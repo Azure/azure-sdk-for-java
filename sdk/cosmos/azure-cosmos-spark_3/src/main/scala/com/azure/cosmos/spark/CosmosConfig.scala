@@ -2507,6 +2507,14 @@ private object CosmosThroughputControlConfig {
             if (throughputBucket.isDefined && throughputBucket.get > 0) {
                 Some(parseServerThroughputControlConfig(groupName.get, throughputBucket.get, cfg))
             } else {
+
+              // If a non-positive throughputBucket was provided treat it as invalid
+              if (throughputBucket.isDefined && throughputBucket.get <= 0) {
+                throw new IllegalArgumentException(
+                  s"Mixed throughput control configuration detected: " +
+                    s"Invalid '${CosmosConfigNames.ThroughputControlThroughputBucket}' value '${throughputBucket.get}'. It must be greater than 0 or omitted.")
+              }
+
                 // if throughput bucket is defined, then use server side throughput bucket control
                 // else validate SDK global throughput control config
                 Some(parseSDKThroughputControlConfig(groupName.get, cfg))
@@ -2520,6 +2528,29 @@ private object CosmosThroughputControlConfig {
                                                          groupName: String,
                                                          throughputBucket: Int,
                                                          cfg: Map[String, String]): CosmosServerThroughputControlConfig = {
+
+    // Detect presence of SDK/global throughput control options
+    val targetThroughputOpt = CosmosConfigEntry.parse(cfg, targetThroughputSupplier)
+    val targetThroughputThresholdOpt = CosmosConfigEntry.parse(cfg, targetThroughputThresholdSupplier)
+    val throughputControlAccountEndpointOpt = CosmosConfigEntry.parse(cfg, throughputControlAccountEndpointUriSupplier)
+    val throughputControlAccountKeyOpt = CosmosConfigEntry.parse(cfg, throughputControlAccountKeySupplier)
+    val globalControlDatabaseOpt = CosmosConfigEntry.parse(cfg, globalControlDatabaseSupplier)
+    val globalControlContainerOpt = CosmosConfigEntry.parse(cfg, globalControlContainerSupplier)
+
+    val sdkThroughputControlConfigsPresent = targetThroughputOpt.isDefined ||
+      targetThroughputThresholdOpt.isDefined ||
+      throughputControlAccountEndpointOpt.isDefined ||
+      throughputControlAccountKeyOpt.isDefined ||
+      globalControlDatabaseOpt.isDefined ||
+      globalControlContainerOpt.isDefined
+
+    if (sdkThroughputControlConfigsPresent) {
+      throw new IllegalArgumentException(
+        "Mixed throughput control configuration detected: 'throughputBucket' cannot be used together with " +
+          "['targetThroughput', 'targetThroughputThreshold', 'throughputControl.accountEndpoint', 'throughputControl.accountKey', " +
+          "'throughputControl.globalControl.database', 'throughputControl.globalControl.container']")
+    }
+
     val priorityLevel = CosmosConfigEntry.parse(cfg, priorityLevelSupplier)
     CosmosServerThroughputControlConfig(groupName, throughputBucket, priorityLevel)
   }

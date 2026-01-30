@@ -1589,6 +1589,26 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     }
   }
 
+  it should "complain when both server and sdk throughput control configs are provided" in {
+    val userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.throughputControl.throughputBucket" -> "2",
+      "spark.cosmos.throughputControl.enabled" -> "true",
+      "spark.cosmos.throughputControl.name" -> "test",
+      "spark.cosmos.throughputControl.targetThroughput" -> "10"
+    )
+
+    try {
+      CosmosThroughputControlConfig.parseThroughputControlConfig(userConfig)
+      fail("should have failed due to mixed throughput control configuration")
+    } catch {
+      case e: IllegalArgumentException =>
+        e.getMessage should startWith("Mixed throughput control configuration detected")
+      case e: Exception => fail(s"Unexpected exception type: ${e.getClass}")
+    }
+  }
+
   private case class PatchColumnConfigParameterTest
   (
    isValid: Boolean,
