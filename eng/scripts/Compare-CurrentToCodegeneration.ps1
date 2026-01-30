@@ -228,6 +228,7 @@ if ($jobTimeout) {
   Write-Host "The aggregated generate job timed out after $timeout seconds."
   Stop-Job $job | Out-Null
 }
+Remove-Job $job | Out-Null
 
 # Clean up generated code, so that next step will not be affected.
 git reset --hard | Out-Null
