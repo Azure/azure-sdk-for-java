@@ -238,7 +238,7 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         input.setUrl(uriSource);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
+            = contentUnderstandingClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
 
@@ -300,7 +300,7 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         input.setUrl(uriSource);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = contentUnderstandingClient.beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
+            = contentUnderstandingClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
 
@@ -368,7 +368,7 @@ public class Sample02_AnalyzeUrl extends ContentUnderstandingClientTestBase {
         input.setUrl(uriSource);
 
         SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
-            = contentUnderstandingClient.beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
+            = contentUnderstandingClient.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
 
         AnalyzeResult result = operation.getFinalResult();
 

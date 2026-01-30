@@ -245,8 +245,8 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(uriSource);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingAsyncClient
-            .beginAnalyze("prebuilt-videoSearch", null, null, Arrays.asList(input), null);
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
@@ -315,8 +315,8 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(uriSource);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingAsyncClient
-            .beginAnalyze("prebuilt-audioSearch", null, null, Arrays.asList(input), null);
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-audioSearch", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
@@ -391,8 +391,8 @@ public class Sample02_AnalyzeUrlAsync extends ContentUnderstandingClientTestBase
         AnalyzeInput input = new AnalyzeInput();
         input.setUrl(uriSource);
 
-        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation = contentUnderstandingAsyncClient
-            .beginAnalyze("prebuilt-imageSearch", null, null, Arrays.asList(input), null);
+        PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> operation
+            = contentUnderstandingAsyncClient.beginAnalyze("prebuilt-imageSearch", Arrays.asList(input));
 
         // Use reactive pattern: chain operations using flatMap
         // In a real application, you would use subscribe() instead of block()
