@@ -241,7 +241,7 @@ public class KeyVaultClientTest {
 
     @EnabledIfEnvironmentVariable(named = "AZURE_KEYVAULT_CERTIFICATE_NAME", matches = "myalias")
     @Test
-    public void testKeuVaultClients() {
+    public void testKeyVaultClients() {
         String accessToken = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ACCESS_TOKEN");
         KeyVaultClient keyVaultClient;
         if (accessToken != null && !accessToken.isEmpty()) {
