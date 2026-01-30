@@ -1,6 +1,6 @@
 # Release History
 
-## 2.59.0-beta.1 (Unreleased)
+## 2.59.0 (2025-01-30)
 
 ### azure-resourcemanager-redis
 
