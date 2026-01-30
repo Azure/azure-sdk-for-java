@@ -225,7 +225,7 @@ $job | Receive-Job 2>$null | Out-Null
 
 $jobTimeout = $job.State -eq 'Running'
 if ($jobTimeout) {
-  Write-Host "The aggregated generate jobs timed out after $timeout seconds."
+  Write-Host "The aggregated generate job timed out after $timeout seconds."
   Stop-Job $job | Out-Null
 }
 
