@@ -742,7 +742,7 @@ public class Utils {
                 cosmosChangeFeedRequestRequestOptions, pagedFluxOptions);
     }
 
-    static String escapeNonAscii(String partitionKeyJson) {
+    public static String escapeNonAscii(String partitionKeyJson) {
         // if all are ascii original string will be returned, and avoids copying data.
         StringBuilder sb = null;
         for (int i = 0; i < partitionKeyJson.length(); i++) {

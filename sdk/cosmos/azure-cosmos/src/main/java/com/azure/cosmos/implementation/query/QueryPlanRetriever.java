@@ -96,7 +96,7 @@ class QueryPlanRetriever {
 
         if (partitionKey != null && partitionKey != PartitionKey.NONE) {
             PartitionKeyInternal partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
-            requestHeaders.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
+            requestHeaders.put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
         }
 
         final RxDocumentServiceRequest queryPlanRequest = RxDocumentServiceRequest.create(diagnosticsClientContext,
