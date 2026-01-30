@@ -18,9 +18,9 @@ public class DeviceUpdateListNames {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.deviceupdatelistnames.deviceupdatelistnames
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-update-list-names.device-update-list-names
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = deviceUpdateClient.listNames("microsoft", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.deviceupdatelistnames.deviceupdatelistnames
+        // END:com.azure.iot.deviceupdate.generated.device-update-list-names.device-update-list-names
     }
 }

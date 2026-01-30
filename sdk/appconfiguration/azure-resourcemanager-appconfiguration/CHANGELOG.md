@@ -1,14 +1,186 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2026-01-16)
 
-### Features Added
+- Azure Resource Manager AppConfiguration client library for Java. This package contains Microsoft Azure SDK for AppConfiguration Management SDK. // (missing-service-description) Add service description. Package api-version 2025-06-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ApiKeyListResult` was removed
 
-### Other Changes
+#### `models.PrivateLinkResourceListResult` was removed
+
+#### `models.ConfigurationStoreListResult` was removed
+
+#### `models.OperationDefinitionListResult` was removed
+
+#### `models.ReplicaListResult` was removed
+
+#### `models.PrivateEndpointConnectionListResult` was removed
+
+#### `models.DeletedConfigurationStoreListResult` was removed
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `validate()` was removed
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `validate()` was removed
+
+#### `models.ConfigurationStoreUpdateParameters` was modified
+
+* `validate()` was removed
+
+#### `models.DataPlaneProxyProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDefinitionDisplay` was modified
+
+* `OperationDefinitionDisplay()` was changed to private access
+* `validate()` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.ServiceSpecification` was modified
+
+* `ServiceSpecification()` was changed to private access
+* `withLogSpecifications(java.util.List)` was removed
+* `validate()` was removed
+* `withMetricSpecifications(java.util.List)` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `validate()` was removed
+
+#### `models.ResourceIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.MetricDimension` was modified
+
+* `MetricDimension()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+* `withInternalName(java.lang.String)` was removed
+
+#### `models.KeyValueFilter` was modified
+
+* `validate()` was removed
+
+#### `models.MetricSpecification` was modified
+
+* `MetricSpecification()` was changed to private access
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withUnit(java.lang.String)` was removed
+* `withAggregationType(java.lang.String)` was removed
+* `withInternalMetricName(java.lang.String)` was removed
+* `withDimensions(java.util.List)` was removed
+* `withDisplayDescription(java.lang.String)` was removed
+* `withFillGapWithZero(java.lang.Boolean)` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `models.UserIdentity` was modified
+
+* `validate()` was removed
+
+#### `models.CheckNameAvailabilityParameters` was modified
+
+* `validate()` was removed
+
+#### `models.Sku` was modified
+
+* `validate()` was removed
+
+#### `models.EncryptionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.KeyVaultProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationProperties` was modified
+
+* `OperationProperties()` was changed to private access
+* `withServiceSpecification(models.ServiceSpecification)` was removed
+* `validate()` was removed
+
+#### `models.PrivateEndpointConnectionReference` was modified
+
+* `PrivateEndpointConnectionReference()` was changed to private access
+* `validate()` was removed
+* `withPrivateLinkServiceConnectionState(models.PrivateLinkServiceConnectionState)` was removed
+* `withPrivateEndpoint(models.PrivateEndpoint)` was removed
+
+#### `models.LogSpecification` was modified
+
+* `LogSpecification()` was changed to private access
+* `withBlobDuration(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+* `validate()` was removed
+* `withDisplayName(java.lang.String)` was removed
+
+#### `AppConfigurationManager` was modified
+
+* `fluent.AppConfigurationManagementClient serviceClient()` -> `fluent.AppConfigurationClient serviceClient()`
+
+### Features Added
+
+* `models.ManagedOnBehalfOfConfiguration` was added
+
+* `models.MoboBrokerResource` was added
+
+* `models.TelemetryProperties` was added
+
+* `models.AzureFrontDoorProperties` was added
+
+#### `models.ConfigurationStoreUpdateParameters` was modified
+
+* `telemetry()` was added
+* `azureFrontDoor()` was added
+* `withTelemetry(models.TelemetryProperties)` was added
+* `withAzureFrontDoor(models.AzureFrontDoorProperties)` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was added
+
+#### `models.ConfigurationStore$Definition` was modified
+
+* `withTelemetry(models.TelemetryProperties)` was added
+* `withAzureFrontDoor(models.AzureFrontDoorProperties)` was added
+
+#### `models.ConfigurationStore$Update` was modified
+
+* `withAzureFrontDoor(models.AzureFrontDoorProperties)` was added
+* `withTelemetry(models.TelemetryProperties)` was added
+
+#### `models.DeletedConfigurationStore` was modified
+
+* `systemData()` was added
+
+#### `models.ConfigurationStore` was modified
+
+* `telemetry()` was added
+* `managedOnBehalfOfConfiguration()` was added
+* `azureFrontDoor()` was added
+
+#### `models.Snapshot` was modified
+
+* `systemData()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was added
+
+#### `models.KeyValue` was modified
+
+* `systemData()` was added
 
 ## 1.1.0 (2025-06-11)
 

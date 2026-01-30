@@ -331,8 +331,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # get the stable version and current version from version_client.txt, current version in version_client will be updated if the release type is GA. 
         # e.g. If current version is 1.2.0-beta.1 and the release type is GA, then current version will be updated to 1.2.0
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, preview=release_beta_sdk)
-        update_parameters(None)
-        output_folder = OUTPUT_FOLDER_FORMAT.format(service)
+        output_folder = sdk_folder
         update_version(sdk_root, output_folder)
 
         # compile
@@ -572,8 +571,7 @@ def main():
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
-        update_parameters(None)
-        output_folder = OUTPUT_FOLDER_FORMAT.format(service)
+        output_folder = sdk_folder
         update_version(sdk_root, output_folder)
         update_changelog_version(sdk_root, output_folder, current_version)
     else:

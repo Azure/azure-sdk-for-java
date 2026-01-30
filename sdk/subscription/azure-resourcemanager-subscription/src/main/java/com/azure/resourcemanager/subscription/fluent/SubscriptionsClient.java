@@ -6,91 +6,175 @@ package com.azure.resourcemanager.subscription.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.subscription.fluent.models.LocationInner;
-import com.azure.resourcemanager.subscription.fluent.models.SubscriptionInner;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.subscription.fluent.models.AcceptOwnershipStatusResponseInner;
+import com.azure.resourcemanager.subscription.fluent.models.CanceledSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.fluent.models.EnabledSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.fluent.models.RenamedSubscriptionIdInner;
+import com.azure.resourcemanager.subscription.models.AcceptOwnershipRequest;
+import com.azure.resourcemanager.subscription.models.SubscriptionName;
 
 /**
  * An instance of this class provides access to all the operations defined in SubscriptionsClient.
  */
 public interface SubscriptionsClient {
     /**
-     * Gets all available geo-locations.
+     * The operation to cancel a subscription.
      * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LocationInner> listLocations(String subscriptionId);
-
-    /**
-     * Gets all available geo-locations.
-     * 
-     * This operation provides all the locations that are available for resource providers; however, each resource
-     * provider may support a subset of this list.
-     * 
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId Subscription Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LocationInner> listLocations(String subscriptionId, Context context);
-
-    /**
-     * Gets details about a specified subscription.
-     * 
-     * @param subscriptionId The ID of the target subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription along with {@link Response}.
+     * @return the ID of the canceled subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context);
+    Response<CanceledSubscriptionIdInner> cancelWithResponse(String subscriptionId, Context context);
 
     /**
-     * Gets details about a specified subscription.
+     * The operation to cancel a subscription.
      * 
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return the ID of the canceled subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionInner get(String subscriptionId);
+    CanceledSubscriptionIdInner cancel(String subscriptionId);
 
     /**
-     * Gets all subscriptions for a tenant.
+     * The operation to rename a subscription.
      * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubscriptionInner> list();
-
-    /**
-     * Gets all subscriptions for a tenant.
-     * 
+     * @param subscriptionId Subscription Id.
+     * @param body Subscription Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
+     * @return the ID of the subscriptions that is being renamed along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubscriptionInner> list(Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RenamedSubscriptionIdInner> renameWithResponse(String subscriptionId, SubscriptionName body,
+        Context context);
+
+    /**
+     * The operation to rename a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body Subscription Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the subscriptions that is being renamed.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RenamedSubscriptionIdInner rename(String subscriptionId, SubscriptionName body);
+
+    /**
+     * The operation to enable a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the subscriptions that is being enabled along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<EnabledSubscriptionIdInner> enableWithResponse(String subscriptionId, Context context);
+
+    /**
+     * The operation to enable a subscription.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the ID of the subscriptions that is being enabled.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    EnabledSubscriptionIdInner enable(String subscriptionId);
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAcceptOwnership(String subscriptionId, AcceptOwnershipRequest body);
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAcceptOwnership(String subscriptionId, AcceptOwnershipRequest body,
+        Context context);
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void acceptOwnership(String subscriptionId, AcceptOwnershipRequest body);
+
+    /**
+     * Accept subscription ownership.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void acceptOwnership(String subscriptionId, AcceptOwnershipRequest body, Context context);
+
+    /**
+     * Accept subscription ownership status.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription Accept Ownership Response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AcceptOwnershipStatusResponseInner> acceptOwnershipStatusWithResponse(String subscriptionId,
+        Context context);
+
+    /**
+     * Accept subscription ownership status.
+     * 
+     * @param subscriptionId Subscription Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription Accept Ownership Response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AcceptOwnershipStatusResponseInner acceptOwnershipStatus(String subscriptionId);
 }
