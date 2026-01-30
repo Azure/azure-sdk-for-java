@@ -18,6 +18,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
 ## 2.58.0 (2025-12-22)
 
 ### azure-resourcemanager-containerservice
