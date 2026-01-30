@@ -224,6 +224,7 @@ $job | Wait-Job -Timeout $timeout | Out-Null
 $job | Receive-Job 2>$null | Out-Null
 
 $jobTimeout = $job.State -eq 'Running'
+$jobFailed = $job.State -eq 'Failed'
 if ($jobTimeout) {
   Write-Host "The aggregated generate job timed out after $timeout seconds."
   Stop-Job $job | Out-Null
@@ -234,4 +235,4 @@ Remove-Job $job | Out-Null
 git reset --hard | Out-Null
 git clean -fd . | Out-Null
 
-exit $job.State -eq 'Failed' -or $jobTimeout
+exit $jobFailed -or $jobTimeout
