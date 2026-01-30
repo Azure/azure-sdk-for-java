@@ -545,6 +545,7 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         customization.getClass(MODELS_PACKAGE, "ObjectField").customizeAst(ast -> {
             ast.addImport("com.azure.core.util.logging.ClientLogger");
+            ast.addImport("java.util.NoSuchElementException");
             ast.getClassByName("ObjectField").ifPresent(clazz -> {
                 // Add static ClientLogger for throwing through Azure SDK lint (ThrowFromClientLoggerCheck)
                 clazz.addFieldWithInitializer("ClientLogger", "LOGGER",
@@ -650,7 +651,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                     for (MethodDeclaration method : clazz.getMethods()) {
                         String name = method.getNameAsString();
                         int paramCount = method.getParameters().size();
-                        
+
                         // Hide 1-param beginAnalyze (useless - creates empty AnalyzeRequest1)
                         if ("beginAnalyze".equals(name) && paramCount == 1) {
                             method.removeModifier(Modifier.Keyword.PUBLIC);
