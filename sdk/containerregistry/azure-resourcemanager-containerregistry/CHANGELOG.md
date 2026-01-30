@@ -13,6 +13,14 @@
 - Moved `ContainerRegistryManager.serviceClient().getRegistries().scheduleRun(...)` to `ContainerRegistryManager.taskClient().getRegistryTasks().scheduleRun(...)`.
 - Moved `ContainerRegistryManager.serviceClient().getRegistries().getBuildSourceUploadUrl(...)` to `ContainerRegistryManager.taskClient().getRegistryTasks().getBuildSourceUploadUrl(...)`.
 
+## 2.54.2 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
 ## 2.55.0-beta.1 (2025-12-04)
 
 ### Other Changes
