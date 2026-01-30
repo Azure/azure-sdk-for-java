@@ -5,6 +5,7 @@ package com.azure.ai.contentunderstanding.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -107,6 +108,8 @@ public final class ArrayField extends ContentField {
         });
     }
 
+    private static final ClientLogger LOGGER = new ClientLogger(ArrayField.class);
+
     /**
      * Gets the number of items in the array.
      *
@@ -125,8 +128,8 @@ public final class ArrayField extends ContentField {
      */
     public ContentField get(int index) {
         if (getValueArray() == null || index < 0 || index >= getValueArray().size()) {
-            throw new IndexOutOfBoundsException(
-                "Index " + index + " is out of range. Array has " + size() + " elements.");
+            throw LOGGER.logThrowableAsError(new IndexOutOfBoundsException(
+                "Index " + index + " is out of range. Array has " + size() + " elements."));
         }
         return getValueArray().get(index);
     }

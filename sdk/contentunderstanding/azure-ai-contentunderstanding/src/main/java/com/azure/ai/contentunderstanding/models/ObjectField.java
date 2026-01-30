@@ -5,6 +5,7 @@ package com.azure.ai.contentunderstanding.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -108,22 +109,25 @@ public final class ObjectField extends ContentField {
         });
     }
 
+    private static final ClientLogger LOGGER = new ClientLogger(ObjectField.class);
+
     /**
      * Gets a field from the object by name.
      *
      * @param fieldName The name of the field to retrieve.
      * @return The field if found.
      * @throws IllegalArgumentException if fieldName is null or empty.
-     * @throws java.util.NoSuchElementException if the field is not found.
+     * @throws NoSuchElementException if the field is not found.
      */
     public ContentField getField(String fieldName) {
         if (fieldName == null || fieldName.isEmpty()) {
-            throw new IllegalArgumentException("fieldName cannot be null or empty.");
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("fieldName cannot be null or empty."));
         }
         if (getValueObject() != null && getValueObject().containsKey(fieldName)) {
             return getValueObject().get(fieldName);
         }
-        throw new java.util.NoSuchElementException("Field '" + fieldName + "' was not found in the object.");
+        throw LOGGER.logThrowableAsError(
+            new java.util.NoSuchElementException("Field '" + fieldName + "' was not found in the object."));
     }
 
     /**

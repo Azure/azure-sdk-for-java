@@ -502,8 +502,14 @@ public class ContentUnderstandingCustomizations extends Customization {
     private void customizeArrayFieldExtensions(LibraryCustomization customization, Logger logger) {
         logger.info("Adding convenience methods to ArrayField class");
 
-        customization.getClass(MODELS_PACKAGE, "ArrayField").customizeAst(ast ->
+        customization.getClass(MODELS_PACKAGE, "ArrayField").customizeAst(ast -> {
+            ast.addImport("com.azure.core.util.logging.ClientLogger");
             ast.getClassByName("ArrayField").ifPresent(clazz -> {
+                // Add static ClientLogger for throwing through Azure SDK lint (ThrowFromClientLoggerCheck)
+                clazz.addFieldWithInitializer("ClientLogger", "LOGGER",
+                    StaticJavaParser.parseExpression("new ClientLogger(ArrayField.class)"),
+                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+
                 // Add size() method - equivalent to Count property in C#
                 clazz.addMethod("size", Modifier.Keyword.PUBLIC)
                     .setType("int")
@@ -513,7 +519,7 @@ public class ContentUnderstandingCustomizations extends Customization {
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "return getValueArray() != null ? getValueArray().size() : 0; }"));
 
-                // Add get(int index) method - equivalent to indexer in C#
+                // Add get(int index) method - equivalent to indexer in C# (throw via ClientLogger per SDK lint)
                 clazz.addMethod("get", Modifier.Keyword.PUBLIC)
                     .setType("ContentField")
                     .addParameter("int", "index")
@@ -524,10 +530,11 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("throws", "IndexOutOfBoundsException if the index is out of range."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "if (getValueArray() == null || index < 0 || index >= getValueArray().size()) {"
-                        + "    throw new IndexOutOfBoundsException(\"Index \" + index + \" is out of range. Array has \" + size() + \" elements.\");"
+                        + "    throw LOGGER.logThrowableAsError(new IndexOutOfBoundsException(\"Index \" + index + \" is out of range. Array has \" + size() + \" elements.\"));"
                         + "}"
                         + "return getValueArray().get(index); }"));
-            }));
+            });
+        });
     }
 
     /**
@@ -536,9 +543,15 @@ public class ContentUnderstandingCustomizations extends Customization {
     private void customizeObjectFieldExtensions(LibraryCustomization customization, Logger logger) {
         logger.info("Adding convenience methods to ObjectField class");
 
-        customization.getClass(MODELS_PACKAGE, "ObjectField").customizeAst(ast ->
+        customization.getClass(MODELS_PACKAGE, "ObjectField").customizeAst(ast -> {
+            ast.addImport("com.azure.core.util.logging.ClientLogger");
             ast.getClassByName("ObjectField").ifPresent(clazz -> {
-                // Add getField(String fieldName) method - equivalent to indexer in C#
+                // Add static ClientLogger for throwing through Azure SDK lint (ThrowFromClientLoggerCheck)
+                clazz.addFieldWithInitializer("ClientLogger", "LOGGER",
+                    StaticJavaParser.parseExpression("new ClientLogger(ObjectField.class)"),
+                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+
+                // Add getField(String fieldName) method - equivalent to indexer in C# (throw via ClientLogger per SDK lint)
                 clazz.addMethod("getField", Modifier.Keyword.PUBLIC)
                     .setType("ContentField")
                     .addParameter("String", "fieldName")
@@ -547,15 +560,15 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("param", "fieldName The name of the field to retrieve.")
                         .addBlockTag("return", "The field if found.")
                         .addBlockTag("throws", "IllegalArgumentException if fieldName is null or empty.")
-                        .addBlockTag("throws", "java.util.NoSuchElementException if the field is not found."))
+                        .addBlockTag("throws", "NoSuchElementException if the field is not found."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "if (fieldName == null || fieldName.isEmpty()) {"
-                        + "    throw new IllegalArgumentException(\"fieldName cannot be null or empty.\");"
+                        + "    throw LOGGER.logThrowableAsError(new IllegalArgumentException(\"fieldName cannot be null or empty.\"));"
                         + "}"
                         + "if (getValueObject() != null && getValueObject().containsKey(fieldName)) {"
                         + "    return getValueObject().get(fieldName);"
                         + "}"
-                        + "throw new java.util.NoSuchElementException(\"Field '\" + fieldName + \"' was not found in the object.\"); }"));
+                        + "throw LOGGER.logThrowableAsError(new java.util.NoSuchElementException(\"Field '\" + fieldName + \"' was not found in the object.\")); }"));
 
                 // Add getFieldOrDefault(String fieldName) method - returns null if not found
                 clazz.addMethod("getFieldOrDefault", Modifier.Keyword.PUBLIC)
@@ -570,7 +583,8 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "    return null;"
                         + "}"
                         + "return getValueObject().get(fieldName); }"));
-            }));
+            });
+        });
     }
 
     // =================== SERVICE-FIX implementations ===================
