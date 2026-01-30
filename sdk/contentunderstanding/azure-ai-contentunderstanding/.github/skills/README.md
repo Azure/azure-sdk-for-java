@@ -31,25 +31,25 @@ Skills should define **what to do**, not **how to do it**:
 
 | Skill | Description | Priority |
 |-------|-------------|----------|
-| [`sdk-setup-env`](sdk-setup-env/) | Load environment variables from .env file | P0 |
-| [`sdk-compile`](sdk-compile/) | Compile SDK source code | P0 |
-| [`sdk-test-record`](sdk-test-record/) | Run tests in RECORD mode | P0 |
-| [`sdk-test-playback`](sdk-test-playback/) | Run tests in PLAYBACK mode | P0 |
-| [`sdk-push-recordings`](sdk-push-recordings/) | Push session recordings to assets repo | P1 |
-| [`sdk-run-sample`](sdk-run-sample/) | Run a single sample | P1 |
-| [`sdk-run-all-samples`](sdk-run-all-samples/) | Run all samples | P2 |
+| [`sdk-setup-env`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/sdk-setup-env/) | Load environment variables from .env file | P0 |
+| [`sdk-compile`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/sdk-compile/) | Compile SDK source code | P0 |
+| [`sdk-test-record`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/sdk-test-record/) | Run tests in RECORD mode | P0 |
+| [`sdk-test-playback`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/sdk-test-playback/) | Run tests in PLAYBACK mode | P0 |
+| [`sdk-push-recordings`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/sdk-push-recordings/) | Push session recordings to assets repo | P1 |
+| [`sdk-run-sample`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/sdk-run-sample/) | Run a single sample | P1 |
+| [`sdk-run-all-samples`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/sdk-run-all-samples/) | Run all samples | P2 |
 
 ### Workflow Skills
 
 | Skill | Description | Steps |
 |-------|-------------|-------|
-| [`sdk-workflow-record-push`](sdk-workflow-record-push/) | Complete RECORD and PUSH workflow | setup → compile → record → push → playback |
+| [`sdk-workflow-record-push`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/sdk-workflow-record-push/) | Complete RECORD and PUSH workflow | setup → compile → record → push → playback |
 
 ### Language-Specific Skills
 
 | Skill | Language | Description |
 |-------|----------|-------------|
-| [`java-cu-create-async-sample`](java-cu-create-async-sample/) | Java | Create async samples with reactive patterns |
+| [`java-cu-create-async-sample`](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/contentunderstanding/azure-ai-contentunderstanding/.github/skills/java-cu-create-async-sample/) | Java | Create async samples with reactive patterns |
 
 ## 🚀 Quick Start
 
