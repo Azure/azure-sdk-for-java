@@ -7,9 +7,12 @@ package com.azure.resourcemanager.healthdataaiservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.healthdataaiservices.fluent.models.DeidServiceInner;
 import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceProperties;
+import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceSku;
+import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceSkuName;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import com.azure.resourcemanager.healthdataaiservices.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,27 +22,42 @@ public final class DeidServiceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeidServiceInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"pzvgnwzsymglzufc\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"bihanuf\",\"fcbjysagithxqha\",\"ifpikxwczby\",\"cnpqxuhivyqniwby\"],\"privateEndpoint\":{\"id\":\"xvd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"rtfw\",\"actionsRequired\":\"k\"},\"provisioningState\":\"Deleting\"},\"id\":\"dcc\",\"name\":\"nhsjcnyej\",\"type\":\"kryhtnapczwlokj\"},{\"properties\":{\"groupIds\":[\"kvnipjoxz\",\"nchgej\",\"podmailzydehojwy\"],\"privateEndpoint\":{\"id\":\"xinpmqnjaq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"sprozvcput\",\"actionsRequired\":\"jvwmfda\"},\"provisioningState\":\"Succeeded\"},\"id\":\"dvpjhulsuuvmk\",\"name\":\"ozkrwfndiodjpslw\",\"type\":\"jdpvwryo\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"cctazakljlahbc\",\"tenantId\":\"ffdfdosygexpa\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qtrgqjbpfzfsinzg\":{\"principalId\":\"msbzjhcrz\",\"clientId\":\"dphlxaolt\"},\"ofpdvh\":{\"principalId\":\"cjrwzoxxjtfellu\",\"clientId\":\"zitonpeqfpjkjl\"}}},\"location\":\"xxypininmay\",\"tags\":{\"oginuvamiheognar\":\"bbkpodep\"},\"id\":\"zxtheotusivyevcc\",\"name\":\"qi\",\"type\":\"nhungbw\"}")
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"pzvgnwzsymglzufc\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"bihanuf\",\"fcbjysagithxqha\",\"ifpikxwczby\",\"cnpqxuhivyqniwby\"],\"privateEndpoint\":{\"id\":\"xvd\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"rtfw\",\"actionsRequired\":\"k\"},\"provisioningState\":\"Deleting\"},\"id\":\"dcc\",\"name\":\"nhsjcnyej\",\"type\":\"kryhtnapczwlokj\"},{\"properties\":{\"groupIds\":[\"kvnipjoxz\",\"nchgej\",\"podmailzydehojwy\"],\"privateEndpoint\":{\"id\":\"xinpmqnjaq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"sprozvcput\",\"actionsRequired\":\"jvwmfda\"},\"provisioningState\":\"Succeeded\"},\"id\":\"dvpjhulsuuvmk\",\"name\":\"ozkrwfndiodjpslw\",\"type\":\"jdpvwryo\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"cctazakljlahbc\",\"tenantId\":\"ffdfdosygexpa\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"qtrgqjbpfzfsinzg\":{\"principalId\":\"msbzjhcrz\",\"clientId\":\"dphlxaolt\"},\"ofpdvh\":{\"principalId\":\"cjrwzoxxjtfellu\",\"clientId\":\"zitonpeqfpjkjl\"}}},\"sku\":{\"name\":\"Basic\",\"tier\":\"Basic\",\"size\":\"ininmay\",\"family\":\"ybb\",\"capacity\":49478059},\"location\":\"epoo\",\"tags\":{\"eotusivyevc\":\"uvamiheognarxzxt\",\"un\":\"iqihn\",\"fygxgispemvtzfk\":\"bwjzr\"},\"id\":\"fublj\",\"name\":\"fxqeof\",\"type\":\"aeqjhqjbasvms\"}")
             .toObject(DeidServiceInner.class);
-        Assertions.assertEquals("xxypininmay", model.location());
-        Assertions.assertEquals("bbkpodep", model.tags().get("oginuvamiheognar"));
+        Assertions.assertEquals("epoo", model.location());
+        Assertions.assertEquals("uvamiheognarxzxt", model.tags().get("eotusivyevc"));
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(DeidServiceSkuName.BASIC, model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("ininmay", model.sku().size());
+        Assertions.assertEquals("ybb", model.sku().family());
+        Assertions.assertEquals(49478059, model.sku().capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeidServiceInner model = new DeidServiceInner().withLocation("xxypininmay")
-            .withTags(mapOf("oginuvamiheognar", "bbkpodep"))
+        DeidServiceInner model = new DeidServiceInner().withLocation("epoo")
+            .withTags(mapOf("eotusivyevc", "uvamiheognarxzxt", "un", "iqihn", "fygxgispemvtzfk", "bwjzr"))
             .withProperties(new DeidServiceProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(
-                    mapOf("qtrgqjbpfzfsinzg", new UserAssignedIdentity(), "ofpdvh", new UserAssignedIdentity())));
+                    mapOf("qtrgqjbpfzfsinzg", new UserAssignedIdentity(), "ofpdvh", new UserAssignedIdentity())))
+            .withSku(new DeidServiceSku().withName(DeidServiceSkuName.BASIC)
+                .withTier(SkuTier.BASIC)
+                .withSize("ininmay")
+                .withFamily("ybb")
+                .withCapacity(49478059));
         model = BinaryData.fromObject(model).toObject(DeidServiceInner.class);
-        Assertions.assertEquals("xxypininmay", model.location());
-        Assertions.assertEquals("bbkpodep", model.tags().get("oginuvamiheognar"));
+        Assertions.assertEquals("epoo", model.location());
+        Assertions.assertEquals("uvamiheognarxzxt", model.tags().get("eotusivyevc"));
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(DeidServiceSkuName.BASIC, model.sku().name());
+        Assertions.assertEquals(SkuTier.BASIC, model.sku().tier());
+        Assertions.assertEquals("ininmay", model.sku().size());
+        Assertions.assertEquals("ybb", model.sku().family());
+        Assertions.assertEquals(49478059, model.sku().capacity());
     }
 
     // Use "Map.of" if available

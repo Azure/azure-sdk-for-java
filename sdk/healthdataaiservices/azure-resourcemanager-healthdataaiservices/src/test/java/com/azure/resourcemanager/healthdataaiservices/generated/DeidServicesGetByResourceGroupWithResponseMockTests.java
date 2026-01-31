@@ -11,8 +11,10 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthdataaiservices.HealthDataAIServicesManager;
 import com.azure.resourcemanager.healthdataaiservices.models.DeidService;
+import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceSkuName;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +25,7 @@ public final class DeidServicesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"serviceUrl\":\"u\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"x\",\"ffeii\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"ez\",\"name\":\"v\",\"type\":\"hxmzsbbzoggig\"},{\"properties\":{\"groupIds\":[\"ur\",\"jx\",\"jnspydp\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Deleting\"},\"id\":\"kouknvudwtiu\",\"name\":\"bldngkpoc\",\"type\":\"pazyxoegukg\"},{\"properties\":{\"groupIds\":[\"ucgygevqz\",\"typmrbpizcdrqjsd\",\"ydnfyhxdeoejz\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"sjttgzfbish\",\"name\":\"bkh\",\"type\":\"jdeyeamdpha\"},{\"properties\":{\"groupIds\":[\"buxwgip\",\"honowkgshwank\",\"xzbinjeputt\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"uzoqft\",\"name\":\"yqzrnkcqvyxlw\",\"type\":\"zlsico\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"wvl\",\"tenantId\":\"avwhheunm\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"szfkbe\":{\"principalId\":\"xzko\",\"clientId\":\"cukoklyaxuconu\"},\"frzpwvlqdqgb\":{\"principalId\":\"ewrmjmwvvjektc\",\"clientId\":\"enhwlrs\"}}},\"location\":\"ylihkaetckt\",\"tags\":{\"m\":\"ivfsnk\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\",\"hfnljkyq\":\"jrbirphxepcyv\"},\"id\":\"j\",\"name\":\"uujqgidokgjljyo\",\"type\":\"gvcl\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"serviceUrl\":\"haquhcdh\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"exq\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"mwsrcrgvxpvgo\",\"name\":\"zlfmisgwbnbbeld\",\"type\":\"wkz\"},{\"properties\":{\"groupIds\":[\"ourqhakau\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"fwxosowzxcu\",\"name\":\"i\",\"type\":\"jooxdjebw\"},{\"properties\":{\"groupIds\":[\"wfvovbv\",\"euecivyhzceuoj\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"ueiotwmcdyt\",\"name\":\"x\",\"type\":\"it\"},{\"properties\":{\"groupIds\":[\"awgqwgxhni\",\"kxfbkpycgklwndn\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"whvylw\",\"name\":\"btdhxujznbm\",\"type\":\"ow\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"qlveualupjmkh\",\"tenantId\":\"obbc\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"kbegibt\":{\"principalId\":\"jriplrbpbewtghf\",\"clientId\":\"lcgwxzvlvqh\"},\"gmtsavjcbpwxqpsr\":{\"principalId\":\"xiebwwaloayqcg\",\"clientId\":\"tzjuzgwyzmhtxo\"},\"yriwwroyqb\":{\"principalId\":\"ftguv\",\"clientId\":\"uhprwmdyvxqt\"},\"jyzhpvgq\":{\"principalId\":\"rmcqiby\",\"clientId\":\"ojvknmefqsgzvaha\"}}},\"sku\":{\"name\":\"Standard\",\"tier\":\"Premium\",\"size\":\"djzlmwlx\",\"family\":\"ug\",\"capacity\":2083539395},\"location\":\"vawjvzunlu\",\"tags\":{\"rnxipei\":\"n\",\"e\":\"pjzu\"},\"id\":\"xdult\",\"name\":\"kzbbtd\",\"type\":\"umveekgpwozuhkf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +35,17 @@ public final class DeidServicesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeidService response = manager.deidServices()
-            .getByResourceGroupWithResponse("sonpclhocohs", "kevle", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("mx", "gkvtmelmqkrhah", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ylihkaetckt", response.location());
-        Assertions.assertEquals("ivfsnk", response.tags().get("m"));
+        Assertions.assertEquals("vawjvzunlu", response.location());
+        Assertions.assertEquals("n", response.tags().get("rnxipei"));
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals(DeidServiceSkuName.STANDARD, response.sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
+        Assertions.assertEquals("djzlmwlx", response.sku().size());
+        Assertions.assertEquals("ug", response.sku().family());
+        Assertions.assertEquals(2083539395, response.sku().capacity());
     }
 }

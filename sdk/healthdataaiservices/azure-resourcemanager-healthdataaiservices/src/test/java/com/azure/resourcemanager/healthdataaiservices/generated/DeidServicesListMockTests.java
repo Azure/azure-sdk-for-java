@@ -12,8 +12,10 @@ import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.healthdataaiservices.HealthDataAIServicesManager;
 import com.azure.resourcemanager.healthdataaiservices.models.DeidService;
+import com.azure.resourcemanager.healthdataaiservices.models.DeidServiceSkuName;
 import com.azure.resourcemanager.healthdataaiservices.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.healthdataaiservices.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthdataaiservices.models.SkuTier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +26,7 @@ public final class DeidServicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"serviceUrl\":\"ncwscwsvlxoto\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"qsx\",\"nmic\",\"kvceoveilovnotyf\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Failed\"},\"id\":\"bkc\",\"name\":\"x\",\"type\":\"hbttkphyw\"},{\"properties\":{\"groupIds\":[\"t\",\"qnermclfplphoxu\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Creating\"},\"id\":\"bgyepsbj\",\"name\":\"azqugxywpmueefj\",\"type\":\"wfqkquj\"},{\"properties\":{\"groupIds\":[\"yonobgl\",\"ocqxtccmg\",\"udxytlmoyrx\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"wpzntxhdzh\",\"name\":\"rqjbhckfrl\",\"type\":\"rxsbkyvp\"},{\"properties\":{\"groupIds\":[\"uzbpzkafku\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"wbme\",\"name\":\"hseyvju\",\"type\":\"rts\"}],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"principalId\":\"deemao\",\"tenantId\":\"xagkvtmelmqkrh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"fadmws\":{\"principalId\":\"uahaquhcdhmd\",\"clientId\":\"laexqp\"},\"zlfmisgwbnbbeld\":{\"principalId\":\"r\",\"clientId\":\"xpvgo\"},\"urqhaka\":{\"principalId\":\"k\",\"clientId\":\"ali\"}}},\"location\":\"ashsfwxos\",\"tags\":{\"cjooxdjebwpucwwf\":\"xcug\"},\"id\":\"ovbvmeueciv\",\"name\":\"hzceuojgjrwjue\",\"type\":\"otwmcdyt\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"serviceUrl\":\"lmpewwwfbkr\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"hqjohxcrsbfova\",\"rruvwbhsq\",\"sub\"],\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"rxbpyb\",\"name\":\"rfbjf\",\"type\":\"twss\"}],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"principalId\":\"vjz\",\"tenantId\":\"xilzznf\",\"type\":\"None\",\"userAssignedIdentities\":{\"ybn\":{\"principalId\":\"pmqtaru\",\"clientId\":\"jmkcjhwqytj\"}}},\"sku\":{\"name\":\"Free\",\"tier\":\"Premium\",\"size\":\"rjerv\",\"family\":\"enq\",\"capacity\":682074960},\"location\":\"ndoygmifthnzdnd\",\"tags\":{\"ynduha\":\"nayqi\",\"bgycduiertgccym\":\"hqlkthumaqo\",\"lqlfm\":\"aolps\"},\"id\":\"dnbbglzps\",\"name\":\"iydmcwyhzdxs\",\"type\":\"adbzmnvdfznud\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,10 +37,15 @@ public final class DeidServicesListMockTests {
 
         PagedIterable<DeidService> response = manager.deidServices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ashsfwxos", response.iterator().next().location());
-        Assertions.assertEquals("xcug", response.iterator().next().tags().get("cjooxdjebwpucwwf"));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED,
+        Assertions.assertEquals("ndoygmifthnzdnd", response.iterator().next().location());
+        Assertions.assertEquals("nayqi", response.iterator().next().tags().get("ynduha"));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
             response.iterator().next().properties().publicNetworkAccess());
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals(DeidServiceSkuName.FREE, response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
+        Assertions.assertEquals("rjerv", response.iterator().next().sku().size());
+        Assertions.assertEquals("enq", response.iterator().next().sku().family());
+        Assertions.assertEquals(682074960, response.iterator().next().sku().capacity());
     }
 }
