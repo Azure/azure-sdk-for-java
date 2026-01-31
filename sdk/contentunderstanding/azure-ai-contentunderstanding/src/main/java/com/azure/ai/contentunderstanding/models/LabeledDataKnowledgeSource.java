@@ -150,7 +150,9 @@ public final class LabeledDataKnowledgeSource extends KnowledgeSource {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
             jsonWriter.writeStringField("containerUrl", this.containerUrl);
-            jsonWriter.writeStringField("prefix", this.prefix);
+            if (this.prefix != null) {
+                jsonWriter.writeStringField("prefix", this.prefix);
+            }
             jsonWriter.writeStringField("fileListPath", this.fileListPath);
             return jsonWriter.writeEndObject();
         }
@@ -167,12 +169,8 @@ public final class LabeledDataKnowledgeSource extends KnowledgeSource {
                 jsonWriter.writeStringField("containerUrl", this.containerUrl);
             }
         }
-        if (updatedProperties.contains("prefix")) {
-            if (this.prefix == null) {
-                jsonWriter.writeNullField("prefix");
-            } else {
-                jsonWriter.writeStringField("prefix", this.prefix);
-            }
+        if (updatedProperties.contains("prefix") && this.prefix != null) {
+            jsonWriter.writeStringField("prefix", this.prefix);
         }
         if (updatedProperties.contains("fileListPath")) {
             if (this.fileListPath == null) {

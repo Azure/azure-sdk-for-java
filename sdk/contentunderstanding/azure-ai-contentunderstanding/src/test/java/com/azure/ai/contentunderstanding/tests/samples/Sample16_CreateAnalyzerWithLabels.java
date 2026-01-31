@@ -30,16 +30,30 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Sample demonstrates how to create an analyzer with labeled training data from Azure Blob Storage.
+ * Sample demonstrates how to build analyzers with training labels (labeled data from Azure Blob Storage).
  *
- * Required environment variables:
- * - CONTENTUNDERSTANDING_ENDPOINT: Azure Content Understanding endpoint URL
- * - CONTENTUNDERSTANDING_KEY: Azure Content Understanding API key (optional if using DefaultAzureCredential)
+ * This sample is mainly to show the API pattern for creating an analyzer with labeled training data.
+ * For an easier labeling workflow, use Azure AI Content Understanding Studio at
+ * https://contentunderstanding.ai.azure.com/
  *
- * Optional environment variables:
- * - TRAINING_DATA_SAS_URL: SAS URL for the container with labeled training data
- *   If set, the analyzer will be created with labeled data knowledge source.
- *   If not set, the analyzer will be created without training data (demonstration mode).
+ * Labeled receipt data is available in this repo at {@code src/samples/resources/receipt_labels}.
+ * For LIVE mode with real training data: upload that folder to Azure Blob Storage, generate a
+ * container SAS URL with List/Read permissions, then set the environment variables below. Use
+ * {@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} if you uploaded into a subfolder
+ * (e.g., "receipt_labels/"); omit or leave unset if files are at the container root.
+ *
+ * <p><b>Required environment variables:</b></p>
+ * <ul>
+ *   <li>{@code CONTENTUNDERSTANDING_ENDPOINT} – Azure Content Understanding endpoint URL</li>
+ * </ul>
+ *
+ * <p><b>Optional environment variables (for labeled training data; used in LIVE mode):</b></p>
+ * <ul>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL} – SAS URL for the Azure Blob container
+ *       with labeled training data.</li>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} – Path prefix within the container
+ *       (e.g., "receipt_labels/"). Omit or leave unset if files are at the container root.</li>
+ * </ul>
  */
 public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClientTestBase {
 
@@ -57,7 +71,18 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
         // In PLAYBACK mode, use a placeholder URL to ensure consistent test behavior
         String trainingDataSasUrl = getTestMode() == TestMode.PLAYBACK
             ? "https://placeholder.blob.core.windows.net/container?sv=placeholder"
-            : System.getenv("TRAINING_DATA_SAS_URL");
+            : System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL");
+        // Save prefix in test proxy variable during RECORD, load back during PLAYBACK so request bodies match.
+        String trainingDataPrefix;
+        if (getTestMode() == TestMode.PLAYBACK) {
+            String recorded = interceptorManager.getProxyVariableSupplier().get();
+            trainingDataPrefix = (recorded == null || recorded.isEmpty()) ? null : recorded;
+        } else if (getTestMode() == TestMode.RECORD) {
+            trainingDataPrefix = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX");
+            interceptorManager.getProxyVariableConsumer().accept(trainingDataPrefix != null ? trainingDataPrefix : "");
+        } else {
+            trainingDataPrefix = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX");
+        }
 
         try {
             // BEGIN: com.azure.ai.contentunderstanding.createAnalyzerWithLabels
@@ -124,6 +149,9 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             if (trainingDataSasUrl != null && !trainingDataSasUrl.trim().isEmpty()) {
                 LabeledDataKnowledgeSource knowledgeSource
                     = new LabeledDataKnowledgeSource().setContainerUrl(trainingDataSasUrl);
+                if (trainingDataPrefix != null && !trainingDataPrefix.trim().isEmpty()) {
+                    knowledgeSource.setPrefix(trainingDataPrefix);
+                }
                 knowledgeSources.add(knowledgeSource);
                 System.out.println("Using labeled training data from: "
                     + trainingDataSasUrl.substring(0, Math.min(50, trainingDataSasUrl.length())) + "...");
@@ -158,7 +186,7 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
 
             // BEGIN: Assertion_ContentUnderstandingCreateAnalyzerWithLabels
             // Verify analyzer creation
-            System.out.println("\n📋 Analyzer Creation Verification:");
+            System.out.println("\nAnalyzer Creation Verification:");
             assertNotNull(result, "Analyzer should not be null");
             assertEquals("prebuilt-document", result.getBaseAnalyzerId());
             assertEquals("Receipt analyzer with labeled training data", result.getDescription());
@@ -187,7 +215,7 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
 
             // If training data was provided, test the analyzer with a sample document
             if (trainingDataSasUrl != null && !trainingDataSasUrl.trim().isEmpty()) {
-                System.out.println("\n📄 Testing analyzer with sample document...");
+                System.out.println("\nTesting analyzer with sample document...");
                 String testDocUrl
                     = "https://github.com/Azure-Samples/cognitive-services-REST-api-samples/raw/master/curl/form-recognizer/sample-invoice.pdf";
 
@@ -225,7 +253,7 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             }
 
             // Display API pattern information
-            System.out.println("\n📚 CreateAnalyzerWithLabels API Pattern:");
+            System.out.println("\nCreateAnalyzerWithLabels API Pattern:");
             System.out.println("   1. Define field schema with nested structures (arrays, objects)");
             System.out.println("   2. Upload training data to Azure Blob Storage:");
             System.out.println("      - Documents: receipt1.pdf, receipt2.pdf, ...");
@@ -235,10 +263,11 @@ public class Sample16_CreateAnalyzerWithLabels extends ContentUnderstandingClien
             System.out.println("   4. Create analyzer with field schema and knowledge sources");
             System.out.println("   5. Use analyzer for document analysis");
 
-            System.out.println("\n✅ CreateAnalyzerWithLabels pattern demonstration completed");
+            System.out.println("\nCreateAnalyzerWithLabels pattern demonstration completed");
             if (trainingDataSasUrl == null || trainingDataSasUrl.trim().isEmpty()) {
                 System.out.println("   Note: This sample demonstrates the API pattern.");
-                System.out.println("   For actual training, provide TRAINING_DATA_SAS_URL with labeled data.");
+                System.out.println(
+                    "   For actual training, provide CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL with labeled data.");
             }
 
         } finally {

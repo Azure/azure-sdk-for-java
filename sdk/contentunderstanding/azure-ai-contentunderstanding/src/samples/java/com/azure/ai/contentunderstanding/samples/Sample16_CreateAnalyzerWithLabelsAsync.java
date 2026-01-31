@@ -27,17 +27,53 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to create an analyzer with labeled training data from Azure Blob Storage
- * using the async client.
+ * Async sample demonstrates how to build analyzers with training labels (labeled data from Azure Blob Storage).
  *
- * Required environment variables:
- * - CONTENTUNDERSTANDING_ENDPOINT: Azure Content Understanding endpoint URL
- * - CONTENTUNDERSTANDING_KEY: Azure Content Understanding API key (optional if using DefaultAzureCredential)
+ * This sample is mainly to show the API pattern for creating an analyzer with labeled training data.
+ * For an easier labeling workflow, use Azure AI Content Understanding Studio at
+ * https://contentunderstanding.ai.azure.com/
  *
- * Optional environment variables:
- * - TRAINING_DATA_SAS_URL: SAS URL for the container with labeled training data
- *   If set, the analyzer will be created with labeled data knowledge source.
- *   If not set, the analyzer will be created without training data (demonstration mode).
+ * Labeled receipt data is available in this repo at {@code src/samples/resources/receipt_labels}
+ * (images and corresponding .labels.json files). To use it for training:
+ *
+ * <p><b>Manual instructions to upload labels into Azure Blob Storage:</b></p>
+ * <ol>
+ *   <li>Create an Azure Blob Storage container (or use an existing one).</li>
+ *   <li>Upload the contents of {@code src/samples/resources/receipt_labels} into the container.
+ *       You may upload into the container root or into a subfolder (e.g., "receipt_labels/").</li>
+ *   <li>Generate a SAS (Shared Access Signature) URL for the container with at least List and Read
+ *       permissions. In Azure Portal: Storage account → Containers → your container → Shared access
+ *       token; set expiry and permissions, then generate the SAS URL.</li>
+ *   <li>Set {@code CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL} to the full SAS URL
+ *       (e.g., https://&lt;account&gt;.blob.core.windows.net/&lt;container&gt;?sv=...&amp;se=...).</li>
+ *   <li>If you uploaded into a subfolder, set {@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} to
+ *       that path (e.g., "receipt_labels/"). If files are at the container root, omit the prefix
+ *       or leave it unset.</li>
+ * </ol>
+ *
+ * <p>Each labeled document in the training folder includes:</p>
+ * <ul>
+ *   <li>The original file (e.g., PDF or image).</li>
+ *   <li>A corresponding .labels.json file with labeled fields.</li>
+ *   <li>A corresponding .result.json file with OCR results (optional).</li>
+ * </ul>
+ *
+ * <p><b>Required environment variables:</b></p>
+ * <ul>
+ *   <li>{@code CONTENTUNDERSTANDING_ENDPOINT} – Azure Content Understanding endpoint URL</li>
+ *   <li>{@code CONTENTUNDERSTANDING_KEY} – Azure Content Understanding API key
+ *       (optional if using DefaultAzureCredential)</li>
+ * </ul>
+ *
+ * <p><b>Optional environment variables (for labeled training data):</b></p>
+ * <ul>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL} – SAS URL for the Azure Blob container
+ *       with labeled training data. If set, the analyzer is created with a labeled-data knowledge
+ *       source; otherwise, created without training data.</li>
+ *   <li>{@code CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX} – Path prefix within the container
+ *       (e.g., "receipt_labels/" or "CreateAnalyzerWithLabels/"). Omit or leave unset if files
+ *       are at the container root.</li>
+ * </ul>
  */
 public class Sample16_CreateAnalyzerWithLabelsAsync {
 
@@ -45,7 +81,8 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
         // BEGIN: com.azure.ai.contentunderstanding.sample16Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
-        String sasUrl = System.getenv("TRAINING_DATA_SAS_URL");
+        String sasUrl = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL");
+        String sasUrlPrefix = System.getenv("CONTENTUNDERSTANDING_TRAINING_DATA_PREFIX");
 
         // Build the async client with appropriate authentication
         ContentUnderstandingClientBuilder builder = new ContentUnderstandingClientBuilder().endpoint(endpoint);
@@ -128,11 +165,12 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
             List<KnowledgeSource> knowledgeSources = new ArrayList<>();
             if (sasUrl != null && !sasUrl.trim().isEmpty()) {
                 LabeledDataKnowledgeSource knowledgeSource = new LabeledDataKnowledgeSource()
-                    .setContainerUrl(sasUrl);
+                    .setContainerUrl(sasUrl)
+                    .setPrefix(sasUrlPrefix);
                 knowledgeSources.add(knowledgeSource);
                 System.out.println("Using labeled training data from: " + sasUrl.substring(0, Math.min(50, sasUrl.length())) + "...");
             } else {
-                System.out.println("No TRAINING_DATA_SAS_URL set, creating analyzer without labeled training data");
+                System.out.println("No CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL set, creating analyzer without labeled training data");
             }
 
             // Step 3: Create analyzer (with or without labeled data)
@@ -157,7 +195,7 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
             // Using reactive pattern for async operations
             PollerFlux<com.azure.ai.contentunderstanding.models.ContentAnalyzerOperationStatus, ContentAnalyzer> createPoller
                 = client.beginCreateAnalyzer(finalAnalyzerId, analyzer, true);
-            
+
             createPoller.last()
                 .flatMap(pollResponse -> {
                     if (pollResponse.getStatus().isComplete()) {
@@ -176,7 +214,7 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
                     // END: com.azure.ai.contentunderstanding.createAnalyzerWithLabelsAsync
 
                     // Verify analyzer creation
-                    System.out.println("\n📋 Analyzer Creation Verification:");
+                    System.out.println("\nAnalyzer Creation Verification:");
                     System.out.println("Analyzer created successfully");
 
                     // Verify field schema
@@ -193,7 +231,7 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
                     System.out.println("  Item properties: " + itemsFieldResult.getItemDefinition().getProperties().size());
 
                     // Display API pattern information
-                    System.out.println("\n📚 CreateAnalyzerWithLabels API Pattern:");
+                    System.out.println("\nCreateAnalyzerWithLabels API Pattern:");
                     System.out.println("   1. Define field schema with nested structures (arrays, objects)");
                     System.out.println("   2. Upload training data to Azure Blob Storage:");
                     System.out.println("      - Documents: receipt1.pdf, receipt2.pdf, ...");
@@ -203,9 +241,9 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
                     System.out.println("   4. Create analyzer with field schema and knowledge sources");
                     System.out.println("   5. Use analyzer for document analysis");
 
-                    System.out.println("\n✅ CreateAnalyzerWithLabels pattern demonstration completed");
+                    System.out.println("\nCreateAnalyzerWithLabels pattern demonstration completed");
                     System.out.println("   Note: This sample demonstrates the API pattern.");
-                    System.out.println("   For actual training, provide TRAINING_DATA_SAS_URL with labeled data.");
+                    System.out.println("   For actual training, provide CONTENTUNDERSTANDING_TRAINING_DATA_SAS_URL with labeled data.");
                 })
                 .doFinally(signalType -> {
                     // Cleanup using reactive pattern
