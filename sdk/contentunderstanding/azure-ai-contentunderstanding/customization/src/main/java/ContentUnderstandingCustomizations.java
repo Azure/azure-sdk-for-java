@@ -68,9 +68,6 @@ public class ContentUnderstandingCustomizations extends Customization {
 
         // 13. Add beginAnalyze convenience overloads (no stringEncoding)
         addBeginAnalyzeConvenienceOverloads(customization, logger);
-
-        // 14. Omit LabeledDataKnowledgeSource.prefix from JSON when null (RECORD/PLAYBACK body match)
-        customizeLabeledDataKnowledgeSourceOmitNullPrefix(customization, logger);
     }
 
     /**
@@ -985,39 +982,6 @@ public class ContentUnderstandingCustomizations extends Customization {
                             }
                         });
                     });
-            });
-        });
-    }
-
-    /**
-     * Omit LabeledDataKnowledgeSource.prefix from JSON when null so RECORD/PLAYBACK request bodies match.
-     * The generated code always serializes "prefix" (as null); omitting it when null avoids body diff in playback.
-     */
-    private void customizeLabeledDataKnowledgeSourceOmitNullPrefix(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing LabeledDataKnowledgeSource to omit prefix from JSON when null");
-
-        customization.getClass(MODELS_PACKAGE, "LabeledDataKnowledgeSource").customizeAst(ast -> {
-            ast.getClassByName("LabeledDataKnowledgeSource").ifPresent(clazz -> {
-                // toJson(): only write prefix when non-null
-                clazz.getMethodsByName("toJson").forEach(method -> {
-                    method.getBody().ifPresent(body -> {
-                        String bodyStr = body.toString();
-                        bodyStr = bodyStr.replace(
-                            "jsonWriter.writeStringField(\"prefix\", this.prefix);",
-                            "if (this.prefix != null) { jsonWriter.writeStringField(\"prefix\", this.prefix); }");
-                        method.setBody(StaticJavaParser.parseBlock(bodyStr));
-                    });
-                });
-                // toJsonMergePatch(): only write prefix when non-null (omit key when null)
-                clazz.getMethodsByName("toJsonMergePatch").forEach(method -> {
-                    method.getBody().ifPresent(body -> {
-                        String bodyStr = body.toString();
-                        bodyStr = bodyStr.replace(
-                            "if (updatedProperties.contains(\"prefix\")) {\n            if (this.prefix == null) {\n                jsonWriter.writeNullField(\"prefix\");\n            } else {\n                jsonWriter.writeStringField(\"prefix\", this.prefix);\n            }\n        }",
-                            "if (updatedProperties.contains(\"prefix\") && this.prefix != null) {\n            jsonWriter.writeStringField(\"prefix\", this.prefix);\n        }");
-                        method.setBody(StaticJavaParser.parseBlock(bodyStr));
-                    });
-                });
             });
         });
     }
