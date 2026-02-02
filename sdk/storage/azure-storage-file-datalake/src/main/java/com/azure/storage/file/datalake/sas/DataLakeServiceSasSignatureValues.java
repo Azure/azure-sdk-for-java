@@ -484,6 +484,8 @@ public final class DataLakeServiceSasSignatureValues {
      * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
      * Any usage of the SAS must include these headers and values in the request.
      *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
      * @return The custom request headers to be set when the SAS is used.
      */
     public Map<String, String> getRequestHeaders() {
@@ -493,6 +495,8 @@ public final class DataLakeServiceSasSignatureValues {
     /**
      * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
      * Any usage of the SAS must include these headers and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
      *
      * @param requestHeaders The custom request headers to be set when the SAS is used.
      * @return the updated DataLakeServiceSasSignatureValues object
@@ -506,6 +510,8 @@ public final class DataLakeServiceSasSignatureValues {
      * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
      * the SAS. Any usage of the SAS must include these query parameters and values in the request.
      *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
      * @return The custom query parameters to be set when the SAS is used.
      */
     public Map<String, String> getRequestQueryParameters() {
@@ -515,6 +521,8 @@ public final class DataLakeServiceSasSignatureValues {
     /**
      * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
      * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
      *
      * @param requestQueryParameters The custom query parameters to be set when the SAS is used.
      * @return the updated DataLakeServiceSasSignatureValues object
