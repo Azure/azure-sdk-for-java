@@ -95,19 +95,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-extensions</artifactId>
-      <version>1.2.6</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+      <version>1.2.7</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.7.8</version> <!-- {x-version-update;springboot4_org.postgresql:postgresql;external_dependency} -->
+      <version>42.7.9</version> <!-- {x-version-update;springboot4_org.postgresql:postgresql;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-jdbc</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
+      <version>4.0.2</version> <!-- {x-version-update;springboot4_org.springframework.boot:spring-boot-jdbc;external_dependency} -->
     </dependency>
   </dependencies>
 
