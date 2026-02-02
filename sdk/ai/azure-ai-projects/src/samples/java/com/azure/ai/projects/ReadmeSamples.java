@@ -4,6 +4,7 @@
 
 package com.azure.ai.projects;
 
+import com.openai.client.OpenAIClient;
 import com.openai.services.blocking.EvalService;
 
 public final class ReadmeSamples {
@@ -25,6 +26,7 @@ public final class ReadmeSamples {
         InsightsClient insightsClient = builder.buildInsightsClient();
         RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
         SchedulesClient schedulesClient = builder.buildSchedulesClient();
+        OpenAIClient openAIClient = builder.buildOpenAIClient();
         // END: com.azure.ai.projects.clientInitialization
 
         // BEGIN: com.azure.ai.projects.evaluationsClientInit

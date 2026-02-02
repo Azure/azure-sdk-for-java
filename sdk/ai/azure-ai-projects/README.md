@@ -58,6 +58,7 @@ IndexesClient indexesClient = builder.buildIndexesClient();
 InsightsClient insightsClient = builder.buildInsightsClient();
 RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
 SchedulesClient schedulesClient = builder.buildSchedulesClient();
+OpenAIClient openAIClient = builder.buildOpenAIClient();
 ```
 
 In the particular case of the `EvaluationsClient`, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.

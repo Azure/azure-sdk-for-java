@@ -38,6 +38,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.azure.AzureUrlPathMode;
+import com.openai.client.OpenAIClient;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
@@ -557,6 +559,28 @@ public final class AIProjectClientBuilder
         return new EvaluationsAsyncClient(getOpenAIAsyncClientBuilder().build()
             .withOptions(optionBuilder -> optionBuilder
                 .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline()))));
+    }
+
+    /**
+     * Builds an instance of OpenAIClient class with a default setup for OpenAI
+     *
+     * @return an instance of OpenAIClient
+     */
+    public OpenAIClient buildOpenAIClient() {
+        return getOpenAIClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
+    }
+
+    /**
+     * Builds an instance of OpenAIAsyncClient class with a default setup for OpenAI
+     *
+     * @return an instance of OpenAIAsyncClient
+     */
+    public OpenAIClientAsync buildOpenAIAsyncClient() {
+        return getOpenAIAsyncClientBuilder().build()
+            .withOptions(optionBuilder -> optionBuilder
+                .httpClient(HttpClientHelper.mapToOpenAIHttpClient(createHttpPipeline())));
     }
 
     private OpenAIOkHttpClient.Builder getOpenAIClientBuilder() {
