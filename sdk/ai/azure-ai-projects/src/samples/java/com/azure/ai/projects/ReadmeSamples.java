@@ -4,7 +4,13 @@
 
 package com.azure.ai.projects;
 
+import com.azure.ai.agents.AgentsClient;
+import com.azure.ai.agents.AgentsClientBuilder;
+import com.azure.ai.agents.ConversationsClient;
+import com.azure.ai.agents.MemoryStoresClient;
+import com.azure.ai.agents.ResponsesClient;
 import com.openai.client.OpenAIClient;
+import com.openai.client.OpenAIClientAsync;
 import com.openai.services.blocking.EvalService;
 
 public final class ReadmeSamples {
@@ -26,12 +32,27 @@ public final class ReadmeSamples {
         InsightsClient insightsClient = builder.buildInsightsClient();
         RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
         SchedulesClient schedulesClient = builder.buildSchedulesClient();
-        OpenAIClient openAIClient = builder.buildOpenAIClient();
         // END: com.azure.ai.projects.clientInitialization
 
         // BEGIN: com.azure.ai.projects.evaluationsClientInit
         EvalService evalService = evaluationsClient.getOpenAIClient();
         // END: com.azure.ai.projects.evaluationsClientInit
+
+        // BEGIN: com.azure.ai.projects.openAIClient
+        AIProjectClientBuilder projectsBuilder = new AIProjectClientBuilder();
+
+        OpenAIClient openAIClient = projectsBuilder.buildOpenAIClient();
+        OpenAIClientAsync openAIClientAsync = projectsBuilder.buildOpenAIAsyncClient();
+        // END: com.azure.ai.projects.openAIClient
+
+        // BEGIN: com.azure.ai.projects.agentsSubClients
+        AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
+
+        AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
+        ConversationsClient conversationsClient = agentsClientBuilder.buildConversationsClient();
+        MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
+        ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
+        // END: com.azure.ai.projects.agentsSubClients
 
     }
 }

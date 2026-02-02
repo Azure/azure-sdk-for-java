@@ -31,7 +31,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-projects</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,13 +58,32 @@ IndexesClient indexesClient = builder.buildIndexesClient();
 InsightsClient insightsClient = builder.buildInsightsClient();
 RedTeamsClient redTeamsClient = builder.buildRedTeamsClient();
 SchedulesClient schedulesClient = builder.buildSchedulesClient();
-OpenAIClient openAIClient = builder.buildOpenAIClient();
 ```
 
 In the particular case of the `EvaluationsClient`, this client library exposes [OpenAI's official SDK][openai_java_sdk] directly, so you can use the [official OpenAI docs][openai_api_docs] to access this feature.
 
 ```java com.azure.ai.projects.evaluationsClientInit
 EvalService evalService = evaluationsClient.getOpenAIClient();
+```
+
+For the Agents operation, you can use the `azure-ai-agents` package which is available as transitive dependency:
+
+```java com.azure.ai.projects.agentsSubClients
+AgentsClientBuilder agentsClientBuilder = new AgentsClientBuilder();
+
+AgentsClient agentsClient = agentsClientBuilder.buildAgentsClient();
+ConversationsClient conversationsClient = agentsClientBuilder.buildConversationsClient();
+MemoryStoresClient memoryStoresClient = agentsClientBuilder.buildMemoryStoresClient();
+ResponsesClient responsesClient = agentsClientBuilder.buildResponsesClient();
+```
+
+If you need a full OpenAI client as well, you can use the `AIProjectClientBuilder` to obtain one:
+
+```java com.azure.ai.projects.openAIClient
+AIProjectClientBuilder projectsBuilder = new AIProjectClientBuilder();
+
+OpenAIClient openAIClient = projectsBuilder.buildOpenAIClient();
+OpenAIClientAsync openAIClientAsync = projectsBuilder.buildOpenAIAsyncClient();
 ```
 
 ## Examples
