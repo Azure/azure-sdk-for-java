@@ -20,6 +20,12 @@ public abstract class HttpTimeoutPolicy {
         if (OperationType.Read.equals(request.getOperationType()) && request.getResourceType() == ResourceType.DatabaseAccount) {
             return HttpTimeoutPolicyControlPlaneRead.INSTANCE;
         }
+        // Use Gateway V2 timeout policy for point read operations when Thin Client mode is enabled
+        if (request.useThinClientMode
+            && request.getResourceType() == ResourceType.Document
+            && OperationType.Read.equals(request.getOperationType())) {
+            return HttpTimeoutPolicyForGatewayV2.INSTANCE;
+        }
         return HttpTimeoutPolicyDefault.INSTANCE;
     }
 
