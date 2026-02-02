@@ -5,7 +5,7 @@
 ### Features Added
 
 - Added `getOpenAIClient` methods to obtain an instance of the Stainless OpenAI client
-- Added `getAgentsClient` to obtain an instance of the `azure-ai-agents` package library
+- Added documentation on how to get an `AgentsClient`
 
 ### Breaking Changes
 
