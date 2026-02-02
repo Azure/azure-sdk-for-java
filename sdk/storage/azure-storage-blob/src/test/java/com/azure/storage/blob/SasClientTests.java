@@ -569,7 +569,7 @@ public class SasClientTests extends BlobTestBase {
             String sasWithPermissions = cc.generateUserDelegationSas(sasValues, key);
 
             BlobContainerClient client = getContainerClient(sasWithPermissions, cc.getBlobContainerUrl());
-            client.listBlobs().iterator().hasNext();
+            assertTrue(client.listBlobs().iterator().hasNext());
 
             assertDoesNotThrow(() -> sasWithPermissions.contains("scid=" + cid));
         });
@@ -985,6 +985,7 @@ public class SasClientTests extends BlobTestBase {
     */
     private static Stream<Arguments> blobSasImplUtilStringToSignSupplier() {
         return Stream.of(
+            // Start Time
             Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), null, null, null, null, null, null,
                 null, null, null, null, null,
                 "r\n"
@@ -995,62 +996,73 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n"),
+            // Identifier
             Arguments.of(null, "id", null, null, null, null, null, null, null, null, null, null, "r\n\n"
                 + Constants.ISO_8601_UTC_DATE_FORMATTER
                     .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                 + "\n/blob/%s/containerName/blobName\nid\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+            // Sas IP Range
             Arguments.of(null, null, new SasIpRange(), null, null, null, null, null, null, null, null, null, "r\n\n"
                 + Constants.ISO_8601_UTC_DATE_FORMATTER
                     .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                 + "\n/blob/%s/containerName/blobName\n\nip\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+            // Sas Protocol
             Arguments.of(null, null, null, SasProtocol.HTTPS_ONLY, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
+            // Snapshot ID
             Arguments.of(null, null, null, null, "snapId", null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nbs\nsnapId\n\n\n\n\n\n"),
+            // Cache Control
             Arguments.of(null, null, null, null, null, "control", null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\ncontrol\n\n\n\n"),
+            // Content Disposition
             Arguments.of(null, null, null, null, null, null, "disposition", null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\ndisposition\n\n\n"),
+            // Content Encoding
             Arguments.of(null, null, null, null, null, null, null, "encoding", null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\nencoding\n\n"),
+            // Content Language
             Arguments.of(null, null, null, null, null, null, null, null, "language", null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\nlanguage\n"),
+            // Content Type
             Arguments.of(null, null, null, null, null, null, null, null, null, "type", null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\ntype"),
+            // Version ID
             Arguments.of(null, null, null, null, null, null, null, null, null, null, "versionId", null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nbv\nversionId\n\n\n\n\n\n"),
+            // Encryption Scope
             Arguments.of(null, null, null, null, null, null, null, null, null, null, null, "encryptionScope",
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
@@ -1134,6 +1146,7 @@ public class SasClientTests extends BlobTestBase {
         multipleQueryParams.put("comp", "blocklist");
 
         return Stream.of(
+            //StartTime
             Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), null, null, null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null,
@@ -1145,6 +1158,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Key Object ID
             Arguments.of(null, "11111111-1111-1111-1111-111111111111", null, null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null,
@@ -1153,6 +1167,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Key Tenant ID
             Arguments.of(null, null, "22222222-2222-2222-2222-222222222222", null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null,
@@ -1161,6 +1176,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Key Start Time
             Arguments.of(null, null, null, OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC), null,
                 null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null,
                 null, null, null, null, null, null, null, null,
@@ -1169,6 +1185,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Key Expiry Time
             Arguments.of(null, null, null, null, OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC),
                 null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null,
                 null, null, null, null, null, null, null, null,
@@ -1177,6 +1194,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Key Service
             Arguments.of(null, null, null, null, null, "b", null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1184,6 +1202,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Key Version
             Arguments.of(null, null, null, null, null, null, "2018-06-17",
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null,
@@ -1192,6 +1211,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Sas Ip Range
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=",
                 new SasIpRange(), null, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1199,6 +1219,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\nip\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Sas Protocol
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 SasProtocol.HTTPS_ONLY, null, null, null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1206,6 +1227,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Snapshot ID
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, "snapId", null, null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1213,6 +1235,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nbs\nsnapId\n\n\n\n\n\n\n\n"),
+            // Cache Control
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, "control", null, null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1220,6 +1243,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\ncontrol\n\n\n\n"),
+            // Content Disposition
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, "disposition", null, null, null, null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1227,6 +1251,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\ndisposition\n\n\n"),
+            // Content Encoding
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, "encoding", null, null, null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1234,6 +1259,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\nencoding\n\n"),
+            // Content Language
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, "language", null, null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1241,6 +1267,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n\nlanguage\n"),
+            // Content Type
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, "type", null, null, null, null, null, null, null,
                 "r\n\n"
@@ -1248,6 +1275,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n\n\ntype"),
+            // Version ID
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, "versionId", null, null, null, null, null, null,
                 "r\n\n"
@@ -1255,6 +1283,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nbv\nversionId\n\n\n\n\n\n\n\n"),
+            // Saoid - Preauthorized Agent Object ID
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, "saoid", null, null, null, null, null,
                 "r\n\n"
@@ -1262,6 +1291,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nsaoid\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Correlation ID
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null, "cid", null, null, null, null,
                 "r\n\n"
@@ -1269,6 +1299,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\ncid\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n\n\n"),
+            // Encryption Scope
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null, null, "encryptionScope", null, null, null,
                 "r\n\n"
@@ -1276,6 +1307,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\nencryptionScope\n\n\n\n\n\n\n"),
+            // Delegated User Object ID
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
                 "r\n\n"
@@ -1283,35 +1315,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
-            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
-                "r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
-            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
-                "r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
-            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
-                "r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
-            Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
-                null, null, null, null, null, null, null, null, null, null, null, "delegatedOid", null, null,
-                "r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n"),
-            // Test requestHeaders only (single header)
+            // Request Headers (single header)
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null, null, null, null, singleHeader, null,
                 "r\n\n"
@@ -1319,7 +1323,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\nx-ms-encryption-key-sha256:hashvalue\n\n\n\n\n\n\n"),
-            // Test requestQueryParameters only (single param)
+            // Request Query Params (single param)
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null, null, null, null, null, singleQueryParam,
                 "r\n\n"
@@ -1327,7 +1331,7 @@ public class SasClientTests extends BlobTestBase {
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\ncomp:blocklist\n\n\n\n\n"),
-            // Test both requestHeaders and requestQueryParameters
+            // Request Headers and Query Params (single each)
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null, null, null, null, singleHeader, singleQueryParam,
                 "r\n\n"
@@ -1522,7 +1526,7 @@ public class SasClientTests extends BlobTestBase {
             output.append(actual.replace("\n", "\\n\n"));
 
             // Print everything at once
-            System.out.println(output.toString());
+            System.out.println(output);
         }
         assertEquals(expected, actual, "String-to-sign mismatch");
     }
