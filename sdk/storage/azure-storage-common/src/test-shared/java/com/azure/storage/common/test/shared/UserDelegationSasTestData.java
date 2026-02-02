@@ -33,6 +33,7 @@ public class UserDelegationSasTestData extends SasTestData {
     private String saoid;
     private String suoid;
     private String cid;
+    private String delegatedOid;
 
     /**
      * Default constructor.
@@ -175,38 +176,22 @@ public class UserDelegationSasTestData extends SasTestData {
         return this;
     }
 
-    /**
-     * Converts to Arguments for user delegation SAS tests.
-     * Returns arguments with or without request headers/query parameters based on the parameter.
-     *
-     * @param withHeadersAndParams Whether to include request headers and query parameters in the test data.
-     * @return Arguments for parameterized tests matching the signature of user delegation SAS test methods
-     */
-    public Arguments toArguments(boolean withHeadersAndParams) {
-        if (withHeadersAndParams) {
-            return Arguments.of(
-                getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
-                getIpRange(), getProtocol(), getSnapshotId(), getCacheControl(), getDisposition(), getEncoding(),
-                getLanguage(), getType(), getVersionId(), getEncryptionScope(), requestHeaders, requestQueryParameters,
-                saoid, suoid, cid, getExpectedStringToSign()
-            );
-        } else {
-            return Arguments.of(
-                getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
-                getIpRange(), getProtocol(), getSnapshotId(), getCacheControl(), getDisposition(), getEncoding(),
-                getLanguage(), getType(), getVersionId(), getEncryptionScope(), saoid, suoid, cid,
-                getExpectedStringToSign()
-            );
-        }
+    public UserDelegationSasTestData setDelegatedOid(String delegatedOid) {
+        this.delegatedOid = delegatedOid;
+        return this;
     }
 
     /**
      * Converts to Arguments for user delegation SAS tests with request headers and query parameters.
-     * This is a convenience method that calls {@link #toArguments(boolean)} with true.
      *
      * @return Arguments for parameterized tests with headers and query parameters included
      */
     public Arguments toArguments() {
-        return toArguments(true);
+        return Arguments.of(
+            getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
+            getIpRange(), getProtocol(), getSnapshotId(), getCacheControl(), getDisposition(), getEncoding(),
+            getLanguage(), getType(), getVersionId(), saoid, cid,
+            getEncryptionScope(), delegatedOid, requestHeaders, requestQueryParameters, getExpectedStringToSign()
+        );
     }
 }

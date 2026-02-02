@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SasImplUtilsTests {
 
@@ -25,13 +26,13 @@ public class SasImplUtilsTests {
     }
 
     @Test
-    public void formatRequestHeadersForSasSigningNullReturnsEmptyString() {
-        assertEquals("", SasImplUtils.formatRequestHeadersForSasSigning(null));
+    public void formatRequestHeadersForSasSigningNullReturnsNull() {
+        assertNull(SasImplUtils.formatRequestHeadersForSasSigning(null));
     }
 
     @Test
-    public void formatRequestHeadersForSasSigningEmptyReturnsEmptyString() {
-        assertEquals("", SasImplUtils.formatRequestHeadersForSasSigning(requestHeaders));
+    public void formatRequestHeadersForSasSigningEmptyReturnsNull() {
+        assertNull(SasImplUtils.formatRequestHeadersForSasSigning(requestHeaders));
     }
 
     @Test
@@ -67,13 +68,13 @@ public class SasImplUtilsTests {
     }
 
     @Test
-    public void formatRequestQueryParamsForSasSigningNullReturnsEmptyString() {
-        assertEquals("", SasImplUtils.formatRequestQueryParametersForSasSigning(null));
+    public void formatRequestQueryParamsForSasSigningNullReturnsNull() {
+        assertNull(SasImplUtils.formatRequestQueryParametersForSasSigning(null));
     }
 
     @Test
-    public void formatRequestQueryParamsForSasSigningEmptyReturnsEmptyString() {
-        assertEquals("", SasImplUtils.formatRequestQueryParametersForSasSigning(requestQueryParams));
+    public void formatRequestQueryParamsForSasSigningEmptyReturnsNull() {
+        assertNull(SasImplUtils.formatRequestQueryParametersForSasSigning(requestQueryParams));
     }
 
     @Test
