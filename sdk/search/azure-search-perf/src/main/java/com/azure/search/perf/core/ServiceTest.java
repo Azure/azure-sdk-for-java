@@ -120,13 +120,15 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
          * index for its document count until it is equal to the count passed.
          */
         return Mono.defer(() -> {
-            List<Map<String, Object>> hotels = DocumentGenerator.generateHotels(documentCount, DocumentSize.valueOf(documentSize));
+            List<Map<String, Object>> hotels
+                = DocumentGenerator.generateHotels(documentCount, DocumentSize.valueOf(documentSize));
 
             return Flux.range(0, (int) Math.ceil(hotels.size() / 100D))
                 .map(i -> hotels.subList(i * 100, Math.min((i + 1) * 100, hotels.size())))
-                .flatMap(hotelDocuments -> searchAsyncClient
-                    .indexDocuments(new IndexDocumentsBatch(hotelDocuments.stream().map(doc -> new IndexAction()
-                        .setActionType(IndexActionType.UPLOAD).setAdditionalProperties(doc))
+                .flatMap(
+                    hotelDocuments -> searchAsyncClient.indexDocuments(new IndexDocumentsBatch(hotelDocuments.stream()
+                        .map(
+                            doc -> new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(doc))
                         .collect(Collectors.toList()))))
                 .then();
         })

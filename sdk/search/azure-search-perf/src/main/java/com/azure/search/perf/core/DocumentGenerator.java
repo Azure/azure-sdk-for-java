@@ -88,18 +88,19 @@ public final class DocumentGenerator {
                 + "vous exploriez simplement le parc, le Mount Rainier Lodge peut être le lieu de repos idéal pour "
                 + "votre aventure. Nous espérons vous voir bientôt!");
             hotel.put("Category", "Lodge");
-            hotel.put("Tags", new String[] {
-                "jacuzzi",
-                "air conditioning",
-                "gift shop",
-                "basic cable",
-                "continental breakfast",
-                "free wi-fi",
-                "national park",
-                "cabin",
-                "outdoors",
-                "pacific northwest",
-                "mountain" });
+            hotel.put("Tags",
+                new String[] {
+                    "jacuzzi",
+                    "air conditioning",
+                    "gift shop",
+                    "basic cable",
+                    "continental breakfast",
+                    "free wi-fi",
+                    "national park",
+                    "cabin",
+                    "outdoors",
+                    "pacific northwest",
+                    "mountain" });
             hotel.put("ParkingIncluded", true);
             hotel.put("LastRenovationDate", OffsetDateTime.of(1985, 3, 30, 0, 0, 0, 0, ZoneOffset.UTC));
             hotel.put("Rating", 4.2D);

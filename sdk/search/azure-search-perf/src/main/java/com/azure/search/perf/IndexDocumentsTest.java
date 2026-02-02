@@ -49,12 +49,9 @@ public class IndexDocumentsTest extends ServiceTest<SearchPerfStressOptions> {
     }
 
     private IndexDocumentsBatch createBatch(int[] idOffset) {
-        return new IndexDocumentsBatch(hotels.stream()
-            .map(hotel -> {
-                hotel.put("HotelId", idOffset[0]++);
-                return new IndexAction().setActionType(IndexActionType.UPLOAD)
-                    .setAdditionalProperties(hotel);
-            })
-            .collect(Collectors.toList()));
+        return new IndexDocumentsBatch(hotels.stream().map(hotel -> {
+            hotel.put("HotelId", idOffset[0]++);
+            return new IndexAction().setActionType(IndexActionType.UPLOAD).setAdditionalProperties(hotel);
+        }).collect(Collectors.toList()));
     }
 }
