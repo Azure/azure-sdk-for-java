@@ -19,11 +19,14 @@ public class SasTestData {
     private OffsetDateTime startTime;
     private SasIpRange ipRange;
     private SasProtocol protocol;
+    private String snapshotId;
     private String cacheControl;
     private String disposition;
     private String encoding;
     private String language;
     private String type;
+    private String versionId;
+    private String encryptionScope;
     private String expectedStringToSign;
     private String identifier;
 
@@ -54,6 +57,11 @@ public class SasTestData {
         return this;
     }
 
+    public SasTestData setSnapshotId(String snapshotId) {
+        this.snapshotId = snapshotId;
+        return this;
+    }
+
     public SasTestData setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -79,6 +87,16 @@ public class SasTestData {
         return this;
     }
 
+    public SasTestData setVersionId(String versionId) {
+        this.versionId = versionId;
+        return this;
+    }
+
+    public SasTestData setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
     public SasTestData setExpectedStringToSign(String expectedStringToSign) {
         this.expectedStringToSign = expectedStringToSign;
         return this;
@@ -88,11 +106,14 @@ public class SasTestData {
     public String getIdentifier() { return identifier; }
     public SasIpRange getIpRange() { return ipRange; }
     public SasProtocol getProtocol() { return protocol; }
+    public String getSnapshotId() { return snapshotId; }
     public String getCacheControl() { return cacheControl; }
     public String getDisposition() { return disposition; }
     public String getEncoding() { return encoding; }
     public String getLanguage() { return language; }
     public String getType() { return type; }
+    public String getVersionId() { return versionId; }
+    public String getEncryptionScope() { return encryptionScope; }
     public String getExpectedStringToSign() { return expectedStringToSign; }
 
     /**
@@ -103,7 +124,7 @@ public class SasTestData {
      * @return Arguments for parameterized tests matching the signature of regular SAS test methods
      */
     public Arguments toArguments() {
-        return Arguments.of(startTime, identifier, ipRange, protocol, cacheControl, disposition, encoding, language,
-            type, expectedStringToSign);
+        return Arguments.of(startTime, identifier, ipRange, protocol, snapshotId, cacheControl, disposition, encoding,
+            language, type, versionId, encryptionScope, expectedStringToSign);
     }
 }

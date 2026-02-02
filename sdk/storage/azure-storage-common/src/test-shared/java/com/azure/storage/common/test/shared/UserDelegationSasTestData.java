@@ -62,6 +62,12 @@ public class UserDelegationSasTestData extends SasTestData {
     }
 
     @Override
+    public UserDelegationSasTestData setSnapshotId(String snapshotId) {
+        super.setSnapshotId(snapshotId);
+        return this;
+    }
+
+    @Override
     public UserDelegationSasTestData setCacheControl(String cacheControl) {
         super.setCacheControl(cacheControl);
         return this;
@@ -88,6 +94,18 @@ public class UserDelegationSasTestData extends SasTestData {
     @Override
     public UserDelegationSasTestData setType(String type) {
         super.setType(type);
+        return this;
+    }
+
+    @Override
+    public UserDelegationSasTestData setVersionId(String versionId) {
+        super.setVersionId(versionId);
+        return this;
+    }
+
+    @Override
+    public UserDelegationSasTestData setEncryptionScope(String encryptionScope) {
+        super.setEncryptionScope(encryptionScope);
         return this;
     }
 
@@ -168,14 +186,16 @@ public class UserDelegationSasTestData extends SasTestData {
         if (withHeadersAndParams) {
             return Arguments.of(
                 getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
-                getIpRange(), getProtocol(), getCacheControl(), getDisposition(), getEncoding(), getLanguage(), getType(),
-                requestHeaders, requestQueryParameters, saoid, suoid, cid, getExpectedStringToSign()
+                getIpRange(), getProtocol(), getSnapshotId(), getCacheControl(), getDisposition(), getEncoding(),
+                getLanguage(), getType(), getVersionId(), getEncryptionScope(), requestHeaders, requestQueryParameters,
+                saoid, suoid, cid, getExpectedStringToSign()
             );
         } else {
             return Arguments.of(
                 getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
-                getIpRange(), getProtocol(), getCacheControl(), getDisposition(), getEncoding(), getLanguage(), getType(),
-                saoid, suoid, cid, getExpectedStringToSign()
+                getIpRange(), getProtocol(), getSnapshotId(), getCacheControl(), getDisposition(), getEncoding(),
+                getLanguage(), getType(), getVersionId(), getEncryptionScope(), saoid, suoid, cid,
+                getExpectedStringToSign()
             );
         }
     }

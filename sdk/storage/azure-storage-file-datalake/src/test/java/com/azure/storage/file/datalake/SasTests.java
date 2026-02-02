@@ -890,6 +890,7 @@ public class SasTests extends DataLakeTestBase {
 
         // We test string to sign functionality directly related to user delegation sas specific parameters
         return Stream.of(
+            // Start time
             new UserDelegationSasTestData().setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
                 .setExpectedStringToSign("r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
