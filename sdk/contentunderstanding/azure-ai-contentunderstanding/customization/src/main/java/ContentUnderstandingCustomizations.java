@@ -19,6 +19,87 @@ import org.slf4j.Logger;
 /**
  * Customization class for Content Understanding SDK.
  * This class contains customization code to modify the AutoRest/TypeSpec generated code.
+ *
+ * <h2>Summary of customizations</h2>
+ *
+ * <h3>Extension of generated code to make it easier to use</h3>
+ * <ul>
+ *   <li>Add {@code operationId} field and getter/setter to {@code ContentAnalyzerAnalyzeOperationStatus};
+ *       parse and set it from the Operation-Location header in polling strategies.</li>
+ *   <li>Add {@code parseOperationId} to {@code PollingUtils} and override poll() in sync/async
+ *       {@code OperationLocationPollingStrategy} to set operationId on the status.</li>
+ *   <li>Add static accessor helper ({@code ContentAnalyzerAnalyzeOperationStatusHelper}) so polling
+ *       can set the private operationId.</li>
+ *   <li>Add convenience methods on model classes for content/array/object fields (equivalent to *.Extensions.cs).</li>
+ *   <li>Make {@code ContentUnderstandingDefaults} constructor public and add {@code updateDefaults}
+ *       convenience methods that accept {@code Map} or {@code ContentUnderstandingDefaults} (TypeSpec
+ *       disabled these; we re-enable and add them).</li>
+ *   <li>Add {@code beginAnalyze} and {@code beginAnalyzeBinary} convenience overloads without a
+ *       {@code stringEncoding} parameter (default utf16).</li>
+ * </ul>
+ *
+ * <p><b>Scenarios and before/after</b></p>
+ *
+ * <p><b>operationId on status</b> — Scenario: Caller needs the operation ID (e.g. to call
+ * getResultFile or deleteResult) after starting analyze.</p>
+ * <pre>{@code
+ * // Before: generated model had no operationId; caller could not get it from the status.
+ * SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> poller = client.beginAnalyze(...);
+ * ContentAnalyzerAnalyzeOperationStatus status = poller.getFinalResult(); // no getOperationId()
+ *
+ * // After: status carries operationId, set automatically by polling strategy from Operation-Location header.
+ * String id = status.getOperationId();
+ * client.getResultFile(analyzerId, id, ...);
+ * }</pre>
+ *
+ * <p><b>Content/array/object field extensions</b> — Scenario: Reading document fields
+ * (ContentField and subtypes StringField, NumberField, DateField, ObjectField, ArrayField) without
+ * casting to each subtype or manually navigating getValueObject()/getValueArray().</p>
+ * <pre>{@code
+ * // Before: Cast to subtype and call type-specific getters.
+ * ContentField customerNameField = content.getFields().get("CustomerName");
+ * String name = customerNameField instanceof StringField
+ *     ? ((StringField) customerNameField).getValueString() : null;
+ * ContentField totalField = content.getFields().get("TotalAmount");
+ * ObjectField totalObj = (ObjectField) totalField;
+ * ContentField amountField = totalObj.getValueObject() != null ? totalObj.getValueObject().get("Amount") : null;
+ * Double amount = amountField instanceof NumberField ? ((NumberField) amountField).getValueNumber() : null;
+ *
+ * // After: ContentField.getValue() returns typed value; ObjectField.getFieldOrDefault(name); ArrayField.size()/get(i).
+ * String name = customerNameField != null ? (String) customerNameField.getValue() : null;
+ * ContentField amountField = totalObj.getFieldOrDefault("Amount");
+ * Double amount = amountField != null ? (Double) amountField.getValue() : null;
+ * // ArrayField: lineItems.size(); ContentField item = lineItems.get(i);
+ * }</pre>
+ *
+ * <p><b>beginAnalyze / beginAnalyzeBinary without stringEncoding</b> — Scenario: Start analyze
+ * with the default string encoding (utf16) without exposing encoding in the API.</p>
+ * <pre>{@code
+ * // Before: Generated API required stringEncoding parameter (if present), e.g. beginAnalyze(..., "utf16").
+ *
+ * // After: Convenience overloads default utf16; caller uses simple signatures.
+ * SyncPoller<..., AnalyzeResult> poller = client.beginAnalyze(analyzerId, inputs);
+ * SyncPoller<..., AnalyzeResult> binaryPoller = client.beginAnalyzeBinary(analyzerId, binaryInput);
+ * }</pre>
+ *
+ * <h3>Fix service issue (SERVICE-FIX)</h3>
+ * <ul>
+ *   <li>Add case-insensitive deserialization for {@code keyFrameTimesMs} / {@code KeyFrameTimesMs}
+ *       in {@code AudioVisualContent} for forward-compatibility with service casing.</li>
+ * </ul>
+ *
+ * <h3>Correct emitter limitations</h3>
+ * <ul>
+ *   <li>Hide generated methods that expose {@code stringEncoding} (make them package-private) so the
+ *       public API does not expose it; simplified overloads use utf16 by default.</li>
+ *   <li>Fix generated {@code beginAnalyze} / {@code beginAnalyzeBinary} bodies that call
+ *       non-existent overloads after the generator stopped emitting stringEncoding overloads;
+ *       rewrite bodies to call the implementation client with {@code stringEncoding=utf16} in
+ *       RequestOptions.</li>
+ *   <li>Make {@code ContentUnderstandingDefaults} constructor public so that {@code updateDefaults}
+ *       convenience methods can be used (generated/TypeSpec code assumed a public constructor for
+ *       updateDefaults; without this, updateDefaults usage would not compile).</li>
+ * </ul>
  */
 public class ContentUnderstandingCustomizations extends Customization {
 
@@ -28,45 +109,42 @@ public class ContentUnderstandingCustomizations extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
-        // 1. Add operationId field to AnalyzeResult model
+        // Add operationId field to AnalyzeResult model
         customizeAnalyzeResult(customization, logger);
 
-        // 2. Customize PollingUtils to add parseOperationId method
+        // Customize PollingUtils to add parseOperationId method
         customizePollingUtils(customization, logger);
 
-        // 3. Customize PollingStrategy to extract and set operationId
+        // Customize PollingStrategy to extract and set operationId
         customizePollingStrategy(customization, logger);
 
-        // 4. Fix generated beginAnalyze/beginAnalyzeBinary bodies to call impl with utf16 (generator no longer emits stringEncoding overloads)
+        // Fix generated beginAnalyze/beginAnalyzeBinary bodies to call impl with utf16 (generator no longer emits stringEncoding overloads)
         fixGeneratedAnalyzeBodiesToCallImplWithUtf16(customization, logger);
 
-        // 5. Add static accessor helper for operationId
+        // Add static accessor helper for operationId
         addStaticAccessorForOperationId(customization, logger);
 
-        // 6. Add convenience methods to model classes (equivalent to *.Extensions.cs)
+        // Add convenience methods to model classes (equivalent to *.Extensions.cs)
         customizeContentFieldExtensions(customization, logger);
         customizeArrayFieldExtensions(customization, logger);
         customizeObjectFieldExtensions(customization, logger);
 
-        // 7. SERVICE-FIX: Add keyFrameTimesMs case-insensitive deserialization
+        // SERVICE-FIX: Add keyFrameTimesMs case-insensitive deserialization
         customizeAudioVisualContentDeserialization(customization, logger);
 
-        // 8. Hide methods that expose stringEncoding parameter (if generator still emits them)
+        // Hide methods that expose stringEncoding parameter (if generator still emits them)
         hideStringEncodingMethods(customization, logger);
 
-        // 9. Fix generated 2-param beginAnalyzeBinary body if present (generator may use undefined contentType)
-        fixBeginAnalyzeBinaryTwoParamBody(customization, logger);
-
-        // 10. Make ContentUnderstandingDefaults constructor public for updateDefaults convenience methods
+        // Make ContentUnderstandingDefaults constructor public for updateDefaults convenience methods
         customizeContentUnderstandingDefaults(customization, logger);
 
-        // 11. Add updateDefaults convenience methods (TypeSpec disabled these, but auto-generates updateAnalyzer)
+        // Add updateDefaults convenience methods (TypeSpec disabled these, but auto-generates updateAnalyzer)
         addUpdateDefaultsConvenienceMethods(customization, logger);
 
-        // 12. Add beginAnalyzeBinary convenience overloads (no stringEncoding)
+        // Add beginAnalyzeBinary convenience overloads (no stringEncoding)
         addBeginAnalyzeBinaryConvenienceOverloads(customization, logger);
 
-        // 13. Add beginAnalyze convenience overloads (no stringEncoding)
+        // Add beginAnalyze convenience overloads (no stringEncoding)
         addBeginAnalyzeConvenienceOverloads(customization, logger);
     }
 
@@ -277,122 +355,6 @@ public class ContentUnderstandingCustomizations extends Customization {
      * 1. Hide methods with stringEncoding parameter (make them package-private)
      * 2. Add simplified overloads that use "utf16" as default
      */
-    /**
-     * Add simplified beginAnalyze methods that hide the stringEncoding parameter.
-     * This matches .NET's approach of hiding stringEncoding while keeping processingLocation and modelDeployments.
-     * NOTE: After generator change (commit 31f87d83) the generator may already emit 4-param and 2-param; this adds them only if not present.
-     */
-    private void addSimplifiedAnalyzeMethods(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding simplified beginAnalyze methods without stringEncoding parameter");
-
-        // Add to sync client
-        customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.models.AnalyzeInput");
-            ast.addImport("com.azure.ai.contentunderstanding.models.ProcessingLocation");
-            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
-            ast.addImport("com.azure.core.http.rest.RequestOptions");
-            ast.addImport("com.azure.core.util.BinaryData");
-            ast.addImport("java.util.List");
-            ast.addImport("java.util.Map");
-            ast.addImport("com.azure.core.annotation.ServiceMethod");
-            ast.addImport("com.azure.core.annotation.ReturnType");
-            ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
-                // Add overload with all optional parameters (matches .NET parameter order)
-                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("List<AnalyzeInput>", "inputs")
-                    .addParameter("Map<String, String>", "modelDeployments")
-                    .addParameter("ProcessingLocation", "processingLocation")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from inputs. "
-                        + "This is a convenience method that uses default string encoding (utf16)."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "inputs The inputs to analyze.")
-                        .addBlockTag("param", "modelDeployments Custom model deployment mappings. Set to null to use service defaults.")
-                        .addBlockTag("param", "processingLocation The processing location for the analysis. Set to null to use the service default.")
-                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyze(analyzerId, inputs, modelDeployments, processingLocation, \"utf16\"); }"));
-
-                // Add simplified overload with only analyzerId and inputs (most common usage)
-                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("List<AnalyzeInput>", "inputs")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from inputs. "
-                        + "This is a convenience method that uses default string encoding (utf16), "
-                        + "service default model deployments, and global processing location."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "inputs The inputs to analyze.")
-                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyze(analyzerId, inputs, null, null); }"));
-            });
-        });
-
-        // Add to async client
-        customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.models.AnalyzeInput");
-            ast.addImport("com.azure.ai.contentunderstanding.models.ProcessingLocation");
-            ast.addImport("com.azure.ai.contentunderstanding.implementation.models.AnalyzeRequest1");
-            ast.addImport("com.azure.core.http.rest.RequestOptions");
-            ast.addImport("com.azure.core.util.BinaryData");
-            ast.addImport("java.util.List");
-            ast.addImport("java.util.Map");
-            ast.addImport("com.azure.core.annotation.ServiceMethod");
-            ast.addImport("com.azure.core.annotation.ReturnType");
-            ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
-                // Add overload with all optional parameters (matches .NET parameter order)
-                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("List<AnalyzeInput>", "inputs")
-                    .addParameter("Map<String, String>", "modelDeployments")
-                    .addParameter("ProcessingLocation", "processingLocation")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from inputs. "
-                        + "This is a convenience method that uses default string encoding (utf16)."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "inputs The inputs to analyze.")
-                        .addBlockTag("param", "modelDeployments Custom model deployment mappings. Set to null to use service defaults.")
-                        .addBlockTag("param", "processingLocation The processing location for the analysis. Set to null to use the service default.")
-                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "RequestOptions requestOptions = new RequestOptions();"
-                        + "return beginAnalyze(analyzerId, inputs, modelDeployments, processingLocation, \"utf16\"); }"));
-
-                // Add simplified overload with only analyzerId and inputs (most common usage)
-                clazz.addMethod("beginAnalyze", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("List<AnalyzeInput>", "inputs")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from inputs. "
-                        + "This is a convenience method that uses default string encoding (utf16), "
-                        + "service default model deployments, and global processing location."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "inputs The inputs to analyze.")
-                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyze(analyzerId, inputs, null, null); }"));
-            });
-        });
-    }
-
     /**
      * Add static accessor helper for setting operationId on ContentAnalyzerAnalyzeOperationStatus
      */
@@ -627,17 +589,6 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add simplified beginAnalyzeBinary methods that don't require contentType parameter.
-     * When contentType is not specified, defaults to "application/octet-stream".
-     */
-    private void addSimplifiedAnalyzeBinaryMethods(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding simplified beginAnalyzeBinary methods with default contentType");
-
-        // NOTE: Generator now produces both beginAnalyzeBinary convenience methods (2-param and 3-param),
-        // so no customization needed for beginAnalyzeBinary. This method is now a no-op.
-    }
-
-    /**
      * Hide generated methods that expose stringEncoding parameter by making them package-private.
      * This prevents stringEncoding from appearing in the public API while still allowing delegation
      * from simplified overloads that use utf16 by default.
@@ -675,315 +626,6 @@ public class ContentUnderstandingCustomizations extends Customization {
                     }
                 }));
         }
-    }
-
-    /**
-     * Add public beginAnalyzeBinary(analyzerId, binaryInput, inputRange, contentType, processingLocation) overload
-     * that delegates to the 6-param method with stringEncoding "utf16". The 6-param method is hidden by
-     * hideStringEncodingMethods.
-     */
-    private void addBeginAnalyzeBinaryFiveParamOverload(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding 5-param beginAnalyzeBinary overload with default stringEncoding utf16");
-
-        // Sync client
-        customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.models.ProcessingLocation");
-            ast.addImport("com.azure.core.annotation.ServiceMethod");
-            ast.addImport("com.azure.core.annotation.ReturnType");
-            ast.addImport("com.azure.core.util.BinaryData");
-            ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
-                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("BinaryData", "binaryInput")
-                    .addParameter("String", "inputRange")
-                    .addParameter("String", "contentType")
-                    .addParameter("ProcessingLocation", "processingLocation")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from binary input. Uses default string encoding (utf16)."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
-                        .addBlockTag("param", "inputRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio visual uses milliseconds.")
-                        .addBlockTag("param", "contentType Request content type.")
-                        .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
-                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, inputRange, contentType, processingLocation, \"utf16\"); }"));
-            });
-        });
-
-        // Async client
-        customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast -> {
-            ast.addImport("com.azure.ai.contentunderstanding.models.ProcessingLocation");
-            ast.addImport("com.azure.core.annotation.ServiceMethod");
-            ast.addImport("com.azure.core.annotation.ReturnType");
-            ast.addImport("com.azure.core.util.BinaryData");
-            ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
-                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("BinaryData", "binaryInput")
-                    .addParameter("String", "inputRange")
-                    .addParameter("String", "contentType")
-                    .addParameter("ProcessingLocation", "processingLocation")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from binary input. Uses default string encoding (utf16)."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
-                        .addBlockTag("param", "inputRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio visual uses milliseconds.")
-                        .addBlockTag("param", "contentType Request content type.")
-                        .addBlockTag("param", "processingLocation The location where the data may be processed. Set to null for service default.")
-                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, inputRange, contentType, processingLocation, \"utf16\"); }"));
-            });
-        });
-    }
-
-    /**
-     * Fix generated 2-param beginAnalyzeBinary(analyzerId, binaryInput) body.
-     * The generator emits this overload but the body uses undefined variable contentType;
-     * replace with "application/octet-stream".
-     */
-    private void fixBeginAnalyzeBinaryTwoParamBody(LibraryCustomization customization, Logger logger) {
-        logger.info("Fixing 2-param beginAnalyzeBinary body to use application/octet-stream");
-
-        // Sync client
-        customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast ->
-            ast.getClassByName("ContentUnderstandingClient").ifPresent(clazz -> {
-                boolean found = false;
-                for (MethodDeclaration method : clazz.getMethods()) {
-                    if ("beginAnalyzeBinary".equals(method.getNameAsString())
-                        && method.getParameters().size() == 2) {
-                        method.setBody(StaticJavaParser.parseBlock("{"
-                            + "RequestOptions requestOptions = new RequestOptions();"
-                            + "return serviceClient.beginAnalyzeBinaryWithModel(analyzerId, \"application/octet-stream\", binaryInput, requestOptions); }"));
-                        found = true;
-                        break;
-                    }
-                }
-                logger.info("Sync beginAnalyzeBinary 2-param found for body fix: {}", found);
-            }));
-
-        // Async client
-        customization.getClass(PACKAGE_NAME, "ContentUnderstandingAsyncClient").customizeAst(ast ->
-            ast.getClassByName("ContentUnderstandingAsyncClient").ifPresent(clazz -> {
-                boolean found = false;
-                for (MethodDeclaration method : clazz.getMethods()) {
-                    if ("beginAnalyzeBinary".equals(method.getNameAsString())
-                        && method.getParameters().size() == 2) {
-                        method.setBody(StaticJavaParser.parseBlock("{"
-                            + "RequestOptions requestOptions = new RequestOptions();"
-                            + "return serviceClient.beginAnalyzeBinaryWithModelAsync(analyzerId, \"application/octet-stream\", binaryInput, requestOptions); }"));
-                        found = true;
-                        break;
-                    }
-                }
-                logger.info("Async beginAnalyzeBinary 2-param found for body fix: {}", found);
-            }));
-    }
-
-    /**
-     * SERVICE-FIX: Fix SupportedModels to use List<String> instead of Map<String, String>.
-     * The service returns arrays for completion/embedding fields, not maps.
-     * This fixes the deserialization error: "Unexpected token to begin map deserialization: START_ARRAY"
-     */
-    private void customizeSupportedModels(LibraryCustomization customization, Logger logger) {
-        logger.info("Customizing SupportedModels to use List<String> instead of Map<String, String>");
-
-        customization.getClass(MODELS_PACKAGE, "SupportedModels").customizeAst(ast -> {
-            ast.addImport("java.util.List");
-            ast.addImport("java.util.ArrayList");
-
-            ast.getClassByName("SupportedModels").ifPresent(clazz -> {
-                // Change completion field from Map<String, String> to List<String>
-                clazz.getFieldByName("completion").ifPresent(field -> {
-                    field.getVariable(0).setType("List<String>");
-                });
-
-                // Change embedding field from Map<String, String> to List<String>
-                clazz.getFieldByName("embedding").ifPresent(field -> {
-                    field.getVariable(0).setType("List<String>");
-                });
-
-                // Update getCompletion return type
-                clazz.getMethodsByName("getCompletion").forEach(method -> {
-                    method.setType("List<String>");
-                });
-
-                // Update getEmbedding return type
-                clazz.getMethodsByName("getEmbedding").forEach(method -> {
-                    method.setType("List<String>");
-                });
-
-                // Update constructor parameter types
-                clazz.getConstructors().forEach(constructor -> {
-                    constructor.getParameters().forEach(param -> {
-                        String paramName = param.getNameAsString();
-                        if ("completion".equals(paramName) || "embedding".equals(paramName)) {
-                            param.setType("List<String>");
-                        }
-                    });
-                });
-
-                // Update toJson method - change writeMapField to writeArrayField
-                clazz.getMethodsByName("toJson").forEach(method -> {
-                    method.getBody().ifPresent(body -> {
-                        String bodyStr = body.toString();
-                        // Replace writeMapField with writeArrayField for completion and embedding
-                        bodyStr = bodyStr.replace(
-                            "jsonWriter.writeMapField(\"completion\", this.completion, (writer, element) -> writer.writeString(element))",
-                            "jsonWriter.writeArrayField(\"completion\", this.completion, (writer, element) -> writer.writeString(element))");
-                        bodyStr = bodyStr.replace(
-                            "jsonWriter.writeMapField(\"embedding\", this.embedding, (writer, element) -> writer.writeString(element))",
-                            "jsonWriter.writeArrayField(\"embedding\", this.embedding, (writer, element) -> writer.writeString(element))");
-                        method.setBody(StaticJavaParser.parseBlock(bodyStr));
-                    });
-                });
-
-                // Update fromJson method - change readMap to readArray
-                clazz.getMethodsByName("fromJson").forEach(method -> {
-                    method.getBody().ifPresent(body -> {
-                        String bodyStr = body.toString();
-                        // Replace Map<String, String> with List<String>
-                        bodyStr = bodyStr.replace("Map<String, String> completion = null;", "List<String> completion = null;");
-                        bodyStr = bodyStr.replace("Map<String, String> embedding = null;", "List<String> embedding = null;");
-                        // Replace readMap with readArray
-                        bodyStr = bodyStr.replace(
-                            "completion = reader.readMap(reader1 -> reader1.getString());",
-                            "completion = reader.readArray(reader1 -> reader1.getString());");
-                        bodyStr = bodyStr.replace(
-                            "embedding = reader.readMap(reader1 -> reader1.getString());",
-                            "embedding = reader.readArray(reader1 -> reader1.getString());");
-                        method.setBody(StaticJavaParser.parseBlock(bodyStr));
-                    });
-                });
-            });
-        });
-    }
-
-    /**
-     * SERVICE-FIX: Fix the copyAnalyzer API path and expected responses.
-     *
-     * The TypeSpec/Swagger spec incorrectly uses ":copyAnalyzer" as the action,
-     * but the actual service endpoint uses ":copy". Additionally, the spec only
-     * expects 202 response, but the service can return 200, 201, or 202.
-     *
-     * This customization modifies the ContentUnderstandingService interface annotations
-     * to match the actual service behavior.
-     */
-    private void customizeCopyAnalyzerApi(LibraryCustomization customization, Logger logger) {
-        logger.info("SERVICE-FIX: Customizing copyAnalyzer API path and expected responses");
-
-        customization.getClass(IMPLEMENTATION_PACKAGE, "ContentUnderstandingClientImpl").customizeAst(ast -> {
-            ast.addImport("com.azure.core.exception.ResourceNotFoundException");
-
-            // Find the ContentUnderstandingService interface inside ContentUnderstandingClientImpl
-            ast.getClassByName("ContentUnderstandingClientImpl").ifPresent(implClass -> {
-                implClass.getMembers().stream()
-                    .filter(member -> member instanceof ClassOrInterfaceDeclaration)
-                    .map(member -> (ClassOrInterfaceDeclaration) member)
-                    .filter(innerClass -> innerClass.getNameAsString().equals("ContentUnderstandingService"))
-                    .findFirst()
-                    .ifPresent(serviceInterface -> {
-                        // Find and update copyAnalyzer method
-                        serviceInterface.getMethodsByName("copyAnalyzer").forEach(method -> {
-                            // Update @Post annotation from ":copyAnalyzer" to ":copy"
-                            method.getAnnotationByName("Post").ifPresent(postAnnotation -> {
-                                postAnnotation.asNormalAnnotationExpr().getPairs().forEach(pair -> {
-                                    if (pair.getValue().toString().contains(":copyAnalyzer")) {
-                                        pair.setValue(StaticJavaParser.parseExpression(
-                                            "\"/analyzers/{analyzerId}:copy\""));
-                                        logger.info("Updated @Post path for copyAnalyzer async method");
-                                    }
-                                });
-                                // Handle single value annotation
-                                if (postAnnotation.isSingleMemberAnnotationExpr()) {
-                                    String value = postAnnotation.asSingleMemberAnnotationExpr()
-                                        .getMemberValue().toString();
-                                    if (value.contains(":copyAnalyzer")) {
-                                        postAnnotation.asSingleMemberAnnotationExpr().setMemberValue(
-                                            StaticJavaParser.parseExpression("\"/analyzers/{analyzerId}:copy\""));
-                                        logger.info("Updated @Post path for copyAnalyzer async method (single value)");
-                                    }
-                                }
-                            });
-
-                            // Update @ExpectedResponses from { 202 } to { 200, 201, 202 }
-                            method.getAnnotationByName("ExpectedResponses").ifPresent(expectedAnnotation -> {
-                                if (expectedAnnotation.isSingleMemberAnnotationExpr()) {
-                                    expectedAnnotation.asSingleMemberAnnotationExpr().setMemberValue(
-                                        StaticJavaParser.parseExpression("{ 200, 201, 202 }"));
-                                    logger.info("Updated @ExpectedResponses for copyAnalyzer async method");
-                                }
-                            });
-
-                            // Add @UnexpectedResponseExceptionType for 404 if not present
-                            boolean has404Handler = method.getAnnotations().stream()
-                                .filter(a -> a.getNameAsString().equals("UnexpectedResponseExceptionType"))
-                                .anyMatch(a -> a.toString().contains("404"));
-
-                            if (!has404Handler) {
-                                // Add 404 handler annotation
-                                method.addAnnotation(StaticJavaParser.parseAnnotation(
-                                    "@UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })"));
-                                logger.info("Added 404 exception handler for copyAnalyzer async method");
-                            }
-                        });
-
-                        // Find and update copyAnalyzerSync method
-                        serviceInterface.getMethodsByName("copyAnalyzerSync").forEach(method -> {
-                            // Update @Post annotation from ":copyAnalyzer" to ":copy"
-                            method.getAnnotationByName("Post").ifPresent(postAnnotation -> {
-                                postAnnotation.asNormalAnnotationExpr().getPairs().forEach(pair -> {
-                                    if (pair.getValue().toString().contains(":copyAnalyzer")) {
-                                        pair.setValue(StaticJavaParser.parseExpression(
-                                            "\"/analyzers/{analyzerId}:copy\""));
-                                        logger.info("Updated @Post path for copyAnalyzerSync method");
-                                    }
-                                });
-                                // Handle single value annotation
-                                if (postAnnotation.isSingleMemberAnnotationExpr()) {
-                                    String value = postAnnotation.asSingleMemberAnnotationExpr()
-                                        .getMemberValue().toString();
-                                    if (value.contains(":copyAnalyzer")) {
-                                        postAnnotation.asSingleMemberAnnotationExpr().setMemberValue(
-                                            StaticJavaParser.parseExpression("\"/analyzers/{analyzerId}:copy\""));
-                                        logger.info("Updated @Post path for copyAnalyzerSync method (single value)");
-                                    }
-                                }
-                            });
-
-                            // Update @ExpectedResponses from { 202 } to { 200, 201, 202 }
-                            method.getAnnotationByName("ExpectedResponses").ifPresent(expectedAnnotation -> {
-                                if (expectedAnnotation.isSingleMemberAnnotationExpr()) {
-                                    expectedAnnotation.asSingleMemberAnnotationExpr().setMemberValue(
-                                        StaticJavaParser.parseExpression("{ 200, 201, 202 }"));
-                                    logger.info("Updated @ExpectedResponses for copyAnalyzerSync method");
-                                }
-                            });
-
-                            // Add @UnexpectedResponseExceptionType for 404 if not present
-                            boolean has404Handler = method.getAnnotations().stream()
-                                .filter(a -> a.getNameAsString().equals("UnexpectedResponseExceptionType"))
-                                .anyMatch(a -> a.toString().contains("404"));
-
-                            if (!has404Handler) {
-                                // Add 404 handler annotation
-                                method.addAnnotation(StaticJavaParser.parseAnnotation(
-                                    "@UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })"));
-                                logger.info("Added 404 exception handler for copyAnalyzerSync method");
-                            }
-                        });
-                    });
-            });
-        });
     }
 
     // =================== Update Convenience Methods ===================
