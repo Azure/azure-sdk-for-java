@@ -132,7 +132,7 @@ public class SasImplUtils {
 
     public static String formatRequestHeadersForSasSigning(Map<String, String> requestHeaders) {
         if (requestHeaders == null || requestHeaders.isEmpty()) {
-            return "";
+            return null;
         }
         StringBuilder sb = new StringBuilder();
         requestHeaders.forEach((key, value) -> sb.append(key).append(":").append(value).append("\n"));
@@ -151,7 +151,7 @@ public class SasImplUtils {
      */
     public static String formatRequestQueryParametersForSasSigning(Map<String, String> requestQueryParameters) {
         if (requestQueryParameters == null || requestQueryParameters.isEmpty()) {
-            return "";
+            return null;
         }
         StringBuilder sb = new StringBuilder();
         requestQueryParameters.forEach((key, value) -> sb.append("\n").append(key).append(":").append(value));
