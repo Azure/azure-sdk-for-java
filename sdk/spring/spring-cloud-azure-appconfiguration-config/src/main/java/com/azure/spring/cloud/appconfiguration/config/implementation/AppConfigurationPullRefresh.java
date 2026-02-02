@@ -4,6 +4,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
@@ -81,6 +82,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
         this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
         this.replicaLookUp = replicaLookUp;
+        Objects.requireNonNull(stateHolder, "stateHolder must not be null");
         this.stateHolder = stateHolder;
         this.refreshUtils = refreshUtils;
     }

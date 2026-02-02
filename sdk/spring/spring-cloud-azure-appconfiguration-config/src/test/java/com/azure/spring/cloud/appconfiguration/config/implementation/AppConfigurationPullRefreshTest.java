@@ -2,17 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
+
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
@@ -28,7 +29,7 @@ public class AppConfigurationPullRefreshTest {
 
     @Mock
     private ApplicationEventPublisher publisher;
-    
+
     @Mock
     private ReplicaLookUp replicaLookUpMock;
 
@@ -39,13 +40,13 @@ public class AppConfigurationPullRefreshTest {
 
     @Mock
     private AppConfigurationReplicaClientFactory clientFactoryMock;
-    
+
     @Mock
     private AppConfigurationRefreshUtil refreshUtilMock;
 
     @Mock
     private StateHolder stateHolderMock;
-    
+
     private MockitoSession session;
 
     @BeforeEach
@@ -62,24 +63,26 @@ public class AppConfigurationPullRefreshTest {
 
     @Test
     public void refreshNoChange() throws InterruptedException, ExecutionException {
-        when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
+        when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenReturn(eventDataMock);
 
         AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
             replicaLookUpMock, stateHolderMock, refreshUtilMock);
         assertFalse(refresh.refreshConfigurations().block());
-       
+
     }
 
     @Test
     public void refreshUpdate() throws InterruptedException, ExecutionException {
         when(eventDataMock.getMessage()).thenReturn("Updated");
         when(eventDataMock.getDoRefresh()).thenReturn(true);
-        when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
+        when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+            .thenReturn(eventDataMock);
 
         AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
             replicaLookUpMock, stateHolderMock, refreshUtilMock);
         refresh.setApplicationEventPublisher(publisher);
         assertTrue(refresh.refreshConfigurations().block());
-        
+
     }
 }
