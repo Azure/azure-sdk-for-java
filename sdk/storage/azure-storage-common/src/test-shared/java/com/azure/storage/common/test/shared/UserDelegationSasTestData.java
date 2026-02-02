@@ -21,7 +21,6 @@ import java.util.Map;
  * For regular SAS tests, use {@link SasTestData} directly.
  */
 public class UserDelegationSasTestData extends SasTestData {
-    // User delegation SAS specific fields
     private String keyOid;
     private String keyTid;
     private OffsetDateTime keyStart;
@@ -34,6 +33,14 @@ public class UserDelegationSasTestData extends SasTestData {
     private String saoid;
     private String suoid;
     private String cid;
+
+    /**
+     * Default constructor.
+     * All fields default to null.
+     */
+    public UserDelegationSasTestData() {
+        super();
+    }
 
     // Override parent setters to return UserDelegationSasTestData for fluent API
     @Override
@@ -89,8 +96,6 @@ public class UserDelegationSasTestData extends SasTestData {
         super.setExpectedStringToSign(expectedStringToSign);
         return this;
     }
-
-    // User delegation SAS specific setters
 
     public UserDelegationSasTestData setKeyOid(String keyOid) {
         this.keyOid = keyOid;
@@ -161,12 +166,17 @@ public class UserDelegationSasTestData extends SasTestData {
      */
     public Arguments toArguments(boolean withHeadersAndParams) {
         if (withHeadersAndParams) {
-            return Arguments.of(startTime, keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
-                ipRange, protocol, cacheControl, disposition, encoding, language, type, requestHeaders,
-                requestQueryParameters, saoid, suoid, cid, expectedStringToSign);
+            return Arguments.of(
+                getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
+                getIpRange(), getProtocol(), getCacheControl(), getDisposition(), getEncoding(), getLanguage(), getType(),
+                requestHeaders, requestQueryParameters, saoid, suoid, cid, getExpectedStringToSign()
+            );
         } else {
-            return Arguments.of(startTime, keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
-                ipRange, protocol, cacheControl, disposition, encoding, language, type, saoid, suoid, cid, expectedStringToSign);
+            return Arguments.of(
+                getStartTime(), keyOid, keyTid, keyStart, keyExpiry, keyService, keyVersion, keyValue,
+                getIpRange(), getProtocol(), getCacheControl(), getDisposition(), getEncoding(), getLanguage(), getType(),
+                saoid, suoid, cid, getExpectedStringToSign()
+            );
         }
     }
 
@@ -180,5 +190,3 @@ public class UserDelegationSasTestData extends SasTestData {
         return toArguments(true);
     }
 }
-
-

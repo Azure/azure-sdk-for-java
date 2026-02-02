@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.storage.common.test.shared;
+
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 import org.junit.jupiter.params.provider.Arguments;
 import java.time.OffsetDateTime;
+
 /**
  * Helper class to build test arguments for regular SAS string-to-sign tests.
  * This is the base class that contains common fields shared by both regular SAS and user delegation SAS.
@@ -13,58 +16,85 @@ import java.time.OffsetDateTime;
  * For user delegation SAS tests, use {@link UserDelegationSasTestData} which extends this class.
  */
 public class SasTestData {
-    // Common fields for all SAS types
-    protected OffsetDateTime startTime;
-    protected SasIpRange ipRange;
-    protected SasProtocol protocol;
-    protected String cacheControl;
-    protected String disposition;
-    protected String encoding;
-    protected String language;
-    protected String type;
-    protected String expectedStringToSign;
-    // Regular SAS specific field
-    protected String identifier;  // Signed identifier for regular SAS
+    private OffsetDateTime startTime;
+    private SasIpRange ipRange;
+    private SasProtocol protocol;
+    private String cacheControl;
+    private String disposition;
+    private String encoding;
+    private String language;
+    private String type;
+    private String expectedStringToSign;
+    private String identifier;
+
+    /**
+     * Default constructor.
+     * All fields default to null.
+     */
+    public SasTestData() {
+    }
+
     public SasTestData setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
     }
+
     public SasTestData setIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
     }
+
     public SasTestData setIpRange(SasIpRange ipRange) {
         this.ipRange = ipRange;
         return this;
     }
+
     public SasTestData setProtocol(SasProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
+
     public SasTestData setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
     }
+
     public SasTestData setDisposition(String disposition) {
         this.disposition = disposition;
         return this;
     }
+
     public SasTestData setEncoding(String encoding) {
         this.encoding = encoding;
         return this;
     }
+
     public SasTestData setLanguage(String language) {
         this.language = language;
         return this;
     }
+
     public SasTestData setType(String type) {
         this.type = type;
         return this;
     }
+
     public SasTestData setExpectedStringToSign(String expectedStringToSign) {
         this.expectedStringToSign = expectedStringToSign;
         return this;
     }
+
+    public OffsetDateTime getStartTime() { return startTime; }
+    public String getIdentifier() { return identifier; }
+    public SasIpRange getIpRange() { return ipRange; }
+    public SasProtocol getProtocol() { return protocol; }
+    public String getCacheControl() { return cacheControl; }
+    public String getDisposition() { return disposition; }
+    public String getEncoding() { return encoding; }
+    public String getLanguage() { return language; }
+    public String getType() { return type; }
+    public String getExpectedStringToSign() { return expectedStringToSign; }
+
     /**
      * Converts to Arguments for regular SAS tests.
      * Returns arguments in this order:
