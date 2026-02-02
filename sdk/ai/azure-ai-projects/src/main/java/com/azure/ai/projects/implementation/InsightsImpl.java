@@ -88,9 +88,9 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> generate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData insight,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData insight, RequestOptions requestOptions, Context context);
 
         @Post("/insights")
         @ExpectedResponses({ 201 })
@@ -99,9 +99,9 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> generateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData insight,
-            RequestOptions requestOptions, Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData insight, RequestOptions requestOptions, Context context);
 
         @Get("/insights/{id}")
         @ExpectedResponses({ 200 })
@@ -186,8 +186,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -208,8 +208,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -230,6 +230,7 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateWithResponseAsync(BinaryData insight, RequestOptions requestOptions) {
+        final String foundryBeta = "Insights=v1";
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -246,8 +247,9 @@ public final class InsightsImpl {
                         DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()));
             }
         });
-        return FluxUtil.withContext(context -> service.generate(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, accept, insight, requestOptionsLocal, context));
+        return FluxUtil.withContext(
+            context -> service.generate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                foundryBeta, contentType, accept, insight, requestOptionsLocal, context));
     }
 
     /**
@@ -272,8 +274,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -294,8 +296,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -315,6 +317,7 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateWithResponse(BinaryData insight, RequestOptions requestOptions) {
+        final String foundryBeta = "Insights=v1";
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -332,7 +335,7 @@ public final class InsightsImpl {
             }
         });
         return service.generateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, accept, insight, requestOptionsLocal, Context.NONE);
+            foundryBeta, contentType, accept, insight, requestOptionsLocal, Context.NONE);
     }
 
     /**
@@ -356,8 +359,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -403,8 +406,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -455,8 +458,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -510,8 +513,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -563,8 +566,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -616,8 +619,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -656,8 +659,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -699,8 +702,8 @@ public final class InsightsImpl {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {

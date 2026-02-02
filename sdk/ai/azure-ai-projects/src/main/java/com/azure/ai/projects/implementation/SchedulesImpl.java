@@ -147,7 +147,8 @@ public final class SchedulesImpl {
         Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData schedule, RequestOptions requestOptions, Context context);
+            @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
+            Context context);
 
         @Put("/schedules/{id}")
         @ExpectedResponses({ 200, 201 })
@@ -158,29 +159,30 @@ public final class SchedulesImpl {
         Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData schedule, RequestOptions requestOptions, Context context);
+            @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
+            Context context);
 
-        @Get("/schedules/{scheduleId}/runs/{runId}")
+        @Get("/schedules/{schedule_id}/runs/{run_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRun(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scheduleId") String scheduleId,
-            @PathParam("runId") String runId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("schedule_id") String scheduleId, @PathParam("run_id") String runId,
+            @HeaderParam("Foundry-Beta") String foundryBeta, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
-        @Get("/schedules/{scheduleId}/runs/{runId}")
+        @Get("/schedules/{schedule_id}/runs/{run_id}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getRunSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("scheduleId") String scheduleId,
-            @PathParam("runId") String runId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
-            Context context);
+            @PathParam("schedule_id") String scheduleId, @PathParam("run_id") String runId,
+            @HeaderParam("Foundry-Beta") String foundryBeta, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}/runs")
         @ExpectedResponses({ 200 })
@@ -287,12 +289,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -336,12 +338,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -385,12 +387,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -437,12 +439,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -487,12 +489,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -537,12 +539,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -578,7 +580,7 @@ public final class SchedulesImpl {
     }
 
     /**
-     * Create or update a schedule by id.
+     * Create or update operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -587,12 +589,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -619,12 +621,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -644,7 +646,7 @@ public final class SchedulesImpl {
      * </pre>
      * 
      * @param id Identifier of the schedule.
-     * @param schedule Schedule resource.
+     * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -653,16 +655,16 @@ public final class SchedulesImpl {
      * @return schedule model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String id, BinaryData schedule,
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String id, BinaryData resource,
         RequestOptions requestOptions) {
-        final String contentType = "application/json";
+        final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, contentType, accept, schedule, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), id, contentType, accept, resource, requestOptions, context));
     }
 
     /**
-     * Create or update a schedule by id.
+     * Create or update operation template.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -671,12 +673,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -703,12 +705,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -728,7 +730,7 @@ public final class SchedulesImpl {
      * </pre>
      * 
      * @param id Identifier of the schedule.
-     * @param schedule Schedule resource.
+     * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -737,12 +739,12 @@ public final class SchedulesImpl {
      * @return schedule model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData schedule,
+    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData resource,
         RequestOptions requestOptions) {
-        final String contentType = "application/json";
+        final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            contentType, accept, schedule, requestOptions, Context.NONE);
+            contentType, accept, resource, requestOptions, Context.NONE);
     }
 
     /**
@@ -764,8 +766,8 @@ public final class SchedulesImpl {
      * }
      * </pre>
      * 
-     * @param scheduleId Identifier of the schedule.
-     * @param runId Identifier of the schedule run.
+     * @param scheduleId The unique identifier of the schedule.
+     * @param runId The unique identifier of the schedule run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -776,9 +778,10 @@ public final class SchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRunWithResponseAsync(String scheduleId, String runId,
         RequestOptions requestOptions) {
+        final String foundryBeta = "Insights=v1";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRun(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), scheduleId, runId, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRun(this.client.getEndpoint(), scheduleId, runId, foundryBeta,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -800,8 +803,8 @@ public final class SchedulesImpl {
      * }
      * </pre>
      * 
-     * @param scheduleId Identifier of the schedule.
-     * @param runId Identifier of the schedule run.
+     * @param scheduleId The unique identifier of the schedule.
+     * @param runId The unique identifier of the schedule run.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -811,9 +814,10 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRunWithResponse(String scheduleId, String runId, RequestOptions requestOptions) {
+        final String foundryBeta = "Insights=v1";
         final String accept = "application/json";
-        return service.getRunSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), scheduleId,
-            runId, accept, requestOptions, Context.NONE);
+        return service.getRunSync(this.client.getEndpoint(), scheduleId, runId, foundryBeta,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -972,12 +976,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)
@@ -1025,12 +1029,12 @@ public final class SchedulesImpl {
      *     id: String (Required)
      *     displayName: String (Optional)
      *     description: String (Optional)
-     *     enabled: boolean (Required)
+     *     enabled: boolean (Optional, Required on create)
      *     provisioningStatus: String(Creating/Updating/Deleting/Succeeded/Failed) (Optional)
-     *     trigger (Required): {
+     *     trigger (Optional, Required on create): {
      *         type: String(Cron/Recurrence/OneTime) (Required)
      *     }
-     *     task (Required): {
+     *     task (Optional, Required on create): {
      *         type: String(Evaluation/Insight) (Required)
      *         configuration (Optional): {
      *             String: String (Required)

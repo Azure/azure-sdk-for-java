@@ -59,13 +59,13 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * Creation date/time of the evaluator
      */
     @Generated
-    private long createdAt;
+    private String createdAt;
 
     /*
      * Last modified date/time of the evaluator
      */
     @Generated
-    private long modifiedAt;
+    private String modifiedAt;
 
     /*
      * Asset ID, a unique identifier for the asset
@@ -204,7 +204,7 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * @return the createdAt value.
      */
     @Generated
-    public long getCreatedAt() {
+    public String getCreatedAt() {
         return this.createdAt;
     }
 
@@ -214,7 +214,7 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
      * @return the modifiedAt value.
      */
     @Generated
-    public long getModifiedAt() {
+    public String getModifiedAt() {
         return this.modifiedAt;
     }
 
@@ -327,8 +327,8 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
             List<EvaluatorCategory> categories = null;
             EvaluatorDefinition definition = null;
             String createdBy = null;
-            long createdAt = 0L;
-            long modifiedAt = 0L;
+            String createdAt = null;
+            String modifiedAt = null;
             String name = null;
             String version = null;
             String displayName = null;
@@ -348,9 +348,9 @@ public final class EvaluatorVersion implements JsonSerializable<EvaluatorVersion
                 } else if ("created_by".equals(fieldName)) {
                     createdBy = reader.getString();
                 } else if ("created_at".equals(fieldName)) {
-                    createdAt = reader.getLong();
+                    createdAt = reader.getString();
                 } else if ("modified_at".equals(fieldName)) {
-                    modifiedAt = reader.getLong();
+                    modifiedAt = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("version".equals(fieldName)) {

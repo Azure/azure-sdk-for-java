@@ -60,8 +60,8 @@ public final class InsightsClient {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -82,8 +82,8 @@ public final class InsightsClient {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -128,8 +128,8 @@ public final class InsightsClient {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {
@@ -179,8 +179,8 @@ public final class InsightsClient {
      *         completedAt: OffsetDateTime (Optional)
      *     }
      *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Required)
-     *     request (Required): {
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
      *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
      *     }
      *     result (Optional): {

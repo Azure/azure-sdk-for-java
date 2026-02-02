@@ -87,8 +87,8 @@ public class BaseCredentials implements JsonSerializable<BaseCredentials> {
                     return SasCredentials.fromJson(readerToUse.reset());
                 } else if ("None".equals(discriminatorValue)) {
                     return NoAuthenticationCredentials.fromJson(readerToUse.reset());
-                } else if ("AgenticIdentityToken".equals(discriminatorValue)) {
-                    return AgenticIdentityCredentials.fromJson(readerToUse.reset());
+                } else if ("AgenticIdentityToken_Preview".equals(discriminatorValue)) {
+                    return AgenticIdentityPreviewCredentials.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

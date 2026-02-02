@@ -4,6 +4,7 @@
 package com.azure.ai.projects;
 
 import com.azure.ai.projects.implementation.RedTeamsImpl;
+import com.azure.ai.projects.models.FoundryPreviewOptInKeys;
 import com.azure.ai.projects.models.RedTeam;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -13,6 +14,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -136,6 +138,15 @@ public final class RedTeamsAsyncClient {
 
     /**
      * Creates a redteam run.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
+     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -278,6 +289,32 @@ public final class RedTeamsAsyncClient {
     public Mono<RedTeam> create(RedTeam redTeam) {
         // Generated convenience method for createWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        return createWithResponse(BinaryData.fromObject(redTeam), requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RedTeam.class));
+    }
+
+    /**
+     * Creates a redteam run.
+     *
+     * @param redTeam Redteam to be run.
+     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
+     * resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return red team details on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<RedTeam> create(RedTeam redTeam, FoundryPreviewOptInKeys foundryBeta) {
+        // Generated convenience method for createWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryBeta != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), foundryBeta.toString());
+        }
         return createWithResponse(BinaryData.fromObject(redTeam), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(RedTeam.class));
     }

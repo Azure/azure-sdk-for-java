@@ -70,7 +70,7 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
      * Remote tool.
      */
     @Generated
-    public static final ConnectionType REMOTE_TOOL = fromString("RemoteTool");
+    public static final ConnectionType REMOTE_TOOL = fromString("RemoteTool_Preview");
 
     /**
      * Creates a new instance of ConnectionType value.
