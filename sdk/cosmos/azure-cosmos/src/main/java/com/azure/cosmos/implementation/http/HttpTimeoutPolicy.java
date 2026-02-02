@@ -20,11 +20,17 @@ public abstract class HttpTimeoutPolicy {
         if (OperationType.Read.equals(request.getOperationType()) && request.getResourceType() == ResourceType.DatabaseAccount) {
             return HttpTimeoutPolicyControlPlaneRead.INSTANCE;
         }
-        // Use Gateway V2 timeout policy for point read operations when Thin Client mode is enabled
-        if (request.useThinClientMode
-            && request.getResourceType() == ResourceType.Document
-            && OperationType.Read.equals(request.getOperationType())) {
-            return HttpTimeoutPolicyForGatewayV2.INSTANCE;
+        // Use Gateway V2 timeout policies when Thin Client mode is enabled
+        if (request.useThinClientMode && request.getResourceType() == ResourceType.Document) {
+            OperationType operationType = request.getOperationType();
+            // Point read operations
+            if (OperationType.Read.equals(operationType)) {
+                return HttpTimeoutPolicyForGatewayV2.INSTANCE_FOR_POINT_READ;
+            }
+            // Query and Change Feed operations
+            if (OperationType.Query.equals(operationType) || request.isChangeFeedRequest()) {
+                return HttpTimeoutPolicyForGatewayV2.INSTANCE_FOR_QUERY_AND_CHANGE_FEED;
+            }
         }
         return HttpTimeoutPolicyDefault.INSTANCE;
     }

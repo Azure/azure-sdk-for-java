@@ -9,21 +9,35 @@ import java.util.List;
 
 /**
  * Timeout policy for Gateway V2 (Thin Client) requests.
- * This policy applies to point read operations when Thin Client mode is enabled.
+ * This policy has separate configurations for point read operations vs query/change feed operations.
  */
 public class HttpTimeoutPolicyForGatewayV2 extends HttpTimeoutPolicy {
 
-    public static final HttpTimeoutPolicy INSTANCE = new HttpTimeoutPolicyForGatewayV2();
+    public static final HttpTimeoutPolicy INSTANCE_FOR_POINT_READ = new HttpTimeoutPolicyForGatewayV2(true);
+    public static final HttpTimeoutPolicy INSTANCE_FOR_QUERY_AND_CHANGE_FEED = new HttpTimeoutPolicyForGatewayV2(false);
 
-    private HttpTimeoutPolicyForGatewayV2() {
+    private final boolean isPointRead;
+
+    private HttpTimeoutPolicyForGatewayV2(boolean isPointRead) {
+        this.isPointRead = isPointRead;
         timeoutAndDelaysList = getTimeoutList();
     }
 
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
-        return Collections.unmodifiableList(
-            Arrays.asList(
-                new ResponseTimeoutAndDelays(Duration.ofSeconds(5), Duration.ofMillis(500)),
-                new ResponseTimeoutAndDelays(Duration.ofSeconds(10), Duration.ofSeconds(1)),
-                new ResponseTimeoutAndDelays(Duration.ofSeconds(20), Duration.ZERO)));
+        if (isPointRead) {
+            // Point read timeout policy: 500ms delay for 1st retry, 1s delay for 2nd retry
+            return Collections.unmodifiableList(
+                Arrays.asList(
+                    new ResponseTimeoutAndDelays(Duration.ofSeconds(6), Duration.ZERO),
+                    new ResponseTimeoutAndDelays(Duration.ofSeconds(6), Duration.ZERO),
+                    new ResponseTimeoutAndDelays(Duration.ofSeconds(10), Duration.ZERO)));
+        } else {
+            // Query and Change Feed timeout policy: longer timeouts for these operations
+            return Collections.unmodifiableList(
+                Arrays.asList(
+                    new ResponseTimeoutAndDelays(Duration.ofSeconds(6), Duration.ZERO),
+                    new ResponseTimeoutAndDelays(Duration.ofSeconds(6), Duration.ZERO),
+                    new ResponseTimeoutAndDelays(Duration.ofSeconds(10), Duration.ZERO)));
+        }
     }
 }
