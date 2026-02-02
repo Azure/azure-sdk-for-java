@@ -31,8 +31,7 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testSerializationWithoutToolChoice() throws IOException {
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setInstructions("Test instructions");
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setInstructions("Test instructions");
 
         String json = serializeToJson(definition);
 
@@ -49,8 +48,7 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testSerializationWithToolChoiceAutoString() throws IOException {
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice("auto");
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice("auto");
 
         String json = serializeToJson(definition);
 
@@ -66,8 +64,7 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testSerializationWithToolChoiceNoneString() throws IOException {
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice("none");
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice("none");
 
         String json = serializeToJson(definition);
 
@@ -81,8 +78,7 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testSerializationWithToolChoiceRequiredString() throws IOException {
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice("required");
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice("required");
 
         String json = serializeToJson(definition);
 
@@ -142,8 +138,7 @@ public class PromptAgentDefinitionSerializationTests {
     @Test
     public void testSerializationWithToolChoiceFunctionJsonString() throws IOException {
         String functionChoiceJson = "{\"type\":\"function\",\"name\":\"get_weather\"}";
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice(functionChoiceJson);
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice(functionChoiceJson);
 
         String json = serializeToJson(definition);
 
@@ -159,8 +154,7 @@ public class PromptAgentDefinitionSerializationTests {
     @Test
     public void testSerializationWithToolChoiceTypesWebSearchJsonString() throws IOException {
         String typesChoiceJson = "{\"type\":\"web_search\"}";
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice(typesChoiceJson);
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice(typesChoiceJson);
 
         String json = serializeToJson(definition);
 
@@ -175,8 +169,7 @@ public class PromptAgentDefinitionSerializationTests {
     @Test
     public void testSerializationWithToolChoiceTypesFileSearchJsonString() throws IOException {
         String typesChoiceJson = "{\"type\":\"file_search\"}";
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice(typesChoiceJson);
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice(typesChoiceJson);
 
         String json = serializeToJson(definition);
 
@@ -191,8 +184,7 @@ public class PromptAgentDefinitionSerializationTests {
     @Test
     public void testSerializationWithToolChoiceTypesCodeInterpreterJsonString() throws IOException {
         String typesChoiceJson = "{\"type\":\"code_interpreter\"}";
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice(typesChoiceJson);
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice(typesChoiceJson);
 
         String json = serializeToJson(definition);
 
@@ -311,8 +303,7 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testRoundTripSerializationWithToolChoiceAuto() throws IOException {
-        PromptAgentDefinition original = new PromptAgentDefinition(TEST_MODEL)
-            .setInstructions("Test instructions")
+        PromptAgentDefinition original = new PromptAgentDefinition(TEST_MODEL).setInstructions("Test instructions")
             .setTemperature(0.7)
             .setToolChoice(ResponseCreateParams.ToolChoice.ofOptions(ToolChoiceOptions.AUTO));
 
@@ -332,9 +323,9 @@ public class PromptAgentDefinitionSerializationTests {
     public void testRoundTripSerializationWithToolChoiceFunctionJsonString() throws IOException {
         String functionChoiceJson = "{\"type\":\"function\",\"name\":\"calculate_sum\"}";
 
-        PromptAgentDefinition original = new PromptAgentDefinition(TEST_MODEL)
-            .setInstructions("You are a calculator assistant")
-            .setToolChoice(functionChoiceJson);
+        PromptAgentDefinition original
+            = new PromptAgentDefinition(TEST_MODEL).setInstructions("You are a calculator assistant")
+                .setToolChoice(functionChoiceJson);
 
         String json = serializeToJson(original);
         PromptAgentDefinition deserialized = deserializeFromJson(json);
@@ -349,11 +340,11 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testFullSerializationWithAllFields() throws IOException {
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setInstructions("You are a helpful assistant")
-            .setTemperature(0.8)
-            .setTopP(0.9)
-            .setToolChoice(ResponseCreateParams.ToolChoice.ofOptions(ToolChoiceOptions.AUTO));
+        PromptAgentDefinition definition
+            = new PromptAgentDefinition(TEST_MODEL).setInstructions("You are a helpful assistant")
+                .setTemperature(0.8)
+                .setTopP(0.9)
+                .setToolChoice(ResponseCreateParams.ToolChoice.ofOptions(ToolChoiceOptions.AUTO));
 
         String json = serializeToJson(definition);
 
@@ -371,7 +362,8 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testDeserializationWithComplexToolChoiceAllowed() throws IOException {
-        String json = "{\"model\":\"gpt-4o\",\"tool_choice\":{\"type\":\"allowed\",\"allowed_tools\":[{\"type\":\"function\",\"name\":\"func1\"},{\"type\":\"function\",\"name\":\"func2\"}]}}";
+        String json
+            = "{\"model\":\"gpt-4o\",\"tool_choice\":{\"type\":\"allowed\",\"allowed_tools\":[{\"type\":\"function\",\"name\":\"func1\"},{\"type\":\"function\",\"name\":\"func2\"}]}}";
 
         PromptAgentDefinition definition = deserializeFromJson(json);
 
@@ -384,9 +376,9 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testSerializationWithToolChoiceAllowedJsonString() throws IOException {
-        String allowedChoiceJson = "{\"type\":\"allowed\",\"allowed_tools\":[{\"type\":\"function\",\"name\":\"func1\"}]}";
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice(allowedChoiceJson);
+        String allowedChoiceJson
+            = "{\"type\":\"allowed\",\"allowed_tools\":[{\"type\":\"function\",\"name\":\"func1\"}]}";
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice(allowedChoiceJson);
 
         String json = serializeToJson(definition);
 
@@ -402,7 +394,8 @@ public class PromptAgentDefinitionSerializationTests {
      */
     @Test
     public void testDeserializationWithToolChoiceMcp() throws IOException {
-        String json = "{\"model\":\"gpt-4o\",\"tool_choice\":{\"type\":\"mcp\",\"server_label\":\"my_mcp_server\",\"name\":\"my_tool\"}}";
+        String json
+            = "{\"model\":\"gpt-4o\",\"tool_choice\":{\"type\":\"mcp\",\"server_label\":\"my_mcp_server\",\"name\":\"my_tool\"}}";
 
         PromptAgentDefinition definition = deserializeFromJson(json);
 
@@ -416,8 +409,7 @@ public class PromptAgentDefinitionSerializationTests {
     @Test
     public void testSerializationWithToolChoiceMcpJsonString() throws IOException {
         String mcpChoiceJson = "{\"type\":\"mcp\",\"server_label\":\"my_mcp_server\",\"name\":\"my_tool\"}";
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice(mcpChoiceJson);
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice(mcpChoiceJson);
 
         String json = serializeToJson(definition);
 
@@ -446,8 +438,7 @@ public class PromptAgentDefinitionSerializationTests {
     @Test
     public void testSerializationWithToolChoiceCustomJsonString() throws IOException {
         String customChoiceJson = "{\"type\":\"custom\",\"name\":\"my_custom_tool\"}";
-        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL)
-            .setToolChoice(customChoiceJson);
+        PromptAgentDefinition definition = new PromptAgentDefinition(TEST_MODEL).setToolChoice(customChoiceJson);
 
         String json = serializeToJson(definition);
 

@@ -32,8 +32,7 @@ public class TestUtils {
      */
     static Stream<Arguments> getTestParameters() {
         List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients().forEach(
-            httpClient -> argumentsList.add(Arguments.of(httpClient, AgentsServiceVersion.V1)));
+        getHttpClients().forEach(httpClient -> argumentsList.add(Arguments.of(httpClient, AgentsServiceVersion.V1)));
         return argumentsList.stream();
     }
 

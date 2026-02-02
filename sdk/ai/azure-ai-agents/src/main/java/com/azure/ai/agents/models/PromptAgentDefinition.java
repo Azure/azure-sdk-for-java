@@ -305,7 +305,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
         }
         jsonWriter.writeJsonField("text", this.text);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
-                (writer, element) -> writer.writeJson(element));
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -352,7 +352,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
                     tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
                 } else if ("tool_choice".equals(fieldName)) {
                     toolChoice
-                            = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("text".equals(fieldName)) {
                     text = PromptAgentDefinitionTextOptions.fromJson(reader);
                 } else if ("structured_inputs".equals(fieldName)) {
@@ -375,7 +375,6 @@ public final class PromptAgentDefinition extends AgentDefinition {
             return deserializedPromptAgentDefinition;
         });
     }
-
 
     /*
      * How the model should select which tool (or tools) to use when generating a response.

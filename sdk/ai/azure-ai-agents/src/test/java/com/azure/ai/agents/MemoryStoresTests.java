@@ -236,8 +236,8 @@ public class MemoryStoresTests extends ClientTestBase {
         assertNotNull(chainedResponse);
         String chainedUpdateId = chainedResponse.getUpdateId();
         assertNotNull(chainedUpdateId);
-        System.out.println("Scheduled memory update operation (Update ID: " + chainedUpdateId
-            + ", Status: " + chainedPoller.poll().getStatus() + ")");
+        System.out.println("Scheduled memory update operation (Update ID: " + chainedUpdateId + ", Status: "
+            + chainedPoller.poll().getStatus() + ")");
 
         // As first update has not started yet, the new update will cancel the first update and cover both sets of messages
         System.out.println("Superseded first memory update operation (Update ID: " + initialUpdateId + ", Status: "
