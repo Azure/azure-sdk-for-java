@@ -4,13 +4,23 @@
 
 ### Features Added
 
+- Added `getOpenAIClient` methods to obtain an instance of the Stainless OpenAI client
+- Added `getAgentsClient` to obtain an instance of the `azure-ai-agents` package library
+
 ### Breaking Changes
+
+- Updated service version from `2025-11-15-preview` to `v1`
+- Renamed `AgenticIdentityCredentials` to `AgenticIdentityPreviewCredentials`
+- Renamed `AgentClusterInsightsRequest` to `AgentClusterInsightRequest`
+- `ConnectionType.REMOTE_TOOL` value changed to `RemoteTool_Preview`
+- `CredentialType.AGENTIC_IDENTITY` renamed to `AGENTIC_IDENTITY_PREVIEW`
 
 ### Bugs Fixed
 
 ### Other Changes
 
 - Updated version of `openai` client library to `4.14.0`
+- Generated from latest v2 API spec
 
 ## 1.0.0-beta.3 (2025-11-12)
 
