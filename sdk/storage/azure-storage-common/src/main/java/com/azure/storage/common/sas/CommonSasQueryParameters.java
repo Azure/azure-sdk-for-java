@@ -49,8 +49,8 @@ public class CommonSasQueryParameters {
     private final String correlationId;
     private final String encryptionScope;
     private final String delegatedUserObjectId;
-    private Map<String, String> requestHeaders;
-    private Map<String, String> requestQueryParameters;
+    private final Map<String, String> requestHeaders;
+    private final Map<String, String> requestQueryParameters;
 
     /**
      * Creates a new {@link CommonSasQueryParameters} object.
