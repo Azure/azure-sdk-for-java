@@ -245,18 +245,11 @@ public class KeyVaultClientTest {
         String accessToken = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ACCESS_TOKEN");
         KeyVaultClient keyVaultClient;
         if (accessToken != null && !accessToken.isEmpty()) {
-            keyVaultClient = new KeyVaultClient(
-                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
-                null,
-                null,
-                null,
-                null,
-                accessToken,
-                false);
+            keyVaultClient = new KeyVaultClient(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+                null, null, null, null, accessToken, false);
 
         } else {
-            keyVaultClient = new KeyVaultClient(
-                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
+            keyVaultClient = new KeyVaultClient(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
                 PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
                 PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
                 PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
