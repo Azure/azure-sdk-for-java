@@ -1,8 +1,8 @@
 # Release History
 
 ## 7.1.0 (2026-02-04)
-- This release is compatible with Spring Boot 4.0.2.
-- This release is compatible with Spring Cloud 2025.1.0.
+- This release is compatible with Spring Boot 4.0.2. (Note: 4.0.x (x>2) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2025.1.0. (Note: 2025.1.x (x>0) should be supported, but they aren't tested with this release.)
 
 ### Spring Cloud Azure Dependencies (BOM)
 
