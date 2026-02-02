@@ -5,9 +5,12 @@ package com.azure.ai.agents.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.openai.models.responses.ResponseCreateParams;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +52,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * where the model considers the results of the tokens with top_p probability
      * mass. So 0.1 means only the tokens comprising the top 10% probability mass
      * are considered.
-     * 
+     *
      * We generally recommend altering this or `temperature` but not both.
      */
     @Generated
@@ -285,7 +288,6 @@ public final class PromptAgentDefinition extends AgentDefinition {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -297,10 +299,13 @@ public final class PromptAgentDefinition extends AgentDefinition {
         jsonWriter.writeNumberField("top_p", this.topP);
         jsonWriter.writeJsonField("reasoning", this.reasoning);
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("tool_choice", this.toolChoice);
+        if (this.toolChoice != null) {
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
+        }
         jsonWriter.writeJsonField("text", this.text);
         jsonWriter.writeMapField("structured_inputs", this.structuredInputs,
-            (writer, element) -> writer.writeJson(element));
+                (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -313,7 +318,6 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PromptAgentDefinition.
      */
-    @Generated
     public static PromptAgentDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RaiConfig raiConfig = null;
@@ -324,7 +328,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
             Double topP = null;
             Reasoning reasoning = null;
             List<Tool> tools = null;
-            String toolChoice = null;
+            BinaryData toolChoice = null;
             PromptAgentDefinitionTextOptions text = null;
             Map<String, StructuredInputDefinition> structuredInputs = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -347,7 +351,8 @@ public final class PromptAgentDefinition extends AgentDefinition {
                 } else if ("tools".equals(fieldName)) {
                     tools = reader.readArray(reader1 -> Tool.fromJson(reader1));
                 } else if ("tool_choice".equals(fieldName)) {
-                    toolChoice = reader.getString();
+                    toolChoice
+                            = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("text".equals(fieldName)) {
                     text = PromptAgentDefinitionTextOptions.fromJson(reader);
                 } else if ("structured_inputs".equals(fieldName)) {
@@ -371,12 +376,12 @@ public final class PromptAgentDefinition extends AgentDefinition {
         });
     }
 
+
     /*
      * How the model should select which tool (or tools) to use when generating a response.
      * See the `tools` parameter to see how to specify which tools the model can call.
      */
-    @Generated
-    private String toolChoice;
+    private BinaryData toolChoice;
 
     /**
      * Get the toolChoice property: How the model should select which tool (or tools) to use when generating a response.
@@ -384,8 +389,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      *
      * @return the toolChoice value.
      */
-    @Generated
-    public String getToolChoice() {
+    private BinaryData getToolChoice() {
         return this.toolChoice;
     }
 
@@ -409,9 +413,20 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * @param toolChoice the toolChoice value to set.
      * @return the PromptAgentDefinition object itself.
      */
-    @Generated
     public PromptAgentDefinition setToolChoice(String toolChoice) {
-        this.toolChoice = toolChoice;
+        this.toolChoice = BinaryData.fromString(toolChoice);
+        return this;
+    }
+
+    /**
+     * Set the toolChoice property: How the model should select which tool (or tools) to use when generating a response.
+     * See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @param toolChoice the toolChoice value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    public PromptAgentDefinition setToolChoice(ResponseCreateParams.ToolChoice toolChoice) {
+        this.toolChoice = BinaryData.fromObject(toolChoice);
         return this;
     }
 }
