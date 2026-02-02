@@ -36,7 +36,6 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      * Publisher for Spring refresh events.
      */
     private ApplicationEventPublisher publisher;
-    private final Long defaultMinBackoff = (long) 30;
 
     /**
      * Default minimum backoff duration in seconds when refresh operations fail.
@@ -64,18 +63,25 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     private final AppConfigurationRefreshUtil refreshUtils;
 
     /**
+     * Holds configuration state between refreshes.
+     */
+    private final StateHolder stateHolder;
+
+    /**
      * Creates a new AppConfigurationPullRefresh component.
      *
      * @param clientFactory factory for creating App Configuration clients to connect to stores
      * @param refreshInterval time duration between refresh interval checks
      * @param replicaLookUp component for handling replica lookup and failover
+     * @param stateHolder holds configuration state between refreshes
      * @param refreshUtils utility component for refresh operations
      */
     public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
-        ReplicaLookUp replicaLookUp, AppConfigurationRefreshUtil refreshUtils) {
+        ReplicaLookUp replicaLookUp, StateHolder stateHolder, AppConfigurationRefreshUtil refreshUtils) {
         this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
         this.replicaLookUp = replicaLookUp;
+        this.stateHolder = stateHolder;
         this.refreshUtils = refreshUtils;
     }
 
@@ -96,6 +102,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      * @return a Mono containing a boolean indicating if a RefreshEvent was published. Returns {@code false} if
      * refreshConfigurations is currently being executed elsewhere.
      */
+    @Override
     public Mono<Boolean> refreshConfigurations() {
         return Mono.just(refreshStores());
     }
@@ -107,6 +114,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
      * @param endpoint the Config Store endpoint to expire refresh interval on
      * @param syncToken the syncToken to verify the latest changes are available on pull
      */
+    @Override
     public void expireRefreshInterval(String endpoint, String syncToken) {
         LOGGER.debug("Expiring refresh interval for " + endpoint);
 
@@ -114,7 +122,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
 
         clientFactory.updateSyncToken(originEndpoint, endpoint, syncToken);
 
-        StateHolder.getCurrentState().expireState(originEndpoint);
+        stateHolder.expireState(originEndpoint);
     }
 
     /**
@@ -135,7 +143,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
             } catch (Exception e) {
                 LOGGER.warn("Error occurred during configuration refresh, will retry at next interval", e);
                 // The next refresh will happen sooner if refresh interval is expired.
-                StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, DEFAULT_MIN_BACKOFF_SECONDS);
+                stateHolder.updateNextRefreshTime(refreshInterval, DEFAULT_MIN_BACKOFF_SECONDS);
                 throw e;
             } finally {
                 running.set(false);

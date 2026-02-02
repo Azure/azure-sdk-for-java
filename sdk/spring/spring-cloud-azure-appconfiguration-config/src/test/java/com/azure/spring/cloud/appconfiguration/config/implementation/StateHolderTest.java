@@ -3,7 +3,9 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.times;
@@ -13,176 +15,142 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
-import org.mockito.quality.Strictness;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 public class StateHolderTest {
 
-    private final List<ConfigurationSetting> watchKeys = new ArrayList<>();
-    
-    private MockitoSession session;
+    private List<ConfigurationSetting> watchKeys;
+    private StateHolder stateHolder;
+    private static final String TEST_ENDPOINT = "test.azconfig.io";
 
     @BeforeEach
     public void setup() {
-        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
-        MockitoAnnotations.openMocks(this);
+        watchKeys = new ArrayList<>();
         ConfigurationSetting watchKey = new ConfigurationSetting().setKey("sentinel").setValue("0").setETag("current");
-
         watchKeys.add(watchKey);
-    }
-    
-    @AfterEach
-    public void cleanup() throws Exception {
-        MockitoAnnotations.openMocks(this).close();
-        session.finishMocking();
+        stateHolder = new StateHolder();
     }
 
-    /**
-     * Because of static code these need to run all at once.
-     * @param testInfo
-     */
     @Test
-    public void stateHolderTest(TestInfo testInfo) {
-        // Expire State Tests
-        stateNotExpiredTest(testInfo);
-        stateExpiredTest(testInfo);
+    public void stateNotExpiredTest() {
+        stateHolder.setNextForcedRefresh(Duration.ofMinutes(10));
+        stateHolder.setState(TEST_ENDPOINT, watchKeys, Duration.ofSeconds(30));
 
-        // Update Next Refresh Time Tests
-        updateNextRefreshTimeNoRefreshTest(testInfo);
-        updateNextRefreshTimeRefreshTest(testInfo);
-        updateNextRefreshBackoffCalcTest(testInfo);
-
-        // Load State Tests
-        loadStateTest(testInfo);
+        State originalState = stateHolder.getState(TEST_ENDPOINT);
+        assertNotNull(originalState);
+        
+        stateHolder.expireState(TEST_ENDPOINT);
+        State newState = stateHolder.getState(TEST_ENDPOINT);
+        
+        // State should be different because expireState adds jitter
+        assertNotEquals(originalState, newState);
     }
 
-    private void stateNotExpiredTest(TestInfo testInfo) {
-        // State isn't expired Test
-        String endpoint = testInfo.getDisplayName() + "expire" + ".azconfig.io";
+    @Test
+    public void stateExpiredTest() {
+        // State with negative duration is already expired
+        stateHolder.setNextForcedRefresh(Duration.ofMinutes(10));
+        stateHolder.setState(TEST_ENDPOINT, watchKeys, Duration.ofHours(-30));
 
-        StateHolder expireStateHolder = new StateHolder();
-        expireStateHolder.setNextForcedRefresh(Duration.ofMinutes(10));
-        expireStateHolder.setState(endpoint, watchKeys, Duration.ofSeconds(30));
-
-        StateHolder.updateState(expireStateHolder);
-
-        State originalExpireState = StateHolder.getState(endpoint);
-        expireStateHolder.expireState(endpoint);
-        StateHolder.updateState(expireStateHolder);
-        assertNotEquals(originalExpireState, StateHolder.getState(endpoint));
+        State originalState = stateHolder.getState(TEST_ENDPOINT);
+        Instant originalRefreshCheck = originalState.getNextRefreshCheck();
+        
+        stateHolder.expireState(TEST_ENDPOINT);
+        State newState = stateHolder.getState(TEST_ENDPOINT);
+        
+        // When state is already expired, expireState won't update if jitter would make it later
+        // The check is: if wait < timeLeft, update. Since timeLeft is negative, wait is always >= timeLeft
+        assertEquals(originalRefreshCheck, newState.getNextRefreshCheck());
     }
 
-    private void stateExpiredTest(TestInfo testInfo) {
-        // State is expired Test
-        String endpoint = testInfo.getDisplayName() + "expireNegativeDuration" + ".azconfig.io";
+    @Test
+    public void updateNextRefreshTimeNoRefreshTest() {
+        stateHolder.setState(TEST_ENDPOINT, watchKeys, Duration.ofMinutes(10));
 
-        StateHolder expiredNegativeDurationStateHolder = new StateHolder();
-        expiredNegativeDurationStateHolder.setNextForcedRefresh(Duration.ofMinutes(10));
-        expiredNegativeDurationStateHolder.setState(endpoint, watchKeys, Duration.ofHours(-30));
+        State originalState = stateHolder.getState(TEST_ENDPOINT);
 
-        StateHolder.updateState(expiredNegativeDurationStateHolder);
-
-        State originalExpireNegativeState = StateHolder.getState(endpoint);
-        expiredNegativeDurationStateHolder.expireState(endpoint);
-        StateHolder.updateState(expiredNegativeDurationStateHolder);
-        assertEquals(originalExpireNegativeState, StateHolder.getState(endpoint));
-    }
-
-    private void updateNextRefreshTimeNoRefreshTest(TestInfo testInfo) {
-        String endpoint = testInfo.getDisplayName() + "updateRefreshTime" + ".azconfig.io";
-
-        StateHolder stateHolder = new StateHolder();
-
-        stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) 10));
-
-        StateHolder.updateState(stateHolder);
-
-        State originalState = StateHolder.getState(endpoint);
-
-        stateHolder.updateNextRefreshTime(null, (long) 0);
-        StateHolder.updateState(stateHolder);
-        State newState = StateHolder.getState(endpoint);
+        stateHolder.updateNextRefreshTime(null, 0L);
+        State newState = stateHolder.getState(TEST_ENDPOINT);
+        
         assertEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
     }
 
-    private void updateNextRefreshTimeRefreshTest(TestInfo testInfo) {
-        String endpoint = testInfo.getDisplayName() + "updateRefreshTimeRefresh" + ".azconfig.io";
+    @Test
+    public void updateNextRefreshTimeRefreshTest() {
+        // Duration 0 means refresh immediately
+        stateHolder.setState(TEST_ENDPOINT, watchKeys, Duration.ofMinutes(0));
 
-        StateHolder stateHolder = new StateHolder();
+        State originalState = stateHolder.getState(TEST_ENDPOINT);
 
-        stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) 0));
-
-        StateHolder.updateState(stateHolder);
-
-        State originalState = StateHolder.getState(endpoint);
-
-        // Duration is less than the minBackOff
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             fail("Sleep failed");
         }
-        stateHolder.updateNextRefreshTime(null, (long) 0);
-        State newState = StateHolder.getState(endpoint);
+        
+        stateHolder.updateNextRefreshTime(null, 0L);
+        State newState = stateHolder.getState(TEST_ENDPOINT);
+        
         assertNotEquals(originalState.getNextRefreshCheck(), newState.getNextRefreshCheck());
         assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
     }
 
-    private void updateNextRefreshBackoffCalcTest(TestInfo testInfo) {
-        String endpoint = testInfo.getDisplayName() + "updateRefreshTimeBackoffCalc" + ".azconfig.io";
+    @Test
+    public void updateNextRefreshBackoffCalcTest() {
+        stateHolder.setState(TEST_ENDPOINT, watchKeys, Duration.ofMinutes(-1));
+        State originalState = stateHolder.getState(TEST_ENDPOINT);
 
-        StateHolder stateHolder = new StateHolder();
-        stateHolder.setState(endpoint, watchKeys, Duration.ofMinutes((long) -1));
-        StateHolder.updateState(stateHolder);
-        State originalState = StateHolder.getState(endpoint);
-
-        // Duration is less than the minBackOff
         try (MockedStatic<BackoffTimeCalculator> backoffTimeCalculatorMock = Mockito
             .mockStatic(BackoffTimeCalculator.class)) {
             Long ns = Long.valueOf("300000000000");
             backoffTimeCalculatorMock.when(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt()))
                 .thenReturn(ns);
 
-            stateHolder.updateNextRefreshTime(null, (long) -120);
-            State newState = StateHolder.getState(endpoint);
+            stateHolder.updateNextRefreshTime(null, -120L);
+            State newState = stateHolder.getState(TEST_ENDPOINT);
 
             assertTrue(originalState.getNextRefreshCheck().isBefore(newState.getNextRefreshCheck()));
             backoffTimeCalculatorMock.verify(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt()), times(1));
         }
+    }
 
-        stateHolder = new StateHolder();
-        Duration duration = Duration.ofMinutes((long) -1);
-
+    @Test
+    public void updateNextForcedRefreshTest() {
+        Duration duration = Duration.ofMinutes(-1);
         stateHolder.setNextForcedRefresh(duration);
+        stateHolder.setState(TEST_ENDPOINT, watchKeys, duration);
 
-        stateHolder.setState(endpoint, watchKeys, duration);
+        Instant originalForcedRefresh = stateHolder.getNextForcedRefresh();
 
-        StateHolder.updateState(stateHolder);
+        stateHolder.updateNextRefreshTime(Duration.ofMinutes(11), 0L);
 
-        Instant originalForcedRefresh = StateHolder.getNextForcedRefresh();
-
-        stateHolder.updateNextRefreshTime(Duration.ofMinutes((long) 11), (long) 0);
-
-        Instant newForcedRefresh = StateHolder.getNextForcedRefresh();
+        Instant newForcedRefresh = stateHolder.getNextForcedRefresh();
 
         assertNotEquals(originalForcedRefresh, newForcedRefresh);
     }
 
-    private void loadStateTest(TestInfo testInfo) {
-        String endpoint = testInfo.getDisplayName() + "updateRefreshTimeBackoffCalc" + ".azconfig.io";
-        StateHolder testStateHolder = new StateHolder();
-        testStateHolder.setLoadState(endpoint, true);
-        StateHolder.updateState(testStateHolder);
-        assertEquals(testStateHolder, StateHolder.getCurrentState());
+    @Test
+    public void loadStateTest() {
+        assertFalse(stateHolder.getLoadState(TEST_ENDPOINT));
+        
+        stateHolder.setLoadState(TEST_ENDPOINT, true);
+        
+        assertTrue(stateHolder.getLoadState(TEST_ENDPOINT));
     }
 
+    @Test
+    public void getStateReturnsNullForUnknownEndpoint() {
+        assertNotNull(stateHolder);
+        assertEquals(null, stateHolder.getState("unknown.azconfig.io"));
+    }
+
+    @Test
+    public void getStateFeatureFlagReturnsNullForUnknownEndpoint() {
+        assertEquals(null, stateHolder.getStateFeatureFlag("unknown.azconfig.io"));
+    }
 }

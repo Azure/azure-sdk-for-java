@@ -2,18 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
-
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
 
 import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
@@ -43,6 +42,9 @@ public class AppConfigurationPullRefreshTest {
     
     @Mock
     private AppConfigurationRefreshUtil refreshUtilMock;
+
+    @Mock
+    private StateHolder stateHolderMock;
     
     private MockitoSession session;
 
@@ -63,7 +65,7 @@ public class AppConfigurationPullRefreshTest {
         when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
 
         AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
-            replicaLookUpMock, refreshUtilMock);
+            replicaLookUpMock, stateHolderMock, refreshUtilMock);
         assertFalse(refresh.refreshConfigurations().block());
        
     }
@@ -75,7 +77,7 @@ public class AppConfigurationPullRefreshTest {
         when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
 
         AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
-            replicaLookUpMock, refreshUtilMock);
+            replicaLookUpMock, stateHolderMock, refreshUtilMock);
         refresh.setApplicationEventPublisher(publisher);
         assertTrue(refresh.refreshConfigurations().block());
         

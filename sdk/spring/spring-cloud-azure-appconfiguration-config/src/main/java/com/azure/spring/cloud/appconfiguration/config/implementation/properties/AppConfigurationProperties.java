@@ -89,7 +89,7 @@ public class AppConfigurationProperties {
         this.stores.forEach(store -> {
             Assert.isTrue(
                 StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString())
-                    || store.getEndpoints().size() > 0 || store.getConnectionStrings().size() > 0,
+                    || !store.getEndpoints().isEmpty() || !store.getConnectionStrings().isEmpty(),
                 "Either configuration store name or connection string should be configured.");
             store.validateAndInit();
         });
@@ -98,7 +98,7 @@ public class AppConfigurationProperties {
 
         for (ConfigStore store : this.stores) {
 
-            if (store.getEndpoints().size() > 0) {
+            if (!store.getEndpoints().isEmpty()) {
                 for (String endpoint : store.getEndpoints()) {
                     if (existingEndpoints.containsKey(endpoint)) {
                         throw new IllegalArgumentException("Duplicate store name exists.");

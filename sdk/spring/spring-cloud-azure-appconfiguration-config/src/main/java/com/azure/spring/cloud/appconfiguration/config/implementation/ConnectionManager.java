@@ -34,9 +34,6 @@ class ConnectionManager {
     /** Map of auto-discovered failover clients, keyed by endpoint URL. */
     private final Map<String, AppConfigurationReplicaClient> autoFailoverClients;
 
-    /** Currently active replica endpoint being used for requests. */
-    private String currentReplica;
-
     /** Current health status of the App Configuration store connection. */
     private AppConfigurationStoreHealth health;
 
@@ -67,7 +64,6 @@ class ConnectionManager {
         this.configStore = configStore;
         this.originEndpoint = configStore.getEndpoint();
         this.health = AppConfigurationStoreHealth.NOT_LOADED;
-        this.currentReplica = configStore.getEndpoint();
         this.autoFailoverClients = new HashMap<>();
         this.replicaLookUp = replicaLookUp;
         this.activeClients = new ArrayList<>();
@@ -81,15 +77,6 @@ class ConnectionManager {
      */
     AppConfigurationStoreHealth getHealth() {
         return this.health;
-    }
-
-    /**
-     * Sets the current active replica endpoint for client routing.
-     * 
-     * @param replicaEndpoint the endpoint URL to set as current; may be null to reset to primary endpoint
-     */
-    void setCurrentClient(String replicaEndpoint) {
-        this.currentReplica = replicaEndpoint;
     }
 
     /**
@@ -112,8 +99,7 @@ class ConnectionManager {
             lastActiveClient = "";
             return null;
         } else if (useLastActive) {
-            List<AppConfigurationReplicaClient> clients = getAvailableClients();
-            for (AppConfigurationReplicaClient client: clients) {
+            for (AppConfigurationReplicaClient client: getAvailableClients()) {
                 if (client.getEndpoint().equals(lastActiveClient)) {
                     return client;
                 }
@@ -180,7 +166,7 @@ class ConnectionManager {
             if (clients.get(0).getBackoffEndTime().isBefore(Instant.now())) {
                 availableClients.add(clients.get(0));
             }
-        } else if (clients.size() > 0 && !configStore.isLoadBalancingEnabled()) {
+        } else if (!clients.isEmpty() && !configStore.isLoadBalancingEnabled()) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getBackoffEndTime().isBefore(Instant.now())) {
                     LOGGER.debug("Using Client: " + replicaClient.getEndpoint());
@@ -195,10 +181,10 @@ class ConnectionManager {
             }
         }
 
-        if (availableClients.size() == 0 || configStore.isLoadBalancingEnabled()) {
+        if (availableClients.isEmpty() || configStore.isLoadBalancingEnabled()) {
             List<String> autoFailoverEndpoints = replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint());
 
-            if (autoFailoverEndpoints.size() > 0) {
+            if (!autoFailoverEndpoints.isEmpty()) {
                 for (String failoverEndpoint : autoFailoverEndpoints) {
                     AppConfigurationReplicaClient client = autoFailoverClients.get(failoverEndpoint);
                     if (client == null) {
@@ -212,13 +198,22 @@ class ConnectionManager {
                 }
             }
         }
-        if (clients.size() > 0 && availableClients.size() == 0) {
+        if (!clients.isEmpty() && availableClients.isEmpty()) {
             this.health = AppConfigurationStoreHealth.DOWN;
-        } else if (clients.size() > 0) {
+        } else if (!clients.isEmpty()) {
             this.health = AppConfigurationStoreHealth.UP;
         }
 
         return availableClients;
+    }
+
+    /**
+     * Sets the current active replica client endpoint.
+     * 
+     * @param endpoint the endpoint URL of the currently active client
+     */
+    void setCurrentClient(String endpoint) {
+        this.lastActiveClient = endpoint;
     }
 
     /**

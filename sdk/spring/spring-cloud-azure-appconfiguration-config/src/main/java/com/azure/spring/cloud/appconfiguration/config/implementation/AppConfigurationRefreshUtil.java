@@ -32,6 +32,17 @@ public class AppConfigurationRefreshUtil {
 
     private static final String FEATURE_FLAG_PREFIX = ".appconfig.featureflag/*";
 
+    private final StateHolder stateHolder;
+
+    /**
+     * Creates a new AppConfigurationRefreshUtil with the specified state holder.
+     *
+     * @param stateHolder the state holder for managing configuration and feature flag states
+     */
+    public AppConfigurationRefreshUtil(StateHolder stateHolder) {
+        this.stateHolder = stateHolder;
+    }
+
     /**
      * Functional interface for refresh operations that can throw AppConfigurationStatusException.
      */
@@ -56,8 +67,8 @@ public class AppConfigurationRefreshUtil {
         RefreshEventData eventData = new RefreshEventData();
 
         try {
-            if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null
-                && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
+            if (refreshInterval != null && stateHolder.getNextForcedRefresh() != null
+                && Instant.now().isAfter(stateHolder.getNextForcedRefresh())) {
                 String eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
 
                 LOGGER.info(eventDataInfo);
@@ -86,11 +97,11 @@ public class AppConfigurationRefreshUtil {
 
                 clientFactory.findActiveClients(originEndpoint);
 
-                if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
+                if (monitor.isEnabled() && stateHolder.getLoadState(originEndpoint)) {
                     RefreshEventData result = executeRefreshWithRetry(
                         clientFactory,
                         originEndpoint,
-                        (client, data, ctx) -> refreshWithTime(client, StateHolder.getState(originEndpoint),
+                        (client, data, ctx) -> refreshWithTime(client, stateHolder.getState(originEndpoint),
                             monitor.getRefreshInterval(), data, replicaLookUp, ctx),
                         eventData,
                         context,
@@ -104,12 +115,12 @@ public class AppConfigurationRefreshUtil {
 
                 FeatureFlagStore featureStore = connection.getFeatureFlagStore();
 
-                if (featureStore.getEnabled() && StateHolder.getStateFeatureFlag(originEndpoint) != null) {
+                if (featureStore.getEnabled() && stateHolder.getStateFeatureFlag(originEndpoint) != null) {
                     RefreshEventData result = executeRefreshWithRetry(
                         clientFactory,
                         originEndpoint,
                         (client, data, ctx) -> refreshWithTimeFeatureFlags(client,
-                            StateHolder.getStateFeatureFlag(originEndpoint),
+                            stateHolder.getStateFeatureFlag(originEndpoint),
                             monitor.getFeatureFlagRefreshInterval(), data, replicaLookUp, ctx),
                         eventData,
                         context,
@@ -124,7 +135,7 @@ public class AppConfigurationRefreshUtil {
             }
         } catch (Exception e) {
             // The next refresh will happen sooner if refresh interval is expired.
-            StateHolder.getCurrentState().updateNextRefreshTime(refreshInterval, defaultMinBackoff);
+            stateHolder.updateNextRefreshTime(refreshInterval, defaultMinBackoff);
             throw e;
         }
         return eventData;
@@ -178,12 +189,14 @@ public class AppConfigurationRefreshUtil {
      * @param client the client for checking refresh status
      * @param originEndpoint the original config store endpoint
      * @param context the operation context
+     * @param stateHolder the state holder instance
      * @return true if a refresh should be triggered, false otherwise
      */
-    static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint, Context context) {
+    static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint, Context context,
+        StateHolder stateHolder) {
         RefreshEventData eventData = new RefreshEventData();
-        if (StateHolder.getLoadState(originEndpoint)) {
-            refreshWithoutTime(client, StateHolder.getState(originEndpoint).getWatchKeys(), eventData, context);
+        if (stateHolder.getLoadState(originEndpoint)) {
+            refreshWithoutTime(client, stateHolder.getState(originEndpoint).getWatchKeys(), eventData, context);
         }
         return eventData.getDoRefresh();
     }
@@ -197,13 +210,13 @@ public class AppConfigurationRefreshUtil {
      * @param context the operation context
      * @return true if a refresh should be triggered, false otherwise
      */
-    static boolean refreshStoreFeatureFlagCheck(Boolean featureStoreEnabled,
+    boolean refreshStoreFeatureFlagCheck(Boolean featureStoreEnabled,
         AppConfigurationReplicaClient client, Context context) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
 
-        if (featureStoreEnabled && StateHolder.getStateFeatureFlag(endpoint) != null) {
-            refreshWithoutTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(endpoint), eventData, context);
+        if (featureStoreEnabled && stateHolder.getStateFeatureFlag(endpoint) != null) {
+            refreshWithoutTimeFeatureFlags(client, stateHolder.getStateFeatureFlag(endpoint), eventData, context);
         } else {
             LOGGER.debug("Skipping feature flag refresh check for {}", endpoint);
         }
@@ -222,7 +235,7 @@ public class AppConfigurationRefreshUtil {
      * @param context the operation context
      * @throws AppConfigurationStatusException if there's an error during the refresh check
      */
-    private static void refreshWithTime(AppConfigurationReplicaClient client, State state, Duration refreshInterval,
+    private void refreshWithTime(AppConfigurationReplicaClient client, State state, Duration refreshInterval,
         RefreshEventData eventData, ReplicaLookUp replicaLookUp, Context context)
         throws AppConfigurationStatusException {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
@@ -237,7 +250,7 @@ public class AppConfigurationRefreshUtil {
                 refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
             }
 
-            StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
+            stateHolder.updateStateRefresh(state, refreshInterval);
         }
     }
 
@@ -307,7 +320,7 @@ public class AppConfigurationRefreshUtil {
      * @param context the operation context
      * @throws AppConfigurationStatusException if there's an error during the refresh check
      */
-    private static void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagState state,
+    private void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagState state,
         Duration refreshInterval, RefreshEventData eventData, ReplicaLookUp replicaLookUp, Context context)
         throws AppConfigurationStatusException {
         Instant date = Instant.now();
@@ -326,7 +339,7 @@ public class AppConfigurationRefreshUtil {
 
             }
 
-            StateHolder.getCurrentState().updateFeatureFlagStateRefresh(state, refreshInterval);
+            stateHolder.updateFeatureFlagStateRefresh(state, refreshInterval);
         }
     }
 
