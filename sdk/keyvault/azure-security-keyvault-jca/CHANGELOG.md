@@ -1,11 +1,9 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
+## 2.11.0 (2026-02-03)
 
 ### Features Added
 - Added support for bearer token authentication via the `azure.keyvault.access-token` system property. This allows users to provide a pre-obtained access token for authentication, enabling multi-factor authentication scenarios without requiring client ID and client secret. Authentication priority order is: Managed Identity > Access Token > Client Credentials.
-
-### Breaking Changes
 
 ### Bugs Fixed
 - Fixed the NPE where the token object was not returned when the credential information was incorrect.
