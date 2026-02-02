@@ -92,14 +92,6 @@ public final class AgentsClient {
 
     /**
      * Deletes an agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -124,74 +116,6 @@ public final class AgentsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteAgentWithResponse(String agentName, RequestOptions requestOptions) {
         return this.serviceClient.deleteAgentWithResponse(agentName, requestOptions);
-    }
-
-    /**
-     * Returns the list of all agents.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
-     * Allowed values: "prompt", "hosted", "container_app", "workflow".</td></tr>
-     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
-     * between 1 and 100, and the
-     * default is 20.</td></tr>
-     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
-     * for ascending order and`desc`
-     * for descending order. Allowed values: "asc", "desc".</td></tr>
-     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
-     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
-     * defines your place in the list.
-     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
-     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     object: String (Required)
-     *     id: String (Required)
-     *     name: String (Required)
-     *     versions (Required): {
-     *         latest (Required): {
-     *             metadata (Required): {
-     *                 String: String (Required)
-     *             }
-     *             object: String (Required)
-     *             id: String (Required)
-     *             name: String (Required)
-     *             version: String (Required)
-     *             description: String (Optional)
-     *             created_at: long (Required)
-     *             definition (Required): {
-     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
-     *                 rai_config (Optional): {
-     *                     rai_policy_name: String (Required)
-     *                 }
-     *             }
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAgents(RequestOptions requestOptions) {
-        return this.serviceClient.listAgents(requestOptions);
     }
 
     /**
@@ -572,15 +496,6 @@ public final class AgentsClient {
     /**
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
-     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -785,15 +700,6 @@ public final class AgentsClient {
     /**
      * Updates the agent from a manifest by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
-     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1459,31 +1365,6 @@ public final class AgentsClient {
     }
 
     /**
-     * Deletes an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
-     * resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted agent Object.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeleteAgentResponse deleteAgent(String agentName, BinaryData foundryBeta) {
-        // Generated convenience method for deleteAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryBeta != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
-        }
-        return deleteAgentWithResponse(agentName, requestOptions).getValue().toObject(DeleteAgentResponse.class);
-    }
-
-    /**
      * Create a new agent version.
      *
      * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
@@ -1609,5 +1490,73 @@ public final class AgentsClient {
             requestOptions.addQueryParam("tail", String.valueOf(tail), false);
         }
         streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).getValue();
+    }
+
+    /**
+     * Returns the list of all agents.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>kind</td><td>String</td><td>No</td><td>Filter agents by kind. If not provided, all agents are returned.
+     * Allowed values: "prompt", "hosted", "container_app", "workflow".</td></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the
+     * default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the `created_at` timestamp of the objects. `asc`
+     * for ascending order and`desc`
+     * for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. `after` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. `before` is an object ID that
+     * defines your place in the list.
+     * For instance, if you make a list request and receive 100 objects, ending with obj_foo, your
+     * subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     id: String (Required)
+     *     name: String (Required)
+     *     versions (Required): {
+     *         latest (Required): {
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *             object: String (Required)
+     *             id: String (Required)
+     *             name: String (Required)
+     *             version: String (Required)
+     *             description: String (Optional)
+     *             created_at: long (Required)
+     *             definition (Required): {
+     *                 kind: String(prompt/hosted/container_app/workflow) (Required)
+     *                 rai_config (Optional): {
+     *                     rai_policy_name: String (Required)
+     *                 }
+     *             }
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response data for a requested list of items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAgents(RequestOptions requestOptions) {
+        return this.serviceClient.listAgents(requestOptions);
     }
 }

@@ -390,19 +390,6 @@ public final class PromptAgentDefinition extends AgentDefinition {
     }
 
     /**
-     * Set the toolChoice property: How the model should select which tool (or tools) to use when generating a response.
-     * See the `tools` parameter to see how to specify which tools the model can call.
-     *
-     * @param toolChoice the toolChoice value to set.
-     * @return the PromptAgentDefinition object itself.
-     */
-    @Generated
-    public PromptAgentDefinition setToolChoice(String toolChoice) {
-        this.toolChoice = toolChoice;
-        return this;
-    }
-
-    /**
      * Set the text property: Configuration options for a text response from the model. Can be plain text or structured
      * JSON data.
      *
@@ -412,6 +399,19 @@ public final class PromptAgentDefinition extends AgentDefinition {
     @Generated
     public PromptAgentDefinition setText(PromptAgentDefinitionTextOptions text) {
         this.text = text;
+        return this;
+    }
+
+    /**
+     * Set the toolChoice property: How the model should select which tool (or tools) to use when generating a response.
+     * See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @param toolChoice the toolChoice value to set.
+     * @return the PromptAgentDefinition object itself.
+     */
+    @Generated
+    public PromptAgentDefinition setToolChoice(String toolChoice) {
+        this.toolChoice = toolChoice;
         return this;
     }
 }
