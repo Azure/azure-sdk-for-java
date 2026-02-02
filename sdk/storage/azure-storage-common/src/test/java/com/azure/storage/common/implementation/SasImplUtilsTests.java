@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.storage.common.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SasImplUtilsTests {
 
@@ -36,8 +38,9 @@ public class SasImplUtilsTests {
         requestHeaders.put(Constants.HeaderConstants.CONTENT_TYPE, "contentTypeValue");
         requestHeaders.put(Constants.HeaderConstants.CLIENT_REQUEST_ID, "clientRequestId");
 
-        String expected = "x-ms-encryption-key:encryptionKeyValue\n" + "Content-Encoding:contentEncodingValue\n"
-            + "Content-Type:contentTypeValue\n" + "x-ms-client-request-id:clientRequestId\n";
+        String expected
+            = String.join("\n", "x-ms-encryption-key:encryptionKeyValue", "Content-Encoding:contentEncodingValue",
+                "Content-Type:contentTypeValue", "x-ms-client-request-id:clientRequestId");
 
         String headers = SasImplUtils.formatRequestHeadersForSasSigning(requestHeaders);
         Integer newLineCount

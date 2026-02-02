@@ -364,7 +364,6 @@ public final class Constants {
          */
         public static final String SAS_ENCRYPTION_SCOPE = "ses";
 
-
         /**
          * The SAS request headers parameter.
          */
