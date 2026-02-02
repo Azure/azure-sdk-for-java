@@ -645,7 +645,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    public void canRoundTripBoundaryValuesSync() {
+    public void roundTripBoundaryValuesSync() {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();
@@ -663,7 +663,7 @@ public class IndexingTests extends SearchTestBase {
     }
 
     @Test
-    public void canRoundTripBoundaryValuesAsync() {
+    public void roundTripBoundaryValuesAsync() {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         List<Hotel> boundaryConditionDocs = getBoundaryValues();

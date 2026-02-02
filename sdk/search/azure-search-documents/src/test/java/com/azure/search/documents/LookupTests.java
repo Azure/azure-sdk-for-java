@@ -868,7 +868,7 @@ public class LookupTests extends SearchTestBase {
         // Since Date doesn't have time zone information to make this test durable against time zones create the Date
         // from an OffsetDateTime.
         OffsetDateTime dateTime = OffsetDateTime.parse("2010-06-26T17:00:00.000+00:00")
-            .atZoneSameInstant(ZoneId.systemDefault())
+            .atZoneSameInstant(ZoneOffset.UTC)
             .toOffsetDateTime();
 
         return new Hotel().hotelId(key)
