@@ -119,6 +119,17 @@ public class SasImplUtils {
         return retVals;
     }
 
+    /**
+     * Formats request headers for SAS signing.
+     *
+     * @param requestHeaders The map of request headers to format.
+     * @return A formatted string with headers in the format "key:value" separated by newlines, or empty string if
+     * null/empty. Terminates each pair with a newline (\n).
+     * @see
+     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas#version-2026-04-06-and-later-blob-storage-and-data-lake-storage">
+     *     Version 2026-04-06 and later (Blob Storage and Data Lake Storage)</a>
+     */
+
     public static String formatRequestHeadersForSasSigning(Map<String, String> requestHeaders) {
         if (requestHeaders == null || requestHeaders.isEmpty()) {
             return "";
@@ -128,6 +139,16 @@ public class SasImplUtils {
         return sb.toString();
     }
 
+    /**
+     * Formats request headers for SAS signing.
+     *
+     * @param requestQueryParameters The map of request headers to format.
+     * @return A formatted string with query params in the format "key:value" separated by newlines, or empty string if
+     * null/empty. Prepends a newline character. Prefixes each pair with a newline (\n).
+     * @see
+     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas#version-2026-04-06-and-later-blob-storage-and-data-lake-storage">
+     *     Version 2026-04-06 and later (Blob Storage and Data Lake Storage)</a>
+     */
     public static String formatRequestQueryParametersForSasSigning(Map<String, String> requestQueryParameters) {
         if (requestQueryParameters == null || requestQueryParameters.isEmpty()) {
             return "";
