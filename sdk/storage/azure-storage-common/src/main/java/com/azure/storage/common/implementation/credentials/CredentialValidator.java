@@ -42,7 +42,6 @@ public class CredentialValidator {
         }
     }
 
-
     /**
      * Validates that the provided credentials do not form an ambiguous or unsupported combination.
      * <p>
