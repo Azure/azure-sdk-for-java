@@ -218,7 +218,7 @@ public final class SchedulesClient {
      * </pre>
      *
      * @param id Identifier of the schedule.
-     * @param resource The resource instance.
+     * @param schedule The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -228,9 +228,9 @@ public final class SchedulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData resource,
+    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData schedule,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponse(id, resource, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponse(id, schedule, requestOptions);
     }
 
     /**
@@ -328,7 +328,7 @@ public final class SchedulesClient {
      * Create or update operation template.
      *
      * @param id Identifier of the schedule.
-     * @param resource The resource instance.
+     * @param schedule The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -339,15 +339,15 @@ public final class SchedulesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Schedule createOrUpdate(String id, Schedule resource) {
+    public Schedule createOrUpdate(String id, Schedule schedule) {
         // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getScheduleAccessor().prepareModelForJsonMergePatch(resource, true);
-        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        JsonMergePatchHelper.getScheduleAccessor().prepareModelForJsonMergePatch(schedule, true);
+        BinaryData scheduleInBinaryData = BinaryData.fromObject(schedule);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        resourceInBinaryData.getLength();
-        JsonMergePatchHelper.getScheduleAccessor().prepareModelForJsonMergePatch(resource, false);
-        return createOrUpdateWithResponse(id, resourceInBinaryData, requestOptions).getValue().toObject(Schedule.class);
+        scheduleInBinaryData.getLength();
+        JsonMergePatchHelper.getScheduleAccessor().prepareModelForJsonMergePatch(schedule, false);
+        return createOrUpdateWithResponse(id, scheduleInBinaryData, requestOptions).getValue().toObject(Schedule.class);
     }
 
     /**

@@ -224,7 +224,7 @@ public final class SchedulesAsyncClient {
      * </pre>
      *
      * @param id Identifier of the schedule.
-     * @param resource The resource instance.
+     * @param schedule The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -234,9 +234,9 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String id, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String id, BinaryData schedule,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(id, resource, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponseAsync(id, schedule, requestOptions);
     }
 
     /**
@@ -349,7 +349,7 @@ public final class SchedulesAsyncClient {
      * Create or update operation template.
      *
      * @param id Identifier of the schedule.
-     * @param resource The resource instance.
+     * @param schedule The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -360,15 +360,15 @@ public final class SchedulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Schedule> createOrUpdate(String id, Schedule resource) {
+    public Mono<Schedule> createOrUpdate(String id, Schedule schedule) {
         // Generated convenience method for createOrUpdateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getScheduleAccessor().prepareModelForJsonMergePatch(resource, true);
-        BinaryData resourceInBinaryData = BinaryData.fromObject(resource);
+        JsonMergePatchHelper.getScheduleAccessor().prepareModelForJsonMergePatch(schedule, true);
+        BinaryData scheduleInBinaryData = BinaryData.fromObject(schedule);
         // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        resourceInBinaryData.getLength();
-        JsonMergePatchHelper.getScheduleAccessor().prepareModelForJsonMergePatch(resource, false);
-        return createOrUpdateWithResponse(id, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+        scheduleInBinaryData.getLength();
+        JsonMergePatchHelper.getScheduleAccessor().prepareModelForJsonMergePatch(schedule, false);
+        return createOrUpdateWithResponse(id, scheduleInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Schedule.class));
     }
 

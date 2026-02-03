@@ -147,7 +147,7 @@ public final class SchedulesImpl {
         Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
+            @BodyParam("application/merge-patch+json") BinaryData schedule, RequestOptions requestOptions,
             Context context);
 
         @Put("/schedules/{id}")
@@ -159,7 +159,7 @@ public final class SchedulesImpl {
         Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("id") String id,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
+            @BodyParam("application/merge-patch+json") BinaryData schedule, RequestOptions requestOptions,
             Context context);
 
         @Get("/schedules/{schedule_id}/runs/{run_id}")
@@ -646,7 +646,7 @@ public final class SchedulesImpl {
      * </pre>
      * 
      * @param id Identifier of the schedule.
-     * @param resource The resource instance.
+     * @param schedule The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -655,12 +655,12 @@ public final class SchedulesImpl {
      * @return schedule model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String id, BinaryData resource,
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String id, BinaryData schedule,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), id, contentType, accept, resource, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), id, contentType, accept, schedule, requestOptions, context));
     }
 
     /**
@@ -730,7 +730,7 @@ public final class SchedulesImpl {
      * </pre>
      * 
      * @param id Identifier of the schedule.
-     * @param resource The resource instance.
+     * @param schedule The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -739,12 +739,12 @@ public final class SchedulesImpl {
      * @return schedule model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData resource,
+    public Response<BinaryData> createOrUpdateWithResponse(String id, BinaryData schedule,
         RequestOptions requestOptions) {
         final String contentType = "application/merge-patch+json";
         final String accept = "application/json";
         return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), id,
-            contentType, accept, resource, requestOptions, Context.NONE);
+            contentType, accept, schedule, requestOptions, Context.NONE);
     }
 
     /**
