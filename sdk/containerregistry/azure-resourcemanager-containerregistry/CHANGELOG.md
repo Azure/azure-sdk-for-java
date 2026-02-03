@@ -19,6 +19,14 @@
 
 - Registry Tasks related feature is deprecated in this library. Please use "azure-resourcemanager-containerregistry-tasks" library.
 
+## 2.54.2 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
 ## 2.55.0-beta.1 (2025-12-04)
 
 ### Other Changes
