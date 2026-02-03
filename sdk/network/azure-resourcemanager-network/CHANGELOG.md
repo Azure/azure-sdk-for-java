@@ -1,6 +1,6 @@
 # Release History
 
-## 2.58.0 (2026-01-28)
+## 2.58.0 (2026-02-03)
 
 ### Breaking Changes
 
@@ -11,6 +11,14 @@
 #### Dependency Updates
 
 - Updated `api-version` to `2025-05-01`.
+
+## 2.57.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
 
 ## 2.57.0 (2025-11-19)
 

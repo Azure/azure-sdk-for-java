@@ -208,21 +208,21 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-ai-translation-text</artifactId>
-          <version>1.1.7</version> <!-- {x-version-update;com.azure:azure-ai-translation-text;dependency} -->
+          <version>1.1.8</version> <!-- {x-version-update;com.azure:azure-ai-translation-text;dependency} -->
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob</artifactId>
-          <version>12.33.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+          <version>12.33.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
           <scope>test</scope>
         </dependency>
 
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue</artifactId>
-          <version>12.28.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+          <version>12.28.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
           <scope>test</scope>
         </dependency>
 
@@ -243,31 +243,31 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
-          <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+          <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-keys</artifactId>
-          <version>4.10.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+          <version>4.10.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-secrets</artifactId>
-          <version>4.10.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+          <version>4.10.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-certificates</artifactId>
-          <version>4.8.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+          <version>4.8.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-administration</artifactId>
-          <version>4.7.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
+          <version>4.7.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
@@ -305,31 +305,31 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-data-appconfiguration</artifactId>
-          <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+          <version>1.9.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-keys</artifactId>
-          <version>4.10.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+          <version>4.10.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-secrets</artifactId>
-          <version>4.10.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+          <version>4.10.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-certificates</artifactId>
-          <version>4.8.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
+          <version>4.8.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-certificates;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-security-keyvault-administration</artifactId>
-          <version>4.7.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
+          <version>4.7.5</version> <!-- {x-version-update;com.azure:azure-security-keyvault-administration;dependency} -->
           <scope>provided</scope>
         </dependency>
         <dependency>
@@ -350,14 +350,14 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-queue</artifactId>
-          <version>12.28.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
+          <version>12.28.1</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
           <scope>provided</scope>
         </dependency>
 
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-storage-blob</artifactId>
-          <version>12.33.0</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+          <version>12.33.1</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
           <scope>provided</scope>
         </dependency>
       </dependencies>
