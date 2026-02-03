@@ -240,14 +240,11 @@ public class KeyVaultClient {
                     disableChallengeResourceVerification);
                 result
                     = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
-<<<<<<< HEAD
             } else if (AccessTokenUtil.isWorkloadIdentityAvailable()) {
                 accessToken
                     = AccessTokenUtil.getAccessTokenWithWorkloadIdentity(keyVaultBaseUri, tenantId, clientId, null);
             } else {
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
-=======
->>>>>>> upstream/main
             }
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
