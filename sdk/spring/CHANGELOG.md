@@ -7,6 +7,10 @@ Upgrade Spring Boot dependencies version to 4.0.1 and Spring Cloud dependencies 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
+#### New Features
+
+- Add ConnectionDetails for ServiceBus. [44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+
 #### Bugs Fixed
 
 - Fix `ClassNotFoundException: com.nimbusds.oauth2.sdk.util.StringUtils` in Active Directory starter. ([#47600](https://github.com/Azure/azure-sdk-for-java/issues/47600))
@@ -17,6 +21,22 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 #### Bugs Fixed
 
 - Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
+
+### Spring Cloud Azure Test Containers
+
+This section includes changes in `spring-cloud-azure-testcontainers` module.
+
+#### New Features
+
+- Add ServiceBusDockerComposeConnectionDetailsFactory. [44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+
+### Spring Cloud Azure Docker Compose
+
+This section includes changes in `spring-cloud-azure-docker-compose` module.
+
+#### New Features
+
+- Add ServiceBusContainerConnectionDetailsFactory. [44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
 
 ## 7.0.0-beta.1 (2025-12-23)
 - This release is compatible with Spring Boot 4.0.0. (Note: 4.0.x (x>0) should be supported, but they aren't tested with this release.)
