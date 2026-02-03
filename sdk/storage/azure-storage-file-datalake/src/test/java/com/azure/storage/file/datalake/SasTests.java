@@ -812,7 +812,7 @@ public class SasTests extends DataLakeTestBase {
         util.generateUserDelegationSas(key, ENVIRONMENT.getDataLakeAccount().getName(), stringToSign::add,
             Context.NONE);
 
-        assertEqualsForEachLine(stringToSign, expected);
+        assertEquals(expected, stringToSign.get(0), "String-to-sign mismatch");
         assertEquals(expected,
             util.stringToSign(key, util.getCanonicalName(ENVIRONMENT.getDataLakeAccount().getName())));
     }
@@ -882,37 +882,6 @@ public class SasTests extends DataLakeTestBase {
         assertDoesNotThrow(
             () -> instrument(new DataLakeServiceClientBuilder().endpoint(fileSystemUrl + "?" + sas)).buildClient()
                 .getProperties());
-    }
-
-    private static void assertEqualsForEachLine(ArrayList<String> stringToSign, String expected) {
-        String actual = stringToSign.get(0);
-        if (!expected.equals(actual)) {
-            StringBuilder output = new StringBuilder();
-            String[] expectedLines = expected.split("\n", -1);
-            String[] actualLines = actual.split("\n", -1);
-
-            output.append("\n=== Line-by-Line String-to-Sign Comparison ===\n");
-            output.append("Expected lines: ").append(expectedLines.length).append("\n");
-            output.append("Actual lines:   ").append(actualLines.length).append("\n\n");
-
-            int maxLines = Math.max(expectedLines.length, actualLines.length);
-            for (int i = 0; i < maxLines; i++) {
-                String expLine = i < expectedLines.length ? expectedLines[i] : "<missing>";
-                String actLine = i < actualLines.length ? actualLines[i] : "<missing>";
-
-                if (!expLine.equals(actLine)) {
-                    output.append("Line ").append(i).append(" differs:\n");
-                    output.append("  Expected: [").append(expLine).append("]\n");
-                    output.append("  Actual:   [").append(actLine).append("]\n\n");
-                } else {
-                    output.append("Line ").append(i).append(" matches: [").append(expLine).append("]\n");
-                }
-            }
-
-            // Print everything at once
-            System.out.println(output.toString());
-        }
-        assertEquals(expected, actual, "String-to-sign mismatch");
     }
 
 }

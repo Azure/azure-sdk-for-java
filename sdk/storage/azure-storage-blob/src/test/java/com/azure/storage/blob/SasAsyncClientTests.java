@@ -54,6 +54,7 @@ import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -1070,6 +1071,7 @@ public class SasAsyncClientTests extends BlobTestBase {
         Map<String, String> requestQueryParameters, String expectedStringToSign) {
         OffsetDateTime e = OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
         BlobSasPermission p = new BlobSasPermission().setReadPermission(true);
+        ArrayList<String> stringToSign = new ArrayList<>();
         BlobServiceSasSignatureValues v = new BlobServiceSasSignatureValues(e, p);
 
         String expected = String.format(expectedStringToSign, ENVIRONMENT.getPrimaryAccount().getName());
@@ -1098,11 +1100,12 @@ public class SasAsyncClientTests extends BlobTestBase {
 
         BlobSasImplUtil implUtil
             = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId, encryptionScope);
-        String sasToken
-            = implUtil.generateUserDelegationSas(key, ENVIRONMENT.getPrimaryAccount().getName(), Context.NONE);
+        String sasToken = implUtil.generateUserDelegationSas(key, ENVIRONMENT.getPrimaryAccount().getName(),
+            stringToSign::add, Context.NONE);
         CommonSasQueryParameters token
             = BlobUrlParts.parse(ccAsync.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters();
 
+        assertEquals(expected, stringToSign.get(0), "String-to-sign mismatch");
         assertEquals(token.getSignature(), StorageImplUtils.computeHMac256(key.getValue(), expected));
     }
 

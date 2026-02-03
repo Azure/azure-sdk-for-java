@@ -1014,7 +1014,7 @@ public class SasClientTests extends BlobTestBase {
         CommonSasQueryParameters token
             = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters();
 
-        assertEqualsForEachLine(stringToSign, expected);
+        assertEquals(expected, stringToSign.get(0), "String-to-sign mismatch");
         assertEquals(token.getSignature(), StorageImplUtils.computeHMac256(key.getValue(), expected));
     }
 
@@ -1102,41 +1102,5 @@ public class SasClientTests extends BlobTestBase {
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
                     + "\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nencryptionScope\n"));
-    }
-
-    private static void assertEqualsForEachLine(ArrayList<String> stringToSign, String expected) {
-        String actual = stringToSign.get(0);
-        if (!expected.equals(actual)) {
-            StringBuilder output = new StringBuilder();
-            String[] expectedLines = expected.split("\n", -1);
-            String[] actualLines = actual.split("\n", -1);
-
-            output.append("\n=== Line-by-Line String-to-Sign Comparison ===\n");
-            output.append("Expected lines: ").append(expectedLines.length).append("\n");
-            output.append("Actual lines:   ").append(actualLines.length).append("\n\n");
-
-            int maxLines = Math.max(expectedLines.length, actualLines.length);
-            for (int i = 0; i < maxLines; i++) {
-                String expLine = i < expectedLines.length ? expectedLines[i] : "<missing>";
-                String actLine = i < actualLines.length ? actualLines[i] : "<missing>";
-
-                if (!expLine.equals(actLine)) {
-                    output.append("Line ").append(i).append(" differs:\n");
-                    output.append("  Expected: [").append(expLine).append("]\n");
-                    output.append("  Actual:   [").append(actLine).append("]\n\n");
-                } else {
-                    output.append("Line ").append(i).append(" matches: [").append(expLine).append("]\n");
-                }
-            }
-
-            output.append("=== Full Expected String ===\n");
-            output.append(expected.replace("\n", "\\n\n"));
-            output.append("\n\n=== Full Actual String ===\n");
-            output.append(actual.replace("\n", "\\n\n"));
-
-            // Print everything at once
-            System.out.println(output);
-        }
-        assertEquals(expected, actual, "String-to-sign mismatch");
     }
 }
