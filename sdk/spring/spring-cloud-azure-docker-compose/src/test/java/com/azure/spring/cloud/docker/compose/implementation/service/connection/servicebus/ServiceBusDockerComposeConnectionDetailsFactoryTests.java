@@ -29,7 +29,14 @@ import static org.awaitility.Awaitility.waitAtMost;
 @SpringBootTest(properties = {
     "spring.docker.compose.skip.in-tests=false",
     "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/servicebus/servicebus-compose.yaml",
-    "spring.docker.compose.stop.command=down"
+    "spring.docker.compose.stop.command=down",
+    "spring.cloud.azure.servicebus.namespace=sbemulatorns",
+    "spring.cloud.azure.servicebus.entity-name=queue.1",
+    "spring.cloud.azure.servicebus.entity-type=queue",
+    "spring.cloud.azure.servicebus.producer.entity-name=queue.1",
+    "spring.cloud.azure.servicebus.producer.entity-type=queue",
+    "spring.cloud.azure.servicebus.processor.entity-name=queue.1",
+    "spring.cloud.azure.servicebus.processor.entity-type=queue"
 })
 @EnabledOnOs(OS.LINUX)
 class ServiceBusDockerComposeConnectionDetailsFactoryTests {
