@@ -24,234 +24,299 @@ public final class RecoveryPlanInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanInner model = BinaryData.fromString(
-            "{\"properties\":{\"friendlyName\":\"znnhd\",\"primaryFabricId\":\"ktgj\",\"primaryFabricFriendlyName\":\"gguxhemlwyw\",\"recoveryFabricId\":\"eczgfb\",\"recoveryFabricFriendlyName\":\"klelssxb\",\"failoverDeploymentModel\":\"c\",\"replicationProviders\":[\"ujksrlsmdesqplpv\",\"jcdoewb\",\"dyvt\"],\"allowedOperations\":[\"xvgpiude\",\"gfsxzec\",\"axwk\",\"fykhvuhxepmru\"],\"lastPlannedFailoverTime\":\"2021-01-01T13:09:47Z\",\"lastUnplannedFailoverTime\":\"2021-01-21T20:15:20Z\",\"lastTestFailoverTime\":\"2021-07-09T17:03:36Z\",\"currentScenario\":{\"scenarioName\":\"slujdjltym\",\"jobId\":\"vguihywar\",\"startTime\":\"2021-09-29T23:23Z\"},\"currentScenarioStatus\":\"hkixkykxdssj\",\"currentScenarioStatusDescription\":\"mmuc\",\"groups\":[{\"groupType\":\"Failover\",\"replicationProtectedItems\":[{\"id\":\"lrmymyincqlhri\",\"virtualMachineId\":\"sl\"},{\"id\":\"iiovgqcgxu\",\"virtualMachineId\":\"qkctotiowlxte\"}],\"startGroupActions\":[{\"actionName\":\"tjgwdtguk\",\"failoverTypes\":[\"DisableProtection\",\"Commit\",\"CancelFailover\",\"Commit\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"kccuzgy\",\"failoverTypes\":[\"PlannedFailover\",\"SwitchProtection\"],\"failoverDirections\":[\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"lwgniiprglvawu\",\"failoverTypes\":[\"CancelFailover\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"pivlsbbjpm\",\"failoverTypes\":[\"TestFailoverCleanup\",\"CancelFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"PrimaryToRecovery\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"xxkubvphavp\",\"failoverTypes\":[\"RepairReplication\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"gvgovpbbttefjo\",\"failoverTypes\":[\"Commit\",\"DisableProtection\",\"FinalizeFailback\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Boot\",\"replicationProtectedItems\":[{\"id\":\"frdbiqmrjgeihf\",\"virtualMachineId\":\"ggwfiwz\"},{\"id\":\"mjpb\",\"virtualMachineId\":\"phmgtvljvrcmyfq\"},{\"id\":\"gxhnpomyqwcabv\",\"virtualMachineId\":\"ilee\"},{\"id\":\"swlpaugmrmfj\",\"virtualMachineId\":\"xwtoaukhfkvc\"}],\"startGroupActions\":[{\"actionName\":\"zmoaeds\",\"failoverTypes\":[\"Commit\",\"ChangePit\"],\"failoverDirections\":[\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"edwcgyee\",\"failoverTypes\":[\"Commit\",\"FinalizeFailback\",\"ChangePit\"],\"failoverDirections\":[\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"g\",\"failoverTypes\":[\"PlannedFailover\",\"SwitchProtection\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"l\",\"failoverTypes\":[\"DisableProtection\",\"TestFailoverCleanup\",\"DisableProtection\",\"RepairReplication\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"PrimaryToRecovery\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Failover\",\"replicationProtectedItems\":[{\"id\":\"hvn\",\"virtualMachineId\":\"gnxkympqan\"},{\"id\":\"jk\",\"virtualMachineId\":\"tw\"},{\"id\":\"aoypny\",\"virtualMachineId\":\"shxcylhkg\"}],\"startGroupActions\":[{\"actionName\":\"ghpxycphdr\",\"failoverTypes\":[\"CompleteMigration\",\"RepairReplication\",\"ChangePit\"],\"failoverDirections\":[\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"omacluzvxnqmhr\",\"failoverTypes\":[\"FinalizeFailback\"],\"failoverDirections\":[\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"kois\",\"failoverTypes\":[\"DisableProtection\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"xuifmcsypobkdqz\",\"failoverTypes\":[\"CompleteMigration\",\"Commit\",\"ChangePit\",\"TestFailoverCleanup\"],\"failoverDirections\":[\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"lgtrczzy\",\"failoverTypes\":[\"DisableProtection\",\"UnplannedFailover\",\"TestFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"PrimaryToRecovery\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]}],\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"}]},\"location\":\"rkihcirld\",\"id\":\"fx\",\"name\":\"dcoxnbk\",\"type\":\"ja\"}")
+            "{\"properties\":{\"friendlyName\":\"lpaugmrm\",\"primaryFabricId\":\"lrxw\",\"primaryFabricFriendlyName\":\"aukhfkvcisiz\",\"recoveryFabricId\":\"a\",\"recoveryFabricFriendlyName\":\"sx\",\"failoverDeploymentModel\":\"uivedwcgyeewxeiq\",\"replicationProviders\":[\"mgomg\",\"amljdlrgmsplzgau\",\"cshhv\"],\"allowedOperations\":[\"gnxkympqan\",\"rjkixtw\",\"taoypnyghshxc\",\"lhkgmnsghp\"],\"lastPlannedFailoverTime\":\"2021-02-16T02:21:14Z\",\"lastUnplannedFailoverTime\":\"2021-10-26T23:15:05Z\",\"lastTestFailoverTime\":\"2021-06-29T00:22:13Z\",\"currentScenario\":{\"scenarioName\":\"jkhvyomacluzvxnq\",\"jobId\":\"rpqpd\",\"startTime\":\"2021-08-05T21:29:24Z\"},\"currentScenarioStatus\":\"oi\",\"currentScenarioStatusDescription\":\"css\",\"groups\":[{\"groupType\":\"Boot\",\"replicationProtectedItems\":[{\"id\":\"csypobkdqzrdzsyl\",\"virtualMachineId\":\"lgtrczzy\"},{\"id\":\"xzji\",\"virtualMachineId\":\"vuaurk\"},{\"id\":\"ci\",\"virtualMachineId\":\"defxrdc\"}],\"startGroupActions\":[{\"actionName\":\"b\",\"failoverTypes\":[\"FinalizeFailback\",\"Failback\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"nnqbnqbp\",\"failoverTypes\":[\"Failback\",\"Commit\",\"PlannedFailover\",\"UnplannedFailover\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"ypxrx\",\"failoverTypes\":[\"Failback\",\"Failback\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"PrimaryToRecovery\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"tafsrbxrblmliowx\",\"failoverTypes\":[\"CompleteMigration\",\"FinalizeFailback\",\"Commit\",\"RepairReplication\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"nepzwakls\",\"failoverTypes\":[\"DisableProtection\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"wwrxaomzisgl\",\"failoverTypes\":[\"Failback\",\"ReverseReplicate\",\"RepairReplication\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Boot\",\"replicationProtectedItems\":[{\"id\":\"dhqoawj\",\"virtualMachineId\":\"yueayfbpcmsp\"},{\"id\":\"yrrueqth\",\"virtualMachineId\":\"gnmbscbbxigdhx\"},{\"id\":\"d\",\"virtualMachineId\":\"pedbwdpyqy\"}],\"startGroupActions\":[{\"actionName\":\"ubmdnafcbqwre\",\"failoverTypes\":[\"Failback\",\"FinalizeFailback\",\"CancelFailover\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"geleohdbvq\",\"failoverTypes\":[\"FinalizeFailback\",\"CompleteMigration\",\"TestFailoverCleanup\",\"UnplannedFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"eonrlkwzdqybxce\",\"failoverTypes\":[\"PlannedFailover\",\"RepairReplication\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"yiaseqchkrttzraz\",\"failoverTypes\":[\"FinalizeFailback\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"uem\",\"failoverTypes\":[\"FinalizeFailback\",\"CancelFailover\",\"Commit\",\"TestFailoverCleanup\"],\"failoverDirections\":[\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"mnrxxbsojkl\",\"failoverTypes\":[\"CompleteMigration\",\"Failback\",\"TestFailoverCleanup\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Failover\",\"replicationProtectedItems\":[{\"id\":\"sgnzxojpslsvjgpl\",\"virtualMachineId\":\"fiqwoy\"},{\"id\":\"vapcoh\",\"virtualMachineId\":\"ucqpqojxcxzrz\"}],\"startGroupActions\":[{\"actionName\":\"dzbenri\",\"failoverTypes\":[\"SwitchProtection\",\"ChangePit\",\"SwitchProtection\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"ddtjwfljhznam\",\"failoverTypes\":[\"DisableProtection\",\"ChangePit\",\"CancelFailover\",\"FinalizeFailback\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"cqtjzmi\",\"failoverTypes\":[\"CompleteMigration\",\"DisableProtection\",\"Commit\",\"TestFailoverCleanup\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Boot\",\"replicationProtectedItems\":[{\"id\":\"ngrebwg\",\"virtualMachineId\":\"httzlswvajqfutlx\"}],\"startGroupActions\":[{\"actionName\":\"zasunwqrjzfrgq\",\"failoverTypes\":[\"PlannedFailover\",\"ReverseReplicate\",\"CompleteMigration\"],\"failoverDirections\":[\"PrimaryToRecovery\",\"RecoveryToPrimary\",\"PrimaryToRecovery\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"njrohmbpy\",\"failoverTypes\":[\"SwitchProtection\"],\"failoverDirections\":[\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"eblydyv\",\"failoverTypes\":[\"Failback\",\"SwitchProtection\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"PrimaryToRecovery\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"nehvsmt\",\"failoverTypes\":[\"CancelFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"PrimaryToRecovery\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"ygvoavyunssxlgh\",\"failoverTypes\":[\"ReverseReplicate\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"vvpa\",\"failoverTypes\":[\"PlannedFailover\",\"ChangePit\",\"DisableProtection\",\"PlannedFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"RecoveryToPrimary\",\"PrimaryToRecovery\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"uygdhgaqipirp\",\"failoverTypes\":[\"TestFailoverCleanup\"],\"failoverDirections\":[\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"fulopmjnlexwhcb\",\"failoverTypes\":[\"CancelFailover\",\"ChangePit\",\"CancelFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]}],\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"}]},\"location\":\"uerct\",\"id\":\"toyint\",\"name\":\"pbrlcyrduczkgofx\",\"type\":\"fsrucv\"}")
             .toObject(RecoveryPlanInner.class);
-        Assertions.assertEquals("znnhd", model.properties().friendlyName());
-        Assertions.assertEquals("ktgj", model.properties().primaryFabricId());
-        Assertions.assertEquals("gguxhemlwyw", model.properties().primaryFabricFriendlyName());
-        Assertions.assertEquals("eczgfb", model.properties().recoveryFabricId());
-        Assertions.assertEquals("klelssxb", model.properties().recoveryFabricFriendlyName());
-        Assertions.assertEquals("c", model.properties().failoverDeploymentModel());
-        Assertions.assertEquals("ujksrlsmdesqplpv", model.properties().replicationProviders().get(0));
-        Assertions.assertEquals("xvgpiude", model.properties().allowedOperations().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T13:09:47Z"),
+        Assertions.assertEquals("lpaugmrm", model.properties().friendlyName());
+        Assertions.assertEquals("lrxw", model.properties().primaryFabricId());
+        Assertions.assertEquals("aukhfkvcisiz", model.properties().primaryFabricFriendlyName());
+        Assertions.assertEquals("a", model.properties().recoveryFabricId());
+        Assertions.assertEquals("sx", model.properties().recoveryFabricFriendlyName());
+        Assertions.assertEquals("uivedwcgyeewxeiq", model.properties().failoverDeploymentModel());
+        Assertions.assertEquals("mgomg", model.properties().replicationProviders().get(0));
+        Assertions.assertEquals("gnxkympqan", model.properties().allowedOperations().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T02:21:14Z"),
             model.properties().lastPlannedFailoverTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T20:15:20Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T23:15:05Z"),
             model.properties().lastUnplannedFailoverTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-09T17:03:36Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T00:22:13Z"),
             model.properties().lastTestFailoverTime());
-        Assertions.assertEquals("slujdjltym", model.properties().currentScenario().scenarioName());
-        Assertions.assertEquals("vguihywar", model.properties().currentScenario().jobId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T23:23Z"),
+        Assertions.assertEquals("jkhvyomacluzvxnq", model.properties().currentScenario().scenarioName());
+        Assertions.assertEquals("rpqpd", model.properties().currentScenario().jobId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T21:29:24Z"),
             model.properties().currentScenario().startTime());
-        Assertions.assertEquals("hkixkykxdssj", model.properties().currentScenarioStatus());
-        Assertions.assertEquals("mmuc", model.properties().currentScenarioStatusDescription());
-        Assertions.assertEquals(RecoveryPlanGroupType.FAILOVER, model.properties().groups().get(0).groupType());
-        Assertions.assertEquals("lrmymyincqlhri",
+        Assertions.assertEquals("oi", model.properties().currentScenarioStatus());
+        Assertions.assertEquals("css", model.properties().currentScenarioStatusDescription());
+        Assertions.assertEquals(RecoveryPlanGroupType.BOOT, model.properties().groups().get(0).groupType());
+        Assertions.assertEquals("csypobkdqzrdzsyl",
             model.properties().groups().get(0).replicationProtectedItems().get(0).id());
-        Assertions.assertEquals("sl",
+        Assertions.assertEquals("lgtrczzy",
             model.properties().groups().get(0).replicationProtectedItems().get(0).virtualMachineId());
-        Assertions.assertEquals("tjgwdtguk",
-            model.properties().groups().get(0).startGroupActions().get(0).actionName());
-        Assertions.assertEquals(ReplicationProtectedItemOperation.DISABLE_PROTECTION,
+        Assertions.assertEquals("b", model.properties().groups().get(0).startGroupActions().get(0).actionName());
+        Assertions.assertEquals(ReplicationProtectedItemOperation.FINALIZE_FAILBACK,
             model.properties().groups().get(0).startGroupActions().get(0).failoverTypes().get(0));
         Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
             model.properties().groups().get(0).startGroupActions().get(0).failoverDirections().get(0));
-        Assertions.assertEquals("lwgniiprglvawu",
+        Assertions.assertEquals("tafsrbxrblmliowx",
             model.properties().groups().get(0).endGroupActions().get(0).actionName());
-        Assertions.assertEquals(ReplicationProtectedItemOperation.CANCEL_FAILOVER,
+        Assertions.assertEquals(ReplicationProtectedItemOperation.COMPLETE_MIGRATION,
             model.properties().groups().get(0).endGroupActions().get(0).failoverTypes().get(0));
-        Assertions.assertEquals(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+        Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
             model.properties().groups().get(0).endGroupActions().get(0).failoverDirections().get(0));
-        Assertions.assertEquals("rkihcirld", model.location());
+        Assertions.assertEquals("uerct", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanInner model = new RecoveryPlanInner()
-            .withProperties(new RecoveryPlanProperties().withFriendlyName("znnhd")
-                .withPrimaryFabricId("ktgj")
-                .withPrimaryFabricFriendlyName("gguxhemlwyw")
-                .withRecoveryFabricId("eczgfb")
-                .withRecoveryFabricFriendlyName("klelssxb")
-                .withFailoverDeploymentModel("c")
-                .withReplicationProviders(Arrays.asList("ujksrlsmdesqplpv", "jcdoewb", "dyvt"))
-                .withAllowedOperations(Arrays.asList("xvgpiude", "gfsxzec", "axwk", "fykhvuhxepmru"))
-                .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-01-01T13:09:47Z"))
-                .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-01-21T20:15:20Z"))
-                .withLastTestFailoverTime(OffsetDateTime.parse("2021-07-09T17:03:36Z"))
-                .withCurrentScenario(new CurrentScenarioDetails().withScenarioName("slujdjltym")
-                    .withJobId("vguihywar")
-                    .withStartTime(OffsetDateTime.parse("2021-09-29T23:23Z")))
-                .withCurrentScenarioStatus("hkixkykxdssj")
-                .withCurrentScenarioStatusDescription("mmuc")
+            .withProperties(new RecoveryPlanProperties().withFriendlyName("lpaugmrm")
+                .withPrimaryFabricId("lrxw")
+                .withPrimaryFabricFriendlyName("aukhfkvcisiz")
+                .withRecoveryFabricId("a")
+                .withRecoveryFabricFriendlyName("sx")
+                .withFailoverDeploymentModel("uivedwcgyeewxeiq")
+                .withReplicationProviders(Arrays.asList("mgomg", "amljdlrgmsplzgau", "cshhv"))
+                .withAllowedOperations(Arrays.asList("gnxkympqan", "rjkixtw", "taoypnyghshxc", "lhkgmnsghp"))
+                .withLastPlannedFailoverTime(OffsetDateTime.parse("2021-02-16T02:21:14Z"))
+                .withLastUnplannedFailoverTime(OffsetDateTime.parse("2021-10-26T23:15:05Z"))
+                .withLastTestFailoverTime(OffsetDateTime.parse("2021-06-29T00:22:13Z"))
+                .withCurrentScenario(new CurrentScenarioDetails().withScenarioName("jkhvyomacluzvxnq")
+                    .withJobId("rpqpd")
+                    .withStartTime(OffsetDateTime.parse("2021-08-05T21:29:24Z")))
+                .withCurrentScenarioStatus("oi")
+                .withCurrentScenarioStatusDescription("css")
                 .withGroups(Arrays.asList(
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
+                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
                         .withReplicationProtectedItems(Arrays.asList(
-                            new RecoveryPlanProtectedItem().withId("lrmymyincqlhri").withVirtualMachineId("sl"),
-                            new RecoveryPlanProtectedItem().withId("iiovgqcgxu").withVirtualMachineId("qkctotiowlxte")))
+                            new RecoveryPlanProtectedItem().withId("csypobkdqzrdzsyl").withVirtualMachineId("lgtrczzy"),
+                            new RecoveryPlanProtectedItem().withId("xzji").withVirtualMachineId("vuaurk"),
+                            new RecoveryPlanProtectedItem().withId("ci").withVirtualMachineId("defxrdc")))
                         .withStartGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("tjgwdtguk")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.DISABLE_PROTECTION,
-                                    ReplicationProtectedItemOperation.COMMIT,
-                                    ReplicationProtectedItemOperation.CANCEL_FAILOVER,
-                                    ReplicationProtectedItemOperation.COMMIT))
+                            new RecoveryPlanAction().withActionName("b")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FINALIZE_FAILBACK,
+                                    ReplicationProtectedItemOperation.FAILBACK))
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("nnqbnqbp")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FAILBACK,
+                                    ReplicationProtectedItemOperation.COMMIT,
+                                    ReplicationProtectedItemOperation.PLANNED_FAILOVER,
+                                    ReplicationProtectedItemOperation.UNPLANNED_FAILOVER))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction()
-                                .withActionName("kccuzgy")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.PLANNED_FAILOVER,
-                                    ReplicationProtectedItemOperation.SWITCH_PROTECTION))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
+                            new RecoveryPlanAction().withActionName("ypxrx")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FAILBACK,
+                                    ReplicationProtectedItemOperation.FAILBACK))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
                                 .withCustomDetails(new RecoveryPlanActionDetails())))
                         .withEndGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("lwgniiprglvawu")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.CANCEL_FAILOVER))
-                                .withFailoverDirections(Arrays.asList(
-                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
-                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("pivlsbbjpm")
-                                .withFailoverTypes(
-                                    Arrays.asList(ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP,
-                                        ReplicationProtectedItemOperation.CANCEL_FAILOVER))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
-                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("xxkubvphavp")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.REPAIR_REPLICATION))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction()
-                                .withActionName("gvgovpbbttefjo")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMMIT,
-                                    ReplicationProtectedItemOperation.DISABLE_PROTECTION,
-                                    ReplicationProtectedItemOperation.FINALIZE_FAILBACK))
+                            new RecoveryPlanAction().withActionName("tafsrbxrblmliowx")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMPLETE_MIGRATION,
+                                    ReplicationProtectedItemOperation.FINALIZE_FAILBACK,
+                                    ReplicationProtectedItemOperation.COMMIT,
+                                    ReplicationProtectedItemOperation.REPAIR_REPLICATION))
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("nepzwakls")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.DISABLE_PROTECTION))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("wwrxaomzisgl")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FAILBACK,
+                                    ReplicationProtectedItemOperation.REVERSE_REPLICATE,
+                                    ReplicationProtectedItemOperation.REPAIR_REPLICATION))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()))),
                     new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
                         .withReplicationProtectedItems(Arrays.asList(
-                            new RecoveryPlanProtectedItem().withId("frdbiqmrjgeihf").withVirtualMachineId("ggwfiwz"),
-                            new RecoveryPlanProtectedItem().withId("mjpb").withVirtualMachineId("phmgtvljvrcmyfq"),
-                            new RecoveryPlanProtectedItem().withId("gxhnpomyqwcabv").withVirtualMachineId("ilee"),
-                            new RecoveryPlanProtectedItem().withId("swlpaugmrmfj")
-                                .withVirtualMachineId("xwtoaukhfkvc")))
+                            new RecoveryPlanProtectedItem().withId("dhqoawj").withVirtualMachineId("yueayfbpcmsp"),
+                            new RecoveryPlanProtectedItem().withId("yrrueqth").withVirtualMachineId("gnmbscbbxigdhx"),
+                            new RecoveryPlanProtectedItem().withId("d").withVirtualMachineId("pedbwdpyqy")))
                         .withStartGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("zmoaeds")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMMIT,
-                                    ReplicationProtectedItemOperation.CHANGE_PIT))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
-                                .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("edwcgyee")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMMIT,
+                            new RecoveryPlanAction().withActionName("ubmdnafcbqwre")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FAILBACK,
                                     ReplicationProtectedItemOperation.FINALIZE_FAILBACK,
-                                    ReplicationProtectedItemOperation.CHANGE_PIT))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
-                                .withCustomDetails(new RecoveryPlanActionDetails())))
-                        .withEndGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("g")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.PLANNED_FAILOVER,
-                                    ReplicationProtectedItemOperation.SWITCH_PROTECTION))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    ReplicationProtectedItemOperation.CANCEL_FAILOVER))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("l")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.DISABLE_PROTECTION,
+                            new RecoveryPlanAction().withActionName("geleohdbvq")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FINALIZE_FAILBACK,
+                                    ReplicationProtectedItemOperation.COMPLETE_MIGRATION,
                                     ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP,
-                                    ReplicationProtectedItemOperation.DISABLE_PROTECTION,
-                                    ReplicationProtectedItemOperation.REPAIR_REPLICATION))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
-                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    ReplicationProtectedItemOperation.UNPLANNED_FAILOVER))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
-                                .withCustomDetails(new RecoveryPlanActionDetails()))),
-                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
-                        .withReplicationProtectedItems(Arrays.asList(
-                            new RecoveryPlanProtectedItem().withId("hvn").withVirtualMachineId("gnxkympqan"),
-                            new RecoveryPlanProtectedItem().withId("jk").withVirtualMachineId("tw"),
-                            new RecoveryPlanProtectedItem().withId("aoypny").withVirtualMachineId("shxcylhkg")))
-                        .withStartGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("ghpxycphdr")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMPLETE_MIGRATION,
-                                    ReplicationProtectedItemOperation.REPAIR_REPLICATION,
-                                    ReplicationProtectedItemOperation.CHANGE_PIT))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction()
-                                .withActionName("omacluzvxnqmhr")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FINALIZE_FAILBACK))
-                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
+                            new RecoveryPlanAction().withActionName("eonrlkwzdqybxce")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.PLANNED_FAILOVER,
+                                    ReplicationProtectedItemOperation.REPAIR_REPLICATION))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails())))
                         .withEndGroupActions(Arrays.asList(
-                            new RecoveryPlanAction().withActionName("kois")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.DISABLE_PROTECTION))
-                                .withFailoverDirections(Arrays.asList(
-                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                            new RecoveryPlanAction().withActionName("yiaseqchkrttzraz")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FINALIZE_FAILBACK))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
                                     PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("xuifmcsypobkdqz")
-                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMPLETE_MIGRATION,
+                            new RecoveryPlanAction().withActionName("uem")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FINALIZE_FAILBACK,
+                                    ReplicationProtectedItemOperation.CANCEL_FAILOVER,
                                     ReplicationProtectedItemOperation.COMMIT,
-                                    ReplicationProtectedItemOperation.CHANGE_PIT,
                                     ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP))
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
                                 .withCustomDetails(new RecoveryPlanActionDetails()),
-                            new RecoveryPlanAction().withActionName("lgtrczzy")
+                            new RecoveryPlanAction().withActionName("mnrxxbsojkl")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMPLETE_MIGRATION,
+                                    ReplicationProtectedItemOperation.FAILBACK,
+                                    ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()))),
+                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.FAILOVER)
+                        .withReplicationProtectedItems(Arrays.asList(
+                            new RecoveryPlanProtectedItem().withId("sgnzxojpslsvjgpl").withVirtualMachineId("fiqwoy"),
+                            new RecoveryPlanProtectedItem().withId("vapcoh").withVirtualMachineId("ucqpqojxcxzrz")))
+                        .withStartGroupActions(Arrays.asList(
+                            new RecoveryPlanAction().withActionName("dzbenri")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.SWITCH_PROTECTION,
+                                    ReplicationProtectedItemOperation.CHANGE_PIT,
+                                    ReplicationProtectedItemOperation.SWITCH_PROTECTION))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("ddtjwfljhznam")
                                 .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.DISABLE_PROTECTION,
-                                    ReplicationProtectedItemOperation.UNPLANNED_FAILOVER,
-                                    ReplicationProtectedItemOperation.TEST_FAILOVER))
+                                    ReplicationProtectedItemOperation.CHANGE_PIT,
+                                    ReplicationProtectedItemOperation.CANCEL_FAILOVER,
+                                    ReplicationProtectedItemOperation.FINALIZE_FAILBACK))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails())))
+                        .withEndGroupActions(Arrays
+                            .asList(new RecoveryPlanAction().withActionName("cqtjzmi")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.COMPLETE_MIGRATION,
+                                    ReplicationProtectedItemOperation.DISABLE_PROTECTION,
+                                    ReplicationProtectedItemOperation.COMMIT,
+                                    ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()))),
+                    new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
+                        .withReplicationProtectedItems(Arrays.asList(
+                            new RecoveryPlanProtectedItem().withId("ngrebwg").withVirtualMachineId("httzlswvajqfutlx")))
+                        .withStartGroupActions(Arrays.asList(
+                            new RecoveryPlanAction().withActionName("zasunwqrjzfrgq")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.PLANNED_FAILOVER,
+                                    ReplicationProtectedItemOperation.REVERSE_REPLICATE,
+                                    ReplicationProtectedItemOperation.COMPLETE_MIGRATION))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("njrohmbpy")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.SWITCH_PROTECTION))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("eblydyv")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.FAILBACK,
+                                    ReplicationProtectedItemOperation.SWITCH_PROTECTION))
                                 .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
                                     PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
                                     PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("nehvsmt")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.CANCEL_FAILOVER))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
+                                .withCustomDetails(new RecoveryPlanActionDetails())))
+                        .withEndGroupActions(Arrays.asList(
+                            new RecoveryPlanAction().withActionName("ygvoavyunssxlgh")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.REVERSE_REPLICATE))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("vvpa")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.PLANNED_FAILOVER,
+                                    ReplicationProtectedItemOperation.CHANGE_PIT,
+                                    ReplicationProtectedItemOperation.DISABLE_PROTECTION,
+                                    ReplicationProtectedItemOperation.PLANNED_FAILOVER))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+                                    PossibleOperationsDirections.PRIMARY_TO_RECOVERY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("uygdhgaqipirp")
+                                .withFailoverTypes(
+                                    Arrays.asList(ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
+                                .withCustomDetails(new RecoveryPlanActionDetails()),
+                            new RecoveryPlanAction().withActionName("fulopmjnlexwhcb")
+                                .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.CANCEL_FAILOVER,
+                                    ReplicationProtectedItemOperation.CHANGE_PIT,
+                                    ReplicationProtectedItemOperation.CANCEL_FAILOVER))
+                                .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
                                 .withCustomDetails(new RecoveryPlanActionDetails())))))
                 .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificDetails(),
-                    new RecoveryPlanProviderSpecificDetails(), new RecoveryPlanProviderSpecificDetails())))
-            .withLocation("rkihcirld");
+                    new RecoveryPlanProviderSpecificDetails())))
+            .withLocation("uerct");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanInner.class);
-        Assertions.assertEquals("znnhd", model.properties().friendlyName());
-        Assertions.assertEquals("ktgj", model.properties().primaryFabricId());
-        Assertions.assertEquals("gguxhemlwyw", model.properties().primaryFabricFriendlyName());
-        Assertions.assertEquals("eczgfb", model.properties().recoveryFabricId());
-        Assertions.assertEquals("klelssxb", model.properties().recoveryFabricFriendlyName());
-        Assertions.assertEquals("c", model.properties().failoverDeploymentModel());
-        Assertions.assertEquals("ujksrlsmdesqplpv", model.properties().replicationProviders().get(0));
-        Assertions.assertEquals("xvgpiude", model.properties().allowedOperations().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T13:09:47Z"),
+        Assertions.assertEquals("lpaugmrm", model.properties().friendlyName());
+        Assertions.assertEquals("lrxw", model.properties().primaryFabricId());
+        Assertions.assertEquals("aukhfkvcisiz", model.properties().primaryFabricFriendlyName());
+        Assertions.assertEquals("a", model.properties().recoveryFabricId());
+        Assertions.assertEquals("sx", model.properties().recoveryFabricFriendlyName());
+        Assertions.assertEquals("uivedwcgyeewxeiq", model.properties().failoverDeploymentModel());
+        Assertions.assertEquals("mgomg", model.properties().replicationProviders().get(0));
+        Assertions.assertEquals("gnxkympqan", model.properties().allowedOperations().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T02:21:14Z"),
             model.properties().lastPlannedFailoverTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T20:15:20Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-26T23:15:05Z"),
             model.properties().lastUnplannedFailoverTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-09T17:03:36Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T00:22:13Z"),
             model.properties().lastTestFailoverTime());
-        Assertions.assertEquals("slujdjltym", model.properties().currentScenario().scenarioName());
-        Assertions.assertEquals("vguihywar", model.properties().currentScenario().jobId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T23:23Z"),
+        Assertions.assertEquals("jkhvyomacluzvxnq", model.properties().currentScenario().scenarioName());
+        Assertions.assertEquals("rpqpd", model.properties().currentScenario().jobId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-05T21:29:24Z"),
             model.properties().currentScenario().startTime());
-        Assertions.assertEquals("hkixkykxdssj", model.properties().currentScenarioStatus());
-        Assertions.assertEquals("mmuc", model.properties().currentScenarioStatusDescription());
-        Assertions.assertEquals(RecoveryPlanGroupType.FAILOVER, model.properties().groups().get(0).groupType());
-        Assertions.assertEquals("lrmymyincqlhri",
+        Assertions.assertEquals("oi", model.properties().currentScenarioStatus());
+        Assertions.assertEquals("css", model.properties().currentScenarioStatusDescription());
+        Assertions.assertEquals(RecoveryPlanGroupType.BOOT, model.properties().groups().get(0).groupType());
+        Assertions.assertEquals("csypobkdqzrdzsyl",
             model.properties().groups().get(0).replicationProtectedItems().get(0).id());
-        Assertions.assertEquals("sl",
+        Assertions.assertEquals("lgtrczzy",
             model.properties().groups().get(0).replicationProtectedItems().get(0).virtualMachineId());
-        Assertions.assertEquals("tjgwdtguk",
-            model.properties().groups().get(0).startGroupActions().get(0).actionName());
-        Assertions.assertEquals(ReplicationProtectedItemOperation.DISABLE_PROTECTION,
+        Assertions.assertEquals("b", model.properties().groups().get(0).startGroupActions().get(0).actionName());
+        Assertions.assertEquals(ReplicationProtectedItemOperation.FINALIZE_FAILBACK,
             model.properties().groups().get(0).startGroupActions().get(0).failoverTypes().get(0));
         Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
             model.properties().groups().get(0).startGroupActions().get(0).failoverDirections().get(0));
-        Assertions.assertEquals("lwgniiprglvawu",
+        Assertions.assertEquals("tafsrbxrblmliowx",
             model.properties().groups().get(0).endGroupActions().get(0).actionName());
-        Assertions.assertEquals(ReplicationProtectedItemOperation.CANCEL_FAILOVER,
+        Assertions.assertEquals(ReplicationProtectedItemOperation.COMPLETE_MIGRATION,
             model.properties().groups().get(0).endGroupActions().get(0).failoverTypes().get(0));
-        Assertions.assertEquals(PossibleOperationsDirections.PRIMARY_TO_RECOVERY,
+        Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
             model.properties().groups().get(0).endGroupActions().get(0).failoverDirections().get(0));
-        Assertions.assertEquals("rkihcirld", model.location());
+        Assertions.assertEquals("uerct", model.location());
     }
 }

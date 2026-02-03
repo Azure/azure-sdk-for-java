@@ -7,9 +7,10 @@ import java.util.List;
 
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 
 /**
  * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
@@ -42,12 +43,13 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * </p>
      *
      * @param trim prefix to trim
+     * @param isRefresh true if a refresh triggered the loading of the Snapshot.
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> trim) throws InvalidConfigurationPropertyValueException {
-        processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName), null, trim);
+    public void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException {
+        processConfigurationSettings(replicaClient.listSettingSnapshot(snapshotName, context), null, trim);
 
-        FeatureFlags featureFlags = new FeatureFlags(null, featureFlagsList);
+        WatchedConfigurationSettings featureFlags = new WatchedConfigurationSettings(null, featureFlagsList);
         featureFlagClient.proccessFeatureFlags(featureFlags, replicaClient.getEndpoint());
     }
 

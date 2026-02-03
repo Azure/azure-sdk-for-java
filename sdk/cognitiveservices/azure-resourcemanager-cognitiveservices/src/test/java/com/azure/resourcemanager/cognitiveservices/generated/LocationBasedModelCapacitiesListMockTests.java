@@ -7,8 +7,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.ModelCapacityListResultValueItem;
@@ -22,27 +22,27 @@ public final class LocationBasedModelCapacitiesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"ycsxzu\",\"properties\":{\"model\":{\"publisher\":\"lsmdesqplpvmjc\",\"format\":\"ewbidyvteowxv\",\"name\":\"iudeu\",\"version\":\"sxze\",\"source\":\"axwk\",\"sourceAccount\":\"ykhv\",\"callRateLimit\":{\"count\":36.75517,\"renewalPeriod\":93.7912,\"rules\":[{},{},{}]}},\"skuName\":\"znabaobns\",\"availableCapacity\":77.23243,\"availableFinetuneCapacity\":76.454056},\"id\":\"ltymkmvguihywart\",\"name\":\"pphkixkykxds\",\"type\":\"j\"}]}";
+            = "{\"value\":[{\"location\":\"dxlwyojbfqz\",\"properties\":{\"model\":{\"publisher\":\"jyixhaf\",\"format\":\"tqxmbj\",\"name\":\"umzznvalqjrhuz\",\"version\":\"xonjtpusl\",\"source\":\"wpvtiotzbpdbol\",\"sourceAccount\":\"ryf\",\"callRateLimit\":{\"count\":71.75664,\"renewalPeriod\":1.5519679,\"rules\":[{},{},{}]}},\"skuName\":\"wsocnequygdjbo\",\"availableCapacity\":73.7661,\"availableFinetuneCapacity\":54.30265},\"id\":\"jkqev\",\"name\":\"drmmwiuawvcmjz\",\"type\":\"xiid\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ModelCapacityListResultValueItem> response = manager.locationBasedModelCapacities()
-            .list("hdroznnh", "rlktgjcsggu", "hemlwywaee", "zgfbukklelssx", com.azure.core.util.Context.NONE);
+            .list("wyrmouv", "lgmokzkl", "rfowtdvrfmvlih", "vjdrqcrjidhftuk", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ycsxzu", response.iterator().next().location());
-        Assertions.assertEquals("lsmdesqplpvmjc", response.iterator().next().properties().model().publisher());
-        Assertions.assertEquals("ewbidyvteowxv", response.iterator().next().properties().model().format());
-        Assertions.assertEquals("iudeu", response.iterator().next().properties().model().name());
-        Assertions.assertEquals("sxze", response.iterator().next().properties().model().version());
-        Assertions.assertEquals("axwk", response.iterator().next().properties().model().source());
-        Assertions.assertEquals("ykhv", response.iterator().next().properties().model().sourceAccount());
-        Assertions.assertEquals("znabaobns", response.iterator().next().properties().skuName());
-        Assertions.assertEquals(77.23243F, response.iterator().next().properties().availableCapacity());
-        Assertions.assertEquals(76.454056F, response.iterator().next().properties().availableFinetuneCapacity());
+        Assertions.assertEquals("dxlwyojbfqz", response.iterator().next().location());
+        Assertions.assertEquals("jyixhaf", response.iterator().next().properties().model().publisher());
+        Assertions.assertEquals("tqxmbj", response.iterator().next().properties().model().format());
+        Assertions.assertEquals("umzznvalqjrhuz", response.iterator().next().properties().model().name());
+        Assertions.assertEquals("xonjtpusl", response.iterator().next().properties().model().version());
+        Assertions.assertEquals("wpvtiotzbpdbol", response.iterator().next().properties().model().source());
+        Assertions.assertEquals("ryf", response.iterator().next().properties().model().sourceAccount());
+        Assertions.assertEquals("wsocnequygdjbo", response.iterator().next().properties().skuName());
+        Assertions.assertEquals(73.7661F, response.iterator().next().properties().availableCapacity());
+        Assertions.assertEquals(54.30265F, response.iterator().next().properties().availableFinetuneCapacity());
     }
 }

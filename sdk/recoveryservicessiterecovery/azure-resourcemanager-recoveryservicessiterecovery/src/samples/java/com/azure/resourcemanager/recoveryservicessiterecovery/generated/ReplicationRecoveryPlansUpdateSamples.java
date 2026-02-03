@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class ReplicationRecoveryPlansUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationRecoveryPlans_Update.json
      */
     /**
@@ -28,7 +28,7 @@ public final class ReplicationRecoveryPlansUpdateSamples {
     public static void updatesTheGivenRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         RecoveryPlan resource = manager.replicationRecoveryPlans()
-            .getWithResponse("vault1", "resourceGroupPS1", "RPtest1", com.azure.core.util.Context.NONE)
+            .getWithResponse("resourceGroupPS1", "vault1", "RPtest1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
             .withProperties(new UpdateRecoveryPlanInputProperties().withGroups(Arrays.asList(

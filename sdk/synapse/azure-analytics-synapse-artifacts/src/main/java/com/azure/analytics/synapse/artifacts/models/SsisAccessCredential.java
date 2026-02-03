@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
     /*
      * Domain for windows authentication.
      */
+    @Generated
     private Object domain;
 
     /*
      * UseName for windows authentication.
      */
+    @Generated
     private Object userName;
 
     /*
      * Password for windows authentication.
      */
+    @Generated
     private SecretBase password;
 
     /**
      * Creates an instance of SsisAccessCredential class.
      */
+    @Generated
     public SsisAccessCredential() {
     }
 
@@ -42,6 +47,7 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
      * 
      * @return the domain value.
      */
+    @Generated
     public Object getDomain() {
         return this.domain;
     }
@@ -52,6 +58,7 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
      * @param domain the domain value to set.
      * @return the SsisAccessCredential object itself.
      */
+    @Generated
     public SsisAccessCredential setDomain(Object domain) {
         this.domain = domain;
         return this;
@@ -62,6 +69,7 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -72,6 +80,7 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
      * @param userName the userName value to set.
      * @return the SsisAccessCredential object itself.
      */
+    @Generated
     public SsisAccessCredential setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -82,6 +91,7 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -92,6 +102,7 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
      * @param password the password value to set.
      * @return the SsisAccessCredential object itself.
      */
+    @Generated
     public SsisAccessCredential setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -100,6 +111,7 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class SsisAccessCredential implements JsonSerializable<SsisAccessCr
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SsisAccessCredential.
      */
+    @Generated
     public static SsisAccessCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SsisAccessCredential deserializedSsisAccessCredential = new SsisAccessCredential();

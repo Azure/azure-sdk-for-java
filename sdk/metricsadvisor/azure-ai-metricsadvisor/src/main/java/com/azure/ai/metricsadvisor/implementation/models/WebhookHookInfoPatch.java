@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,16 +20,19 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
     /*
      * hook type
      */
+    @Generated
     private HookType hookType = HookType.WEBHOOK;
 
     /*
      * The hookParameter property.
      */
+    @Generated
     private WebhookHookParameterPatch hookParameter;
 
     /**
      * Creates an instance of WebhookHookInfoPatch class.
      */
+    @Generated
     public WebhookHookInfoPatch() {
     }
 
@@ -37,6 +41,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      * 
      * @return the hookType value.
      */
+    @Generated
     @Override
     public HookType getHookType() {
         return this.hookType;
@@ -47,6 +52,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      * 
      * @return the hookParameter value.
      */
+    @Generated
     public WebhookHookParameterPatch getHookParameter() {
         return this.hookParameter;
     }
@@ -57,6 +63,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      * @param hookParameter the hookParameter value to set.
      * @return the WebhookHookInfoPatch object itself.
      */
+    @Generated
     public WebhookHookInfoPatch setHookParameter(WebhookHookParameterPatch hookParameter) {
         this.hookParameter = hookParameter;
         return this;
@@ -65,6 +72,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfoPatch setHookName(String hookName) {
         super.setHookName(hookName);
@@ -74,6 +82,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfoPatch setDescription(String description) {
         super.setDescription(description);
@@ -83,6 +92,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfoPatch setExternalLink(String externalLink) {
         super.setExternalLink(externalLink);
@@ -92,6 +102,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebhookHookInfoPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -101,6 +112,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -121,6 +133,7 @@ public final class WebhookHookInfoPatch extends HookInfoPatch {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WebhookHookInfoPatch.
      */
+    @Generated
     public static WebhookHookInfoPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebhookHookInfoPatch deserializedWebhookHookInfoPatch = new WebhookHookInfoPatch();

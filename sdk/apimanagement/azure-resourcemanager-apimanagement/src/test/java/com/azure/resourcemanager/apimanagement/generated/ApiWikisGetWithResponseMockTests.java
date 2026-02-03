@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.WikiContract;
@@ -21,19 +21,19 @@ public final class ApiWikisGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"documents\":[{\"documentationId\":\"zvptriysj\"},{\"documentationId\":\"truwpuqps\"},{\"documentationId\":\"ekdv\"},{\"documentationId\":\"ydw\"}]},\"id\":\"dggwgclvbw\",\"name\":\"tzadrjbjngoarsr\",\"type\":\"rwiemzcyni\"}";
+            = "{\"properties\":{\"documents\":[{\"documentationId\":\"tpyabensjflwp\"},{\"documentationId\":\"vvqtmvif\"},{\"documentationId\":\"vsimalbmti\"},{\"documentationId\":\"gosnxajptcdfmzxa\"}]},\"id\":\"xl\",\"name\":\"mvj\",\"type\":\"nn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WikiContract response = manager.apiWikis()
-            .getWithResponse("myqyyfrridzfps", "y", "kidfhmlxrqkeknu", com.azure.core.util.Context.NONE)
+            .getWithResponse("vswtwonadezm", "xvfybxmmr", "nuvqkrrsguog", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zvptriysj", response.documents().get(0).documentationId());
+        Assertions.assertEquals("tpyabensjflwp", response.documents().get(0).documentationId());
     }
 }

@@ -61,7 +61,7 @@ public final class RunNotebooksImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientRunNo")
+    @ServiceInterface(name = "ArtifactsClientRunNotebooks")
     public interface RunNotebooksService {
         @Put("/notebooks/runs/{runId}")
         @ExpectedResponses({ 202 })
@@ -105,7 +105,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -121,7 +122,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +142,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -155,7 +158,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +177,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,7 +195,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -205,7 +211,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -222,7 +229,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -242,7 +250,8 @@ public final class RunNotebooksImpl {
     /**
      * Run notebook.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param runNotebookRequest Run notebook request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +268,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Status for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -273,7 +283,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Status for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -290,7 +301,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Status for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -304,7 +316,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Status for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -319,7 +332,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Status for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -334,7 +348,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Status for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -348,7 +363,8 @@ public final class RunNotebooksImpl {
     /**
      * Cancel notebook run.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RunNotebookResponseException thrown if the request is rejected by server on status code 409.
@@ -363,7 +379,8 @@ public final class RunNotebooksImpl {
     /**
      * Cancel notebook run.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -381,7 +398,8 @@ public final class RunNotebooksImpl {
     /**
      * Cancel notebook run.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RunNotebookResponseException thrown if the request is rejected by server on status code 409.
@@ -396,7 +414,8 @@ public final class RunNotebooksImpl {
     /**
      * Cancel notebook run.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -412,7 +431,8 @@ public final class RunNotebooksImpl {
     /**
      * Cancel notebook run.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -428,7 +448,8 @@ public final class RunNotebooksImpl {
     /**
      * Cancel notebook run.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RunNotebookResponseException thrown if the request is rejected by server on status code 409.
@@ -443,7 +464,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Snapshot for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -457,7 +479,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Snapshot for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -474,7 +497,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Snapshot for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -488,7 +512,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Snapshot for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -503,7 +528,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Snapshot for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -518,7 +544,8 @@ public final class RunNotebooksImpl {
     /**
      * Get RunNotebook Snapshot for run id.
      * 
-     * @param runId Notebook run id.
+     * @param runId Notebook run id. For Create Run, you can generate a new GUID and use it here. For other actions,
+     * this is the same ID used in Create Run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

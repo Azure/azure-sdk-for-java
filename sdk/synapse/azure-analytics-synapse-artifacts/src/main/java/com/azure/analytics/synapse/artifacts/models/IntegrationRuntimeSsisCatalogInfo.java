@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,32 +22,38 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
     /*
      * The catalog database server URL.
      */
+    @Generated
     private String catalogServerEndpoint;
 
     /*
      * The administrator user name of catalog database.
      */
+    @Generated
     private String catalogAdminUserName;
 
     /*
      * The password of the administrator user account of the catalog database.
      */
+    @Generated
     private SecureString catalogAdminPassword;
 
     /*
      * The pricing tier for the catalog database. The valid values could be found in
      * https://azure.microsoft.com/en-us/pricing/details/sql-database/
      */
+    @Generated
     private IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier;
 
     /*
      * Catalog information for managed dedicated integration runtime.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of IntegrationRuntimeSsisCatalogInfo class.
      */
+    @Generated
     public IntegrationRuntimeSsisCatalogInfo() {
     }
 
@@ -55,6 +62,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * 
      * @return the catalogServerEndpoint value.
      */
+    @Generated
     public String getCatalogServerEndpoint() {
         return this.catalogServerEndpoint;
     }
@@ -65,6 +73,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * @param catalogServerEndpoint the catalogServerEndpoint value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisCatalogInfo setCatalogServerEndpoint(String catalogServerEndpoint) {
         this.catalogServerEndpoint = catalogServerEndpoint;
         return this;
@@ -75,6 +84,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * 
      * @return the catalogAdminUserName value.
      */
+    @Generated
     public String getCatalogAdminUserName() {
         return this.catalogAdminUserName;
     }
@@ -85,6 +95,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * @param catalogAdminUserName the catalogAdminUserName value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisCatalogInfo setCatalogAdminUserName(String catalogAdminUserName) {
         this.catalogAdminUserName = catalogAdminUserName;
         return this;
@@ -95,6 +106,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * 
      * @return the catalogAdminPassword value.
      */
+    @Generated
     public SecureString getCatalogAdminPassword() {
         return this.catalogAdminPassword;
     }
@@ -105,6 +117,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * @param catalogAdminPassword the catalogAdminPassword value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisCatalogInfo setCatalogAdminPassword(SecureString catalogAdminPassword) {
         this.catalogAdminPassword = catalogAdminPassword;
         return this;
@@ -116,6 +129,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * 
      * @return the catalogPricingTier value.
      */
+    @Generated
     public IntegrationRuntimeSsisCatalogPricingTier getCatalogPricingTier() {
         return this.catalogPricingTier;
     }
@@ -127,6 +141,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * @param catalogPricingTier the catalogPricingTier value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisCatalogInfo
         setCatalogPricingTier(IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier) {
         this.catalogPricingTier = catalogPricingTier;
@@ -138,6 +153,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -148,6 +164,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * @param additionalProperties the additionalProperties value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
+    @Generated
     public IntegrationRuntimeSsisCatalogInfo setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -156,6 +173,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -180,6 +198,7 @@ public final class IntegrationRuntimeSsisCatalogInfo implements JsonSerializable
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IntegrationRuntimeSsisCatalogInfo.
      */
+    @Generated
     public static IntegrationRuntimeSsisCatalogInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IntegrationRuntimeSsisCatalogInfo deserializedIntegrationRuntimeSsisCatalogInfo

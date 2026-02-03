@@ -14,20 +14,20 @@ public final class StatefulTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Stateful model = BinaryData.fromString(
-            "{\"kind\":\"Stateful\",\"maxAgentLifetime\":\"mgxsab\",\"gracePeriodTimeSpan\":\"qduujitcjczdz\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}}")
+            "{\"kind\":\"Stateful\",\"maxAgentLifetime\":\"lljfmppeeb\",\"gracePeriodTimeSpan\":\"gxsabkyq\",\"resourcePredictions\":{},\"resourcePredictionsProfile\":{\"kind\":\"ResourcePredictionsProfile\"}}")
             .toObject(Stateful.class);
-        Assertions.assertEquals("mgxsab", model.maxAgentLifetime());
-        Assertions.assertEquals("qduujitcjczdz", model.gracePeriodTimeSpan());
+        Assertions.assertEquals("lljfmppeeb", model.maxAgentLifetime());
+        Assertions.assertEquals("gxsabkyq", model.gracePeriodTimeSpan());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Stateful model = new Stateful().withResourcePredictions(new ResourcePredictions())
             .withResourcePredictionsProfile(new ResourcePredictionsProfile())
-            .withMaxAgentLifetime("mgxsab")
-            .withGracePeriodTimeSpan("qduujitcjczdz");
+            .withMaxAgentLifetime("lljfmppeeb")
+            .withGracePeriodTimeSpan("gxsabkyq");
         model = BinaryData.fromObject(model).toObject(Stateful.class);
-        Assertions.assertEquals("mgxsab", model.maxAgentLifetime());
-        Assertions.assertEquals("qduujitcjczdz", model.gracePeriodTimeSpan());
+        Assertions.assertEquals("lljfmppeeb", model.maxAgentLifetime());
+        Assertions.assertEquals("gxsabkyq", model.gracePeriodTimeSpan());
     }
 }

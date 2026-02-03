@@ -287,8 +287,12 @@ public class Dataset implements JsonSerializable<Dataset> {
         jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("structure", this.structure);
-        jsonWriter.writeUntypedField("schema", this.schema);
+        if (this.structure != null) {
+            jsonWriter.writeUntypedField("structure", this.structure);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", this.folder);
@@ -525,7 +529,7 @@ public class Dataset implements JsonSerializable<Dataset> {
                     return SharePointOnlineListResourceDataset.fromJson(readerToUse.reset());
                 } else if ("AzureDatabricksDeltaLakeDataset".equals(discriminatorValue)) {
                     return AzureDatabricksDeltaLakeDataset.fromJson(readerToUse.reset());
-                } else if ("LakeHouseTable".equals(discriminatorValue)) {
+                } else if ("LakehouseTable".equals(discriminatorValue)) {
                     return LakeHouseTableDataset.fromJson(readerToUse.reset());
                 } else if ("SalesforceV2Object".equals(discriminatorValue)) {
                     return SalesforceV2ObjectDataset.fromJson(readerToUse.reset());

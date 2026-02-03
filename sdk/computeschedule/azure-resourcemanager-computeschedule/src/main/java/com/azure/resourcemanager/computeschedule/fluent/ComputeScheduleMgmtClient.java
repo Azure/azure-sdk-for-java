@@ -59,4 +59,25 @@ public interface ComputeScheduleMgmtClient {
      * @return the ScheduledActionsClient object.
      */
     ScheduledActionsClient getScheduledActions();
+
+    /**
+     * Gets the ScheduledActionExtensionsClient object to access its operations.
+     * 
+     * @return the ScheduledActionExtensionsClient object.
+     */
+    ScheduledActionExtensionsClient getScheduledActionExtensions();
+
+    /**
+     * Gets the OccurrencesClient object to access its operations.
+     * 
+     * @return the OccurrencesClient object.
+     */
+    OccurrencesClient getOccurrences();
+
+    /**
+     * Gets the OccurrenceExtensionsClient object to access its operations.
+     * 
+     * @return the OccurrenceExtensionsClient object.
+     */
+    OccurrenceExtensionsClient getOccurrenceExtensions();
 }

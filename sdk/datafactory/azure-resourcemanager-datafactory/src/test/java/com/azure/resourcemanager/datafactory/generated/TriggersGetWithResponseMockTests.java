@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.TriggerResource;
@@ -21,21 +21,20 @@ public final class TriggersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"xdnckgdcszz\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datazle\",\"dataz\"],\"\":{\"seft\":\"dataeqmfzyhikhn\",\"ax\":\"datajzqfpfkdybe\",\"zcadoqijfll\":\"datathppjxtobeq\",\"wvg\":\"datamuzeolcgqjtvpalk\"}},\"name\":\"utdswjtuqw\",\"type\":\"pauiccjaea\",\"etag\":\"ebqhbbqodyv\",\"id\":\"coiaaagvaecwwd\"}";
+            = "{\"properties\":{\"type\":\"Trigger\",\"description\":\"jjrhvdxfs\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datailsrxc\",\"datayk\",\"datavksvflurrfnlhlfv\"],\"cblvpwuqq\":\"datahy\",\"rcxamgvi\":\"datamfuuhmftshg\",\"y\":\"datazvvrfplkemvvlge\",\"plhwplyvqofpemc\":\"datash\"},\"name\":\"xkifjvil\",\"type\":\"opw\",\"etag\":\"bewbxaufo\",\"id\":\"mdpgg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TriggerResource response = manager.triggers()
-            .getWithResponse("klnrzoafxoyddush", "yjhhynlmxzdwpdw", "noukyz", "yeghmf",
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("zcvmr", "xebslausvbv", "ctiso", "fefyggbacmn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("coiaaagvaecwwd", response.id());
-        Assertions.assertEquals("xdnckgdcszz", response.properties().description());
+        Assertions.assertEquals("mdpgg", response.id());
+        Assertions.assertEquals("jjrhvdxfs", response.properties().description());
     }
 }

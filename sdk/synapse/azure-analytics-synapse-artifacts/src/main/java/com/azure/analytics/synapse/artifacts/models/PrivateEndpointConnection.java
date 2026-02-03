@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,26 +19,31 @@ public class PrivateEndpointConnection extends ProxyResource {
     /*
      * The private endpoint which the connection belongs to.
      */
+    @Generated
     private PrivateEndpoint privateEndpoint;
 
     /*
      * Connection state of the private endpoint connection.
      */
+    @Generated
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
      * Provisioning state of the private endpoint connection.
      */
+    @Generated
     private String provisioningState;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
@@ -45,11 +51,13 @@ public class PrivateEndpointConnection extends ProxyResource {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /**
      * Creates an instance of PrivateEndpointConnection class.
      */
+    @Generated
     public PrivateEndpointConnection() {
     }
 
@@ -58,6 +66,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the privateEndpoint value.
      */
+    @Generated
     public PrivateEndpoint getPrivateEndpoint() {
         return this.privateEndpoint;
     }
@@ -68,6 +77,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnection object itself.
      */
+    @Generated
     public PrivateEndpointConnection setPrivateEndpoint(PrivateEndpoint privateEndpoint) {
         this.privateEndpoint = privateEndpoint;
         return this;
@@ -78,6 +88,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the privateLinkServiceConnectionState value.
      */
+    @Generated
     public PrivateLinkServiceConnectionState getPrivateLinkServiceConnectionState() {
         return this.privateLinkServiceConnectionState;
     }
@@ -88,6 +99,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnection object itself.
      */
+    @Generated
     public PrivateEndpointConnection
         setPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
@@ -99,6 +111,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public String getProvisioningState() {
         return this.provisioningState;
     }
@@ -109,6 +122,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -119,6 +133,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the name value.
      */
+    @Generated
     @Override
     public String getName() {
         return this.name;
@@ -130,6 +145,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * 
      * @return the id value.
      */
+    @Generated
     @Override
     public String getId() {
         return this.id;
@@ -138,6 +154,7 @@ public class PrivateEndpointConnection extends ProxyResource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -158,6 +175,7 @@ public class PrivateEndpointConnection extends ProxyResource {
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PrivateEndpointConnection.
      */
+    @Generated
     public static PrivateEndpointConnection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrivateEndpointConnection deserializedPrivateEndpointConnection = new PrivateEndpointConnection();

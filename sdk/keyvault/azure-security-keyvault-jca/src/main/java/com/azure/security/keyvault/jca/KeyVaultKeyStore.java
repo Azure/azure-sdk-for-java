@@ -111,7 +111,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * <p>
      * The constructor uses System.getProperty for
      * <code>azure.keyvault.uri</code>,
-     * <code>azure.keyvault.aadAuthenticationUrl</code>,
      * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
      * <code>azure.keyvault.clientSecret</code> and
@@ -128,6 +127,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
+        String accessToken = System.getProperty("azure.keyvault.access-token");
         boolean disableChallengeResourceVerification
             = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
         long refreshInterval = getRefreshInterval();
@@ -147,7 +147,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         LOGGER.log(FINE, String.format("Loaded custom certificates: %s.", customCertificates.getAliases()));
 
         keyVaultCertificates = new KeyVaultCertificates(refreshInterval, keyVaultUri, tenantId, clientId, clientSecret,
-            managedIdentity, disableChallengeResourceVerification);
+            managedIdentity, accessToken, disableChallengeResourceVerification);
         LOGGER.log(FINE, String.format("Loaded Key Vault certificates: %s.", keyVaultCertificates.getAliases()));
 
         classpathCertificates = new ClasspathCertificates();
@@ -185,7 +185,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         KeyVaultLoadStoreParameter keyVaultLoadStoreParameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"), System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"), System.getProperty("azure.keyvault.client-secret"),
-            System.getProperty("azure.keyvault.managed-identity"));
+            System.getProperty("azure.keyvault.managed-identity"), System.getProperty("azure.keyvault.access-token"));
 
         if (Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"))) {
             keyVaultLoadStoreParameter.disableChallengeResourceVerification();
@@ -400,7 +400,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
             keyVaultCertificates.updateKeyVaultClient(parameter.getUri(), parameter.getTenantId(),
                 parameter.getClientId(), parameter.getClientSecret(), parameter.getManagedIdentity(),
-                parameter.isChallengeResourceVerificationDisabled());
+                parameter.getAccessToken(), parameter.isChallengeResourceVerificationDisabled());
         }
 
         classpathCertificates.loadCertificatesFromClasspath();

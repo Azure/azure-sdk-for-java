@@ -10,7 +10,7 @@ package com.azure.resourcemanager.hybridcompute.generated;
 public final class GatewaysDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-07-31-preview/examples/gateway/
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2025-02-19-preview/examples/gateway/
      * Gateway_Delete.json
      */
     /**

@@ -20,6 +20,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -114,6 +118,14 @@ public final class PoliciesClientImpl implements PoliciesClient {
             @PathParam("policyId") PolicyIdName policyId, @HeaderParam("If-Match") String ifMatch,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PolicyCollectionInner>> listByServiceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -124,11 +136,11 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation along with {@link Response} on successful completion of
+     * @return the response of the list policy operation along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+    private Mono<PagedResponse<PolicyContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
         String serviceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -149,6 +161,8 @@ public final class PoliciesClientImpl implements PoliciesClient {
         return FluxUtil
             .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
                 this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<PolicyContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -161,11 +175,11 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation along with {@link Response} on successful completion of
+     * @return the response of the list policy operation along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+    private Mono<PagedResponse<PolicyContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
         String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -184,8 +198,11 @@ public final class PoliciesClientImpl implements PoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return service
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -196,12 +213,12 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation on successful completion of {@link Mono}.
+     * @return the response of the list policy operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PolicyCollectionInner> listByServiceAsync(String resourceGroupName, String serviceName) {
-        return listByServiceWithResponseAsync(resourceGroupName, serviceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PolicyContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName),
+            nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -213,12 +230,13 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation along with {@link Response}.
+     * @return the response of the list policy operation as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PolicyContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
         Context context) {
-        return listByServiceWithResponseAsync(resourceGroupName, serviceName, context).block();
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, context),
+            nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -229,11 +247,28 @@ public final class PoliciesClientImpl implements PoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation.
+     * @return the response of the list policy operation as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyCollectionInner listByService(String resourceGroupName, String serviceName) {
-        return listByServiceWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyContractInner> listByService(String resourceGroupName, String serviceName) {
+        return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName));
+    }
+
+    /**
+     * Lists all the Global Policy definitions of the Api Management service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the list policy operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PolicyContractInner> listByService(String resourceGroupName, String serviceName,
+        Context context) {
+        return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, context));
     }
 
     /**
@@ -797,5 +832,60 @@ public final class PoliciesClientImpl implements PoliciesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch) {
         deleteWithResponse(resourceGroupName, serviceName, policyId, ifMatch, Context.NONE);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the list policy operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PolicyContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PolicyContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the list policy operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PolicyContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

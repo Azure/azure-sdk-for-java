@@ -792,15 +792,7 @@ public class ReaderBasedJsonParser extends ParserMinimalBase {
                 }
             }
             ch = _inputBuffer[_inputPtr++];
-            if (ch == 'N') {
-                String match = negative ? "-INF" : "+INF";
-                _matchToken(match, 3);
-                if (Feature.ALLOW_NON_NUMERIC_NUMBERS.enabledIn(_features)) {
-                    return resetAsNaN(match, negative ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
-                }
-                _reportError(
-                    "Non-standard token '" + match + "': enable JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS to allow");
-            } else if (ch == 'n') {
+            if (ch == 'n') {
                 String match = negative ? "-Infinity" : "+Infinity";
                 _matchToken(match, 3);
                 if (Feature.ALLOW_NON_NUMERIC_NUMBERS.enabledIn(_features)) {

@@ -17,10 +17,10 @@ public class TriggersGetTrigger {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildTriggersClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.triggersgettrigger.triggersgettrigger
+        // BEGIN:com.azure.analytics.purview.scanning.generated.triggers-get-trigger.triggers-get-trigger
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = triggersClient.getTriggerWithResponse("myDataSourceName", "myScanName", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.triggersgettrigger.triggersgettrigger
+        // END:com.azure.analytics.purview.scanning.generated.triggers-get-trigger.triggers-get-trigger
     }
 }

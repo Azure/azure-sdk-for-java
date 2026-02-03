@@ -6,11 +6,13 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.databox.DataBoxManager;
 import com.azure.resourcemanager.databox.models.DatacenterAddressRequest;
+import com.azure.resourcemanager.databox.models.DeviceCapabilityRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
 import com.azure.resourcemanager.databox.models.RegionConfigurationResponse;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityRequest;
@@ -25,24 +27,30 @@ public final class ServicesRegionConfigurationByResourceGroupWithResponseMockTes
     @Test
     public void testRegionConfigurationByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"scheduleAvailabilityResponse\":{\"availableDates\":[\"2021-05-03T19:00:54Z\"]},\"transportAvailabilityResponse\":{\"transportAvailabilityDetails\":[{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"CustomerManaged\"}]},\"datacenterAddressResponse\":{\"datacenterAddressType\":\"DatacenterAddressResponse\",\"supportedCarriersForReturnShipment\":[\"wncot\"],\"dataCenterAzureLocation\":\"fhir\"}}";
+            = "{\"scheduleAvailabilityResponse\":{\"availableDates\":[\"2021-08-09T21:16:26Z\"]},\"transportAvailabilityResponse\":{\"transportAvailabilityDetails\":[{\"shipmentType\":\"MicrosoftManaged\"},{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"CustomerManaged\"}]},\"datacenterAddressResponse\":{\"datacenterAddressType\":\"DatacenterAddressResponse\",\"supportedCarriersForReturnShipment\":[\"nc\",\"tmr\"],\"dataCenterAzureLocation\":\"irctymoxoftpipiw\"},\"deviceCapabilityResponse\":{\"deviceCapabilityDetails\":[{\"hardwareEncryption\":\"Enabled\"}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataBoxManager manager = DataBoxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RegionConfigurationResponse response = manager.services()
-            .regionConfigurationByResourceGroupWithResponse("jbibg", "mfxumvfcluyovw", new RegionConfigurationRequest()
-                .withScheduleAvailabilityRequest(
-                    new ScheduleAvailabilityRequest().withStorageLocation("bkfezzxscyhwzdgi")
-                        .withCountry("jbzbomvzzbtdcq"))
-                .withTransportAvailabilityRequest(
-                    new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_CUSTOMER_DISK))
-                .withDatacenterAddressRequest(
-                    new DatacenterAddressRequest().withStorageLocation("ujviylwdshfs").withSkuName(SkuName.DATA_BOX)),
+            .regionConfigurationByResourceGroupWithResponse("xumvfcluyovw", "nbkfezzxscy",
+                new RegionConfigurationRequest()
+                    .withScheduleAvailabilityRequest(new ScheduleAvailabilityRequest().withStorageLocation("zdgiruj")
+                        .withCountry("bomvzzbtdcqv")
+                        .withModel(ModelName.AZURE_DATA_BOX525))
+                    .withTransportAvailabilityRequest(
+                        new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_HEAVY)
+                            .withModel(ModelName.DATA_BOX_CUSTOMER_DISK))
+                    .withDatacenterAddressRequest(new DatacenterAddressRequest().withStorageLocation("l")
+                        .withSkuName(SkuName.DATA_BOX)
+                        .withModel(ModelName.DATA_BOX))
+                    .withDeviceCapabilityRequest(
+                        new DeviceCapabilityRequest().withSkuName(SkuName.DATA_BOX_CUSTOMER_DISK)
+                            .withModel(ModelName.AZURE_DATA_BOX525)),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

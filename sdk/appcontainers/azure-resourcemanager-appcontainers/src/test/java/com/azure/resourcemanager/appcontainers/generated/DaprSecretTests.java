@@ -11,7 +11,7 @@ public final class DaprSecretTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprSecret model
-            = BinaryData.fromString("{\"name\":\"enwabfatk\",\"value\":\"dxbjhwuaanozj\"}").toObject(DaprSecret.class);
+            = BinaryData.fromString("{\"name\":\"k\",\"value\":\"henbtkcxywnytn\"}").toObject(DaprSecret.class);
     }
 
     @org.junit.jupiter.api.Test

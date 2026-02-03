@@ -6,18 +6,27 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datamigration.models.WaitStatistics;
+import org.junit.jupiter.api.Assertions;
 
 public final class WaitStatisticsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WaitStatistics model = BinaryData
-            .fromString("{\"waitType\":\"wsdtutnwl\",\"waitTimeMs\":91.60054,\"waitCount\":6613508255547335147}")
+            .fromString("{\"waitType\":\"gxdgdhpab\",\"waitTimeMs\":79.70512,\"waitCount\":487078818297817911}")
             .toObject(WaitStatistics.class);
+        Assertions.assertEquals("gxdgdhpab", model.waitType());
+        Assertions.assertEquals(79.70512F, model.waitTimeMs());
+        Assertions.assertEquals(487078818297817911L, model.waitCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WaitStatistics model = new WaitStatistics();
+        WaitStatistics model = new WaitStatistics().withWaitType("gxdgdhpab")
+            .withWaitTimeMs(79.70512F)
+            .withWaitCount(487078818297817911L);
         model = BinaryData.fromObject(model).toObject(WaitStatistics.class);
+        Assertions.assertEquals("gxdgdhpab", model.waitType());
+        Assertions.assertEquals(79.70512F, model.waitTimeMs());
+        Assertions.assertEquals(487078818297817911L, model.waitCount());
     }
 }

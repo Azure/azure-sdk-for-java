@@ -12,21 +12,21 @@ public final class InMageRcmFailbackReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmFailbackReprotectInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcmFailback\",\"processServerId\":\"e\",\"runAsAccountId\":\"fm\",\"policyId\":\"mskkixvlzjxplhpe\"}")
+            "{\"instanceType\":\"InMageRcmFailback\",\"processServerId\":\"ntotcxmmqm\",\"runAsAccountId\":\"jkyjrexw\",\"policyId\":\"onbexft\"}")
             .toObject(InMageRcmFailbackReprotectInput.class);
-        Assertions.assertEquals("e", model.processServerId());
-        Assertions.assertEquals("fm", model.runAsAccountId());
-        Assertions.assertEquals("mskkixvlzjxplhpe", model.policyId());
+        Assertions.assertEquals("ntotcxmmqm", model.processServerId());
+        Assertions.assertEquals("jkyjrexw", model.runAsAccountId());
+        Assertions.assertEquals("onbexft", model.policyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmFailbackReprotectInput model = new InMageRcmFailbackReprotectInput().withProcessServerId("e")
-            .withRunAsAccountId("fm")
-            .withPolicyId("mskkixvlzjxplhpe");
+        InMageRcmFailbackReprotectInput model = new InMageRcmFailbackReprotectInput().withProcessServerId("ntotcxmmqm")
+            .withRunAsAccountId("jkyjrexw")
+            .withPolicyId("onbexft");
         model = BinaryData.fromObject(model).toObject(InMageRcmFailbackReprotectInput.class);
-        Assertions.assertEquals("e", model.processServerId());
-        Assertions.assertEquals("fm", model.runAsAccountId());
-        Assertions.assertEquals("mskkixvlzjxplhpe", model.policyId());
+        Assertions.assertEquals("ntotcxmmqm", model.processServerId());
+        Assertions.assertEquals("jkyjrexw", model.runAsAccountId());
+        Assertions.assertEquals("onbexft", model.policyId());
     }
 }

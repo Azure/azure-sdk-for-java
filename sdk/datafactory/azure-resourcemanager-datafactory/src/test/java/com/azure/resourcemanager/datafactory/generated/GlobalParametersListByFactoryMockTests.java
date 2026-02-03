@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterResource;
@@ -23,20 +23,19 @@ public final class GlobalParametersListByFactoryMockTests {
     @Test
     public void testListByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"gjkzulihdhfcc\":{\"type\":\"Float\",\"value\":\"datas\"},\"ilhcca\":{\"type\":\"Float\",\"value\":\"datahztqiaydmblpdjtl\"},\"ydcslyd\":{\"type\":\"Int\",\"value\":\"dataiifvindcakansjrz\"},\"iyngupphvo\":{\"type\":\"Array\",\"value\":\"datawtkce\"}},\"name\":\"ocjsadbuvvpdj\",\"type\":\"nndvvgs\",\"etag\":\"vz\",\"id\":\"dfikduwqkhmabgzc\"}]}";
+            = "{\"value\":[{\"properties\":{\"cwngg\":{\"type\":\"Int\",\"value\":\"datamjxxov\"},\"papzb\":{\"type\":\"Int\",\"value\":\"datajbgy\"},\"izoamttxyddkvi\":{\"type\":\"Float\",\"value\":\"datafuac\"}},\"name\":\"bbn\",\"type\":\"gzlicytfpy\",\"etag\":\"ednous\",\"id\":\"ljl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GlobalParameterResource> response
-            = manager.globalParameters().listByFactory("tbflechgiqxknjr", "rvnq", com.azure.core.util.Context.NONE);
+            = manager.globalParameters().listByFactory("ukveknwldqjlgzc", "rh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dfikduwqkhmabgzc", response.iterator().next().id());
-        Assertions.assertEquals(GlobalParameterType.FLOAT,
-            response.iterator().next().properties().get("gjkzulihdhfcc").type());
+        Assertions.assertEquals("ljl", response.iterator().next().id());
+        Assertions.assertEquals(GlobalParameterType.INT, response.iterator().next().properties().get("cwngg").type());
     }
 }

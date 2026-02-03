@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.datamigration.models.ObjectType;
 import com.azure.resourcemanager.datamigration.models.SchemaComparisonValidationResult;
+import com.azure.resourcemanager.datamigration.models.SchemaComparisonValidationResultType;
+import com.azure.resourcemanager.datamigration.models.Severity;
+import com.azure.resourcemanager.datamigration.models.UpdateActionType;
+import com.azure.resourcemanager.datamigration.models.ValidationError;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -14,22 +19,35 @@ public final class SchemaComparisonValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaComparisonValidationResult model = BinaryData.fromString(
-            "{\"schemaDifferences\":{\"objectName\":\"foj\",\"objectType\":\"StoredProcedures\",\"updateAction\":\"ChangedOnTarget\"},\"validationErrors\":{\"text\":\"lcplc\",\"severity\":\"Warning\"},\"sourceDatabaseObjectCount\":{\"lhzdsqtzb\":2890962376533436249,\"nowc\":2978941899472695406,\"gmvecactxmw\":4272824792965282046,\"yowc\":8777916003567598395},\"targetDatabaseObjectCount\":{\"ekqvgqouwif\":3485830042406616316,\"j\":4207965579372127021,\"vqikfxcvhrfsphu\":6985401659827260093}}")
+            "{\"schemaDifferences\":{\"objectName\":\"g\",\"objectType\":\"StoredProcedures\",\"updateAction\":\"ChangedOnTarget\"},\"validationErrors\":{\"text\":\"abbujftabenb\",\"severity\":\"Error\"},\"sourceDatabaseObjectCount\":{\"ucafedd\":3125504831221073323,\"lzafwxu\":365194165954905680},\"targetDatabaseObjectCount\":{\"ookrtalvnbw\":8202091905557917702,\"emeluclv\":5423357702381080106,\"ukyrdnqodxahh\":6196852251779054307,\"faqnvz\":8854757179811049458}}")
             .toObject(SchemaComparisonValidationResult.class);
-        Assertions.assertEquals(2890962376533436249L, model.sourceDatabaseObjectCount().get("lhzdsqtzb"));
-        Assertions.assertEquals(3485830042406616316L, model.targetDatabaseObjectCount().get("ekqvgqouwif"));
+        Assertions.assertEquals("g", model.schemaDifferences().objectName());
+        Assertions.assertEquals(ObjectType.STORED_PROCEDURES, model.schemaDifferences().objectType());
+        Assertions.assertEquals(UpdateActionType.CHANGED_ON_TARGET, model.schemaDifferences().updateAction());
+        Assertions.assertEquals("abbujftabenb", model.validationErrors().text());
+        Assertions.assertEquals(Severity.ERROR, model.validationErrors().severity());
+        Assertions.assertEquals(3125504831221073323L, model.sourceDatabaseObjectCount().get("ucafedd"));
+        Assertions.assertEquals(8202091905557917702L, model.targetDatabaseObjectCount().get("ookrtalvnbw"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaComparisonValidationResult model = new SchemaComparisonValidationResult()
-            .withSourceDatabaseObjectCount(mapOf("lhzdsqtzb", 2890962376533436249L, "nowc", 2978941899472695406L,
-                "gmvecactxmw", 4272824792965282046L, "yowc", 8777916003567598395L))
-            .withTargetDatabaseObjectCount(mapOf("ekqvgqouwif", 3485830042406616316L, "j", 4207965579372127021L,
-                "vqikfxcvhrfsphu", 6985401659827260093L));
+            .withSchemaDifferences(new SchemaComparisonValidationResultType().withObjectName("g")
+                .withObjectType(ObjectType.STORED_PROCEDURES)
+                .withUpdateAction(UpdateActionType.CHANGED_ON_TARGET))
+            .withValidationErrors(new ValidationError().withText("abbujftabenb").withSeverity(Severity.ERROR))
+            .withSourceDatabaseObjectCount(mapOf("ucafedd", 3125504831221073323L, "lzafwxu", 365194165954905680L))
+            .withTargetDatabaseObjectCount(mapOf("ookrtalvnbw", 8202091905557917702L, "emeluclv", 5423357702381080106L,
+                "ukyrdnqodxahh", 6196852251779054307L, "faqnvz", 8854757179811049458L));
         model = BinaryData.fromObject(model).toObject(SchemaComparisonValidationResult.class);
-        Assertions.assertEquals(2890962376533436249L, model.sourceDatabaseObjectCount().get("lhzdsqtzb"));
-        Assertions.assertEquals(3485830042406616316L, model.targetDatabaseObjectCount().get("ekqvgqouwif"));
+        Assertions.assertEquals("g", model.schemaDifferences().objectName());
+        Assertions.assertEquals(ObjectType.STORED_PROCEDURES, model.schemaDifferences().objectType());
+        Assertions.assertEquals(UpdateActionType.CHANGED_ON_TARGET, model.schemaDifferences().updateAction());
+        Assertions.assertEquals("abbujftabenb", model.validationErrors().text());
+        Assertions.assertEquals(Severity.ERROR, model.validationErrors().severity());
+        Assertions.assertEquals(3125504831221073323L, model.sourceDatabaseObjectCount().get("ucafedd"));
+        Assertions.assertEquals(8202091905557917702L, model.targetDatabaseObjectCount().get("ookrtalvnbw"));
     }
 
     // Use "Map.of" if available

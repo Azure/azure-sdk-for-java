@@ -14,35 +14,33 @@ public final class InMageDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageDiskDetails model = BinaryData.fromString(
-            "{\"diskId\":\"kgxqwqueuuylztpz\",\"diskName\":\"zevjykofve\",\"diskSizeInMB\":\"fkhkqtwqlep\",\"diskType\":\"zkca\",\"diskConfiguration\":\"wz\",\"volumeList\":[{\"label\":\"gffjw\",\"name\":\"nrtwz\"},{\"label\":\"qkifmxawostfz\",\"name\":\"hrkmjqncfv\"},{\"label\":\"cnhemvwfnq\",\"name\":\"ypvndrw\"},{\"label\":\"od\",\"name\":\"grssgw\"}]}")
+            "{\"diskId\":\"pieidzlvssqy\",\"diskName\":\"opac\",\"diskSizeInMB\":\"hydv\",\"diskType\":\"mfngpmillxgjsci\",\"diskConfiguration\":\"gsoriobij\",\"volumeList\":[{\"label\":\"yeuynhbokay\",\"name\":\"wybriopdwe\"},{\"label\":\"tnorwaigsioct\",\"name\":\"mvjanx\"}]}")
             .toObject(InMageDiskDetails.class);
-        Assertions.assertEquals("kgxqwqueuuylztpz", model.diskId());
-        Assertions.assertEquals("zevjykofve", model.diskName());
-        Assertions.assertEquals("fkhkqtwqlep", model.diskSizeInMB());
-        Assertions.assertEquals("zkca", model.diskType());
-        Assertions.assertEquals("wz", model.diskConfiguration());
-        Assertions.assertEquals("gffjw", model.volumeList().get(0).label());
-        Assertions.assertEquals("nrtwz", model.volumeList().get(0).name());
+        Assertions.assertEquals("pieidzlvssqy", model.diskId());
+        Assertions.assertEquals("opac", model.diskName());
+        Assertions.assertEquals("hydv", model.diskSizeInMB());
+        Assertions.assertEquals("mfngpmillxgjsci", model.diskType());
+        Assertions.assertEquals("gsoriobij", model.diskConfiguration());
+        Assertions.assertEquals("yeuynhbokay", model.volumeList().get(0).label());
+        Assertions.assertEquals("wybriopdwe", model.volumeList().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageDiskDetails model = new InMageDiskDetails().withDiskId("kgxqwqueuuylztpz")
-            .withDiskName("zevjykofve")
-            .withDiskSizeInMB("fkhkqtwqlep")
-            .withDiskType("zkca")
-            .withDiskConfiguration("wz")
-            .withVolumeList(Arrays.asList(new DiskVolumeDetails().withLabel("gffjw").withName("nrtwz"),
-                new DiskVolumeDetails().withLabel("qkifmxawostfz").withName("hrkmjqncfv"),
-                new DiskVolumeDetails().withLabel("cnhemvwfnq").withName("ypvndrw"),
-                new DiskVolumeDetails().withLabel("od").withName("grssgw")));
+        InMageDiskDetails model = new InMageDiskDetails().withDiskId("pieidzlvssqy")
+            .withDiskName("opac")
+            .withDiskSizeInMB("hydv")
+            .withDiskType("mfngpmillxgjsci")
+            .withDiskConfiguration("gsoriobij")
+            .withVolumeList(Arrays.asList(new DiskVolumeDetails().withLabel("yeuynhbokay").withName("wybriopdwe"),
+                new DiskVolumeDetails().withLabel("tnorwaigsioct").withName("mvjanx")));
         model = BinaryData.fromObject(model).toObject(InMageDiskDetails.class);
-        Assertions.assertEquals("kgxqwqueuuylztpz", model.diskId());
-        Assertions.assertEquals("zevjykofve", model.diskName());
-        Assertions.assertEquals("fkhkqtwqlep", model.diskSizeInMB());
-        Assertions.assertEquals("zkca", model.diskType());
-        Assertions.assertEquals("wz", model.diskConfiguration());
-        Assertions.assertEquals("gffjw", model.volumeList().get(0).label());
-        Assertions.assertEquals("nrtwz", model.volumeList().get(0).name());
+        Assertions.assertEquals("pieidzlvssqy", model.diskId());
+        Assertions.assertEquals("opac", model.diskName());
+        Assertions.assertEquals("hydv", model.diskSizeInMB());
+        Assertions.assertEquals("mfngpmillxgjsci", model.diskType());
+        Assertions.assertEquals("gsoriobij", model.diskConfiguration());
+        Assertions.assertEquals("yeuynhbokay", model.volumeList().get(0).label());
+        Assertions.assertEquals("wybriopdwe", model.volumeList().get(0).name());
     }
 }

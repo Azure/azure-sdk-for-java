@@ -6,18 +6,43 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datamigration.models.DataIntegrityValidationResult;
+import com.azure.resourcemanager.datamigration.models.Severity;
+import com.azure.resourcemanager.datamigration.models.ValidationError;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.Assertions;
 
 public final class DataIntegrityValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataIntegrityValidationResult model = BinaryData.fromString(
-            "{\"failedObjects\":{\"fzqlqhycavod\":\"ilcbtgnhnzeyqxtj\",\"nlrariaawiuagy\":\"gxdbeesmie\",\"ojocqwogf\":\"wqfbylyrfgiagt\",\"uxylfsbtkadpy\":\"zjvusfzldmo\"},\"validationErrors\":{\"text\":\"nbtgkbugrjqctoj\",\"severity\":\"Warning\"}}")
+            "{\"failedObjects\":{\"lnwyvqkxr\":\"fehgmv\"},\"validationErrors\":{\"text\":\"niylyly\",\"severity\":\"Warning\"}}")
             .toObject(DataIntegrityValidationResult.class);
+        Assertions.assertEquals("fehgmv", model.failedObjects().get("lnwyvqkxr"));
+        Assertions.assertEquals("niylyly", model.validationErrors().text());
+        Assertions.assertEquals(Severity.WARNING, model.validationErrors().severity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataIntegrityValidationResult model = new DataIntegrityValidationResult();
+        DataIntegrityValidationResult model
+            = new DataIntegrityValidationResult().withFailedObjects(mapOf("lnwyvqkxr", "fehgmv"))
+                .withValidationErrors(new ValidationError().withText("niylyly").withSeverity(Severity.WARNING));
         model = BinaryData.fromObject(model).toObject(DataIntegrityValidationResult.class);
+        Assertions.assertEquals("fehgmv", model.failedObjects().get("lnwyvqkxr"));
+        Assertions.assertEquals("niylyly", model.validationErrors().text());
+        Assertions.assertEquals(Severity.WARNING, model.validationErrors().severity());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

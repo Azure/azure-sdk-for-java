@@ -7,8 +7,8 @@ package com.azure.resourcemanager.providerhub.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.providerhub.ProviderHubManager;
 import com.azure.resourcemanager.providerhub.models.OperationActionType;
@@ -24,24 +24,24 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ihywartspph\",\"isDataAction\":true,\"origin\":\"User\",\"display\":{\"provider\":\"kxdssjpemmucfxh\",\"resource\":\"kkflrmymyincqlhr\",\"operation\":\"s\",\"description\":\"sl\"},\"actionType\":\"Internal\",\"properties\":\"dataovgqcgxuugqkctot\"}]}";
+            = "{\"value\":[{\"name\":\"tsnld\",\"isDataAction\":true,\"origin\":\"System\",\"display\":{\"provider\":\"gisubxbt\",\"resource\":\"ogfg\",\"operation\":\"iijrykwlefksxq\",\"description\":\"eazfpxgnmqvzvlu\"},\"actionType\":\"NotSpecified\",\"properties\":\"dataios\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ProviderHubManager manager = ProviderHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OperationsDefinition> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ihywartspph", response.iterator().next().name());
-        Assertions.assertEquals(true, response.iterator().next().isDataAction());
-        Assertions.assertEquals(OperationOrigins.USER, response.iterator().next().origin());
-        Assertions.assertEquals("kxdssjpemmucfxh", response.iterator().next().display().provider());
-        Assertions.assertEquals("kkflrmymyincqlhr", response.iterator().next().display().resource());
-        Assertions.assertEquals("s", response.iterator().next().display().operation());
-        Assertions.assertEquals("sl", response.iterator().next().display().description());
-        Assertions.assertEquals(OperationActionType.INTERNAL, response.iterator().next().actionType());
+        Assertions.assertEquals("tsnld", response.iterator().next().name());
+        Assertions.assertTrue(response.iterator().next().isDataAction());
+        Assertions.assertEquals(OperationOrigins.SYSTEM, response.iterator().next().origin());
+        Assertions.assertEquals("gisubxbt", response.iterator().next().display().provider());
+        Assertions.assertEquals("ogfg", response.iterator().next().display().resource());
+        Assertions.assertEquals("iijrykwlefksxq", response.iterator().next().display().operation());
+        Assertions.assertEquals("eazfpxgnmqvzvlu", response.iterator().next().display().description());
+        Assertions.assertEquals(OperationActionType.NOT_SPECIFIED, response.iterator().next().actionType());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class InternalError implements JsonSerializable<InternalError> {
     /*
      * Detailed error code.
      */
+    @Generated
     private String code;
 
     /*
      * An object containing more specific information than the parent object about the error.
      */
+    @Generated
     private InternalError innererror;
 
     /**
      * Creates an instance of InternalError class.
      */
+    @Generated
     public InternalError() {
     }
 
@@ -37,6 +41,7 @@ public final class InternalError implements JsonSerializable<InternalError> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -47,6 +52,7 @@ public final class InternalError implements JsonSerializable<InternalError> {
      * @param code the code value to set.
      * @return the InternalError object itself.
      */
+    @Generated
     public InternalError setCode(String code) {
         this.code = code;
         return this;
@@ -58,6 +64,7 @@ public final class InternalError implements JsonSerializable<InternalError> {
      * 
      * @return the innererror value.
      */
+    @Generated
     public InternalError getInnererror() {
         return this.innererror;
     }
@@ -69,6 +76,7 @@ public final class InternalError implements JsonSerializable<InternalError> {
      * @param innererror the innererror value to set.
      * @return the InternalError object itself.
      */
+    @Generated
     public InternalError setInnererror(InternalError innererror) {
         this.innererror = innererror;
         return this;
@@ -77,6 +85,7 @@ public final class InternalError implements JsonSerializable<InternalError> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class InternalError implements JsonSerializable<InternalError> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the InternalError.
      */
+    @Generated
     public static InternalError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             InternalError deserializedInternalError = new InternalError();

@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class WeatherValueMaxMinAvg implements JsonSerializable<WeatherValu
     /*
      * Maximum temperature for the time period.
      */
+    @Generated
     private WeatherUnitDetails maximum;
 
     /*
      * Minimum temperature for the time period.
      */
+    @Generated
     private WeatherUnitDetails minimum;
 
     /*
      * Average temperature for the time period.
      */
+    @Generated
     private WeatherUnitDetails average;
 
     /**
      * Set default WeatherValueMaxMinAvg constructor to private
      */
+    @Generated
     private WeatherValueMaxMinAvg() {
     }
 
@@ -42,6 +47,7 @@ public final class WeatherValueMaxMinAvg implements JsonSerializable<WeatherValu
      *
      * @return the maximum value.
      */
+    @Generated
     public WeatherUnitDetails getMaximum() {
         return this.maximum;
     }
@@ -51,6 +57,7 @@ public final class WeatherValueMaxMinAvg implements JsonSerializable<WeatherValu
      *
      * @return the minimum value.
      */
+    @Generated
     public WeatherUnitDetails getMinimum() {
         return this.minimum;
     }
@@ -60,6 +67,7 @@ public final class WeatherValueMaxMinAvg implements JsonSerializable<WeatherValu
      *
      * @return the average value.
      */
+    @Generated
     public WeatherUnitDetails getAverage() {
         return this.average;
     }
@@ -67,6 +75,7 @@ public final class WeatherValueMaxMinAvg implements JsonSerializable<WeatherValu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -84,6 +93,7 @@ public final class WeatherValueMaxMinAvg implements JsonSerializable<WeatherValu
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the WeatherValueMaxMinAvg.
      */
+    @Generated
     public static WeatherValueMaxMinAvg fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WeatherValueMaxMinAvg deserializedWeatherValueMaxMinAvg = new WeatherValueMaxMinAvg();

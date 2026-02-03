@@ -15,36 +15,37 @@ public final class RackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RackInner model = BinaryData.fromString(
-            "{\"extendedLocation\":{\"name\":\"fiwrxgkn\",\"type\":\"uvyinzqodfvpgs\"},\"properties\":{\"availabilityZone\":\"oxgsgbpfgzdjtx\",\"clusterId\":\"flbqvgaq\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"fcq\",\"provisioningState\":\"Provisioning\",\"rackLocation\":\"dvetnws\",\"rackSerialNumber\":\"tutnwlduycvuzhyr\",\"rackSkuId\":\"ewipm\"},\"location\":\"k\",\"tags\":{\"zhhzjhfjmhvvmu\":\"kuqgsjjxundxgket\",\"yihsasbhudypohyu\":\"gpmuneqsxvmhfbuz\"},\"id\":\"ms\",\"name\":\"ynsqyrpfoobr\",\"type\":\"ttymsjny\"}")
+            "{\"etag\":\"tifdwfmvi\",\"extendedLocation\":{\"name\":\"orq\",\"type\":\"bttzhraglkafhonq\"},\"properties\":{\"availabilityZone\":\"ujeickp\",\"clusterId\":\"cpopmxel\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"tyjedex\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"f\",\"rackSerialNumber\":\"kqscazuawxtzx\",\"rackSkuId\":\"uamwabzxrvxc\"},\"location\":\"hsphaivmxyas\",\"tags\":{\"smjblmljhlnym\":\"gsgzwywakoihk\",\"zcbmqqvxmvwf\":\"otqyry\",\"nsup\":\"tayx\",\"oibgsxg\":\"ujlzqnhcvsqltn\"},\"id\":\"xfyqonmpqoxwdo\",\"name\":\"dbxiqx\",\"type\":\"iiqbi\"}")
             .toObject(RackInner.class);
-        Assertions.assertEquals("k", model.location());
-        Assertions.assertEquals("kuqgsjjxundxgket", model.tags().get("zhhzjhfjmhvvmu"));
-        Assertions.assertEquals("fiwrxgkn", model.extendedLocation().name());
-        Assertions.assertEquals("uvyinzqodfvpgs", model.extendedLocation().type());
-        Assertions.assertEquals("oxgsgbpfgzdjtx", model.availabilityZone());
-        Assertions.assertEquals("dvetnws", model.rackLocation());
-        Assertions.assertEquals("tutnwlduycvuzhyr", model.rackSerialNumber());
-        Assertions.assertEquals("ewipm", model.rackSkuId());
+        Assertions.assertEquals("hsphaivmxyas", model.location());
+        Assertions.assertEquals("gsgzwywakoihk", model.tags().get("smjblmljhlnym"));
+        Assertions.assertEquals("orq", model.extendedLocation().name());
+        Assertions.assertEquals("bttzhraglkafhonq", model.extendedLocation().type());
+        Assertions.assertEquals("ujeickp", model.availabilityZone());
+        Assertions.assertEquals("f", model.rackLocation());
+        Assertions.assertEquals("kqscazuawxtzx", model.rackSerialNumber());
+        Assertions.assertEquals("uamwabzxrvxc", model.rackSkuId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RackInner model = new RackInner().withLocation("k")
-            .withTags(mapOf("zhhzjhfjmhvvmu", "kuqgsjjxundxgket", "yihsasbhudypohyu", "gpmuneqsxvmhfbuz"))
-            .withExtendedLocation(new ExtendedLocation().withName("fiwrxgkn").withType("uvyinzqodfvpgs"))
-            .withAvailabilityZone("oxgsgbpfgzdjtx")
-            .withRackLocation("dvetnws")
-            .withRackSerialNumber("tutnwlduycvuzhyr")
-            .withRackSkuId("ewipm");
+        RackInner model = new RackInner().withLocation("hsphaivmxyas")
+            .withTags(mapOf("smjblmljhlnym", "gsgzwywakoihk", "zcbmqqvxmvwf", "otqyry", "nsup", "tayx", "oibgsxg",
+                "ujlzqnhcvsqltn"))
+            .withExtendedLocation(new ExtendedLocation().withName("orq").withType("bttzhraglkafhonq"))
+            .withAvailabilityZone("ujeickp")
+            .withRackLocation("f")
+            .withRackSerialNumber("kqscazuawxtzx")
+            .withRackSkuId("uamwabzxrvxc");
         model = BinaryData.fromObject(model).toObject(RackInner.class);
-        Assertions.assertEquals("k", model.location());
-        Assertions.assertEquals("kuqgsjjxundxgket", model.tags().get("zhhzjhfjmhvvmu"));
-        Assertions.assertEquals("fiwrxgkn", model.extendedLocation().name());
-        Assertions.assertEquals("uvyinzqodfvpgs", model.extendedLocation().type());
-        Assertions.assertEquals("oxgsgbpfgzdjtx", model.availabilityZone());
-        Assertions.assertEquals("dvetnws", model.rackLocation());
-        Assertions.assertEquals("tutnwlduycvuzhyr", model.rackSerialNumber());
-        Assertions.assertEquals("ewipm", model.rackSkuId());
+        Assertions.assertEquals("hsphaivmxyas", model.location());
+        Assertions.assertEquals("gsgzwywakoihk", model.tags().get("smjblmljhlnym"));
+        Assertions.assertEquals("orq", model.extendedLocation().name());
+        Assertions.assertEquals("bttzhraglkafhonq", model.extendedLocation().type());
+        Assertions.assertEquals("ujeickp", model.availabilityZone());
+        Assertions.assertEquals("f", model.rackLocation());
+        Assertions.assertEquals("kqscazuawxtzx", model.rackSerialNumber());
+        Assertions.assertEquals("uamwabzxrvxc", model.rackSkuId());
     }
 
     // Use "Map.of" if available

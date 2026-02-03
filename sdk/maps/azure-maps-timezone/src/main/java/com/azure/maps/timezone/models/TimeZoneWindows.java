@@ -4,6 +4,7 @@
 package com.azure.maps.timezone.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class TimeZoneWindows implements JsonSerializable<TimeZoneWindows> 
     /*
      * Windows Id property
      */
+    @Generated
     private String windowsId;
 
     /*
      * Territory property
      */
+    @Generated
     private String territory;
 
     /*
      * IanaIds array
      */
+    @Generated
     private List<String> ianaIds;
 
     /**
      * Set default TimeZoneWindows constructor to private
      */
+    @Generated
     private TimeZoneWindows() {
     }
 
@@ -43,6 +48,7 @@ public final class TimeZoneWindows implements JsonSerializable<TimeZoneWindows> 
      *
      * @return the windowsId value.
      */
+    @Generated
     public String getWindowsId() {
         return this.windowsId;
     }
@@ -52,6 +58,7 @@ public final class TimeZoneWindows implements JsonSerializable<TimeZoneWindows> 
      *
      * @return the territory value.
      */
+    @Generated
     public String getTerritory() {
         return this.territory;
     }
@@ -61,6 +68,7 @@ public final class TimeZoneWindows implements JsonSerializable<TimeZoneWindows> 
      *
      * @return the ianaIds value.
      */
+    @Generated
     public List<String> getIanaIds() {
         return this.ianaIds;
     }
@@ -68,6 +76,7 @@ public final class TimeZoneWindows implements JsonSerializable<TimeZoneWindows> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,6 +92,7 @@ public final class TimeZoneWindows implements JsonSerializable<TimeZoneWindows> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TimeZoneWindows.
      */
+    @Generated
     public static TimeZoneWindows fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TimeZoneWindows deserializedTimeZoneWindows = new TimeZoneWindows();

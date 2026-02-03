@@ -6,8 +6,8 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
 import com.azure.resourcemanager.deviceregistry.models.SchemaRegistry;
@@ -26,33 +26,33 @@ public final class SchemaRegistriesCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"qhl\",\"namespace\":\"vriiio\",\"displayName\":\"al\",\"description\":\"fk\",\"storageAccountContainerUrl\":\"tvsexsowuel\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"hhxvrhmzkwpj\",\"tenantId\":\"wspughftqsxhqx\",\"type\":\"None\"},\"location\":\"ukndxdigrjgu\",\"tags\":{\"z\":\"dmsyqtfihwhbo\",\"zudphqamvdkfw\":\"ngamvpphosz\",\"qiatkzwpcnp\":\"nwcvtbvkayhmtnv\"},\"id\":\"zcjaesgvvsccy\",\"name\":\"jguq\",\"type\":\"hwyg\"}";
+            = "{\"properties\":{\"uuid\":\"hzjkn\",\"namespace\":\"uxgvttxpnr\",\"displayName\":\"zaamrdixtrekid\",\"description\":\"yskbruff\",\"storageAccountContainerUrl\":\"l\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"tvlxhrpqh\",\"tenantId\":\"blcouqehbhbcdszi\",\"type\":\"None\"},\"location\":\"an\",\"tags\":{\"xldykalsygaolnjp\":\"pmbltoormkfql\",\"mr\":\"nbmjksibjgsjjxxa\",\"yqegx\":\"ad\",\"inbmh\":\"iv\"},\"id\":\"bjijkgqxnh\",\"name\":\"bkezn\",\"type\":\"aujvaa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DeviceRegistryManager manager = DeviceRegistryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaRegistry response = manager.schemaRegistries()
-            .define("x")
-            .withRegion("frl")
-            .withExistingResourceGroup("slthaq")
-            .withTags(mapOf("iin", "zrnw", "h", "fpwpjylwbt"))
-            .withProperties(new SchemaRegistryProperties().withNamespace("pdrhne")
-                .withDisplayName("owqkdwytisi")
-                .withDescription("rcgp")
-                .withStorageAccountContainerUrl("kpzi"))
+            .define("uflgbhgauacdixm")
+            .withRegion("sgxjc")
+            .withExistingResourceGroup("hulrtywikdmhla")
+            .withTags(mapOf("qwodiffjx", "rrscubiwsdrnp", "jogjonmc", "jrmmuabwib"))
+            .withProperties(new SchemaRegistryProperties().withNamespace("yjq")
+                .withDisplayName("kfnozoeoqbvj")
+                .withDescription("efgwbmqjc")
+                .withStorageAccountContainerUrl("ntasfaymxbu"))
             .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
             .create();
 
-        Assertions.assertEquals("ukndxdigrjgu", response.location());
-        Assertions.assertEquals("dmsyqtfihwhbo", response.tags().get("z"));
-        Assertions.assertEquals("vriiio", response.properties().namespace());
-        Assertions.assertEquals("al", response.properties().displayName());
-        Assertions.assertEquals("fk", response.properties().description());
-        Assertions.assertEquals("tvsexsowuel", response.properties().storageAccountContainerUrl());
+        Assertions.assertEquals("an", response.location());
+        Assertions.assertEquals("pmbltoormkfql", response.tags().get("xldykalsygaolnjp"));
+        Assertions.assertEquals("uxgvttxpnr", response.properties().namespace());
+        Assertions.assertEquals("zaamrdixtrekid", response.properties().displayName());
+        Assertions.assertEquals("yskbruff", response.properties().description());
+        Assertions.assertEquals("l", response.properties().storageAccountContainerUrl());
         Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.identity().type());
     }
 

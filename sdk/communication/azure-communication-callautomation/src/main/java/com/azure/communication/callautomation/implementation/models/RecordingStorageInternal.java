@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
     /*
      * Defines the kind of external storage
      */
+    @Generated
     private RecordingStorageTypeInternal recordingStorageKind;
 
     /*
      * Uri of a container or a location within a container
      */
+    @Generated
     private String recordingDestinationContainerUrl;
 
     /**
      * Creates an instance of RecordingStorageInternal class.
      */
+    @Generated
     public RecordingStorageInternal() {
     }
 
@@ -37,6 +41,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * 
      * @return the recordingStorageKind value.
      */
+    @Generated
     public RecordingStorageTypeInternal getRecordingStorageKind() {
         return this.recordingStorageKind;
     }
@@ -47,6 +52,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * @param recordingStorageKind the recordingStorageKind value to set.
      * @return the RecordingStorageInternal object itself.
      */
+    @Generated
     public RecordingStorageInternal setRecordingStorageKind(RecordingStorageTypeInternal recordingStorageKind) {
         this.recordingStorageKind = recordingStorageKind;
         return this;
@@ -57,6 +63,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * 
      * @return the recordingDestinationContainerUrl value.
      */
+    @Generated
     public String getRecordingDestinationContainerUrl() {
         return this.recordingDestinationContainerUrl;
     }
@@ -67,6 +74,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * @param recordingDestinationContainerUrl the recordingDestinationContainerUrl value to set.
      * @return the RecordingStorageInternal object itself.
      */
+    @Generated
     public RecordingStorageInternal setRecordingDestinationContainerUrl(String recordingDestinationContainerUrl) {
         this.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
         return this;
@@ -75,6 +83,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class RecordingStorageInternal implements JsonSerializable<Recordin
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RecordingStorageInternal.
      */
+    @Generated
     public static RecordingStorageInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecordingStorageInternal deserializedRecordingStorageInternal = new RecordingStorageInternal();

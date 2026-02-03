@@ -191,7 +191,7 @@ public class TraceChatCompletionsToolCallSample {
                     } else {
                         functionResponse = "Unavailable";
                     }
-                    return Optional.of(new ChatRequestToolMessage(functionResponse, toolCall.getId()));
+                    return Optional.of(new ChatRequestToolMessage(toolCall.getId()).setContent(functionResponse));
                 }
                 return Optional.empty();
             }
@@ -248,7 +248,7 @@ public class TraceChatCompletionsToolCallSample {
                     } else {
                         functionResponse = "Unavailable";
                     }
-                    return Optional.of(new ChatRequestToolMessage(functionResponse, toolCall.getId()));
+                    return Optional.of(new ChatRequestToolMessage(toolCall.getId()).setContent(functionResponse));
                 }
                 return Optional.empty();
             }

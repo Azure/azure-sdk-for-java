@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,6 +19,7 @@ public final class VectorSearchCompressionRescoreStorageMethod
      * This option preserves the original full-precision vectors. Choose this option for maximum flexibility and highest
      * quality of compressed search results. This consumes more storage but allows for rescoring and oversampling.
      */
+    @Generated
     public static final VectorSearchCompressionRescoreStorageMethod PRESERVE_ORIGINALS
         = fromString("preserveOriginals");
 
@@ -26,6 +28,7 @@ public final class VectorSearchCompressionRescoreStorageMethod
      * this option does not allow for rescoring and oversampling, it will often cause slight to moderate reductions in
      * quality.
      */
+    @Generated
     public static final VectorSearchCompressionRescoreStorageMethod DISCARD_ORIGINALS = fromString("discardOriginals");
 
     /**
@@ -33,6 +36,7 @@ public final class VectorSearchCompressionRescoreStorageMethod
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VectorSearchCompressionRescoreStorageMethod() {
     }
@@ -43,6 +47,7 @@ public final class VectorSearchCompressionRescoreStorageMethod
      * @param name a name to look for.
      * @return the corresponding VectorSearchCompressionRescoreStorageMethod.
      */
+    @Generated
     public static VectorSearchCompressionRescoreStorageMethod fromString(String name) {
         return fromString(name, VectorSearchCompressionRescoreStorageMethod.class);
     }
@@ -52,6 +57,7 @@ public final class VectorSearchCompressionRescoreStorageMethod
      * 
      * @return known VectorSearchCompressionRescoreStorageMethod values.
      */
+    @Generated
     public static Collection<VectorSearchCompressionRescoreStorageMethod> values() {
         return values(VectorSearchCompressionRescoreStorageMethod.class);
     }

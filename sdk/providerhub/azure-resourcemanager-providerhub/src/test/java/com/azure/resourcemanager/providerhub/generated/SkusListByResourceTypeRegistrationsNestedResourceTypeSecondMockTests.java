@@ -7,11 +7,10 @@ package com.azure.resourcemanager.providerhub.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.providerhub.ProviderHubManager;
-import com.azure.resourcemanager.providerhub.models.ProvisioningState;
 import com.azure.resourcemanager.providerhub.models.SkuResource;
 import com.azure.resourcemanager.providerhub.models.SkuScaleType;
 import java.nio.charset.StandardCharsets;
@@ -24,47 +23,45 @@ public final class SkusListByResourceTypeRegistrationsNestedResourceTypeSecondMo
     @Test
     public void testListByResourceTypeRegistrationsNestedResourceTypeSecond() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"skuSettings\":[{\"name\":\"skx\",\"tier\":\"ansbvriaqg\",\"size\":\"ojrulfuctejrt\",\"family\":\"fjzhxl\",\"kind\":\"bqjr\",\"locations\":[\"vrjeqmtzzbeqrztr\",\"alx\",\"d\"],\"locationInfo\":[{\"location\":\"srwrsnrhpqati\"},{\"location\":\"kkvyanxk\"},{\"location\":\"vcsemsvuvdj\"},{\"location\":\"qxetqmmlivrjjx\"}],\"requiredQuotaIds\":[\"dchpojxlehzl\",\"pgfquwzpwiibelwc\"],\"requiredFeatures\":[\"kwbpjxljtxbusq\",\"bxxn\"],\"capacity\":{\"minimum\":132768417,\"maximum\":972835304,\"default\":298319215,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"zpa\"},{\"meterId\":\"secnadbuwqrgxf\"}],\"capabilities\":[{\"name\":\"qiynez\",\"value\":\"ellnkkii\"},{\"name\":\"vmtumxpym\",\"value\":\"jfuaxroqvqpilrgu\"}]},{\"name\":\"canlduwzorxs\",\"tier\":\"x\",\"size\":\"klxymxkqvfqepdxc\",\"family\":\"uubwyvpjb\",\"kind\":\"cpj\",\"locations\":[\"qgi\",\"exkydfb\"],\"locationInfo\":[{\"location\":\"avhuerkjddvrglie\"}],\"requiredQuotaIds\":[\"cvbiiftksdw\",\"dnkefgm\",\"dhcebuv\"],\"requiredFeatures\":[\"db\",\"lzoutbaaqgzekaj\",\"lyzgsnor\"],\"capacity\":{\"minimum\":562724806,\"maximum\":2008025421,\"default\":477935303,\"scaleType\":\"Manual\"},\"costs\":[{\"meterId\":\"rxkhlob\"},{\"meterId\":\"vjb\"},{\"meterId\":\"vhdi\"}],\"capabilities\":[{\"name\":\"fluiyuosnuud\",\"value\":\"elvhyibdrqrswh\"},{\"name\":\"uubpyrow\",\"value\":\"joxztfwfqchvczev\"},{\"name\":\"nnctagfyvrt\",\"value\":\"qpemh\"},{\"name\":\"cgkrepdqhqy\",\"value\":\"wqwemvxqabckmze\"}]}],\"provisioningState\":\"MovingResources\"},\"id\":\"nhgr\",\"name\":\"ohtwhlpuzj\",\"type\":\"ceezn\"}]}";
+            = "{\"value\":[{\"properties\":{\"skuSettings\":[{\"name\":\"qvjweiwtczk\",\"tier\":\"nvovbooqbmdqrxy\",\"size\":\"ae\",\"family\":\"cflwtjdtlr\",\"kind\":\"fooy\",\"locations\":[\"xdtzcqipsdudgco\",\"zomehxlantolam\"],\"locationInfo\":[{\"location\":\"juxkqll\"}],\"requiredQuotaIds\":[\"pvwdtgckzdqiq\"],\"requiredFeatures\":[\"atrkwxoauwxs\",\"ykznhrfgslglhp\",\"yjfzi\",\"uioaeocpaj\"],\"capacity\":{\"minimum\":989988387,\"maximum\":2085922825,\"default\":1963332561,\"scaleType\":\"Manual\"},\"costs\":[{\"meterId\":\"krhd\"},{\"meterId\":\"cxbeuuqutkzwtjww\"},{\"meterId\":\"uzy\"}],\"capabilities\":[{\"name\":\"cxfnondegjdydhqk\",\"value\":\"kbjuckcatuqbhp\"},{\"name\":\"wcnxtpzdlyseid\",\"value\":\"oa\"}]}],\"provisioningState\":\"NotSpecified\"},\"id\":\"rytgrhzbqfdpfawr\",\"name\":\"tvcshtkutzcttb\",\"type\":\"gdirda\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ProviderHubManager manager = ProviderHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SkuResource> response = manager.skus()
-            .listByResourceTypeRegistrationsNestedResourceTypeSecond("jxcxxq", "dcqjkedwqurc", "ojmrvvxwjongzse",
-                "qqrsil", com.azure.core.util.Context.NONE);
+            .listByResourceTypeRegistrationsNestedResourceTypeSecond("mjodu", "fvulxfaryr", "jlgdez", "jqwahoyi",
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("skx", response.iterator().next().properties().skuSettings().get(0).name());
-        Assertions.assertEquals("ansbvriaqg", response.iterator().next().properties().skuSettings().get(0).tier());
-        Assertions.assertEquals("ojrulfuctejrt", response.iterator().next().properties().skuSettings().get(0).size());
-        Assertions.assertEquals("fjzhxl", response.iterator().next().properties().skuSettings().get(0).family());
-        Assertions.assertEquals("bqjr", response.iterator().next().properties().skuSettings().get(0).kind());
-        Assertions.assertEquals("vrjeqmtzzbeqrztr",
+        Assertions.assertEquals("qvjweiwtczk", response.iterator().next().properties().skuSettings().get(0).name());
+        Assertions.assertEquals("nvovbooqbmdqrxy", response.iterator().next().properties().skuSettings().get(0).tier());
+        Assertions.assertEquals("ae", response.iterator().next().properties().skuSettings().get(0).size());
+        Assertions.assertEquals("cflwtjdtlr", response.iterator().next().properties().skuSettings().get(0).family());
+        Assertions.assertEquals("fooy", response.iterator().next().properties().skuSettings().get(0).kind());
+        Assertions.assertEquals("xdtzcqipsdudgco",
             response.iterator().next().properties().skuSettings().get(0).locations().get(0));
-        Assertions.assertEquals("srwrsnrhpqati",
+        Assertions.assertEquals("juxkqll",
             response.iterator().next().properties().skuSettings().get(0).locationInfo().get(0).location());
-        Assertions.assertEquals("dchpojxlehzl",
+        Assertions.assertEquals("pvwdtgckzdqiq",
             response.iterator().next().properties().skuSettings().get(0).requiredQuotaIds().get(0));
-        Assertions.assertEquals("kwbpjxljtxbusq",
+        Assertions.assertEquals("atrkwxoauwxs",
             response.iterator().next().properties().skuSettings().get(0).requiredFeatures().get(0));
-        Assertions.assertEquals(132768417,
+        Assertions.assertEquals(989988387,
             response.iterator().next().properties().skuSettings().get(0).capacity().minimum());
-        Assertions.assertEquals(972835304,
+        Assertions.assertEquals(2085922825,
             response.iterator().next().properties().skuSettings().get(0).capacity().maximum());
-        Assertions.assertEquals(298319215,
+        Assertions.assertEquals(1963332561,
             response.iterator().next().properties().skuSettings().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(SkuScaleType.NONE,
+        Assertions.assertEquals(SkuScaleType.MANUAL,
             response.iterator().next().properties().skuSettings().get(0).capacity().scaleType());
-        Assertions.assertEquals("zpa",
+        Assertions.assertEquals("krhd",
             response.iterator().next().properties().skuSettings().get(0).costs().get(0).meterId());
-        Assertions.assertEquals("qiynez",
+        Assertions.assertEquals("cxfnondegjdydhqk",
             response.iterator().next().properties().skuSettings().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("ellnkkii",
+        Assertions.assertEquals("kbjuckcatuqbhp",
             response.iterator().next().properties().skuSettings().get(0).capabilities().get(0).value());
-        Assertions.assertEquals(ProvisioningState.MOVING_RESOURCES,
-            response.iterator().next().properties().provisioningState());
     }
 }

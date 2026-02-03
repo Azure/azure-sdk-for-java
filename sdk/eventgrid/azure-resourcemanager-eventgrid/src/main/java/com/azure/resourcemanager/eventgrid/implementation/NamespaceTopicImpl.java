@@ -183,6 +183,6 @@ public final class NamespaceTopicImpl implements NamespaceTopic, NamespaceTopic.
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

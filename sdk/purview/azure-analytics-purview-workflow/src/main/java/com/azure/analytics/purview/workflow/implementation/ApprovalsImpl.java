@@ -68,7 +68,7 @@ public final class ApprovalsImpl {
      * REST calls.
      */
     @Host("{endpoint}/workflow")
-    @ServiceInterface(name = "PurviewWorkflowAppro")
+    @ServiceInterface(name = "PurviewWorkflowApprovals")
     public interface ApprovalsService {
         @Post("/workflowtasks/{taskId}/approve-approval")
         @ExpectedResponses({ 200 })

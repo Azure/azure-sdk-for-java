@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,17 +22,20 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute
      * Compute type of the cluster which will execute data flow job. Possible values include: 'General',
      * 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string)
      */
+    @Generated
     private Object computeType;
 
     /*
      * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
      * Type: integer (or Expression with resultType integer)
      */
+    @Generated
     private Object coreCount;
 
     /**
      * Creates an instance of ExecuteDataFlowActivityTypePropertiesCompute class.
      */
+    @Generated
     public ExecuteDataFlowActivityTypePropertiesCompute() {
     }
 
@@ -41,6 +45,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute
      * 
      * @return the computeType value.
      */
+    @Generated
     public Object getComputeType() {
         return this.computeType;
     }
@@ -52,6 +57,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute
      * @param computeType the computeType value to set.
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
+    @Generated
     public ExecuteDataFlowActivityTypePropertiesCompute setComputeType(Object computeType) {
         this.computeType = computeType;
         return this;
@@ -63,6 +69,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute
      * 
      * @return the coreCount value.
      */
+    @Generated
     public Object getCoreCount() {
         return this.coreCount;
     }
@@ -74,6 +81,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute
      * @param coreCount the coreCount value to set.
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
+    @Generated
     public ExecuteDataFlowActivityTypePropertiesCompute setCoreCount(Object coreCount) {
         this.coreCount = coreCount;
         return this;
@@ -82,11 +90,16 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("computeType", this.computeType);
-        jsonWriter.writeUntypedField("coreCount", this.coreCount);
+        if (this.computeType != null) {
+            jsonWriter.writeUntypedField("computeType", this.computeType);
+        }
+        if (this.coreCount != null) {
+            jsonWriter.writeUntypedField("coreCount", this.coreCount);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -98,6 +111,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExecuteDataFlowActivityTypePropertiesCompute.
      */
+    @Generated
     public static ExecuteDataFlowActivityTypePropertiesCompute fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExecuteDataFlowActivityTypePropertiesCompute deserializedExecuteDataFlowActivityTypePropertiesCompute

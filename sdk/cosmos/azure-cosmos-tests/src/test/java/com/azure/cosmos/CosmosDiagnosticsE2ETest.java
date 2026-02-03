@@ -4,11 +4,8 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
 import com.azure.cosmos.implementation.DiagnosticsProviderJvmFatalErrorMapper;
 import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestUtils;
@@ -29,6 +26,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -157,12 +156,16 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
                     .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)
             );
         CosmosContainer container = this.getContainer(builder);
-        CosmosItemResponse<ObjectNode> response = executeTestCase(container);
-        assertThat(response.getDiagnostics()).isNotNull();
-        assertThat(response.getDiagnostics().getDiagnosticsContext()).isNotNull();
-        // no assertions here - invocations for diagnostics handler are validated above
-        // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
-        // with custom appender
+        try {
+            CosmosItemResponse<ObjectNode> response = executeTestCase(container);
+            assertThat(response.getDiagnostics()).isNotNull();
+            assertThat(response.getDiagnostics().getDiagnosticsContext()).isNotNull();
+            // no assertions here - invocations for diagnostics handler are validated above
+            // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
+            // with custom appender
+        } finally {
+            safeCloseCosmosClient();
+        }
     }
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
@@ -251,7 +254,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, timeOut = TIMEOUT)
     public void defaultLoggerAndMetrics() {
-        MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
+        MeterRegistry meterRegistry = Log4jDebugLoggingRegistryFactory.create(1);
 
         CosmosClientBuilder builder = this
             .getClientBuilder()
@@ -273,7 +276,7 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @Test(groups = { "fast", "emulator" }, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void delayedSampling(OperationType operationType) {
-        MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
+        MeterRegistry meterRegistry = Log4jDebugLoggingRegistryFactory.create(1);
 
         CapturingLogger capturingLogger = new CapturingLogger();
         CosmosClientTelemetryConfig clientTelemetryCfg = new CosmosClientTelemetryConfig()
@@ -439,12 +442,17 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         CosmosAsyncClient client = this
             .getClientBuilder()
             .buildAsyncClient();
-        TestUtils.createDummyQueryFeedOperationStateWithoutPagedFluxOptions(
-            ResourceType.Document,
-            OperationType.Query,
-            new CosmosQueryRequestOptions(),
-            client
-        );
+
+        try {
+            TestUtils.createDummyQueryFeedOperationStateWithoutPagedFluxOptions(
+                ResourceType.Document,
+                OperationType.Query,
+                new CosmosQueryRequestOptions(),
+                client
+            );
+        } finally {
+            client.close();
+        }
     }
 
     private CosmosItemResponse<ObjectNode> executeTestCase(CosmosContainer container) {
@@ -475,12 +483,16 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         }
     }
 
-    private CosmosContainer getContainer(CosmosClientBuilder builder) {
-
+    private void safeCloseCosmosClient() {
         CosmosClient oldClient = this.client;
         if (oldClient != null) {
             oldClient.close();
         }
+    }
+
+    private CosmosContainer getContainer(CosmosClientBuilder builder) {
+
+        this.safeCloseCosmosClient();
 
         assertThat(builder).isNotNull();
         this.client = builder.buildClient();

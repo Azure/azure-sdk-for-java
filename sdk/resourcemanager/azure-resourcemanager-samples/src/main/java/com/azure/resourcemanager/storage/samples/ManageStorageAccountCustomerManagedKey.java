@@ -6,7 +6,7 @@ package com.azure.resourcemanager.storage.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.BinaryData;
@@ -198,7 +198,7 @@ public final class ManageStorageAccountCustomerManagedKey {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();

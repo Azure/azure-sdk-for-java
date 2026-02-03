@@ -17,36 +17,34 @@ public final class SpringBootAdminComponentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SpringBootAdminComponent model = BinaryData.fromString(
-            "{\"componentType\":\"SpringBootAdmin\",\"ingress\":{\"fqdn\":\"kvzwydw\"},\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"gkskjivbss\",\"value\":\"jqf\"},{\"propertyName\":\"peexpgeumilhwuit\",\"value\":\"exyionofninbd\"},{\"propertyName\":\"s\",\"value\":\"wqqrsmpcbbprtuga\"}],\"scale\":{\"minReplicas\":859644110,\"maxReplicas\":1675076969},\"serviceBinds\":[{\"name\":\"vm\",\"serviceId\":\"gd\"},{\"name\":\"bfcmkrfts\",\"serviceId\":\"wjjxsgm\"},{\"name\":\"wvif\",\"serviceId\":\"kecifhocjxwklo\"},{\"name\":\"rvtxvcmufunlc\",\"serviceId\":\"xvi\"}]}")
+            "{\"componentType\":\"SpringBootAdmin\",\"ingress\":{\"fqdn\":\"yzlwh\"},\"provisioningState\":\"InProgress\",\"configurations\":[{\"propertyName\":\"oclu\",\"value\":\"pqmem\"},{\"propertyName\":\"jk\",\"value\":\"ykyujxsg\"}],\"scale\":{\"minReplicas\":317592065,\"maxReplicas\":709948754},\"serviceBinds\":[{\"name\":\"ylmbkzudni\",\"serviceId\":\"fihotj\"},{\"name\":\"lpxuzzjgnrefq\",\"serviceId\":\"qotoihiqakydiwfb\"},{\"name\":\"wpzdqtvhcspo\",\"serviceId\":\"qaxsipietgbebjf\"}]}")
             .toObject(SpringBootAdminComponent.class);
-        Assertions.assertEquals("gkskjivbss", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("jqf", model.configurations().get(0).value());
-        Assertions.assertEquals(859644110, model.scale().minReplicas());
-        Assertions.assertEquals(1675076969, model.scale().maxReplicas());
-        Assertions.assertEquals("vm", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("gd", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("oclu", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("pqmem", model.configurations().get(0).value());
+        Assertions.assertEquals(317592065, model.scale().minReplicas());
+        Assertions.assertEquals(709948754, model.scale().maxReplicas());
+        Assertions.assertEquals("ylmbkzudni", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("fihotj", model.serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SpringBootAdminComponent model = new SpringBootAdminComponent()
             .withConfigurations(
-                Arrays.asList(new JavaComponentConfigurationProperty().withPropertyName("gkskjivbss").withValue("jqf"),
-                    new JavaComponentConfigurationProperty().withPropertyName("peexpgeumilhwuit")
-                        .withValue("exyionofninbd"),
-                    new JavaComponentConfigurationProperty().withPropertyName("s").withValue("wqqrsmpcbbprtuga")))
-            .withScale(new JavaComponentPropertiesScale().withMinReplicas(859644110).withMaxReplicas(1675076969))
-            .withServiceBinds(Arrays.asList(new JavaComponentServiceBind().withName("vm").withServiceId("gd"),
-                new JavaComponentServiceBind().withName("bfcmkrfts").withServiceId("wjjxsgm"),
-                new JavaComponentServiceBind().withName("wvif").withServiceId("kecifhocjxwklo"),
-                new JavaComponentServiceBind().withName("rvtxvcmufunlc").withServiceId("xvi")))
+                Arrays.asList(new JavaComponentConfigurationProperty().withPropertyName("oclu").withValue("pqmem"),
+                    new JavaComponentConfigurationProperty().withPropertyName("jk").withValue("ykyujxsg")))
+            .withScale(new JavaComponentPropertiesScale().withMinReplicas(317592065).withMaxReplicas(709948754))
+            .withServiceBinds(
+                Arrays.asList(new JavaComponentServiceBind().withName("ylmbkzudni").withServiceId("fihotj"),
+                    new JavaComponentServiceBind().withName("lpxuzzjgnrefq").withServiceId("qotoihiqakydiwfb"),
+                    new JavaComponentServiceBind().withName("wpzdqtvhcspo").withServiceId("qaxsipietgbebjf")))
             .withIngress(new JavaComponentIngress());
         model = BinaryData.fromObject(model).toObject(SpringBootAdminComponent.class);
-        Assertions.assertEquals("gkskjivbss", model.configurations().get(0).propertyName());
-        Assertions.assertEquals("jqf", model.configurations().get(0).value());
-        Assertions.assertEquals(859644110, model.scale().minReplicas());
-        Assertions.assertEquals(1675076969, model.scale().maxReplicas());
-        Assertions.assertEquals("vm", model.serviceBinds().get(0).name());
-        Assertions.assertEquals("gd", model.serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("oclu", model.configurations().get(0).propertyName());
+        Assertions.assertEquals("pqmem", model.configurations().get(0).value());
+        Assertions.assertEquals(317592065, model.scale().minReplicas());
+        Assertions.assertEquals(709948754, model.scale().maxReplicas());
+        Assertions.assertEquals("ylmbkzudni", model.serviceBinds().get(0).name());
+        Assertions.assertEquals("fihotj", model.serviceBinds().get(0).serviceId());
     }
 }

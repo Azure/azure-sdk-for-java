@@ -8,7 +8,7 @@ parameters:
   - name: release_azuresdkbom
     displayName: 'azure-sdk-bom'
     type: boolean
-    default: true
+    default: false
   - name: release_springcloudazuredependencies
     displayName: 'spring-cloud-azure-dependencies'
     type: boolean
@@ -28,10 +28,10 @@ extends:
         safeName: azuresdkbom
         releaseInBatch: ${{ parameters.release_azuresdkbom }}
       - name: spring-cloud-azure-dependencies
-        groupID: com.azure.spring
+        groupId: com.azure.spring
         safeName: springcloudazuredependencies
         releaseInBatch: ${{ parameters.release_springcloudazuredependencies }}
       - name: azure-sdk-template-bom
-        groupID: com.azure
+        groupId: com.azure
         safeName: azuresdktemplatebom
         releaseInBatch: ${{ parameters.release_azuresdktemplatebom }}

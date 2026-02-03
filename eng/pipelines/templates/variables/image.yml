@@ -2,27 +2,17 @@
 
 variables:
   - name: LINUXPOOL
-    value: azsdk-pool-mms-ubuntu-2004-general
-  - name: LINUXNEXTPOOL
-    value: azsdk-pool-mms-ubuntu-2204-general
+    value: azsdk-pool
   - name: WINDOWSPOOL
-    value: azsdk-pool-mms-win-2022-general
+    value: azsdk-pool
   - name: MACPOOL
     value: Azure Pipelines
 
   - name: LINUXVMIMAGE
-    value: azsdk-pool-mms-ubuntu-2004-1espt
+    value: ubuntu-24.04
   - name: LINUXNEXTVMIMAGE
-    value: azsdk-pool-mms-ubuntu-2204-1espt
+    value: ubuntu-24.04
   - name: WINDOWSVMIMAGE
-    value: azsdk-pool-mms-win-2022-1espt
+    value: windows-2022
   - name: MACVMIMAGE
     value: macos-latest
-
-  # Values required for pool.os field in 1es pipeline templates
-  - name: LINUXOS
-    value: linux
-  - name: WINDOWSOS
-    value: windows
-  - name: MACOS
-    value: macOS

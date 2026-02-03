@@ -41,7 +41,7 @@ public final class VirtualMachineScaleSetStorageProfileTests {
         Assertions.assertEquals("bnbdxkqpxokajion", model.imageReference().communityGalleryImageId());
         Assertions.assertEquals("ex", model.osDisk().name());
         Assertions.assertEquals(CachingTypes.READ_ONLY, model.osDisk().caching());
-        Assertions.assertEquals(false, model.osDisk().writeAcceleratorEnabled());
+        Assertions.assertFalse(model.osDisk().writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.COPY, model.osDisk().createOption());
         Assertions.assertEquals(DiffDiskOptions.LOCAL, model.osDisk().diffDiskSettings().option());
         Assertions.assertEquals(DiffDiskPlacement.NVME_DISK, model.osDisk().diffDiskSettings().placement());
@@ -59,7 +59,7 @@ public final class VirtualMachineScaleSetStorageProfileTests {
         Assertions.assertEquals("eic", model.dataDisks().get(0).name());
         Assertions.assertEquals(1638817627, model.dataDisks().get(0).lun());
         Assertions.assertEquals(CachingTypes.READ_WRITE, model.dataDisks().get(0).caching());
-        Assertions.assertEquals(false, model.dataDisks().get(0).writeAcceleratorEnabled());
+        Assertions.assertFalse(model.dataDisks().get(0).writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.RESTORE, model.dataDisks().get(0).createOption());
         Assertions.assertEquals(2122151049, model.dataDisks().get(0).diskSizeGB());
         Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_LRS,
@@ -128,7 +128,7 @@ public final class VirtualMachineScaleSetStorageProfileTests {
         Assertions.assertEquals("bnbdxkqpxokajion", model.imageReference().communityGalleryImageId());
         Assertions.assertEquals("ex", model.osDisk().name());
         Assertions.assertEquals(CachingTypes.READ_ONLY, model.osDisk().caching());
-        Assertions.assertEquals(false, model.osDisk().writeAcceleratorEnabled());
+        Assertions.assertFalse(model.osDisk().writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.COPY, model.osDisk().createOption());
         Assertions.assertEquals(DiffDiskOptions.LOCAL, model.osDisk().diffDiskSettings().option());
         Assertions.assertEquals(DiffDiskPlacement.NVME_DISK, model.osDisk().diffDiskSettings().placement());
@@ -146,7 +146,7 @@ public final class VirtualMachineScaleSetStorageProfileTests {
         Assertions.assertEquals("eic", model.dataDisks().get(0).name());
         Assertions.assertEquals(1638817627, model.dataDisks().get(0).lun());
         Assertions.assertEquals(CachingTypes.READ_WRITE, model.dataDisks().get(0).caching());
-        Assertions.assertEquals(false, model.dataDisks().get(0).writeAcceleratorEnabled());
+        Assertions.assertFalse(model.dataDisks().get(0).writeAcceleratorEnabled());
         Assertions.assertEquals(DiskCreateOptionTypes.RESTORE, model.dataDisks().get(0).createOption());
         Assertions.assertEquals(2122151049, model.dataDisks().get(0).diskSizeGB());
         Assertions.assertEquals(StorageAccountTypes.STANDARD_SSD_LRS,

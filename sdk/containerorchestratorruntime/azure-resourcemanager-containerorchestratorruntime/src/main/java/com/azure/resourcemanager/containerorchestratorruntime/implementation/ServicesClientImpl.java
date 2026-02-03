@@ -62,13 +62,22 @@ public final class ServicesClientImpl implements ServicesClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerOrchestrato")
+    @ServiceInterface(name = "ContainerOrchestratorRuntimeMgmtClientServices")
     public interface ServicesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceResourceInner>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("serviceName") String serviceName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ServiceResourceInner> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam("serviceName") String serviceName, @HeaderParam("Accept") String accept, Context context);
@@ -83,14 +92,32 @@ public final class ServicesClientImpl implements ServicesClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") ServiceResourceInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Put("/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ServiceResourceInner> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("serviceName") String serviceName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") ServiceResourceInner resource,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam("serviceName") String serviceName, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("serviceName") String serviceName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/services/{serviceName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("serviceName") String serviceName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/services")
@@ -102,12 +129,28 @@ public final class ServicesClientImpl implements ServicesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/services")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ServiceResourceListResult> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServiceResourceListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ServiceResourceListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -122,51 +165,11 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceResourceInner>> getWithResponseAsync(String resourceUri, String serviceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
                 serviceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a ServiceResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param serviceName The name of the the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a ServiceResource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceResourceInner>> getWithResponseAsync(String resourceUri, String serviceName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, serviceName, accept,
-            context);
     }
 
     /**
@@ -197,7 +200,9 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceResourceInner> getWithResponse(String resourceUri, String serviceName, Context context) {
-        return getWithResponseAsync(resourceUri, serviceName, context).block();
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, serviceName, accept,
+            context);
     }
 
     /**
@@ -230,65 +235,12 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceResourceInner>> createOrUpdateWithResponseAsync(String resourceUri, String serviceName,
         ServiceResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
                 resourceUri, serviceName, contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Create a ServiceResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param serviceName The name of the the service.
-     * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters) along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceResourceInner>> createOrUpdateWithResponseAsync(String resourceUri, String serviceName,
-        ServiceResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, serviceName,
-            contentType, accept, resource, context);
     }
 
     /**
@@ -326,7 +278,10 @@ public final class ServicesClientImpl implements ServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ServiceResourceInner> createOrUpdateWithResponse(String resourceUri, String serviceName,
         ServiceResourceInner resource, Context context) {
-        return createOrUpdateWithResponseAsync(resourceUri, serviceName, resource, context).block();
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            serviceName, contentType, accept, resource, context);
     }
 
     /**
@@ -357,50 +312,10 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String serviceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                serviceName, accept, context))
+                serviceName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete a ServiceResource.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param serviceName The name of the the service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String serviceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, serviceName, accept,
-            context);
     }
 
     /**
@@ -431,7 +346,8 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String serviceName, Context context) {
-        return deleteWithResponseAsync(resourceUri, serviceName, context).block();
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, serviceName,
+            context);
     }
 
     /**
@@ -460,13 +376,6 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceResourceInner>> listSinglePageAsync(String resourceUri) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
@@ -474,33 +383,6 @@ public final class ServicesClientImpl implements ServicesClient {
             .<PagedResponse<ServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List ServiceResource resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ServiceResource list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceResourceInner>> listSinglePageAsync(String resourceUri, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -521,16 +403,37 @@ public final class ServicesClientImpl implements ServicesClient {
      * List ServiceResource resources by parent.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a ServiceResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ServiceResourceInner> listSinglePage(String resourceUri) {
+        final String accept = "application/json";
+        Response<ServiceResourceListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), resourceUri, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List ServiceResource resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ServiceResource list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a ServiceResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ServiceResourceInner> listAsync(String resourceUri, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ServiceResourceInner> listSinglePage(String resourceUri, Context context) {
+        final String accept = "application/json";
+        Response<ServiceResourceListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -544,7 +447,7 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceResourceInner> list(String resourceUri) {
-        return new PagedIterable<>(listAsync(resourceUri));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -559,7 +462,8 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ServiceResourceInner> list(String resourceUri, Context context) {
-        return new PagedIterable<>(listAsync(resourceUri, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -574,13 +478,6 @@ public final class ServicesClientImpl implements ServicesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServiceResourceInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
@@ -592,26 +489,36 @@ public final class ServicesClientImpl implements ServicesClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a ServiceResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ServiceResourceInner> listNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<ServiceResourceListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ServiceResource list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response of a ServiceResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServiceResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<ServiceResourceInner> listNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ServiceResourceListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

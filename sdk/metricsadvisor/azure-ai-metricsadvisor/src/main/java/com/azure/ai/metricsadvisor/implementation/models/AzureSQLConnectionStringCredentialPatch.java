@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
     /*
      * Type of data source credential
      */
+    @Generated
     private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.AZURE_SQLCONNECTION_STRING;
 
     /*
      * The parameters property.
      */
+    @Generated
     private AzureSQLConnectionStringParamPatch parameters;
 
     /**
      * Creates an instance of AzureSQLConnectionStringCredentialPatch class.
      */
+    @Generated
     public AzureSQLConnectionStringCredentialPatch() {
     }
 
@@ -36,6 +40,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
      * 
      * @return the dataSourceCredentialType value.
      */
+    @Generated
     @Override
     public DataSourceCredentialType getDataSourceCredentialType() {
         return this.dataSourceCredentialType;
@@ -46,6 +51,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
      * 
      * @return the parameters value.
      */
+    @Generated
     public AzureSQLConnectionStringParamPatch getParameters() {
         return this.parameters;
     }
@@ -56,6 +62,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
      * @param parameters the parameters value to set.
      * @return the AzureSQLConnectionStringCredentialPatch object itself.
      */
+    @Generated
     public AzureSQLConnectionStringCredentialPatch setParameters(AzureSQLConnectionStringParamPatch parameters) {
         this.parameters = parameters;
         return this;
@@ -64,6 +71,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSQLConnectionStringCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -73,6 +81,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureSQLConnectionStringCredentialPatch
         setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
@@ -83,6 +92,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +112,7 @@ public final class AzureSQLConnectionStringCredentialPatch extends DataSourceCre
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureSQLConnectionStringCredentialPatch.
      */
+    @Generated
     public static AzureSQLConnectionStringCredentialPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureSQLConnectionStringCredentialPatch deserializedAzureSQLConnectionStringCredentialPatch

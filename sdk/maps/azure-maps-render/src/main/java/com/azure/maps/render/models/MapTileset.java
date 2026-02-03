@@ -4,14 +4,15 @@
 package com.azure.maps.render.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.models.GeoBoundingBox;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoBoundingBox;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Metadata for a tileset in the TileJSON format.
@@ -22,81 +23,108 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
     /*
      * Describes the version of the TileJSON spec that is implemented by this JSON object.
      */
+    @Generated
     private String tilejson;
 
     /*
-     * A name describing the tileset. The name can contain any legal character. Implementations SHOULD NOT interpret the name as HTML.
+     * A name describing the tileset. The name can contain any legal character. Implementations SHOULD NOT interpret the
+     * name as HTML.
      */
+    @Generated
     private String name;
 
     /*
-     * Text description of the tileset. The description can contain any legal character. Implementations SHOULD NOT interpret the description as HTML.
+     * Text description of the tileset. The description can contain any legal character. Implementations SHOULD NOT
+     * interpret the description as HTML.
      */
+    @Generated
     private String description;
 
     /*
-     * A semver.org style version number for the tiles contained within the tileset. When changes across tiles are introduced, the minor version MUST change.
+     * A semver.org style version number for the tiles contained within the tileset. When changes across tiles are
+     * introduced, the minor version MUST change.
      */
+    @Generated
     private String version;
 
     /*
-     * Copyright attribution to be displayed on the map. Implementations MAY decide to treat this as HTML or literal text. For security reasons, make absolutely sure that this field can't be abused as a vector for XSS or beacon tracking.
+     * Copyright attribution to be displayed on the map. Implementations MAY decide to treat this as HTML or literal
+     * text. For security reasons, make absolutely sure that this field can't be abused as a vector for XSS or beacon
+     * tracking.
      */
+    @Generated
     private String attribution;
 
     /*
      * A mustache template to be used to format data from grids for interaction.
      */
+    @Generated
     private String template;
 
     /*
-     * A legend to be displayed with the map. Implementations MAY decide to treat this as HTML or literal text. For security reasons, make absolutely sure that this field can't be abused as a vector for XSS or beacon tracking.
+     * A legend to be displayed with the map. Implementations MAY decide to treat this as HTML or literal text. For
+     * security reasons, make absolutely sure that this field can't be abused as a vector for XSS or beacon tracking.
      */
+    @Generated
     private String legend;
 
     /*
-     * Default: "xyz". Either "xyz" or "tms". Influences the y direction of the tile coordinates. The global-mercator (aka Spherical Mercator) profile is assumed.
+     * Default: "xyz". Either "xyz" or "tms". Influences the y direction of the tile coordinates. The global-mercator
+     * (aka Spherical Mercator) profile is assumed.
      */
+    @Generated
     private String scheme;
 
     /*
-     * An array of tile endpoints. If multiple endpoints are specified, clients may use any combination of endpoints. All endpoints MUST return the same content for the same URL. The array MUST contain at least one endpoint.
+     * An array of tile endpoints. If multiple endpoints are specified, clients may use any combination of endpoints.
+     * All endpoints MUST return the same content for the same URL. The array MUST contain at least one endpoint.
      */
+    @Generated
     private List<String> tiles;
 
     /*
      * An array of interactivity endpoints.
      */
+    @Generated
     private List<String> grids;
 
     /*
      * An array of data files in GeoJSON format.
      */
+    @Generated
     private List<String> data;
 
     /*
      * The minimum zoom level.
      */
+    @Generated
     private Integer minZoom;
 
     /*
      * The maximum zoom level.
      */
+    @Generated
     private Integer maxZoom;
 
     /*
-     * The maximum extent of available map tiles. Bounds MUST define an area covered by all zoom levels. The bounds are represented in WGS:84 latitude and longitude values, in the order left, bottom, right, top. Values may be integers or floating point numbers.
+     * The maximum extent of available map tiles. Bounds MUST define an area covered by all zoom levels. The bounds are
+     * represented in WGS:84 latitude and longitude values, in the order left, bottom, right, top. Values may be
+     * integers or floating point numbers.
      */
+    @Generated
     private List<Float> bounds;
 
     /*
-     * The default location of the tileset in the form [longitude, latitude, zoom]. The zoom level MUST be between minzoom and maxzoom. Implementations can use this value to set the default location.
+     * The default location of the tileset in the form [longitude, latitude, zoom]. The zoom level MUST be between
+     * minzoom and maxzoom. Implementations can use this value to set the default location.
      */
+    @Generated
     private List<Float> center;
 
     /**
      * Creates an instance of MapTileset class.
      */
+    @Generated
     public MapTileset() {
     }
 
@@ -105,6 +133,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the tilejson value.
      */
+    @Generated
     public String getTilejson() {
         return this.tilejson;
     }
@@ -115,6 +144,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param tilejson the tilejson value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setTilejson(String tilejson) {
         this.tilejson = tilejson;
         return this;
@@ -126,6 +156,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -137,6 +168,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param name the name value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setName(String name) {
         this.name = name;
         return this;
@@ -148,6 +180,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -159,6 +192,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param description the description value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setDescription(String description) {
         this.description = description;
         return this;
@@ -170,6 +204,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -181,6 +216,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param version the version value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setVersion(String version) {
         this.version = version;
         return this;
@@ -193,6 +229,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the attribution value.
      */
+    @Generated
     public String getAttribution() {
         return this.attribution;
     }
@@ -205,6 +242,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param attribution the attribution value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setAttribution(String attribution) {
         this.attribution = attribution;
         return this;
@@ -215,6 +253,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the template value.
      */
+    @Generated
     public String getTemplate() {
         return this.template;
     }
@@ -225,6 +264,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param template the template value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setTemplate(String template) {
         this.template = template;
         return this;
@@ -237,6 +277,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the legend value.
      */
+    @Generated
     public String getLegend() {
         return this.legend;
     }
@@ -249,6 +290,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param legend the legend value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setLegend(String legend) {
         this.legend = legend;
         return this;
@@ -260,6 +302,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the scheme value.
      */
+    @Generated
     public String getScheme() {
         return this.scheme;
     }
@@ -271,6 +314,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param scheme the scheme value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setScheme(String scheme) {
         this.scheme = scheme;
         return this;
@@ -283,6 +327,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the tiles value.
      */
+    @Generated
     public List<String> getTiles() {
         return this.tiles;
     }
@@ -295,6 +340,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param tiles the tiles value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setTiles(List<String> tiles) {
         this.tiles = tiles;
         return this;
@@ -305,6 +351,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the grids value.
      */
+    @Generated
     public List<String> getGrids() {
         return this.grids;
     }
@@ -315,6 +362,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param grids the grids value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setGrids(List<String> grids) {
         this.grids = grids;
         return this;
@@ -325,6 +373,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the data value.
      */
+    @Generated
     public List<String> getData() {
         return this.data;
     }
@@ -335,6 +384,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param data the data value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setData(List<String> data) {
         this.data = data;
         return this;
@@ -345,6 +395,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the minZoom value.
      */
+    @Generated
     public Integer getMinZoom() {
         return this.minZoom;
     }
@@ -355,6 +406,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param minZoom the minZoom value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setMinZoom(Integer minZoom) {
         this.minZoom = minZoom;
         return this;
@@ -365,6 +417,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the maxZoom value.
      */
+    @Generated
     public Integer getMaxZoom() {
         return this.maxZoom;
     }
@@ -375,6 +428,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * @param maxZoom the maxZoom value to set.
      * @return the MapTileset object itself.
      */
+    @Generated
     public MapTileset setMaxZoom(Integer maxZoom) {
         this.maxZoom = maxZoom;
         return this;
@@ -387,6 +441,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the bounds value.
      */
+    @Generated
     public GeoBoundingBox getBounds() {
         return new GeoBoundingBox(this.bounds.get(0), this.bounds.get(1), this.bounds.get(2), this.bounds.get(3));
     }
@@ -397,6 +452,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      *
      * @return the center value.
      */
+    @Generated
     public GeoPosition getCenter() {
         return new GeoPosition(this.center.get(0).doubleValue(), this.center.get(1).doubleValue(),
             this.center.get(2).doubleValue());
@@ -405,6 +461,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -434,6 +491,7 @@ public final class MapTileset implements JsonSerializable<MapTileset> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the MapTileset.
      */
+    @Generated
     public static MapTileset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MapTileset deserializedMapTileset = new MapTileset();

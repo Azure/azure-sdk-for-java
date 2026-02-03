@@ -4,7 +4,7 @@
   },
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
     },
     "JavaTestVersion": [ "1.11" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "netty" ],
@@ -16,7 +16,7 @@
   "include": [
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",

@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
     /*
      * crv value
      */
+    @Generated
     private String crv;
 
     /*
      * kid value
      */
+    @Generated
     private String kid;
 
     /*
      * kty value
      */
+    @Generated
     private String kty;
 
     /*
      * x value
      */
+    @Generated
     private String x;
 
     /*
      * y value
      */
+    @Generated
     private String y;
 
     /**
      * Creates an instance of JWKHeader class.
      */
+    @Generated
     public JWKHeader() {
     }
 
@@ -52,6 +59,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * 
      * @return the crv value.
      */
+    @Generated
     public String getCrv() {
         return this.crv;
     }
@@ -62,6 +70,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * @param crv the crv value to set.
      * @return the JWKHeader object itself.
      */
+    @Generated
     public JWKHeader setCrv(String crv) {
         this.crv = crv;
         return this;
@@ -72,6 +81,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * 
      * @return the kid value.
      */
+    @Generated
     public String getKid() {
         return this.kid;
     }
@@ -82,6 +92,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * @param kid the kid value to set.
      * @return the JWKHeader object itself.
      */
+    @Generated
     public JWKHeader setKid(String kid) {
         this.kid = kid;
         return this;
@@ -92,6 +103,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * 
      * @return the kty value.
      */
+    @Generated
     public String getKty() {
         return this.kty;
     }
@@ -102,6 +114,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * @param kty the kty value to set.
      * @return the JWKHeader object itself.
      */
+    @Generated
     public JWKHeader setKty(String kty) {
         this.kty = kty;
         return this;
@@ -112,6 +125,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * 
      * @return the x value.
      */
+    @Generated
     public String getX() {
         return this.x;
     }
@@ -122,6 +136,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * @param x the x value to set.
      * @return the JWKHeader object itself.
      */
+    @Generated
     public JWKHeader setX(String x) {
         this.x = x;
         return this;
@@ -132,6 +147,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * 
      * @return the y value.
      */
+    @Generated
     public String getY() {
         return this.y;
     }
@@ -142,6 +158,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * @param y the y value to set.
      * @return the JWKHeader object itself.
      */
+    @Generated
     public JWKHeader setY(String y) {
         this.y = y;
         return this;
@@ -150,6 +167,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -169,6 +187,7 @@ public final class JWKHeader implements JsonSerializable<JWKHeader> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the JWKHeader.
      */
+    @Generated
     public static JWKHeader fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JWKHeader deserializedJWKHeader = new JWKHeader();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,65 +22,77 @@ public class MongoDbLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "MongoDb";
 
     /*
      * The IP address or server name of the MongoDB server. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object server;
 
     /*
      * The authentication type to be used to connect to the MongoDB database.
      */
+    @Generated
     private MongoDbAuthenticationType authenticationType;
 
     /*
      * The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object databaseName;
 
     /*
      * Username for authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object username;
 
     /*
      * Password for authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * Database to verify the username and password. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object authSource;
 
     /*
      * The TCP port number that the MongoDB server uses to listen for client connections. The default value is 27017.
      * Type: integer (or Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object port;
 
     /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false. Type:
      * boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enableSsl;
 
     /*
      * Specifies whether to allow self-signed certificates from the server. The default value is false. Type: boolean
      * (or Expression with resultType boolean).
      */
+    @Generated
     private Object allowSelfSignedServerCert;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of MongoDbLinkedService class.
      */
+    @Generated
     public MongoDbLinkedService() {
     }
 
@@ -88,6 +101,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -99,6 +113,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -110,6 +125,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -120,6 +136,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public MongoDbAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -130,6 +147,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setAuthenticationType(MongoDbAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -141,6 +159,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the databaseName value.
      */
+    @Generated
     public Object getDatabaseName() {
         return this.databaseName;
     }
@@ -152,6 +171,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param databaseName the databaseName value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setDatabaseName(Object databaseName) {
         this.databaseName = databaseName;
         return this;
@@ -162,6 +182,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -172,6 +193,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -182,6 +204,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -192,6 +215,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -203,6 +227,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the authSource value.
      */
+    @Generated
     public Object getAuthSource() {
         return this.authSource;
     }
@@ -214,6 +239,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param authSource the authSource value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setAuthSource(Object authSource) {
         this.authSource = authSource;
         return this;
@@ -225,6 +251,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -236,6 +263,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -247,6 +275,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the enableSsl value.
      */
+    @Generated
     public Object getEnableSsl() {
         return this.enableSsl;
     }
@@ -258,6 +287,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param enableSsl the enableSsl value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setEnableSsl(Object enableSsl) {
         this.enableSsl = enableSsl;
         return this;
@@ -269,6 +299,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the allowSelfSignedServerCert value.
      */
+    @Generated
     public Object getAllowSelfSignedServerCert() {
         return this.allowSelfSignedServerCert;
     }
@@ -280,6 +311,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setAllowSelfSignedServerCert(Object allowSelfSignedServerCert) {
         this.allowSelfSignedServerCert = allowSelfSignedServerCert;
         return this;
@@ -291,6 +323,7 @@ public class MongoDbLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -302,6 +335,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MongoDbLinkedService object itself.
      */
+    @Generated
     public MongoDbLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -310,6 +344,17 @@ public class MongoDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public MongoDbLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public MongoDbLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -319,6 +364,7 @@ public class MongoDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -328,6 +374,7 @@ public class MongoDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -337,6 +384,7 @@ public class MongoDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -346,9 +394,11 @@ public class MongoDbLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -369,13 +419,25 @@ public class MongoDbLinkedService extends LinkedService {
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
             jsonWriter.writeUntypedField("databaseName", this.databaseName);
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("authSource", this.authSource);
-            jsonWriter.writeUntypedField("port", this.port);
-            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.authSource != null) {
+                jsonWriter.writeUntypedField("authSource", this.authSource);
+            }
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
+            if (this.enableSsl != null) {
+                jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.allowSelfSignedServerCert != null) {
+                jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -395,6 +457,7 @@ public class MongoDbLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MongoDbLinkedService.
      */
+    @Generated
     public static MongoDbLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MongoDbLinkedService deserializedMongoDbLinkedService = new MongoDbLinkedService();
@@ -403,7 +466,9 @@ public class MongoDbLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedMongoDbLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedMongoDbLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedMongoDbLinkedService.setDescription(reader.getString());

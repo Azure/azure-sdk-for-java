@@ -13,7 +13,7 @@ import com.azure.resourcemanager.databox.models.PackageCarrierInfo;
 public final class JobsMarkDevicesShippedSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/MarkDevicesShipped.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/MarkDevicesShipped.json
      */
     /**
      * Sample code: MarkDevicesShipped.

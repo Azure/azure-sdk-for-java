@@ -24,6 +24,11 @@ public final class DataMigrationServiceStatusResponseInner
     private String agentVersion;
 
     /*
+     * Agent Configuration
+     */
+    private Object agentConfiguration;
+
+    /*
      * The machine-readable status, such as 'Initializing', 'Offline', 'Online', 'Deploying', 'Deleting', 'Stopped',
      * 'Stopping', 'Starting', 'FailedToStart', 'FailedToStop' or 'Failed'
      */
@@ -62,6 +67,26 @@ public final class DataMigrationServiceStatusResponseInner
      */
     public DataMigrationServiceStatusResponseInner withAgentVersion(String agentVersion) {
         this.agentVersion = agentVersion;
+        return this;
+    }
+
+    /**
+     * Get the agentConfiguration property: Agent Configuration.
+     * 
+     * @return the agentConfiguration value.
+     */
+    public Object agentConfiguration() {
+        return this.agentConfiguration;
+    }
+
+    /**
+     * Set the agentConfiguration property: Agent Configuration.
+     * 
+     * @param agentConfiguration the agentConfiguration value to set.
+     * @return the DataMigrationServiceStatusResponseInner object itself.
+     */
+    public DataMigrationServiceStatusResponseInner withAgentConfiguration(Object agentConfiguration) {
+        this.agentConfiguration = agentConfiguration;
         return this;
     }
 
@@ -142,6 +167,9 @@ public final class DataMigrationServiceStatusResponseInner
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        if (this.agentConfiguration != null) {
+            jsonWriter.writeUntypedField("agentConfiguration", this.agentConfiguration);
+        }
         jsonWriter.writeStringField("status", this.status);
         jsonWriter.writeStringField("vmSize", this.vmSize);
         jsonWriter.writeArrayField("supportedTaskTypes", this.supportedTaskTypes,
@@ -167,6 +195,8 @@ public final class DataMigrationServiceStatusResponseInner
 
                 if ("agentVersion".equals(fieldName)) {
                     deserializedDataMigrationServiceStatusResponseInner.agentVersion = reader.getString();
+                } else if ("agentConfiguration".equals(fieldName)) {
+                    deserializedDataMigrationServiceStatusResponseInner.agentConfiguration = reader.readUntyped();
                 } else if ("status".equals(fieldName)) {
                     deserializedDataMigrationServiceStatusResponseInner.status = reader.getString();
                 } else if ("vmSize".equals(fieldName)) {

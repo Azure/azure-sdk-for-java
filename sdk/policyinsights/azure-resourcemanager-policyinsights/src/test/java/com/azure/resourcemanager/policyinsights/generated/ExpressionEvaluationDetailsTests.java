@@ -12,26 +12,26 @@ public final class ExpressionEvaluationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExpressionEvaluationDetails model = BinaryData.fromString(
-            "{\"result\":\"v\",\"expression\":\"ovqfzge\",\"expressionKind\":\"dftuljltduce\",\"path\":\"tmczuomejwcwwqi\",\"expressionValue\":\"datanssxmojmsvpk\",\"targetValue\":\"datarvkwc\",\"operator\":\"ql\"}")
+            "{\"result\":\"irgzp\",\"expression\":\"lazszrn\",\"expressionKind\":\"iin\",\"path\":\"pwp\",\"expressionValue\":\"datalwbtlhf\",\"targetValue\":\"datajcdh\",\"operator\":\"fjvfbgofeljagr\"}")
             .toObject(ExpressionEvaluationDetails.class);
-        Assertions.assertEquals("v", model.result());
-        Assertions.assertEquals("ovqfzge", model.expression());
-        Assertions.assertEquals("tmczuomejwcwwqi", model.path());
-        Assertions.assertEquals("ql", model.operator());
+        Assertions.assertEquals("irgzp", model.result());
+        Assertions.assertEquals("lazszrn", model.expression());
+        Assertions.assertEquals("pwp", model.path());
+        Assertions.assertEquals("fjvfbgofeljagr", model.operator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExpressionEvaluationDetails model = new ExpressionEvaluationDetails().withResult("v")
-            .withExpression("ovqfzge")
-            .withPath("tmczuomejwcwwqi")
-            .withExpressionValue("datanssxmojmsvpk")
-            .withTargetValue("datarvkwc")
-            .withOperator("ql");
+        ExpressionEvaluationDetails model = new ExpressionEvaluationDetails().withResult("irgzp")
+            .withExpression("lazszrn")
+            .withPath("pwp")
+            .withExpressionValue("datalwbtlhf")
+            .withTargetValue("datajcdh")
+            .withOperator("fjvfbgofeljagr");
         model = BinaryData.fromObject(model).toObject(ExpressionEvaluationDetails.class);
-        Assertions.assertEquals("v", model.result());
-        Assertions.assertEquals("ovqfzge", model.expression());
-        Assertions.assertEquals("tmczuomejwcwwqi", model.path());
-        Assertions.assertEquals("ql", model.operator());
+        Assertions.assertEquals("irgzp", model.result());
+        Assertions.assertEquals("lazszrn", model.expression());
+        Assertions.assertEquals("pwp", model.path());
+        Assertions.assertEquals("fjvfbgofeljagr", model.operator());
     }
 }

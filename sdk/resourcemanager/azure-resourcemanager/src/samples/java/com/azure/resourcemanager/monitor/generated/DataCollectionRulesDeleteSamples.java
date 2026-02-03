@@ -23,6 +23,6 @@ public final class DataCollectionRulesDeleteSamples {
             .manager()
             .serviceClient()
             .getDataCollectionRules()
-            .deleteWithResponse("myResourceGroup", "myCollectionRule", com.azure.core.util.Context.NONE);
+            .delete("myResourceGroup", "myCollectionRule");
     }
 }

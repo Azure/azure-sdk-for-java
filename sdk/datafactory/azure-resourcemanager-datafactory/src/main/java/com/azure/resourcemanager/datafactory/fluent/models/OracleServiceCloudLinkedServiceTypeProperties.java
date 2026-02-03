@@ -250,9 +250,15 @@ public final class OracleServiceCloudLinkedServiceTypeProperties
         jsonWriter.writeUntypedField("host", this.host);
         jsonWriter.writeUntypedField("username", this.username);
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        if (this.useEncryptedEndpoints != null) {
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        }
+        if (this.useHostVerification != null) {
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        }
+        if (this.usePeerVerification != null) {
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

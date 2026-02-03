@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -18,25 +19,32 @@ import java.util.List;
 @Fluent
 public final class GeocodePointsItem implements JsonSerializable<GeocodePointsItem> {
     /*
-     * A valid `GeoJSON Point` geometry type. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.2) for details.
+     * A valid `GeoJSON Point` geometry type. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.2) for details.
      */
+    @Generated
     private GeoJsonPoint geometry;
 
     /*
      * The method that was used to compute the geocode point.
      */
+    @Generated
     private CalculationMethodEnum calculationMethod;
 
     /*
      * The best use for the geocode point.
      * Each geocode point is defined as a `Route` point, a `Display` point or both.
-     * Use `Route` points if you are creating a route to the location. Use `Display` points if you are showing the location on a map. For example, if the location is a park, a `Route` point may specify an entrance to the park where you can enter with a car, and a `Display` point may be a point that specifies the center of the park.
+     * Use `Route` points if you are creating a route to the location. Use `Display` points if you are showing the
+     * location on a map. For example, if the location is a park, a `Route` point may specify an entrance to the park
+     * where you can enter with a car, and a `Display` point may be a point that specifies the center of the park.
      */
+    @Generated
     private List<UsageTypeEnum> usageTypes;
 
     /**
      * Creates an instance of GeocodePointsItem class.
      */
+    @Generated
     public GeocodePointsItem() {
     }
 
@@ -46,6 +54,7 @@ public final class GeocodePointsItem implements JsonSerializable<GeocodePointsIt
      * 
      * @return the geometry value.
      */
+    @Generated
     public GeoJsonPoint getGeometry() {
         return this.geometry;
     }
@@ -57,6 +66,7 @@ public final class GeocodePointsItem implements JsonSerializable<GeocodePointsIt
      * @param geometry the geometry value to set.
      * @return the GeocodePointsItem object itself.
      */
+    @Generated
     public GeocodePointsItem setGeometry(GeoJsonPoint geometry) {
         this.geometry = geometry;
         return this;
@@ -67,6 +77,7 @@ public final class GeocodePointsItem implements JsonSerializable<GeocodePointsIt
      * 
      * @return the calculationMethod value.
      */
+    @Generated
     public CalculationMethodEnum getCalculationMethod() {
         return this.calculationMethod;
     }
@@ -77,6 +88,7 @@ public final class GeocodePointsItem implements JsonSerializable<GeocodePointsIt
      * @param calculationMethod the calculationMethod value to set.
      * @return the GeocodePointsItem object itself.
      */
+    @Generated
     public GeocodePointsItem setCalculationMethod(CalculationMethodEnum calculationMethod) {
         this.calculationMethod = calculationMethod;
         return this;
@@ -91,6 +103,7 @@ public final class GeocodePointsItem implements JsonSerializable<GeocodePointsIt
      * 
      * @return the usageTypes value.
      */
+    @Generated
     public List<UsageTypeEnum> getUsageTypes() {
         return this.usageTypes;
     }
@@ -105,6 +118,7 @@ public final class GeocodePointsItem implements JsonSerializable<GeocodePointsIt
      * @param usageTypes the usageTypes value to set.
      * @return the GeocodePointsItem object itself.
      */
+    @Generated
     public GeocodePointsItem setUsageTypes(List<UsageTypeEnum> usageTypes) {
         this.usageTypes = usageTypes;
         return this;
@@ -113,6 +127,7 @@ public final class GeocodePointsItem implements JsonSerializable<GeocodePointsIt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -132,6 +147,7 @@ public final class GeocodePointsItem implements JsonSerializable<GeocodePointsIt
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeocodePointsItem.
      */
+    @Generated
     public static GeocodePointsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeocodePointsItem deserializedGeocodePointsItem = new GeocodePointsItem();

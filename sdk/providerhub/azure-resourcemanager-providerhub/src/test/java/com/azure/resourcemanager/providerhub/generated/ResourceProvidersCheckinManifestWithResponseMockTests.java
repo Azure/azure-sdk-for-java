@@ -6,8 +6,8 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.providerhub.ProviderHubManager;
 import com.azure.resourcemanager.providerhub.models.CheckinManifestInfo;
@@ -22,25 +22,25 @@ public final class ResourceProvidersCheckinManifestWithResponseMockTests {
     @Test
     public void testCheckinManifestWithResponse() throws Exception {
         String responseStr
-            = "{\"isCheckedIn\":true,\"statusMessage\":\"bwidql\",\"pullRequest\":\"ukoveofi\",\"commitId\":\"vjfn\"}";
+            = "{\"isCheckedIn\":false,\"statusMessage\":\"dusztekxby\",\"pullRequest\":\"msfe\",\"commitId\":\"yihpqadagrh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ProviderHubManager manager = ProviderHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckinManifestInfo response = manager.resourceProviders()
-            .checkinManifestWithResponse("mjvlgfgg",
-                new CheckinManifestParams().withEnvironment("vkyylizrzbjpsf")
-                    .withBaselineArmManifestLocation("sfuztlvtmv"),
+            .checkinManifestWithResponse("hamfowgwbtmk",
+                new CheckinManifestParams().withEnvironment("kxpkzwaq")
+                    .withBaselineArmManifestLocation("ofqovchiqbplv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.isCheckedIn());
-        Assertions.assertEquals("bwidql", response.statusMessage());
-        Assertions.assertEquals("ukoveofi", response.pullRequest());
-        Assertions.assertEquals("vjfn", response.commitId());
+        Assertions.assertFalse(response.isCheckedIn());
+        Assertions.assertEquals("dusztekxby", response.statusMessage());
+        Assertions.assertEquals("msfe", response.pullRequest());
+        Assertions.assertEquals("yihpqadagrh", response.commitId());
     }
 }

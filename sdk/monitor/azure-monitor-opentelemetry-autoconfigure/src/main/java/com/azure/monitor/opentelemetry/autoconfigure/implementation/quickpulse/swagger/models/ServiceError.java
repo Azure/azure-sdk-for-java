@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
     /*
      * A globally unique identifier to identify the diagnostic context. It defaults to the empty GUID.
      */
+    @Generated
     private String requestId;
 
     /*
      * Service error response date time.
      */
+    @Generated
     private String responseDateTime;
 
     /*
      * Error code.
      */
+    @Generated
     private String code;
 
     /*
      * Error message.
      */
+    @Generated
     private String message;
 
     /*
      * Message of the exception that triggers the error response.
      */
+    @Generated
     private String exception;
 
     /**
      * Creates an instance of ServiceError class.
      */
+    @Generated
     public ServiceError() {
     }
 
@@ -53,6 +60,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * 
      * @return the requestId value.
      */
+    @Generated
     public String getRequestId() {
         return this.requestId;
     }
@@ -64,6 +72,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * @param requestId the requestId value to set.
      * @return the ServiceError object itself.
      */
+    @Generated
     public ServiceError setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
@@ -74,6 +83,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * 
      * @return the responseDateTime value.
      */
+    @Generated
     public String getResponseDateTime() {
         return this.responseDateTime;
     }
@@ -84,6 +94,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * @param responseDateTime the responseDateTime value to set.
      * @return the ServiceError object itself.
      */
+    @Generated
     public ServiceError setResponseDateTime(String responseDateTime) {
         this.responseDateTime = responseDateTime;
         return this;
@@ -94,6 +105,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -104,6 +116,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * @param code the code value to set.
      * @return the ServiceError object itself.
      */
+    @Generated
     public ServiceError setCode(String code) {
         this.code = code;
         return this;
@@ -114,6 +127,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -124,6 +138,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * @param message the message value to set.
      * @return the ServiceError object itself.
      */
+    @Generated
     public ServiceError setMessage(String message) {
         this.message = message;
         return this;
@@ -134,6 +149,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * 
      * @return the exception value.
      */
+    @Generated
     public String getException() {
         return this.exception;
     }
@@ -144,6 +160,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * @param exception the exception value to set.
      * @return the ServiceError object itself.
      */
+    @Generated
     public ServiceError setException(String exception) {
         this.exception = exception;
         return this;
@@ -152,6 +169,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -172,6 +190,7 @@ public final class ServiceError implements JsonSerializable<ServiceError> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ServiceError.
      */
+    @Generated
     public static ServiceError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServiceError deserializedServiceError = new ServiceError();

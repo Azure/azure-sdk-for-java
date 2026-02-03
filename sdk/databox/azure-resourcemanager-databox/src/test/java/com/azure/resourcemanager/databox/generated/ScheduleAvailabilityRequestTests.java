@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityRequest;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,18 +13,21 @@ public final class ScheduleAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleAvailabilityRequest model = BinaryData.fromString(
-            "{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"wvnhdldwmgx\",\"country\":\"rslpmutwuoeg\"}")
+            "{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"l\",\"country\":\"zxmhhvhgu\",\"model\":\"DataBoxHeavy\"}")
             .toObject(ScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("wvnhdldwmgx", model.storageLocation());
-        Assertions.assertEquals("rslpmutwuoeg", model.country());
+        Assertions.assertEquals("l", model.storageLocation());
+        Assertions.assertEquals("zxmhhvhgu", model.country());
+        Assertions.assertEquals(ModelName.DATA_BOX_HEAVY, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleAvailabilityRequest model
-            = new ScheduleAvailabilityRequest().withStorageLocation("wvnhdldwmgx").withCountry("rslpmutwuoeg");
+        ScheduleAvailabilityRequest model = new ScheduleAvailabilityRequest().withStorageLocation("l")
+            .withCountry("zxmhhvhgu")
+            .withModel(ModelName.DATA_BOX_HEAVY);
         model = BinaryData.fromObject(model).toObject(ScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("wvnhdldwmgx", model.storageLocation());
-        Assertions.assertEquals("rslpmutwuoeg", model.country());
+        Assertions.assertEquals("l", model.storageLocation());
+        Assertions.assertEquals("zxmhhvhgu", model.country());
+        Assertions.assertEquals(ModelName.DATA_BOX_HEAVY, model.model());
     }
 }

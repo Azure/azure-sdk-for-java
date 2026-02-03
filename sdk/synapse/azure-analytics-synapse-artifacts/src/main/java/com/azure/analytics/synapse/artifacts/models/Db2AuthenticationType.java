@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class Db2AuthenticationType extends ExpandableStringEnum<Db2Authent
     /**
      * Static value Basic for Db2AuthenticationType.
      */
+    @Generated
     public static final Db2AuthenticationType BASIC = fromString("Basic");
 
     /**
@@ -21,6 +23,7 @@ public final class Db2AuthenticationType extends ExpandableStringEnum<Db2Authent
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public Db2AuthenticationType() {
     }
@@ -31,6 +34,7 @@ public final class Db2AuthenticationType extends ExpandableStringEnum<Db2Authent
      * @param name a name to look for.
      * @return the corresponding Db2AuthenticationType.
      */
+    @Generated
     public static Db2AuthenticationType fromString(String name) {
         return fromString(name, Db2AuthenticationType.class);
     }
@@ -40,6 +44,7 @@ public final class Db2AuthenticationType extends ExpandableStringEnum<Db2Authent
      * 
      * @return known Db2AuthenticationType values.
      */
+    @Generated
     public static Collection<Db2AuthenticationType> values() {
         return values(Db2AuthenticationType.class);
     }

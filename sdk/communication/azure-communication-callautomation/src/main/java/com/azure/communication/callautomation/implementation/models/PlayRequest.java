@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,33 +21,45 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     /*
      * The source of the audio to be played.
      */
+    @Generated
     private List<PlaySourceInternal> playSources;
 
     /*
      * The list of call participants play provided audio to.
      * Plays to everyone in the call when not provided.
      */
+    @Generated
     private List<CommunicationIdentifierModel> playTo;
+
+    /*
+     * If set play can barge into other existing queued-up/currently-processing requests.
+     */
+    @Generated
+    private Boolean interruptCallMediaOperation;
 
     /*
      * Defines options for playing the audio.
      */
+    @Generated
     private PlayOptionsInternal playOptions;
 
     /*
      * The value to identify context of the operation.
      */
+    @Generated
     private String operationContext;
 
     /*
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
+    @Generated
     private String operationCallbackUri;
 
     /**
      * Creates an instance of PlayRequest class.
      */
+    @Generated
     public PlayRequest() {
     }
 
@@ -55,6 +68,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * 
      * @return the playSources value.
      */
+    @Generated
     public List<PlaySourceInternal> getPlaySources() {
         return this.playSources;
     }
@@ -65,6 +79,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * @param playSources the playSources value to set.
      * @return the PlayRequest object itself.
      */
+    @Generated
     public PlayRequest setPlaySources(List<PlaySourceInternal> playSources) {
         this.playSources = playSources;
         return this;
@@ -76,6 +91,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * 
      * @return the playTo value.
      */
+    @Generated
     public List<CommunicationIdentifierModel> getPlayTo() {
         return this.playTo;
     }
@@ -87,8 +103,33 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * @param playTo the playTo value to set.
      * @return the PlayRequest object itself.
      */
+    @Generated
     public PlayRequest setPlayTo(List<CommunicationIdentifierModel> playTo) {
         this.playTo = playTo;
+        return this;
+    }
+
+    /**
+     * Get the interruptCallMediaOperation property: If set play can barge into other existing
+     * queued-up/currently-processing requests.
+     * 
+     * @return the interruptCallMediaOperation value.
+     */
+    @Generated
+    public Boolean isInterruptCallMediaOperation() {
+        return this.interruptCallMediaOperation;
+    }
+
+    /**
+     * Set the interruptCallMediaOperation property: If set play can barge into other existing
+     * queued-up/currently-processing requests.
+     * 
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
+     * @return the PlayRequest object itself.
+     */
+    @Generated
+    public PlayRequest setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+        this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
     }
 
@@ -97,6 +138,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * 
      * @return the playOptions value.
      */
+    @Generated
     public PlayOptionsInternal getPlayOptions() {
         return this.playOptions;
     }
@@ -107,6 +149,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * @param playOptions the playOptions value to set.
      * @return the PlayRequest object itself.
      */
+    @Generated
     public PlayRequest setPlayOptions(PlayOptionsInternal playOptions) {
         this.playOptions = playOptions;
         return this;
@@ -117,6 +160,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -127,6 +171,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * @param operationContext the operationContext value to set.
      * @return the PlayRequest object itself.
      */
+    @Generated
     public PlayRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -139,6 +184,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * 
      * @return the operationCallbackUri value.
      */
+    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -151,6 +197,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the PlayRequest object itself.
      */
+    @Generated
     public PlayRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -159,11 +206,13 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("playSources", this.playSources, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("playTo", this.playTo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
         jsonWriter.writeJsonField("playOptions", this.playOptions);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
@@ -179,6 +228,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PlayRequest.
      */
+    @Generated
     public static PlayRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PlayRequest deserializedPlayRequest = new PlayRequest();
@@ -194,6 +244,8 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
                     List<CommunicationIdentifierModel> playTo
                         = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
                     deserializedPlayRequest.playTo = playTo;
+                } else if ("interruptCallMediaOperation".equals(fieldName)) {
+                    deserializedPlayRequest.interruptCallMediaOperation = reader.getNullable(JsonReader::getBoolean);
                 } else if ("playOptions".equals(fieldName)) {
                     deserializedPlayRequest.playOptions = PlayOptionsInternal.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {

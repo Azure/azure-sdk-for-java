@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
+import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.RemoteVendorManagementFeature;
 import com.azure.resourcemanager.networkcloud.models.RemoteVendorManagementStatus;
 import com.azure.resourcemanager.networkcloud.models.SecretRotationStatus;
@@ -30,12 +31,18 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     private AdministrativeCredentials administratorCredentials;
 
     /*
-     * The total capacity of the storage appliance.
+     * The CA certificate information issued by the platform for connecting to TLS interfaces for the storage appliance.
+     * Callers add this certificate to their trusted CA store to allow secure communication with the storage appliance.
+     */
+    private CertificateInfo caCertificate;
+
+    /*
+     * The total capacity of the storage appliance. Measured in GiB.
      */
     private Long capacity;
 
     /*
-     * The amount of storage consumed.
+     * The amount of storage consumed. Measured in GiB.
      */
     private Long capacityUsed;
 
@@ -144,7 +151,18 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     }
 
     /**
-     * Get the capacity property: The total capacity of the storage appliance.
+     * Get the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
+     * interfaces for the storage appliance. Callers add this certificate to their trusted CA store to allow secure
+     * communication with the storage appliance.
+     * 
+     * @return the caCertificate value.
+     */
+    public CertificateInfo caCertificate() {
+        return this.caCertificate;
+    }
+
+    /**
+     * Get the capacity property: The total capacity of the storage appliance. Measured in GiB.
      * 
      * @return the capacity value.
      */
@@ -153,7 +171,7 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     }
 
     /**
-     * Get the capacityUsed property: The amount of storage consumed.
+     * Get the capacityUsed property: The amount of storage consumed. Measured in GiB.
      * 
      * @return the capacityUsed value.
      */
@@ -355,6 +373,9 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
         } else {
             administratorCredentials().validate();
         }
+        if (caCertificate() != null) {
+            caCertificate().validate();
+        }
         if (rackId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -418,6 +439,8 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
                     deserializedStorageApplianceProperties.serialNumber = reader.getString();
                 } else if ("storageApplianceSkuId".equals(fieldName)) {
                     deserializedStorageApplianceProperties.storageApplianceSkuId = reader.getString();
+                } else if ("caCertificate".equals(fieldName)) {
+                    deserializedStorageApplianceProperties.caCertificate = CertificateInfo.fromJson(reader);
                 } else if ("capacity".equals(fieldName)) {
                     deserializedStorageApplianceProperties.capacity = reader.getNullable(JsonReader::getLong);
                 } else if ("capacityUsed".equals(fieldName)) {

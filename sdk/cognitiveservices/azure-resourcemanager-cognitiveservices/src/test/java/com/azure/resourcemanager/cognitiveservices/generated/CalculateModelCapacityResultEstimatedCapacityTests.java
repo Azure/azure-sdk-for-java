@@ -12,18 +12,18 @@ public final class CalculateModelCapacityResultEstimatedCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CalculateModelCapacityResultEstimatedCapacity model
-            = BinaryData.fromString("{\"value\":1929078891,\"deployableValue\":766917495}")
+            = BinaryData.fromString("{\"value\":96926313,\"deployableValue\":1505256116}")
                 .toObject(CalculateModelCapacityResultEstimatedCapacity.class);
-        Assertions.assertEquals(1929078891, model.value());
-        Assertions.assertEquals(766917495, model.deployableValue());
+        Assertions.assertEquals(96926313, model.value());
+        Assertions.assertEquals(1505256116, model.deployableValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CalculateModelCapacityResultEstimatedCapacity model
-            = new CalculateModelCapacityResultEstimatedCapacity().withValue(1929078891).withDeployableValue(766917495);
+            = new CalculateModelCapacityResultEstimatedCapacity().withValue(96926313).withDeployableValue(1505256116);
         model = BinaryData.fromObject(model).toObject(CalculateModelCapacityResultEstimatedCapacity.class);
-        Assertions.assertEquals(1929078891, model.value());
-        Assertions.assertEquals(766917495, model.deployableValue());
+        Assertions.assertEquals(96926313, model.value());
+        Assertions.assertEquals(1505256116, model.deployableValue());
     }
 }

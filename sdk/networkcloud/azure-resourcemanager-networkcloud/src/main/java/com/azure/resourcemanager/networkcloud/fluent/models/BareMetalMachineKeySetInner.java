@@ -28,6 +28,11 @@ import java.util.Map;
 @Fluent
 public final class BareMetalMachineKeySetInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -61,6 +66,15 @@ public final class BareMetalMachineKeySetInner extends Resource {
      * Creates an instance of BareMetalMachineKeySetInner class.
      */
     public BareMetalMachineKeySetInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -300,6 +314,31 @@ public final class BareMetalMachineKeySetInner extends Resource {
     }
 
     /**
+     * Get the privilegeLevelName property: The name of the access level to apply when the privilege level is set to
+     * Other.
+     * 
+     * @return the privilegeLevelName value.
+     */
+    public String privilegeLevelName() {
+        return this.innerProperties() == null ? null : this.innerProperties().privilegeLevelName();
+    }
+
+    /**
+     * Set the privilegeLevelName property: The name of the access level to apply when the privilege level is set to
+     * Other.
+     * 
+     * @param privilegeLevelName the privilegeLevelName value to set.
+     * @return the BareMetalMachineKeySetInner object itself.
+     */
+    public BareMetalMachineKeySetInner withPrivilegeLevelName(String privilegeLevelName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BareMetalMachineKeySetProperties();
+        }
+        this.innerProperties().withPrivilegeLevelName(privilegeLevelName);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the bare metal machine key set.
      * 
      * @return the provisioningState value.
@@ -409,6 +448,8 @@ public final class BareMetalMachineKeySetInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedBareMetalMachineKeySetInner.innerProperties
                         = BareMetalMachineKeySetProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBareMetalMachineKeySetInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedBareMetalMachineKeySetInner.systemData = SystemData.fromJson(reader);
                 } else {

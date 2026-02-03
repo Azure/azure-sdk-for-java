@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,41 +22,69 @@ public class SharePointOnlineListLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "SharePointOnlineList";
 
     /*
      * The URL of the SharePoint Online site. For example, https://contoso.sharepoint.com/sites/siteName. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private Object siteUrl;
 
     /*
      * The tenant ID under which your application resides. You can find it from Azure portal Active Directory overview
      * page. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object tenantId;
 
     /*
      * The application (client) ID of your application registered in Azure Active Directory. Make sure to grant
      * SharePoint site permission to this application. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object servicePrincipalId;
 
     /*
      * The client secret of your application registered in Azure Active Directory. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private SecretBase servicePrincipalKey;
+
+    /*
+     * The service principal credential type to use in Server-To-Server authentication. 'ServicePrincipalKey' for
+     * key/secret, 'ServicePrincipalCert' for certificate. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object servicePrincipalCredentialType;
+
+    /*
+     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string (or
+     * Expression with resultType string).
+     */
+    @Generated
+    private SecretBase servicePrincipalEmbeddedCert;
+
+    /*
+     * Specify the password of your certificate if your certificate has a password and you are using AadServicePrincipal
+     * authentication. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SharePointOnlineListLinkedService class.
      */
+    @Generated
     public SharePointOnlineListLinkedService() {
     }
 
@@ -64,6 +93,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -75,6 +105,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * 
      * @return the siteUrl value.
      */
+    @Generated
     public Object getSiteUrl() {
         return this.siteUrl;
     }
@@ -86,6 +117,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * @param siteUrl the siteUrl value to set.
      * @return the SharePointOnlineListLinkedService object itself.
      */
+    @Generated
     public SharePointOnlineListLinkedService setSiteUrl(Object siteUrl) {
         this.siteUrl = siteUrl;
         return this;
@@ -97,6 +129,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * 
      * @return the tenantId value.
      */
+    @Generated
     public Object getTenantId() {
         return this.tenantId;
     }
@@ -108,6 +141,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * @param tenantId the tenantId value to set.
      * @return the SharePointOnlineListLinkedService object itself.
      */
+    @Generated
     public SharePointOnlineListLinkedService setTenantId(Object tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -120,6 +154,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalId value.
      */
+    @Generated
     public Object getServicePrincipalId() {
         return this.servicePrincipalId;
     }
@@ -132,6 +167,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the SharePointOnlineListLinkedService object itself.
      */
+    @Generated
     public SharePointOnlineListLinkedService setServicePrincipalId(Object servicePrincipalId) {
         this.servicePrincipalId = servicePrincipalId;
         return this;
@@ -143,6 +179,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * 
      * @return the servicePrincipalKey value.
      */
+    @Generated
     public SecretBase getServicePrincipalKey() {
         return this.servicePrincipalKey;
     }
@@ -154,8 +191,86 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the SharePointOnlineListLinkedService object itself.
      */
+    @Generated
     public SharePointOnlineListLinkedService setServicePrincipalKey(SecretBase servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    @Generated
+    public Object getServicePrincipalCredentialType() {
+        return this.servicePrincipalCredentialType;
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the SharePointOnlineListLinkedService object itself.
+     */
+    @Generated
+    public SharePointOnlineListLinkedService setServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        this.servicePrincipalCredentialType = servicePrincipalCredentialType;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCert value.
+     */
+    @Generated
+    public SecretBase getServicePrincipalEmbeddedCert() {
+        return this.servicePrincipalEmbeddedCert;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
+     * @return the SharePointOnlineListLinkedService object itself.
+     */
+    @Generated
+    public SharePointOnlineListLinkedService setServicePrincipalEmbeddedCert(SecretBase servicePrincipalEmbeddedCert) {
+        this.servicePrincipalEmbeddedCert = servicePrincipalEmbeddedCert;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCertPassword value.
+     */
+    @Generated
+    public SecretBase getServicePrincipalEmbeddedCertPassword() {
+        return this.servicePrincipalEmbeddedCertPassword;
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCertPassword the servicePrincipalEmbeddedCertPassword value to set.
+     * @return the SharePointOnlineListLinkedService object itself.
+     */
+    @Generated
+    public SharePointOnlineListLinkedService
+        setServicePrincipalEmbeddedCertPassword(SecretBase servicePrincipalEmbeddedCertPassword) {
+        this.servicePrincipalEmbeddedCertPassword = servicePrincipalEmbeddedCertPassword;
         return this;
     }
 
@@ -165,6 +280,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -176,6 +292,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SharePointOnlineListLinkedService object itself.
      */
+    @Generated
     public SharePointOnlineListLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -184,6 +301,17 @@ public class SharePointOnlineListLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SharePointOnlineListLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SharePointOnlineListLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -193,6 +321,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -202,6 +331,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -211,6 +341,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SharePointOnlineListLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -220,9 +351,11 @@ public class SharePointOnlineListLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -232,13 +365,24 @@ public class SharePointOnlineListLinkedService extends LinkedService {
             || tenantId != null
             || servicePrincipalId != null
             || servicePrincipalKey != null
+            || servicePrincipalCredentialType != null
+            || servicePrincipalEmbeddedCert != null
+            || servicePrincipalEmbeddedCertPassword != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("siteUrl", this.siteUrl);
             jsonWriter.writeUntypedField("tenantId", this.tenantId);
             jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
             jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.servicePrincipalCredentialType != null) {
+                jsonWriter.writeUntypedField("servicePrincipalCredentialType", this.servicePrincipalCredentialType);
+            }
+            jsonWriter.writeJsonField("servicePrincipalEmbeddedCert", this.servicePrincipalEmbeddedCert);
+            jsonWriter.writeJsonField("servicePrincipalEmbeddedCertPassword",
+                this.servicePrincipalEmbeddedCertPassword);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -258,6 +402,7 @@ public class SharePointOnlineListLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SharePointOnlineListLinkedService.
      */
+    @Generated
     public static SharePointOnlineListLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SharePointOnlineListLinkedService deserializedSharePointOnlineListLinkedService
@@ -267,7 +412,9 @@ public class SharePointOnlineListLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSharePointOnlineListLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSharePointOnlineListLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
@@ -294,6 +441,15 @@ public class SharePointOnlineListLinkedService extends LinkedService {
                             deserializedSharePointOnlineListLinkedService.servicePrincipalId = reader.readUntyped();
                         } else if ("servicePrincipalKey".equals(fieldName)) {
                             deserializedSharePointOnlineListLinkedService.servicePrincipalKey
+                                = SecretBase.fromJson(reader);
+                        } else if ("servicePrincipalCredentialType".equals(fieldName)) {
+                            deserializedSharePointOnlineListLinkedService.servicePrincipalCredentialType
+                                = reader.readUntyped();
+                        } else if ("servicePrincipalEmbeddedCert".equals(fieldName)) {
+                            deserializedSharePointOnlineListLinkedService.servicePrincipalEmbeddedCert
+                                = SecretBase.fromJson(reader);
+                        } else if ("servicePrincipalEmbeddedCertPassword".equals(fieldName)) {
+                            deserializedSharePointOnlineListLinkedService.servicePrincipalEmbeddedCertPassword
                                 = SecretBase.fromJson(reader);
                         } else if ("encryptedCredential".equals(fieldName)) {
                             deserializedSharePointOnlineListLinkedService.encryptedCredential = reader.readUntyped();

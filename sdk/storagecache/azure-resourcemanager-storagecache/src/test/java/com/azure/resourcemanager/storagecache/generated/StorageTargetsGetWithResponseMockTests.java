@@ -6,8 +6,8 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.OperationalStateType;
@@ -23,34 +23,34 @@ public final class StorageTargetsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"junctions\":[{\"namespacePath\":\"cc\",\"targetPath\":\"nhxk\",\"nfsExport\":\"v\",\"nfsAccessPolicy\":\"nrzvuljraaer\"},{\"namespacePath\":\"okqgukkjq\",\"targetPath\":\"broyla\",\"nfsExport\":\"ulcdisdosf\",\"nfsAccessPolicy\":\"jsvg\"},{\"namespacePath\":\"whryvycytdcl\",\"targetPath\":\"ccknfnwmbtmvp\",\"nfsExport\":\"jdhttzaefedxi\",\"nfsAccessPolicy\":\"hrphkmcrjdqn\"},{\"namespacePath\":\"fzpbgtgkyl\",\"targetPath\":\"ghrjeuutl\",\"nfsExport\":\"ez\",\"nfsAccessPolicy\":\"hokvbwnh\"}],\"targetType\":\"unknown\",\"provisioningState\":\"Deleting\",\"state\":\"Busy\",\"nfs3\":{\"target\":\"ppipifhpfeoa\",\"usageModel\":\"gcxtxj\",\"verificationTimer\":1930965124,\"writeBackTimer\":1050895909},\"clfs\":{\"target\":\"dltug\"},\"unknown\":{\"attributes\":{\"jhoiftxfkfweg\":\"mks\",\"iqtgdqoh\":\"rhptilluc\"}},\"blobNfs\":{\"target\":\"sldrizetpwbral\",\"usageModel\":\"ibph\",\"verificationTimer\":449888460,\"writeBackTimer\":1515253868},\"allocationPercentage\":739440726},\"location\":\"a\",\"id\":\"nkjpdnjzha\",\"name\":\"oylhjlmuoyxprimr\",\"type\":\"opteecj\"}";
+            = "{\"properties\":{\"junctions\":[{\"namespacePath\":\"lnzonzlrpiqywn\",\"targetPath\":\"jtszcof\",\"nfsExport\":\"e\",\"nfsAccessPolicy\":\"dhgbjkvre\"}],\"targetType\":\"clfs\",\"provisioningState\":\"Canceled\",\"state\":\"Flushing\",\"nfs3\":{\"target\":\"zmlovuanash\",\"usageModel\":\"lpmjerb\",\"verificationTimer\":1754763241,\"writeBackTimer\":394123494},\"clfs\":{\"target\":\"izozsd\"},\"unknown\":{\"attributes\":{\"n\":\"jmonfdgn\",\"keifzzhmkdasv\":\"ypuuwwltvuqjctze\"}},\"blobNfs\":{\"target\":\"hbxcu\",\"usageModel\":\"hxgsrboldfor\",\"verificationTimer\":866872583,\"writeBackTimer\":1198748738},\"allocationPercentage\":998979559},\"location\":\"bfhfovvacqp\",\"id\":\"uodxesza\",\"name\":\"belawumuaslzkwr\",\"type\":\"woycqucwyha\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageCacheManager manager = StorageCacheManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageTarget response = manager.storageTargets()
-            .getWithResponse("kdlpa", "zrcxfailcfxwmdbo", "dfgsftufqobrj", com.azure.core.util.Context.NONE)
+            .getWithResponse("hcz", "xrxzbujrtr", "qvwre", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cc", response.junctions().get(0).namespacePath());
-        Assertions.assertEquals("nhxk", response.junctions().get(0).targetPath());
-        Assertions.assertEquals("v", response.junctions().get(0).nfsExport());
-        Assertions.assertEquals("nrzvuljraaer", response.junctions().get(0).nfsAccessPolicy());
-        Assertions.assertEquals(StorageTargetType.UNKNOWN, response.targetType());
-        Assertions.assertEquals(OperationalStateType.BUSY, response.state());
-        Assertions.assertEquals("ppipifhpfeoa", response.nfs3().target());
-        Assertions.assertEquals("gcxtxj", response.nfs3().usageModel());
-        Assertions.assertEquals(1930965124, response.nfs3().verificationTimer());
-        Assertions.assertEquals(1050895909, response.nfs3().writeBackTimer());
-        Assertions.assertEquals("dltug", response.clfs().target());
-        Assertions.assertEquals("mks", response.unknown().attributes().get("jhoiftxfkfweg"));
-        Assertions.assertEquals("sldrizetpwbral", response.blobNfs().target());
-        Assertions.assertEquals("ibph", response.blobNfs().usageModel());
-        Assertions.assertEquals(449888460, response.blobNfs().verificationTimer());
-        Assertions.assertEquals(1515253868, response.blobNfs().writeBackTimer());
+        Assertions.assertEquals("lnzonzlrpiqywn", response.junctions().get(0).namespacePath());
+        Assertions.assertEquals("jtszcof", response.junctions().get(0).targetPath());
+        Assertions.assertEquals("e", response.junctions().get(0).nfsExport());
+        Assertions.assertEquals("dhgbjkvre", response.junctions().get(0).nfsAccessPolicy());
+        Assertions.assertEquals(StorageTargetType.CLFS, response.targetType());
+        Assertions.assertEquals(OperationalStateType.FLUSHING, response.state());
+        Assertions.assertEquals("zmlovuanash", response.nfs3().target());
+        Assertions.assertEquals("lpmjerb", response.nfs3().usageModel());
+        Assertions.assertEquals(1754763241, response.nfs3().verificationTimer());
+        Assertions.assertEquals(394123494, response.nfs3().writeBackTimer());
+        Assertions.assertEquals("izozsd", response.clfs().target());
+        Assertions.assertEquals("jmonfdgn", response.unknown().attributes().get("n"));
+        Assertions.assertEquals("hbxcu", response.blobNfs().target());
+        Assertions.assertEquals("hxgsrboldfor", response.blobNfs().usageModel());
+        Assertions.assertEquals(866872583, response.blobNfs().verificationTimer());
+        Assertions.assertEquals(1198748738, response.blobNfs().writeBackTimer());
     }
 }

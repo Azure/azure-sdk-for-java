@@ -81,27 +81,6 @@ public final class ConnectedEnvironmentsImpl implements ConnectedEnvironments {
         this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, context);
     }
 
-    public Response<ConnectedEnvironment> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        Context context) {
-        Response<ConnectedEnvironmentInner> inner
-            = this.serviceClient().updateWithResponse(resourceGroupName, connectedEnvironmentName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new ConnectedEnvironmentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ConnectedEnvironment update(String resourceGroupName, String connectedEnvironmentName) {
-        ConnectedEnvironmentInner inner = this.serviceClient().update(resourceGroupName, connectedEnvironmentName);
-        if (inner != null) {
-            return new ConnectedEnvironmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String resourceGroupName,
         String connectedEnvironmentName, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
         Response<CheckNameAvailabilityResponseInner> inner = this.serviceClient()

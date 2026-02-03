@@ -5,18 +5,24 @@
 package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.datamigration.models.Severity;
 import com.azure.resourcemanager.datamigration.models.ValidationError;
+import org.junit.jupiter.api.Assertions;
 
 public final class ValidationErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationError model
-            = BinaryData.fromString("{\"text\":\"of\",\"severity\":\"Warning\"}").toObject(ValidationError.class);
+            = BinaryData.fromString("{\"text\":\"utgqztwh\",\"severity\":\"Error\"}").toObject(ValidationError.class);
+        Assertions.assertEquals("utgqztwh", model.text());
+        Assertions.assertEquals(Severity.ERROR, model.severity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationError model = new ValidationError();
+        ValidationError model = new ValidationError().withText("utgqztwh").withSeverity(Severity.ERROR);
         model = BinaryData.fromObject(model).toObject(ValidationError.class);
+        Assertions.assertEquals("utgqztwh", model.text());
+        Assertions.assertEquals(Severity.ERROR, model.severity());
     }
 }

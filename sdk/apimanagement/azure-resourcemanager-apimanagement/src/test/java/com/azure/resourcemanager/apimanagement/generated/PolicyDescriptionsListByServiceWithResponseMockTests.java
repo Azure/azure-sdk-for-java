@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PolicyDescriptionCollection;
@@ -22,20 +22,19 @@ public final class PolicyDescriptionsListByServiceWithResponseMockTests {
     @Test
     public void testListByServiceWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"owrdtd\",\"scope\":8346381537310170982},\"id\":\"zd\",\"name\":\"bbcztamky\",\"type\":\"kwsthpivocf\"},{\"properties\":{\"description\":\"vnodqqzjbfy\",\"scope\":4648926311682901421},\"id\":\"nfqdfwvsxfr\",\"name\":\"vlypztuskpncdo\",\"type\":\"loepjzaqb\"},{\"properties\":{\"description\":\"wazbur\",\"scope\":508138936372298520},\"id\":\"fudbkvu\",\"name\":\"ngjoasnz\",\"type\":\"awowqsni\"},{\"properties\":{\"description\":\"dqzu\",\"scope\":5718414521542769104},\"id\":\"szk\",\"name\":\"xbhhpvv\",\"type\":\"eghtmqo\"}],\"count\":4114034609909249754}";
+            = "{\"value\":[{\"properties\":{\"description\":\"troxlybddxebdhm\",\"scope\":4828404302357120100},\"id\":\"f\",\"name\":\"grepbrbmc\",\"type\":\"tvx\"},{\"properties\":{\"description\":\"vqrexluipalqw\",\"scope\":3017902024104521923},\"id\":\"ovpdltjdrfiwerl\",\"name\":\"cetrvirdfsdswp\",\"type\":\"nloop\"},{\"properties\":{\"description\":\"egchtabhacjlf\",\"scope\":1195418586662166260},\"id\":\"lvvwvpf\",\"name\":\"tpvzhmlnfvy\",\"type\":\"dhf\"}],\"count\":8101397034240673841}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyDescriptionCollection response = manager.policyDescriptions()
-            .listByServiceWithResponse("kyduqzuscolbqveh", "ekxn", PolicyScopeContract.ALL,
-                com.azure.core.util.Context.NONE)
+            .listByServiceWithResponse("kszxcmsc", "zas", PolicyScopeContract.TENANT, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(4114034609909249754L, response.count());
+        Assertions.assertEquals(8101397034240673841L, response.count());
     }
 }

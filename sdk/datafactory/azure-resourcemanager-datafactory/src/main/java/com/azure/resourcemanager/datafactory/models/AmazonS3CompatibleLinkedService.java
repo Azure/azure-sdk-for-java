@@ -52,7 +52,7 @@ public final class AmazonS3CompatibleLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonS3CompatibleLinkedServiceTypeProperties innerTypeProperties() {
+    AmazonS3CompatibleLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

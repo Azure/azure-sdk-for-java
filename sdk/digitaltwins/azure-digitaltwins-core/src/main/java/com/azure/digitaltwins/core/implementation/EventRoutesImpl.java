@@ -64,7 +64,7 @@ public final class EventRoutesImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDigitalTwinsAPI")
+    @ServiceInterface(name = "AzureDigitalTwinsAPIEventRoutes")
     public interface EventRoutesService {
         @Get("/eventroutes")
         @ExpectedResponses({ 200 })

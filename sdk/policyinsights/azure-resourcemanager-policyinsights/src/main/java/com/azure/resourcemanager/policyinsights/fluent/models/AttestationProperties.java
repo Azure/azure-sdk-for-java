@@ -330,7 +330,9 @@ public final class AttestationProperties implements JsonSerializable<Attestation
         jsonWriter.writeArrayField("evidence", this.evidence, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("assessmentDate",
             this.assessmentDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.assessmentDate));
-        jsonWriter.writeUntypedField("metadata", this.metadata);
+        if (this.metadata != null) {
+            jsonWriter.writeUntypedField("metadata", this.metadata);
+        }
         return jsonWriter.writeEndObject();
     }
 

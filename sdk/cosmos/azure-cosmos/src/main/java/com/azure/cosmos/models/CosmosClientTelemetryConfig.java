@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.Tracer;
@@ -13,6 +14,7 @@ import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
@@ -51,7 +53,6 @@ public final class CosmosClientTelemetryConfig {
     private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_CONNECTION_POOL_SIZE = 1000;
 
-    private Boolean clientTelemetryEnabled;
     private final Duration httpNetworkRequestTimeout;
     private final int maxConnectionPoolSize;
     private final Duration idleHttpConnectionTimeout;
@@ -66,23 +67,18 @@ public final class CosmosClientTelemetryConfig {
     private Tag clientCorrelationTag;
     private String accountName;
     private ClientTelemetry clientTelemetry;
-
-    private Boolean effectiveIsClientTelemetryEnabled = null;
     private CosmosMicrometerMetricsOptions micrometerMetricsOptions = null;
     private CosmosDiagnosticsThresholds diagnosticsThresholds = new CosmosDiagnosticsThresholds();
     private Tracer tracer;
     private TracingOptions tracingOptions;
-
     private double samplingRate;
-    
     private ShowQueryMode showQueryMode = ShowQueryMode.NONE;
+    private EnumSet<AttributeNamingScheme> attributeNamingSchemes;
 
     /**
      * Instantiates a new Cosmos client telemetry configuration.
      */
     public CosmosClientTelemetryConfig() {
-        this.clientTelemetryEnabled = null;
-        this.effectiveIsClientTelemetryEnabled = null;
         this.httpNetworkRequestTimeout = DEFAULT_NETWORK_REQUEST_TIMEOUT;
         this.maxConnectionPoolSize = DEFAULT_MAX_CONNECTION_POOL_SIZE;
         this.idleHttpConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
@@ -94,6 +90,7 @@ public final class CosmosClientTelemetryConfig {
         this.samplingRate = Configs.getMetricsConfig().getSampleRate();
         CosmosMicrometerMetricsOptions defaultMetricsOptions = new CosmosMicrometerMetricsOptions();
         this.isClientMetricsEnabled = defaultMetricsOptions.isEnabled();
+        this.attributeNamingSchemes = Configs.getDefaultOtelSpanAttributeNamingScheme();
         if (this.isClientMetricsEnabled) {
             this.micrometerMetricsOptions = defaultMetricsOptions;
         }
@@ -101,25 +98,19 @@ public final class CosmosClientTelemetryConfig {
 
     /**
      * Enables or disables sending Cosmos DB client telemetry to the Azure Cosmos DB Service
+     *
+     * @deprecated is is not possible to send the telemetry to the service. But client-side telemetry can be
+     * enabled via {@link CosmosClientTelemetryConfig#diagnosticsHandler(CosmosDiagnosticsHandler)},
+     * {@link CosmosClientTelemetryConfig#metricsOptions(MetricsOptions)} and
+     * {@link CosmosClientTelemetryConfig#tracingOptions(TracingOptions)}.
+     *
      * @param enabled a flag indicating whether sending client telemetry to the backend should be
      * enabled or not
      * @return current CosmosClientTelemetryConfig
      */
+    @Deprecated()
     public CosmosClientTelemetryConfig sendClientTelemetryToService(boolean enabled) {
-        this.clientTelemetryEnabled = enabled;
-
         return this;
-    }
-
-    Boolean isSendClientTelemetryToServiceEnabled() {
-        Boolean effectiveSnapshot = this.effectiveIsClientTelemetryEnabled;
-        Boolean currentSnapshot = this.clientTelemetryEnabled;
-
-        return  effectiveSnapshot != null ? effectiveSnapshot : currentSnapshot;
-    }
-
-    void resetIsSendClientTelemetryToServiceEnabled() {
-        this.clientTelemetryEnabled = null;
     }
 
     void setAccountName(String accountName) {
@@ -308,13 +299,6 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
 
-    private CosmosClientTelemetryConfig setEffectiveIsClientTelemetryEnabled(
-        boolean effectiveIsClientTelemetryEnabled) {
-
-        this.effectiveIsClientTelemetryEnabled = effectiveIsClientTelemetryEnabled;
-        return this;
-    }
-
     Duration getHttpNetworkRequestTimeout() {
         return this.httpNetworkRequestTimeout;
     }
@@ -396,10 +380,10 @@ public final class CosmosClientTelemetryConfig {
         this.isTransportLevelTracingEnabled = true;
         return this;
     }
-    
+
     /**
      * Enables printing query in db.statement attribute and diagnostic logs. By default, query is not printed.
-     * Users have the option to enable printing parameterized or all queries, 
+     * Users have the option to enable printing parameterized or all queries,
      * but has to beware that customer data may be shown when the later option is chosen
      * It's the user's responsibility to sanitize the queries if necessary.
      * @param showQueryMode the mode for printing none, parameterized or all of the query statements
@@ -449,7 +433,6 @@ public final class CosmosClientTelemetryConfig {
             "samplingRate=" + this.samplingRate +
             ", thresholds=" + this.diagnosticsThresholds +
             ", clientCorrelationId=" + this.clientCorrelationId +
-            ", clientTelemetryEnabled=" + this.effectiveIsClientTelemetryEnabled +
             ", clientMetricsEnabled=" + this.isClientMetricsEnabled +
             ", transportLevelTracingEnabled=" + this.isTransportLevelTracingEnabled +
             ", showQueryMode=" + this.showQueryMode +
@@ -459,15 +442,37 @@ public final class CosmosClientTelemetryConfig {
     }
 
     Tracer getOrCreateTracer() {
+        logger.debug("getOrCreateTracer: {}", this.tracer);
         if (this.tracer != null) {
             return this.tracer;
         }
 
-        return TracerProvider.getDefaultProvider().createTracer(
-            "azure-cosmos",
-            HttpConstants.Versions.getSdkVersion(),
-            DiagnosticsProvider.RESOURCE_PROVIDER_NAME,
-            tracingOptions);
+        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions("azure-cosmos")
+            .setLibraryVersion(HttpConstants.Versions.getSdkVersion())
+            .setResourceProviderNamespace(DiagnosticsProvider.RESOURCE_PROVIDER_NAME);
+
+        Tracer tracerCandidate = TracerProvider.getDefaultProvider().createTracer(
+            libraryOptions,
+            tracingOptions
+        );
+
+        logger.debug(
+            "TracerCandidate from config: {} - {} - {}",
+            tracerCandidate,
+            tracingOptions != null ? String.valueOf(tracingOptions.isEnabled()) : "null",
+            tracerCandidate.isEnabled());
+
+        return tracerCandidate;
+    }
+
+    CosmosClientTelemetryConfig setOtelSpanAttributeNamingScheme(String name) {
+        this.attributeNamingSchemes = AttributeNamingScheme.parse(name);
+
+        return this;
+    }
+
+    EnumSet<AttributeNamingScheme> getOtelSpanAttributeNamingScheme() {
+        return this.attributeNamingSchemes.clone();
     }
 
     private static class JsonProxyOptionsConfig {
@@ -568,21 +573,8 @@ public final class CosmosClientTelemetryConfig {
                 }
 
                 @Override
-                public Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
-                    return config.isSendClientTelemetryToServiceEnabled();
-                }
-
-                @Override
                 public boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config) {
                     return config.isClientMetricsEnabled;
-                }
-
-                @Override
-                public CosmosClientTelemetryConfig createSnapshot(
-                    CosmosClientTelemetryConfig config,
-                    boolean effectiveIsClientTelemetryEnabled) {
-
-                    return config.setEffectiveIsClientTelemetryEnabled(effectiveIsClientTelemetryEnabled);
                 }
 
                 @Override
@@ -598,6 +590,16 @@ public final class CosmosClientTelemetryConfig {
                 @Override
                 public String getAccountName(CosmosClientTelemetryConfig config) {
                     return config.getAccountName();
+                }
+
+                @Override
+                public CosmosClientTelemetryConfig setOtelSpanAttributeNamingSchema(CosmosClientTelemetryConfig config, String attributeNamingScheme) {
+                    return config.setOtelSpanAttributeNamingScheme(attributeNamingScheme);
+                }
+
+                @Override
+                public EnumSet<AttributeNamingScheme> getOtelSpanAttributeNamingSchema(CosmosClientTelemetryConfig config) {
+                    return config.getOtelSpanAttributeNamingScheme();
                 }
 
                 @Override
@@ -632,12 +634,6 @@ public final class CosmosClientTelemetryConfig {
                         }
                     }
                     config.diagnosticHandlers.add(handler);
-                }
-
-                @Override
-                public void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config) {
-
-                    config.resetIsSendClientTelemetryToServiceEnabled();
                 }
 
                 @Override
@@ -681,7 +677,7 @@ public final class CosmosClientTelemetryConfig {
                 public ShowQueryMode showQueryMode(CosmosClientTelemetryConfig config) {
                     return config.showQueryMode;
                 }
-       
+
                 @Override
                 public double[] getDefaultPercentiles(CosmosClientTelemetryConfig config) {
                     return config.micrometerMetricsOptions.getDefaultPercentiles();

@@ -17,55 +17,55 @@ public final class BackupSetInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupSetInfo model = BinaryData.fromString(
-            "{\"backupSetId\":\"y\",\"firstLsn\":\"svexcsonpclhoco\",\"lastLsn\":\"lkevle\",\"lastModifiedTime\":\"2021-02-17T22:26:44Z\",\"backupType\":\"Partial\",\"listOfBackupFiles\":[{\"fileLocation\":\"mvfaxkffeiith\",\"familySequenceNumber\":63986979,\"status\":\"Restored\"},{\"fileLocation\":\"v\",\"familySequenceNumber\":516508763,\"status\":\"Restoring\"},{\"fileLocation\":\"bbzoggig\",\"familySequenceNumber\":2011180934,\"status\":\"Queued\"}],\"databaseName\":\"vjxxjnsp\",\"backupStartDate\":\"2021-07-31T00:27:15Z\",\"backupFinishedDate\":\"2021-09-23T06:50:39Z\",\"isBackupRestored\":true}")
+            "{\"backupSetId\":\"lmywwtkgkxnyed\",\"firstLsn\":\"gyvudtjuewbc\",\"lastLsn\":\"xuuwhcj\",\"lastModifiedTime\":\"2021-05-11T16:18:11Z\",\"backupType\":\"Partial\",\"listOfBackupFiles\":[{\"fileLocation\":\"ayakkudzpx\",\"familySequenceNumber\":431593989,\"status\":\"Cancelled\"},{\"fileLocation\":\"agst\",\"familySequenceNumber\":1840695765,\"status\":\"Queued\"},{\"fileLocation\":\"kyrk\",\"familySequenceNumber\":293927715,\"status\":\"Queued\"}],\"databaseName\":\"gsj\",\"backupStartDate\":\"2021-04-30T17:49:14Z\",\"backupFinishedDate\":\"2021-11-19T04:56:42Z\",\"isBackupRestored\":true}")
             .toObject(BackupSetInfo.class);
-        Assertions.assertEquals("y", model.backupSetId());
-        Assertions.assertEquals("svexcsonpclhoco", model.firstLsn());
-        Assertions.assertEquals("lkevle", model.lastLsn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T22:26:44Z"), model.lastModifiedTime());
+        Assertions.assertEquals("lmywwtkgkxnyed", model.backupSetId());
+        Assertions.assertEquals("gyvudtjuewbc", model.firstLsn());
+        Assertions.assertEquals("xuuwhcj", model.lastLsn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T16:18:11Z"), model.lastModifiedTime());
         Assertions.assertEquals(BackupType.PARTIAL, model.backupType());
-        Assertions.assertEquals("mvfaxkffeiith", model.listOfBackupFiles().get(0).fileLocation());
-        Assertions.assertEquals(63986979, model.listOfBackupFiles().get(0).familySequenceNumber());
-        Assertions.assertEquals(BackupFileStatus.RESTORED, model.listOfBackupFiles().get(0).status());
-        Assertions.assertEquals("vjxxjnsp", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T00:27:15Z"), model.backupStartDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T06:50:39Z"), model.backupFinishedDate());
-        Assertions.assertEquals(true, model.isBackupRestored());
+        Assertions.assertEquals("ayakkudzpx", model.listOfBackupFiles().get(0).fileLocation());
+        Assertions.assertEquals(431593989, model.listOfBackupFiles().get(0).familySequenceNumber());
+        Assertions.assertEquals(BackupFileStatus.CANCELLED, model.listOfBackupFiles().get(0).status());
+        Assertions.assertEquals("gsj", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T17:49:14Z"), model.backupStartDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T04:56:42Z"), model.backupFinishedDate());
+        Assertions.assertTrue(model.isBackupRestored());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupSetInfo model = new BackupSetInfo().withBackupSetId("y")
-            .withFirstLsn("svexcsonpclhoco")
-            .withLastLsn("lkevle")
-            .withLastModifiedTime(OffsetDateTime.parse("2021-02-17T22:26:44Z"))
+        BackupSetInfo model = new BackupSetInfo().withBackupSetId("lmywwtkgkxnyed")
+            .withFirstLsn("gyvudtjuewbc")
+            .withLastLsn("xuuwhcj")
+            .withLastModifiedTime(OffsetDateTime.parse("2021-05-11T16:18:11Z"))
             .withBackupType(BackupType.PARTIAL)
             .withListOfBackupFiles(Arrays.asList(
-                new BackupFileInfo().withFileLocation("mvfaxkffeiith")
-                    .withFamilySequenceNumber(63986979)
-                    .withStatus(BackupFileStatus.RESTORED),
-                new BackupFileInfo().withFileLocation("v")
-                    .withFamilySequenceNumber(516508763)
-                    .withStatus(BackupFileStatus.RESTORING),
-                new BackupFileInfo().withFileLocation("bbzoggig")
-                    .withFamilySequenceNumber(2011180934)
+                new BackupFileInfo().withFileLocation("ayakkudzpx")
+                    .withFamilySequenceNumber(431593989)
+                    .withStatus(BackupFileStatus.CANCELLED),
+                new BackupFileInfo().withFileLocation("agst")
+                    .withFamilySequenceNumber(1840695765)
+                    .withStatus(BackupFileStatus.QUEUED),
+                new BackupFileInfo().withFileLocation("kyrk")
+                    .withFamilySequenceNumber(293927715)
                     .withStatus(BackupFileStatus.QUEUED)))
-            .withDatabaseName("vjxxjnsp")
-            .withBackupStartDate(OffsetDateTime.parse("2021-07-31T00:27:15Z"))
-            .withBackupFinishedDate(OffsetDateTime.parse("2021-09-23T06:50:39Z"))
+            .withDatabaseName("gsj")
+            .withBackupStartDate(OffsetDateTime.parse("2021-04-30T17:49:14Z"))
+            .withBackupFinishedDate(OffsetDateTime.parse("2021-11-19T04:56:42Z"))
             .withIsBackupRestored(true);
         model = BinaryData.fromObject(model).toObject(BackupSetInfo.class);
-        Assertions.assertEquals("y", model.backupSetId());
-        Assertions.assertEquals("svexcsonpclhoco", model.firstLsn());
-        Assertions.assertEquals("lkevle", model.lastLsn());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T22:26:44Z"), model.lastModifiedTime());
+        Assertions.assertEquals("lmywwtkgkxnyed", model.backupSetId());
+        Assertions.assertEquals("gyvudtjuewbc", model.firstLsn());
+        Assertions.assertEquals("xuuwhcj", model.lastLsn());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-11T16:18:11Z"), model.lastModifiedTime());
         Assertions.assertEquals(BackupType.PARTIAL, model.backupType());
-        Assertions.assertEquals("mvfaxkffeiith", model.listOfBackupFiles().get(0).fileLocation());
-        Assertions.assertEquals(63986979, model.listOfBackupFiles().get(0).familySequenceNumber());
-        Assertions.assertEquals(BackupFileStatus.RESTORED, model.listOfBackupFiles().get(0).status());
-        Assertions.assertEquals("vjxxjnsp", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T00:27:15Z"), model.backupStartDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-23T06:50:39Z"), model.backupFinishedDate());
-        Assertions.assertEquals(true, model.isBackupRestored());
+        Assertions.assertEquals("ayakkudzpx", model.listOfBackupFiles().get(0).fileLocation());
+        Assertions.assertEquals(431593989, model.listOfBackupFiles().get(0).familySequenceNumber());
+        Assertions.assertEquals(BackupFileStatus.CANCELLED, model.listOfBackupFiles().get(0).status());
+        Assertions.assertEquals("gsj", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T17:49:14Z"), model.backupStartDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T04:56:42Z"), model.backupFinishedDate());
+        Assertions.assertTrue(model.isBackupRestored());
     }
 }

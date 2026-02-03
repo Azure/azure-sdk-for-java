@@ -9,7 +9,9 @@ import com.azure.resourcemanager.tools.changelog.utils.ClassName;
 import com.azure.resourcemanager.tools.changelog.utils.MethodName;
 import japicmp.model.JApiChangeStatus;
 import japicmp.model.JApiClass;
+import japicmp.model.JApiConstructor;
 import japicmp.model.JApiMethod;
+import javassist.bytecode.AccessFlag;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -121,6 +123,7 @@ public class ChangeLog {
             case REMOVED: breakingChange.setClassLevelChangeType(BreakingChange.Type.REMOVED); break;
             default:
                 boolean checkReturnType = !ClassName.name(getJApiClass()).equals("Definition");
+                allMethods.getConstructors().forEach(constructor -> this.calcChangelogForConstructor(constructor));
                 allMethods.getMethods().forEach(method -> this.calcChangelogForMethod(method, checkReturnType));
                 break;
         }
@@ -149,6 +152,24 @@ public class ChangeLog {
                     }
                 } else {
                     breakingChange.addMethodLevelChange(String.format("`%s %s` -> `%s %s`", method.getReturnType().getOldReturnType(), MethodName.name(method.getOldMethod().get()), method.getReturnType().getNewReturnType(), MethodName.name(method.getNewMethod().get())));
+                }
+                break;
+        }
+    }
+
+    private void calcChangelogForConstructor(JApiConstructor constructor) {
+        switch (constructor.getChangeStatus()) {
+            case NEW:
+                addClassTitle(newFeature);
+                newFeature.add(String.format("* `%s` was added", MethodName.name(constructor.getNewConstructor().get())));
+                break;
+            case REMOVED:
+                breakingChange.addMethodLevelChange(String.format("`%s` was removed", MethodName.name(constructor.getOldConstructor().get())));
+                break;
+            case MODIFIED:
+                if ((constructor.getOldConstructor().get().getModifiers() & AccessFlag.PUBLIC) == AccessFlag.PUBLIC
+                        && (constructor.getNewConstructor().get().getModifiers() & AccessFlag.PRIVATE) == AccessFlag.PRIVATE) {
+                    breakingChange.addMethodLevelChange(String.format("`%s` was changed to private access", MethodName.name(constructor.getOldConstructor().get())));
                 }
                 break;
         }

@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -179,6 +180,7 @@ public class RxDocumentClientImplTest {
         Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(dummyInt);
         Mockito.when(this.connectionPolicyMock.getProxy()).thenReturn(dummyProxyOptions);
         Mockito.when(this.connectionPolicyMock.getHttpNetworkRequestTimeout()).thenReturn(dummyDuration);
+        Mockito.when(this.connectionPolicyMock.getHttp2ConnectionConfig()).thenReturn(new Http2ConnectionConfig());
 
         httpClientMock
             .when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
@@ -232,6 +234,7 @@ public class RxDocumentClientImplTest {
             this.permissionFeedMock,
             this.connectionPolicyMock,
             this.consistencyLevelMock,
+            null,
             this.configsMock,
             this.cosmosAuthorizationTokenResolverMock,
             this.azureKeyCredentialMock,
@@ -246,7 +249,8 @@ public class RxDocumentClientImplTest {
             this.sessionRetryOptionsMock,
             this.containerProactiveInitConfigMock,
             this.defaultItemSerializer,
-            false);
+            false
+        );
 
         try {
             ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
@@ -390,7 +394,15 @@ public class RxDocumentClientImplTest {
             }
 
             @Override
-            public CollectionRoutingMap tryCombine(List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges) {
+            public CollectionRoutingMap tryCombine(
+                List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges,
+                String changeFeedIfNoneMatch,
+                String collectionRid) {
+                return null;
+            }
+
+            @Override
+            public String getChangeFeedNextIfNoneMatch() {
                 return null;
             }
         };
@@ -432,6 +444,7 @@ public class RxDocumentClientImplTest {
     private static RxDocumentServiceResponse mockRxDocumentServiceResponse(String content, Map<String, String> headers) {
         byte[] blob = content.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
+            null,
             HttpResponseStatus.OK.code(),
             headers,
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),

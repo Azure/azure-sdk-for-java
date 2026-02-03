@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,51 +21,61 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
     /*
      * Output of exit command.
      */
+    @Generated
     private String exitValue;
 
     /*
      * Run notebook runId.
      */
+    @Generated
     private String id;
 
     /*
      * Notebook name.
      */
+    @Generated
     private String notebook;
 
     /*
      * Session properties.
      */
+    @Generated
     private RunNotebookSparkSessionOptions sessionOptions;
 
     /*
      * Whether session should run till time to live after run completes.
      */
+    @Generated
     private Boolean honorSessionTimeToLive;
 
     /*
      * Livy session id.
      */
+    @Generated
     private String sessionId;
 
     /*
      * SparkPool name.
      */
+    @Generated
     private String sparkPool;
 
     /*
      * Run notebook parameters
      */
+    @Generated
     private Map<String, RunNotebookParameter> parameters;
 
     /*
      * Notebook resource type.
      */
+    @Generated
     private NotebookResource notebookContent;
 
     /**
      * Creates an instance of RunNotebookSnapshot class.
      */
+    @Generated
     public RunNotebookSnapshot() {
     }
 
@@ -73,6 +84,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the exitValue value.
      */
+    @Generated
     public String getExitValue() {
         return this.exitValue;
     }
@@ -83,6 +95,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param exitValue the exitValue value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setExitValue(String exitValue) {
         this.exitValue = exitValue;
         return this;
@@ -93,6 +106,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -103,6 +117,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param id the id value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setId(String id) {
         this.id = id;
         return this;
@@ -113,6 +128,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the notebook value.
      */
+    @Generated
     public String getNotebook() {
         return this.notebook;
     }
@@ -123,6 +139,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param notebook the notebook value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setNotebook(String notebook) {
         this.notebook = notebook;
         return this;
@@ -133,6 +150,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the sessionOptions value.
      */
+    @Generated
     public RunNotebookSparkSessionOptions getSessionOptions() {
         return this.sessionOptions;
     }
@@ -143,6 +161,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param sessionOptions the sessionOptions value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setSessionOptions(RunNotebookSparkSessionOptions sessionOptions) {
         this.sessionOptions = sessionOptions;
         return this;
@@ -153,6 +172,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the honorSessionTimeToLive value.
      */
+    @Generated
     public Boolean isHonorSessionTimeToLive() {
         return this.honorSessionTimeToLive;
     }
@@ -163,6 +183,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param honorSessionTimeToLive the honorSessionTimeToLive value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setHonorSessionTimeToLive(Boolean honorSessionTimeToLive) {
         this.honorSessionTimeToLive = honorSessionTimeToLive;
         return this;
@@ -173,6 +194,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -183,6 +205,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param sessionId the sessionId value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -193,6 +216,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the sparkPool value.
      */
+    @Generated
     public String getSparkPool() {
         return this.sparkPool;
     }
@@ -203,6 +227,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setSparkPool(String sparkPool) {
         this.sparkPool = sparkPool;
         return this;
@@ -213,6 +238,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, RunNotebookParameter> getParameters() {
         return this.parameters;
     }
@@ -223,6 +249,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param parameters the parameters value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setParameters(Map<String, RunNotebookParameter> parameters) {
         this.parameters = parameters;
         return this;
@@ -233,6 +260,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * 
      * @return the notebookContent value.
      */
+    @Generated
     public NotebookResource getNotebookContent() {
         return this.notebookContent;
     }
@@ -243,6 +271,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @param notebookContent the notebookContent value to set.
      * @return the RunNotebookSnapshot object itself.
      */
+    @Generated
     public RunNotebookSnapshot setNotebookContent(NotebookResource notebookContent) {
         this.notebookContent = notebookContent;
         return this;
@@ -251,6 +280,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -275,6 +305,7 @@ public final class RunNotebookSnapshot implements JsonSerializable<RunNotebookSn
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunNotebookSnapshot.
      */
+    @Generated
     public static RunNotebookSnapshot fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunNotebookSnapshot deserializedRunNotebookSnapshot = new RunNotebookSnapshot();

@@ -12,16 +12,16 @@ public final class CommitmentPlanAccountAssociationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentPlanAccountAssociationListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"omtkub\",\"value\":[{\"etag\":\"vdxzxhihfrbbc\",\"tags\":{\"ykvgtrdcnifmz\":\"agtltdhlfkqoj\"},\"properties\":{\"accountId\":\"ymbrnysuxmpraf\"},\"id\":\"g\",\"name\":\"khocxvdfffwaf\",\"type\":\"roud\"},{\"etag\":\"avehhrvkbunzo\",\"tags\":{\"dyuib\":\"hcxgkmoyx\",\"zydvfvf\":\"mfdn\",\"vhmgorffukis\":\"jnaeois\"},\"properties\":{\"accountId\":\"mzhwplefaxvxi\"},\"id\":\"cbtgnhnz\",\"name\":\"yqxtjjfzql\",\"type\":\"hycav\"}]}")
+            "{\"nextLink\":\"mxzrpoa\",\"value\":[{\"etag\":\"wiaaomylweaz\",\"tags\":{\"jhlfzswpchwahf\":\"sethwwn\"},\"properties\":{\"accountId\":\"snfepgfewetwlyx\"},\"id\":\"cxy\",\"name\":\"xhdjhl\",\"type\":\"mmbcxfhbcp\"},{\"etag\":\"xvxcjzhq\",\"tags\":{\"scjavftju\":\"fpxtg\",\"civmmg\":\"dqazkmtgguwpijra\",\"fiwrxgkn\":\"f\"},\"properties\":{\"accountId\":\"yinzqodfvpgs\"},\"id\":\"xgsg\",\"name\":\"p\",\"type\":\"gzdjtxvzf\"},{\"etag\":\"q\",\"tags\":{\"sdtutnwlduyc\":\"qvlgafcqusrdvetn\",\"kuqgsjjxundxgket\":\"uzhyrmewipmvekdx\",\"gpmuneqsxvmhfbuz\":\"zhhzjhfjmhvvmu\"},\"properties\":{\"accountId\":\"hsasbhu\"},\"id\":\"pohyuemslynsqyr\",\"name\":\"foobrlttyms\",\"type\":\"nygq\"}]}")
             .toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("omtkub", model.nextLink());
+        Assertions.assertEquals("mxzrpoa", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommitmentPlanAccountAssociationListResult model
-            = new CommitmentPlanAccountAssociationListResult().withNextLink("omtkub");
+            = new CommitmentPlanAccountAssociationListResult().withNextLink("mxzrpoa");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanAccountAssociationListResult.class);
-        Assertions.assertEquals("omtkub", model.nextLink());
+        Assertions.assertEquals("mxzrpoa", model.nextLink());
     }
 }

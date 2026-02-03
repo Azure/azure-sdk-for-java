@@ -18,22 +18,22 @@ import java.io.IOException;
 @Fluent
 public class OperationsDisplayDefinition implements JsonSerializable<OperationsDisplayDefinition> {
     /*
-     * The provider property.
+     * The provider.
      */
     private String provider;
 
     /*
-     * The resource property.
+     * The resource.
      */
     private String resource;
 
     /*
-     * The operation property.
+     * The operation.
      */
     private String operation;
 
     /*
-     * The description property.
+     * The description.
      */
     private String description;
 
@@ -44,7 +44,7 @@ public class OperationsDisplayDefinition implements JsonSerializable<OperationsD
     }
 
     /**
-     * Get the provider property: The provider property.
+     * Get the provider property: The provider.
      * 
      * @return the provider value.
      */
@@ -53,7 +53,7 @@ public class OperationsDisplayDefinition implements JsonSerializable<OperationsD
     }
 
     /**
-     * Set the provider property: The provider property.
+     * Set the provider property: The provider.
      * 
      * @param provider the provider value to set.
      * @return the OperationsDisplayDefinition object itself.
@@ -64,7 +64,7 @@ public class OperationsDisplayDefinition implements JsonSerializable<OperationsD
     }
 
     /**
-     * Get the resource property: The resource property.
+     * Get the resource property: The resource.
      * 
      * @return the resource value.
      */
@@ -73,7 +73,7 @@ public class OperationsDisplayDefinition implements JsonSerializable<OperationsD
     }
 
     /**
-     * Set the resource property: The resource property.
+     * Set the resource property: The resource.
      * 
      * @param resource the resource value to set.
      * @return the OperationsDisplayDefinition object itself.
@@ -84,7 +84,7 @@ public class OperationsDisplayDefinition implements JsonSerializable<OperationsD
     }
 
     /**
-     * Get the operation property: The operation property.
+     * Get the operation property: The operation.
      * 
      * @return the operation value.
      */
@@ -93,7 +93,7 @@ public class OperationsDisplayDefinition implements JsonSerializable<OperationsD
     }
 
     /**
-     * Set the operation property: The operation property.
+     * Set the operation property: The operation.
      * 
      * @param operation the operation value to set.
      * @return the OperationsDisplayDefinition object itself.
@@ -104,7 +104,7 @@ public class OperationsDisplayDefinition implements JsonSerializable<OperationsD
     }
 
     /**
-     * Get the description property: The description property.
+     * Get the description property: The description.
      * 
      * @return the description value.
      */
@@ -113,7 +113,7 @@ public class OperationsDisplayDefinition implements JsonSerializable<OperationsD
     }
 
     /**
-     * Set the description property: The description property.
+     * Set the description property: The description.
      * 
      * @param description the description value to set.
      * @return the OperationsDisplayDefinition object itself.

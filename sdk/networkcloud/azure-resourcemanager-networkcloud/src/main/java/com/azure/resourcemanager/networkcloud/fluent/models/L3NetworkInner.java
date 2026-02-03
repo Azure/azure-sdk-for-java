@@ -27,6 +27,11 @@ import java.util.Map;
 @Fluent
 public final class L3NetworkInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -60,6 +65,15 @@ public final class L3NetworkInner extends Resource {
      * Creates an instance of L3NetworkInner class.
      */
     public L3NetworkInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -297,8 +311,7 @@ public final class L3NetworkInner extends Resource {
 
     /**
      * Get the ipv4ConnectedPrefix property: The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV4 or DualStack.
+     * allocation type is IPV4 or DualStack.
      * 
      * @return the ipv4ConnectedPrefix value.
      */
@@ -308,8 +321,7 @@ public final class L3NetworkInner extends Resource {
 
     /**
      * Set the ipv4ConnectedPrefix property: The IPV4 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV4 or DualStack.
+     * allocation type is IPV4 or DualStack.
      * 
      * @param ipv4ConnectedPrefix the ipv4ConnectedPrefix value to set.
      * @return the L3NetworkInner object itself.
@@ -324,8 +336,7 @@ public final class L3NetworkInner extends Resource {
 
     /**
      * Get the ipv6ConnectedPrefix property: The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV6 or DualStack.
+     * allocation type is IPV6 or DualStack.
      * 
      * @return the ipv6ConnectedPrefix value.
      */
@@ -335,8 +346,7 @@ public final class L3NetworkInner extends Resource {
 
     /**
      * Set the ipv6ConnectedPrefix property: The IPV6 prefix (CIDR) assigned to this L3 network. Required when the IP
-     * allocation type
-     * is IPV6 or DualStack.
+     * allocation type is IPV6 or DualStack.
      * 
      * @param ipv6ConnectedPrefix the ipv6ConnectedPrefix value to set.
      * @return the L3NetworkInner object itself.
@@ -482,6 +492,8 @@ public final class L3NetworkInner extends Resource {
                     deserializedL3NetworkInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedL3NetworkInner.innerProperties = L3NetworkProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedL3NetworkInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedL3NetworkInner.systemData = SystemData.fromJson(reader);
                 } else {

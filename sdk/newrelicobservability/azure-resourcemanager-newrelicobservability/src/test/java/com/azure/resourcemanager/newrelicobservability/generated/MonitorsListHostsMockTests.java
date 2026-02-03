@@ -7,8 +7,8 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager;
 import com.azure.resourcemanager.newrelicobservability.models.HostsGetRequest;
@@ -24,24 +24,21 @@ public final class MonitorsListHostsMockTests {
     @Test
     public void testListHosts() throws Exception {
         String responseStr
-            = "{\"value\":[{\"vmId\":\"koievseo\",\"agentVersion\":\"q\",\"agentStatus\":\"ltmuwlauwzizx\"}]}";
+            = "{\"value\":[{\"vmId\":\"fuflrwdmhdlx\",\"agentVersion\":\"rxsagafcnihgwqa\",\"agentStatus\":\"edgfbcvkcvq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VMInfo> response = manager.monitors()
-            .listHosts("ur", "odkwobd",
-                new HostsGetRequest()
-                    .withVmIds(Arrays.asList("tibqdxbxwakb", "gqxndlkzgxhuripl", "podxunkb", "bxmubyynt"))
-                    .withUserEmail("lrb"),
-                com.azure.core.util.Context.NONE);
+            .listHosts("b", "c", new HostsGetRequest().withVmIds(Arrays.asList("wdsjnkalju", "iiswacffgdkzze"))
+                .withUserEmail("kfvhqcrailvpn"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("koievseo", response.iterator().next().vmId());
-        Assertions.assertEquals("q", response.iterator().next().agentVersion());
-        Assertions.assertEquals("ltmuwlauwzizx", response.iterator().next().agentStatus());
+        Assertions.assertEquals("fuflrwdmhdlx", response.iterator().next().vmId());
+        Assertions.assertEquals("rxsagafcnihgwqa", response.iterator().next().agentVersion());
+        Assertions.assertEquals("edgfbcvkcvq", response.iterator().next().agentStatus());
     }
 }

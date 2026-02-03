@@ -125,6 +125,38 @@ public class RoomsClientTest extends RoomsTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createRoomSyncWithParticipants(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "createRoomSyncWithParticipants");
+        assertNotNull(roomsClient);
+
+        // Create 4 participants
+        RoomParticipant firstParticipant
+            = new RoomParticipant(communicationClient.createUser()).setRole(ParticipantRole.PRESENTER);
+        RoomParticipant secondParticipant
+            = new RoomParticipant(communicationClient.createUser()).setRole(ParticipantRole.COLLABORATOR);
+        RoomParticipant thirdParticipant
+            = new RoomParticipant(communicationClient.createUser()).setRole(ParticipantRole.CONSUMER);
+        RoomParticipant fourthParticipant
+            = new RoomParticipant(communicationClient.createUser()).setRole(ParticipantRole.ATTENDEE);
+
+        List<RoomParticipant> participants
+            = Arrays.asList(firstParticipant, secondParticipant, thirdParticipant, fourthParticipant);
+
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions().setParticipants(participants);
+
+        Response<CommunicationRoom> createdRoomResponse = roomsClient.createRoomWithResponse(createRoomOptions, null);
+        String roomId = createdRoomResponse.getValue().getRoomId();
+
+        // Check participant count, expected 3
+        PagedIterable<RoomParticipant> listParticipantsResponse = roomsClient.listParticipants(roomId);
+        assertEquals(4, listParticipantsResponse.stream().count());
+
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listRoomTestFirstRoomIsNotNullThenDeleteRoomWithOutResponse(HttpClient httpClient) {
         roomsClient = setupSyncClient(httpClient, "listRoomTestFirstRoomIsNotNullThenDeleteRoomWithOutResponse");
         assertNotNull(roomsClient);
@@ -170,7 +202,8 @@ public class RoomsClientTest extends RoomsTestBase {
 
         // Create 3 participants
         RoomParticipant firstParticipant = new RoomParticipant(communicationClient.createUser());
-        RoomParticipant secondParticipant = new RoomParticipant(communicationClient.createUser());
+        RoomParticipant secondParticipant
+            = new RoomParticipant(communicationClient.createUser()).setRole(ParticipantRole.COLLABORATOR);
         RoomParticipant thirdParticipant
             = new RoomParticipant(communicationClient.createUser()).setRole(ParticipantRole.CONSUMER);
 
@@ -192,7 +225,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
         List<RoomParticipant> participantsToUpdate = Arrays.asList(firstParticipantUpdated, secondParticipantUpdated);
 
-        // Update 2 participants roles, ATTENDEE -> CONSUMER
+        // Update 2 participants roles, ATTENDEE or COLLABORATOR -> CONSUMER
         AddOrUpdateParticipantsResult updateParticipantResponse
             = roomsClient.addOrUpdateParticipants(roomId, participantsToUpdate);
         assertEquals(true, updateParticipantResponse instanceof AddOrUpdateParticipantsResult);
@@ -297,21 +330,40 @@ public class RoomsClientTest extends RoomsTestBase {
 
         String roomId = createCommunicationRoom.getRoomId();
 
-        RoomParticipant firstParticipantToUpdate
+        RoomParticipant firstParticipantToUpdateToPresenter
             = new RoomParticipant(firstParticipant.getCommunicationIdentifier()).setRole(ParticipantRole.PRESENTER);
-        RoomParticipant secondParticipantToUpdate
+        RoomParticipant secondParticipantToUpdateToPresenter
             = new RoomParticipant(secondParticipant.getCommunicationIdentifier()).setRole(ParticipantRole.PRESENTER);
 
-        List<RoomParticipant> participantsToUpdate = Arrays.asList(firstParticipantToUpdate, secondParticipantToUpdate);
+        List<RoomParticipant> participantsToUpdateToPresenter
+            = Arrays.asList(firstParticipantToUpdateToPresenter, secondParticipantToUpdateToPresenter);
 
-        // Update 2 participants.
-        AddOrUpdateParticipantsResult addPartcipantResponse
-            = roomsClient.addOrUpdateParticipants(roomId, participantsToUpdate);
+        // Update 2 participants, both to presenter
+        AddOrUpdateParticipantsResult addParticipantsAsPresenterResponse
+            = roomsClient.addOrUpdateParticipants(roomId, participantsToUpdateToPresenter);
 
-        PagedIterable<RoomParticipant> listResponse = roomsClient.listParticipants(roomId);
+        PagedIterable<RoomParticipant> listPresentersResponse = roomsClient.listParticipants(roomId);
 
-        for (RoomParticipant participant : listResponse) {
+        for (RoomParticipant participant : listPresentersResponse) {
             assertEquals(ParticipantRole.PRESENTER, participant.getRole());
+        }
+
+        RoomParticipant firstParticipantToUpdateToCollaborator
+            = new RoomParticipant(firstParticipant.getCommunicationIdentifier()).setRole(ParticipantRole.COLLABORATOR);
+        RoomParticipant secondParticipantToUpdateToCollaborator
+            = new RoomParticipant(secondParticipant.getCommunicationIdentifier()).setRole(ParticipantRole.COLLABORATOR);
+
+        List<RoomParticipant> participantsToUpdateToCollaborator
+            = Arrays.asList(firstParticipantToUpdateToCollaborator, secondParticipantToUpdateToCollaborator);
+
+        // Update 2 participants, to collaborator
+        AddOrUpdateParticipantsResult addParticipantsAsNonPresentersResponse
+            = roomsClient.addOrUpdateParticipants(roomId, participantsToUpdateToCollaborator);
+
+        PagedIterable<RoomParticipant> listNonPresentersResponse = roomsClient.listParticipants(roomId);
+
+        for (RoomParticipant participant : listNonPresentersResponse) {
+            assertEquals(ParticipantRole.COLLABORATOR, participant.getRole());
         }
 
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
@@ -919,7 +971,7 @@ public class RoomsClientTest extends RoomsTestBase {
     private RoomsClient setupSyncClient(HttpClient httpClient, String testName) {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(
             buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
-            RoomsServiceVersion.V2024_04_15);
+            RoomsServiceVersion.V2025_03_13);
 
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
 

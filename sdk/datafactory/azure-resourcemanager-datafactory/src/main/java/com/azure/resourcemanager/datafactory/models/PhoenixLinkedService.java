@@ -51,7 +51,7 @@ public final class PhoenixLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private PhoenixLinkedServiceTypeProperties innerTypeProperties() {
+    PhoenixLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

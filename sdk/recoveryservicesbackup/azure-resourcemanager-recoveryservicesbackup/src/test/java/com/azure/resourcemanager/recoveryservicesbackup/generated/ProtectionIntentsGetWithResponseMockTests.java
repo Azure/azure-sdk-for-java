@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
@@ -23,26 +23,27 @@ public final class ProtectionIntentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureStorage\",\"sourceResourceId\":\"pjlxeehuxiqhzl\",\"itemId\":\"yme\",\"policyId\":\"lskihmxrfdsajred\",\"protectionState\":\"NotProtected\"},\"eTag\":\"shtuwgm\",\"location\":\"vuafpwzyifr\",\"tags\":{\"gzdyimsfayorp\":\"ltxeqip\",\"sl\":\"avkjog\",\"sykvwjtqpke\":\"bnsmjkwynqxaek\",\"rspxklur\":\"myltj\"},\"id\":\"clf\",\"name\":\"xa\",\"type\":\"n\"}";
+            = "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"AzureIaasVM\",\"sourceResourceId\":\"h\",\"itemId\":\"ndnelqkaadlknw\",\"policyId\":\"anniyopetxivcnr\",\"protectionState\":\"Invalid\"},\"eTag\":\"ucae\",\"location\":\"hblkwqpatvbq\",\"tags\":{\"zqymtuowogtgits\":\"cjbctviv\"},\"id\":\"hzvb\",\"name\":\"zcdba\",\"type\":\"fzndscxmxeatkd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectionIntentResource response = manager.protectionIntents()
-            .getWithResponse("n", "pmil", "pnwy", "udqll", com.azure.core.util.Context.NONE)
+            .getWithResponse("thgygvfltgvdi", "oynkrxwetwkdrcyr", "cpcunnuzdqum", "enodna",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("vuafpwzyifr", response.location());
-        Assertions.assertEquals("ltxeqip", response.tags().get("gzdyimsfayorp"));
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE, response.properties().backupManagementType());
-        Assertions.assertEquals("pjlxeehuxiqhzl", response.properties().sourceResourceId());
-        Assertions.assertEquals("yme", response.properties().itemId());
-        Assertions.assertEquals("lskihmxrfdsajred", response.properties().policyId());
-        Assertions.assertEquals(ProtectionStatus.NOT_PROTECTED, response.properties().protectionState());
-        Assertions.assertEquals("shtuwgm", response.etag());
+        Assertions.assertEquals("hblkwqpatvbq", response.location());
+        Assertions.assertEquals("cjbctviv", response.tags().get("zqymtuowogtgits"));
+        Assertions.assertEquals(BackupManagementType.AZURE_IAAS_VM, response.properties().backupManagementType());
+        Assertions.assertEquals("h", response.properties().sourceResourceId());
+        Assertions.assertEquals("ndnelqkaadlknw", response.properties().itemId());
+        Assertions.assertEquals("anniyopetxivcnr", response.properties().policyId());
+        Assertions.assertEquals(ProtectionStatus.INVALID, response.properties().protectionState());
+        Assertions.assertEquals("ucae", response.etag());
     }
 }

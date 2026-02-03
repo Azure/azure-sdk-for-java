@@ -16,9 +16,9 @@ public class ResourceSetRulesDeleteResourceSetRule {
             = new ResourceSetRulesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.resourcesetrulesdeleteresourcesetrule.resourcesetrulesdeleteresourcesetrule
+        // BEGIN:com.azure.analytics.purview.administration.generated.resource-set-rules-delete-resource-set-rule.resource-set-rules-delete-resource-set-rule
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = resourceSetRulesClient.deleteResourceSetRuleWithResponse(requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.resourcesetrulesdeleteresourcesetrule.resourcesetrulesdeleteresourcesetrule
+        // END:com.azure.analytics.purview.administration.generated.resource-set-rules-delete-resource-set-rule.resource-set-rules-delete-resource-set-rule
     }
 }

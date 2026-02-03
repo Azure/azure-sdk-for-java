@@ -14,21 +14,21 @@ public final class PortalConfigCspPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PortalConfigCspProperties model = BinaryData.fromString(
-            "{\"mode\":\"reportOnly\",\"reportUri\":[\"qncfvdscnhe\",\"vwfnqqwypvn\",\"r\"],\"allowedSources\":[\"od\",\"ggrssgwjfkain\"]}")
+            "{\"mode\":\"disabled\",\"reportUri\":[\"xkqllczipvwdtgc\",\"zdqiqdlrat\",\"kwx\",\"auwxsuykznhrfgsl\"],\"allowedSources\":[\"pryjfzih\",\"io\",\"eo\",\"pajtfeyvkbd\"]}")
             .toObject(PortalConfigCspProperties.class);
-        Assertions.assertEquals(PortalSettingsCspMode.REPORT_ONLY, model.mode());
-        Assertions.assertEquals("qncfvdscnhe", model.reportUri().get(0));
-        Assertions.assertEquals("od", model.allowedSources().get(0));
+        Assertions.assertEquals(PortalSettingsCspMode.DISABLED, model.mode());
+        Assertions.assertEquals("xkqllczipvwdtgc", model.reportUri().get(0));
+        Assertions.assertEquals("pryjfzih", model.allowedSources().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortalConfigCspProperties model = new PortalConfigCspProperties().withMode(PortalSettingsCspMode.REPORT_ONLY)
-            .withReportUri(Arrays.asList("qncfvdscnhe", "vwfnqqwypvn", "r"))
-            .withAllowedSources(Arrays.asList("od", "ggrssgwjfkain"));
+        PortalConfigCspProperties model = new PortalConfigCspProperties().withMode(PortalSettingsCspMode.DISABLED)
+            .withReportUri(Arrays.asList("xkqllczipvwdtgc", "zdqiqdlrat", "kwx", "auwxsuykznhrfgsl"))
+            .withAllowedSources(Arrays.asList("pryjfzih", "io", "eo", "pajtfeyvkbd"));
         model = BinaryData.fromObject(model).toObject(PortalConfigCspProperties.class);
-        Assertions.assertEquals(PortalSettingsCspMode.REPORT_ONLY, model.mode());
-        Assertions.assertEquals("qncfvdscnhe", model.reportUri().get(0));
-        Assertions.assertEquals("od", model.allowedSources().get(0));
+        Assertions.assertEquals(PortalSettingsCspMode.DISABLED, model.mode());
+        Assertions.assertEquals("xkqllczipvwdtgc", model.reportUri().get(0));
+        Assertions.assertEquals("pryjfzih", model.allowedSources().get(0));
     }
 }

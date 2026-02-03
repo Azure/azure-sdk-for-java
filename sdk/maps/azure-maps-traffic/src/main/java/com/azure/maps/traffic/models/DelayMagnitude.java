@@ -4,63 +4,146 @@
 
 package com.azure.maps.traffic.models;
 
-import com.azure.core.util.ExpandableStringEnum;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.ExpandableEnum;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * The magnitude of delay associated with incident. These values correspond to incident colors in the traffic tiles.
  */
-public final class DelayMagnitude extends ExpandableStringEnum<DelayMagnitude> {
+public final class DelayMagnitude implements ExpandableEnum<Integer>, JsonSerializable<DelayMagnitude> {
+    private static final Map<Integer, DelayMagnitude> VALUES = new ConcurrentHashMap<>();
+
+    private static final Function<Integer, DelayMagnitude> NEW_INSTANCE = DelayMagnitude::new;
+
     /**
      * Unknown.
      */
-    public static final DelayMagnitude UNKNOWN = fromInt(0);
+    @Generated
+    public static final DelayMagnitude UNKNOWN = fromValue(0);
 
     /**
      * Minor.
      */
-    public static final DelayMagnitude MINOR = fromInt(1);
+    @Generated
+    public static final DelayMagnitude MINOR = fromValue(1);
 
     /**
      * Moderate.
      */
-    public static final DelayMagnitude MODERATE = fromInt(2);
+    @Generated
+    public static final DelayMagnitude MODERATE = fromValue(2);
 
     /**
      * Major.
      */
-    public static final DelayMagnitude MAJOR = fromInt(3);
+    @Generated
+    public static final DelayMagnitude MAJOR = fromValue(3);
 
     /**
      * Indefinite (used for road closures and other indefinite delays).
      */
-    public static final DelayMagnitude INDEFINITE = fromInt(4);
+    @Generated
+    public static final DelayMagnitude INDEFINITE = fromValue(4);
 
-    /**
-     * Creates a new instance of DelayMagnitude value.
-     * 
-     * @deprecated Use the {@link #fromInt(int)} factory method.
-     */
-    @Deprecated
-    public DelayMagnitude() {
+    private final Integer value;
+
+    private DelayMagnitude(Integer value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a DelayMagnitude from its string representation.
+     * Creates or finds a DelayMagnitude.
      * 
-     * @param name a name to look for.
+     * @param value a value to look for.
      * @return the corresponding DelayMagnitude.
+     * @throws IllegalArgumentException if value is null.
      */
-    public static DelayMagnitude fromInt(int name) {
-        return fromString(String.valueOf(name), DelayMagnitude.class);
+    @Generated
+    public static DelayMagnitude fromValue(Integer value) {
+        if (value == null) {
+            throw new IllegalArgumentException("'value' cannot be null.");
+        }
+        return VALUES.computeIfAbsent(value, NEW_INSTANCE);
     }
 
     /**
      * Gets known DelayMagnitude values.
      * 
-     * @return known DelayMagnitude values.
+     * @return Known DelayMagnitude values.
      */
+    @Generated
     public static Collection<DelayMagnitude> values() {
-        return values(DelayMagnitude.class);
+        return new ArrayList<>(VALUES.values());
+    }
+
+    /**
+     * Gets the value of the DelayMagnitude instance.
+     * 
+     * @return the value of the DelayMagnitude instance.
+     */
+    @Generated
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeInt(getValue());
+    }
+
+    /**
+     * Reads an instance of DelayMagnitude from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelayMagnitude if the JsonReader was pointing to an instance of it, or null if the
+     * JsonReader was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DelayMagnitude.
+     * @throws IllegalStateException If unexpected JSON token is found.
+     */
+    @Generated
+    public static DelayMagnitude fromJson(JsonReader jsonReader) throws IOException {
+        JsonToken nextToken = jsonReader.nextToken();
+        if (nextToken == JsonToken.NULL) {
+            return null;
+        }
+        if (nextToken != JsonToken.NUMBER) {
+            throw new IllegalStateException(
+                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.NUMBER, nextToken));
+        }
+        return DelayMagnitude.fromValue(jsonReader.getInt());
+    }
+
+    @Generated
+    @Override
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Generated
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj;
+    }
+
+    @Generated
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }

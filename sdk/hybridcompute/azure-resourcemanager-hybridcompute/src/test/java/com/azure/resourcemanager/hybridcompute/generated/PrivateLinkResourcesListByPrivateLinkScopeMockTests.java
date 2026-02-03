@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResource;
@@ -21,17 +21,17 @@ public final class PrivateLinkResourcesListByPrivateLinkScopeMockTests {
     @Test
     public void testListByPrivateLinkScope() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"izvoaiknaqlnuwi\",\"requiredMembers\":[\"xly\"],\"requiredZoneNames\":[\"hvxzcwxhmp\",\"jtlkexaonwivkcqh\"]},\"id\":\"hxknlccrmmkyupi\",\"name\":\"ubyqj\",\"type\":\"kakfqfr\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"uykbbmn\",\"requiredMembers\":[\"ltbxoeeonqlnfw\",\"y\",\"mvqdbpbhfckdvez\"],\"requiredZoneNames\":[\"ssbzhddubbnqfbl\",\"kalehp\",\"vawu\"]},\"id\":\"qjtiogqgdm\",\"name\":\"nictteajo\",\"type\":\"iygspnbonhpczyk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<PrivateLinkResource> response
-            = manager.privateLinkResources().listByPrivateLinkScope("fexl", "xn", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response = manager.privateLinkResources()
+            .listByPrivateLinkScope("vcuartrhun", "pirykycndzfqiv", com.azure.core.util.Context.NONE);
 
     }
 }

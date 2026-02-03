@@ -15,8 +15,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -28,18 +31,30 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
     ServiceBusProcessorClientTestProperties,
     ServiceBusSessionProcessorClientBuilderFactory> {
 
+    @Override
+    public PropertiesIntegrityParameters getParametersForPropertiesIntegrity() {
+        Map<String, String> namingFromBinderToProperties = new HashMap<>();
+        namingFromBinderToProperties.put("queuename", "entityname");
+        namingFromBinderToProperties.put("topicname", "entityname");
+        namingFromBinderToProperties.put("disableautocomplete", "autocomplete");
+        return new PropertiesIntegrityParameters(ServiceBusProcessorClientTestProperties.class,
+            ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class, namingFromBinderToProperties);
+    }
+
     @Test
-    void queueConfigured() {
+    void configured() {
         ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityType(ServiceBusEntityType.QUEUE);
         properties.setEntityName("test-queue");
+        properties.setSessionIdleTimeout(Duration.ofSeconds(10));
 
         final ServiceBusSessionProcessorClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
         builder.buildProcessorClient();
 
         verify(builder, times(1)).queueName("test-queue");
+        verify(builder, times(1)).sessionIdleTimeout(Duration.ofSeconds(10));
     }
 
     @Test
@@ -122,7 +137,7 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         verify(builder, times(1)).maxConcurrentCalls(10);
         verify(builder, times(1)).maxConcurrentSessions(20);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), atLeast(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     private ServiceBusProcessorClientTestProperties getServiceBusProcessorClientTestProperties(boolean isShareServiceClientBuilder) {

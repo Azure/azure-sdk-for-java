@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class WindingnessLevel extends ExpandableStringEnum<WindingnessLeve
     /**
      * low.
      */
+    @Generated
     public static final WindingnessLevel LOW = fromString("low");
 
     /**
      * normal.
      */
+    @Generated
     public static final WindingnessLevel NORMAL = fromString("normal");
 
     /**
      * high.
      */
+    @Generated
     public static final WindingnessLevel HIGH = fromString("high");
 
     /**
@@ -31,6 +35,7 @@ public final class WindingnessLevel extends ExpandableStringEnum<WindingnessLeve
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WindingnessLevel() {
     }
@@ -41,6 +46,7 @@ public final class WindingnessLevel extends ExpandableStringEnum<WindingnessLeve
      * @param name a name to look for.
      * @return the corresponding WindingnessLevel.
      */
+    @Generated
     public static WindingnessLevel fromString(String name) {
         return fromString(name, WindingnessLevel.class);
     }
@@ -50,6 +56,7 @@ public final class WindingnessLevel extends ExpandableStringEnum<WindingnessLeve
      * 
      * @return known WindingnessLevel values.
      */
+    @Generated
     public static Collection<WindingnessLevel> values() {
         return values(WindingnessLevel.class);
     }

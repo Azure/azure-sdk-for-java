@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class BlobShareTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BlobShare model = BinaryData.fromString("{\"sasUri\":\"msjnygqdnfw\"}").toObject(BlobShare.class);
-        Assertions.assertEquals("msjnygqdnfw", model.sasUri());
+        BlobShare model = BinaryData.fromString("{\"sasUri\":\"z\"}").toObject(BlobShare.class);
+        Assertions.assertEquals("z", model.sasUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BlobShare model = new BlobShare().withSasUri("msjnygqdnfw");
+        BlobShare model = new BlobShare().withSasUri("z");
         model = BinaryData.fromObject(model).toObject(BlobShare.class);
-        Assertions.assertEquals("msjnygqdnfw", model.sasUri());
+        Assertions.assertEquals("z", model.sasUri());
     }
 }

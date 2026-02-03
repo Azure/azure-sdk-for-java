@@ -7,8 +7,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.Volume;
@@ -22,21 +22,23 @@ public final class VolumesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"yvdgxlyzk\",\"type\":\"itdshezsvkolru\"},\"properties\":{\"attachedTo\":[\"vmozsayebrazwz\",\"pzbtzuyk\",\"kipfsdyepf\",\"ocmbezacf\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"azwyqejgaaokctgk\",\"provisioningState\":\"Provisioning\",\"serialNumber\":\"qzkcyzm\",\"sizeMiB\":1437328628753102819},\"location\":\"dyfcix\",\"tags\":{\"a\":\"cqvhoejgoiutgwrm\",\"hazyntacihnco\":\"p\",\"mliqmvlb\":\"mip\",\"eaqgrvgpomxpupd\":\"i\"},\"id\":\"sdfjyiesoc\",\"name\":\"iqbuou\",\"type\":\"mpyzgleo\"}]}";
+            = "{\"value\":[{\"etag\":\"z\",\"extendedLocation\":{\"name\":\"wihvaangqtnh\",\"type\":\"rfdmfdvbbaexx\"},\"properties\":{\"allocatedSizeMiB\":2111869483655368468,\"attachedTo\":[\"fkkauigvmua\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"fedyuep\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"tidajjvyweocf\",\"sizeMiB\":2610208171754811537,\"storageApplianceId\":\"fjxokye\"},\"location\":\"yasvf\",\"tags\":{\"jekrknfd\":\"myg\"},\"id\":\"ugjqyckgtxkrdt\",\"name\":\"lcr\",\"type\":\"jdkl\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Volume> response = manager.volumes().list(com.azure.core.util.Context.NONE);
+        PagedIterable<Volume> response
+            = manager.volumes().list(2103406504, "qwczsyiq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dyfcix", response.iterator().next().location());
-        Assertions.assertEquals("cqvhoejgoiutgwrm", response.iterator().next().tags().get("a"));
-        Assertions.assertEquals("yvdgxlyzk", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("itdshezsvkolru", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(1437328628753102819L, response.iterator().next().sizeMiB());
+        Assertions.assertEquals("yasvf", response.iterator().next().location());
+        Assertions.assertEquals("myg", response.iterator().next().tags().get("jekrknfd"));
+        Assertions.assertEquals("wihvaangqtnh", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("rfdmfdvbbaexx", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(2610208171754811537L, response.iterator().next().sizeMiB());
+        Assertions.assertEquals("fjxokye", response.iterator().next().storageApplianceId());
     }
 }

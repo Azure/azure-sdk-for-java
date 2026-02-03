@@ -51,7 +51,7 @@ public final class AzureSqlDWLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureSqlDWLinkedServiceTypeProperties innerTypeProperties() {
+    AzureSqlDWLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

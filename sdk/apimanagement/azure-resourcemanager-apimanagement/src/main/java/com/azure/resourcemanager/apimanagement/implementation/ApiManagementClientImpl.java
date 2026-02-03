@@ -23,16 +23,22 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.apimanagement.fluent.AllPoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiDiagnosticsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiExportsClient;
+import com.azure.resourcemanager.apimanagement.fluent.ApiGatewayConfigConnectionsClient;
+import com.azure.resourcemanager.apimanagement.fluent.ApiGatewaysClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiIssueAttachmentsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiIssueCommentsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiIssuesClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiManagementClient;
+import com.azure.resourcemanager.apimanagement.fluent.ApiManagementGatewaySkusClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiManagementOperationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiManagementServiceSkusClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiManagementServicesClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiManagementSkusClient;
+import com.azure.resourcemanager.apimanagement.fluent.ApiManagementWorkspaceLinkOperationsClient;
+import com.azure.resourcemanager.apimanagement.fluent.ApiManagementWorkspaceLinksClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiOperationPoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiOperationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ApiPoliciesClient;
@@ -78,16 +84,22 @@ import com.azure.resourcemanager.apimanagement.fluent.NotificationRecipientEmail
 import com.azure.resourcemanager.apimanagement.fluent.NotificationRecipientUsersClient;
 import com.azure.resourcemanager.apimanagement.fluent.NotificationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.OpenIdConnectProvidersClient;
+import com.azure.resourcemanager.apimanagement.fluent.OperationStatusClient;
 import com.azure.resourcemanager.apimanagement.fluent.OperationsClient;
+import com.azure.resourcemanager.apimanagement.fluent.OperationsResultsClient;
 import com.azure.resourcemanager.apimanagement.fluent.OutboundNetworkDependenciesEndpointsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.PolicyDescriptionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PolicyFragmentsClient;
+import com.azure.resourcemanager.apimanagement.fluent.PolicyRestrictionValidationsClient;
+import com.azure.resourcemanager.apimanagement.fluent.PolicyRestrictionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PortalConfigsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PortalRevisionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PortalSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.apimanagement.fluent.ProductApiLinksClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductApisClient;
+import com.azure.resourcemanager.apimanagement.fluent.ProductGroupLinksClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductGroupsClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductPoliciesClient;
 import com.azure.resourcemanager.apimanagement.fluent.ProductSubscriptionsClient;
@@ -102,6 +114,9 @@ import com.azure.resourcemanager.apimanagement.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.apimanagement.fluent.SignInSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.SignUpSettingsClient;
 import com.azure.resourcemanager.apimanagement.fluent.SubscriptionsClient;
+import com.azure.resourcemanager.apimanagement.fluent.TagApiLinksClient;
+import com.azure.resourcemanager.apimanagement.fluent.TagOperationLinksClient;
+import com.azure.resourcemanager.apimanagement.fluent.TagProductLinksClient;
 import com.azure.resourcemanager.apimanagement.fluent.TagResourcesClient;
 import com.azure.resourcemanager.apimanagement.fluent.TagsClient;
 import com.azure.resourcemanager.apimanagement.fluent.TenantAccessClient;
@@ -113,6 +128,39 @@ import com.azure.resourcemanager.apimanagement.fluent.UserGroupsClient;
 import com.azure.resourcemanager.apimanagement.fluent.UserIdentitiesClient;
 import com.azure.resourcemanager.apimanagement.fluent.UserSubscriptionsClient;
 import com.azure.resourcemanager.apimanagement.fluent.UsersClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiDiagnosticsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiExportsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiOperationPoliciesClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiOperationsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiPoliciesClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiReleasesClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiRevisionsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiSchemasClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApiVersionSetsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceApisClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceBackendsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceCertificatesClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceDiagnosticsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceGlobalSchemasClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceGroupUsersClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceGroupsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceLoggersClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceNamedValuesClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceNotificationRecipientEmailsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceNotificationRecipientUsersClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceNotificationsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspacePoliciesClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspacePolicyFragmentsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceProductApiLinksClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceProductGroupLinksClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceProductPoliciesClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceProductsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceSubscriptionsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceTagApiLinksClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceTagOperationLinksClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceTagProductLinksClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspaceTagsClient;
+import com.azure.resourcemanager.apimanagement.fluent.WorkspacesClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -128,12 +176,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = ApiManagementClientBuilder.class)
 public final class ApiManagementClientImpl implements ApiManagementClient {
     /**
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -209,6 +257,48 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
+    }
+
+    /**
+     * The ApiGatewaysClient object to access its operations.
+     */
+    private final ApiGatewaysClient apiGateways;
+
+    /**
+     * Gets the ApiGatewaysClient object to access its operations.
+     * 
+     * @return the ApiGatewaysClient object.
+     */
+    public ApiGatewaysClient getApiGateways() {
+        return this.apiGateways;
+    }
+
+    /**
+     * The ApiManagementGatewaySkusClient object to access its operations.
+     */
+    private final ApiManagementGatewaySkusClient apiManagementGatewaySkus;
+
+    /**
+     * Gets the ApiManagementGatewaySkusClient object to access its operations.
+     * 
+     * @return the ApiManagementGatewaySkusClient object.
+     */
+    public ApiManagementGatewaySkusClient getApiManagementGatewaySkus() {
+        return this.apiManagementGatewaySkus;
+    }
+
+    /**
+     * The AllPoliciesClient object to access its operations.
+     */
+    private final AllPoliciesClient allPolicies;
+
+    /**
+     * Gets the AllPoliciesClient object to access its operations.
+     * 
+     * @return the AllPoliciesClient object.
+     */
+    public AllPoliciesClient getAllPolicies() {
+        return this.allPolicies;
     }
 
     /**
@@ -506,20 +596,6 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
     }
 
     /**
-     * The AuthorizationServersClient object to access its operations.
-     */
-    private final AuthorizationServersClient authorizationServers;
-
-    /**
-     * Gets the AuthorizationServersClient object to access its operations.
-     * 
-     * @return the AuthorizationServersClient object.
-     */
-    public AuthorizationServersClient getAuthorizationServers() {
-        return this.authorizationServers;
-    }
-
-    /**
      * The AuthorizationProvidersClient object to access its operations.
      */
     private final AuthorizationProvidersClient authorizationProviders;
@@ -573,6 +649,20 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      */
     public AuthorizationAccessPoliciesClient getAuthorizationAccessPolicies() {
         return this.authorizationAccessPolicies;
+    }
+
+    /**
+     * The AuthorizationServersClient object to access its operations.
+     */
+    private final AuthorizationServersClient authorizationServers;
+
+    /**
+     * Gets the AuthorizationServersClient object to access its operations.
+     * 
+     * @return the AuthorizationServersClient object.
+     */
+    public AuthorizationServersClient getAuthorizationServers() {
+        return this.authorizationServers;
     }
 
     /**
@@ -730,6 +820,20 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
     }
 
     /**
+     * The DocumentationsClient object to access its operations.
+     */
+    private final DocumentationsClient documentations;
+
+    /**
+     * Gets the DocumentationsClient object to access its operations.
+     * 
+     * @return the DocumentationsClient object.
+     */
+    public DocumentationsClient getDocumentations() {
+        return this.documentations;
+    }
+
+    /**
      * The EmailTemplatesClient object to access its operations.
      */
     private final EmailTemplatesClient emailTemplates;
@@ -741,6 +845,20 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      */
     public EmailTemplatesClient getEmailTemplates() {
         return this.emailTemplates;
+    }
+
+    /**
+     * The ApiGatewayConfigConnectionsClient object to access its operations.
+     */
+    private final ApiGatewayConfigConnectionsClient apiGatewayConfigConnections;
+
+    /**
+     * Gets the ApiGatewayConfigConnectionsClient object to access its operations.
+     * 
+     * @return the ApiGatewayConfigConnectionsClient object.
+     */
+    public ApiGatewayConfigConnectionsClient getApiGatewayConfigConnections() {
+        return this.apiGatewayConfigConnections;
     }
 
     /**
@@ -1010,6 +1128,34 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
     }
 
     /**
+     * The PolicyRestrictionsClient object to access its operations.
+     */
+    private final PolicyRestrictionsClient policyRestrictions;
+
+    /**
+     * Gets the PolicyRestrictionsClient object to access its operations.
+     * 
+     * @return the PolicyRestrictionsClient object.
+     */
+    public PolicyRestrictionsClient getPolicyRestrictions() {
+        return this.policyRestrictions;
+    }
+
+    /**
+     * The PolicyRestrictionValidationsClient object to access its operations.
+     */
+    private final PolicyRestrictionValidationsClient policyRestrictionValidations;
+
+    /**
+     * Gets the PolicyRestrictionValidationsClient object to access its operations.
+     * 
+     * @return the PolicyRestrictionValidationsClient object.
+     */
+    public PolicyRestrictionValidationsClient getPolicyRestrictionValidations() {
+        return this.policyRestrictionValidations;
+    }
+
+    /**
      * The PortalConfigsClient object to access its operations.
      */
     private final PortalConfigsClient portalConfigs;
@@ -1206,6 +1352,34 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
     }
 
     /**
+     * The ProductApiLinksClient object to access its operations.
+     */
+    private final ProductApiLinksClient productApiLinks;
+
+    /**
+     * Gets the ProductApiLinksClient object to access its operations.
+     * 
+     * @return the ProductApiLinksClient object.
+     */
+    public ProductApiLinksClient getProductApiLinks() {
+        return this.productApiLinks;
+    }
+
+    /**
+     * The ProductGroupLinksClient object to access its operations.
+     */
+    private final ProductGroupLinksClient productGroupLinks;
+
+    /**
+     * Gets the ProductGroupLinksClient object to access its operations.
+     * 
+     * @return the ProductGroupLinksClient object.
+     */
+    public ProductGroupLinksClient getProductGroupLinks() {
+        return this.productGroupLinks;
+    }
+
+    /**
      * The QuotaByCounterKeysClient object to access its operations.
      */
     private final QuotaByCounterKeysClient quotaByCounterKeys;
@@ -1332,6 +1506,48 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
     }
 
     /**
+     * The TagApiLinksClient object to access its operations.
+     */
+    private final TagApiLinksClient tagApiLinks;
+
+    /**
+     * Gets the TagApiLinksClient object to access its operations.
+     * 
+     * @return the TagApiLinksClient object.
+     */
+    public TagApiLinksClient getTagApiLinks() {
+        return this.tagApiLinks;
+    }
+
+    /**
+     * The TagOperationLinksClient object to access its operations.
+     */
+    private final TagOperationLinksClient tagOperationLinks;
+
+    /**
+     * Gets the TagOperationLinksClient object to access its operations.
+     * 
+     * @return the TagOperationLinksClient object.
+     */
+    public TagOperationLinksClient getTagOperationLinks() {
+        return this.tagOperationLinks;
+    }
+
+    /**
+     * The TagProductLinksClient object to access its operations.
+     */
+    private final TagProductLinksClient tagProductLinks;
+
+    /**
+     * Gets the TagProductLinksClient object to access its operations.
+     * 
+     * @return the TagProductLinksClient object.
+     */
+    public TagProductLinksClient getTagProductLinks() {
+        return this.tagProductLinks;
+    }
+
+    /**
      * The TenantAccessClient object to access its operations.
      */
     private final TenantAccessClient tenantAccess;
@@ -1444,17 +1660,521 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
     }
 
     /**
-     * The DocumentationsClient object to access its operations.
+     * The WorkspaceBackendsClient object to access its operations.
      */
-    private final DocumentationsClient documentations;
+    private final WorkspaceBackendsClient workspaceBackends;
 
     /**
-     * Gets the DocumentationsClient object to access its operations.
+     * Gets the WorkspaceBackendsClient object to access its operations.
      * 
-     * @return the DocumentationsClient object.
+     * @return the WorkspaceBackendsClient object.
      */
-    public DocumentationsClient getDocumentations() {
-        return this.documentations;
+    public WorkspaceBackendsClient getWorkspaceBackends() {
+        return this.workspaceBackends;
+    }
+
+    /**
+     * The WorkspaceCertificatesClient object to access its operations.
+     */
+    private final WorkspaceCertificatesClient workspaceCertificates;
+
+    /**
+     * Gets the WorkspaceCertificatesClient object to access its operations.
+     * 
+     * @return the WorkspaceCertificatesClient object.
+     */
+    public WorkspaceCertificatesClient getWorkspaceCertificates() {
+        return this.workspaceCertificates;
+    }
+
+    /**
+     * The WorkspaceDiagnosticsClient object to access its operations.
+     */
+    private final WorkspaceDiagnosticsClient workspaceDiagnostics;
+
+    /**
+     * Gets the WorkspaceDiagnosticsClient object to access its operations.
+     * 
+     * @return the WorkspaceDiagnosticsClient object.
+     */
+    public WorkspaceDiagnosticsClient getWorkspaceDiagnostics() {
+        return this.workspaceDiagnostics;
+    }
+
+    /**
+     * The WorkspaceApiDiagnosticsClient object to access its operations.
+     */
+    private final WorkspaceApiDiagnosticsClient workspaceApiDiagnostics;
+
+    /**
+     * Gets the WorkspaceApiDiagnosticsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiDiagnosticsClient object.
+     */
+    public WorkspaceApiDiagnosticsClient getWorkspaceApiDiagnostics() {
+        return this.workspaceApiDiagnostics;
+    }
+
+    /**
+     * The ApiManagementWorkspaceLinksClient object to access its operations.
+     */
+    private final ApiManagementWorkspaceLinksClient apiManagementWorkspaceLinks;
+
+    /**
+     * Gets the ApiManagementWorkspaceLinksClient object to access its operations.
+     * 
+     * @return the ApiManagementWorkspaceLinksClient object.
+     */
+    public ApiManagementWorkspaceLinksClient getApiManagementWorkspaceLinks() {
+        return this.apiManagementWorkspaceLinks;
+    }
+
+    /**
+     * The ApiManagementWorkspaceLinkOperationsClient object to access its operations.
+     */
+    private final ApiManagementWorkspaceLinkOperationsClient apiManagementWorkspaceLinkOperations;
+
+    /**
+     * Gets the ApiManagementWorkspaceLinkOperationsClient object to access its operations.
+     * 
+     * @return the ApiManagementWorkspaceLinkOperationsClient object.
+     */
+    public ApiManagementWorkspaceLinkOperationsClient getApiManagementWorkspaceLinkOperations() {
+        return this.apiManagementWorkspaceLinkOperations;
+    }
+
+    /**
+     * The WorkspaceLoggersClient object to access its operations.
+     */
+    private final WorkspaceLoggersClient workspaceLoggers;
+
+    /**
+     * Gets the WorkspaceLoggersClient object to access its operations.
+     * 
+     * @return the WorkspaceLoggersClient object.
+     */
+    public WorkspaceLoggersClient getWorkspaceLoggers() {
+        return this.workspaceLoggers;
+    }
+
+    /**
+     * The WorkspacesClient object to access its operations.
+     */
+    private final WorkspacesClient workspaces;
+
+    /**
+     * Gets the WorkspacesClient object to access its operations.
+     * 
+     * @return the WorkspacesClient object.
+     */
+    public WorkspacesClient getWorkspaces() {
+        return this.workspaces;
+    }
+
+    /**
+     * The WorkspacePoliciesClient object to access its operations.
+     */
+    private final WorkspacePoliciesClient workspacePolicies;
+
+    /**
+     * Gets the WorkspacePoliciesClient object to access its operations.
+     * 
+     * @return the WorkspacePoliciesClient object.
+     */
+    public WorkspacePoliciesClient getWorkspacePolicies() {
+        return this.workspacePolicies;
+    }
+
+    /**
+     * The WorkspaceNamedValuesClient object to access its operations.
+     */
+    private final WorkspaceNamedValuesClient workspaceNamedValues;
+
+    /**
+     * Gets the WorkspaceNamedValuesClient object to access its operations.
+     * 
+     * @return the WorkspaceNamedValuesClient object.
+     */
+    public WorkspaceNamedValuesClient getWorkspaceNamedValues() {
+        return this.workspaceNamedValues;
+    }
+
+    /**
+     * The WorkspaceGlobalSchemasClient object to access its operations.
+     */
+    private final WorkspaceGlobalSchemasClient workspaceGlobalSchemas;
+
+    /**
+     * Gets the WorkspaceGlobalSchemasClient object to access its operations.
+     * 
+     * @return the WorkspaceGlobalSchemasClient object.
+     */
+    public WorkspaceGlobalSchemasClient getWorkspaceGlobalSchemas() {
+        return this.workspaceGlobalSchemas;
+    }
+
+    /**
+     * The WorkspaceNotificationsClient object to access its operations.
+     */
+    private final WorkspaceNotificationsClient workspaceNotifications;
+
+    /**
+     * Gets the WorkspaceNotificationsClient object to access its operations.
+     * 
+     * @return the WorkspaceNotificationsClient object.
+     */
+    public WorkspaceNotificationsClient getWorkspaceNotifications() {
+        return this.workspaceNotifications;
+    }
+
+    /**
+     * The WorkspaceNotificationRecipientUsersClient object to access its operations.
+     */
+    private final WorkspaceNotificationRecipientUsersClient workspaceNotificationRecipientUsers;
+
+    /**
+     * Gets the WorkspaceNotificationRecipientUsersClient object to access its operations.
+     * 
+     * @return the WorkspaceNotificationRecipientUsersClient object.
+     */
+    public WorkspaceNotificationRecipientUsersClient getWorkspaceNotificationRecipientUsers() {
+        return this.workspaceNotificationRecipientUsers;
+    }
+
+    /**
+     * The WorkspaceNotificationRecipientEmailsClient object to access its operations.
+     */
+    private final WorkspaceNotificationRecipientEmailsClient workspaceNotificationRecipientEmails;
+
+    /**
+     * Gets the WorkspaceNotificationRecipientEmailsClient object to access its operations.
+     * 
+     * @return the WorkspaceNotificationRecipientEmailsClient object.
+     */
+    public WorkspaceNotificationRecipientEmailsClient getWorkspaceNotificationRecipientEmails() {
+        return this.workspaceNotificationRecipientEmails;
+    }
+
+    /**
+     * The WorkspacePolicyFragmentsClient object to access its operations.
+     */
+    private final WorkspacePolicyFragmentsClient workspacePolicyFragments;
+
+    /**
+     * Gets the WorkspacePolicyFragmentsClient object to access its operations.
+     * 
+     * @return the WorkspacePolicyFragmentsClient object.
+     */
+    public WorkspacePolicyFragmentsClient getWorkspacePolicyFragments() {
+        return this.workspacePolicyFragments;
+    }
+
+    /**
+     * The WorkspaceGroupsClient object to access its operations.
+     */
+    private final WorkspaceGroupsClient workspaceGroups;
+
+    /**
+     * Gets the WorkspaceGroupsClient object to access its operations.
+     * 
+     * @return the WorkspaceGroupsClient object.
+     */
+    public WorkspaceGroupsClient getWorkspaceGroups() {
+        return this.workspaceGroups;
+    }
+
+    /**
+     * The WorkspaceGroupUsersClient object to access its operations.
+     */
+    private final WorkspaceGroupUsersClient workspaceGroupUsers;
+
+    /**
+     * Gets the WorkspaceGroupUsersClient object to access its operations.
+     * 
+     * @return the WorkspaceGroupUsersClient object.
+     */
+    public WorkspaceGroupUsersClient getWorkspaceGroupUsers() {
+        return this.workspaceGroupUsers;
+    }
+
+    /**
+     * The WorkspaceSubscriptionsClient object to access its operations.
+     */
+    private final WorkspaceSubscriptionsClient workspaceSubscriptions;
+
+    /**
+     * Gets the WorkspaceSubscriptionsClient object to access its operations.
+     * 
+     * @return the WorkspaceSubscriptionsClient object.
+     */
+    public WorkspaceSubscriptionsClient getWorkspaceSubscriptions() {
+        return this.workspaceSubscriptions;
+    }
+
+    /**
+     * The WorkspaceApiVersionSetsClient object to access its operations.
+     */
+    private final WorkspaceApiVersionSetsClient workspaceApiVersionSets;
+
+    /**
+     * Gets the WorkspaceApiVersionSetsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiVersionSetsClient object.
+     */
+    public WorkspaceApiVersionSetsClient getWorkspaceApiVersionSets() {
+        return this.workspaceApiVersionSets;
+    }
+
+    /**
+     * The WorkspaceApisClient object to access its operations.
+     */
+    private final WorkspaceApisClient workspaceApis;
+
+    /**
+     * Gets the WorkspaceApisClient object to access its operations.
+     * 
+     * @return the WorkspaceApisClient object.
+     */
+    public WorkspaceApisClient getWorkspaceApis() {
+        return this.workspaceApis;
+    }
+
+    /**
+     * The WorkspaceApiRevisionsClient object to access its operations.
+     */
+    private final WorkspaceApiRevisionsClient workspaceApiRevisions;
+
+    /**
+     * Gets the WorkspaceApiRevisionsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiRevisionsClient object.
+     */
+    public WorkspaceApiRevisionsClient getWorkspaceApiRevisions() {
+        return this.workspaceApiRevisions;
+    }
+
+    /**
+     * The WorkspaceApiReleasesClient object to access its operations.
+     */
+    private final WorkspaceApiReleasesClient workspaceApiReleases;
+
+    /**
+     * Gets the WorkspaceApiReleasesClient object to access its operations.
+     * 
+     * @return the WorkspaceApiReleasesClient object.
+     */
+    public WorkspaceApiReleasesClient getWorkspaceApiReleases() {
+        return this.workspaceApiReleases;
+    }
+
+    /**
+     * The WorkspaceApiOperationsClient object to access its operations.
+     */
+    private final WorkspaceApiOperationsClient workspaceApiOperations;
+
+    /**
+     * Gets the WorkspaceApiOperationsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiOperationsClient object.
+     */
+    public WorkspaceApiOperationsClient getWorkspaceApiOperations() {
+        return this.workspaceApiOperations;
+    }
+
+    /**
+     * The WorkspaceApiOperationPoliciesClient object to access its operations.
+     */
+    private final WorkspaceApiOperationPoliciesClient workspaceApiOperationPolicies;
+
+    /**
+     * Gets the WorkspaceApiOperationPoliciesClient object to access its operations.
+     * 
+     * @return the WorkspaceApiOperationPoliciesClient object.
+     */
+    public WorkspaceApiOperationPoliciesClient getWorkspaceApiOperationPolicies() {
+        return this.workspaceApiOperationPolicies;
+    }
+
+    /**
+     * The WorkspaceApiPoliciesClient object to access its operations.
+     */
+    private final WorkspaceApiPoliciesClient workspaceApiPolicies;
+
+    /**
+     * Gets the WorkspaceApiPoliciesClient object to access its operations.
+     * 
+     * @return the WorkspaceApiPoliciesClient object.
+     */
+    public WorkspaceApiPoliciesClient getWorkspaceApiPolicies() {
+        return this.workspaceApiPolicies;
+    }
+
+    /**
+     * The WorkspaceApiSchemasClient object to access its operations.
+     */
+    private final WorkspaceApiSchemasClient workspaceApiSchemas;
+
+    /**
+     * Gets the WorkspaceApiSchemasClient object to access its operations.
+     * 
+     * @return the WorkspaceApiSchemasClient object.
+     */
+    public WorkspaceApiSchemasClient getWorkspaceApiSchemas() {
+        return this.workspaceApiSchemas;
+    }
+
+    /**
+     * The WorkspaceProductsClient object to access its operations.
+     */
+    private final WorkspaceProductsClient workspaceProducts;
+
+    /**
+     * Gets the WorkspaceProductsClient object to access its operations.
+     * 
+     * @return the WorkspaceProductsClient object.
+     */
+    public WorkspaceProductsClient getWorkspaceProducts() {
+        return this.workspaceProducts;
+    }
+
+    /**
+     * The WorkspaceProductApiLinksClient object to access its operations.
+     */
+    private final WorkspaceProductApiLinksClient workspaceProductApiLinks;
+
+    /**
+     * Gets the WorkspaceProductApiLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceProductApiLinksClient object.
+     */
+    public WorkspaceProductApiLinksClient getWorkspaceProductApiLinks() {
+        return this.workspaceProductApiLinks;
+    }
+
+    /**
+     * The WorkspaceProductGroupLinksClient object to access its operations.
+     */
+    private final WorkspaceProductGroupLinksClient workspaceProductGroupLinks;
+
+    /**
+     * Gets the WorkspaceProductGroupLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceProductGroupLinksClient object.
+     */
+    public WorkspaceProductGroupLinksClient getWorkspaceProductGroupLinks() {
+        return this.workspaceProductGroupLinks;
+    }
+
+    /**
+     * The WorkspaceProductPoliciesClient object to access its operations.
+     */
+    private final WorkspaceProductPoliciesClient workspaceProductPolicies;
+
+    /**
+     * Gets the WorkspaceProductPoliciesClient object to access its operations.
+     * 
+     * @return the WorkspaceProductPoliciesClient object.
+     */
+    public WorkspaceProductPoliciesClient getWorkspaceProductPolicies() {
+        return this.workspaceProductPolicies;
+    }
+
+    /**
+     * The WorkspaceTagsClient object to access its operations.
+     */
+    private final WorkspaceTagsClient workspaceTags;
+
+    /**
+     * Gets the WorkspaceTagsClient object to access its operations.
+     * 
+     * @return the WorkspaceTagsClient object.
+     */
+    public WorkspaceTagsClient getWorkspaceTags() {
+        return this.workspaceTags;
+    }
+
+    /**
+     * The WorkspaceTagApiLinksClient object to access its operations.
+     */
+    private final WorkspaceTagApiLinksClient workspaceTagApiLinks;
+
+    /**
+     * Gets the WorkspaceTagApiLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceTagApiLinksClient object.
+     */
+    public WorkspaceTagApiLinksClient getWorkspaceTagApiLinks() {
+        return this.workspaceTagApiLinks;
+    }
+
+    /**
+     * The WorkspaceTagOperationLinksClient object to access its operations.
+     */
+    private final WorkspaceTagOperationLinksClient workspaceTagOperationLinks;
+
+    /**
+     * Gets the WorkspaceTagOperationLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceTagOperationLinksClient object.
+     */
+    public WorkspaceTagOperationLinksClient getWorkspaceTagOperationLinks() {
+        return this.workspaceTagOperationLinks;
+    }
+
+    /**
+     * The WorkspaceTagProductLinksClient object to access its operations.
+     */
+    private final WorkspaceTagProductLinksClient workspaceTagProductLinks;
+
+    /**
+     * Gets the WorkspaceTagProductLinksClient object to access its operations.
+     * 
+     * @return the WorkspaceTagProductLinksClient object.
+     */
+    public WorkspaceTagProductLinksClient getWorkspaceTagProductLinks() {
+        return this.workspaceTagProductLinks;
+    }
+
+    /**
+     * The WorkspaceApiExportsClient object to access its operations.
+     */
+    private final WorkspaceApiExportsClient workspaceApiExports;
+
+    /**
+     * Gets the WorkspaceApiExportsClient object to access its operations.
+     * 
+     * @return the WorkspaceApiExportsClient object.
+     */
+    public WorkspaceApiExportsClient getWorkspaceApiExports() {
+        return this.workspaceApiExports;
+    }
+
+    /**
+     * The OperationStatusClient object to access its operations.
+     */
+    private final OperationStatusClient operationStatus;
+
+    /**
+     * Gets the OperationStatusClient object to access its operations.
+     * 
+     * @return the OperationStatusClient object.
+     */
+    public OperationStatusClient getOperationStatus() {
+        return this.operationStatus;
+    }
+
+    /**
+     * The OperationsResultsClient object to access its operations.
+     */
+    private final OperationsResultsClient operationsResults;
+
+    /**
+     * Gets the OperationsResultsClient object to access its operations.
+     * 
+     * @return the OperationsResultsClient object.
+     */
+    public OperationsResultsClient getOperationsResults() {
+        return this.operationsResults;
     }
 
     /**
@@ -1464,7 +2184,7 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     ApiManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -1474,7 +2194,10 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-08-01";
+        this.apiVersion = "2024-05-01";
+        this.apiGateways = new ApiGatewaysClientImpl(this);
+        this.apiManagementGatewaySkus = new ApiManagementGatewaySkusClientImpl(this);
+        this.allPolicies = new AllPoliciesClientImpl(this);
         this.apis = new ApisClientImpl(this);
         this.apiRevisions = new ApiRevisionsClientImpl(this);
         this.apiReleases = new ApiReleasesClientImpl(this);
@@ -1496,11 +2219,11 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.apiWikisOperations = new ApiWikisOperationsClientImpl(this);
         this.apiExports = new ApiExportsClientImpl(this);
         this.apiVersionSets = new ApiVersionSetsClientImpl(this);
-        this.authorizationServers = new AuthorizationServersClientImpl(this);
         this.authorizationProviders = new AuthorizationProvidersClientImpl(this);
         this.authorizations = new AuthorizationsClientImpl(this);
         this.authorizationLoginLinks = new AuthorizationLoginLinksClientImpl(this);
         this.authorizationAccessPolicies = new AuthorizationAccessPoliciesClientImpl(this);
+        this.authorizationServers = new AuthorizationServersClientImpl(this);
         this.backends = new BackendsClientImpl(this);
         this.caches = new CachesClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
@@ -1512,7 +2235,9 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.apiManagementServiceSkus = new ApiManagementServiceSkusClientImpl(this);
         this.apiManagementServices = new ApiManagementServicesClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
+        this.documentations = new DocumentationsClientImpl(this);
         this.emailTemplates = new EmailTemplatesClientImpl(this);
+        this.apiGatewayConfigConnections = new ApiGatewayConfigConnectionsClientImpl(this);
         this.gateways = new GatewaysClientImpl(this);
         this.gatewayHostnameConfigurations = new GatewayHostnameConfigurationsClientImpl(this);
         this.gatewayApis = new GatewayApisClientImpl(this);
@@ -1532,6 +2257,8 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.policies = new PoliciesClientImpl(this);
         this.policyDescriptions = new PolicyDescriptionsClientImpl(this);
         this.policyFragments = new PolicyFragmentsClientImpl(this);
+        this.policyRestrictions = new PolicyRestrictionsClientImpl(this);
+        this.policyRestrictionValidations = new PolicyRestrictionValidationsClientImpl(this);
         this.portalConfigs = new PortalConfigsClientImpl(this);
         this.portalRevisions = new PortalRevisionsClientImpl(this);
         this.portalSettings = new PortalSettingsClientImpl(this);
@@ -1546,6 +2273,8 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.productPolicies = new ProductPoliciesClientImpl(this);
         this.productWikis = new ProductWikisClientImpl(this);
         this.productWikisOperations = new ProductWikisOperationsClientImpl(this);
+        this.productApiLinks = new ProductApiLinksClientImpl(this);
+        this.productGroupLinks = new ProductGroupLinksClientImpl(this);
         this.quotaByCounterKeys = new QuotaByCounterKeysClientImpl(this);
         this.quotaByPeriodKeys = new QuotaByPeriodKeysClientImpl(this);
         this.regions = new RegionsClientImpl(this);
@@ -1555,6 +2284,9 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.apiManagementSkus = new ApiManagementSkusClientImpl(this);
         this.subscriptions = new SubscriptionsClientImpl(this);
         this.tagResources = new TagResourcesClientImpl(this);
+        this.tagApiLinks = new TagApiLinksClientImpl(this);
+        this.tagOperationLinks = new TagOperationLinksClientImpl(this);
+        this.tagProductLinks = new TagProductLinksClientImpl(this);
         this.tenantAccess = new TenantAccessClientImpl(this);
         this.tenantAccessGits = new TenantAccessGitsClientImpl(this);
         this.tenantConfigurations = new TenantConfigurationsClientImpl(this);
@@ -1563,7 +2295,43 @@ public final class ApiManagementClientImpl implements ApiManagementClient {
         this.userSubscriptions = new UserSubscriptionsClientImpl(this);
         this.userIdentities = new UserIdentitiesClientImpl(this);
         this.userConfirmationPasswords = new UserConfirmationPasswordsClientImpl(this);
-        this.documentations = new DocumentationsClientImpl(this);
+        this.workspaceBackends = new WorkspaceBackendsClientImpl(this);
+        this.workspaceCertificates = new WorkspaceCertificatesClientImpl(this);
+        this.workspaceDiagnostics = new WorkspaceDiagnosticsClientImpl(this);
+        this.workspaceApiDiagnostics = new WorkspaceApiDiagnosticsClientImpl(this);
+        this.apiManagementWorkspaceLinks = new ApiManagementWorkspaceLinksClientImpl(this);
+        this.apiManagementWorkspaceLinkOperations = new ApiManagementWorkspaceLinkOperationsClientImpl(this);
+        this.workspaceLoggers = new WorkspaceLoggersClientImpl(this);
+        this.workspaces = new WorkspacesClientImpl(this);
+        this.workspacePolicies = new WorkspacePoliciesClientImpl(this);
+        this.workspaceNamedValues = new WorkspaceNamedValuesClientImpl(this);
+        this.workspaceGlobalSchemas = new WorkspaceGlobalSchemasClientImpl(this);
+        this.workspaceNotifications = new WorkspaceNotificationsClientImpl(this);
+        this.workspaceNotificationRecipientUsers = new WorkspaceNotificationRecipientUsersClientImpl(this);
+        this.workspaceNotificationRecipientEmails = new WorkspaceNotificationRecipientEmailsClientImpl(this);
+        this.workspacePolicyFragments = new WorkspacePolicyFragmentsClientImpl(this);
+        this.workspaceGroups = new WorkspaceGroupsClientImpl(this);
+        this.workspaceGroupUsers = new WorkspaceGroupUsersClientImpl(this);
+        this.workspaceSubscriptions = new WorkspaceSubscriptionsClientImpl(this);
+        this.workspaceApiVersionSets = new WorkspaceApiVersionSetsClientImpl(this);
+        this.workspaceApis = new WorkspaceApisClientImpl(this);
+        this.workspaceApiRevisions = new WorkspaceApiRevisionsClientImpl(this);
+        this.workspaceApiReleases = new WorkspaceApiReleasesClientImpl(this);
+        this.workspaceApiOperations = new WorkspaceApiOperationsClientImpl(this);
+        this.workspaceApiOperationPolicies = new WorkspaceApiOperationPoliciesClientImpl(this);
+        this.workspaceApiPolicies = new WorkspaceApiPoliciesClientImpl(this);
+        this.workspaceApiSchemas = new WorkspaceApiSchemasClientImpl(this);
+        this.workspaceProducts = new WorkspaceProductsClientImpl(this);
+        this.workspaceProductApiLinks = new WorkspaceProductApiLinksClientImpl(this);
+        this.workspaceProductGroupLinks = new WorkspaceProductGroupLinksClientImpl(this);
+        this.workspaceProductPolicies = new WorkspaceProductPoliciesClientImpl(this);
+        this.workspaceTags = new WorkspaceTagsClientImpl(this);
+        this.workspaceTagApiLinks = new WorkspaceTagApiLinksClientImpl(this);
+        this.workspaceTagOperationLinks = new WorkspaceTagOperationLinksClientImpl(this);
+        this.workspaceTagProductLinks = new WorkspaceTagProductLinksClientImpl(this);
+        this.workspaceApiExports = new WorkspaceApiExportsClientImpl(this);
+        this.operationStatus = new OperationStatusClientImpl(this);
+        this.operationsResults = new OperationsResultsClientImpl(this);
     }
 
     /**

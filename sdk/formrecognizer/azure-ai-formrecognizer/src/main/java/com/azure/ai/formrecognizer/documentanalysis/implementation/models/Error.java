@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,26 +22,31 @@ public final class Error implements JsonSerializable<Error> {
     /*
      * Error code.
      */
+    @Generated
     private final String code;
 
     /*
      * Error message.
      */
+    @Generated
     private final String message;
 
     /*
      * Target of the error.
      */
+    @Generated
     private String target;
 
     /*
      * List of detailed errors.
      */
+    @Generated
     private List<Error> details;
 
     /*
      * Detailed error.
      */
+    @Generated
     private InnerError innererror;
 
     /**
@@ -49,6 +55,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param code the code value to set.
      * @param message the message value to set.
      */
+    @Generated
     public Error(String code, String message) {
         this.code = code;
         this.message = message;
@@ -59,6 +66,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -68,6 +76,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -77,6 +86,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -87,6 +97,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param target the target value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setTarget(String target) {
         this.target = target;
         return this;
@@ -97,6 +108,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the details value.
      */
+    @Generated
     public List<Error> getDetails() {
         return this.details;
     }
@@ -107,6 +119,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param details the details value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setDetails(List<Error> details) {
         this.details = details;
         return this;
@@ -117,6 +130,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the innererror value.
      */
+    @Generated
     public InnerError getInnererror() {
         return this.innererror;
     }
@@ -127,6 +141,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param innererror the innererror value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setInnererror(InnerError innererror) {
         this.innererror = innererror;
         return this;
@@ -135,6 +150,7 @@ public final class Error implements JsonSerializable<Error> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -155,6 +171,7 @@ public final class Error implements JsonSerializable<Error> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Error.
      */
+    @Generated
     public static Error fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean codeFound = false;

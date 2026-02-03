@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,11 +16,13 @@ public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<
     /**
      * Static value ServiceAuthentication for GoogleAdWordsAuthenticationType.
      */
+    @Generated
     public static final GoogleAdWordsAuthenticationType SERVICE_AUTHENTICATION = fromString("ServiceAuthentication");
 
     /**
      * Static value UserAuthentication for GoogleAdWordsAuthenticationType.
      */
+    @Generated
     public static final GoogleAdWordsAuthenticationType USER_AUTHENTICATION = fromString("UserAuthentication");
 
     /**
@@ -27,6 +30,7 @@ public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public GoogleAdWordsAuthenticationType() {
     }
@@ -37,6 +41,7 @@ public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding GoogleAdWordsAuthenticationType.
      */
+    @Generated
     public static GoogleAdWordsAuthenticationType fromString(String name) {
         return fromString(name, GoogleAdWordsAuthenticationType.class);
     }
@@ -46,6 +51,7 @@ public final class GoogleAdWordsAuthenticationType extends ExpandableStringEnum<
      * 
      * @return known GoogleAdWordsAuthenticationType values.
      */
+    @Generated
     public static Collection<GoogleAdWordsAuthenticationType> values() {
         return values(GoogleAdWordsAuthenticationType.class);
     }

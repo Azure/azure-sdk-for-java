@@ -31,7 +31,7 @@ public final class OperationsDefinitionInner implements JsonSerializable<Operati
     private Boolean isDataAction;
 
     /*
-     * The origin property.
+     * The origin.
      */
     private OperationOrigins origin;
 
@@ -41,7 +41,7 @@ public final class OperationsDefinitionInner implements JsonSerializable<Operati
     private OperationsDefinitionDisplay display;
 
     /*
-     * The actionType property.
+     * The action type.
      */
     private OperationActionType actionType;
 
@@ -97,7 +97,7 @@ public final class OperationsDefinitionInner implements JsonSerializable<Operati
     }
 
     /**
-     * Get the origin property: The origin property.
+     * Get the origin property: The origin.
      * 
      * @return the origin value.
      */
@@ -106,7 +106,7 @@ public final class OperationsDefinitionInner implements JsonSerializable<Operati
     }
 
     /**
-     * Set the origin property: The origin property.
+     * Set the origin property: The origin.
      * 
      * @param origin the origin value to set.
      * @return the OperationsDefinitionInner object itself.
@@ -137,7 +137,7 @@ public final class OperationsDefinitionInner implements JsonSerializable<Operati
     }
 
     /**
-     * Get the actionType property: The actionType property.
+     * Get the actionType property: The action type.
      * 
      * @return the actionType value.
      */
@@ -146,7 +146,7 @@ public final class OperationsDefinitionInner implements JsonSerializable<Operati
     }
 
     /**
-     * Set the actionType property: The actionType property.
+     * Set the actionType property: The action type.
      * 
      * @param actionType the actionType value to set.
      * @return the OperationsDefinitionInner object itself.
@@ -208,7 +208,9 @@ public final class OperationsDefinitionInner implements JsonSerializable<Operati
         jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
         jsonWriter.writeStringField("origin", this.origin == null ? null : this.origin.toString());
         jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -2,13 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.common;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
 import java.util.ArrayList;
@@ -157,30 +158,30 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
 
         this.set(
             Constants.Properties.CHANGE_FEED_STATE_VERSION,
-            ChangeFeedStateVersions.V1,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            ChangeFeedStateVersions.V1
+        );
 
         this.set(
             Constants.Properties.CHANGE_FEED_STATE_RESOURCE_ID,
-            this.containerRid,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.containerRid
+        );
 
         this.set(
             Constants.Properties.CHANGE_FEED_STATE_MODE,
-            this.mode,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.mode
+        );
 
         this.set(
             Constants.Properties.CHANGE_FEED_STATE_START_FROM,
-            this.startFromSettings,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.startFromSettings
+        );
 
         if (this.continuation != null) {
             this.continuation.populatePropertyBag();
             this.set(
                 Constants.Properties.CHANGE_FEED_STATE_CONTINUATION,
-                this.continuation,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.continuation
+            );
             this.feedRange.removeProperties(this);
         } else {
             this.feedRange.setProperties(this, true);

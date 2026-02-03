@@ -19,7 +19,7 @@
   "include": [
     {
       "Agent": {
-        "ubuntu-20.04_TestFromSource": {
+        "ubuntu-24.04_TestFromSource": {
           "OSVmImage": "env:LINUXVMIMAGE",
           "Pool": "env:LINUXPOOL",
           "TestGoals": "surefire:test",
@@ -33,7 +33,7 @@
     },
     {
       "Agent": {
-        "ubuntu-20.04_TestFromSource": {
+        "ubuntu-24.04_TestFromSource": {
           "OSVmImage": "env:LINUXVMIMAGE",
           "Pool": "env:LINUXPOOL",
           "TestGoals": "surefire:test",
@@ -42,7 +42,7 @@
       },
       "ArmTemplateParameters": "@{ enableHsm = $true }",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "JavaTestVersion": "1.21",
+      "JavaTestVersion": "1.25",
       "TestOptions": ""
     }
   ]

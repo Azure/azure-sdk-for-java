@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,12 +17,14 @@ public final class DynamicsServicePrincipalCredentialType
     /**
      * Static value ServicePrincipalKey for DynamicsServicePrincipalCredentialType.
      */
+    @Generated
     public static final DynamicsServicePrincipalCredentialType SERVICE_PRINCIPAL_KEY
         = fromString("ServicePrincipalKey");
 
     /**
      * Static value ServicePrincipalCert for DynamicsServicePrincipalCredentialType.
      */
+    @Generated
     public static final DynamicsServicePrincipalCredentialType SERVICE_PRINCIPAL_CERT
         = fromString("ServicePrincipalCert");
 
@@ -30,6 +33,7 @@ public final class DynamicsServicePrincipalCredentialType
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DynamicsServicePrincipalCredentialType() {
     }
@@ -40,6 +44,7 @@ public final class DynamicsServicePrincipalCredentialType
      * @param name a name to look for.
      * @return the corresponding DynamicsServicePrincipalCredentialType.
      */
+    @Generated
     public static DynamicsServicePrincipalCredentialType fromString(String name) {
         return fromString(name, DynamicsServicePrincipalCredentialType.class);
     }
@@ -49,6 +54,7 @@ public final class DynamicsServicePrincipalCredentialType
      * 
      * @return known DynamicsServicePrincipalCredentialType values.
      */
+    @Generated
     public static Collection<DynamicsServicePrincipalCredentialType> values() {
         return values(DynamicsServicePrincipalCredentialType.class);
     }

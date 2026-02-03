@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,60 +20,68 @@ public final class TemperatureSummary implements JsonSerializable<TemperatureSum
     /*
      * Summary of temperature fluctuations over the past 6 hours.
      */
-    private PastHoursTemperature pastSixHours;
+    @Generated
+    private PastHoursTemperature past6Hours;
 
     /*
      * Summary of temperature fluctuations over the past 12 hours.
      */
-    private PastHoursTemperature pastTwelveHours;
+    @Generated
+    private PastHoursTemperature past12Hours;
 
     /*
      * Summary of temperature fluctuations over the past 24 hours.
      */
-    private PastHoursTemperature pastTwentyFourHours;
+    @Generated
+    private PastHoursTemperature past24Hours;
 
     /**
      * Set default TemperatureSummary constructor to private
      */
+    @Generated
     private TemperatureSummary() {
     }
 
     /**
-     * Get the pastSixHours property: Summary of temperature fluctuations over the past 6 hours.
+     * Get the past6Hours property: Summary of temperature fluctuations over the past 6 hours.
      *
-     * @return the pastSixHours value.
+     * @return the past6Hours value.
      */
-    public PastHoursTemperature getPastSixHours() {
-        return this.pastSixHours;
+    @Generated
+    public PastHoursTemperature getPast6Hours() {
+        return this.past6Hours;
     }
 
     /**
-     * Get the pastTwelveHours property: Summary of temperature fluctuations over the past 12 hours.
+     * Get the past12Hours property: Summary of temperature fluctuations over the past 12 hours.
      *
-     * @return the pastTwelveHours value.
+     * @return the past12Hours value.
      */
-    public PastHoursTemperature getPastTwelveHours() {
-        return this.pastTwelveHours;
+    @Generated
+    public PastHoursTemperature getPast12Hours() {
+        return this.past12Hours;
     }
 
     /**
-     * Get the pastTwentyFourHours property: Summary of temperature fluctuations over the past 24 hours.
+     * Get the past24Hours property: Summary of temperature fluctuations over the past 24 hours.
      *
-     * @return the pastTwentyFourHours value.
+     * @return the past24Hours value.
      */
-    public PastHoursTemperature getPastTwentyFourHours() {
-        return this.pastTwentyFourHours;
+    @Generated
+    public PastHoursTemperature getPast24Hours() {
+        return this.past24Hours;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("pastSixHours", this.pastSixHours);
-        jsonWriter.writeJsonField("pastTwelveHours", this.pastTwelveHours);
-        jsonWriter.writeJsonField("pastTwentyFourHours", this.pastTwentyFourHours);
+        jsonWriter.writeJsonField("past6Hours", this.past6Hours);
+        jsonWriter.writeJsonField("past12Hours", this.past12Hours);
+        jsonWriter.writeJsonField("past24Hours", this.past24Hours);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,18 +93,19 @@ public final class TemperatureSummary implements JsonSerializable<TemperatureSum
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TemperatureSummary.
      */
+    @Generated
     public static TemperatureSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TemperatureSummary deserializedTemperatureSummary = new TemperatureSummary();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("pastSixHours".equals(fieldName)) {
-                    deserializedTemperatureSummary.pastSixHours = PastHoursTemperature.fromJson(reader);
-                } else if ("pastTwelveHours".equals(fieldName)) {
-                    deserializedTemperatureSummary.pastTwelveHours = PastHoursTemperature.fromJson(reader);
-                } else if ("pastTwentyFourHours".equals(fieldName)) {
-                    deserializedTemperatureSummary.pastTwentyFourHours = PastHoursTemperature.fromJson(reader);
+                if ("past6Hours".equals(fieldName)) {
+                    deserializedTemperatureSummary.past6Hours = PastHoursTemperature.fromJson(reader);
+                } else if ("past12Hours".equals(fieldName)) {
+                    deserializedTemperatureSummary.past12Hours = PastHoursTemperature.fromJson(reader);
+                } else if ("past24Hours".equals(fieldName)) {
+                    deserializedTemperatureSummary.past24Hours = PastHoursTemperature.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

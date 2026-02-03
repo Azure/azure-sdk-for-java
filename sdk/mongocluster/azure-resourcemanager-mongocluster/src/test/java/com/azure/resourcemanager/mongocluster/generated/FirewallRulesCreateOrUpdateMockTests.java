@@ -6,8 +6,8 @@ package com.azure.resourcemanager.mongocluster.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mongocluster.MongoClusterManager;
 import com.azure.resourcemanager.mongocluster.models.FirewallRule;
@@ -22,22 +22,22 @@ public final class FirewallRulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"dnfyhxdeoejzicwi\",\"endIpAddress\":\"sjttgzfbish\"},\"id\":\"khaj\",\"name\":\"eyeam\",\"type\":\"p\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"jwbhqwalmuz\",\"endIpAddress\":\"oxaepd\"},\"id\":\"jancu\",\"name\":\"rhdwbavxbniw\",\"type\":\"jswztsdbpg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MongoClusterManager manager = MongoClusterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FirewallRule response = manager.firewallRules()
-            .define("oenkouknvudwti")
-            .withExistingMongoCluster("gigr", "wburvjxxjnspydpt")
-            .withProperties(new FirewallRuleProperties().withStartIpAddress("dng").withEndIpAddress("pocipazyxoegu"))
+            .define("czfc")
+            .withExistingMongoCluster("tkcxywnytnrsy", "lqidyby")
+            .withProperties(new FirewallRuleProperties().withStartIpAddress("xdbabphlwr").withEndIpAddress("lfktsths"))
             .create();
 
-        Assertions.assertEquals("dnfyhxdeoejzicwi", response.properties().startIpAddress());
-        Assertions.assertEquals("sjttgzfbish", response.properties().endIpAddress());
+        Assertions.assertEquals("jwbhqwalmuz", response.properties().startIpAddress());
+        Assertions.assertEquals("oxaepd", response.properties().endIpAddress());
     }
 }

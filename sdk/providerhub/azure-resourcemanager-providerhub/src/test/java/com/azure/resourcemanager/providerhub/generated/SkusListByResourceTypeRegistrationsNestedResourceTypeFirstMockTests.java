@@ -7,11 +7,10 @@ package com.azure.resourcemanager.providerhub.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.providerhub.ProviderHubManager;
-import com.azure.resourcemanager.providerhub.models.ProvisioningState;
 import com.azure.resourcemanager.providerhub.models.SkuResource;
 import com.azure.resourcemanager.providerhub.models.SkuScaleType;
 import java.nio.charset.StandardCharsets;
@@ -24,47 +23,47 @@ public final class SkusListByResourceTypeRegistrationsNestedResourceTypeFirstMoc
     @Test
     public void testListByResourceTypeRegistrationsNestedResourceTypeFirst() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"skuSettings\":[{\"name\":\"trwntfmtbgw\",\"tier\":\"xwnaz\",\"size\":\"rrdreyzjwhset\",\"family\":\"jwzzqseuzu\",\"kind\":\"y\",\"locations\":[\"qhyqqzzdcykey\",\"tewfopazdazgbsq\",\"pew\",\"c\"],\"locationInfo\":[{\"location\":\"mdpv\"},{\"location\":\"zgl\"},{\"location\":\"jbkn\"},{\"location\":\"zcl\"}],\"requiredQuotaIds\":[\"eyowmndcovd\",\"zqauxzan\",\"mk\",\"fruwkud\"],\"requiredFeatures\":[\"pftxudqyeme\"],\"capacity\":{\"minimum\":837268188,\"maximum\":1305142488,\"default\":507713109,\"scaleType\":\"Manual\"},\"costs\":[{\"meterId\":\"nee\"},{\"meterId\":\"mjauwcgx\"},{\"meterId\":\"fnohaitran\"},{\"meterId\":\"zerwgudas\"}],\"capabilities\":[{\"name\":\"bvfbngfcocefhpri\",\"value\":\"lfmpztr\"}]},{\"name\":\"ud\",\"tier\":\"hlcdc\",\"size\":\"regp\",\"family\":\"moj\",\"kind\":\"rztnv\",\"locations\":[\"hqrdgrtwmewjzlpy\",\"cf\"],\"locationInfo\":[{\"location\":\"wjcayerzrr\"},{\"location\":\"nsyby\"}],\"requiredQuotaIds\":[\"lwzrg\"],\"requiredFeatures\":[\"l\",\"inkfscj\"],\"capacity\":{\"minimum\":2003402338,\"maximum\":325474754,\"default\":941574835,\"scaleType\":\"Automatic\"},\"costs\":[{\"meterId\":\"wtltngvmreuptrk\"},{\"meterId\":\"zmijajwo\"},{\"meterId\":\"xfsv\"},{\"meterId\":\"ghmp\"}],\"capabilities\":[{\"name\":\"lslrcigtzjc\",\"value\":\"bxqla\"}]},{\"name\":\"snsso\",\"tier\":\"xpavid\",\"size\":\"ev\",\"family\":\"fcvvy\",\"kind\":\"slpuxgcbdsva\",\"locations\":[\"ptwtrkxgpazwugxy\"],\"locationInfo\":[{\"location\":\"jo\"},{\"location\":\"felhldiuhzzgqlm\"},{\"location\":\"aewzgiudjp\"}],\"requiredQuotaIds\":[\"httqh\",\"mhk\",\"ezsdsuxheq\"],\"requiredFeatures\":[\"ruxspinymmqgwok\",\"ikpazf\",\"mjxuvjipfdvhaxd\"],\"capacity\":{\"minimum\":456970353,\"maximum\":1625333661,\"default\":2097746238,\"scaleType\":\"Automatic\"},\"costs\":[{\"meterId\":\"dklmvetatlakf\"},{\"meterId\":\"oixwgiksb\"},{\"meterId\":\"vtooxrpo\"}],\"capabilities\":[{\"name\":\"hchgjtnhtukf\",\"value\":\"cihmbfntumeezbxv\"},{\"name\":\"xbnuvwcga\",\"value\":\"gomtm\"},{\"name\":\"zwxuqgovsx\",\"value\":\"wwztj\"},{\"name\":\"mkkhtgfredml\",\"value\":\"cgrllc\"}]}],\"provisioningState\":\"NotSpecified\"},\"id\":\"ovjowazhpabacom\",\"name\":\"yotgkwsxnsrqorc\",\"type\":\"enmvcebxeetq\"}]}";
+            = "{\"value\":[{\"properties\":{\"skuSettings\":[{\"name\":\"ayunomirhpfabenq\",\"tier\":\"mwmgewayxfl\",\"size\":\"cpjs\",\"family\":\"hemhcucsqsnxfbx\",\"kind\":\"eapdrbzyv\",\"locations\":[\"adulpodkaxp\",\"obkzhmhjdqltdel\",\"qrojadhfztlray\",\"rkgzkyhudbkuw\"],\"locationInfo\":[{\"location\":\"xl\"},{\"location\":\"weakfecjvxfa\"},{\"location\":\"ufqizjvppw\"},{\"location\":\"oajeyyjmjjxizx\"}],\"requiredQuotaIds\":[\"nzlslekc\",\"tgzkjtyqpd\",\"adeghztldsvc\"],\"requiredFeatures\":[\"iahuqymjzucw\",\"mejjqhddwvmq\"],\"capacity\":{\"minimum\":1648732325,\"maximum\":1347757609,\"default\":1872555981,\"scaleType\":\"Automatic\"},\"costs\":[{\"meterId\":\"bn\"},{\"meterId\":\"x\"},{\"meterId\":\"ypfqpgaixw\"}],\"capabilities\":[{\"name\":\"kkderfrswq\",\"value\":\"kwepwo\"},{\"name\":\"ggicwnxhtfmcqbs\",\"value\":\"d\"},{\"name\":\"pgchzpgfqum\",\"value\":\"djxh\"},{\"name\":\"ghgodkynrceq\",\"value\":\"v\"}]},{\"name\":\"dbd\",\"tier\":\"mxjdnaju\",\"size\":\"jyyqmkw\",\"family\":\"vcwloqd\",\"kind\":\"kluxxrwzobuzmsxg\",\"locations\":[\"dtkwppth\",\"zdprmimrljdpoqfx\",\"emhkftbaewht\"],\"locationInfo\":[{\"location\":\"oamfmxtllfltymqc\"},{\"location\":\"rrfijhgg\"},{\"location\":\"bqbgamklilirwdv\"},{\"location\":\"fhsdpzouhkt\"}],\"requiredQuotaIds\":[\"qwqnjxrdfddt\",\"llygta\"],\"requiredFeatures\":[\"cxdfweapy\",\"mlx\",\"ljphraspifleimi\",\"lmdbgic\"],\"capacity\":{\"minimum\":500495779,\"maximum\":325161889,\"default\":1730229929,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"bpxtokljmtznpaxw\"},{\"meterId\":\"qtyyqiprcltungb\"}],\"capabilities\":[{\"name\":\"jck\",\"value\":\"iigz\"},{\"name\":\"kuckgkdskswtiiq\",\"value\":\"cqikclsm\"},{\"name\":\"lnssw\",\"value\":\"ykdnonaaxwmg\"}]},{\"name\":\"ru\",\"tier\":\"qcwnynl\",\"size\":\"iqbcbgv\",\"family\":\"t\",\"kind\":\"rtoxadhxuvjhxm\",\"locations\":[\"s\",\"jcm\"],\"locationInfo\":[{\"location\":\"mlgicvnpvvdhgjna\"},{\"location\":\"yqipslzmvcdsvm\"},{\"location\":\"bit\"}],\"requiredQuotaIds\":[\"tfo\",\"vfiybxqichgyb\"],\"requiredFeatures\":[\"qekivycpz\",\"vdizulrqtbh\",\"re\",\"pzl\"],\"capacity\":{\"minimum\":1001240638,\"maximum\":1722811310,\"default\":1828676246,\"scaleType\":\"None\"},\"costs\":[{\"meterId\":\"fkgilnoudccgnd\"}],\"capabilities\":[{\"name\":\"prigg\",\"value\":\"qyeqfcbuulpyuflq\"},{\"name\":\"fsh\",\"value\":\"ujcyohigimwdc\"}]},{\"name\":\"klkqnqvkixnmb\",\"tier\":\"ecuyr\",\"size\":\"imb\",\"family\":\"yspzvrie\",\"kind\":\"fphmdzxplg\",\"locations\":[\"dvatlzmgschn\",\"rsbkkzovlzdmnfmf\",\"sx\"],\"locationInfo\":[{\"location\":\"fuwori\"},{\"location\":\"movzwde\"},{\"location\":\"kkmvhzfovanyrva\"},{\"location\":\"rtgelg\"}],\"requiredQuotaIds\":[\"ikfyaqandm\",\"mnqoqjum\",\"vsfbp\",\"vzopaxmfmvsm\"],\"requiredFeatures\":[\"xfaxdtnq\",\"fbsatroi\"],\"capacity\":{\"minimum\":1395070264,\"maximum\":1644085180,\"default\":406077581,\"scaleType\":\"Manual\"},\"costs\":[{\"meterId\":\"jy\"},{\"meterId\":\"boel\"}],\"capabilities\":[{\"name\":\"twfld\",\"value\":\"iuorinikc\"},{\"name\":\"dpk\",\"value\":\"riwmmtmqrxrzqv\"},{\"name\":\"yczyayubtgm\",\"value\":\"xiqahr\"},{\"name\":\"gpx\",\"value\":\"ibplnupoyryefqm\"}]}],\"provisioningState\":\"Accepted\"},\"id\":\"ztxlnomfpbjceeg\",\"name\":\"yieztkutnjil\",\"type\":\"ukkrehyh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ProviderHubManager manager = ProviderHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SkuResource> response = manager.skus()
-            .listByResourceTypeRegistrationsNestedResourceTypeFirst("suenyg", "xcgjtf", "nquktrfnslnlrxs",
+            .listByResourceTypeRegistrationsNestedResourceTypeFirst("xegtvgwyur", "elfnzzryiz", "bxgde",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("trwntfmtbgw", response.iterator().next().properties().skuSettings().get(0).name());
-        Assertions.assertEquals("xwnaz", response.iterator().next().properties().skuSettings().get(0).tier());
-        Assertions.assertEquals("rrdreyzjwhset", response.iterator().next().properties().skuSettings().get(0).size());
-        Assertions.assertEquals("jwzzqseuzu", response.iterator().next().properties().skuSettings().get(0).family());
-        Assertions.assertEquals("y", response.iterator().next().properties().skuSettings().get(0).kind());
-        Assertions.assertEquals("qhyqqzzdcykey",
+        Assertions.assertEquals("ayunomirhpfabenq",
+            response.iterator().next().properties().skuSettings().get(0).name());
+        Assertions.assertEquals("mwmgewayxfl", response.iterator().next().properties().skuSettings().get(0).tier());
+        Assertions.assertEquals("cpjs", response.iterator().next().properties().skuSettings().get(0).size());
+        Assertions.assertEquals("hemhcucsqsnxfbx",
+            response.iterator().next().properties().skuSettings().get(0).family());
+        Assertions.assertEquals("eapdrbzyv", response.iterator().next().properties().skuSettings().get(0).kind());
+        Assertions.assertEquals("adulpodkaxp",
             response.iterator().next().properties().skuSettings().get(0).locations().get(0));
-        Assertions.assertEquals("mdpv",
+        Assertions.assertEquals("xl",
             response.iterator().next().properties().skuSettings().get(0).locationInfo().get(0).location());
-        Assertions.assertEquals("eyowmndcovd",
+        Assertions.assertEquals("nzlslekc",
             response.iterator().next().properties().skuSettings().get(0).requiredQuotaIds().get(0));
-        Assertions.assertEquals("pftxudqyeme",
+        Assertions.assertEquals("iahuqymjzucw",
             response.iterator().next().properties().skuSettings().get(0).requiredFeatures().get(0));
-        Assertions.assertEquals(837268188,
+        Assertions.assertEquals(1648732325,
             response.iterator().next().properties().skuSettings().get(0).capacity().minimum());
-        Assertions.assertEquals(1305142488,
+        Assertions.assertEquals(1347757609,
             response.iterator().next().properties().skuSettings().get(0).capacity().maximum());
-        Assertions.assertEquals(507713109,
+        Assertions.assertEquals(1872555981,
             response.iterator().next().properties().skuSettings().get(0).capacity().defaultProperty());
-        Assertions.assertEquals(SkuScaleType.MANUAL,
+        Assertions.assertEquals(SkuScaleType.AUTOMATIC,
             response.iterator().next().properties().skuSettings().get(0).capacity().scaleType());
-        Assertions.assertEquals("nee",
+        Assertions.assertEquals("bn",
             response.iterator().next().properties().skuSettings().get(0).costs().get(0).meterId());
-        Assertions.assertEquals("bvfbngfcocefhpri",
+        Assertions.assertEquals("kkderfrswq",
             response.iterator().next().properties().skuSettings().get(0).capabilities().get(0).name());
-        Assertions.assertEquals("lfmpztr",
+        Assertions.assertEquals("kwepwo",
             response.iterator().next().properties().skuSettings().get(0).capabilities().get(0).value());
-        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED,
-            response.iterator().next().properties().provisioningState());
     }
 }

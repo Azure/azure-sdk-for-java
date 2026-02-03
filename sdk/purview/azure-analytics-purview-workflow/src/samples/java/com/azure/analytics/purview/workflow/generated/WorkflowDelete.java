@@ -17,10 +17,10 @@ public class WorkflowDelete {
             = new WorkflowClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowdelete.workflowdelete
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflow-delete.workflow-delete
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response
             = workflowClient.deleteWithResponse("4afb5752-e47f-43a1-8ba7-c696bf8d2745", requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.workflowdelete.workflowdelete
+        // END:com.azure.analytics.purview.workflow.generated.workflow-delete.workflow-delete
     }
 }

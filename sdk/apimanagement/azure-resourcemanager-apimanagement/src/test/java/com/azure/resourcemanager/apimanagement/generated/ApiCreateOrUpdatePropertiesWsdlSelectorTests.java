@@ -12,19 +12,19 @@ public final class ApiCreateOrUpdatePropertiesWsdlSelectorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiCreateOrUpdatePropertiesWsdlSelector model
-            = BinaryData.fromString("{\"wsdlServiceName\":\"fmppe\",\"wsdlEndpointName\":\"vmgxsab\"}")
+            = BinaryData.fromString("{\"wsdlServiceName\":\"dobpxjmflbvvn\",\"wsdlEndpointName\":\"rkcciwwzjuqk\"}")
                 .toObject(ApiCreateOrUpdatePropertiesWsdlSelector.class);
-        Assertions.assertEquals("fmppe", model.wsdlServiceName());
-        Assertions.assertEquals("vmgxsab", model.wsdlEndpointName());
+        Assertions.assertEquals("dobpxjmflbvvn", model.wsdlServiceName());
+        Assertions.assertEquals("rkcciwwzjuqk", model.wsdlEndpointName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiCreateOrUpdatePropertiesWsdlSelector model
-            = new ApiCreateOrUpdatePropertiesWsdlSelector().withWsdlServiceName("fmppe")
-                .withWsdlEndpointName("vmgxsab");
+            = new ApiCreateOrUpdatePropertiesWsdlSelector().withWsdlServiceName("dobpxjmflbvvn")
+                .withWsdlEndpointName("rkcciwwzjuqk");
         model = BinaryData.fromObject(model).toObject(ApiCreateOrUpdatePropertiesWsdlSelector.class);
-        Assertions.assertEquals("fmppe", model.wsdlServiceName());
-        Assertions.assertEquals("vmgxsab", model.wsdlEndpointName());
+        Assertions.assertEquals("dobpxjmflbvvn", model.wsdlServiceName());
+        Assertions.assertEquals("rkcciwwzjuqk", model.wsdlEndpointName());
     }
 }

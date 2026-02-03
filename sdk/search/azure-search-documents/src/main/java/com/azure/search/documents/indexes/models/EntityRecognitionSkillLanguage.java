@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,116 +17,139 @@ public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<E
     /**
      * Arabic.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage AR = fromString("ar");
 
     /**
      * Czech.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage CS = fromString("cs");
 
     /**
      * Chinese-Simplified.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage ZH_HANS = fromString("zh-Hans");
 
     /**
      * Chinese-Traditional.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage ZH_HANT = fromString("zh-Hant");
 
     /**
      * Danish.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage DA = fromString("da");
 
     /**
      * Dutch.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage NL = fromString("nl");
 
     /**
      * English.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage EN = fromString("en");
 
     /**
      * Finnish.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage FI = fromString("fi");
 
     /**
      * French.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage FR = fromString("fr");
 
     /**
      * German.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage DE = fromString("de");
 
     /**
      * Greek.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage EL = fromString("el");
 
     /**
      * Hungarian.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage HU = fromString("hu");
 
     /**
      * Italian.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage IT = fromString("it");
 
     /**
      * Japanese.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage JA = fromString("ja");
 
     /**
      * Korean.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage KO = fromString("ko");
 
     /**
      * Norwegian (Bokmaal).
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage NO = fromString("no");
 
     /**
      * Polish.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage PL = fromString("pl");
 
     /**
      * Portuguese (Portugal).
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage PT_PT = fromString("pt-PT");
 
     /**
      * Portuguese (Brazil).
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage PT_BR = fromString("pt-BR");
 
     /**
      * Russian.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage RU = fromString("ru");
 
     /**
      * Spanish.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage ES = fromString("es");
 
     /**
      * Swedish.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage SV = fromString("sv");
 
     /**
      * Turkish.
      */
+    @Generated
     public static final EntityRecognitionSkillLanguage TR = fromString("tr");
 
     /**
@@ -133,6 +157,7 @@ public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<E
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EntityRecognitionSkillLanguage() {
     }
@@ -143,6 +168,7 @@ public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<E
      * @param name a name to look for.
      * @return the corresponding EntityRecognitionSkillLanguage.
      */
+    @Generated
     public static EntityRecognitionSkillLanguage fromString(String name) {
         return fromString(name, EntityRecognitionSkillLanguage.class);
     }
@@ -152,6 +178,7 @@ public final class EntityRecognitionSkillLanguage extends ExpandableStringEnum<E
      * 
      * @return known EntityRecognitionSkillLanguage values.
      */
+    @Generated
     public static Collection<EntityRecognitionSkillLanguage> values() {
         return values(EntityRecognitionSkillLanguage.class);
     }

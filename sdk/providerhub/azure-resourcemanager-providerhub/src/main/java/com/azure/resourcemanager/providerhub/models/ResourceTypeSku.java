@@ -19,12 +19,12 @@ import java.util.List;
 @Fluent
 public class ResourceTypeSku implements JsonSerializable<ResourceTypeSku> {
     /*
-     * The skuSettings property.
+     * The sku settings.
      */
     private List<SkuSetting> skuSettings;
 
     /*
-     * The provisioningState property.
+     * The provisioning state.
      */
     private ProvisioningState provisioningState;
 
@@ -35,7 +35,7 @@ public class ResourceTypeSku implements JsonSerializable<ResourceTypeSku> {
     }
 
     /**
-     * Get the skuSettings property: The skuSettings property.
+     * Get the skuSettings property: The sku settings.
      * 
      * @return the skuSettings value.
      */
@@ -44,7 +44,7 @@ public class ResourceTypeSku implements JsonSerializable<ResourceTypeSku> {
     }
 
     /**
-     * Set the skuSettings property: The skuSettings property.
+     * Set the skuSettings property: The sku settings.
      * 
      * @param skuSettings the skuSettings value to set.
      * @return the ResourceTypeSku object itself.
@@ -55,7 +55,7 @@ public class ResourceTypeSku implements JsonSerializable<ResourceTypeSku> {
     }
 
     /**
-     * Get the provisioningState property: The provisioningState property.
+     * Get the provisioningState property: The provisioning state.
      * 
      * @return the provisioningState value.
      */
@@ -64,12 +64,12 @@ public class ResourceTypeSku implements JsonSerializable<ResourceTypeSku> {
     }
 
     /**
-     * Set the provisioningState property: The provisioningState property.
+     * Set the provisioningState property: The provisioning state.
      * 
      * @param provisioningState the provisioningState value to set.
      * @return the ResourceTypeSku object itself.
      */
-    public ResourceTypeSku withProvisioningState(ProvisioningState provisioningState) {
+    ResourceTypeSku withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -97,8 +97,6 @@ public class ResourceTypeSku implements JsonSerializable<ResourceTypeSku> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("skuSettings", this.skuSettings, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("provisioningState",
-            this.provisioningState == null ? null : this.provisioningState.toString());
         return jsonWriter.writeEndObject();
     }
 

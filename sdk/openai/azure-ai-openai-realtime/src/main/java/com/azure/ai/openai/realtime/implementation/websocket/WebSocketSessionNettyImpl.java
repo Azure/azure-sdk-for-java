@@ -5,10 +5,13 @@ package com.azure.ai.openai.realtime.implementation.websocket;
 
 import com.azure.ai.openai.realtime.models.ConnectFailedException;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -28,21 +31,22 @@ import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketCl
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import io.netty.handler.timeout.IdleStateHandler;
 
 import javax.net.ssl.SSLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 final class WebSocketSessionNettyImpl implements WebSocketSession {
 
-    private static final int MAX_FRAME_SIZE = 65536;
+    private static final int MAX_FRAME_SIZE = Configuration.getGlobalConfiguration().get("AZURE_MAX_FRAME_SIZE", 65536);
 
-    private final AtomicReference<ClientLogger> loggerReference;
+    private static final ClientLogger LOGGER = new ClientLogger(WebSocketSessionNettyImpl.class);
     private final MessageEncoder messageEncoder;
     private final MessageDecoder messageDecoder;
 
@@ -81,15 +85,16 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
             }
             p.addLast(new HttpClientCodec(), new HttpObjectAggregator(MAX_FRAME_SIZE),
                 WebSocketClientCompressionHandler.INSTANCE, new WebSocketFrameAggregator(MAX_FRAME_SIZE), handler);
+            p.addLast(new KeepAliveHandler());
+            p.addLast(new IdleStateHandler(0, 0, 30, TimeUnit.SECONDS));
+            p.addLast(new WebSocketPingHandler());
         }
     }
 
     WebSocketSessionNettyImpl(ClientEndpointConfiguration cec,
         Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
-        AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
-        Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
+        Consumer<Object> messageHandler, Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
         this.uri = cec.getUri();
-        this.loggerReference = loggerReference;
         this.messageEncoder = cec.getMessageEncoder();
         this.messageDecoder = cec.getMessageDecoder();
         this.subProtocol = cec.getSubProtocol();
@@ -132,11 +137,16 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         handshaker = WebSocketClientHandshakerFactory.newHandshaker(uri, WebSocketVersion.V13, this.subProtocol, true,
             this.headers);
 
-        clientHandler = new WebSocketClientHandler(handshaker, loggerReference, messageDecoder, messageHandler);
+        clientHandler = new WebSocketClientHandler(handshaker, messageDecoder, messageHandler);
 
         Bootstrap b = new Bootstrap();
         b.group(group)
             .channel(NioSocketChannel.class)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)  // Connection establishment timeout
+            .option(ChannelOption.SO_KEEPALIVE, true)            // Enable TCP-level keep-alive
+            .option(ChannelOption.TCP_NODELAY, true)             // Disable Nagle's algorithm for low latency
+            .option(ChannelOption.SO_REUSEADDR, true)            // Allow address reuse
+            .option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)  // Efficient memory allocation
             .handler(new WebSocketChannelHandler(host, port, sslCtx, clientHandler));
 
         final CompletableFuture<Void> handshakeCallbackFuture = new CompletableFuture<>();
@@ -183,7 +193,6 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
     @Override
     public void sendObjectAsync(Object data, Consumer<SendResult> handler) {
         if (ch != null && ch.isOpen()) {
-            // TODO: jpalvarezl adjust to the right type for casting
             String msg = messageEncoder.encode((RealtimeClientEvent) data);
             sendTextAsync(msg, handler);
         } else {
@@ -195,7 +204,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
     public void sendTextAsync(String text, Consumer<SendResult> handler) {
         if (ch != null && ch.isOpen()) {
             TextWebSocketFrame frame = new TextWebSocketFrame(text);
-            loggerReference.get().atVerbose().addKeyValue("text", frame.text()).log(() -> "Send TextWebSocketFrame");
+            LOGGER.atVerbose().addKeyValue("text", frame.text()).log(() -> "Send TextWebSocketFrame");
             ch.writeAndFlush(frame).addListener(future -> {
                 if (future.isSuccess()) {
                     handler.accept(new SendResult());
@@ -219,7 +228,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
 
                 group.shutdownGracefully();
             } catch (InterruptedException e) {
-                throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
+                throw LOGGER.logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
             }
         }
     }
@@ -235,8 +244,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                     clientHandler.setClientCloseCallbackFuture(closeCallbackFuture);
 
                     CloseWebSocketFrame closeFrame = new CloseWebSocketFrame(WebSocketCloseStatus.NORMAL_CLOSURE);
-                    loggerReference.get()
-                        .atVerbose()
+                    LOGGER.atVerbose()
                         .addKeyValue("statusCode", closeFrame.statusCode())
                         .addKeyValue("reasonText", closeFrame.reasonText())
                         .log(() -> "Send CloseWebSocketFrame");
@@ -252,7 +260,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
                     closeCallbackFuture.get();
                 }
             } catch (InterruptedException | ExecutionException e) {
-                throw loggerReference.get().logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
+                throw LOGGER.logExceptionAsError(new ConnectFailedException("Failed to disconnect", e));
             }
         }
     }

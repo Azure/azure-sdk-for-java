@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
     /*
      * Properties of link connection's source database
      */
+    @Generated
     private LinkConnectionSourceDatabase sourceDatabase;
 
     /*
      * Properties of link connection's target database
      */
+    @Generated
     private LinkConnectionTargetDatabase targetDatabase;
 
     /*
      * Properties of link connection's landing zone
      */
+    @Generated
     private LinkConnectionLandingZone landingZone;
 
     /*
      * Properties of link connection's compute
      */
+    @Generated
     private LinkConnectionCompute compute;
 
     /**
      * Creates an instance of LinkConnection class.
      */
+    @Generated
     public LinkConnection() {
     }
 
@@ -47,6 +53,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * 
      * @return the sourceDatabase value.
      */
+    @Generated
     public LinkConnectionSourceDatabase getSourceDatabase() {
         return this.sourceDatabase;
     }
@@ -57,6 +64,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * @param sourceDatabase the sourceDatabase value to set.
      * @return the LinkConnection object itself.
      */
+    @Generated
     public LinkConnection setSourceDatabase(LinkConnectionSourceDatabase sourceDatabase) {
         this.sourceDatabase = sourceDatabase;
         return this;
@@ -67,6 +75,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * 
      * @return the targetDatabase value.
      */
+    @Generated
     public LinkConnectionTargetDatabase getTargetDatabase() {
         return this.targetDatabase;
     }
@@ -77,6 +86,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * @param targetDatabase the targetDatabase value to set.
      * @return the LinkConnection object itself.
      */
+    @Generated
     public LinkConnection setTargetDatabase(LinkConnectionTargetDatabase targetDatabase) {
         this.targetDatabase = targetDatabase;
         return this;
@@ -87,6 +97,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * 
      * @return the landingZone value.
      */
+    @Generated
     public LinkConnectionLandingZone getLandingZone() {
         return this.landingZone;
     }
@@ -97,6 +108,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * @param landingZone the landingZone value to set.
      * @return the LinkConnection object itself.
      */
+    @Generated
     public LinkConnection setLandingZone(LinkConnectionLandingZone landingZone) {
         this.landingZone = landingZone;
         return this;
@@ -107,6 +119,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * 
      * @return the compute value.
      */
+    @Generated
     public LinkConnectionCompute getCompute() {
         return this.compute;
     }
@@ -117,6 +130,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * @param compute the compute value to set.
      * @return the LinkConnection object itself.
      */
+    @Generated
     public LinkConnection setCompute(LinkConnectionCompute compute) {
         this.compute = compute;
         return this;
@@ -125,6 +139,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public final class LinkConnection implements JsonSerializable<LinkConnection> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkConnection.
      */
+    @Generated
     public static LinkConnection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkConnection deserializedLinkConnection = new LinkConnection();

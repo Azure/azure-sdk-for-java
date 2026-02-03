@@ -9,14 +9,26 @@ package com.azure.resourcemanager.neonpostgres.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-08-01-preview/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-06-23-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
-     * Sample code: Operations_List.
+     * Sample code: Operations_List_MinimumSet.
      * 
      * @param manager Entry point to NeonPostgresManager.
      */
-    public static void operationsList(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
+    public static void operationsListMinimumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-06-23-preview/Operations_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Operations_List_MaximumSet.
+     * 
+     * @param manager Entry point to NeonPostgresManager.
+     */
+    public static void operationsListMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

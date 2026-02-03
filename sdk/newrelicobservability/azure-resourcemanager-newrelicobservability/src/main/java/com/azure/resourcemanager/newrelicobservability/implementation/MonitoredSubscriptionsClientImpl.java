@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.newrelicobservability.fluent.MonitoredSubscriptionsClient;
@@ -70,36 +72,65 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NewRelicObservabilit")
+    @ServiceInterface(name = "NewRelicObservabilityMonitoredSubscriptions")
     public interface MonitoredSubscriptionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitoredSubscriptionPropertiesList>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MonitoredSubscriptionPropertiesList> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitoredSubscriptionPropertiesInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") ConfigurationName configurationName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("configurationName") ConfigurationName configurationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MonitoredSubscriptionPropertiesInner> getSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") ConfigurationName configurationName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createorUpdate(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @PathParam("configurationName") ConfigurationName configurationName,
-            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MonitoredSubscriptionPropertiesInner body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") ConfigurationName configurationName,
             @BodyParam("application/json") MonitoredSubscriptionPropertiesInner body,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -108,10 +139,20 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @PathParam("configurationName") ConfigurationName configurationName,
-            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MonitoredSubscriptionPropertiesInner body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") ConfigurationName configurationName,
             @BodyParam("application/json") MonitoredSubscriptionPropertiesInner body,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -120,10 +161,20 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") ConfigurationName configurationName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("configurationName") ConfigurationName configurationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/monitoredSubscriptions/{configurationName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") ConfigurationName configurationName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -132,17 +183,28 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         Mono<Response<MonitoredSubscriptionPropertiesList>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<MonitoredSubscriptionPropertiesList> listNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of MonitoredSubscriptionProperties items along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredSubscriptionPropertiesInner>> listSinglePageAsync(String resourceGroupName,
@@ -164,60 +226,24 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
             .<PagedResponse<MonitoredSubscriptionPropertiesInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoredSubscriptionPropertiesInner>> listSinglePageAsync(String resourceGroupName,
-        String monitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MonitoredSubscriptionPropertiesInner> listAsync(String resourceGroupName, String monitorName) {
@@ -226,7 +252,50 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of MonitoredSubscriptionProperties items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MonitoredSubscriptionPropertiesInner> listSinglePage(String resourceGroupName,
+        String monitorName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MonitoredSubscriptionPropertiesList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -234,32 +303,60 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return paged collection of MonitoredSubscriptionProperties items along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MonitoredSubscriptionPropertiesInner> listAsync(String resourceGroupName, String monitorName,
-        Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MonitoredSubscriptionPropertiesInner> listSinglePage(String resourceGroupName,
+        String monitorName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MonitoredSubscriptionPropertiesList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredSubscriptionPropertiesInner> list(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, monitorName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * List MonitoredSubscriptionProperties resources by NewRelicMonitorResource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -267,16 +364,20 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return paged collection of MonitoredSubscriptionProperties items as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MonitoredSubscriptionPropertiesInner> list(String resourceGroupName, String monitorName,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, monitorName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -284,8 +385,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return a MonitoredSubscriptionProperties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MonitoredSubscriptionPropertiesInner>> getWithResponseAsync(String resourceGroupName,
@@ -311,54 +411,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MonitoredSubscriptionPropertiesInner>> getWithResponseAsync(String resourceGroupName,
-        String monitorName, ConfigurationName configurationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (configurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
-            configurationName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -366,8 +427,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource on successful
-     * completion of {@link Mono}.
+     * @return a MonitoredSubscriptionProperties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MonitoredSubscriptionPropertiesInner> getAsync(String resourceGroupName, String monitorName,
@@ -377,7 +437,9 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -386,17 +448,42 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response}.
+     * @return a MonitoredSubscriptionProperties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MonitoredSubscriptionPropertiesInner> getWithResponse(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, monitorName, configurationName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (configurationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, configurationName, accept, context);
     }
 
     /**
-     * List the subscriptions currently being monitored by the NewRelic monitor resource.
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -404,7 +491,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource.
+     * @return a MonitoredSubscriptionProperties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoredSubscriptionPropertiesInner get(String resourceGroupName, String monitorName,
@@ -413,7 +500,9 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -426,7 +515,7 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String monitorName, ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -452,13 +541,65 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createorUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), body, accept, context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, body, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @param configurationName The configuration name. Only 'default' value is supported.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
+        ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (configurationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, body, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -469,42 +610,45 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createorUpdateWithResponseAsync(String resourceGroupName,
-        String monitorName, ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body,
-        Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String monitorName,
+        ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (configurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createorUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            monitorName, configurationName, this.client.getApiVersion(), body, accept, context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, body, accept, context);
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -518,17 +662,19 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdateAsync(String resourceGroupName, String monitorName, ConfigurationName configurationName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, ConfigurationName configurationName,
             MonitoredSubscriptionPropertiesInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
         return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
             mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
             MonitoredSubscriptionPropertiesInner.class, this.client.getContext());
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -541,43 +687,45 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdateAsync(String resourceGroupName, String monitorName, ConfigurationName configurationName) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, ConfigurationName configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
         return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
             mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
             MonitoredSubscriptionPropertiesInner.class, this.client.getContext());
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the request to update subscriptions needed to be monitored by the
+     * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
      * NewRelic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdateAsync(String resourceGroupName, String monitorName, ConfigurationName configurationName,
-            MonitoredSubscriptionPropertiesInner body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createorUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
+    public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
+            MonitoredSubscriptionPropertiesInner body) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, monitorName, configurationName, body);
         return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-            mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
-            MonitoredSubscriptionPropertiesInner.class, context);
+            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class,
+            Context.NONE);
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -590,13 +738,19 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName) {
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return this.beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body).getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class,
+            Context.NONE);
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -611,14 +765,18 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginCreateorUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
             MonitoredSubscriptionPropertiesInner body, Context context) {
-        return this.beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, monitorName, configurationName, body, context);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class, context);
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -631,14 +789,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
+    private Mono<MonitoredSubscriptionPropertiesInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body) {
-        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -650,36 +810,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
+    private Mono<MonitoredSubscriptionPropertiesInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
         ConfigurationName configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> createorUpdateAsync(String resourceGroupName, String monitorName,
-        ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
-        return beginCreateorUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -690,14 +831,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
+    public MonitoredSubscriptionPropertiesInner createOrUpdate(String resourceGroupName, String monitorName,
         ConfigurationName configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return createorUpdateAsync(resourceGroupName, monitorName, configurationName, body).block();
+        return beginCreateOrUpdate(resourceGroupName, monitorName, configurationName, body).getFinalResult();
     }
 
     /**
-     * Add the subscriptions that should be monitored by the NewRelic monitor resource.
+     * Add subscriptions to be monitored by the New Relic monitor resource, enabling observability and monitoring.
+     * 
+     * Create a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -710,13 +853,16 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MonitoredSubscriptionPropertiesInner createorUpdate(String resourceGroupName, String monitorName,
+    public MonitoredSubscriptionPropertiesInner createOrUpdate(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
-        return createorUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).block();
+        return beginCreateOrUpdate(resourceGroupName, monitorName, configurationName, body, context).getFinalResult();
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -754,14 +900,66 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
             body.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), body, accept, context))
+        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @param configurationName The configuration name. Only 'default' value is supported.
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String monitorName,
+        ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (configurationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, body, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -772,41 +970,46 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String monitorName,
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (configurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            monitorName, configurationName, this.client.getApiVersion(), body, accept, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, body, accept, context);
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -830,7 +1033,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -853,33 +1059,36 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param configurationName The configuration name. Only 'default' value is supported.
      * @param body The body parameter.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the request to update subscriptions needed to be monitored by the
+     * @return the {@link SyncPoller} for polling of the request to update subscriptions needed to be monitored by the
      * NewRelic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
-        beginUpdateAsync(String resourceGroupName, String monitorName, ConfigurationName configurationName,
-            MonitoredSubscriptionPropertiesInner body, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
+    public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
+        beginUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
+            MonitoredSubscriptionPropertiesInner body) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, configurationName, body);
         return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
-            mono, this.client.getHttpPipeline(), MonitoredSubscriptionPropertiesInner.class,
-            MonitoredSubscriptionPropertiesInner.class, context);
+            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class,
+            Context.NONE);
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -894,11 +1103,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return this.beginUpdateAsync(resourceGroupName, monitorName, configurationName, body).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class,
+            Context.NONE);
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -915,11 +1130,17 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     public SyncPoller<PollResult<MonitoredSubscriptionPropertiesInner>, MonitoredSubscriptionPropertiesInner>
         beginUpdate(String resourceGroupName, String monitorName, ConfigurationName configurationName,
             MonitoredSubscriptionPropertiesInner body, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, monitorName, configurationName, body, context);
+        return this.client.<MonitoredSubscriptionPropertiesInner, MonitoredSubscriptionPropertiesInner>getLroResult(
+            response, MonitoredSubscriptionPropertiesInner.class, MonitoredSubscriptionPropertiesInner.class, context);
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -939,7 +1160,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -959,28 +1183,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the request to update subscriptions needed to be monitored by the NewRelic monitor resource on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MonitoredSubscriptionPropertiesInner> updateAsync(String resourceGroupName, String monitorName,
-        ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
-        return beginUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -994,11 +1200,14 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     public MonitoredSubscriptionPropertiesInner update(String resourceGroupName, String monitorName,
         ConfigurationName configurationName) {
         final MonitoredSubscriptionPropertiesInner body = null;
-        return updateAsync(resourceGroupName, monitorName, configurationName, body).block();
+        return beginUpdate(resourceGroupName, monitorName, configurationName, body).getFinalResult();
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Update subscriptions to be monitored by the New Relic monitor resource, ensuring optimal observability and
+     * performance
+     * 
+     * Update a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1013,11 +1222,14 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MonitoredSubscriptionPropertiesInner update(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, MonitoredSubscriptionPropertiesInner body, Context context) {
-        return updateAsync(resourceGroupName, monitorName, configurationName, body, context).block();
+        return beginUpdate(resourceGroupName, monitorName, configurationName, body, context).getFinalResult();
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1051,13 +1263,60 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @param configurationName The configuration name. Only 'default' value is supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName,
+        ConfigurationName configurationName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (configurationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, accept, Context.NONE);
+    }
+
+    /**
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1066,38 +1325,43 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
         }
         if (configurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            monitorName, configurationName, this.client.getApiVersion(), accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, accept, context);
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1117,29 +1381,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName,
-        ConfigurationName configurationName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, monitorName, configurationName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1152,11 +1397,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         ConfigurationName configurationName) {
-        return this.beginDeleteAsync(resourceGroupName, monitorName, configurationName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, configurationName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1170,11 +1419,15 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
         ConfigurationName configurationName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, monitorName, configurationName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, monitorName, configurationName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1191,26 +1444,10 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the Monitors resource.
-     * @param configurationName The configuration name. Only 'default' value is supported.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, ConfigurationName configurationName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, configurationName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1221,11 +1458,14 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, ConfigurationName configurationName) {
-        deleteAsync(resourceGroupName, monitorName, configurationName).block();
+        beginDelete(resourceGroupName, monitorName, configurationName).getFinalResult();
     }
 
     /**
-     * Updates the subscriptions that are being monitored by the NewRelic monitor resource.
+     * Delete subscriptions being monitored by the New Relic monitor resource, removing their observability and
+     * monitoring capabilities
+     * 
+     * Delete a MonitoredSubscriptionProperties.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
@@ -1238,17 +1478,20 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String monitorName, ConfigurationName configurationName,
         Context context) {
-        deleteAsync(resourceGroupName, monitorName, configurationName, context).block();
+        beginDelete(resourceGroupName, monitorName, configurationName, context).getFinalResult();
     }
 
     /**
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of MonitoredSubscriptionProperties items along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredSubscriptionPropertiesInner>> listNextSinglePageAsync(String nextLink) {
@@ -1267,6 +1510,37 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
     }
 
     /**
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of MonitoredSubscriptionProperties items along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<MonitoredSubscriptionPropertiesInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<MonitoredSubscriptionPropertiesList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists all the subscriptions currently being monitored by the NewRelic monitor resource.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1274,22 +1548,25 @@ public final class MonitoredSubscriptionsClientImpl implements MonitoredSubscrip
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return paged collection of MonitoredSubscriptionProperties items along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoredSubscriptionPropertiesInner>> listNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<MonitoredSubscriptionPropertiesInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<MonitoredSubscriptionPropertiesList> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MonitoredSubscriptionsClientImpl.class);
 }

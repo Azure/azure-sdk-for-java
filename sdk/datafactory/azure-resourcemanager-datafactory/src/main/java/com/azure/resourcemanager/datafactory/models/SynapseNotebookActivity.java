@@ -51,7 +51,7 @@ public final class SynapseNotebookActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private SynapseNotebookActivityTypeProperties innerTypeProperties() {
+    SynapseNotebookActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

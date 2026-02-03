@@ -13,7 +13,6 @@ import java.util.Map;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
 abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
@@ -36,12 +35,16 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
 
     // region Methods
 
-    final int computeCount() {
+    final int computeCount(boolean isThinClientRequest) {
 
         int count = 0;
 
         for (final RntbdToken token : this.tokens.values()) {
             if (token.isPresent()) {
+                if (isThinClientRequest
+                    && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
+                    continue;
+                }
                 ++count;
             }
         }
@@ -49,11 +52,15 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         return count;
     }
 
-    final int computeLength() {
+    final int computeLength(boolean isThinClientRequest) {
 
         int total = 0;
 
         for (final RntbdToken token : this.tokens.values()) {
+            if (isThinClientRequest
+                && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
+                continue;
+            }
             total += token.computeLength();
         }
 
@@ -80,7 +87,7 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
 
         for (final RntbdToken token : stream.tokens.values()) {
             if (!token.isPresent() && token.isRequired()) {
-                final String message = lenientFormat("Required header not found on token stream: %s", token);
+                final String message = String.format("Required header not found on token stream: %s", token);
                 throw new CorruptedFrameException(message);
             }
         }
@@ -88,8 +95,22 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         return stream;
     }
 
-    final void encode(final ByteBuf out) {
+    final void encode(final ByteBuf out, boolean isThinClientRequest) {
+        if (isThinClientRequest) {
+            for (RntbdConstants.RntbdRequestHeader header : RntbdConstants.RntbdRequestHeader.thinClientHeadersInOrderList) {
+                RntbdToken token = this.tokens.get(header);
+                if (token != null && token.isPresent()) {
+                    token.encode(out);
+                }
+            }
+        }
+
         for (final RntbdToken token : this.tokens.values()) {
+            if (!token.isPresent()
+                || (isThinClientRequest && RntbdConstants.RntbdRequestHeader.thinClientProxyOrderedOrExcludedSet.contains(token.getId()))) {
+
+                continue;
+            }
             token.encode(out);
         }
     }

@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,17 +15,20 @@ public final class PostContentSchemaGrantType extends ExpandableStringEnum<PostC
     /**
      * Static value access_token_refresh_token for PostContentSchemaGrantType.
      */
+    @Generated
     public static final PostContentSchemaGrantType ACCESS_TOKEN_REFRESH_TOKEN
         = fromString("access_token_refresh_token");
 
     /**
      * Static value access_token for PostContentSchemaGrantType.
      */
+    @Generated
     public static final PostContentSchemaGrantType ACCESS_TOKEN = fromString("access_token");
 
     /**
      * Static value refresh_token for PostContentSchemaGrantType.
      */
+    @Generated
     public static final PostContentSchemaGrantType REFRESH_TOKEN = fromString("refresh_token");
 
     /**
@@ -32,6 +36,7 @@ public final class PostContentSchemaGrantType extends ExpandableStringEnum<PostC
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PostContentSchemaGrantType() {
     }
@@ -42,6 +47,7 @@ public final class PostContentSchemaGrantType extends ExpandableStringEnum<PostC
      * @param name a name to look for.
      * @return the corresponding PostContentSchemaGrantType.
      */
+    @Generated
     public static PostContentSchemaGrantType fromString(String name) {
         return fromString(name, PostContentSchemaGrantType.class);
     }
@@ -51,6 +57,7 @@ public final class PostContentSchemaGrantType extends ExpandableStringEnum<PostC
      * 
      * @return known PostContentSchemaGrantType values.
      */
+    @Generated
     public static Collection<PostContentSchemaGrantType> values() {
         return values(PostContentSchemaGrantType.class);
     }

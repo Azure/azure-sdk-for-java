@@ -16,34 +16,25 @@ public final class RaiContentFilterListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiContentFilterListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"pglydz\",\"value\":[{\"properties\":{\"name\":\"eevt\",\"isMultiLevelFilter\":false,\"source\":\"Completion\"},\"id\":\"utnwytpzdmovzvf\",\"name\":\"aawzqadfl\",\"type\":\"z\"},{\"properties\":{\"name\":\"glae\",\"isMultiLevelFilter\":false,\"source\":\"Prompt\"},\"id\":\"icokpv\",\"name\":\"mlqtmldgxob\",\"type\":\"irclnpk\"},{\"properties\":{\"name\":\"yzriykhy\",\"isMultiLevelFilter\":true,\"source\":\"Prompt\"},\"id\":\"lboxqvkjl\",\"name\":\"xhom\",\"type\":\"ynhdwdigum\"},{\"properties\":{\"name\":\"aauzzptjazysd\",\"isMultiLevelFilter\":false,\"source\":\"Completion\"},\"id\":\"wva\",\"name\":\"qyuvvfonkp\",\"type\":\"hqyikvy\"}]}")
+            "{\"nextLink\":\"joxslhvnhla\",\"value\":[{\"properties\":{\"name\":\"kzjcjbtrgae\",\"isMultiLevelFilter\":false,\"source\":\"Prompt\"},\"id\":\"xjjs\",\"name\":\"oqbeitpkxzt\",\"type\":\"oobklftidgfcwq\"}]}")
             .toObject(RaiContentFilterListResult.class);
-        Assertions.assertEquals("pglydz", model.nextLink());
-        Assertions.assertEquals("eevt", model.value().get(0).properties().name());
-        Assertions.assertEquals(false, model.value().get(0).properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.value().get(0).properties().source());
+        Assertions.assertEquals("joxslhvnhla", model.nextLink());
+        Assertions.assertEquals("kzjcjbtrgae", model.value().get(0).properties().name());
+        Assertions.assertFalse(model.value().get(0).properties().isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.value().get(0).properties().source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiContentFilterListResult model = new RaiContentFilterListResult().withNextLink("pglydz")
+        RaiContentFilterListResult model = new RaiContentFilterListResult().withNextLink("joxslhvnhla")
             .withValue(Arrays.asList(
-                new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("eevt")
+                new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("kzjcjbtrgae")
                     .withIsMultiLevelFilter(false)
-                    .withSource(RaiPolicyContentSource.COMPLETION)),
-                new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("glae")
-                    .withIsMultiLevelFilter(false)
-                    .withSource(RaiPolicyContentSource.PROMPT)),
-                new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("yzriykhy")
-                    .withIsMultiLevelFilter(true)
-                    .withSource(RaiPolicyContentSource.PROMPT)),
-                new RaiContentFilterInner().withProperties(new RaiContentFilterProperties().withName("aauzzptjazysd")
-                    .withIsMultiLevelFilter(false)
-                    .withSource(RaiPolicyContentSource.COMPLETION))));
+                    .withSource(RaiPolicyContentSource.PROMPT))));
         model = BinaryData.fromObject(model).toObject(RaiContentFilterListResult.class);
-        Assertions.assertEquals("pglydz", model.nextLink());
-        Assertions.assertEquals("eevt", model.value().get(0).properties().name());
-        Assertions.assertEquals(false, model.value().get(0).properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.value().get(0).properties().source());
+        Assertions.assertEquals("joxslhvnhla", model.nextLink());
+        Assertions.assertEquals("kzjcjbtrgae", model.value().get(0).properties().name());
+        Assertions.assertFalse(model.value().get(0).properties().isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.value().get(0).properties().source());
     }
 }

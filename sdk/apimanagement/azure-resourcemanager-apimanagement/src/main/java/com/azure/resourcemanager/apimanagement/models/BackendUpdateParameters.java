@@ -247,6 +247,75 @@ public final class BackendUpdateParameters implements JsonSerializable<BackendUp
     }
 
     /**
+     * Get the circuitBreaker property: Backend Circuit Breaker Configuration.
+     * 
+     * @return the circuitBreaker value.
+     */
+    public BackendCircuitBreaker circuitBreaker() {
+        return this.innerProperties() == null ? null : this.innerProperties().circuitBreaker();
+    }
+
+    /**
+     * Set the circuitBreaker property: Backend Circuit Breaker Configuration.
+     * 
+     * @param circuitBreaker the circuitBreaker value to set.
+     * @return the BackendUpdateParameters object itself.
+     */
+    public BackendUpdateParameters withCircuitBreaker(BackendCircuitBreaker circuitBreaker) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withCircuitBreaker(circuitBreaker);
+        return this;
+    }
+
+    /**
+     * Get the pool property: The pool property.
+     * 
+     * @return the pool value.
+     */
+    public BackendBaseParametersPool pool() {
+        return this.innerProperties() == null ? null : this.innerProperties().pool();
+    }
+
+    /**
+     * Set the pool property: The pool property.
+     * 
+     * @param pool the pool value to set.
+     * @return the BackendUpdateParameters object itself.
+     */
+    public BackendUpdateParameters withPool(BackendBaseParametersPool pool) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withPool(pool);
+        return this;
+    }
+
+    /**
+     * Get the type property: Type of the backend. A backend can be either Single or Pool.
+     * 
+     * @return the type value.
+     */
+    public BackendType type() {
+        return this.innerProperties() == null ? null : this.innerProperties().type();
+    }
+
+    /**
+     * Set the type property: Type of the backend. A backend can be either Single or Pool.
+     * 
+     * @param type the type value to set.
+     * @return the BackendUpdateParameters object itself.
+     */
+    public BackendUpdateParameters withType(BackendType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendUpdateParameterProperties();
+        }
+        this.innerProperties().withType(type);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

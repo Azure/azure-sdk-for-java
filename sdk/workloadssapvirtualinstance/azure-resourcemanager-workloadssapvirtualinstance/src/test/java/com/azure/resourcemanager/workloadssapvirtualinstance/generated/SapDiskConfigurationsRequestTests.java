@@ -16,30 +16,30 @@ public final class SapDiskConfigurationsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapDiskConfigurationsRequest model = BinaryData.fromString(
-            "{\"appLocation\":\"mwabnetshhszhedp\",\"environment\":\"Prod\",\"sapProduct\":\"ECC\",\"databaseType\":\"DB2\",\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"ubmwmbesld\"}")
+            "{\"appLocation\":\"exilzznfqqnvwpmq\",\"environment\":\"Prod\",\"sapProduct\":\"Other\",\"databaseType\":\"DB2\",\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"ujmkcjhwqy\"}")
             .toObject(SapDiskConfigurationsRequest.class);
-        Assertions.assertEquals("mwabnetshhszhedp", model.appLocation());
+        Assertions.assertEquals("exilzznfqqnvwpmq", model.appLocation());
         Assertions.assertEquals(SapEnvironmentType.PROD, model.environment());
-        Assertions.assertEquals(SapProductType.ECC, model.sapProduct());
+        Assertions.assertEquals(SapProductType.OTHER, model.sapProduct());
         Assertions.assertEquals(SapDatabaseType.DB2, model.databaseType());
         Assertions.assertEquals(SapDeploymentType.THREE_TIER, model.deploymentType());
-        Assertions.assertEquals("ubmwmbesld", model.dbVmSku());
+        Assertions.assertEquals("ujmkcjhwqy", model.dbVmSku());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapDiskConfigurationsRequest model = new SapDiskConfigurationsRequest().withAppLocation("mwabnetshhszhedp")
+        SapDiskConfigurationsRequest model = new SapDiskConfigurationsRequest().withAppLocation("exilzznfqqnvwpmq")
             .withEnvironment(SapEnvironmentType.PROD)
-            .withSapProduct(SapProductType.ECC)
+            .withSapProduct(SapProductType.OTHER)
             .withDatabaseType(SapDatabaseType.DB2)
             .withDeploymentType(SapDeploymentType.THREE_TIER)
-            .withDbVmSku("ubmwmbesld");
+            .withDbVmSku("ujmkcjhwqy");
         model = BinaryData.fromObject(model).toObject(SapDiskConfigurationsRequest.class);
-        Assertions.assertEquals("mwabnetshhszhedp", model.appLocation());
+        Assertions.assertEquals("exilzznfqqnvwpmq", model.appLocation());
         Assertions.assertEquals(SapEnvironmentType.PROD, model.environment());
-        Assertions.assertEquals(SapProductType.ECC, model.sapProduct());
+        Assertions.assertEquals(SapProductType.OTHER, model.sapProduct());
         Assertions.assertEquals(SapDatabaseType.DB2, model.databaseType());
         Assertions.assertEquals(SapDeploymentType.THREE_TIER, model.deploymentType());
-        Assertions.assertEquals("ubmwmbesld", model.dbVmSku());
+        Assertions.assertEquals("ujmkcjhwqy", model.dbVmSku());
     }
 }

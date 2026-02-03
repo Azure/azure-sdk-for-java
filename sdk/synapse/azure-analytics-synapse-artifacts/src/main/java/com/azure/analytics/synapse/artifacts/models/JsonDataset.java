@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,11 +22,13 @@ public class JsonDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Json";
 
     /*
      * The location of the json data storage.
      */
+    @Generated
     private DatasetLocation location;
 
     /*
@@ -34,16 +37,19 @@ public class JsonDataset extends Dataset {
      * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object encodingName;
 
     /*
      * The data compression method used for the json dataset.
      */
+    @Generated
     private DatasetCompression compression;
 
     /**
      * Creates an instance of JsonDataset class.
      */
+    @Generated
     public JsonDataset() {
     }
 
@@ -52,6 +58,7 @@ public class JsonDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -62,6 +69,7 @@ public class JsonDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -72,6 +80,7 @@ public class JsonDataset extends Dataset {
      * @param location the location value to set.
      * @return the JsonDataset object itself.
      */
+    @Generated
     public JsonDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -85,6 +94,7 @@ public class JsonDataset extends Dataset {
      * 
      * @return the encodingName value.
      */
+    @Generated
     public Object getEncodingName() {
         return this.encodingName;
     }
@@ -98,6 +108,7 @@ public class JsonDataset extends Dataset {
      * @param encodingName the encodingName value to set.
      * @return the JsonDataset object itself.
      */
+    @Generated
     public JsonDataset setEncodingName(Object encodingName) {
         this.encodingName = encodingName;
         return this;
@@ -108,6 +119,7 @@ public class JsonDataset extends Dataset {
      * 
      * @return the compression value.
      */
+    @Generated
     public DatasetCompression getCompression() {
         return this.compression;
     }
@@ -118,6 +130,7 @@ public class JsonDataset extends Dataset {
      * @param compression the compression value to set.
      * @return the JsonDataset object itself.
      */
+    @Generated
     public JsonDataset setCompression(DatasetCompression compression) {
         this.compression = compression;
         return this;
@@ -126,6 +139,7 @@ public class JsonDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonDataset setDescription(String description) {
         super.setDescription(description);
@@ -135,6 +149,7 @@ public class JsonDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -144,6 +159,7 @@ public class JsonDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -153,6 +169,7 @@ public class JsonDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -162,6 +179,7 @@ public class JsonDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -171,6 +189,7 @@ public class JsonDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -180,6 +199,7 @@ public class JsonDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -189,13 +209,18 @@ public class JsonDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -203,7 +228,9 @@ public class JsonDataset extends Dataset {
         if (location != null || encodingName != null || compression != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("location", this.location);
-            jsonWriter.writeUntypedField("encodingName", this.encodingName);
+            if (this.encodingName != null) {
+                jsonWriter.writeUntypedField("encodingName", this.encodingName);
+            }
             jsonWriter.writeJsonField("compression", this.compression);
             jsonWriter.writeEndObject();
         }
@@ -224,6 +251,7 @@ public class JsonDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the JsonDataset.
      */
+    @Generated
     public static JsonDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             JsonDataset deserializedJsonDataset = new JsonDataset();

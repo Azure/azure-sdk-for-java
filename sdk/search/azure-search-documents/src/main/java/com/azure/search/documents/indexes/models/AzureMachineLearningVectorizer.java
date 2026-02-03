@@ -7,25 +7,28 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies an Azure Machine Learning endpoint deployed via the Azure AI Studio Model Catalog for generating the vector
- * embedding of a query string.
+ * Specifies an Azure Machine Learning endpoint deployed via the Azure AI Foundry Model Catalog for generating the
+ * vector embedding of a query string.
  */
 @Fluent
 public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer {
     /*
      * The name of the kind of vectorization method being configured for use with vector search.
      */
+    @Generated
     private VectorSearchVectorizerKind kind = VectorSearchVectorizerKind.AML;
 
     /*
      * Specifies the properties of the AML vectorizer.
      */
+    @Generated
     private AzureMachineLearningParameters aMLParameters;
 
     /**
@@ -33,6 +36,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
      * 
      * @param vectorizerName the vectorizerName value to set.
      */
+    @Generated
     public AzureMachineLearningVectorizer(String vectorizerName) {
         super(vectorizerName);
     }
@@ -42,6 +46,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public VectorSearchVectorizerKind getKind() {
         return this.kind;
@@ -52,6 +57,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
      * 
      * @return the aMLParameters value.
      */
+    @Generated
     public AzureMachineLearningParameters getAMLParameters() {
         return this.aMLParameters;
     }
@@ -62,6 +68,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
      * @param aMLParameters the aMLParameters value to set.
      * @return the AzureMachineLearningVectorizer object itself.
      */
+    @Generated
     public AzureMachineLearningVectorizer setAMLParameters(AzureMachineLearningParameters aMLParameters) {
         this.aMLParameters = aMLParameters;
         return this;
@@ -70,6 +77,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -88,6 +96,7 @@ public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMachineLearningVectorizer.
      */
+    @Generated
     public static AzureMachineLearningVectorizer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean vectorizerNameFound = false;

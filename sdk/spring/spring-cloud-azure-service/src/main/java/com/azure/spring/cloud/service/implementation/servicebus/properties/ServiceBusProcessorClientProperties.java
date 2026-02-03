@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.service.implementation.servicebus.properties;
 
+import java.time.Duration;
+
 /**
  *
  */
@@ -11,5 +13,7 @@ public interface ServiceBusProcessorClientProperties extends ServiceBusReceiverC
     Integer getMaxConcurrentCalls();
 
     Integer getMaxConcurrentSessions();
+
+    Duration getSessionIdleTimeout();
 
 }

@@ -42,14 +42,14 @@ public final class ValidationStatus extends ExpandableStringEnum<ValidationStatu
     public static final ValidationStatus COMPLETED_WITH_ISSUES = fromString("CompletedWithIssues");
 
     /**
-     * Static value Failed for ValidationStatus.
-     */
-    public static final ValidationStatus FAILED = fromString("Failed");
-
-    /**
      * Static value Stopped for ValidationStatus.
      */
     public static final ValidationStatus STOPPED = fromString("Stopped");
+
+    /**
+     * Static value Failed for ValidationStatus.
+     */
+    public static final ValidationStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of ValidationStatus value.

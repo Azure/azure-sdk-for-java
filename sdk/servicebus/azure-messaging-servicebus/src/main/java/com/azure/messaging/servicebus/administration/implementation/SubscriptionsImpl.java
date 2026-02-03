@@ -23,7 +23,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
 import reactor.core.publisher.Mono;
 
 /**
@@ -56,12 +56,12 @@ public final class SubscriptionsImpl {
      * service to perform REST calls.
      */
     @Host("https://{endpoint}")
-    @ServiceInterface(name = "ServiceBusManagement")
+    @ServiceInterface(name = "ServiceBusManagementClientSubscriptions")
     public interface SubscriptionsService {
         @Get("/{topicName}/subscriptions/{subscriptionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<SubscriptionDescriptionEntryImpl>> get(@HostParam("endpoint") String endpoint,
+        Mono<Response<SubscriptionDescriptionEntry>> get(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @QueryParam("enrich") Boolean enrich, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -69,7 +69,7 @@ public final class SubscriptionsImpl {
         @Get("/{topicName}/subscriptions/{subscriptionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<SubscriptionDescriptionEntryImpl> getSync(@HostParam("endpoint") String endpoint,
+        Response<SubscriptionDescriptionEntry> getSync(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @QueryParam("enrich") Boolean enrich, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -77,7 +77,7 @@ public final class SubscriptionsImpl {
         @Put("/{topicName}/subscriptions/{subscriptionName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<SubscriptionDescriptionEntryImpl>> put(@HostParam("endpoint") String endpoint,
+        Mono<Response<SubscriptionDescriptionEntry>> put(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
             @BodyParam("application/atom+xml") Object requestBody, @HeaderParam("Accept") String accept,
@@ -86,7 +86,7 @@ public final class SubscriptionsImpl {
         @Put("/{topicName}/subscriptions/{subscriptionName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<SubscriptionDescriptionEntryImpl> putSync(@HostParam("endpoint") String endpoint,
+        Response<SubscriptionDescriptionEntry> putSync(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("If-Match") String ifMatch,
             @BodyParam("application/atom+xml") Object requestBody, @HeaderParam("Accept") String accept,
@@ -95,14 +95,14 @@ public final class SubscriptionsImpl {
         @Delete("/{topicName}/subscriptions/{subscriptionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<SubscriptionDescriptionEntryImpl>> delete(@HostParam("endpoint") String endpoint,
+        Mono<Response<SubscriptionDescriptionEntry>> delete(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/{topicName}/subscriptions/{subscriptionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<SubscriptionDescriptionEntryImpl> deleteSync(@HostParam("endpoint") String endpoint,
+        Response<SubscriptionDescriptionEntry> deleteSync(@HostParam("endpoint") String endpoint,
             @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
@@ -122,8 +122,8 @@ public final class SubscriptionsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescriptionEntryImpl>> getWithResponseAsync(String topicName,
-        String subscriptionName, Boolean enrich) {
+    public Mono<Response<SubscriptionDescriptionEntry>> getWithResponseAsync(String topicName, String subscriptionName,
+        Boolean enrich) {
         return FluxUtil.withContext(context -> getWithResponseAsync(topicName, subscriptionName, enrich, context));
     }
 
@@ -143,8 +143,8 @@ public final class SubscriptionsImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescriptionEntryImpl>> getWithResponseAsync(String topicName,
-        String subscriptionName, Boolean enrich, Context context) {
+    public Mono<Response<SubscriptionDescriptionEntry>> getWithResponseAsync(String topicName, String subscriptionName,
+        Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.get(this.client.getEndpoint(), topicName, subscriptionName, enrich, this.client.getApiVersion(),
             accept, context);
@@ -164,7 +164,7 @@ public final class SubscriptionsImpl {
      * @return the details about the subscription of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescriptionEntryImpl> getAsync(String topicName, String subscriptionName, Boolean enrich) {
+    public Mono<SubscriptionDescriptionEntry> getAsync(String topicName, String subscriptionName, Boolean enrich) {
         return getWithResponseAsync(topicName, subscriptionName, enrich)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -184,7 +184,7 @@ public final class SubscriptionsImpl {
      * @return the details about the subscription of a topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescriptionEntryImpl> getAsync(String topicName, String subscriptionName, Boolean enrich,
+    public Mono<SubscriptionDescriptionEntry> getAsync(String topicName, String subscriptionName, Boolean enrich,
         Context context) {
         return getWithResponseAsync(topicName, subscriptionName, enrich, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -205,7 +205,7 @@ public final class SubscriptionsImpl {
      * @return the details about the subscription of a topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionDescriptionEntryImpl> getWithResponse(String topicName, String subscriptionName,
+    public Response<SubscriptionDescriptionEntry> getWithResponse(String topicName, String subscriptionName,
         Boolean enrich, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.getSync(this.client.getEndpoint(), topicName, subscriptionName, enrich,
@@ -226,7 +226,7 @@ public final class SubscriptionsImpl {
      * @return the details about the subscription of a topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionDescriptionEntryImpl get(String topicName, String subscriptionName, Boolean enrich) {
+    public SubscriptionDescriptionEntry get(String topicName, String subscriptionName, Boolean enrich) {
         return getWithResponse(topicName, subscriptionName, enrich, Context.NONE).getValue();
     }
 
@@ -247,8 +247,8 @@ public final class SubscriptionsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescriptionEntryImpl>> putWithResponseAsync(String topicName,
-        String subscriptionName, Object requestBody, String ifMatch) {
+    public Mono<Response<SubscriptionDescriptionEntry>> putWithResponseAsync(String topicName, String subscriptionName,
+        Object requestBody, String ifMatch) {
         return FluxUtil
             .withContext(context -> putWithResponseAsync(topicName, subscriptionName, requestBody, ifMatch, context));
     }
@@ -271,8 +271,8 @@ public final class SubscriptionsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescriptionEntryImpl>> putWithResponseAsync(String topicName,
-        String subscriptionName, Object requestBody, String ifMatch, Context context) {
+    public Mono<Response<SubscriptionDescriptionEntry>> putWithResponseAsync(String topicName, String subscriptionName,
+        Object requestBody, String ifMatch, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.put(this.client.getEndpoint(), topicName, subscriptionName, this.client.getApiVersion(), ifMatch,
             requestBody, accept, context);
@@ -294,8 +294,8 @@ public final class SubscriptionsImpl {
      * @return represents an entry in the feed when querying subscriptions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescriptionEntryImpl> putAsync(String topicName, String subscriptionName,
-        Object requestBody, String ifMatch) {
+    public Mono<SubscriptionDescriptionEntry> putAsync(String topicName, String subscriptionName, Object requestBody,
+        String ifMatch) {
         return putWithResponseAsync(topicName, subscriptionName, requestBody, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -317,8 +317,8 @@ public final class SubscriptionsImpl {
      * @return represents an entry in the feed when querying subscriptions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescriptionEntryImpl> putAsync(String topicName, String subscriptionName,
-        Object requestBody, String ifMatch, Context context) {
+    public Mono<SubscriptionDescriptionEntry> putAsync(String topicName, String subscriptionName, Object requestBody,
+        String ifMatch, Context context) {
         return putWithResponseAsync(topicName, subscriptionName, requestBody, ifMatch, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -340,7 +340,7 @@ public final class SubscriptionsImpl {
      * @return represents an entry in the feed when querying subscriptions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionDescriptionEntryImpl> putWithResponse(String topicName, String subscriptionName,
+    public Response<SubscriptionDescriptionEntry> putWithResponse(String topicName, String subscriptionName,
         Object requestBody, String ifMatch, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.putSync(this.client.getEndpoint(), topicName, subscriptionName, this.client.getApiVersion(),
@@ -363,7 +363,7 @@ public final class SubscriptionsImpl {
      * @return represents an entry in the feed when querying subscriptions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionDescriptionEntryImpl put(String topicName, String subscriptionName, Object requestBody,
+    public SubscriptionDescriptionEntry put(String topicName, String subscriptionName, Object requestBody,
         String ifMatch) {
         return putWithResponse(topicName, subscriptionName, requestBody, ifMatch, Context.NONE).getValue();
     }
@@ -382,7 +382,7 @@ public final class SubscriptionsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescriptionEntryImpl>> deleteWithResponseAsync(String topicName,
+    public Mono<Response<SubscriptionDescriptionEntry>> deleteWithResponseAsync(String topicName,
         String subscriptionName) {
         return FluxUtil.withContext(context -> deleteWithResponseAsync(topicName, subscriptionName, context));
     }
@@ -402,7 +402,7 @@ public final class SubscriptionsImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescriptionEntryImpl>> deleteWithResponseAsync(String topicName,
+    public Mono<Response<SubscriptionDescriptionEntry>> deleteWithResponseAsync(String topicName,
         String subscriptionName, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.delete(this.client.getEndpoint(), topicName, subscriptionName, this.client.getApiVersion(),
@@ -422,7 +422,7 @@ public final class SubscriptionsImpl {
      * @return represents an entry in the feed when querying subscriptions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescriptionEntryImpl> deleteAsync(String topicName, String subscriptionName) {
+    public Mono<SubscriptionDescriptionEntry> deleteAsync(String topicName, String subscriptionName) {
         return deleteWithResponseAsync(topicName, subscriptionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -440,8 +440,7 @@ public final class SubscriptionsImpl {
      * @return represents an entry in the feed when querying subscriptions on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescriptionEntryImpl> deleteAsync(String topicName, String subscriptionName,
-        Context context) {
+    public Mono<SubscriptionDescriptionEntry> deleteAsync(String topicName, String subscriptionName, Context context) {
         return deleteWithResponseAsync(topicName, subscriptionName, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -460,7 +459,7 @@ public final class SubscriptionsImpl {
      * @return represents an entry in the feed when querying subscriptions along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionDescriptionEntryImpl> deleteWithResponse(String topicName, String subscriptionName,
+    public Response<SubscriptionDescriptionEntry> deleteWithResponse(String topicName, String subscriptionName,
         Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.deleteSync(this.client.getEndpoint(), topicName, subscriptionName, this.client.getApiVersion(),
@@ -480,7 +479,7 @@ public final class SubscriptionsImpl {
      * @return represents an entry in the feed when querying subscriptions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionDescriptionEntryImpl delete(String topicName, String subscriptionName) {
+    public SubscriptionDescriptionEntry delete(String topicName, String subscriptionName) {
         return deleteWithResponse(topicName, subscriptionName, Context.NONE).getValue();
     }
 }

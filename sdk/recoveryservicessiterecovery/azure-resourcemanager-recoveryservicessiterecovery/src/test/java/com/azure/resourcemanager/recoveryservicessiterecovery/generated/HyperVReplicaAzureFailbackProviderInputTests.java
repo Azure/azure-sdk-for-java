@@ -12,22 +12,22 @@ public final class HyperVReplicaAzureFailbackProviderInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzureFailbackProviderInput model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaAzureFailback\",\"dataSyncOption\":\"vgohtw\",\"recoveryVmCreationOption\":\"qilrixysfn\",\"providerIdForAlternateRecovery\":\"sqywwwmhkru\"}")
+            "{\"instanceType\":\"HyperVReplicaAzureFailback\",\"dataSyncOption\":\"iqwnnraclibbfq\",\"recoveryVmCreationOption\":\"pkl\",\"providerIdForAlternateRecovery\":\"ydgnha\"}")
             .toObject(HyperVReplicaAzureFailbackProviderInput.class);
-        Assertions.assertEquals("vgohtw", model.dataSyncOption());
-        Assertions.assertEquals("qilrixysfn", model.recoveryVmCreationOption());
-        Assertions.assertEquals("sqywwwmhkru", model.providerIdForAlternateRecovery());
+        Assertions.assertEquals("iqwnnraclibbfq", model.dataSyncOption());
+        Assertions.assertEquals("pkl", model.recoveryVmCreationOption());
+        Assertions.assertEquals("ydgnha", model.providerIdForAlternateRecovery());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzureFailbackProviderInput model
-            = new HyperVReplicaAzureFailbackProviderInput().withDataSyncOption("vgohtw")
-                .withRecoveryVmCreationOption("qilrixysfn")
-                .withProviderIdForAlternateRecovery("sqywwwmhkru");
+            = new HyperVReplicaAzureFailbackProviderInput().withDataSyncOption("iqwnnraclibbfq")
+                .withRecoveryVmCreationOption("pkl")
+                .withProviderIdForAlternateRecovery("ydgnha");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureFailbackProviderInput.class);
-        Assertions.assertEquals("vgohtw", model.dataSyncOption());
-        Assertions.assertEquals("qilrixysfn", model.recoveryVmCreationOption());
-        Assertions.assertEquals("sqywwwmhkru", model.providerIdForAlternateRecovery());
+        Assertions.assertEquals("iqwnnraclibbfq", model.dataSyncOption());
+        Assertions.assertEquals("pkl", model.recoveryVmCreationOption());
+        Assertions.assertEquals("ydgnha", model.providerIdForAlternateRecovery());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,11 +20,13 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
      * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
      * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
+    @Generated
     private StringIndexType stringIndexType;
 
     /**
      * Creates an instance of EntitiesTaskParameters class.
      */
+    @Generated
     public EntitiesTaskParameters() {
     }
 
@@ -34,6 +37,7 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
      * 
      * @return the stringIndexType value.
      */
+    @Generated
     public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
@@ -46,6 +50,7 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
      * @param stringIndexType the stringIndexType value to set.
      * @return the EntitiesTaskParameters object itself.
      */
+    @Generated
     public EntitiesTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
@@ -54,6 +59,7 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntitiesTaskParameters setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -63,6 +69,7 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EntitiesTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -72,6 +79,7 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -90,6 +98,7 @@ public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the EntitiesTaskParameters.
      */
+    @Generated
     public static EntitiesTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EntitiesTaskParameters deserializedEntitiesTaskParameters = new EntitiesTaskParameters();

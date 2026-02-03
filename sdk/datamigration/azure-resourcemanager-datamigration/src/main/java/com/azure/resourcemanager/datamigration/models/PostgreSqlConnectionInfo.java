@@ -27,6 +27,16 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
     private String serverName;
 
     /*
+     * Data source
+     */
+    private String dataSource;
+
+    /*
+     * server version
+     */
+    private String serverVersion;
+
+    /*
      * Name of the database
      */
     private String databaseName;
@@ -35,6 +45,31 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
      * Port for Server
      */
     private int port;
+
+    /*
+     * Whether to encrypt the connection
+     */
+    private Boolean encryptConnection;
+
+    /*
+     * Whether to trust the server certificate
+     */
+    private Boolean trustServerCertificate;
+
+    /*
+     * Additional connection settings
+     */
+    private String additionalSettings;
+
+    /*
+     * server brand version
+     */
+    private String serverBrandVersion;
+
+    /*
+     * Authentication type to use for connection
+     */
+    private AuthenticationType authentication;
 
     /**
      * Creates an instance of PostgreSqlConnectionInfo class.
@@ -69,6 +104,46 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
      */
     public PostgreSqlConnectionInfo withServerName(String serverName) {
         this.serverName = serverName;
+        return this;
+    }
+
+    /**
+     * Get the dataSource property: Data source.
+     * 
+     * @return the dataSource value.
+     */
+    public String dataSource() {
+        return this.dataSource;
+    }
+
+    /**
+     * Set the dataSource property: Data source.
+     * 
+     * @param dataSource the dataSource value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withDataSource(String dataSource) {
+        this.dataSource = dataSource;
+        return this;
+    }
+
+    /**
+     * Get the serverVersion property: server version.
+     * 
+     * @return the serverVersion value.
+     */
+    public String serverVersion() {
+        return this.serverVersion;
+    }
+
+    /**
+     * Set the serverVersion property: server version.
+     * 
+     * @param serverVersion the serverVersion value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withServerVersion(String serverVersion) {
+        this.serverVersion = serverVersion;
         return this;
     }
 
@@ -109,6 +184,106 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
      */
     public PostgreSqlConnectionInfo withPort(int port) {
         this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the encryptConnection property: Whether to encrypt the connection.
+     * 
+     * @return the encryptConnection value.
+     */
+    public Boolean encryptConnection() {
+        return this.encryptConnection;
+    }
+
+    /**
+     * Set the encryptConnection property: Whether to encrypt the connection.
+     * 
+     * @param encryptConnection the encryptConnection value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withEncryptConnection(Boolean encryptConnection) {
+        this.encryptConnection = encryptConnection;
+        return this;
+    }
+
+    /**
+     * Get the trustServerCertificate property: Whether to trust the server certificate.
+     * 
+     * @return the trustServerCertificate value.
+     */
+    public Boolean trustServerCertificate() {
+        return this.trustServerCertificate;
+    }
+
+    /**
+     * Set the trustServerCertificate property: Whether to trust the server certificate.
+     * 
+     * @param trustServerCertificate the trustServerCertificate value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withTrustServerCertificate(Boolean trustServerCertificate) {
+        this.trustServerCertificate = trustServerCertificate;
+        return this;
+    }
+
+    /**
+     * Get the additionalSettings property: Additional connection settings.
+     * 
+     * @return the additionalSettings value.
+     */
+    public String additionalSettings() {
+        return this.additionalSettings;
+    }
+
+    /**
+     * Set the additionalSettings property: Additional connection settings.
+     * 
+     * @param additionalSettings the additionalSettings value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withAdditionalSettings(String additionalSettings) {
+        this.additionalSettings = additionalSettings;
+        return this;
+    }
+
+    /**
+     * Get the serverBrandVersion property: server brand version.
+     * 
+     * @return the serverBrandVersion value.
+     */
+    public String serverBrandVersion() {
+        return this.serverBrandVersion;
+    }
+
+    /**
+     * Set the serverBrandVersion property: server brand version.
+     * 
+     * @param serverBrandVersion the serverBrandVersion value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withServerBrandVersion(String serverBrandVersion) {
+        this.serverBrandVersion = serverBrandVersion;
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Authentication type to use for connection.
+     * 
+     * @return the authentication value.
+     */
+    public AuthenticationType authentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Authentication type to use for connection.
+     * 
+     * @param authentication the authentication value to set.
+     * @return the PostgreSqlConnectionInfo object itself.
+     */
+    public PostgreSqlConnectionInfo withAuthentication(AuthenticationType authentication) {
+        this.authentication = authentication;
         return this;
     }
 
@@ -157,7 +332,15 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
         jsonWriter.writeStringField("serverName", this.serverName);
         jsonWriter.writeIntField("port", this.port);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("dataSource", this.dataSource);
+        jsonWriter.writeStringField("serverVersion", this.serverVersion);
         jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeBooleanField("encryptConnection", this.encryptConnection);
+        jsonWriter.writeBooleanField("trustServerCertificate", this.trustServerCertificate);
+        jsonWriter.writeStringField("additionalSettings", this.additionalSettings);
+        jsonWriter.writeStringField("serverBrandVersion", this.serverBrandVersion);
+        jsonWriter.writeStringField("authentication",
+            this.authentication == null ? null : this.authentication.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -187,8 +370,24 @@ public final class PostgreSqlConnectionInfo extends ConnectionInfo {
                     deserializedPostgreSqlConnectionInfo.port = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     deserializedPostgreSqlConnectionInfo.type = reader.getString();
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.dataSource = reader.getString();
+                } else if ("serverVersion".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.serverVersion = reader.getString();
                 } else if ("databaseName".equals(fieldName)) {
                     deserializedPostgreSqlConnectionInfo.databaseName = reader.getString();
+                } else if ("encryptConnection".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.encryptConnection = reader.getNullable(JsonReader::getBoolean);
+                } else if ("trustServerCertificate".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.trustServerCertificate
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("additionalSettings".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.additionalSettings = reader.getString();
+                } else if ("serverBrandVersion".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.serverBrandVersion = reader.getString();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedPostgreSqlConnectionInfo.authentication
+                        = AuthenticationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

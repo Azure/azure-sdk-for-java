@@ -4,12 +4,16 @@
 package com.azure.monitor.ingestion.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.zip.GZIPOutputStream;
+
+import com.azure.core.http.HttpPipeline;
+import com.azure.monitor.ingestion.LogsIngestionServiceVersion;
 
 public final class Utils {
     public static final long MAX_REQUEST_PAYLOAD_SIZE = 1024 * 1024; // 1 MB
@@ -43,5 +47,11 @@ public final class Utils {
         }
 
         return 1;
+    }
+
+    public static LogsIngestionClientImpl getLogsIngestionClientImpl(HttpPipeline httpPipeline, String endpoint,
+        LogsIngestionServiceVersion serviceVersion) {
+        return new LogsIngestionClientImpl(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint,
+            serviceVersion);
     }
 }

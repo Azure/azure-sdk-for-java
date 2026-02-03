@@ -29,6 +29,9 @@ public interface CloudServicesNetworks {
      * 
      * Get a list of cloud services networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +39,7 @@ public interface CloudServicesNetworks {
      * @return a list of cloud services networks in the provided subscription as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<CloudServicesNetwork> list(Context context);
+    PagedIterable<CloudServicesNetwork> list(Integer top, String skipToken, Context context);
 
     /**
      * List cloud services networks in the resource group.
@@ -58,6 +61,9 @@ public interface CloudServicesNetworks {
      * Get a list of cloud services networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +71,8 @@ public interface CloudServicesNetworks {
      * @return a list of cloud services networks in the provided resource group as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<CloudServicesNetwork> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<CloudServicesNetwork> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the cloud services network.
@@ -118,13 +125,18 @@ public interface CloudServicesNetworks {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cloudServicesNetworkName The name of the cloud services network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(String resourceGroupName, String cloudServicesNetworkName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String cloudServicesNetworkName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Retrieve the cloud services network.
@@ -172,13 +184,17 @@ public interface CloudServicesNetworks {
      * Delete the provided cloud services network.
      * 
      * @param id the resource ID.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Begins definition for a new CloudServicesNetwork resource.

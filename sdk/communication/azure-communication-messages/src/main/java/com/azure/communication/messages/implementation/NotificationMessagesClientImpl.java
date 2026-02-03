@@ -151,7 +151,7 @@ public final class NotificationMessagesClientImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "NotificationMessages")
+    @ServiceInterface(name = "NotificationMessagesClient")
     public interface NotificationMessagesClientService {
         @Post("/messages/notifications:send")
         @ExpectedResponses({ 202 })
@@ -212,7 +212,7 @@ public final class NotificationMessagesClientImpl {
      * <pre>
      * {@code
      * {
-     *     kind: String(text/image/image_v0/document/video/audio/template) (Required)
+     *     kind: String(text/image/image_v0/document/video/audio/template/sticker/reaction/interactive) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)
@@ -284,7 +284,7 @@ public final class NotificationMessagesClientImpl {
      * <pre>
      * {@code
      * {
-     *     kind: String(text/image/image_v0/document/video/audio/template) (Required)
+     *     kind: String(text/image/image_v0/document/video/audio/template/sticker/reaction/interactive) (Required)
      *     channelRegistrationId: String (Required)
      *     to (Required): [
      *         String (Required)

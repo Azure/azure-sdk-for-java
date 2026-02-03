@@ -5,6 +5,7 @@
 package com.azure.maps.route.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,18 +19,23 @@ import java.util.List;
 @Fluent
 public final class GeoJsonGeometryCollection extends GeoJsonGeometry {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_GEOMETRY_COLLECTION;
 
     /*
-     * Contains a list of valid `GeoJSON` geometry objects. **Note** that coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON` geometry objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
+    @Generated
     private List<GeoJsonGeometry> geometries;
 
     /**
      * Creates an instance of GeoJsonGeometryCollection class.
      */
+    @Generated
     public GeoJsonGeometryCollection() {
     }
 
@@ -40,6 +46,7 @@ public final class GeoJsonGeometryCollection extends GeoJsonGeometry {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -51,6 +58,7 @@ public final class GeoJsonGeometryCollection extends GeoJsonGeometry {
      * 
      * @return the geometries value.
      */
+    @Generated
     public List<GeoJsonGeometry> getGeometries() {
         return this.geometries;
     }
@@ -62,6 +70,7 @@ public final class GeoJsonGeometryCollection extends GeoJsonGeometry {
      * @param geometries the geometries value to set.
      * @return the GeoJsonGeometryCollection object itself.
      */
+    @Generated
     public GeoJsonGeometryCollection setGeometries(List<GeoJsonGeometry> geometries) {
         this.geometries = geometries;
         return this;
@@ -70,6 +79,7 @@ public final class GeoJsonGeometryCollection extends GeoJsonGeometry {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -87,6 +97,7 @@ public final class GeoJsonGeometryCollection extends GeoJsonGeometry {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonGeometryCollection.
      */
+    @Generated
     public static GeoJsonGeometryCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonGeometryCollection deserializedGeoJsonGeometryCollection = new GeoJsonGeometryCollection();

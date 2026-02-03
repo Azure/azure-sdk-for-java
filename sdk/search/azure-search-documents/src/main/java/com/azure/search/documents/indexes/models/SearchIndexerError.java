@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,11 +24,13 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
     /*
      * The key of the item for which indexing failed.
      */
+    @Generated
     private String key;
 
     /*
      * The message describing the error that occurred while processing the item.
      */
+    @Generated
     private final String errorMessage;
 
     /*
@@ -35,22 +38,26 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * document, 404 for document not found, 409 for a version conflict, 422 when the index is temporarily unavailable,
      * or 503 for when the service is too busy.
      */
+    @Generated
     private final int statusCode;
 
     /*
      * The name of the source at which the error originated. For example, this could refer to a particular skill in the
      * attached skillset. This may not be always available.
      */
+    @Generated
     private String name;
 
     /*
      * Additional, verbose details about the error to assist in debugging the indexer. This may not be always available.
      */
+    @Generated
     private String details;
 
     /*
      * A link to a troubleshooting guide for these classes of errors. This may not be always available.
      */
+    @Generated
     private String documentationLink;
 
     /**
@@ -59,6 +66,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * @param errorMessage the errorMessage value to set.
      * @param statusCode the statusCode value to set.
      */
+    @Generated
     public SearchIndexerError(String errorMessage, int statusCode) {
         this.errorMessage = errorMessage;
         this.statusCode = statusCode;
@@ -69,6 +77,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * 
      * @return the key value.
      */
+    @Generated
     public String getKey() {
         return this.key;
     }
@@ -78,6 +87,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * 
      * @return the errorMessage value.
      */
+    @Generated
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -89,6 +99,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * 
      * @return the statusCode value.
      */
+    @Generated
     public int getStatusCode() {
         return this.statusCode;
     }
@@ -99,6 +110,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -109,6 +121,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * 
      * @return the details value.
      */
+    @Generated
     public String getDetails() {
         return this.details;
     }
@@ -119,6 +132,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * 
      * @return the documentationLink value.
      */
+    @Generated
     public String getDocumentationLink() {
         return this.documentationLink;
     }
@@ -126,6 +140,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -141,6 +156,7 @@ public final class SearchIndexerError implements JsonSerializable<SearchIndexerE
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerError.
      */
+    @Generated
     public static SearchIndexerError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean errorMessageFound = false;

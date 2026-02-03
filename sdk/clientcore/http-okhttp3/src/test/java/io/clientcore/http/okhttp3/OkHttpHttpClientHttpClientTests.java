@@ -4,6 +4,7 @@
 package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
@@ -18,7 +19,7 @@ public class OkHttpHttpClientHttpClientTests extends HttpClientTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, false);
 
         server.start();
     }
@@ -33,12 +34,12 @@ public class OkHttpHttpClientHttpClientTests extends HttpClientTests {
     @Override
     @Deprecated
     protected int getPort() {
-        return server.getHttpPort();
+        return server.getPort();
     }
 
     @Override
     protected String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getHttpUri();
+        return secure ? server.getHttpsUri() : server.getUri();
     }
 
     @Override

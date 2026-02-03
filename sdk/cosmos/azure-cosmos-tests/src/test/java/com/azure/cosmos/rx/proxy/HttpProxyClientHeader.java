@@ -4,12 +4,20 @@ package com.azure.cosmos.rx.proxy;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.util.ResourceLeakDetector;
 
 /**
  * The http header of client.
  *
  */
 public class HttpProxyClientHeader {
+    private static final int MAX_HEADER_BYTES = 64 * 1024;
+
+    private static final boolean LEAK_DEBUG =
+        ResourceLeakDetector.getLevel().ordinal() >= ResourceLeakDetector.Level.ADVANCED.ordinal();
+
+    private volatile boolean touchedAlloc;
+
     private String method;
     private String host;
     private int port;
@@ -43,10 +51,6 @@ public class HttpProxyClientHeader {
         return port;
     }
 
-    public void setPort(int port) {
-        this.port = port;
-    }
-
     public boolean isHttps() {
         return https;
     }
@@ -56,57 +60,86 @@ public class HttpProxyClientHeader {
     }
 
     public ByteBuf getByteBuf() {
-        return byteBuf;
-    }
-
-    public void setByteBuf(ByteBuf byteBuf) {
-        this.byteBuf = byteBuf;
-    }
-
-    public StringBuilder getLineBuf() {
-        return lineBuf;
+        if (!complete) throw new IllegalStateException("header not complete");
+        if (LEAK_DEBUG) {
+            this.byteBuf.touch("getByteBuf handoff");
+        }
+        ByteBuf out = this.byteBuf;
+        this.byteBuf = Unpooled.EMPTY_BUFFER; // we no longer own anything
+        return out; // caller must write/release this
     }
 
     public void setComplete(boolean complete) {
+        if (complete) {
+            if (LEAK_DEBUG) {
+                this.byteBuf.touch("end-of-headers; https=" + https + " host=" + host + " port=" + port);
+            }
+        }
         this.complete = complete;
     }
 
+    /** Release any internal buffer we still own (idempotent). */
+    public void releaseQuietly() {
+        if (LEAK_DEBUG) {
+            this.byteBuf.touch("releaseQuietly");
+        }
+        io.netty.util.ReferenceCountUtil.safeRelease(this.byteBuf);
+        this.byteBuf = Unpooled.EMPTY_BUFFER;
+    }
+
     public void digest(ByteBuf in) {
+        if (LEAK_DEBUG && !touchedAlloc) {
+            touchedAlloc = true;
+            this.byteBuf.touch("allocated header buffer");
+        }
+
         while (in.isReadable()) {
-            if (complete) {
-                throw new IllegalStateException("already complete");
-            }
+            if (complete) throw new IllegalStateException("already complete");
 
             String line = readLine(in);
-            if (line == null) {
-                return;
-            }
+            if (line == null) return;
 
             if (method == null) {
-                method = line.split(" ")[0]; // the first word is http method name
-                https = method.equalsIgnoreCase("CONNECT"); // method CONNECT means https
+                method = line.split(" ", 2)[0];
+                https = "CONNECT".equalsIgnoreCase(method);
             }
 
-            if (line.startsWith("Host: ") || line.startsWith("host: ")) {
-                String[] arr = line.split(":");
-                host = arr[1].trim();
-                if (arr.length == 3) {
-                    port = Integer.parseInt(arr[2]);
-                } else if (https) {
-                    port = 443; // https
+            if (line.regionMatches(true, 0, "Host:", 0, 5)) {
+                // be tolerant to extra spaces and IPv6
+                String value = line.substring(5).trim();
+                int idx = value.lastIndexOf(':'); // last colon to allow IPv6 literals
+                if (idx > 0 && value.indexOf(']') < idx) {
+                    host = value.substring(0, idx).trim();
+                    port = Integer.parseInt(value.substring(idx + 1).trim());
                 } else {
-                    port = 80; // http
+                    host = value;
+                    port = https ? 443 : 80;
                 }
             }
 
             if (line.isEmpty()) {
                 if (host == null || port == 0) {
-                    throw new IllegalStateException("cannot find header \'Host\'");
+                    releaseQuietly();
+                    throw new IllegalStateException("cannot find header 'Host'");
                 }
-
-                byteBuf = byteBuf.asReadOnly();
-                complete = true;
+                // If HTTPS, we don’t forward the CONNECT request → release now.
+                if (https) {
+                    releaseQuietly();
+                } else {
+                    // non-HTTPS: make read-only for safety; caller will drain & own it
+                    byteBuf = byteBuf.asReadOnly();
+                }
+                setComplete(true);
                 break;
+            }
+
+            // size guard to avoid OOM from giant headers
+            if (byteBuf.writerIndex() >= MAX_HEADER_BYTES) {
+                releaseQuietly();
+                if (LEAK_DEBUG) {
+                    this.byteBuf.touch("header too large at writerIndex=" + byteBuf.writerIndex());
+                }
+                throw new IllegalStateException("header too large");
             }
         }
     }
@@ -117,12 +150,14 @@ public class HttpProxyClientHeader {
             byteBuf.writeByte(b);
             lineBuf.append((char) b);
             int len = lineBuf.length();
-            if (len >= 2 && lineBuf.substring(len - 2).equals("\r\n")) {
+            if (len >= 2 && lineBuf.charAt(len - 2) == '\r' && lineBuf.charAt(len - 1) == '\n') {
                 String line = lineBuf.substring(0, len - 2);
-                lineBuf.delete(0, len);
+                lineBuf.setLength(0);
+                if (LEAK_DEBUG) {
+                    this.byteBuf.touch("CRLF reached, writerIndex=" + byteBuf.writerIndex());
+                }
                 return line;
             }
-
         }
         return null;
     }

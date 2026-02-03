@@ -12,14 +12,19 @@ import java.util.Collection;
  */
 public final class StorageApplianceDetailedStatus extends ExpandableStringEnum<StorageApplianceDetailedStatus> {
     /**
-     * Static value Error for StorageApplianceDetailedStatus.
-     */
-    public static final StorageApplianceDetailedStatus ERROR = fromString("Error");
-
-    /**
      * Static value Available for StorageApplianceDetailedStatus.
      */
     public static final StorageApplianceDetailedStatus AVAILABLE = fromString("Available");
+
+    /**
+     * Static value Degraded for StorageApplianceDetailedStatus.
+     */
+    public static final StorageApplianceDetailedStatus DEGRADED = fromString("Degraded");
+
+    /**
+     * Static value Error for StorageApplianceDetailedStatus.
+     */
+    public static final StorageApplianceDetailedStatus ERROR = fromString("Error");
 
     /**
      * Static value Provisioning for StorageApplianceDetailedStatus.

@@ -26,10 +26,10 @@ public final class SupportedOperatingSystemsOperationsImpl implements SupportedO
         this.serviceManager = serviceManager;
     }
 
-    public Response<SupportedOperatingSystems> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<SupportedOperatingSystems> getWithResponse(String resourceGroupName, String resourceName,
         String instanceType, Context context) {
         Response<SupportedOperatingSystemsInner> inner
-            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, instanceType, context);
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, instanceType, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SupportedOperatingSystemsImpl(inner.getValue(), this.manager()));
@@ -38,8 +38,8 @@ public final class SupportedOperatingSystemsOperationsImpl implements SupportedO
         }
     }
 
-    public SupportedOperatingSystems get(String resourceName, String resourceGroupName) {
-        SupportedOperatingSystemsInner inner = this.serviceClient().get(resourceName, resourceGroupName);
+    public SupportedOperatingSystems get(String resourceGroupName, String resourceName) {
+        SupportedOperatingSystemsInner inner = this.serviceClient().get(resourceGroupName, resourceName);
         if (inner != null) {
             return new SupportedOperatingSystemsImpl(inner, this.manager());
         } else {

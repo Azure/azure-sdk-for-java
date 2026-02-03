@@ -237,16 +237,7 @@ public final class DevBoxesAsyncClient {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -303,16 +294,7 @@ public final class DevBoxesAsyncClient {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -371,16 +353,7 @@ public final class DevBoxesAsyncClient {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -440,16 +413,7 @@ public final class DevBoxesAsyncClient {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -511,16 +475,7 @@ public final class DevBoxesAsyncClient {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -562,16 +517,7 @@ public final class DevBoxesAsyncClient {
      *     powerState: String(Unknown/Running/Deallocated/PoweredOff/Hibernated) (Optional)
      *     uniqueId: String (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      *     location: String (Optional)
      *     osType: String(Windows) (Optional)
@@ -635,16 +581,7 @@ public final class DevBoxesAsyncClient {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
      * }
@@ -684,16 +621,7 @@ public final class DevBoxesAsyncClient {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
      * }
@@ -740,16 +668,7 @@ public final class DevBoxesAsyncClient {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
      * }
@@ -789,16 +708,7 @@ public final class DevBoxesAsyncClient {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
      * }
@@ -1009,16 +919,7 @@ public final class DevBoxesAsyncClient {
      *         }
      *     }
      *     error (Optional): {
-     *         code: String (Required)
-     *         message: String (Required)
-     *         target: String (Optional)
-     *         details (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         innererror (Optional): {
-     *             code: String (Optional)
-     *             innererror (Optional): (recursive schema, see innererror above)
-     *         }
+     *         error (Required): (recursive schema, see error above)
      *     }
      * }
      * }

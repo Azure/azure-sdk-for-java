@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,46 +24,55 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     /*
      * Total number of aliases.
      */
+    @Generated
     private ResourceCounter aliasCounter;
 
     /*
      * Total number of documents across all indexes in the service.
      */
+    @Generated
     private final ResourceCounter documentCounter;
 
     /*
      * Total number of indexes.
      */
+    @Generated
     private final ResourceCounter indexCounter;
 
     /*
      * Total number of indexers.
      */
+    @Generated
     private final ResourceCounter indexerCounter;
 
     /*
      * Total number of data sources.
      */
+    @Generated
     private final ResourceCounter dataSourceCounter;
 
     /*
      * Total size of used storage in bytes.
      */
+    @Generated
     private final ResourceCounter storageSizeCounter;
 
     /*
      * Total number of synonym maps.
      */
+    @Generated
     private final ResourceCounter synonymMapCounter;
 
     /*
      * Total number of skillsets.
      */
+    @Generated
     private ResourceCounter skillsetCounter;
 
     /*
      * Total memory consumption of all vector indexes within the service, in bytes.
      */
+    @Generated
     private ResourceCounter vectorIndexSizeCounter;
 
     /**
@@ -75,6 +85,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @param synonymMapCounter the synonymMapCounter value to set.
      */
+    @Generated
     public SearchServiceCounters(ResourceCounter documentCounter, ResourceCounter indexCounter,
         ResourceCounter indexerCounter, ResourceCounter dataSourceCounter, ResourceCounter storageSizeCounter,
         ResourceCounter synonymMapCounter) {
@@ -91,6 +102,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the aliasCounter value.
      */
+    @Generated
     public ResourceCounter getAliasCounter() {
         return this.aliasCounter;
     }
@@ -101,6 +113,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * @param aliasCounter the aliasCounter value to set.
      * @return the SearchServiceCounters object itself.
      */
+    @Generated
     public SearchServiceCounters setAliasCounter(ResourceCounter aliasCounter) {
         this.aliasCounter = aliasCounter;
         return this;
@@ -111,6 +124,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the documentCounter value.
      */
+    @Generated
     public ResourceCounter getDocumentCounter() {
         return this.documentCounter;
     }
@@ -120,6 +134,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the indexCounter value.
      */
+    @Generated
     public ResourceCounter getIndexCounter() {
         return this.indexCounter;
     }
@@ -129,6 +144,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the indexerCounter value.
      */
+    @Generated
     public ResourceCounter getIndexerCounter() {
         return this.indexerCounter;
     }
@@ -138,6 +154,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the dataSourceCounter value.
      */
+    @Generated
     public ResourceCounter getDataSourceCounter() {
         return this.dataSourceCounter;
     }
@@ -147,6 +164,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the storageSizeCounter value.
      */
+    @Generated
     public ResourceCounter getStorageSizeCounter() {
         return this.storageSizeCounter;
     }
@@ -156,6 +174,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the synonymMapCounter value.
      */
+    @Generated
     public ResourceCounter getSynonymMapCounter() {
         return this.synonymMapCounter;
     }
@@ -165,6 +184,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the skillsetCounter value.
      */
+    @Generated
     public ResourceCounter getSkillsetCounter() {
         return this.skillsetCounter;
     }
@@ -175,6 +195,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * @param skillsetCounter the skillsetCounter value to set.
      * @return the SearchServiceCounters object itself.
      */
+    @Generated
     public SearchServiceCounters setSkillsetCounter(ResourceCounter skillsetCounter) {
         this.skillsetCounter = skillsetCounter;
         return this;
@@ -186,6 +207,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * 
      * @return the vectorIndexSizeCounter value.
      */
+    @Generated
     public ResourceCounter getVectorIndexSizeCounter() {
         return this.vectorIndexSizeCounter;
     }
@@ -197,6 +219,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * @param vectorIndexSizeCounter the vectorIndexSizeCounter value to set.
      * @return the SearchServiceCounters object itself.
      */
+    @Generated
     public SearchServiceCounters setVectorIndexSizeCounter(ResourceCounter vectorIndexSizeCounter) {
         this.vectorIndexSizeCounter = vectorIndexSizeCounter;
         return this;
@@ -205,6 +228,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -229,6 +253,7 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchServiceCounters.
      */
+    @Generated
     public static SearchServiceCounters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean documentCounterFound = false;

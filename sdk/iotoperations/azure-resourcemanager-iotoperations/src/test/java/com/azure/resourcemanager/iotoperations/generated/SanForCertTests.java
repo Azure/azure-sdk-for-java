@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SanForCertTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SanForCert model = BinaryData.fromString(
-            "{\"dns\":[\"rzpwvlqdqgbiq\",\"lihkaetcktvfc\",\"vf\"],\"ip\":[\"kymuctqhjfbebr\",\"cxerf\",\"wutttxfvjrbi\",\"phxepcyvahf\"]}")
-            .toObject(SanForCert.class);
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.dns().get(0));
-        Assertions.assertEquals("kymuctqhjfbebr", model.ip().get(0));
+        SanForCert model
+            = BinaryData.fromString("{\"dns\":[\"ocfs\"],\"ip\":[\"s\",\"mddystkiiux\"]}").toObject(SanForCert.class);
+        Assertions.assertEquals("ocfs", model.dns().get(0));
+        Assertions.assertEquals("s", model.ip().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SanForCert model = new SanForCert().withDns(Arrays.asList("rzpwvlqdqgbiq", "lihkaetcktvfc", "vf"))
-            .withIp(Arrays.asList("kymuctqhjfbebr", "cxerf", "wutttxfvjrbi", "phxepcyvahf"));
+        SanForCert model = new SanForCert().withDns(Arrays.asList("ocfs")).withIp(Arrays.asList("s", "mddystkiiux"));
         model = BinaryData.fromObject(model).toObject(SanForCert.class);
-        Assertions.assertEquals("rzpwvlqdqgbiq", model.dns().get(0));
-        Assertions.assertEquals("kymuctqhjfbebr", model.ip().get(0));
+        Assertions.assertEquals("ocfs", model.dns().get(0));
+        Assertions.assertEquals("s", model.ip().get(0));
     }
 }

@@ -36,7 +36,7 @@ Once this completes, you will find an executable binary file in the `./target` d
 ## Docker support
 
 This project has been configured to let you generate a lightweight container running a native executable.
-Docker should be installed and configured on your machine prior to creating the image, see [the Getting Started section of the reference guide](https://docs.spring.io/spring-native/docs/0.10.0-SNAPSHOT/reference/htmlsingle/#getting-started-buildpacks).
+Docker should be installed and configured on your machine prior to creating the image, see [the Getting Started section of the reference guide](https://docs.spring.io/spring-native/docs/0.11.4/reference/htmlsingle/#getting-started-buildpacks).
 
 To create the image, run the following goal:
 

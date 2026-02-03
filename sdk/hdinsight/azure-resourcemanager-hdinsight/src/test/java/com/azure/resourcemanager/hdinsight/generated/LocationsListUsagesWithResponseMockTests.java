@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.UsagesListResult;
@@ -21,21 +21,20 @@ public final class LocationsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"unit\":\"uidvrmazlpdwwex\",\"currentValue\":8913959723686771783,\"limit\":3631683090324496952,\"name\":{\"value\":\"bhpwvqsgnyy\",\"localizedValue\":\"ziven\"}},{\"unit\":\"pmeyyvpkpatlbijp\",\"currentValue\":7653783145819772188,\"limit\":6070721512636115339,\"name\":{\"value\":\"v\",\"localizedValue\":\"mknbnxwcdommpv\"}}]}";
+            = "{\"value\":[{\"unit\":\"lhkgmnsghp\",\"currentValue\":5615654712753691017,\"limit\":2704306276443969386,\"name\":{\"value\":\"jkhvyomacluzvxnq\",\"localizedValue\":\"rpqpd\"}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HDInsightManager manager = HDInsightManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        UsagesListResult response = manager.locations()
-            .listUsagesWithResponse("vjeaqnrmvvfkoxml", com.azure.core.util.Context.NONE)
-            .getValue();
+        UsagesListResult response
+            = manager.locations().listUsagesWithResponse("pnyghs", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("uidvrmazlpdwwex", response.value().get(0).unit());
-        Assertions.assertEquals(8913959723686771783L, response.value().get(0).currentValue());
-        Assertions.assertEquals(3631683090324496952L, response.value().get(0).limit());
+        Assertions.assertEquals("lhkgmnsghp", response.value().get(0).unit());
+        Assertions.assertEquals(5615654712753691017L, response.value().get(0).currentValue());
+        Assertions.assertEquals(2704306276443969386L, response.value().get(0).limit());
     }
 }

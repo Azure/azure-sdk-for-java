@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAudience;
+import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerProperties;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
@@ -48,6 +49,7 @@ import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.test.shared.policy.InvalidServiceVersionPipelinePolicy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -58,7 +60,6 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
 import java.net.URL;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
@@ -72,6 +73,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.INVALID_VERSION_HEADER_MESSAGE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -911,6 +913,41 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void listBlobsFlatOptionsStartsFrom() {
+        String blob1 = "a" + generateBlobName();
+        String blob2 = "b" + generateBlobName();
+        String blob3 = "c" + generateBlobName();
+        cc.getBlobClient(blob1).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+        cc.getBlobClient(blob2).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+        cc.getBlobClient(blob3).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+
+        ListBlobsOptions options = new ListBlobsOptions().setStartFrom(blob2);
+        Iterator<BlobItem> blobs = cc.listBlobs(options, null).iterator();
+
+        assertEquals(blob2, blobs.next().getName());
+        assertEquals(blob3, blobs.next().getName());
+        assertFalse(blobs.hasNext());
+    }
+
+    @Test
+    public void listBlobsByHierarchyOptionsStartsFrom() {
+        String blob1 = "a" + generateBlobName();
+        String blob2 = "b" + generateBlobName();
+        String blob3 = "c" + generateBlobName();
+
+        cc.getBlobClient(blob1).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+        cc.getBlobClient(blob2).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+        cc.getBlobClient(blob3).getBlockBlobClient().upload(DATA.getDefaultInputStream(), 7);
+
+        ListBlobsOptions options = new ListBlobsOptions().setStartFrom(blob2);
+        Iterator<BlobItem> blobs = cc.listBlobsByHierarchy("/", options, null).iterator();
+
+        assertEquals(blob2, blobs.next().getName());
+        assertEquals(blob3, blobs.next().getName());
+        assertFalse(blobs.hasNext());
+    }
+
+    @Test
     public void listBlobsFlatOptionsMaxResults() {
         int pageSize = 2;
         ListBlobsOptions options = new ListBlobsOptions().setDetails(
@@ -1067,40 +1104,6 @@ public class ContainerApiTests extends BlobTestBase {
     public void listBlobsFlatError() {
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
         assertThrows(BlobStorageException.class, () -> cc.listBlobs().iterator().hasNext());
-    }
-
-    @Test
-    public void listBlobsFlatWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
-
-        for (int i = 0; i < numBlobs; i++) {
-            BlockBlobClient blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-            blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        }
-
-        // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(
-            () -> cc.listBlobs(new ListBlobsOptions().setMaxResultsPerPage(pageResults), Duration.ofSeconds(10))
-                .streamByPage()
-                .count());
-    }
-
-    @Test
-    public void listBlobsHierWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
-
-        for (int i = 0; i < numBlobs; i++) {
-            BlockBlobClient blob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
-            blob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
-        }
-
-        // when: "Consume results by page, then still have paging functionality"
-        assertDoesNotThrow(() -> cc
-            .listBlobsByHierarchy("/", new ListBlobsOptions().setMaxResultsPerPage(pageResults), Duration.ofSeconds(10))
-            .streamByPage()
-            .count());
     }
 
     /*
@@ -1655,28 +1658,6 @@ public class ContainerApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> cc.findBlobsByTags("garbageTag").streamByPage().count());
     }
 
-    @SuppressWarnings("deprecation")
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
-    @Test
-    public void findBlobsWithTimeoutStillBackedByPagedStream() {
-        int numBlobs = 5;
-        int pageResults = 3;
-        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-
-        for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobClient(generateBlobName())
-                .uploadWithResponse(
-                    new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize())
-                        .setTags(tags),
-                    null, null);
-        }
-
-        // when: "Consume results by page, still have paging functionality"
-        assertDoesNotThrow(() -> cc.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
-            Duration.ofSeconds(10), Context.NONE).streamByPage().count());
-    }
-
     @ParameterizedTest
     @ValueSource(strings = { "中文", "az[]", "hello world", "hello/world", "hello&world", "!*'();:@&=+/$,/?#[]" })
     public void createURLSpecialChars(String name) {
@@ -1759,6 +1740,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1770,6 +1752,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void rootExplicitInEndpoint() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1787,6 +1770,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void blobClientBuilderRootImplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // createroot container if not exist.
@@ -1809,6 +1793,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    @PlaybackOnly
     public void containerClientBuilderRootImplicit() {
         cc = primaryBlobServiceClient.getBlobContainerClient(BlobContainerClient.ROOT_CONTAINER_NAME);
         // create root container if not exist.
@@ -1974,6 +1959,60 @@ public class ContainerApiTests extends BlobTestBase {
             = getContainerClientBuilderWithTokenCredential(cc.getBlobContainerUrl()).audience(audience).buildClient();
 
         assertTrue(aadContainer.exists());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        BlobServiceClient serviceClient = getOAuthServiceClient();
+
+        if (!cc.exists()) {
+            cc.create();
+        }
+        cc = serviceClient.getBlobContainerClient(containerName);
+
+        // Act
+        BlobContainerAccessPolicies response = cc.getAccessPolicy();
+        assertDoesNotThrow(() -> cc.setAccessPolicy(null, response.getIdentifiers()));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    public void getAccountInfoOAuth() {
+        // Arrange
+        BlobServiceClient serviceClient = getOAuthServiceClient();
+
+        if (!cc.exists()) {
+            cc.create();
+        }
+        cc = serviceClient.getBlobContainerClient(containerName);
+        assertDoesNotThrow(() -> cc.getAccountInfo(null));
+    }
+
+    @Test
+    public void invalidServiceVersion() {
+        BlobServiceClient serviceClient
+            = instrument(new BlobServiceClientBuilder().endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+                .credential(ENVIRONMENT.getPrimaryAccount().getCredential())
+                .addPolicy(new InvalidServiceVersionPipelinePolicy())).buildClient();
+
+        BlobContainerClient containerClient = serviceClient.getBlobContainerClient(generateContainerName());
+
+        BlobStorageException exception = assertThrows(BlobStorageException.class, containerClient::createIfNotExists);
+
+        assertEquals(400, exception.getStatusCode());
+        assertTrue(exception.getMessage().contains(INVALID_VERSION_HEADER_MESSAGE));
+    }
+
+    // Tests that the container name is URL encoded. Container names with special characters are not supported
+    // by the service, however, the names should still be encoded.
+    @Test
+    public void getBlobContainerUrlEncodesContainerName() {
+        String containerName = "my container";
+        BlobContainerClient containerClient = primaryBlobServiceClient.getBlobContainerClient(containerName);
+
+        assertTrue(containerClient.getBlobContainerUrl().contains("my%20container"));
     }
 
     // TODO: Reintroduce these tests once service starts supporting it.

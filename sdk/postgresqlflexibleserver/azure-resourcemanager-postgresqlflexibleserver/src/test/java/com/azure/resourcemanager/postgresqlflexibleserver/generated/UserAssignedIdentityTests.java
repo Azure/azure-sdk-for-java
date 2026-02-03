@@ -16,10 +16,11 @@ public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAssignedIdentity model = BinaryData.fromString(
-            "{\"userAssignedIdentities\":{\"hahvljuahaq\":{\"principalId\":\"kv\",\"clientId\":\"elmqk\"}},\"type\":\"SystemAssigned\",\"tenantId\":\"dhmdua\"}")
+            "{\"userAssignedIdentities\":{\"ox\":{\"principalId\":\"jhhgdnhxmsi\",\"clientId\":\"omi\"},\"fgdo\":{\"principalId\":\"dufiq\",\"clientId\":\"ieuzaofjchvcyyy\"},\"shqvcimpev\":{\"principalId\":\"ubiipuipwoqonma\",\"clientId\":\"ekni\"}},\"principalId\":\"mblrrilbywd\",\"type\":\"SystemAssigned\",\"tenantId\":\"icc\"}")
             .toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("kv", model.userAssignedIdentities().get("hahvljuahaq").principalId());
-        Assertions.assertEquals("elmqk", model.userAssignedIdentities().get("hahvljuahaq").clientId());
+        Assertions.assertEquals("jhhgdnhxmsi", model.userAssignedIdentities().get("ox").principalId());
+        Assertions.assertEquals("omi", model.userAssignedIdentities().get("ox").clientId());
+        Assertions.assertEquals("mblrrilbywd", model.principalId());
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
@@ -27,11 +28,15 @@ public final class UserAssignedIdentityTests {
     public void testSerialize() throws Exception {
         UserAssignedIdentity model = new UserAssignedIdentity()
             .withUserAssignedIdentities(
-                mapOf("hahvljuahaq", new UserIdentity().withPrincipalId("kv").withClientId("elmqk")))
+                mapOf("ox", new UserIdentity().withPrincipalId("jhhgdnhxmsi").withClientId("omi"), "fgdo",
+                    new UserIdentity().withPrincipalId("dufiq").withClientId("ieuzaofjchvcyyy"), "shqvcimpev",
+                    new UserIdentity().withPrincipalId("ubiipuipwoqonma").withClientId("ekni")))
+            .withPrincipalId("mblrrilbywd")
             .withType(IdentityType.SYSTEM_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("kv", model.userAssignedIdentities().get("hahvljuahaq").principalId());
-        Assertions.assertEquals("elmqk", model.userAssignedIdentities().get("hahvljuahaq").clientId());
+        Assertions.assertEquals("jhhgdnhxmsi", model.userAssignedIdentities().get("ox").principalId());
+        Assertions.assertEquals("omi", model.userAssignedIdentities().get("ox").clientId());
+        Assertions.assertEquals("mblrrilbywd", model.principalId());
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
     }
 

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class KqlScript implements JsonSerializable<KqlScript> {
     /*
      * The content property.
      */
+    @Generated
     private KqlScriptContent content;
 
     /**
      * Creates an instance of KqlScript class.
      */
+    @Generated
     public KqlScript() {
     }
 
@@ -32,6 +35,7 @@ public final class KqlScript implements JsonSerializable<KqlScript> {
      * 
      * @return the content value.
      */
+    @Generated
     public KqlScriptContent getContent() {
         return this.content;
     }
@@ -42,6 +46,7 @@ public final class KqlScript implements JsonSerializable<KqlScript> {
      * @param content the content value to set.
      * @return the KqlScript object itself.
      */
+    @Generated
     public KqlScript setContent(KqlScriptContent content) {
         this.content = content;
         return this;
@@ -50,6 +55,7 @@ public final class KqlScript implements JsonSerializable<KqlScript> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class KqlScript implements JsonSerializable<KqlScript> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the KqlScript.
      */
+    @Generated
     public static KqlScript fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KqlScript deserializedKqlScript = new KqlScript();

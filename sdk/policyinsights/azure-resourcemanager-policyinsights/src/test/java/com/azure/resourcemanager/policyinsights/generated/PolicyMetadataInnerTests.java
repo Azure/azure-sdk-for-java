@@ -11,7 +11,7 @@ public final class PolicyMetadataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyMetadataInner model = BinaryData.fromString(
-            "{\"properties\":{\"description\":\"okqgukkjq\",\"requirements\":\"broyla\",\"metadataId\":\"ulcdisdosf\",\"category\":\"jsvg\",\"title\":\"whryvycytdcl\",\"owner\":\"ccknfnwmbtmvp\",\"additionalContentUrl\":\"jdhttzaefedxi\",\"metadata\":\"datahrphkmcrjdqn\"},\"id\":\"fzpbgtgkyl\",\"type\":\"ghrjeuutl\",\"name\":\"ez\"}")
+            "{\"properties\":{\"description\":\"pmudqmeqwig\",\"requirements\":\"bu\",\"metadataId\":\"wyxebeybpmzz\",\"category\":\"tffyaqit\",\"title\":\"heioqa\",\"owner\":\"v\",\"additionalContentUrl\":\"ufuqyrx\",\"metadata\":\"datalcgqlsismj\"},\"id\":\"rddga\",\"type\":\"uhiosrsju\",\"name\":\"fcdis\"}")
             .toObject(PolicyMetadataInner.class);
     }
 

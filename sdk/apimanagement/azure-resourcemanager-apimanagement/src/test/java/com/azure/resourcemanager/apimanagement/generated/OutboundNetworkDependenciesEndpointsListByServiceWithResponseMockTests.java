@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.OutboundEnvironmentEndpointList;
@@ -21,20 +21,20 @@ public final class OutboundNetworkDependenciesEndpointsListByServiceWithResponse
     @Test
     public void testListByServiceWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"category\":\"i\",\"endpoints\":[{\"domainName\":\"ikdipkxsq\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"brsoihatajd\",\"endpoints\":[{\"domainName\":\"synss\",\"endpointDetails\":[{}]},{\"domainName\":\"uioad\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"yieh\",\"endpoints\":[{\"domainName\":\"uzqqnzkwlxq\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"p\",\"endpointDetails\":[{},{}]},{\"domainName\":\"yitfz\",\"endpointDetails\":[{},{},{},{}]}]},{\"category\":\"zeylz\",\"endpoints\":[{\"domainName\":\"xacrktjoygyn\",\"endpointDetails\":[{}]},{\"domainName\":\"zbbnuglquarbr\",\"endpointDetails\":[{},{},{}]}]}],\"nextLink\":\"eyxwrmupzpe\"}";
+            = "{\"value\":[{\"category\":\"jalorxeegiczr\",\"endpoints\":[{\"domainName\":\"lcvndihkphfzg\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"wmjmgs\",\"endpoints\":[{\"domainName\":\"skuqgneorqtr\",\"endpointDetails\":[{},{},{},{}]}]}],\"nextLink\":\"kqv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OutboundEnvironmentEndpointList response = manager.outboundNetworkDependenciesEndpoints()
-            .listByServiceWithResponse("xnyx", "mqds", com.azure.core.util.Context.NONE)
+            .listByServiceWithResponse("ayxtvpi", "ltybwwmjr", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("i", response.value().get(0).category());
-        Assertions.assertEquals("ikdipkxsq", response.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("jalorxeegiczr", response.value().get(0).category());
+        Assertions.assertEquals("lcvndihkphfzg", response.value().get(0).endpoints().get(0).domainName());
     }
 }

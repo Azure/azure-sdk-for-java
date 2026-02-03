@@ -18,12 +18,12 @@ import java.io.IOException;
 @Fluent
 public final class SkuCapability implements JsonSerializable<SkuCapability> {
     /*
-     * The name property.
+     * The name.
      */
     private String name;
 
     /*
-     * The value property.
+     * The value.
      */
     private String value;
 
@@ -34,7 +34,7 @@ public final class SkuCapability implements JsonSerializable<SkuCapability> {
     }
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The name.
      * 
      * @return the name value.
      */
@@ -43,7 +43,7 @@ public final class SkuCapability implements JsonSerializable<SkuCapability> {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The name.
      * 
      * @param name the name value to set.
      * @return the SkuCapability object itself.
@@ -54,7 +54,7 @@ public final class SkuCapability implements JsonSerializable<SkuCapability> {
     }
 
     /**
-     * Get the value property: The value property.
+     * Get the value property: The value.
      * 
      * @return the value value.
      */
@@ -63,7 +63,7 @@ public final class SkuCapability implements JsonSerializable<SkuCapability> {
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the value property: The value.
      * 
      * @param value the value value to set.
      * @return the SkuCapability object itself.

@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.ChangePointValue;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class ChangePointFeedbackValue implements JsonSerializable<ChangePo
     /*
      * The changePointValue property.
      */
+    @Generated
     private ChangePointValue changePointValue;
 
     /**
      * Creates an instance of ChangePointFeedbackValue class.
      */
+    @Generated
     public ChangePointFeedbackValue() {
     }
 
@@ -33,6 +36,7 @@ public final class ChangePointFeedbackValue implements JsonSerializable<ChangePo
      * 
      * @return the changePointValue value.
      */
+    @Generated
     public ChangePointValue getChangePointValue() {
         return this.changePointValue;
     }
@@ -43,6 +47,7 @@ public final class ChangePointFeedbackValue implements JsonSerializable<ChangePo
      * @param changePointValue the changePointValue value to set.
      * @return the ChangePointFeedbackValue object itself.
      */
+    @Generated
     public ChangePointFeedbackValue setChangePointValue(ChangePointValue changePointValue) {
         this.changePointValue = changePointValue;
         return this;
@@ -51,6 +56,7 @@ public final class ChangePointFeedbackValue implements JsonSerializable<ChangePo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -68,6 +74,7 @@ public final class ChangePointFeedbackValue implements JsonSerializable<ChangePo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChangePointFeedbackValue.
      */
+    @Generated
     public static ChangePointFeedbackValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ChangePointFeedbackValue deserializedChangePointFeedbackValue = new ChangePointFeedbackValue();

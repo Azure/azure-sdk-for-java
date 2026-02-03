@@ -3,11 +3,14 @@
 
 package com.azure.spring.cloud.service.implementation.servicebus.properties;
 
+import java.time.Duration;
+
 public class ServiceBusProcessorClientTestProperties extends ServiceBusReceiverClientTestProperties
     implements ServiceBusProcessorClientProperties {
 
     private Integer maxConcurrentCalls;
     private Integer maxConcurrentSessions;
+    private Duration sessionIdleTimeout;
 
     @Override
     public Integer getMaxConcurrentCalls() {
@@ -25,5 +28,14 @@ public class ServiceBusProcessorClientTestProperties extends ServiceBusReceiverC
 
     public void setMaxConcurrentSessions(Integer maxConcurrentSessions) {
         this.maxConcurrentSessions = maxConcurrentSessions;
+    }
+
+    @Override
+    public Duration getSessionIdleTimeout() {
+        return sessionIdleTimeout;
+    }
+
+    public void setSessionIdleTimeout(Duration sessionIdleTimeout) {
+        this.sessionIdleTimeout = sessionIdleTimeout;
     }
 }

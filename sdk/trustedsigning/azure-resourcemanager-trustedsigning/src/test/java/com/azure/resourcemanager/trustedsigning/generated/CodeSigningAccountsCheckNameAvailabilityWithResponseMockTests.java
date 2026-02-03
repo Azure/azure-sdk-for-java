@@ -6,8 +6,8 @@ package com.azure.resourcemanager.trustedsigning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.trustedsigning.TrustedSigningManager;
 import com.azure.resourcemanager.trustedsigning.models.CheckNameAvailability;
@@ -20,17 +20,17 @@ import reactor.core.publisher.Mono;
 public final class CodeSigningAccountsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AccountNameInvalid\",\"message\":\"c\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"oifiyipjxsqwpgr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         TrustedSigningManager manager = TrustedSigningManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResult response = manager.codeSigningAccounts()
-            .checkNameAvailabilityWithResponse(new CheckNameAvailability().withName("khbzhfepgzg"),
+            .checkNameAvailabilityWithResponse(new CheckNameAvailability().withName("t"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

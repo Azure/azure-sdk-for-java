@@ -143,7 +143,7 @@ public final class MixedRealityStsRestClientImpl {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MixedRealityStsRestC")
+    @ServiceInterface(name = "MixedRealityStsRestClient")
     public interface MixedRealityStsRestClientService {
         @Get("/Accounts/{accountId}/token")
         @ExpectedResponses({ 200 })

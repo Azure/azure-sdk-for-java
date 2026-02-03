@@ -6,38 +6,4 @@
     <Bug pattern="DM_DEFAULT_ENCODING" />
     <Class name="com.azure.digitaltwins.core.implementation.converters.DigitalTwinsModelDataConverter" />
   </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.digitaltwins.core.BasicDigitalTwin" />
-      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinComponent" />
-      <Class name="com.azure.digitaltwins.core.BasicDigitalTwinMetadata" />
-      <Class name="com.azure.digitaltwins.core.BasicRelationship" />
-      <Class name="com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImpl" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.Error" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.EventRouteCollection" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.PagedDigitalTwinsModelDataCollection" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.QueryResult" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.RelationshipCollection" />
-      <Class name="com.azure.digitaltwins.core.models.DigitalTwinsModelData" />
-      <Class name="com.azure.digitaltwins.core.models.ListModelsOptions" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.digitaltwins.core.DigitalTwinsClientBuilder" />
-      <Class name="com.azure.digitaltwins.core.implementation.AzureDigitalTwinsAPIImplBuilder" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.EventRouteCollection" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.IncomingRelationshipCollection" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.PagedDigitalTwinsModelDataCollection" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.QueryResult" />
-      <Class name="com.azure.digitaltwins.core.implementation.models.RelationshipCollection" />
-      <Class name="com.azure.digitaltwins.core.models.DigitalTwinsModelData" />
-      <Class name="com.azure.digitaltwins.core.models.ListModelsOptions" />
-    </Or>
-  </Match>
 </FindBugsFilter>

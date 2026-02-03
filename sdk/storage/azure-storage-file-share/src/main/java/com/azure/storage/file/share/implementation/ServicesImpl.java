@@ -10,6 +10,7 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -25,9 +26,11 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.file.share.implementation.models.KeyInfo;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
 import com.azure.storage.file.share.implementation.models.ListSharesResponse;
 import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.ServicesGetUserDelegationKeyHeaders;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentNextHeaders;
 import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesHeaders;
@@ -36,6 +39,7 @@ import com.azure.storage.file.share.implementation.models.ShareStorageExceptionI
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareTokenIntent;
+import com.azure.storage.file.share.models.UserDelegationKey;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -71,7 +75,7 @@ public final class ServicesImpl {
      * REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureFileStorageServ")
+    @ServiceInterface(name = "AzureFileStorageServices")
     public interface ServicesService {
 
         @Put("/")
@@ -192,6 +196,42 @@ public final class ServicesImpl {
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Post("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>> getUserDelegationKey(
+            @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml") KeyInfo keyInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Mono<Response<UserDelegationKey>> getUserDelegationKeyNoCustomHeaders(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml") KeyInfo keyInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey> getUserDelegationKeySync(
+            @HostParam("url") String url, @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml") KeyInfo keyInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
+        Response<UserDelegationKey> getUserDelegationKeyNoCustomHeadersSync(@HostParam("url") String url,
+            @QueryParam("restype") String restype, @QueryParam("comp") String comp,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version,
+            @HeaderParam("x-ms-client-request-id") String requestId, @BodyParam("application/xml") KeyInfo keyInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ShareStorageExceptionInternal.class)
@@ -235,7 +275,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -255,7 +295,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +321,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -301,7 +341,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,7 +363,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -345,7 +385,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,7 +411,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -399,7 +439,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -416,7 +456,7 @@ public final class ServicesImpl {
      *
      * @param shareServiceProperties The StorageService properties.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -443,7 +483,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -464,7 +504,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -491,7 +531,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -511,7 +551,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -532,7 +572,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -552,7 +592,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -579,7 +619,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -607,7 +647,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -629,7 +669,7 @@ public final class ServicesImpl {
      * CORS (Cross-Origin Resource Sharing) rules.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -663,7 +703,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -701,7 +741,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -739,7 +779,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -765,7 +805,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -793,7 +833,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -831,7 +871,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -869,7 +909,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -896,7 +936,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -923,7 +963,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -963,7 +1003,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1004,7 +1044,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1014,8 +1054,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareItemInternal> listSharesSegment(String prefix, String marker, Integer maxresults,
         List<ListSharesIncludeType> include, Integer timeout) {
-        return new PagedIterable<>(
-            () -> listSharesSegmentSinglePage(prefix, marker, maxresults, include, timeout, Context.NONE),
+        return new PagedIterable<>(() -> listSharesSegmentSinglePage(prefix, marker, maxresults, include, timeout),
             nextLink -> listSharesSegmentNextSinglePage(nextLink));
     }
 
@@ -1031,7 +1070,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1059,7 +1098,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1099,7 +1138,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1140,7 +1179,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1150,8 +1189,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareItemInternal> listSharesSegmentNoCustomHeaders(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
-        return new PagedIterable<>(() -> listSharesSegmentNoCustomHeadersSinglePage(prefix, marker, maxresults, include,
-            timeout, Context.NONE), nextLink -> listSharesSegmentNextSinglePage(nextLink));
+        return new PagedIterable<>(
+            () -> listSharesSegmentNoCustomHeadersSinglePage(prefix, marker, maxresults, include, timeout),
+            nextLink -> listSharesSegmentNextSinglePage(nextLink));
     }
 
     /**
@@ -1166,7 +1206,7 @@ public final class ServicesImpl {
      * or specifies a value greater than 5,000, the server will return up to 5,000 items.
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1180,6 +1220,239 @@ public final class ServicesImpl {
         return new PagedIterable<>(
             () -> listSharesSegmentNoCustomHeadersSinglePage(prefix, marker, maxresults, include, timeout, context),
             nextLink -> listSharesSegmentNextSinglePage(nextLink, context));
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>>
+        getUserDelegationKeyWithResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId) {
+        return FluxUtil
+            .withContext(context -> getUserDelegationKeyWithResponseAsync(keyInfo, timeout, requestId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>>
+        getUserDelegationKeyWithResponseAsync(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "userdelegationkey";
+        final String accept = "application/xml";
+        return service
+            .getUserDelegationKey(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId,
+                keyInfo, accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UserDelegationKey> getUserDelegationKeyAsync(KeyInfo keyInfo, Integer timeout, String requestId) {
+        return getUserDelegationKeyWithResponseAsync(keyInfo, timeout, requestId)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<UserDelegationKey> getUserDelegationKeyAsync(KeyInfo keyInfo, Integer timeout, String requestId,
+        Context context) {
+        return getUserDelegationKeyWithResponseAsync(keyInfo, timeout, requestId, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyNoCustomHeadersWithResponseAsync(KeyInfo keyInfo,
+        Integer timeout, String requestId) {
+        return FluxUtil
+            .withContext(
+                context -> getUserDelegationKeyNoCustomHeadersWithResponseAsync(keyInfo, timeout, requestId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<UserDelegationKey>> getUserDelegationKeyNoCustomHeadersWithResponseAsync(KeyInfo keyInfo,
+        Integer timeout, String requestId, Context context) {
+        final String restype = "service";
+        final String comp = "userdelegationkey";
+        final String accept = "application/xml";
+        return service
+            .getUserDelegationKeyNoCustomHeaders(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
+                requestId, keyInfo, accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>
+        getUserDelegationKeyWithResponse(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
+        try {
+            final String restype = "service";
+            final String comp = "userdelegationkey";
+            final String accept = "application/xml";
+            return service.getUserDelegationKeySync(this.client.getUrl(), restype, comp, timeout,
+                this.client.getVersion(), requestId, keyInfo, accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserDelegationKey getUserDelegationKey(KeyInfo keyInfo, Integer timeout, String requestId) {
+        try {
+            return getUserDelegationKeyWithResponse(keyInfo, timeout, requestId, Context.NONE).getValue();
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
+    }
+
+    /**
+     * Retrieves a user delegation key for the File service. This is only a valid operation when using bearer token
+     * authentication.
+     *
+     * @param keyInfo Key information.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://learn.microsoft.com/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a user delegation key along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<UserDelegationKey> getUserDelegationKeyNoCustomHeadersWithResponse(KeyInfo keyInfo, Integer timeout,
+        String requestId, Context context) {
+        try {
+            final String restype = "service";
+            final String comp = "userdelegationkey";
+            final String accept = "application/xml";
+            return service.getUserDelegationKeyNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
+                this.client.getVersion(), requestId, keyInfo, accept, context);
+        } catch (ShareStorageExceptionInternal internalException) {
+            throw ModelHelper.mapToShareStorageException(internalException);
+        }
     }
 
     /**

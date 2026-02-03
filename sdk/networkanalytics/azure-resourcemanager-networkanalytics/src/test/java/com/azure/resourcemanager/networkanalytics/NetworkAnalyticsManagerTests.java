@@ -10,7 +10,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Test;
 
 public class NetworkAnalyticsManagerTests extends TestProxyTestBase {
@@ -18,7 +18,7 @@ public class NetworkAnalyticsManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         networkAnalyticsManager = NetworkAnalyticsManager.configure()

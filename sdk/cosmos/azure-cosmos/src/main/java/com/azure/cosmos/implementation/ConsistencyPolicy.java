@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
@@ -79,8 +78,8 @@ public final class ConsistencyPolicy extends JsonSerializable {
         this.consistencyLevel = level;
         super.set(
             Constants.Properties.DEFAULT_CONSISTENCY_LEVEL,
-            level.toString(),
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            level.toString()
+        );
         return this;
     }
 
@@ -108,8 +107,8 @@ public final class ConsistencyPolicy extends JsonSerializable {
     public ConsistencyPolicy setMaxStalenessPrefix(int maxStalenessPrefix) {
         super.set(
             Constants.Properties.MAX_STALENESS_PREFIX,
-            maxStalenessPrefix,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            maxStalenessPrefix
+        );
         return this;
     }
 
@@ -140,8 +139,8 @@ public final class ConsistencyPolicy extends JsonSerializable {
         }
         super.set(
             Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS,
-            maxStalenessInterval.getSeconds(),
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            maxStalenessInterval.getSeconds()
+        );
         return this;
     }
 

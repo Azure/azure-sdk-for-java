@@ -326,12 +326,22 @@ public final class MongoDbLinkedServiceTypeProperties implements JsonSerializabl
         jsonWriter.writeUntypedField("databaseName", this.databaseName);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("username", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("authSource", this.authSource);
-        jsonWriter.writeUntypedField("port", this.port);
-        jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-        jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+        if (this.authSource != null) {
+            jsonWriter.writeUntypedField("authSource", this.authSource);
+        }
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
+        if (this.enableSsl != null) {
+            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+        }
+        if (this.allowSelfSignedServerCert != null) {
+            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

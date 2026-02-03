@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,41 +22,48 @@ public class AzureDatabricksLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "AzureDatabricks";
 
     /*
      * <REGION>.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object domain;
 
     /*
      * Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html.
      * Type: string (or Expression with resultType string).
      */
+    @Generated
     private SecretBase accessToken;
 
     /*
      * Required to specify MSI, if using Workspace resource id for databricks REST API. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object authentication;
 
     /*
      * Workspace resource id for databricks REST API. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object workspaceResourceId;
 
     /*
      * The id of an existing interactive cluster that will be used for all runs of this activity. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object existingClusterId;
 
     /*
      * The id of an existing instance pool that will be used for all runs of this activity. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object instancePoolId;
 
     /*
@@ -63,6 +71,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * pool nodes created for each run of this activity. Required if instancePoolId is specified. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object newClusterVersion;
 
     /*
@@ -72,6 +81,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * only specify a fixed number of worker nodes, such as '2'. Required if newClusterVersion is specified. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object newClusterNumOfWorker;
 
     /*
@@ -79,67 +89,85 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * instancePoolId is not specified. If instancePoolId is specified, this property is ignored. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object newClusterNodeType;
 
     /*
      * A set of optional, user-specified Spark configuration key-value pairs.
      */
+    @Generated
     private Map<String, Object> newClusterSparkConf;
 
     /*
      * A set of optional, user-specified Spark environment variables key-value pairs.
      */
+    @Generated
     private Map<String, Object> newClusterSparkEnvVars;
 
     /*
      * Additional tags for cluster resources. This property is ignored in instance pool configurations.
      */
+    @Generated
     private Map<String, Object> newClusterCustomTags;
 
     /*
      * Specify a location to deliver Spark driver, worker, and event logs. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object newClusterLogDestination;
 
     /*
      * The driver node type for the new job cluster. This property is ignored in instance pool configurations. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object newClusterDriverNodeType;
 
     /*
      * User-defined initialization scripts for the new cluster. Type: array of strings (or Expression with resultType
      * array of strings).
      */
+    @Generated
     private Object newClusterInitScripts;
 
     /*
      * Enable the elastic disk on the new cluster. This property is now ignored, and takes the default elastic disk
      * behavior in Databricks (elastic disks are always enabled). Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object newClusterEnableElasticDisk;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * The policy id for limiting the ability to configure clusters based on a user defined set of rules. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private Object policyId;
 
     /*
      * The credential reference containing authentication information.
      */
+    @Generated
     private CredentialReference credential;
+
+    /*
+     * The data security mode for the Databricks Cluster. Type: string (or Expression with resultType string).
+     */
+    @Generated
+    private Object dataSecurityMode;
 
     /**
      * Creates an instance of AzureDatabricksLinkedService class.
      */
+    @Generated
     public AzureDatabricksLinkedService() {
     }
 
@@ -148,6 +176,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -159,6 +188,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the domain value.
      */
+    @Generated
     public Object getDomain() {
         return this.domain;
     }
@@ -170,6 +200,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param domain the domain value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setDomain(Object domain) {
         this.domain = domain;
         return this;
@@ -182,6 +213,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the accessToken value.
      */
+    @Generated
     public SecretBase getAccessToken() {
         return this.accessToken;
     }
@@ -194,6 +226,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param accessToken the accessToken value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setAccessToken(SecretBase accessToken) {
         this.accessToken = accessToken;
         return this;
@@ -205,6 +238,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the authentication value.
      */
+    @Generated
     public Object getAuthentication() {
         return this.authentication;
     }
@@ -216,6 +250,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param authentication the authentication value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setAuthentication(Object authentication) {
         this.authentication = authentication;
         return this;
@@ -227,6 +262,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the workspaceResourceId value.
      */
+    @Generated
     public Object getWorkspaceResourceId() {
         return this.workspaceResourceId;
     }
@@ -238,6 +274,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setWorkspaceResourceId(Object workspaceResourceId) {
         this.workspaceResourceId = workspaceResourceId;
         return this;
@@ -249,6 +286,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the existingClusterId value.
      */
+    @Generated
     public Object getExistingClusterId() {
         return this.existingClusterId;
     }
@@ -260,6 +298,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param existingClusterId the existingClusterId value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setExistingClusterId(Object existingClusterId) {
         this.existingClusterId = existingClusterId;
         return this;
@@ -271,6 +310,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the instancePoolId value.
      */
+    @Generated
     public Object getInstancePoolId() {
         return this.instancePoolId;
     }
@@ -282,6 +322,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param instancePoolId the instancePoolId value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setInstancePoolId(Object instancePoolId) {
         this.instancePoolId = instancePoolId;
         return this;
@@ -294,6 +335,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterVersion value.
      */
+    @Generated
     public Object getNewClusterVersion() {
         return this.newClusterVersion;
     }
@@ -306,6 +348,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterVersion the newClusterVersion value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterVersion(Object newClusterVersion) {
         this.newClusterVersion = newClusterVersion;
         return this;
@@ -320,6 +363,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterNumOfWorker value.
      */
+    @Generated
     public Object getNewClusterNumOfWorker() {
         return this.newClusterNumOfWorker;
     }
@@ -334,6 +378,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterNumOfWorker the newClusterNumOfWorker value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterNumOfWorker(Object newClusterNumOfWorker) {
         this.newClusterNumOfWorker = newClusterNumOfWorker;
         return this;
@@ -346,6 +391,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterNodeType value.
      */
+    @Generated
     public Object getNewClusterNodeType() {
         return this.newClusterNodeType;
     }
@@ -358,6 +404,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterNodeType the newClusterNodeType value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterNodeType(Object newClusterNodeType) {
         this.newClusterNodeType = newClusterNodeType;
         return this;
@@ -368,6 +415,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterSparkConf value.
      */
+    @Generated
     public Map<String, Object> getNewClusterSparkConf() {
         return this.newClusterSparkConf;
     }
@@ -378,6 +426,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterSparkConf the newClusterSparkConf value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterSparkConf(Map<String, Object> newClusterSparkConf) {
         this.newClusterSparkConf = newClusterSparkConf;
         return this;
@@ -389,6 +438,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterSparkEnvVars value.
      */
+    @Generated
     public Map<String, Object> getNewClusterSparkEnvVars() {
         return this.newClusterSparkEnvVars;
     }
@@ -400,6 +450,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterSparkEnvVars the newClusterSparkEnvVars value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterSparkEnvVars(Map<String, Object> newClusterSparkEnvVars) {
         this.newClusterSparkEnvVars = newClusterSparkEnvVars;
         return this;
@@ -411,6 +462,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterCustomTags value.
      */
+    @Generated
     public Map<String, Object> getNewClusterCustomTags() {
         return this.newClusterCustomTags;
     }
@@ -422,6 +474,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterCustomTags the newClusterCustomTags value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterCustomTags(Map<String, Object> newClusterCustomTags) {
         this.newClusterCustomTags = newClusterCustomTags;
         return this;
@@ -433,6 +486,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterLogDestination value.
      */
+    @Generated
     public Object getNewClusterLogDestination() {
         return this.newClusterLogDestination;
     }
@@ -444,6 +498,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterLogDestination the newClusterLogDestination value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterLogDestination(Object newClusterLogDestination) {
         this.newClusterLogDestination = newClusterLogDestination;
         return this;
@@ -455,6 +510,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterDriverNodeType value.
      */
+    @Generated
     public Object getNewClusterDriverNodeType() {
         return this.newClusterDriverNodeType;
     }
@@ -466,6 +522,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterDriverNodeType the newClusterDriverNodeType value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterDriverNodeType(Object newClusterDriverNodeType) {
         this.newClusterDriverNodeType = newClusterDriverNodeType;
         return this;
@@ -477,6 +534,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterInitScripts value.
      */
+    @Generated
     public Object getNewClusterInitScripts() {
         return this.newClusterInitScripts;
     }
@@ -488,6 +546,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterInitScripts the newClusterInitScripts value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterInitScripts(Object newClusterInitScripts) {
         this.newClusterInitScripts = newClusterInitScripts;
         return this;
@@ -500,6 +559,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the newClusterEnableElasticDisk value.
      */
+    @Generated
     public Object getNewClusterEnableElasticDisk() {
         return this.newClusterEnableElasticDisk;
     }
@@ -512,6 +572,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param newClusterEnableElasticDisk the newClusterEnableElasticDisk value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setNewClusterEnableElasticDisk(Object newClusterEnableElasticDisk) {
         this.newClusterEnableElasticDisk = newClusterEnableElasticDisk;
         return this;
@@ -523,6 +584,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -534,6 +596,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -545,6 +608,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the policyId value.
      */
+    @Generated
     public Object getPolicyId() {
         return this.policyId;
     }
@@ -556,6 +620,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param policyId the policyId value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setPolicyId(Object policyId) {
         this.policyId = policyId;
         return this;
@@ -566,6 +631,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the credential value.
      */
+    @Generated
     public CredentialReference getCredential() {
         return this.credential;
     }
@@ -576,14 +642,50 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @param credential the credential value to set.
      * @return the AzureDatabricksLinkedService object itself.
      */
+    @Generated
     public AzureDatabricksLinkedService setCredential(CredentialReference credential) {
         this.credential = credential;
         return this;
     }
 
     /**
+     * Get the dataSecurityMode property: The data security mode for the Databricks Cluster. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @return the dataSecurityMode value.
+     */
+    @Generated
+    public Object getDataSecurityMode() {
+        return this.dataSecurityMode;
+    }
+
+    /**
+     * Set the dataSecurityMode property: The data security mode for the Databricks Cluster. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @param dataSecurityMode the dataSecurityMode value to set.
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    @Generated
+    public AzureDatabricksLinkedService setDataSecurityMode(Object dataSecurityMode) {
+        this.dataSecurityMode = dataSecurityMode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AzureDatabricksLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AzureDatabricksLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -593,6 +695,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -602,6 +705,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -611,6 +715,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -620,9 +725,11 @@ public class AzureDatabricksLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -646,30 +753,60 @@ public class AzureDatabricksLinkedService extends LinkedService {
             || newClusterEnableElasticDisk != null
             || encryptedCredential != null
             || policyId != null
-            || credential != null) {
+            || credential != null
+            || dataSecurityMode != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("domain", this.domain);
             jsonWriter.writeJsonField("accessToken", this.accessToken);
-            jsonWriter.writeUntypedField("authentication", this.authentication);
-            jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
-            jsonWriter.writeUntypedField("existingClusterId", this.existingClusterId);
-            jsonWriter.writeUntypedField("instancePoolId", this.instancePoolId);
-            jsonWriter.writeUntypedField("newClusterVersion", this.newClusterVersion);
-            jsonWriter.writeUntypedField("newClusterNumOfWorker", this.newClusterNumOfWorker);
-            jsonWriter.writeUntypedField("newClusterNodeType", this.newClusterNodeType);
+            if (this.authentication != null) {
+                jsonWriter.writeUntypedField("authentication", this.authentication);
+            }
+            if (this.workspaceResourceId != null) {
+                jsonWriter.writeUntypedField("workspaceResourceId", this.workspaceResourceId);
+            }
+            if (this.existingClusterId != null) {
+                jsonWriter.writeUntypedField("existingClusterId", this.existingClusterId);
+            }
+            if (this.instancePoolId != null) {
+                jsonWriter.writeUntypedField("instancePoolId", this.instancePoolId);
+            }
+            if (this.newClusterVersion != null) {
+                jsonWriter.writeUntypedField("newClusterVersion", this.newClusterVersion);
+            }
+            if (this.newClusterNumOfWorker != null) {
+                jsonWriter.writeUntypedField("newClusterNumOfWorker", this.newClusterNumOfWorker);
+            }
+            if (this.newClusterNodeType != null) {
+                jsonWriter.writeUntypedField("newClusterNodeType", this.newClusterNodeType);
+            }
             jsonWriter.writeMapField("newClusterSparkConf", this.newClusterSparkConf,
                 (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeMapField("newClusterSparkEnvVars", this.newClusterSparkEnvVars,
                 (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeMapField("newClusterCustomTags", this.newClusterCustomTags,
                 (writer, element) -> writer.writeUntyped(element));
-            jsonWriter.writeUntypedField("newClusterLogDestination", this.newClusterLogDestination);
-            jsonWriter.writeUntypedField("newClusterDriverNodeType", this.newClusterDriverNodeType);
-            jsonWriter.writeUntypedField("newClusterInitScripts", this.newClusterInitScripts);
-            jsonWriter.writeUntypedField("newClusterEnableElasticDisk", this.newClusterEnableElasticDisk);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
-            jsonWriter.writeUntypedField("policyId", this.policyId);
+            if (this.newClusterLogDestination != null) {
+                jsonWriter.writeUntypedField("newClusterLogDestination", this.newClusterLogDestination);
+            }
+            if (this.newClusterDriverNodeType != null) {
+                jsonWriter.writeUntypedField("newClusterDriverNodeType", this.newClusterDriverNodeType);
+            }
+            if (this.newClusterInitScripts != null) {
+                jsonWriter.writeUntypedField("newClusterInitScripts", this.newClusterInitScripts);
+            }
+            if (this.newClusterEnableElasticDisk != null) {
+                jsonWriter.writeUntypedField("newClusterEnableElasticDisk", this.newClusterEnableElasticDisk);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
+            if (this.policyId != null) {
+                jsonWriter.writeUntypedField("policyId", this.policyId);
+            }
             jsonWriter.writeJsonField("credential", this.credential);
+            if (this.dataSecurityMode != null) {
+                jsonWriter.writeUntypedField("dataSecurityMode", this.dataSecurityMode);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -689,6 +826,7 @@ public class AzureDatabricksLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDatabricksLinkedService.
      */
+    @Generated
     public static AzureDatabricksLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDatabricksLinkedService deserializedAzureDatabricksLinkedService = new AzureDatabricksLinkedService();
@@ -697,7 +835,9 @@ public class AzureDatabricksLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureDatabricksLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureDatabricksLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
@@ -758,6 +898,8 @@ public class AzureDatabricksLinkedService extends LinkedService {
                             deserializedAzureDatabricksLinkedService.policyId = reader.readUntyped();
                         } else if ("credential".equals(fieldName)) {
                             deserializedAzureDatabricksLinkedService.credential = CredentialReference.fromJson(reader);
+                        } else if ("dataSecurityMode".equals(fieldName)) {
+                            deserializedAzureDatabricksLinkedService.dataSecurityMode = reader.readUntyped();
                         } else {
                             reader.skipChildren();
                         }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.mongocluster.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mongocluster.MongoClusterManager;
 import com.azure.resourcemanager.mongocluster.models.FirewallRule;
@@ -21,20 +21,20 @@ public final class FirewallRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"InProgress\",\"startIpAddress\":\"bpxjmfl\",\"endIpAddress\":\"vvnchrkcc\"},\"id\":\"wzjuqk\",\"name\":\"rsa\",\"type\":\"iwkuofos\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"gr\",\"endIpAddress\":\"wflzlfbxzpuzy\"},\"id\":\"spnqzahmgkb\",\"name\":\"pyydhi\",\"type\":\"nuqqkpikadrgvt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MongoClusterManager manager = MongoClusterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FirewallRule response = manager.firewallRules()
-            .getWithResponse("ulexxbczwtr", "wiqzbqjvsovmyo", "acspkwl", com.azure.core.util.Context.NONE)
+            .getWithResponse("eh", "pvecxgodeb", "qkkrb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bpxjmfl", response.properties().startIpAddress());
-        Assertions.assertEquals("vvnchrkcc", response.properties().endIpAddress());
+        Assertions.assertEquals("gr", response.properties().startIpAddress());
+        Assertions.assertEquals("wflzlfbxzpuzy", response.properties().endIpAddress());
     }
 }

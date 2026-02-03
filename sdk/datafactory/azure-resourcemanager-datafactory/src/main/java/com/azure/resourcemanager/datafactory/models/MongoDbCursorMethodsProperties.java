@@ -175,10 +175,18 @@ public final class MongoDbCursorMethodsProperties implements JsonSerializable<Mo
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("project", this.project);
-        jsonWriter.writeUntypedField("sort", this.sort);
-        jsonWriter.writeUntypedField("skip", this.skip);
-        jsonWriter.writeUntypedField("limit", this.limit);
+        if (this.project != null) {
+            jsonWriter.writeUntypedField("project", this.project);
+        }
+        if (this.sort != null) {
+            jsonWriter.writeUntypedField("sort", this.sort);
+        }
+        if (this.skip != null) {
+            jsonWriter.writeUntypedField("skip", this.skip);
+        }
+        if (this.limit != null) {
+            jsonWriter.writeUntypedField("limit", this.limit);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

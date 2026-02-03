@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,16 +24,19 @@ public final class QueryRewritesValuesDebugInfo implements JsonSerializable<Quer
      * The input text to the generative query rewriting model. There may be cases where the user query and the input to
      * the generative model are not identical.
      */
+    @Generated
     private String inputQuery;
 
     /*
      * List of query rewrites.
      */
+    @Generated
     private List<String> rewrites;
 
     /**
      * Creates an instance of QueryRewritesValuesDebugInfo class.
      */
+    @Generated
     public QueryRewritesValuesDebugInfo() {
     }
 
@@ -42,6 +46,7 @@ public final class QueryRewritesValuesDebugInfo implements JsonSerializable<Quer
      * 
      * @return the inputQuery value.
      */
+    @Generated
     public String getInputQuery() {
         return this.inputQuery;
     }
@@ -51,6 +56,7 @@ public final class QueryRewritesValuesDebugInfo implements JsonSerializable<Quer
      * 
      * @return the rewrites value.
      */
+    @Generated
     public List<String> getRewrites() {
         return this.rewrites;
     }
@@ -58,6 +64,7 @@ public final class QueryRewritesValuesDebugInfo implements JsonSerializable<Quer
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -72,6 +79,7 @@ public final class QueryRewritesValuesDebugInfo implements JsonSerializable<Quer
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryRewritesValuesDebugInfo.
      */
+    @Generated
     public static QueryRewritesValuesDebugInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             QueryRewritesValuesDebugInfo deserializedQueryRewritesValuesDebugInfo = new QueryRewritesValuesDebugInfo();

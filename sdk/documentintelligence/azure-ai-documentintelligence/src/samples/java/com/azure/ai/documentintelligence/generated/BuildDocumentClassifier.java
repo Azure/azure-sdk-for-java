@@ -24,7 +24,7 @@ public class BuildDocumentClassifier {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.buildclassifier.builddocumentclassifier
+        // BEGIN:com.azure.ai.documentintelligence.generated.build-classifier.build-document-classifier
         SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails> response
             = documentIntelligenceAdministrationClient.beginBuildClassifier(new BuildDocumentClassifierOptions(
                 "myClassifier",
@@ -35,7 +35,7 @@ public class BuildDocumentClassifier {
                     new ClassifierDocumentTypeDetails().setAzureBlobFileListSource(new AzureBlobFileListContentSource(
                         "https://myStorageAccount.blob.core.windows.net/myContainer?mySasToken", "formB.jsonl"))))
                             .setDescription("Classifier description"));
-        // END:com.azure.ai.documentintelligence.generated.buildclassifier.builddocumentclassifier
+        // END:com.azure.ai.documentintelligence.generated.build-classifier.build-document-classifier
     }
 
     // Use "Map.of" if available

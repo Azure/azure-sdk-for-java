@@ -11,7 +11,8 @@ public final class ApiManagementSkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiManagementSkuCapacity model = BinaryData
-            .fromString("{\"minimum\":198753524,\"maximum\":1828172579,\"default\":994702538,\"scaleType\":\"None\"}")
+            .fromString(
+                "{\"minimum\":1452093999,\"maximum\":953634796,\"default\":175685872,\"scaleType\":\"Automatic\"}")
             .toObject(ApiManagementSkuCapacity.class);
     }
 

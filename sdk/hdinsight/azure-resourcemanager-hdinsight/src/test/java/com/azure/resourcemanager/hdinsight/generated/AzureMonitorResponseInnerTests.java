@@ -17,30 +17,34 @@ public final class AzureMonitorResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMonitorResponseInner model = BinaryData.fromString(
-            "{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"dtlwwrlkd\",\"selectedConfigurations\":{\"configurationVersion\":\"cvokotllxdyhg\",\"globalConfigurations\":{\"hadoocrk\":\"cogjltdtbn\",\"amqgxqquezikyw\":\"cikhnv\"},\"tableList\":[{\"name\":\"allatmelwuipic\"},{\"name\":\"zkzivgvvcnay\"}]}}")
+            "{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"lkdmtncvokotllxd\",\"selectedConfigurations\":{\"configurationVersion\":\"syocogjltdtbnnha\",\"globalConfigurations\":{\"amqgxqquezikyw\":\"crkvcikhnv\",\"lla\":\"gxk\",\"z\":\"melwuipiccjz\"},\"tableList\":[{\"name\":\"vc\"},{\"name\":\"y\"},{\"name\":\"yrnxxmueedn\"}]}}")
             .toObject(AzureMonitorResponseInner.class);
-        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("dtlwwrlkd", model.workspaceId());
-        Assertions.assertEquals("cvokotllxdyhg", model.selectedConfigurations().configurationVersion());
-        Assertions.assertEquals("cogjltdtbn", model.selectedConfigurations().globalConfigurations().get("hadoocrk"));
-        Assertions.assertEquals("allatmelwuipic", model.selectedConfigurations().tableList().get(0).name());
+        Assertions.assertFalse(model.clusterMonitoringEnabled());
+        Assertions.assertEquals("lkdmtncvokotllxd", model.workspaceId());
+        Assertions.assertEquals("syocogjltdtbnnha", model.selectedConfigurations().configurationVersion());
+        Assertions.assertEquals("crkvcikhnv",
+            model.selectedConfigurations().globalConfigurations().get("amqgxqquezikyw"));
+        Assertions.assertEquals("vc", model.selectedConfigurations().tableList().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMonitorResponseInner model = new AzureMonitorResponseInner().withClusterMonitoringEnabled(false)
-            .withWorkspaceId("dtlwwrlkd")
-            .withSelectedConfigurations(
-                new AzureMonitorSelectedConfigurations().withConfigurationVersion("cvokotllxdyhg")
-                    .withGlobalConfigurations(mapOf("hadoocrk", "cogjltdtbn", "amqgxqquezikyw", "cikhnv"))
-                    .withTableList(Arrays.asList(new AzureMonitorTableConfiguration().withName("allatmelwuipic"),
-                        new AzureMonitorTableConfiguration().withName("zkzivgvvcnay"))));
+        AzureMonitorResponseInner model
+            = new AzureMonitorResponseInner().withClusterMonitoringEnabled(false)
+                .withWorkspaceId("lkdmtncvokotllxd")
+                .withSelectedConfigurations(new AzureMonitorSelectedConfigurations()
+                    .withConfigurationVersion("syocogjltdtbnnha")
+                    .withGlobalConfigurations(mapOf("amqgxqquezikyw", "crkvcikhnv", "lla", "gxk", "z", "melwuipiccjz"))
+                    .withTableList(Arrays.asList(new AzureMonitorTableConfiguration().withName("vc"),
+                        new AzureMonitorTableConfiguration().withName("y"),
+                        new AzureMonitorTableConfiguration().withName("yrnxxmueedn"))));
         model = BinaryData.fromObject(model).toObject(AzureMonitorResponseInner.class);
-        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("dtlwwrlkd", model.workspaceId());
-        Assertions.assertEquals("cvokotllxdyhg", model.selectedConfigurations().configurationVersion());
-        Assertions.assertEquals("cogjltdtbn", model.selectedConfigurations().globalConfigurations().get("hadoocrk"));
-        Assertions.assertEquals("allatmelwuipic", model.selectedConfigurations().tableList().get(0).name());
+        Assertions.assertFalse(model.clusterMonitoringEnabled());
+        Assertions.assertEquals("lkdmtncvokotllxd", model.workspaceId());
+        Assertions.assertEquals("syocogjltdtbnnha", model.selectedConfigurations().configurationVersion());
+        Assertions.assertEquals("crkvcikhnv",
+            model.selectedConfigurations().globalConfigurations().get("amqgxqquezikyw"));
+        Assertions.assertEquals("vc", model.selectedConfigurations().tableList().get(0).name());
     }
 
     // Use "Map.of" if available

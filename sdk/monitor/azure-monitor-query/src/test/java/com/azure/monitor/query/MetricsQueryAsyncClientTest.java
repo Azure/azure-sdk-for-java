@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.getMetricResourceUri;
+import static com.azure.monitor.query.TestUtil.addTestProxySanitizersAndMatchers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -86,8 +87,10 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
 
         MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder().credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getMetricEndpoint());

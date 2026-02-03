@@ -11,7 +11,7 @@ public final class ConnectToSourceSqlServerTaskOutputLoginLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToSourceSqlServerTaskOutputLoginLevel model = BinaryData.fromString(
-            "{\"resultType\":\"LoginLevelOutput\",\"name\":\"ce\",\"loginType\":\"SqlLogin\",\"defaultDatabase\":\"jrwjueiotwm\",\"isEnabled\":false,\"migrationEligibility\":{\"isEligibleForMigration\":false,\"validationMessages\":[\"txnrjaw\"]},\"id\":\"wgxhn\"}")
+            "{\"resultType\":\"LoginLevelOutput\",\"name\":\"ydvfvfcjnae\",\"loginType\":\"SqlLogin\",\"defaultDatabase\":\"vhmgorffukis\",\"isEnabled\":false,\"migrationEligibility\":{\"isEligibleForMigration\":true,\"validationMessages\":[\"lefaxvxilcbtgn\"]},\"id\":\"zeyqxtjjfzqlqhyc\"}")
             .toObject(ConnectToSourceSqlServerTaskOutputLoginLevel.class);
     }
 

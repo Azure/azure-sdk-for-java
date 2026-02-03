@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class HiveThriftTransportProtocol extends ExpandableStringEnum<Hive
     /**
      * Static value Binary for HiveThriftTransportProtocol.
      */
+    @Generated
     public static final HiveThriftTransportProtocol BINARY = fromString("Binary");
 
     /**
      * Static value SASL for HiveThriftTransportProtocol.
      */
+    @Generated
     public static final HiveThriftTransportProtocol SASL = fromString("SASL");
 
     /**
      * Static value HTTP for HiveThriftTransportProtocol.
      */
+    @Generated
     public static final HiveThriftTransportProtocol HTTP = fromString("HTTP ");
 
     /**
@@ -31,6 +35,7 @@ public final class HiveThriftTransportProtocol extends ExpandableStringEnum<Hive
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HiveThriftTransportProtocol() {
     }
@@ -41,6 +46,7 @@ public final class HiveThriftTransportProtocol extends ExpandableStringEnum<Hive
      * @param name a name to look for.
      * @return the corresponding HiveThriftTransportProtocol.
      */
+    @Generated
     public static HiveThriftTransportProtocol fromString(String name) {
         return fromString(name, HiveThriftTransportProtocol.class);
     }
@@ -50,6 +56,7 @@ public final class HiveThriftTransportProtocol extends ExpandableStringEnum<Hive
      * 
      * @return known HiveThriftTransportProtocol values.
      */
+    @Generated
     public static Collection<HiveThriftTransportProtocol> values() {
         return values(HiveThriftTransportProtocol.class);
     }

@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,18 +15,27 @@ public final class PhoneNumberType extends ExpandableStringEnum<PhoneNumberType>
     /**
      * Static value geographic for PhoneNumberType.
      */
+    @Generated
     public static final PhoneNumberType GEOGRAPHIC = fromString("geographic");
 
     /**
      * Static value tollFree for PhoneNumberType.
      */
+    @Generated
     public static final PhoneNumberType TOLL_FREE = fromString("tollFree");
+
+    /**
+     * Static value mobile for PhoneNumberType.
+     */
+    @Generated
+    public static final PhoneNumberType MOBILE = fromString("mobile");
 
     /**
      * Creates a new instance of PhoneNumberType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PhoneNumberType() {
     }
@@ -36,6 +46,7 @@ public final class PhoneNumberType extends ExpandableStringEnum<PhoneNumberType>
      * @param name a name to look for.
      * @return the corresponding PhoneNumberType.
      */
+    @Generated
     public static PhoneNumberType fromString(String name) {
         return fromString(name, PhoneNumberType.class);
     }
@@ -45,6 +56,7 @@ public final class PhoneNumberType extends ExpandableStringEnum<PhoneNumberType>
      * 
      * @return known PhoneNumberType values.
      */
+    @Generated
     public static Collection<PhoneNumberType> values() {
         return values(PhoneNumberType.class);
     }

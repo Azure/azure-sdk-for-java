@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfiguration;
@@ -25,31 +25,33 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"q\",\"type\":\"btimpkjblor\"},\"properties\":{\"collectionInterval\":89470103286938544,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"uds\",\"disabledMetrics\":[\"uaawja\",\"xwjnfcz\"],\"enabledMetrics\":[\"iixyxvqbanosj\"],\"provisioningState\":\"Succeeded\"},\"location\":\"nbg\",\"tags\":{\"foeajogsy\":\"ddorgmynltwmpft\"},\"id\":\"wetamfddrvlk\",\"name\":\"zwbhnrecc\",\"type\":\"d\"}";
+            = "{\"etag\":\"xsdpla\",\"extendedLocation\":{\"name\":\"mydmhweqjfyxydgt\",\"type\":\"kvqb\"},\"properties\":{\"collectionInterval\":453336181139262277,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"zpvxak\",\"disabledMetrics\":[\"p\",\"esrfgamqiydvx\"],\"enabledMetrics\":[\"hyhgo\"],\"provisioningState\":\"Succeeded\"},\"location\":\"yqyxyjrcbqpbis\",\"tags\":{\"o\":\"q\",\"fwjlof\":\"tdahneaoovtyjzti\"},\"id\":\"ekfsrm\",\"name\":\"uklajvcfoc\",\"type\":\"hapejov\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .define("tvdxxhe")
-            .withRegion("mlnfyz")
-            .withExistingCluster("polzkgysdgzyy", "zoxlvoc")
-            .withExtendedLocation(new ExtendedLocation().withName("gmlilwzghjhjvmab").withType("zbwaybfmdafbgym"))
-            .withCollectionInterval(1745929206373036946L)
-            .withTags(mapOf("dbkp", "rbypi", "njhx", "jtaqhsmqazpdg"))
-            .withEnabledMetrics(Arrays.asList("sgnwdxzedpq", "rfbo"))
+            .define("dwxmda")
+            .withRegion("pwfkc")
+            .withExistingCluster("dgfttmd", "fgeoagfuoftnx")
+            .withExtendedLocation(new ExtendedLocation().withName("vmdmzenlr").withType("tgfczljdncidtjva"))
+            .withCollectionInterval(7260754244675782444L)
+            .withTags(mapOf("avcpfpdofuckclbt", "u"))
+            .withEnabledMetrics(Arrays.asList("ejidbdqzsq", "nycwz", "lv", "wsnmrkkyjt"))
+            .withIfMatch("wpdkktpmbmxbmb")
+            .withIfNoneMatch("wgzzxljb")
             .create();
 
-        Assertions.assertEquals("nbg", response.location());
-        Assertions.assertEquals("ddorgmynltwmpft", response.tags().get("foeajogsy"));
-        Assertions.assertEquals("q", response.extendedLocation().name());
-        Assertions.assertEquals("btimpkjblor", response.extendedLocation().type());
-        Assertions.assertEquals(89470103286938544L, response.collectionInterval());
-        Assertions.assertEquals("iixyxvqbanosj", response.enabledMetrics().get(0));
+        Assertions.assertEquals("yqyxyjrcbqpbis", response.location());
+        Assertions.assertEquals("q", response.tags().get("o"));
+        Assertions.assertEquals("mydmhweqjfyxydgt", response.extendedLocation().name());
+        Assertions.assertEquals("kvqb", response.extendedLocation().type());
+        Assertions.assertEquals(453336181139262277L, response.collectionInterval());
+        Assertions.assertEquals("hyhgo", response.enabledMetrics().get(0));
     }
 
     // Use "Map.of" if available

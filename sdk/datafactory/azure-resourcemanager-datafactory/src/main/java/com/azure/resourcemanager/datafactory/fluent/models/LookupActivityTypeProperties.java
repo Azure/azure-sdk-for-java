@@ -135,7 +135,9 @@ public final class LookupActivityTypeProperties implements JsonSerializable<Look
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("source", this.source);
         jsonWriter.writeJsonField("dataset", this.dataset);
-        jsonWriter.writeUntypedField("firstRowOnly", this.firstRowOnly);
+        if (this.firstRowOnly != null) {
+            jsonWriter.writeUntypedField("firstRowOnly", this.firstRowOnly);
+        }
         return jsonWriter.writeEndObject();
     }
 

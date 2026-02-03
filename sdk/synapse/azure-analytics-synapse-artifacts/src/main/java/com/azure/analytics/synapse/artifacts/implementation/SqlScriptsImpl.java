@@ -63,7 +63,7 @@ public final class SqlScriptsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientSqlSc")
+    @ServiceInterface(name = "ArtifactsClientSqlScripts")
     public interface SqlScriptsService {
         @Get("/sqlScripts")
         @ExpectedResponses({ 200 })

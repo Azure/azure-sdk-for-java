@@ -12,24 +12,24 @@ public final class JobStatusEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobStatusEventDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"JobStatus\",\"jobId\":\"wkaupwhlz\",\"jobFriendlyName\":\"kremgjl\",\"jobStatus\":\"vdorsirx\",\"affectedObjectType\":\"yrkqa\"}")
+            "{\"instanceType\":\"JobStatus\",\"jobId\":\"fe\",\"jobFriendlyName\":\"yj\",\"jobStatus\":\"cdhlywkho\",\"affectedObjectType\":\"junzxezriwg\"}")
             .toObject(JobStatusEventDetails.class);
-        Assertions.assertEquals("wkaupwhlz", model.jobId());
-        Assertions.assertEquals("kremgjl", model.jobFriendlyName());
-        Assertions.assertEquals("vdorsirx", model.jobStatus());
-        Assertions.assertEquals("yrkqa", model.affectedObjectType());
+        Assertions.assertEquals("fe", model.jobId());
+        Assertions.assertEquals("yj", model.jobFriendlyName());
+        Assertions.assertEquals("cdhlywkho", model.jobStatus());
+        Assertions.assertEquals("junzxezriwg", model.affectedObjectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobStatusEventDetails model = new JobStatusEventDetails().withJobId("wkaupwhlz")
-            .withJobFriendlyName("kremgjl")
-            .withJobStatus("vdorsirx")
-            .withAffectedObjectType("yrkqa");
+        JobStatusEventDetails model = new JobStatusEventDetails().withJobId("fe")
+            .withJobFriendlyName("yj")
+            .withJobStatus("cdhlywkho")
+            .withAffectedObjectType("junzxezriwg");
         model = BinaryData.fromObject(model).toObject(JobStatusEventDetails.class);
-        Assertions.assertEquals("wkaupwhlz", model.jobId());
-        Assertions.assertEquals("kremgjl", model.jobFriendlyName());
-        Assertions.assertEquals("vdorsirx", model.jobStatus());
-        Assertions.assertEquals("yrkqa", model.affectedObjectType());
+        Assertions.assertEquals("fe", model.jobId());
+        Assertions.assertEquals("yj", model.jobFriendlyName());
+        Assertions.assertEquals("cdhlywkho", model.jobStatus());
+        Assertions.assertEquals("junzxezriwg", model.affectedObjectType());
     }
 }

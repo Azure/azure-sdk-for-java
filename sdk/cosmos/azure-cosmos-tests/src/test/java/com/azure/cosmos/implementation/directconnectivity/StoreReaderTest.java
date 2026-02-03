@@ -7,11 +7,13 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.LeaseNotFoundException;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -27,7 +29,6 @@ import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.VectorSessionToken;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
-import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -35,7 +36,10 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+import reactor.test.subscriber.TestSubscriber;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -149,6 +153,7 @@ public class StoreReaderTest {
             { new PartitionKeyRangeIsSplittingException() , null, },
             { new PartitionIsMigratingException(), null, },
             { new GoneException(), null, },
+            { new LeaseNotFoundException(null, 0L, null, null), null },
             { null, Mockito.mock(StoreResponse.class), }
         };
     }
@@ -186,12 +191,7 @@ public class StoreReaderTest {
                 .subStatusCode(expectedSubStatusCode)
                 .build();
 
-        TestSubscriber<List<StoreResult>> subscriber = new TestSubscriber<>();
-        res.subscribe(subscriber);
-        subscriber.awaitTerminalEvent();
-        subscriber.assertNotComplete();
-        assertThat(subscriber.errorCount()).isEqualTo(1);
-        failureValidator.validate(subscriber.errors().get(0));
+        StepVerifier.create(res).verifyErrorSatisfies(failureValidator::validate);
 
         if (expectedStatusCode == 410) {
             assertThat(dsr.requestContext.getFailedEndpoints().size()).isEqualTo(1);
@@ -915,9 +915,15 @@ public class StoreReaderTest {
                 try {
                     StoreReader.verifyCanContinueOnException((CosmosException) ex);
 
-                    // for continuable exception, SDK will retry on all other replicas, so the failed endpoints should match replica counts.
-                    List<Uri> expectedFailedEndpoints = Arrays.asList(primaryUri, secondaryUri1, secondaryUri2, secondaryUri3);
-                    assertThat(dsr.requestContext.getFailedEndpoints()).hasSize(expectedFailedEndpoints.size()).containsAll(expectedFailedEndpoints);
+                    if (Exceptions.isAvoidQuorumSelectionException((CosmosException) ex)) {
+                        // while the exception is continuable, it is avoid quorum selection exception, so such results are collected
+                        // while these results are not valid, they are still collected in the failed endpoints and also contribute towards decrementing replicaCountToRead to avoid quorum reselection.
+                        assertThat(dsr.requestContext.getFailedEndpoints().size()).isEqualTo(3);
+                    } else {
+                        // for continuable exception, SDK will retry on all other replicas, so the failed endpoints should match replica counts.
+                        List<Uri> expectedFailedEndpoints = Arrays.asList(primaryUri, secondaryUri1, secondaryUri2, secondaryUri3);
+                        assertThat(dsr.requestContext.getFailedEndpoints()).hasSize(expectedFailedEndpoints.size()).containsAll(expectedFailedEndpoints);
+                    }
 
                 } catch (Exception exception) {
                     if (exception instanceof CosmosException) {
@@ -961,14 +967,10 @@ public class StoreReaderTest {
 
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator, long timeout) {
-        TestSubscriber<List<StoreResult>> testSubscriber = new TestSubscriber<>();
-
-        single.flux().subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static void validateSuccess(Mono<StoreResult> single,
@@ -978,26 +980,17 @@ public class StoreReaderTest {
 
     public static void validateSuccess(Mono<StoreResult> single,
                                        StoreResultValidator validator, long timeout) {
-        TestSubscriber<StoreResult> testSubscriber = new TestSubscriber<>();
-
-        single.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNoErrors();
-        testSubscriber.assertComplete();
-        testSubscriber.assertValueCount(1);
-        validator.validate(testSubscriber.values().get(0));
+        StepVerifier.create(single)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static <T> void validateException(Mono<T> single,
                                              FailureValidator validator, long timeout) {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-
-        single.flux().subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
+        StepVerifier.create(single)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
     }
 
     public static <T> void validateException(Mono<T> single,
@@ -1007,10 +1000,8 @@ public class StoreReaderTest {
 
     public static <T> void validateError(Mono<T> single,
                                              FailureValidator validator) {
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-
         try {
-            single.flux().subscribe(testSubscriber);
+            single.flux().subscribe(TestSubscriber.create());
         } catch (Throwable throwable) {
             assertThat(throwable).isInstanceOf(Error.class);
             validator.validate(throwable);

@@ -17,9 +17,9 @@ public class ScansListByDataSource {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildScansClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.scanslistbydatasource.scanslistbydatasource
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scans-list-by-data-source.scans-list-by-data-source
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = scansClient.listByDataSource("myDataSource", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.scanslistbydatasource.scanslistbydatasource
+        // END:com.azure.analytics.purview.scanning.generated.scans-list-by-data-source.scans-list-by-data-source
     }
 }

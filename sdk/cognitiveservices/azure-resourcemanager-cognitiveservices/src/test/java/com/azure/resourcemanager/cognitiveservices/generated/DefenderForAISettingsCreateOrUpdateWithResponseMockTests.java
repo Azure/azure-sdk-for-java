@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.DefenderForAISetting;
@@ -24,24 +24,24 @@ public final class DefenderForAISettingsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"snxoc\",\"tags\":{\"j\":\"l\",\"g\":\"poy\",\"cvuq\":\"wdjuxdbdljzgdy\",\"nq\":\"sgzlrqhb\"},\"properties\":{\"state\":\"Enabled\"},\"id\":\"wbsfpyxxtjlfl\",\"name\":\"cominxojjluxx\",\"type\":\"hilzzdzzq\"}";
+            = "{\"etag\":\"laslgacizux\",\"tags\":{\"doejtighsxjpyt\":\"rwpewsa\"},\"properties\":{\"state\":\"Disabled\"},\"id\":\"lahovuuwx\",\"name\":\"mehjnhjioti\",\"type\":\"fbbcngkegxcypxbb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DefenderForAISetting response = manager.defenderForAISettings()
-            .define("lssan")
-            .withExistingAccount("xbibanbaupw", "zvpaklozkxbzrpej")
-            .withTags(mapOf("bhuhk", "yik", "okhu", "lgw", "jy", "o"))
+            .define("rcqxgcbvzarmqc")
+            .withExistingAccount("fhxrzfr", "vztiucwviqllukh")
+            .withTags(mapOf("qwh", "brdvce", "uwvorbalkjn", "txnmxgnmguz", "lltqstqkqs", "kbd"))
             .withState(DefenderForAISettingState.ENABLED)
             .create();
 
-        Assertions.assertEquals("l", response.tags().get("j"));
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, response.state());
+        Assertions.assertEquals("rwpewsa", response.tags().get("doejtighsxjpyt"));
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, response.state());
     }
 
     // Use "Map.of" if available

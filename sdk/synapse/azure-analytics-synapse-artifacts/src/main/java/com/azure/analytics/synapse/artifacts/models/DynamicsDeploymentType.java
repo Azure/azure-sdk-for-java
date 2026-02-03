@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsD
     /**
      * Static value Online for DynamicsDeploymentType.
      */
+    @Generated
     public static final DynamicsDeploymentType ONLINE = fromString("Online");
 
     /**
      * Static value OnPremisesWithIfd for DynamicsDeploymentType.
      */
+    @Generated
     public static final DynamicsDeploymentType ON_PREMISES_WITH_IFD = fromString("OnPremisesWithIfd");
 
     /**
@@ -26,6 +29,7 @@ public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsD
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DynamicsDeploymentType() {
     }
@@ -36,6 +40,7 @@ public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsD
      * @param name a name to look for.
      * @return the corresponding DynamicsDeploymentType.
      */
+    @Generated
     public static DynamicsDeploymentType fromString(String name) {
         return fromString(name, DynamicsDeploymentType.class);
     }
@@ -45,6 +50,7 @@ public final class DynamicsDeploymentType extends ExpandableStringEnum<DynamicsD
      * 
      * @return known DynamicsDeploymentType values.
      */
+    @Generated
     public static Collection<DynamicsDeploymentType> values() {
         return values(DynamicsDeploymentType.class);
     }

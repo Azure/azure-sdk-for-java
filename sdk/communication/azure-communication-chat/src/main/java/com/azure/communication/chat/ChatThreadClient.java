@@ -8,6 +8,7 @@ import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
 import com.azure.communication.chat.models.ChatThreadProperties;
+import com.azure.communication.chat.models.UpdateChatThreadOptions;
 import com.azure.communication.chat.models.InvalidParticipantException;
 import com.azure.communication.chat.models.ListChatMessagesOptions;
 import com.azure.communication.chat.models.ListParticipantsOptions;
@@ -105,6 +106,32 @@ public final class ChatThreadClient {
     public Response<Void> updateTopicWithResponse(String topic, Context context) {
 
         return this.client.updateTopic(topic, context).block();
+    }
+
+    /**
+     * Updates a thread's properties.
+     *
+     * @param options The thread update options (e.g., topic, metadata).
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateThreadProperties(UpdateChatThreadOptions options) {
+        this.client.updateThreadProperties(options).block();
+    }
+
+    /**
+     * Updates a thread's properties.
+     *
+     * @param options The thread update options (e.g., topic, metadata).
+     * @param context The context to associate with this operation.
+     * @throws ChatErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response containing the result of the operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateThreadPropertiesWithResponse(UpdateChatThreadOptions options, Context context) {
+        return this.client.updateThreadProperties(options, context).block();
     }
 
     /**

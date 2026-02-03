@@ -3,6 +3,8 @@
 
 package io.clientcore.core.serialization.json.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -12,6 +14,7 @@ import java.io.IOException;
 /**
  * Model representing a JSON null value.
  */
+@Metadata(properties = MetadataProperties.IMMUTABLE)
 public final class JsonNull extends JsonElement {
     private static final JsonNull INSTANCE = new JsonNull();
 

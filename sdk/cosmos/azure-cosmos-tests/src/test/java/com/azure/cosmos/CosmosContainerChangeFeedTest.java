@@ -106,17 +106,17 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @DataProvider(name = "changeFeedQueryEndLSNDataProvider")
     public static Object[][] changeFeedQueryEndLSNDataProvider() {
         return new Object[][]{
-                // container RU, continuous ingest items, partition count
+                // container RU, continuous ingest items
                 // number of docs from cf, documents to write
 
                 // endLSN is less than number of documents
-                { 400, true, 1, 3, 6},
-                { 400, false, 1, 3, 6},
+                { 400, true, 3, 6},
+                { 400, false, 3, 6},
                 // endLSN is equal to number of documents
-                { 400, false, 1, 3, 3},
+                { 400, false, 3, 3},
                 // both partitions have more than the endLSN
-                { 11000, true, 5, 6, 30},
-                { 11000, false, 5, 6, 30},
+                { 11000, true, 6, 30},
+                { 11000, false, 6, 30},
         };
     }
 
@@ -755,9 +755,9 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .result(
                     FaultInjectionResultBuilders
                         .getResultBuilder(faultInjectionServerErrorType)
-                        .times(1)
                         .build()
                 )
+                .hitLimit(1)
                 .build();
 
         CosmosFaultInjectionHelper.configureFaultInjectionRules(this.createdAsyncContainer, Arrays.asList(faultInjectionRule)).block();
@@ -767,7 +767,9 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         CosmosChangeFeedRequestOptions changeFeedRequestOptions =
             CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRanges.get(0));
         if (disableSplitHandling) {
-            ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
+            ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
+              .getCosmosChangeFeedRequestOptionsAccessor()
+              .disableSplitHandling(changeFeedRequestOptions);
         }
 
         try {
@@ -781,6 +783,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             }
 
         } catch (Exception e) {
+            logger.error("Error occurred in asyncChangeFeed_retryPolicy_tests", e);
             if (requestSucceeded) {
                 fail("ChangeFeed request should have succeeded even " + faultInjectionServerErrorType + " injected");
             }
@@ -950,7 +953,6 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     public void changeFeedQueryCompleteAfterEndLSN(
         int throughput,
         boolean shouldContinuouslyIngestItems,
-        int partitionCount,
         int expectedDocs,
         int docsToWrite) {
         String testContainerId = UUID.randomUUID().toString();
@@ -967,7 +969,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             List<FeedRange> feedRanges = testContainer.getFeedRanges().block();
             AtomicInteger currentPageCount = new AtomicInteger(0);
 
-            List<String> partitionKeys = insertDocumentsCore(partitionCount, docsToWrite, testContainer);
+            List<String> partitionKeys = insertDocumentsIntoTwoPartitions(docsToWrite, testContainer);
             CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
             ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
@@ -998,7 +1000,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNHangDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, dataProvider = "changeFeedQueryEndLSNHangDataProvider", timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void changeFeedQueryCompleteAfterEndLSNHang(
             int throughput,
             int partitionCount,
@@ -1128,6 +1130,42 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         ArrayList<Mono<CosmosItemResponse<ObjectNode>>> result = new ArrayList<>();
         for (int i = 0; i < docs.size(); i++) {
             result.add(container.createItem(docs.get(i)));
+        }
+
+        List<ObjectNode> insertedDocs = Flux.merge(
+                        Flux.fromIterable(result),
+                        2)
+                .map(CosmosItemResponse::getItem).collectList().block();
+
+        for (ObjectNode doc : insertedDocs) {
+            partitionKeyToDocuments.put(
+                    doc.get(PARTITION_KEY_FIELD_NAME).textValue(),
+                    doc);
+        }
+        logger.info("FINISHED INSERT");
+        return partitionKeys;
+    }
+
+    List<String> insertDocumentsIntoTwoPartitions(
+            int documentCount,
+            CosmosAsyncContainer container) {
+
+        List<ObjectNode> docs = new ArrayList<>();
+        List<String> partitionKeys = new ArrayList<>();
+
+        // these partition keys will land on two different partitions for hash v2
+        String partitionKey1 = "pk-1";
+        String partitionKey2 = "pk-8fbakldbas";
+        for (int j = 0; j < documentCount; j++) {
+            docs.add(getDocumentDefinition(partitionKey1));
+            docs.add(getDocumentDefinition(partitionKey2));
+        }
+        partitionKeys.add(partitionKey1);
+        partitionKeys.add(partitionKey2);
+
+        ArrayList<Mono<CosmosItemResponse<ObjectNode>>> result = new ArrayList<>();
+        for (ObjectNode jsonNodes : docs) {
+            result.add(container.createItem(jsonNodes));
         }
 
         List<ObjectNode> insertedDocs = Flux.merge(

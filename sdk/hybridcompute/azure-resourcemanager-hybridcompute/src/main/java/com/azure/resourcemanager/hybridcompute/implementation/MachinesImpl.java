@@ -33,13 +33,12 @@ public final class MachinesImpl implements Machines {
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String machineName,
-        Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, machineName, context);
-    }
-
     public void deleteByResourceGroup(String resourceGroupName, String machineName) {
         this.serviceClient().delete(resourceGroupName, machineName);
+    }
+
+    public void delete(String resourceGroupName, String machineName, Context context) {
+        this.serviceClient().delete(resourceGroupName, machineName, context);
     }
 
     public Response<Machine> getByResourceGroupWithResponse(String resourceGroupName, String machineName,

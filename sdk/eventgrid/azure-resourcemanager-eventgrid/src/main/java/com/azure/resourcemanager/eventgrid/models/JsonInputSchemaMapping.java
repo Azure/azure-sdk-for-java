@@ -48,7 +48,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
      * 
      * @return the innerProperties value.
      */
-    private JsonInputSchemaMappingProperties innerProperties() {
+    JsonInputSchemaMappingProperties innerProperties() {
         return this.innerProperties;
     }
 

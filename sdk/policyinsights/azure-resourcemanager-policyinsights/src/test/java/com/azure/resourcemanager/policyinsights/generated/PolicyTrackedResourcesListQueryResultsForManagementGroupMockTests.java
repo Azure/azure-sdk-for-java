@@ -7,8 +7,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.PolicyTrackedResource;
@@ -22,18 +22,18 @@ public final class PolicyTrackedResourcesListQueryResultsForManagementGroupMockT
     @Test
     public void testListQueryResultsForManagementGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"trackedResourceId\":\"q\",\"policyDetails\":{\"policyDefinitionId\":\"cxzrzdcgdzben\",\"policyAssignmentId\":\"bcawetz\",\"policyAssignmentDisplayName\":\"dtjwfljhznamt\",\"policyAssignmentScope\":\"tmzwcjjn\",\"policySetDefinitionId\":\"tjzmi\",\"policyDefinitionReferenceId\":\"gbgatzuuvbxn\"},\"createdBy\":{\"policyDetails\":{\"policyDefinitionId\":\"wggahttzlswvaj\",\"policyAssignmentId\":\"utlxjoqzasunwqrj\",\"policyAssignmentDisplayName\":\"rg\",\"policyAssignmentScope\":\"aohcmbuocn\",\"policySetDefinitionId\":\"ohmbpyr\",\"policyDefinitionReferenceId\":\"ameb\"},\"deploymentId\":\"dyvkfkmr\",\"deploymentTime\":\"2021-07-02T14:54:32Z\"},\"lastModifiedBy\":{\"policyDetails\":{\"policyDefinitionId\":\"v\",\"policyAssignmentId\":\"tod\",\"policyAssignmentDisplayName\":\"pyapucygvoav\",\"policyAssignmentScope\":\"nssxlgh\",\"policySetDefinitionId\":\"egjlgvvpa\",\"policyDefinitionReferenceId\":\"ksgbuxan\"},\"deploymentId\":\"ygdhgaqipirpiwr\",\"deploymentTime\":\"2021-06-02T13:21:22Z\"},\"lastUpdateUtc\":\"2021-06-05T11:42:14Z\"}]}";
+            = "{\"value\":[{\"trackedResourceId\":\"dpcve\",\"policyDetails\":{\"policyDefinitionId\":\"zhhkuuipldqqc\",\"policyAssignmentId\":\"kva\",\"policyAssignmentDisplayName\":\"l\",\"policyAssignmentScope\":\"jqvq\",\"policySetDefinitionId\":\"wehtaemxh\",\"policyDefinitionReferenceId\":\"ysev\"},\"createdBy\":{\"policyDetails\":{\"policyDefinitionId\":\"vzrrryveimi\",\"policyAssignmentId\":\"kdyzatvfuzk\",\"policyAssignmentDisplayName\":\"tjvv\",\"policyAssignmentScope\":\"xwigsye\",\"policySetDefinitionId\":\"qdsmjtg\",\"policyDefinitionReferenceId\":\"gdgkki\"},\"deploymentId\":\"plkcsm\",\"deploymentTime\":\"2021-05-26T00:44:03Z\"},\"lastModifiedBy\":{\"policyDetails\":{\"policyDefinitionId\":\"baedorvvmqfl\",\"policyAssignmentId\":\"gbdg\",\"policyAssignmentDisplayName\":\"mgxdgdhpabgd\",\"policyAssignmentScope\":\"jddvjsaqw\",\"policySetDefinitionId\":\"mmwllc\",\"policyDefinitionReferenceId\":\"srsxaptefh\"},\"deploymentId\":\"cgjokjljnhvlq\",\"deploymentTime\":\"2021-11-03T13:01:45Z\"},\"lastUpdateUtc\":\"2021-09-08T23:51:32Z\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PolicyTrackedResource> response = manager.policyTrackedResources()
-            .listQueryResultsForManagementGroup("fiqwoy", PolicyTrackedResourcesResourceType.DEFAULT, 1594620072,
-                "apcohhouc", com.azure.core.util.Context.NONE);
+            .listQueryResultsForManagementGroup("zrsq", PolicyTrackedResourcesResourceType.DEFAULT, 1686682659,
+                "xkdnwqapf", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class CloudError implements JsonSerializable<CloudError> {
     /*
      * An error response from Attestation.
      */
+    @Generated
     private CloudErrorBody error;
 
     /**
      * Creates an instance of CloudError class.
      */
+    @Generated
     public CloudError() {
     }
 
@@ -32,6 +35,7 @@ public final class CloudError implements JsonSerializable<CloudError> {
      * 
      * @return the error value.
      */
+    @Generated
     public CloudErrorBody getError() {
         return this.error;
     }
@@ -42,6 +46,7 @@ public final class CloudError implements JsonSerializable<CloudError> {
      * @param error the error value to set.
      * @return the CloudError object itself.
      */
+    @Generated
     public CloudError setError(CloudErrorBody error) {
         this.error = error;
         return this;
@@ -61,6 +66,7 @@ public final class CloudError implements JsonSerializable<CloudError> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -76,6 +82,7 @@ public final class CloudError implements JsonSerializable<CloudError> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the CloudError.
      */
+    @Generated
     public static CloudError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CloudError deserializedCloudError = new CloudError();

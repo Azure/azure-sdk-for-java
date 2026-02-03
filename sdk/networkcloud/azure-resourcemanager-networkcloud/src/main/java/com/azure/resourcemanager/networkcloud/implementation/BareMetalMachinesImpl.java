@@ -40,8 +40,8 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BareMetalMachine> list(Context context) {
-        PagedIterable<BareMetalMachineInner> inner = this.serviceClient().list(context);
+    public PagedIterable<BareMetalMachine> list(Integer top, String skipToken, Context context) {
+        PagedIterable<BareMetalMachineInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
@@ -50,9 +50,10 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BareMetalMachine> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<BareMetalMachine> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
         PagedIterable<BareMetalMachineInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
@@ -86,9 +87,10 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String bareMetalMachineName, Context context) {
+    public OperationStatusResult delete(String resourceGroupName, String bareMetalMachineName, String ifMatch,
+        String ifNoneMatch, Context context) {
         OperationStatusResultInner inner
-            = this.serviceClient().delete(resourceGroupName, bareMetalMachineName, context);
+            = this.serviceClient().delete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -239,6 +241,31 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         }
     }
 
+    public OperationStatusResult runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+        Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public OperationStatusResult runReadCommands(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters) {
         OperationStatusResultInner inner = this.serviceClient()
@@ -338,10 +365,13 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
         }
-        return this.delete(resourceGroupName, bareMetalMachineName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, bareMetalMachineName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -352,7 +382,7 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
         }
-        return this.delete(resourceGroupName, bareMetalMachineName, context);
+        return this.delete(resourceGroupName, bareMetalMachineName, ifMatch, ifNoneMatch, context);
     }
 
     private BareMetalMachinesClient serviceClient() {

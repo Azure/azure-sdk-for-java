@@ -56,7 +56,7 @@ public final class AuthenticationsImpl {
      * to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureContainerRegist")
+    @ServiceInterface(name = "AzureContainerRegistryAuthentications")
     public interface AuthenticationsService {
         // @Multipart not supported by RestProxy
         @Post("/oauth2/exchange")

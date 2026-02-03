@@ -11,17 +11,23 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.GatewaysClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayContractInner;
+import com.azure.resourcemanager.apimanagement.fluent.models.GatewayDebugCredentialsContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayKeysContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayTokenContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayDebugCredentialsContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayKeyRegenerationRequestContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayKeysContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListDebugCredentialsContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListTraceContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenRequestContract;
 import com.azure.resourcemanager.apimanagement.models.Gateways;
 import com.azure.resourcemanager.apimanagement.models.GatewaysGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysGetResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewaysListKeysResponse;
+import java.util.Collections;
+import java.util.Map;
 
 public final class GatewaysImpl implements Gateways {
     private static final ClientLogger LOGGER = new ClientLogger(GatewaysImpl.class);
@@ -139,6 +145,56 @@ public final class GatewaysImpl implements Gateways {
             return new GatewayTokenContractImpl(inner, this.manager());
         } else {
             return null;
+        }
+    }
+
+    public Response<Void> invalidateDebugCredentialsWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, Context context) {
+        return this.serviceClient()
+            .invalidateDebugCredentialsWithResponse(resourceGroupName, serviceName, gatewayId, context);
+    }
+
+    public void invalidateDebugCredentials(String resourceGroupName, String serviceName, String gatewayId) {
+        this.serviceClient().invalidateDebugCredentials(resourceGroupName, serviceName, gatewayId);
+    }
+
+    public Response<GatewayDebugCredentialsContract> listDebugCredentialsWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, GatewayListDebugCredentialsContract parameters, Context context) {
+        Response<GatewayDebugCredentialsContractInner> inner = this.serviceClient()
+            .listDebugCredentialsWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new GatewayDebugCredentialsContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public GatewayDebugCredentialsContract listDebugCredentials(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayListDebugCredentialsContract parameters) {
+        GatewayDebugCredentialsContractInner inner
+            = this.serviceClient().listDebugCredentials(resourceGroupName, serviceName, gatewayId, parameters);
+        if (inner != null) {
+            return new GatewayDebugCredentialsContractImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Map<String, Object>> listTraceWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayListTraceContract parameters, Context context) {
+        return this.serviceClient()
+            .listTraceWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
+    }
+
+    public Map<String, Object> listTrace(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayListTraceContract parameters) {
+        Map<String, Object> inner
+            = this.serviceClient().listTrace(resourceGroupName, serviceName, gatewayId, parameters);
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
         }
     }
 

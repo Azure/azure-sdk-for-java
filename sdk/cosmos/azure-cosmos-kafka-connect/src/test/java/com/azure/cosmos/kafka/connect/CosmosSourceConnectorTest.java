@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -20,8 +21,10 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedMode;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosChangeFeedStartFromMode;
@@ -51,7 +54,6 @@ import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.connect.source.SourceConnectorContext;
 import org.mockito.Mockito;
-import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -624,6 +626,30 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     }
 
     @Test(groups = { "unit" })
+    public void sourceConfigWithAuthEndpointOverride() {
+        String tenantId = "tenantId";
+        String clientId = "clientId";
+        String clientSecret = "clientSecret";
+        String authEndpoint = "https://login.example.com/";
+
+        Map<String, String> sourceConfigMap = this.getValidSourceConfig();
+        sourceConfigMap.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+        sourceConfigMap.put("azure.cosmos.account.tenantId", tenantId);
+        sourceConfigMap.put("azure.cosmos.auth.aad.clientId", clientId);
+        sourceConfigMap.put("azure.cosmos.auth.aad.clientSecret", clientSecret);
+        sourceConfigMap.put("azure.cosmos.auth.aad.authEndpointOverride", authEndpoint);
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        assertThat(sourceConfig.getAccountConfig()).isNotNull();
+        assertThat(sourceConfig.getAccountConfig().getCosmosAuthConfig()).isInstanceOf(CosmosAadAuthConfig.class);
+        CosmosAadAuthConfig cosmosAadAuthConfig = (CosmosAadAuthConfig) sourceConfig.getAccountConfig().getCosmosAuthConfig();
+        assertThat(cosmosAadAuthConfig.getTenantId()).isEqualTo(tenantId);
+        assertThat(cosmosAadAuthConfig.getClientId()).isEqualTo(clientId);
+        assertThat(cosmosAadAuthConfig.getClientSecret()).isEqualTo(clientSecret);
+        assertThat(cosmosAadAuthConfig.getAuthEndpoint()).isEqualTo(authEndpoint);
+    }
+
+    @Test(groups = { "unit" })
     public void sourceConfigWithThroughputControl() {
         String throughputControlGroupName = "test";
         int targetThroughput= 6;
@@ -726,8 +752,11 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
         KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
 
-        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(cosmosSourceConfig.getAccountConfig(), "testKafkaConnector");
-        KafkaCosmosReflectionUtils.setCosmosClient(sourceConnector, cosmosAsyncClient);
+        CosmosClientCacheItem clientCacheItem =
+            CosmosClientCache.getCosmosClient(
+                cosmosSourceConfig.getAccountConfig(),
+                "testKafkaConnector");
+        KafkaCosmosReflectionUtils.setCosmosClientCacheItem(sourceConnector, clientCacheItem);
 
         InMemoryStorageReader inMemoryStorageReader = new InMemoryStorageReader();
         MetadataKafkaStorageManager metadataReader = new MetadataKafkaStorageManager(inMemoryStorageReader);
@@ -742,7 +771,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             cosmosSourceConfig.getMetadataConfig(),
             connectorContext,
             metadataReader,
-            cosmosAsyncClient);
+            clientCacheItem.getClient());
 
         KafkaCosmosReflectionUtils.setMetadataMonitorThread(sourceConnector, monitorThread);
     }
@@ -759,10 +788,13 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosSourceConfig cosmosSourceConfig = new CosmosSourceConfig(sourceConfigMap);
         KafkaCosmosReflectionUtils.setCosmosSourceConfig(sourceConnector, cosmosSourceConfig);
 
-        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(cosmosSourceConfig.getAccountConfig(), "testKafkaConnector");
-        KafkaCosmosReflectionUtils.setCosmosClient(sourceConnector, cosmosAsyncClient);
+        CosmosClientCacheItem clientCacheItem =
+            CosmosClientCache.getCosmosClient(
+                cosmosSourceConfig.getAccountConfig(),
+                "testKafkaConnector");
+        KafkaCosmosReflectionUtils.setCosmosClientCacheItem(sourceConnector, clientCacheItem);
 
-        CosmosAsyncContainer container = cosmosAsyncClient.getDatabase(databaseName).getContainer(containerName);
+        CosmosAsyncContainer container = clientCacheItem.getClient().getDatabase(databaseName).getContainer(containerName);
         MetadataCosmosStorageManager cosmosStorageManager = new MetadataCosmosStorageManager(container);
         KafkaCosmosReflectionUtils.setMetadataReader(sourceConnector, cosmosStorageManager);
 
@@ -777,12 +809,14 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             cosmosSourceConfig.getMetadataConfig(),
             connectorContext,
             cosmosStorageManager,
-            cosmosAsyncClient);
+            clientCacheItem.getClient());
 
         KafkaCosmosReflectionUtils.setMetadataMonitorThread(sourceConnector, monitorThread);
 
         // pre-create metadata container
-        cosmosAsyncClient.getDatabase(databaseName)
+        clientCacheItem
+            .getClient()
+            .getDatabase(databaseName)
             .createContainerIfNotExists(containerName, "/id")
             .block();
     }
@@ -993,6 +1027,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("azure.cosmos.account.key", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.authEndpointOverride", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<Boolean>("azure.cosmos.mode.gateway", false, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.preferredRegionList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.application.name", Strings.Emtpy, true),

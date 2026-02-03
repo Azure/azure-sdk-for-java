@@ -10,15 +10,16 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Operations_List.
-     * json
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
+     * ListOperation.json
      */
     /**
-     * Sample code: Operations_List.
+     * Sample code: Lists all of the available SQL Rest API operations.
      * 
      * @param manager Entry point to DataMigrationManager.
      */
-    public static void operationsList(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
+    public static void listsAllOfTheAvailableSQLRestAPIOperations(
+        com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

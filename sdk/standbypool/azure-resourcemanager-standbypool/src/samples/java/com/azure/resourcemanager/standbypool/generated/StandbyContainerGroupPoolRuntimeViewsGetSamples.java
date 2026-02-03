@@ -9,7 +9,7 @@ package com.azure.resourcemanager.standbypool.generated;
  */
 public final class StandbyContainerGroupPoolRuntimeViewsGetSamples {
     /*
-     * x-ms-original-file: 2024-03-01/StandbyContainerGroupPoolRuntimeViews_Get.json
+     * x-ms-original-file: 2025-03-01/StandbyContainerGroupPoolRuntimeViews_Get.json
      */
     /**
      * Sample code: StandbyContainerGroupPoolRuntimeViews_Get.

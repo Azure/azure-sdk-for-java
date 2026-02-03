@@ -360,17 +360,27 @@ public final class SftpServerLinkedServiceTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("host", this.host);
-        jsonWriter.writeUntypedField("port", this.port);
+        if (this.port != null) {
+            jsonWriter.writeUntypedField("port", this.port);
+        }
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("privateKeyPath", this.privateKeyPath);
+        if (this.privateKeyPath != null) {
+            jsonWriter.writeUntypedField("privateKeyPath", this.privateKeyPath);
+        }
         jsonWriter.writeJsonField("privateKeyContent", this.privateKeyContent);
         jsonWriter.writeJsonField("passPhrase", this.passPhrase);
-        jsonWriter.writeUntypedField("skipHostKeyValidation", this.skipHostKeyValidation);
-        jsonWriter.writeUntypedField("hostKeyFingerprint", this.hostKeyFingerprint);
+        if (this.skipHostKeyValidation != null) {
+            jsonWriter.writeUntypedField("skipHostKeyValidation", this.skipHostKeyValidation);
+        }
+        if (this.hostKeyFingerprint != null) {
+            jsonWriter.writeUntypedField("hostKeyFingerprint", this.hostKeyFingerprint);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -33,10 +33,15 @@ steps:
       ServiceDirectory: ${{parameters.ServiceDirectory}}
       ExcludePaths: ${{parameters.ExcludePaths}}
 
-  # Create the ProjectList and ProjectListSha256 variables.
-  # The ProjectList is used by subsequent steps and tasks to run CI.
-  # The ProjectListSha256 is used by the cache key, previously the cache key was using ProjectList but it was found
-  # that long cache keys cause caching to fail.
+# Create the ProjectList and ProjectListSha256 variables.
+# The ProjectList is used by subsequent steps and tasks to run CI.
+# The ProjectListSha256 is used by the cache key, previously the cache key was using ProjectList but it was found
+# that long cache keys cause caching to fail.
+
+# ArtifactPackageNames is set by the generate test matrix and is only set for test runs. This needs to be
+# used to correctly set the project list and additional modules for what should be running for this particular
+# matrix run. The reason for this is that different service directories, like clientcore, have their own
+# default test matrix as compared to something like azure-template, which uses the default test matrix
 - task: PowerShell@2
   displayName: Initialize project list variable
   inputs:
@@ -46,6 +51,19 @@ steps:
     ARTIFACTSJSON: $(ArtifactsJson)
     ADDITIONALMODULESJSON: $(AdditionalModulesJson)
     PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
+  condition: and(succeeded(), eq(variables['ArtifactPackageNames'], ''))
+
+- task: PowerShell@2
+  displayName: Initialize project list variable for PR test run
+  inputs:
+    pwsh: true
+    filePath: eng/pipelines/scripts/generate-project-list.ps1
+  env:
+    ARTIFACTSJSON: $(ArtifactsJson)
+    ADDITIONALMODULESJSON: $(AdditionalModulesJson)
+    PACKAGEINFODIR: $(Build.ArtifactStagingDirectory)/PackageInfo
+    ARTIFACTPACKAGENAMES: $(ArtifactPackageNames)
+  condition: and(succeeded(), ne(variables['ArtifactPackageNames'], ''))
 
 # The Cache task, when restoring, can have a miss and still pass but, if nothing is built, the
 # Post-Job Cache will fail because there's no .m2/repository

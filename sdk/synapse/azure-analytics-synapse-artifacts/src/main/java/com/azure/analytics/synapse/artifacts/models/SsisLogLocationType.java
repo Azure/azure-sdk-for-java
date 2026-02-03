@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocat
     /**
      * Static value File for SsisLogLocationType.
      */
+    @Generated
     public static final SsisLogLocationType FILE = fromString("File");
 
     /**
@@ -21,6 +23,7 @@ public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SsisLogLocationType() {
     }
@@ -31,6 +34,7 @@ public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocat
      * @param name a name to look for.
      * @return the corresponding SsisLogLocationType.
      */
+    @Generated
     public static SsisLogLocationType fromString(String name) {
         return fromString(name, SsisLogLocationType.class);
     }
@@ -40,6 +44,7 @@ public final class SsisLogLocationType extends ExpandableStringEnum<SsisLogLocat
      * 
      * @return known SsisLogLocationType values.
      */
+    @Generated
     public static Collection<SsisLogLocationType> values() {
         return values(SsisLogLocationType.class);
     }

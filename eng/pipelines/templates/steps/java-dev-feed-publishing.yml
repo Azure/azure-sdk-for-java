@@ -1,0 +1,26 @@
+parameters:
+  ArtifactDirectory: $(Pipeline.Workspace)/packages-signed
+  RepositoryUrl: https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1
+  GroupID:
+  ArtifactID:
+  GPGExecutablePath: $(Pipeline.Workspace)/azure-sdk-build-tools/tools/gpg/bin/gpg.exe
+  JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+  ShouldPublish: true
+
+steps:
+  - task: PowerShell@2
+    displayName: 'Publish to DevOps Feed ${{ parameters.RepositoryUrl }}'
+    inputs:
+      pwsh: true
+      workingDirectory: $(Agent.BuildDirectory)
+      filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Publish-MavenPackages.ps1
+      arguments: >
+        -ArtifactDirectory ${{ parameters.ArtifactDirectory }}
+        -GroupIDFilter "${{ parameters.GroupID }}"
+        -ArtifactIDFilter "${{ parameters.ArtifactID }}"
+        -RepositoryUrl ${{ parameters.RepositoryUrl }}
+        -RepositoryUsername nobody
+        -RepositoryPassword $(System.AccessToken)
+        -GPGExecutablePath ${{ parameters.GPGExecutablePath }}
+        -ShouldPublish:$${{ parameters.ShouldPublish }}
+        -InformationAction Continue

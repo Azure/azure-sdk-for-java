@@ -51,7 +51,7 @@ public final class SmartsheetLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SmartsheetLinkedServiceTypeProperties innerTypeProperties() {
+    SmartsheetLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

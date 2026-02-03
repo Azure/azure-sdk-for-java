@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class SparkJobReferenceType extends ExpandableStringEnum<SparkJobRe
     /**
      * Static value SparkJobDefinitionReference for SparkJobReferenceType.
      */
+    @Generated
     public static final SparkJobReferenceType SPARK_JOB_DEFINITION_REFERENCE
         = fromString("SparkJobDefinitionReference");
 
@@ -22,6 +24,7 @@ public final class SparkJobReferenceType extends ExpandableStringEnum<SparkJobRe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkJobReferenceType() {
     }
@@ -32,6 +35,7 @@ public final class SparkJobReferenceType extends ExpandableStringEnum<SparkJobRe
      * @param name a name to look for.
      * @return the corresponding SparkJobReferenceType.
      */
+    @Generated
     public static SparkJobReferenceType fromString(String name) {
         return fromString(name, SparkJobReferenceType.class);
     }
@@ -41,6 +45,7 @@ public final class SparkJobReferenceType extends ExpandableStringEnum<SparkJobRe
      * 
      * @return known SparkJobReferenceType values.
      */
+    @Generated
     public static Collection<SparkJobReferenceType> values() {
         return values(SparkJobReferenceType.class);
     }

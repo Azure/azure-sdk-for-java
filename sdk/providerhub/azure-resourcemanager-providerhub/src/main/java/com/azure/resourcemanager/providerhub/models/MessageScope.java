@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for MessageScope.
+ * The message scope.
  */
 public final class MessageScope extends ExpandableStringEnum<MessageScope> {
     /**

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -19,11 +20,13 @@ public final class QueryRewritesType extends ExpandableStringEnum<QueryRewritesT
     /**
      * Do not generate additional query rewrites for this query.
      */
+    @Generated
     public static final QueryRewritesType NONE = fromString("none");
 
     /**
      * Generate alternative query terms to increase the recall of a search request.
      */
+    @Generated
     public static final QueryRewritesType GENERATIVE = fromString("generative");
 
     /**
@@ -31,6 +34,7 @@ public final class QueryRewritesType extends ExpandableStringEnum<QueryRewritesT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public QueryRewritesType() {
     }
@@ -41,6 +45,7 @@ public final class QueryRewritesType extends ExpandableStringEnum<QueryRewritesT
      * @param name a name to look for.
      * @return the corresponding QueryRewritesType.
      */
+    @Generated
     public static QueryRewritesType fromString(String name) {
         return fromString(name, QueryRewritesType.class);
     }
@@ -50,6 +55,7 @@ public final class QueryRewritesType extends ExpandableStringEnum<QueryRewritesT
      * 
      * @return known QueryRewritesType values.
      */
+    @Generated
     public static Collection<QueryRewritesType> values() {
         return values(QueryRewritesType.class);
     }

@@ -11,7 +11,7 @@ public final class InMageRcmFailbackSyncDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmFailbackSyncDetails model = BinaryData.fromString(
-            "{\"progressHealth\":\"SlowProgress\",\"transferredBytes\":1904677758535173364,\"last15MinutesTransferredBytes\":8784333877422486679,\"lastDataTransferTimeUtc\":\"hc\",\"processedBytes\":2105673643027071231,\"startTime\":\"dkgd\",\"lastRefreshTime\":\"szwcan\",\"progressPercentage\":830454539}")
+            "{\"progressHealth\":\"NoProgress\",\"transferredBytes\":5104453968750460937,\"last15MinutesTransferredBytes\":5183519776456708348,\"lastDataTransferTimeUtc\":\"bzbqufpnezsjzaym\",\"processedBytes\":3786437803207502206,\"startTime\":\"hyogzmsimeht\",\"lastRefreshTime\":\"uwdhtq\",\"progressPercentage\":655745702}")
             .toObject(InMageRcmFailbackSyncDetails.class);
     }
 

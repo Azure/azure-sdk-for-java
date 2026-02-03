@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class FontStyle extends ExpandableStringEnum<FontStyle> {
     /**
      * Characters are represented normally.
      */
+    @Generated
     public static final FontStyle NORMAL = fromString("normal");
 
     /**
      * Characters are visually slanted to the right.
      */
+    @Generated
     public static final FontStyle ITALIC = fromString("italic");
 
     /**
@@ -26,6 +29,7 @@ public final class FontStyle extends ExpandableStringEnum<FontStyle> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FontStyle() {
     }
@@ -36,6 +40,7 @@ public final class FontStyle extends ExpandableStringEnum<FontStyle> {
      * @param name a name to look for.
      * @return the corresponding FontStyle.
      */
+    @Generated
     public static FontStyle fromString(String name) {
         return fromString(name, FontStyle.class);
     }
@@ -45,6 +50,7 @@ public final class FontStyle extends ExpandableStringEnum<FontStyle> {
      * 
      * @return known FontStyle values.
      */
+    @Generated
     public static Collection<FontStyle> values() {
         return values(FontStyle.class);
     }

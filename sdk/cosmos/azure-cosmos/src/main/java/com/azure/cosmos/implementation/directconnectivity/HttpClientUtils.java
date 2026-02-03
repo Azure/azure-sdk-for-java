@@ -17,13 +17,16 @@ import reactor.core.publisher.Mono;
 
 public class HttpClientUtils {
 
-    static Mono<RxDocumentServiceResponse> parseResponseAsync(RxDocumentServiceRequest request,
+    static Mono<RxDocumentServiceResponse> parseResponseAsync(String endpoint,
+                                                              RxDocumentServiceRequest request,
                                                               DiagnosticsClientContext diagnosticsClientContext,
                                                               Mono<HttpResponse> httpResponse) {
         return httpResponse.flatMap(response -> {
             if (response.statusCode() < HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY) {
 
-                return ResponseUtils.toStoreResponse(response).map(rsp -> new RxDocumentServiceResponse(diagnosticsClientContext, rsp));
+                return ResponseUtils
+                    .toStoreResponse(response, endpoint)
+                    .map(rsp -> new RxDocumentServiceResponse(diagnosticsClientContext, rsp));
 
                 // TODO: to break the dependency between RxDocumentServiceResponse and StoreResponse
                 // we should factor out the  RxDocumentServiceResponse(StoreResponse) constructor to a helper class

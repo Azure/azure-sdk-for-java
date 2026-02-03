@@ -6,8 +6,8 @@ package com.azure.resourcemanager.connectedcache.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.connectedcache.ConnectedCacheManager;
 import com.azure.resourcemanager.connectedcache.models.MccCacheNodeBgpCidrDetails;
@@ -21,20 +21,20 @@ public final class IspCacheNodesOperationsGetBgpCidrsWithResponseMockTests {
     @Test
     public void testGetBgpCidrsWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"bgpCidrs\":[\"luicpdggkzzlvmbm\",\"axmodfvuef\",\"wsbpfvm\"]},\"location\":\"hrfou\",\"tags\":{\"wiyzvqtmnubexkp\":\"aakc\",\"mquxvypo\":\"ksmond\"},\"id\":\"gkopkwhojvpajqgx\",\"name\":\"smocmbq\",\"type\":\"qvmkcxo\"}";
+            = "{\"properties\":{\"bgpCidrs\":[\"j\",\"lwuenvrkp\"]},\"location\":\"uaibrebqaaysj\",\"tags\":{\"zlwfffiakp\":\"qtnqtt\",\"tmmjihyeozph\":\"pqqmted\"},\"id\":\"wau\",\"name\":\"qncygupkvi\",\"type\":\"mdscwxqupev\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ConnectedCacheManager manager = ConnectedCacheManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MccCacheNodeBgpCidrDetails response = manager.ispCacheNodesOperations()
-            .getBgpCidrsWithResponse("xcxrsl", "mutwuoe", "rpkhjwn", com.azure.core.util.Context.NONE)
+            .getBgpCidrsWithResponse("jjoqkagf", "sxtta", "gzxnfaazpxdtnk", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hrfou", response.location());
-        Assertions.assertEquals("aakc", response.tags().get("wiyzvqtmnubexkp"));
+        Assertions.assertEquals("uaibrebqaaysj", response.location());
+        Assertions.assertEquals("qtnqtt", response.tags().get("zlwfffiakp"));
     }
 }

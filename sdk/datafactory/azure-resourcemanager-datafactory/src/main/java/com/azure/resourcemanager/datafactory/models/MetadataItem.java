@@ -86,8 +86,12 @@ public final class MetadataItem implements JsonSerializable<MetadataItem> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("name", this.name);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.name != null) {
+            jsonWriter.writeUntypedField("name", this.name);
+        }
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         return jsonWriter.writeEndObject();
     }
 

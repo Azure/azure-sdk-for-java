@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class WebHookActivityMethod extends ExpandableStringEnum<WebHookAct
     /**
      * Static value POST for WebHookActivityMethod.
      */
+    @Generated
     public static final WebHookActivityMethod POST = fromString("POST");
 
     /**
@@ -21,6 +23,7 @@ public final class WebHookActivityMethod extends ExpandableStringEnum<WebHookAct
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public WebHookActivityMethod() {
     }
@@ -31,6 +34,7 @@ public final class WebHookActivityMethod extends ExpandableStringEnum<WebHookAct
      * @param name a name to look for.
      * @return the corresponding WebHookActivityMethod.
      */
+    @Generated
     public static WebHookActivityMethod fromString(String name) {
         return fromString(name, WebHookActivityMethod.class);
     }
@@ -40,6 +44,7 @@ public final class WebHookActivityMethod extends ExpandableStringEnum<WebHookAct
      * 
      * @return known WebHookActivityMethod values.
      */
+    @Generated
     public static Collection<WebHookActivityMethod> values() {
         return values(WebHookActivityMethod.class);
     }

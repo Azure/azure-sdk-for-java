@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
@@ -23,27 +23,27 @@ public final class AccountsListUsagesWithResponseMockTests {
     @Test
     public void testListUsagesWithResponse() throws Exception {
         String responseStr
-            = "{\"nextLink\":\"wvsgmwohqfzizvu\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"thnwpzte\",\"localizedValue\":\"vmribiat\"},\"quotaPeriod\":\"plucfotangcfhnyk\",\"limit\":34.811432195394524,\"currentValue\":74.0119738169162,\"nextResetTime\":\"wlmzqwmvtxnjmxmc\",\"status\":\"Included\"}]}";
+            = "{\"nextLink\":\"mmbugtywatmqaq\",\"value\":[{\"unit\":\"Percent\",\"name\":{\"value\":\"oeshoygzcbyfq\",\"localizedValue\":\"faoytehqpuv\"},\"quotaPeriod\":\"vqmtdwckygroejn\",\"limit\":76.49773710610344,\"currentValue\":67.05490418254814,\"nextResetTime\":\"kb\",\"status\":\"Included\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"ceysfaqeg\",\"localizedValue\":\"wryshwd\"},\"quotaPeriod\":\"vbxgkqusyb\",\"limit\":63.81647101579004,\"currentValue\":90.05665099395556,\"nextResetTime\":\"vvlfntymtp\",\"status\":\"Blocked\"},{\"unit\":\"CountPerSecond\",\"name\":{\"value\":\"erohzrsqalsxkdn\",\"localizedValue\":\"apfgsdpcvessm\"},\"quotaPeriod\":\"h\",\"limit\":39.5785601199793,\"currentValue\":51.17838108548566,\"nextResetTime\":\"qctekvalb\",\"status\":\"InOverage\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UsageListResult response = manager.accounts()
-            .listUsagesWithResponse("bodthsqqgvri", "bakclacjfrnxous", "au", com.azure.core.util.Context.NONE)
+            .listUsagesWithResponse("kwiswskukjtas", "vwisp", "xkdtxfkndlqvtwkn", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wvsgmwohqfzizvu", response.nextLink());
-        Assertions.assertEquals(UnitType.BYTES_PER_SECOND, response.value().get(0).unit());
-        Assertions.assertEquals("thnwpzte", response.value().get(0).name().value());
-        Assertions.assertEquals("vmribiat", response.value().get(0).name().localizedValue());
-        Assertions.assertEquals("plucfotangcfhnyk", response.value().get(0).quotaPeriod());
-        Assertions.assertEquals(34.811432195394524D, response.value().get(0).limit());
-        Assertions.assertEquals(74.0119738169162D, response.value().get(0).currentValue());
-        Assertions.assertEquals("wlmzqwmvtxnjmxmc", response.value().get(0).nextResetTime());
+        Assertions.assertEquals("mmbugtywatmqaq", response.nextLink());
+        Assertions.assertEquals(UnitType.PERCENT, response.value().get(0).unit());
+        Assertions.assertEquals("oeshoygzcbyfq", response.value().get(0).name().value());
+        Assertions.assertEquals("faoytehqpuv", response.value().get(0).name().localizedValue());
+        Assertions.assertEquals("vqmtdwckygroejn", response.value().get(0).quotaPeriod());
+        Assertions.assertEquals(76.49773710610344D, response.value().get(0).limit());
+        Assertions.assertEquals(67.05490418254814D, response.value().get(0).currentValue());
+        Assertions.assertEquals("kb", response.value().get(0).nextResetTime());
         Assertions.assertEquals(QuotaUsageStatus.INCLUDED, response.value().get(0).status());
     }
 }

@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class DataflowEndpointAuthenticationUserAssignedManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataflowEndpointAuthenticationUserAssignedManagedIdentity model = BinaryData
-            .fromString("{\"clientId\":\"oaxoruzfgsqu\",\"scope\":\"xrxxlep\",\"tenantId\":\"ramxjezwlwnw\"}")
-            .toObject(DataflowEndpointAuthenticationUserAssignedManagedIdentity.class);
-        Assertions.assertEquals("oaxoruzfgsqu", model.clientId());
-        Assertions.assertEquals("xrxxlep", model.scope());
-        Assertions.assertEquals("ramxjezwlwnw", model.tenantId());
+        DataflowEndpointAuthenticationUserAssignedManagedIdentity model
+            = BinaryData.fromString("{\"clientId\":\"opkwhojv\",\"scope\":\"jqg\",\"tenantId\":\"ysmocmbqfqvmkcxo\"}")
+                .toObject(DataflowEndpointAuthenticationUserAssignedManagedIdentity.class);
+        Assertions.assertEquals("opkwhojv", model.clientId());
+        Assertions.assertEquals("jqg", model.scope());
+        Assertions.assertEquals("ysmocmbqfqvmkcxo", model.tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointAuthenticationUserAssignedManagedIdentity model
-            = new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("oaxoruzfgsqu")
-                .withScope("xrxxlep")
-                .withTenantId("ramxjezwlwnw");
+            = new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("opkwhojv")
+                .withScope("jqg")
+                .withTenantId("ysmocmbqfqvmkcxo");
         model = BinaryData.fromObject(model).toObject(DataflowEndpointAuthenticationUserAssignedManagedIdentity.class);
-        Assertions.assertEquals("oaxoruzfgsqu", model.clientId());
-        Assertions.assertEquals("xrxxlep", model.scope());
-        Assertions.assertEquals("ramxjezwlwnw", model.tenantId());
+        Assertions.assertEquals("opkwhojv", model.clientId());
+        Assertions.assertEquals("jqg", model.scope());
+        Assertions.assertEquals("ysmocmbqfqvmkcxo", model.tenantId());
     }
 }

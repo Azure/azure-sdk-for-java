@@ -15,12 +15,15 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.elastic.fluent.AllTrafficFiltersClient;
@@ -38,6 +41,7 @@ import com.azure.resourcemanager.elastic.fluent.ExternalUsersClient;
 import com.azure.resourcemanager.elastic.fluent.ListAssociatedTrafficFiltersClient;
 import com.azure.resourcemanager.elastic.fluent.MonitorOperationsClient;
 import com.azure.resourcemanager.elastic.fluent.MonitoredResourcesClient;
+import com.azure.resourcemanager.elastic.fluent.MonitoredSubscriptionsClient;
 import com.azure.resourcemanager.elastic.fluent.MonitorsClient;
 import com.azure.resourcemanager.elastic.fluent.OpenAIsClient;
 import com.azure.resourcemanager.elastic.fluent.OperationsClient;
@@ -186,6 +190,20 @@ public final class ElasticManagementClientImpl implements ElasticManagementClien
      */
     public ElasticVersionsClient getElasticVersions() {
         return this.elasticVersions;
+    }
+
+    /**
+     * The MonitoredSubscriptionsClient object to access its operations.
+     */
+    private final MonitoredSubscriptionsClient monitoredSubscriptions;
+
+    /**
+     * Gets the MonitoredSubscriptionsClient object to access its operations.
+     * 
+     * @return the MonitoredSubscriptionsClient object.
+     */
+    public MonitoredSubscriptionsClient getMonitoredSubscriptions() {
+        return this.monitoredSubscriptions;
     }
 
     /**
@@ -499,10 +517,11 @@ public final class ElasticManagementClientImpl implements ElasticManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-03-01";
+        this.apiVersion = "2025-06-01";
         this.operations = new OperationsClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.elasticVersions = new ElasticVersionsClientImpl(this);
+        this.monitoredSubscriptions = new MonitoredSubscriptionsClientImpl(this);
         this.monitoredResources = new MonitoredResourcesClientImpl(this);
         this.deploymentInfoes = new DeploymentInfoesClientImpl(this);
         this.externalUsers = new ExternalUsersClientImpl(this);
@@ -561,6 +580,23 @@ public final class ElasticManagementClientImpl implements ElasticManagementClien
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

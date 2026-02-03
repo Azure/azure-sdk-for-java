@@ -9,6 +9,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.hybridcompute.fluent.models.SetupExtensionRequestInner;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionUpgrade;
 
 /**
@@ -74,4 +75,66 @@ public interface ResourceProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void upgradeExtensions(String resourceGroupName, String machineName,
         MachineExtensionUpgrade extensionUpgradeParameters, Context context);
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SetupExtensionRequestInner>, SetupExtensionRequestInner>
+        beginSetupExtensions(String resourceGroupName, String machineName, SetupExtensionRequestInner extensions);
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SetupExtensionRequestInner>, SetupExtensionRequestInner> beginSetupExtensions(
+        String resourceGroupName, String machineName, SetupExtensionRequestInner extensions, Context context);
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SetupExtensionRequestInner setupExtensions(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions);
+
+    /**
+     * The operation to Setup Machine Extensions.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param extensions Parameters supplied to the Setup Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SetupExtensionRequestInner setupExtensions(String resourceGroupName, String machineName,
+        SetupExtensionRequestInner extensions, Context context);
 }

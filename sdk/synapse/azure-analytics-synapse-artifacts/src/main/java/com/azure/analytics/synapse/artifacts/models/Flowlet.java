@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,36 +20,43 @@ public class Flowlet extends DataFlow {
     /*
      * Type of data flow.
      */
+    @Generated
     private String type = "Flowlet";
 
     /*
      * List of sources in Flowlet.
      */
+    @Generated
     private List<DataFlowSource> sources;
 
     /*
      * List of sinks in Flowlet.
      */
+    @Generated
     private List<DataFlowSink> sinks;
 
     /*
      * List of transformations in Flowlet.
      */
+    @Generated
     private List<Transformation> transformations;
 
     /*
      * Flowlet script.
      */
+    @Generated
     private String script;
 
     /*
      * Flowlet script lines.
      */
+    @Generated
     private List<String> scriptLines;
 
     /**
      * Creates an instance of Flowlet class.
      */
+    @Generated
     public Flowlet() {
     }
 
@@ -57,6 +65,7 @@ public class Flowlet extends DataFlow {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -67,6 +76,7 @@ public class Flowlet extends DataFlow {
      * 
      * @return the sources value.
      */
+    @Generated
     public List<DataFlowSource> getSources() {
         return this.sources;
     }
@@ -77,6 +87,7 @@ public class Flowlet extends DataFlow {
      * @param sources the sources value to set.
      * @return the Flowlet object itself.
      */
+    @Generated
     public Flowlet setSources(List<DataFlowSource> sources) {
         this.sources = sources;
         return this;
@@ -87,6 +98,7 @@ public class Flowlet extends DataFlow {
      * 
      * @return the sinks value.
      */
+    @Generated
     public List<DataFlowSink> getSinks() {
         return this.sinks;
     }
@@ -97,6 +109,7 @@ public class Flowlet extends DataFlow {
      * @param sinks the sinks value to set.
      * @return the Flowlet object itself.
      */
+    @Generated
     public Flowlet setSinks(List<DataFlowSink> sinks) {
         this.sinks = sinks;
         return this;
@@ -107,6 +120,7 @@ public class Flowlet extends DataFlow {
      * 
      * @return the transformations value.
      */
+    @Generated
     public List<Transformation> getTransformations() {
         return this.transformations;
     }
@@ -117,6 +131,7 @@ public class Flowlet extends DataFlow {
      * @param transformations the transformations value to set.
      * @return the Flowlet object itself.
      */
+    @Generated
     public Flowlet setTransformations(List<Transformation> transformations) {
         this.transformations = transformations;
         return this;
@@ -127,6 +142,7 @@ public class Flowlet extends DataFlow {
      * 
      * @return the script value.
      */
+    @Generated
     public String getScript() {
         return this.script;
     }
@@ -137,6 +153,7 @@ public class Flowlet extends DataFlow {
      * @param script the script value to set.
      * @return the Flowlet object itself.
      */
+    @Generated
     public Flowlet setScript(String script) {
         this.script = script;
         return this;
@@ -147,6 +164,7 @@ public class Flowlet extends DataFlow {
      * 
      * @return the scriptLines value.
      */
+    @Generated
     public List<String> getScriptLines() {
         return this.scriptLines;
     }
@@ -157,6 +175,7 @@ public class Flowlet extends DataFlow {
      * @param scriptLines the scriptLines value to set.
      * @return the Flowlet object itself.
      */
+    @Generated
     public Flowlet setScriptLines(List<String> scriptLines) {
         this.scriptLines = scriptLines;
         return this;
@@ -165,6 +184,7 @@ public class Flowlet extends DataFlow {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Flowlet setDescription(String description) {
         super.setDescription(description);
@@ -174,6 +194,7 @@ public class Flowlet extends DataFlow {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Flowlet setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -183,6 +204,7 @@ public class Flowlet extends DataFlow {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Flowlet setFolder(DataFlowFolder folder) {
         super.setFolder(folder);
@@ -192,6 +214,7 @@ public class Flowlet extends DataFlow {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -221,6 +244,7 @@ public class Flowlet extends DataFlow {
      * JSON null.
      * @throws IOException If an error occurs while reading the Flowlet.
      */
+    @Generated
     public static Flowlet fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Flowlet deserializedFlowlet = new Flowlet();

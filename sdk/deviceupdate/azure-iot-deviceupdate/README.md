@@ -24,7 +24,7 @@ For the best development experience, developers should use the official Microsof
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-iot-deviceupdate</artifactId>
-  <version>1.0.9</version>
+  <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -87,4 +87,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fdeviceupdate%2Fazure-iot-deviceupdate%2FREADME.png)
+

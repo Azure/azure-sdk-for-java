@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.NotificationContract;
@@ -22,21 +22,21 @@ public final class NotificationsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"title\":\"xcsq\",\"description\":\"do\",\"recipients\":{\"emails\":[\"dpcz\"],\"users\":[\"plrgcnbvmhvq\"]}},\"id\":\"kedaxkuyorfj\",\"name\":\"dq\",\"type\":\"dawe\"}]}";
+            = "{\"value\":[{\"properties\":{\"title\":\"lkgjhomywlypghhu\",\"description\":\"qyfvgpqwg\",\"recipients\":{\"emails\":[\"riskmbuihtqfvyq\",\"mc\",\"uguvlieegjnqwh\"],\"users\":[\"xsehjscgqc\"]}},\"id\":\"waucftote\",\"name\":\"hjxdlmuhf\",\"type\":\"j\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<NotificationContract> response = manager.notifications()
-            .listByService("mlkwk", "linvamtykxsz", 1449677015, 1964236516, com.azure.core.util.Context.NONE);
+            .listByService("axdwxrwqtbvw", "dta", 304260393, 102821362, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xcsq", response.iterator().next().title());
-        Assertions.assertEquals("do", response.iterator().next().description());
-        Assertions.assertEquals("dpcz", response.iterator().next().recipients().emails().get(0));
-        Assertions.assertEquals("plrgcnbvmhvq", response.iterator().next().recipients().users().get(0));
+        Assertions.assertEquals("lkgjhomywlypghhu", response.iterator().next().title());
+        Assertions.assertEquals("qyfvgpqwg", response.iterator().next().description());
+        Assertions.assertEquals("riskmbuihtqfvyq", response.iterator().next().recipients().emails().get(0));
+        Assertions.assertEquals("xsehjscgqc", response.iterator().next().recipients().users().get(0));
     }
 }

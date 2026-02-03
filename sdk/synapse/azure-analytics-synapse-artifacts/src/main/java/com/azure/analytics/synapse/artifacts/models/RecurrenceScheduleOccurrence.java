@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
     /*
      * The day of the week.
      */
+    @Generated
     private DayOfWeek day;
 
     /*
      * The occurrence.
      */
+    @Generated
     private Integer occurrence;
 
     /*
      * The recurrence schedule occurrence.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of RecurrenceScheduleOccurrence class.
      */
+    @Generated
     public RecurrenceScheduleOccurrence() {
     }
 
@@ -44,6 +49,7 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
      * 
      * @return the day value.
      */
+    @Generated
     public DayOfWeek getDay() {
         return this.day;
     }
@@ -54,6 +60,7 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
      * @param day the day value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
+    @Generated
     public RecurrenceScheduleOccurrence setDay(DayOfWeek day) {
         this.day = day;
         return this;
@@ -64,6 +71,7 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
      * 
      * @return the occurrence value.
      */
+    @Generated
     public Integer getOccurrence() {
         return this.occurrence;
     }
@@ -74,6 +82,7 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
      * @param occurrence the occurrence value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
+    @Generated
     public RecurrenceScheduleOccurrence setOccurrence(Integer occurrence) {
         this.occurrence = occurrence;
         return this;
@@ -84,6 +93,7 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -94,6 +104,7 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
      * @param additionalProperties the additionalProperties value to set.
      * @return the RecurrenceScheduleOccurrence object itself.
      */
+    @Generated
     public RecurrenceScheduleOccurrence setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -102,6 +113,7 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -123,6 +135,7 @@ public final class RecurrenceScheduleOccurrence implements JsonSerializable<Recu
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RecurrenceScheduleOccurrence.
      */
+    @Generated
     public static RecurrenceScheduleOccurrence fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RecurrenceScheduleOccurrence deserializedRecurrenceScheduleOccurrence = new RecurrenceScheduleOccurrence();

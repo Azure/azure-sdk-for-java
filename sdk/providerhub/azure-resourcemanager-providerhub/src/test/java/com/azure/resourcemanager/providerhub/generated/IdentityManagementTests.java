@@ -12,14 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityManagementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityManagement model = BinaryData.fromString("{\"type\":\"Actor\"}").toObject(IdentityManagement.class);
-        Assertions.assertEquals(IdentityManagementTypes.ACTOR, model.type());
+        IdentityManagement model
+            = BinaryData.fromString("{\"type\":\"DelegatedResourceIdentity\"}").toObject(IdentityManagement.class);
+        Assertions.assertEquals(IdentityManagementTypes.DELEGATED_RESOURCE_IDENTITY, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityManagement model = new IdentityManagement().withType(IdentityManagementTypes.ACTOR);
+        IdentityManagement model
+            = new IdentityManagement().withType(IdentityManagementTypes.DELEGATED_RESOURCE_IDENTITY);
         model = BinaryData.fromObject(model).toObject(IdentityManagement.class);
-        Assertions.assertEquals(IdentityManagementTypes.ACTOR, model.type());
+        Assertions.assertEquals(IdentityManagementTypes.DELEGATED_RESOURCE_IDENTITY, model.type());
     }
 }

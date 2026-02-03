@@ -13,11 +13,11 @@ public final class ResourceDetailsObjectListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceDetailsObjectListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"status\":\"Leased\",\"image\":\"dyjrrfbyaosv\",\"imageVersion\":\"xc\"},\"id\":\"npc\",\"name\":\"hocohslkev\",\"type\":\"eggzfb\"},{\"properties\":{\"status\":\"Updating\",\"image\":\"mvfaxkffeiith\",\"imageVersion\":\"vmezy\"},\"id\":\"hxmzsbbzoggig\",\"name\":\"xwburvjxxjns\",\"type\":\"ydptkoen\"}],\"nextLink\":\"uknvudwti\"}")
+            "{\"value\":[{\"properties\":{\"status\":\"PendingReturn\",\"image\":\"uwiqzb\",\"imageVersion\":\"j\"},\"id\":\"ovm\",\"name\":\"okacspk\",\"type\":\"lhzdobp\"},{\"properties\":{\"status\":\"Allocated\",\"image\":\"flbvvnchrkcciwwz\",\"imageVersion\":\"uqkhrsajiwku\"},\"id\":\"oskg\",\"name\":\"sauuimj\",\"type\":\"vxieduugidyj\"},{\"properties\":{\"status\":\"Returned\",\"image\":\"byao\",\"imageVersion\":\"v\"},\"id\":\"csonpclhoco\",\"name\":\"slkevle\",\"type\":\"gz\"},{\"properties\":{\"status\":\"Returned\",\"image\":\"hfmvfaxkffe\",\"imageVersion\":\"ithlvmezyvshxm\"},\"id\":\"bbzoggig\",\"name\":\"xwburvjxxjns\",\"type\":\"ydptkoen\"}],\"nextLink\":\"uknvudwti\"}")
             .toObject(ResourceDetailsObjectListResult.class);
-        Assertions.assertEquals(ResourceStatus.LEASED, model.value().get(0).properties().status());
-        Assertions.assertEquals("dyjrrfbyaosv", model.value().get(0).properties().image());
-        Assertions.assertEquals("xc", model.value().get(0).properties().imageVersion());
+        Assertions.assertEquals(ResourceStatus.PENDING_RETURN, model.value().get(0).properties().status());
+        Assertions.assertEquals("uwiqzb", model.value().get(0).properties().image());
+        Assertions.assertEquals("j", model.value().get(0).properties().imageVersion());
         Assertions.assertEquals("uknvudwti", model.nextLink());
     }
 }

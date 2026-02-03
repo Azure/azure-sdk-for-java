@@ -12,36 +12,36 @@ public final class ClusterCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterCapacity model = BinaryData.fromString(
-            "{\"availableApplianceStorageGB\":2308997283285722741,\"availableCoreCount\":5565068943906276094,\"availableHostStorageGB\":1160187571716366266,\"availableMemoryGB\":6257621363214543247,\"totalApplianceStorageGB\":3311442512942014453,\"totalCoreCount\":735752608656011593,\"totalHostStorageGB\":8335274886610479577,\"totalMemoryGB\":8200965629156318432}")
+            "{\"availableApplianceStorageGB\":8394550494358137871,\"availableCoreCount\":3241697141108746890,\"availableHostStorageGB\":1145950628020920111,\"availableMemoryGB\":8816145000808176457,\"totalApplianceStorageGB\":1135305711029815277,\"totalCoreCount\":1267263221635298895,\"totalHostStorageGB\":2632587708988993515,\"totalMemoryGB\":4185910785735665912}")
             .toObject(ClusterCapacity.class);
-        Assertions.assertEquals(2308997283285722741L, model.availableApplianceStorageGB());
-        Assertions.assertEquals(5565068943906276094L, model.availableCoreCount());
-        Assertions.assertEquals(1160187571716366266L, model.availableHostStorageGB());
-        Assertions.assertEquals(6257621363214543247L, model.availableMemoryGB());
-        Assertions.assertEquals(3311442512942014453L, model.totalApplianceStorageGB());
-        Assertions.assertEquals(735752608656011593L, model.totalCoreCount());
-        Assertions.assertEquals(8335274886610479577L, model.totalHostStorageGB());
-        Assertions.assertEquals(8200965629156318432L, model.totalMemoryGB());
+        Assertions.assertEquals(8394550494358137871L, model.availableApplianceStorageGB());
+        Assertions.assertEquals(3241697141108746890L, model.availableCoreCount());
+        Assertions.assertEquals(1145950628020920111L, model.availableHostStorageGB());
+        Assertions.assertEquals(8816145000808176457L, model.availableMemoryGB());
+        Assertions.assertEquals(1135305711029815277L, model.totalApplianceStorageGB());
+        Assertions.assertEquals(1267263221635298895L, model.totalCoreCount());
+        Assertions.assertEquals(2632587708988993515L, model.totalHostStorageGB());
+        Assertions.assertEquals(4185910785735665912L, model.totalMemoryGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterCapacity model = new ClusterCapacity().withAvailableApplianceStorageGB(2308997283285722741L)
-            .withAvailableCoreCount(5565068943906276094L)
-            .withAvailableHostStorageGB(1160187571716366266L)
-            .withAvailableMemoryGB(6257621363214543247L)
-            .withTotalApplianceStorageGB(3311442512942014453L)
-            .withTotalCoreCount(735752608656011593L)
-            .withTotalHostStorageGB(8335274886610479577L)
-            .withTotalMemoryGB(8200965629156318432L);
+        ClusterCapacity model = new ClusterCapacity().withAvailableApplianceStorageGB(8394550494358137871L)
+            .withAvailableCoreCount(3241697141108746890L)
+            .withAvailableHostStorageGB(1145950628020920111L)
+            .withAvailableMemoryGB(8816145000808176457L)
+            .withTotalApplianceStorageGB(1135305711029815277L)
+            .withTotalCoreCount(1267263221635298895L)
+            .withTotalHostStorageGB(2632587708988993515L)
+            .withTotalMemoryGB(4185910785735665912L);
         model = BinaryData.fromObject(model).toObject(ClusterCapacity.class);
-        Assertions.assertEquals(2308997283285722741L, model.availableApplianceStorageGB());
-        Assertions.assertEquals(5565068943906276094L, model.availableCoreCount());
-        Assertions.assertEquals(1160187571716366266L, model.availableHostStorageGB());
-        Assertions.assertEquals(6257621363214543247L, model.availableMemoryGB());
-        Assertions.assertEquals(3311442512942014453L, model.totalApplianceStorageGB());
-        Assertions.assertEquals(735752608656011593L, model.totalCoreCount());
-        Assertions.assertEquals(8335274886610479577L, model.totalHostStorageGB());
-        Assertions.assertEquals(8200965629156318432L, model.totalMemoryGB());
+        Assertions.assertEquals(8394550494358137871L, model.availableApplianceStorageGB());
+        Assertions.assertEquals(3241697141108746890L, model.availableCoreCount());
+        Assertions.assertEquals(1145950628020920111L, model.availableHostStorageGB());
+        Assertions.assertEquals(8816145000808176457L, model.availableMemoryGB());
+        Assertions.assertEquals(1135305711029815277L, model.totalApplianceStorageGB());
+        Assertions.assertEquals(1267263221635298895L, model.totalCoreCount());
+        Assertions.assertEquals(2632587708988993515L, model.totalHostStorageGB());
+        Assertions.assertEquals(4185910785735665912L, model.totalMemoryGB());
     }
 }

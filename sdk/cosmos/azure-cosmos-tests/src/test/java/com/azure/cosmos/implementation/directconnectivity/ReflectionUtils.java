@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -40,11 +41,12 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.LocationCache;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlTrackingUnit;
-import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
-import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
-import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.sdk.ThroughputControlTrackingUnit;
+import com.azure.cosmos.implementation.throughputControl.sdk.ThroughputRequestThrottler;
+import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.GlobalThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.sdk.controller.request.PkRangesThroughputRequestController;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.FeedResponse;
 import io.netty.handler.ssl.SslContext;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -187,6 +189,13 @@ public class ReflectionUtils {
         set(cosmosAsyncClient, tracerProvider, "diagnosticsProvider");
     }
 
+    public static DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient cosmosAsyncClient){
+        return get(
+            DiagnosticsProvider.class,
+            cosmosAsyncClient,
+            "diagnosticsProvider");
+    }
+
     public static void setClientTelemetryConfig(CosmosAsyncClient cosmosAsyncClient, CosmosClientTelemetryConfig cfg){
         set(cosmosAsyncClient, cfg, "clientTelemetryConfig");
         AsyncDocumentClient asyncClient = get(
@@ -224,6 +233,10 @@ public class ReflectionUtils {
         return getStaticField(CpuMemoryMonitor.class, "cpuListeners");
     }
 
+    public static RxStoreModel getThinProxy(RxDocumentClientImpl rxDocumentClient){
+        return get(RxStoreModel.class, rxDocumentClient, "thinProxy");
+    }
+
     public static RxStoreModel getGatewayProxy(RxDocumentClientImpl rxDocumentClient){
         return get(RxStoreModel.class, rxDocumentClient, "gatewayProxy");
     }
@@ -234,6 +247,18 @@ public class ReflectionUtils {
 
     public static GlobalEndpointManager getGlobalEndpointManager(RxDocumentClientImpl rxDocumentClient){
         return get(GlobalEndpointManager.class, rxDocumentClient, "globalEndpointManager");
+    }
+
+    public static DatabaseAccountManagerInternal getGlobalEndpointManagerOwner(GlobalEndpointManager globalEndpointManager) {
+        return get(DatabaseAccountManagerInternal.class, globalEndpointManager, "owner");
+    }
+
+    public static void setGlobalEndpointManagerOwner(GlobalEndpointManager globalEndpointManager, DatabaseAccountManagerInternal newOwner) {
+        set(globalEndpointManager, newOwner, "owner");
+    }
+
+    public static void setThinProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
+        set(client, storeModel, "thinProxy");
     }
 
     public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
@@ -284,12 +309,25 @@ public class ReflectionUtils {
         return get(StoreReader.class, consistencyReader, "storeReader");
     }
 
+    public static StoreReader getStoreReader(ConsistencyWriter consistencyWriter) {
+        return get(StoreReader.class, consistencyWriter, "storeReader");
+    }
+
     public static void setStoreReader(ConsistencyReader consistencyReader, StoreReader storeReader) {
         set(consistencyReader, storeReader, "storeReader");
     }
 
     public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {
         set(storeReader, transportClient, "transportClient");
+    }
+
+    public static void setTransportClient(CosmosClient client, TransportClient transportClient) {
+        StoreClient storeClient = getStoreClient((RxDocumentClientImpl) CosmosBridgeInternal.getAsyncDocumentClient(client));
+        set(storeClient, transportClient, "transportClient");
+        ReplicatedResourceClient replicatedResClient = getReplicatedResourceClient(storeClient);
+        ConsistencyWriter writer = getConsistencyWriter(replicatedResClient);
+        set(replicatedResClient, transportClient, "transportClient");
+        set(writer, transportClient, "transportClient");
     }
 
     public static TransportClient getTransportClient(ReplicatedResourceClient replicatedResourceClient) {
@@ -459,5 +497,19 @@ public class ReflectionUtils {
 
     public static SslContext getSslContextWithCertValidationDisabled(Configs configs) {
         return get(SslContext.class, configs, "sslContextWithCertValidationDisabled");
+    }
+
+    public static void setNoChanges(FeedResponse feedResponse, boolean noChanges) {
+        set(feedResponse, noChanges, "nochanges");
+    }
+
+    public static Class<?> getClassBySimpleName(Class<?>[] classes, String classSimpleName) {
+        for (Class<?> clazz : classes) {
+            if (clazz.getSimpleName().equals(classSimpleName)) {
+                return clazz;
+            }
+        }
+
+        return null;
     }
 }

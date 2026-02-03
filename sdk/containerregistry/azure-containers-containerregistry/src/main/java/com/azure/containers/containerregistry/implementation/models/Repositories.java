@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class Repositories implements JsonSerializable<Repositories> {
     /*
      * Repository names
      */
+    @Generated
     private List<String> repositories;
 
     /*
      * The link property.
      */
+    @Generated
     private String link;
 
     /**
      * Creates an instance of Repositories class.
      */
+    @Generated
     public Repositories() {
     }
 
@@ -38,6 +42,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
      * 
      * @return the repositories value.
      */
+    @Generated
     public List<String> getRepositories() {
         return this.repositories;
     }
@@ -48,6 +53,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
      * @param repositories the repositories value to set.
      * @return the Repositories object itself.
      */
+    @Generated
     public Repositories setRepositories(List<String> repositories) {
         this.repositories = repositories;
         return this;
@@ -58,6 +64,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
      * 
      * @return the link value.
      */
+    @Generated
     public String getLink() {
         return this.link;
     }
@@ -68,6 +75,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
      * @param link the link value to set.
      * @return the Repositories object itself.
      */
+    @Generated
     public Repositories setLink(String link) {
         this.link = link;
         return this;
@@ -76,6 +84,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class Repositories implements JsonSerializable<Repositories> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the Repositories.
      */
+    @Generated
     public static Repositories fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Repositories deserializedRepositories = new Repositories();

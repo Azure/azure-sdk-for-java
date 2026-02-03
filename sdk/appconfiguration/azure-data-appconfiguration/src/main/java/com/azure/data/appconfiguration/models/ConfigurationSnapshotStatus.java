@@ -4,6 +4,7 @@
 
 package com.azure.data.appconfiguration.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class ConfigurationSnapshotStatus extends ExpandableStringEnum<Conf
     /**
      * Static value provisioning for ConfigurationSnapshotStatus.
      */
+    @Generated
     public static final ConfigurationSnapshotStatus PROVISIONING = fromString("provisioning");
 
     /**
      * Static value ready for ConfigurationSnapshotStatus.
      */
+    @Generated
     public static final ConfigurationSnapshotStatus READY = fromString("ready");
 
     /**
      * Static value archived for ConfigurationSnapshotStatus.
      */
+    @Generated
     public static final ConfigurationSnapshotStatus ARCHIVED = fromString("archived");
 
     /**
      * Static value failed for ConfigurationSnapshotStatus.
      */
+    @Generated
     public static final ConfigurationSnapshotStatus FAILED = fromString("failed");
 
     /**
@@ -36,6 +41,7 @@ public final class ConfigurationSnapshotStatus extends ExpandableStringEnum<Conf
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ConfigurationSnapshotStatus() {
     }
@@ -46,6 +52,7 @@ public final class ConfigurationSnapshotStatus extends ExpandableStringEnum<Conf
      * @param name a name to look for.
      * @return the corresponding ConfigurationSnapshotStatus.
      */
+    @Generated
     public static ConfigurationSnapshotStatus fromString(String name) {
         return fromString(name, ConfigurationSnapshotStatus.class);
     }
@@ -55,6 +62,7 @@ public final class ConfigurationSnapshotStatus extends ExpandableStringEnum<Conf
      * 
      * @return known ConfigurationSnapshotStatus values.
      */
+    @Generated
     public static Collection<ConfigurationSnapshotStatus> values() {
         return values(ConfigurationSnapshotStatus.class);
     }

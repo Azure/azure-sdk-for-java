@@ -148,8 +148,12 @@ public final class AzureBlobFSDatasetTypeProperties implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", this.folderPath);
-        jsonWriter.writeUntypedField("fileName", this.fileName);
+        if (this.folderPath != null) {
+            jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        }
+        if (this.fileName != null) {
+            jsonWriter.writeUntypedField("fileName", this.fileName);
+        }
         jsonWriter.writeJsonField("format", this.format);
         jsonWriter.writeJsonField("compression", this.compression);
         return jsonWriter.writeEndObject();

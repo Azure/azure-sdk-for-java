@@ -12,17 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidationMessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidationMessage model
-            = BinaryData.fromString("{\"state\":\"Failed\",\"message\":\"ubpaxhe\"}").toObject(ValidationMessage.class);
-        Assertions.assertEquals(ValidationState.FAILED, model.state());
-        Assertions.assertEquals("ubpaxhe", model.message());
+        ValidationMessage model = BinaryData.fromString("{\"state\":\"Warning\",\"message\":\"uzkopbminrfd\"}")
+            .toObject(ValidationMessage.class);
+        Assertions.assertEquals(ValidationState.WARNING, model.state());
+        Assertions.assertEquals("uzkopbminrfd", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationMessage model = new ValidationMessage().withState(ValidationState.FAILED).withMessage("ubpaxhe");
+        ValidationMessage model
+            = new ValidationMessage().withState(ValidationState.WARNING).withMessage("uzkopbminrfd");
         model = BinaryData.fromObject(model).toObject(ValidationMessage.class);
-        Assertions.assertEquals(ValidationState.FAILED, model.state());
-        Assertions.assertEquals("ubpaxhe", model.message());
+        Assertions.assertEquals(ValidationState.WARNING, model.state());
+        Assertions.assertEquals("uzkopbminrfd", model.message());
     }
 }

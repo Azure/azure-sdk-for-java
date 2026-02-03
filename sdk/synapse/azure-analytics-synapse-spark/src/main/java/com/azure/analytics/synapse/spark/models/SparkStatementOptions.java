@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SparkStatementOptions implements JsonSerializable<SparkStatem
     /*
      * The code property.
      */
+    @Generated
     private String code;
 
     /*
      * The kind property.
      */
+    @Generated
     private SparkStatementLanguageType kind;
 
     /**
      * Creates an instance of SparkStatementOptions class.
      */
+    @Generated
     public SparkStatementOptions() {
     }
 
@@ -37,6 +41,7 @@ public final class SparkStatementOptions implements JsonSerializable<SparkStatem
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -47,6 +52,7 @@ public final class SparkStatementOptions implements JsonSerializable<SparkStatem
      * @param code the code value to set.
      * @return the SparkStatementOptions object itself.
      */
+    @Generated
     public SparkStatementOptions setCode(String code) {
         this.code = code;
         return this;
@@ -57,6 +63,7 @@ public final class SparkStatementOptions implements JsonSerializable<SparkStatem
      * 
      * @return the kind value.
      */
+    @Generated
     public SparkStatementLanguageType getKind() {
         return this.kind;
     }
@@ -67,6 +74,7 @@ public final class SparkStatementOptions implements JsonSerializable<SparkStatem
      * @param kind the kind value to set.
      * @return the SparkStatementOptions object itself.
      */
+    @Generated
     public SparkStatementOptions setKind(SparkStatementLanguageType kind) {
         this.kind = kind;
         return this;
@@ -75,6 +83,7 @@ public final class SparkStatementOptions implements JsonSerializable<SparkStatem
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class SparkStatementOptions implements JsonSerializable<SparkStatem
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkStatementOptions.
      */
+    @Generated
     public static SparkStatementOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkStatementOptions deserializedSparkStatementOptions = new SparkStatementOptions();

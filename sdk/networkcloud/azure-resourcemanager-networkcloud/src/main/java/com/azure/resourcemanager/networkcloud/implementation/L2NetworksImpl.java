@@ -34,8 +34,8 @@ public final class L2NetworksImpl implements L2Networks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L2NetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<L2Network> list(Context context) {
-        PagedIterable<L2NetworkInner> inner = this.serviceClient().list(context);
+    public PagedIterable<L2Network> list(Integer top, String skipToken, Context context) {
+        PagedIterable<L2NetworkInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L2NetworkImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class L2NetworksImpl implements L2Networks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L2NetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<L2Network> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<L2NetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<L2Network> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<L2NetworkInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L2NetworkImpl(inner1, this.manager()));
     }
 
@@ -79,8 +81,10 @@ public final class L2NetworksImpl implements L2Networks {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String l2NetworkName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, l2NetworkName, context);
+    public OperationStatusResult delete(String resourceGroupName, String l2NetworkName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -127,10 +131,13 @@ public final class L2NetworksImpl implements L2Networks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l2Networks'.", id)));
         }
-        return this.delete(resourceGroupName, l2NetworkName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, l2NetworkName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -141,7 +148,7 @@ public final class L2NetworksImpl implements L2Networks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l2Networks'.", id)));
         }
-        return this.delete(resourceGroupName, l2NetworkName, context);
+        return this.delete(resourceGroupName, l2NetworkName, ifMatch, ifNoneMatch, context);
     }
 
     private L2NetworksClient serviceClient() {

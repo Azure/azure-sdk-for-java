@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class PolicyCertificatesResult implements JsonSerializable<PolicyCe
     /*
      * SHA256 Hash of the binary representation certificate which was added or removed
      */
+    @Generated
     private JsonWebKeySet policyCertificates;
 
     /**
      * Creates an instance of PolicyCertificatesResult class.
      */
+    @Generated
     public PolicyCertificatesResult() {
     }
 
@@ -33,6 +36,7 @@ public final class PolicyCertificatesResult implements JsonSerializable<PolicyCe
      * 
      * @return the policyCertificates value.
      */
+    @Generated
     public JsonWebKeySet getPolicyCertificates() {
         return this.policyCertificates;
     }
@@ -44,6 +48,7 @@ public final class PolicyCertificatesResult implements JsonSerializable<PolicyCe
      * @param policyCertificates the policyCertificates value to set.
      * @return the PolicyCertificatesResult object itself.
      */
+    @Generated
     public PolicyCertificatesResult setPolicyCertificates(JsonWebKeySet policyCertificates) {
         this.policyCertificates = policyCertificates;
         return this;
@@ -63,6 +68,7 @@ public final class PolicyCertificatesResult implements JsonSerializable<PolicyCe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,6 +84,7 @@ public final class PolicyCertificatesResult implements JsonSerializable<PolicyCe
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PolicyCertificatesResult.
      */
+    @Generated
     public static PolicyCertificatesResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PolicyCertificatesResult deserializedPolicyCertificatesResult = new PolicyCertificatesResult();

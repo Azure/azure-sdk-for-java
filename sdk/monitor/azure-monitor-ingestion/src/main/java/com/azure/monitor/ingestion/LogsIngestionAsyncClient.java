@@ -18,13 +18,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.monitor.ingestion.implementation.Batcher;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesAsyncClient;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
 import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
 import com.azure.monitor.ingestion.models.LogsUploadError;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
+
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
@@ -35,6 +34,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.azure.core.util.FluxUtil.withContext;
+import com.azure.monitor.ingestion.implementation.LogsIngestionClientImpl;
 import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
@@ -96,14 +96,14 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
  */
 @ServiceClient(isAsync = true, builder = LogsIngestionClientBuilder.class)
 public final class LogsIngestionAsyncClient {
-    private final IngestionUsingDataCollectionRulesAsyncClient service;
+    private final LogsIngestionClientImpl service;
 
     /**
      * Creates a {@link LogsIngestionAsyncClient} that sends requests to the data collection endpoint.
      *
-     * @param service The {@link IngestionUsingDataCollectionRulesClient} that the client routes its request through.
+     * @param service The {@link LogsIngestionClientImpl} that the client routes its request through.
      */
-    LogsIngestionAsyncClient(IngestionUsingDataCollectionRulesAsyncClient service) {
+    LogsIngestionAsyncClient(LogsIngestionClientImpl service) {
         this.service = service;
     }
 
@@ -238,7 +238,7 @@ public final class LogsIngestionAsyncClient {
                 request.setHeader(HttpHeaderName.CONTENT_ENCODING, GZIP);
             }
         });
-        return service.uploadWithResponse(ruleId, streamName, logs, requestOptions);
+        return service.uploadWithResponseAsync(ruleId, streamName, logs, requestOptions);
     }
 
     Mono<Void> upload(String ruleId, String streamName, Iterable<Object> logs, LogsUploadOptions options,
@@ -307,7 +307,7 @@ public final class LogsIngestionAsyncClient {
         RequestOptions requestOptions
             = new RequestOptions().addHeader(HttpHeaderName.CONTENT_ENCODING, GZIP).setContext(context);
         return service
-            .uploadWithResponse(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()), requestOptions)
+            .uploadWithResponseAsync(ruleId, streamName, BinaryData.fromBytes(request.getRequestBody()), requestOptions)
             .map(response -> new UploadLogsResponseHolder(null, null))
             .onErrorResume(HttpResponseException.class,
                 ex -> Mono.fromSupplier(() -> new UploadLogsResponseHolder(request, ex)));

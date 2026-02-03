@@ -11,7 +11,7 @@ public final class DatabaseBackupInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseBackupInfo model = BinaryData.fromString(
-            "{\"databaseName\":\"cgbjbgdlfgt\",\"backupType\":\"DifferentialPartial\",\"backupFiles\":[\"quflqbctq\",\"amz\",\"rwd\"],\"position\":605506053,\"isDamaged\":false,\"isCompressed\":true,\"familyCount\":1179923211,\"backupFinishDate\":\"2021-03-27T03:11:25Z\"}")
+            "{\"databaseName\":\"w\",\"backupType\":\"Database\",\"backupFiles\":[\"cgbfzuscstun\"],\"position\":1668969246,\"isDamaged\":false,\"isCompressed\":false,\"familyCount\":194023020,\"backupFinishDate\":\"2021-03-23T14:39:02Z\"}")
             .toObject(DatabaseBackupInfo.class);
     }
 

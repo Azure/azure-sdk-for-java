@@ -14,7 +14,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * The DefaultRolloutSpecificationMediumTraffic model.
+ * The medium traffic region configuration.
  */
 @Fluent
 public final class DefaultRolloutSpecificationMediumTraffic extends TrafficRegionRolloutConfiguration {

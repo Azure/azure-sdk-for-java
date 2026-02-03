@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -126,30 +125,6 @@ public final class DataflowEndpointDataLakeStorageAuthentication
         this.userAssignedManagedIdentitySettings = userAssignedManagedIdentitySettings;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (method() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property method in model DataflowEndpointDataLakeStorageAuthentication"));
-        }
-        if (accessTokenSettings() != null) {
-            accessTokenSettings().validate();
-        }
-        if (systemAssignedManagedIdentitySettings() != null) {
-            systemAssignedManagedIdentitySettings().validate();
-        }
-        if (userAssignedManagedIdentitySettings() != null) {
-            userAssignedManagedIdentitySettings().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DataflowEndpointDataLakeStorageAuthentication.class);
 
     /**
      * {@inheritDoc}

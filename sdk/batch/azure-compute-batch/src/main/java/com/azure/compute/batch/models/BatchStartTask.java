@@ -36,7 +36,7 @@ public final class BatchStartTask implements JsonSerializable<BatchStartTask> {
      * features, you should invoke the shell in the command line, for example using "cmd /c MyCommand" in Windows or
      * "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative path
      * (relative to the Task working directory), or use the Batch provided environment variable
-     * (https://docs.microsoft.com/azure/batch/batch-compute-node-environment-variables).
+     * (https://learn.microsoft.com/azure/batch/batch-compute-node-environment-variables).
      */
     @Generated
     private final String commandLine;
@@ -114,7 +114,7 @@ public final class BatchStartTask implements JsonSerializable<BatchStartTask> {
      * advantage of such features, you should invoke the shell in the command line, for example using "cmd /c MyCommand"
      * in Windows or "/bin/sh -c MyCommand" in Linux. If the command line refers to file paths, it should use a relative
      * path (relative to the Task working directory), or use the Batch provided environment variable
-     * (https://docs.microsoft.com/azure/batch/batch-compute-node-environment-variables).
+     * (https://learn.microsoft.com/azure/batch/batch-compute-node-environment-variables).
      *
      * @return the commandLine value.
      */

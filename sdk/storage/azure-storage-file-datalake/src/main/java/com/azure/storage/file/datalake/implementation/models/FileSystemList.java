@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class FileSystemList implements JsonSerializable<FileSystemList> {
     /*
      * The filesystems property.
      */
+    @Generated
     private List<FileSystem> filesystems;
 
     /**
      * Creates an instance of FileSystemList class.
      */
+    @Generated
     public FileSystemList() {
     }
 
@@ -33,6 +36,7 @@ public final class FileSystemList implements JsonSerializable<FileSystemList> {
      * 
      * @return the filesystems value.
      */
+    @Generated
     public List<FileSystem> getFilesystems() {
         return this.filesystems;
     }
@@ -43,6 +47,7 @@ public final class FileSystemList implements JsonSerializable<FileSystemList> {
      * @param filesystems the filesystems value to set.
      * @return the FileSystemList object itself.
      */
+    @Generated
     public FileSystemList setFilesystems(List<FileSystem> filesystems) {
         this.filesystems = filesystems;
         return this;
@@ -51,6 +56,7 @@ public final class FileSystemList implements JsonSerializable<FileSystemList> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class FileSystemList implements JsonSerializable<FileSystemList> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the FileSystemList.
      */
+    @Generated
     public static FileSystemList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FileSystemList deserializedFileSystemList = new FileSystemList();

@@ -9,7 +9,9 @@ import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
@@ -23,19 +25,25 @@ import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.common.config.types.Password;
-import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -214,6 +222,23 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     }
 
     @Test(groups = "unit")
+    public void evilDeserializationIsBlocked() throws Exception {
+        AtomicReference<String> payload = new AtomicReference<>("Test RCE payload");
+        Evil evil = new Evil(payload);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(evil);
+        }
+        String evilBase64 = Base64.getEncoder().encodeToString(baos.toByteArray());
+
+        // Through KafkaCosmosUtils: should be blocked and return null
+        CosmosClientMetadataCachesSnapshot snapshot =
+            KafkaCosmosUtils.getCosmosClientMetadataFromString(evilBase64);
+        assertThat(snapshot).isNull();
+        assertThat(payload.get()).isEqualTo("Test RCE payload");
+    }
+
+    @Test(groups = "unit")
     public void misFormattedConfig() {
         CosmosSinkConnector sinkConnector = new CosmosSinkConnector();
         Map<String, String> sinkConfigMap = this.getValidSinkConfig();
@@ -245,6 +270,31 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     }
 
     @Test(groups = { "unit" })
+    public void sinkConfigWithAuthEndpointOverride() {
+        String tenantId = "tenantId";
+        String clientId = "clientId";
+        String clientSecret = "clientSecret";
+        String authEndpoint = "https://login.example.com/";
+
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+        sinkConfigMap.put("azure.cosmos.account.tenantId", tenantId);
+        sinkConfigMap.put("azure.cosmos.auth.aad.clientId", clientId);
+        sinkConfigMap.put("azure.cosmos.auth.aad.clientSecret", clientSecret);
+        sinkConfigMap.put("azure.cosmos.auth.aad.authEndpointOverride", authEndpoint);
+
+        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
+        assertThat(sinkConfig.getAccountConfig()).isNotNull();
+        assertThat(sinkConfig.getAccountConfig().getCosmosAuthConfig()).isInstanceOf(CosmosAadAuthConfig.class);
+        CosmosAadAuthConfig cosmosAadAuthConfig = (CosmosAadAuthConfig) sinkConfig.getAccountConfig()
+                .getCosmosAuthConfig();
+        assertThat(cosmosAadAuthConfig.getTenantId()).isEqualTo(tenantId);
+        assertThat(cosmosAadAuthConfig.getClientId()).isEqualTo(clientId);
+        assertThat(cosmosAadAuthConfig.getClientSecret()).isEqualTo(clientSecret);
+        assertThat(cosmosAadAuthConfig.getAuthEndpoint()).isEqualTo(authEndpoint);
+    }
+
+    @Test(groups = { "unit" })
     public void sinkConfigWithThroughputControl() {
         String throughputControlGroupName = "test";
         int targetThroughput= 6;
@@ -252,15 +302,15 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         String throughputControlDatabaseName = "throughputControlDatabase";
         String throughputControlContainerName = "throughputControlContainer";
 
-        Map<String, String> sourceConfigMap = this.getValidSinkConfig();
-        sourceConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
-        sourceConfigMap.put("azure.cosmos.throughputControl.group.name", throughputControlGroupName);
-        sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughput", String.valueOf(targetThroughput));
-        sourceConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", String.valueOf(targetThroughputThreshold));
-        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", throughputControlDatabaseName);
-        sourceConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("azure.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("azure.cosmos.throughputControl.group.name", throughputControlGroupName);
+        sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughput", String.valueOf(targetThroughput));
+        sinkConfigMap.put("azure.cosmos.throughputControl.targetThroughputThreshold", String.valueOf(targetThroughputThreshold));
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.database.name", throughputControlDatabaseName);
+        sinkConfigMap.put("azure.cosmos.throughputControl.globalControl.container.name", throughputControlContainerName);
 
-        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sourceConfigMap);
+        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
         assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
         assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
         assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
@@ -394,6 +444,7 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("azure.cosmos.account.key", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.authEndpointOverride", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<Boolean>("azure.cosmos.mode.gateway", false, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.preferredRegionList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.application.name", Strings.Emtpy, true),
@@ -444,4 +495,26 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
                 true)
         );
     }
+
+    public static class Evil implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        private final AtomicReference<String> payload;
+
+        public Evil(AtomicReference<String> payload) {
+            this.payload = payload;
+        }
+
+        private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+            in.defaultReadObject();
+            System.out.println("Payload executed");
+            payload.set("Payload executed");
+        }
+
+        @Override
+        public String toString() {
+            return "Evil{payload='" + payload.get() + "'}";
+        }
+    }
+
 }

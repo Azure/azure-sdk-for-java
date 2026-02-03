@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,56 +24,67 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     /*
      * The name of the indexer.
      */
+    @Generated
     private final String name;
 
     /*
      * The description of the indexer.
      */
+    @Generated
     private String description;
 
     /*
      * The name of the datasource from which this indexer reads data.
      */
+    @Generated
     private String dataSourceName;
 
     /*
      * The name of the skillset executing with this indexer.
      */
+    @Generated
     private String skillsetName;
 
     /*
      * The name of the index to which this indexer writes data.
      */
+    @Generated
     private String targetIndexName;
 
     /*
      * The schedule for this indexer.
      */
+    @Generated
     private IndexingSchedule schedule;
 
     /*
      * Parameters for indexer execution.
      */
+    @Generated
     private IndexingParameters parameters;
 
     /*
      * Defines mappings between fields in the data source and corresponding target fields in the index.
      */
+    @Generated
     private List<FieldMapping> fieldMappings;
 
     /*
      * Output field mappings are applied after enrichment and immediately before indexing.
      */
+    @Generated
     private List<FieldMapping> outputFieldMappings;
 
     /*
      * A value indicating whether the indexer is disabled. Default is false.
      */
+    @Generated
     private Boolean isDisabled;
 
     /*
      * The ETag of the indexer.
      */
+    @Generated
     private String eTag;
 
     /*
@@ -84,12 +96,14 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * execution status) will be unaffected. Encryption with customer-managed keys is not available for free search
      * services, and is only available for paid services created on or after January 1, 2019.
      */
+    @Generated
     private SearchResourceEncryptionKey encryptionKey;
 
     /*
      * Adds caching to an enrichment pipeline to allow for incremental modification steps without having to rebuild the
      * index every time.
      */
+    @Generated
     private SearchIndexerCache cache;
 
     /**
@@ -97,6 +111,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @param name the name value to set.
      */
+    @Generated
     public SearchIndexer(String name) {
         this.name = name;
     }
@@ -106,6 +121,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -115,6 +131,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -125,6 +142,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param description the description value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setDescription(String description) {
         this.description = description;
         return this;
@@ -135,6 +153,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the dataSourceName value.
      */
+    @Generated
     public String getDataSourceName() {
         return this.dataSourceName;
     }
@@ -145,6 +164,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param dataSourceName the dataSourceName value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setDataSourceName(String dataSourceName) {
         this.dataSourceName = dataSourceName;
         return this;
@@ -155,6 +175,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the skillsetName value.
      */
+    @Generated
     public String getSkillsetName() {
         return this.skillsetName;
     }
@@ -165,6 +186,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param skillsetName the skillsetName value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setSkillsetName(String skillsetName) {
         this.skillsetName = skillsetName;
         return this;
@@ -175,6 +197,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the targetIndexName value.
      */
+    @Generated
     public String getTargetIndexName() {
         return this.targetIndexName;
     }
@@ -185,6 +208,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param targetIndexName the targetIndexName value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setTargetIndexName(String targetIndexName) {
         this.targetIndexName = targetIndexName;
         return this;
@@ -195,6 +219,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the schedule value.
      */
+    @Generated
     public IndexingSchedule getSchedule() {
         return this.schedule;
     }
@@ -205,6 +230,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param schedule the schedule value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setSchedule(IndexingSchedule schedule) {
         this.schedule = schedule;
         return this;
@@ -215,6 +241,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the parameters value.
      */
+    @Generated
     public IndexingParameters getParameters() {
         return this.parameters;
     }
@@ -225,6 +252,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param parameters the parameters value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setParameters(IndexingParameters parameters) {
         this.parameters = parameters;
         return this;
@@ -236,6 +264,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the fieldMappings value.
      */
+    @Generated
     public List<FieldMapping> getFieldMappings() {
         return this.fieldMappings;
     }
@@ -247,6 +276,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param fieldMappings the fieldMappings value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setFieldMappings(List<FieldMapping> fieldMappings) {
         this.fieldMappings = fieldMappings;
         return this;
@@ -258,6 +288,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the outputFieldMappings value.
      */
+    @Generated
     public List<FieldMapping> getOutputFieldMappings() {
         return this.outputFieldMappings;
     }
@@ -269,6 +300,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param outputFieldMappings the outputFieldMappings value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setOutputFieldMappings(List<FieldMapping> outputFieldMappings) {
         this.outputFieldMappings = outputFieldMappings;
         return this;
@@ -279,6 +311,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the isDisabled value.
      */
+    @Generated
     public Boolean isDisabled() {
         return this.isDisabled;
     }
@@ -289,6 +322,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param isDisabled the isDisabled value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setIsDisabled(Boolean isDisabled) {
         this.isDisabled = isDisabled;
         return this;
@@ -299,6 +333,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -309,6 +344,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param eTag the eTag value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -326,6 +362,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the encryptionKey value.
      */
+    @Generated
     public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
@@ -343,6 +380,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param encryptionKey the encryptionKey value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
@@ -354,6 +392,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      *
      * @return the cache value.
      */
+    @Generated
     public SearchIndexerCache getCache() {
         return this.cache;
     }
@@ -365,6 +404,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @param cache the cache value to set.
      * @return the SearchIndexer object itself.
      */
+    @Generated
     public SearchIndexer setCache(SearchIndexerCache cache) {
         this.cache = cache;
         return this;
@@ -373,6 +413,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -402,6 +443,7 @@ public final class SearchIndexer implements JsonSerializable<SearchIndexer> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexer.
      */
+    @Generated
     public static SearchIndexer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

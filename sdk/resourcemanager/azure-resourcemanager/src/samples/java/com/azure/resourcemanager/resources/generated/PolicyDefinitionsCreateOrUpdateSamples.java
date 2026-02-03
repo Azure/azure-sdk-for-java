@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class PolicyDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createOrUpdatePolicyDefinitionAdvancedParams.json
      */
     /**
@@ -55,7 +55,7 @@ public final class PolicyDefinitionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createOrUpdatePolicyDefinition.json
      */
     /**

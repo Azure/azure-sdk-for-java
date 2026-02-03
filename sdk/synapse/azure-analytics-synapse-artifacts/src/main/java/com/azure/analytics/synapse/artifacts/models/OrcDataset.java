@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class OrcDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Orc";
 
     /*
      * The location of the ORC data storage.
      */
+    @Generated
     private DatasetLocation location;
 
     /*
      * The data orcCompressionCodec. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object orcCompressionCodec;
 
     /**
      * Creates an instance of OrcDataset class.
      */
+    @Generated
     public OrcDataset() {
     }
 
@@ -44,6 +49,7 @@ public class OrcDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class OrcDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -64,6 +71,7 @@ public class OrcDataset extends Dataset {
      * @param location the location value to set.
      * @return the OrcDataset object itself.
      */
+    @Generated
     public OrcDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -75,6 +83,7 @@ public class OrcDataset extends Dataset {
      * 
      * @return the orcCompressionCodec value.
      */
+    @Generated
     public Object getOrcCompressionCodec() {
         return this.orcCompressionCodec;
     }
@@ -86,6 +95,7 @@ public class OrcDataset extends Dataset {
      * @param orcCompressionCodec the orcCompressionCodec value to set.
      * @return the OrcDataset object itself.
      */
+    @Generated
     public OrcDataset setOrcCompressionCodec(Object orcCompressionCodec) {
         this.orcCompressionCodec = orcCompressionCodec;
         return this;
@@ -94,6 +104,7 @@ public class OrcDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcDataset setDescription(String description) {
         super.setDescription(description);
@@ -103,6 +114,7 @@ public class OrcDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -112,6 +124,7 @@ public class OrcDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -121,6 +134,7 @@ public class OrcDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -130,6 +144,7 @@ public class OrcDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -139,6 +154,7 @@ public class OrcDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -148,6 +164,7 @@ public class OrcDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public OrcDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -157,13 +174,18 @@ public class OrcDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -171,7 +193,9 @@ public class OrcDataset extends Dataset {
         if (location != null || orcCompressionCodec != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("location", this.location);
-            jsonWriter.writeUntypedField("orcCompressionCodec", this.orcCompressionCodec);
+            if (this.orcCompressionCodec != null) {
+                jsonWriter.writeUntypedField("orcCompressionCodec", this.orcCompressionCodec);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -191,6 +215,7 @@ public class OrcDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OrcDataset.
      */
+    @Generated
     public static OrcDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OrcDataset deserializedOrcDataset = new OrcDataset();

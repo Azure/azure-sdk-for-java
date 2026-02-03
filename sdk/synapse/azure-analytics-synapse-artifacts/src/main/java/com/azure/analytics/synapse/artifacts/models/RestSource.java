@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,29 +21,34 @@ public final class RestSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "RestSource";
 
     /*
      * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object requestMethod;
 
     /*
      * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object requestBody;
 
     /*
      * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object additionalHeaders;
 
     /*
      * The pagination rules to compose next page requests. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object paginationRules;
 
     /*
@@ -50,22 +56,26 @@ public final class RestSource extends CopySource {
      * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object httpRequestTimeout;
 
     /*
      * The time to await before sending next page request.
      */
+    @Generated
     private Object requestInterval;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of RestSource class.
      */
+    @Generated
     public RestSource() {
     }
 
@@ -74,6 +84,7 @@ public final class RestSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -85,6 +96,7 @@ public final class RestSource extends CopySource {
      * 
      * @return the requestMethod value.
      */
+    @Generated
     public Object getRequestMethod() {
         return this.requestMethod;
     }
@@ -96,6 +108,7 @@ public final class RestSource extends CopySource {
      * @param requestMethod the requestMethod value to set.
      * @return the RestSource object itself.
      */
+    @Generated
     public RestSource setRequestMethod(Object requestMethod) {
         this.requestMethod = requestMethod;
         return this;
@@ -107,6 +120,7 @@ public final class RestSource extends CopySource {
      * 
      * @return the requestBody value.
      */
+    @Generated
     public Object getRequestBody() {
         return this.requestBody;
     }
@@ -118,6 +132,7 @@ public final class RestSource extends CopySource {
      * @param requestBody the requestBody value to set.
      * @return the RestSource object itself.
      */
+    @Generated
     public RestSource setRequestBody(Object requestBody) {
         this.requestBody = requestBody;
         return this;
@@ -129,6 +144,7 @@ public final class RestSource extends CopySource {
      * 
      * @return the additionalHeaders value.
      */
+    @Generated
     public Object getAdditionalHeaders() {
         return this.additionalHeaders;
     }
@@ -140,6 +156,7 @@ public final class RestSource extends CopySource {
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the RestSource object itself.
      */
+    @Generated
     public RestSource setAdditionalHeaders(Object additionalHeaders) {
         this.additionalHeaders = additionalHeaders;
         return this;
@@ -151,6 +168,7 @@ public final class RestSource extends CopySource {
      * 
      * @return the paginationRules value.
      */
+    @Generated
     public Object getPaginationRules() {
         return this.paginationRules;
     }
@@ -162,6 +180,7 @@ public final class RestSource extends CopySource {
      * @param paginationRules the paginationRules value to set.
      * @return the RestSource object itself.
      */
+    @Generated
     public RestSource setPaginationRules(Object paginationRules) {
         this.paginationRules = paginationRules;
         return this;
@@ -174,6 +193,7 @@ public final class RestSource extends CopySource {
      * 
      * @return the httpRequestTimeout value.
      */
+    @Generated
     public Object getHttpRequestTimeout() {
         return this.httpRequestTimeout;
     }
@@ -186,6 +206,7 @@ public final class RestSource extends CopySource {
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the RestSource object itself.
      */
+    @Generated
     public RestSource setHttpRequestTimeout(Object httpRequestTimeout) {
         this.httpRequestTimeout = httpRequestTimeout;
         return this;
@@ -196,6 +217,7 @@ public final class RestSource extends CopySource {
      * 
      * @return the requestInterval value.
      */
+    @Generated
     public Object getRequestInterval() {
         return this.requestInterval;
     }
@@ -206,6 +228,7 @@ public final class RestSource extends CopySource {
      * @param requestInterval the requestInterval value to set.
      * @return the RestSource object itself.
      */
+    @Generated
     public RestSource setRequestInterval(Object requestInterval) {
         this.requestInterval = requestInterval;
         return this;
@@ -217,6 +240,7 @@ public final class RestSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -228,6 +252,7 @@ public final class RestSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the RestSource object itself.
      */
+    @Generated
     public RestSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -236,6 +261,7 @@ public final class RestSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -245,6 +271,7 @@ public final class RestSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -254,6 +281,7 @@ public final class RestSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public RestSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -263,20 +291,41 @@ public final class RestSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
-        jsonWriter.writeUntypedField("requestBody", this.requestBody);
-        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
-        jsonWriter.writeUntypedField("paginationRules", this.paginationRules);
-        jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
-        jsonWriter.writeUntypedField("requestInterval", this.requestInterval);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.requestMethod != null) {
+            jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        }
+        if (this.requestBody != null) {
+            jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        }
+        if (this.additionalHeaders != null) {
+            jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        }
+        if (this.paginationRules != null) {
+            jsonWriter.writeUntypedField("paginationRules", this.paginationRules);
+        }
+        if (this.httpRequestTimeout != null) {
+            jsonWriter.writeUntypedField("httpRequestTimeout", this.httpRequestTimeout);
+        }
+        if (this.requestInterval != null) {
+            jsonWriter.writeUntypedField("requestInterval", this.requestInterval);
+        }
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -293,6 +342,7 @@ public final class RestSource extends CopySource {
      * to JSON null.
      * @throws IOException If an error occurs while reading the RestSource.
      */
+    @Generated
     public static RestSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RestSource deserializedRestSource = new RestSource();

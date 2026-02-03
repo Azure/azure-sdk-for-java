@@ -7,14 +7,20 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareRecoveryPoint;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointProperties;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierInformation;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierStatus;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierType;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class AzureFileShareRecoveryPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileShareRecoveryPoint model = BinaryData.fromString(
-            "{\"objectType\":\"AzureFileShareRecoveryPoint\",\"recoveryPointType\":\"h\",\"recoveryPointTime\":\"2021-03-17T00:42:38Z\",\"fileShareSnapshotUri\":\"fdntwjchrdgoih\",\"recoveryPointSizeInGB\":1654736009,\"recoveryPointProperties\":{\"expiryTime\":\"ton\",\"ruleName\":\"jl\",\"isSoftDeleted\":true}}")
+            "{\"objectType\":\"AzureFileShareRecoveryPoint\",\"recoveryPointType\":\"h\",\"recoveryPointTime\":\"2021-03-17T00:42:38Z\",\"fileShareSnapshotUri\":\"fdntwjchrdgoih\",\"recoveryPointSizeInGB\":1654736009,\"recoveryPointProperties\":{\"expiryTime\":\"ton\",\"ruleName\":\"jl\",\"isSoftDeleted\":true},\"recoveryPointTierDetails\":[{\"type\":\"ArchivedRP\",\"status\":\"Deleted\",\"extendedInfo\":{\"tov\":\"sb\",\"irgne\":\"tgseinqfiufxqkn\",\"fcdmqnrojlpijn\":\"ttwqmsni\"}},{\"type\":\"InstantRP\",\"status\":\"Valid\",\"extendedInfo\":{\"zzronasx\":\"hcrat\",\"zq\":\"ft\"}},{\"type\":\"HardenedRP\",\"status\":\"Deleted\",\"extendedInfo\":{\"lgnyhmo\":\"sgogczhonnxk\",\"h\":\"sxkkg\"}},{\"type\":\"Invalid\",\"status\":\"Valid\",\"extendedInfo\":{\"frpdsofbshrns\":\"dhqxvcx\",\"ycnunvjsrtk\":\"buswdvzyy\",\"uxzejntpsew\":\"awnopqgikyzirtxd\"}}]}")
             .toObject(AzureFileShareRecoveryPoint.class);
         Assertions.assertEquals("h", model.recoveryPointType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T00:42:38Z"), model.recoveryPointTime());
@@ -23,6 +29,9 @@ public final class AzureFileShareRecoveryPointTests {
         Assertions.assertEquals("ton", model.recoveryPointProperties().expiryTime());
         Assertions.assertEquals("jl", model.recoveryPointProperties().ruleName());
         Assertions.assertEquals(true, model.recoveryPointProperties().isSoftDeleted());
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.recoveryPointTierDetails().get(0).type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.recoveryPointTierDetails().get(0).status());
+        Assertions.assertEquals("sb", model.recoveryPointTierDetails().get(0).extendedInfo().get("tov"));
     }
 
     @org.junit.jupiter.api.Test
@@ -32,7 +41,21 @@ public final class AzureFileShareRecoveryPointTests {
             .withFileShareSnapshotUri("fdntwjchrdgoih")
             .withRecoveryPointSizeInGB(1654736009)
             .withRecoveryPointProperties(
-                new RecoveryPointProperties().withExpiryTime("ton").withRuleName("jl").withIsSoftDeleted(true));
+                new RecoveryPointProperties().withExpiryTime("ton").withRuleName("jl").withIsSoftDeleted(true))
+            .withRecoveryPointTierDetails(Arrays.asList(
+                new RecoveryPointTierInformation().withType(RecoveryPointTierType.ARCHIVED_RP)
+                    .withStatus(RecoveryPointTierStatus.DELETED)
+                    .withExtendedInfo(mapOf("tov", "sb", "irgne", "tgseinqfiufxqkn", "fcdmqnrojlpijn", "ttwqmsni")),
+                new RecoveryPointTierInformation().withType(RecoveryPointTierType.INSTANT_RP)
+                    .withStatus(RecoveryPointTierStatus.VALID)
+                    .withExtendedInfo(mapOf("zzronasx", "hcrat", "zq", "ft")),
+                new RecoveryPointTierInformation().withType(RecoveryPointTierType.HARDENED_RP)
+                    .withStatus(RecoveryPointTierStatus.DELETED)
+                    .withExtendedInfo(mapOf("lgnyhmo", "sgogczhonnxk", "h", "sxkkg")),
+                new RecoveryPointTierInformation().withType(RecoveryPointTierType.INVALID)
+                    .withStatus(RecoveryPointTierStatus.VALID)
+                    .withExtendedInfo(mapOf("frpdsofbshrns", "dhqxvcx", "ycnunvjsrtk", "buswdvzyy", "uxzejntpsew",
+                        "awnopqgikyzirtxd"))));
         model = BinaryData.fromObject(model).toObject(AzureFileShareRecoveryPoint.class);
         Assertions.assertEquals("h", model.recoveryPointType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T00:42:38Z"), model.recoveryPointTime());
@@ -41,5 +64,20 @@ public final class AzureFileShareRecoveryPointTests {
         Assertions.assertEquals("ton", model.recoveryPointProperties().expiryTime());
         Assertions.assertEquals("jl", model.recoveryPointProperties().ruleName());
         Assertions.assertEquals(true, model.recoveryPointProperties().isSoftDeleted());
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.recoveryPointTierDetails().get(0).type());
+        Assertions.assertEquals(RecoveryPointTierStatus.DELETED, model.recoveryPointTierDetails().get(0).status());
+        Assertions.assertEquals("sb", model.recoveryPointTierDetails().get(0).extendedInfo().get("tov"));
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

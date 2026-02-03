@@ -14,16 +14,17 @@ public final class ApimResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApimResource model = BinaryData.fromString(
-            "{\"tags\":{\"vgllixdgby\":\"ybjpozoks\"},\"id\":\"gwewqkjvxprwpxso\",\"name\":\"hu\",\"type\":\"xlcskltez\"}")
+            "{\"tags\":{\"mglzufcy\":\"zvgnwzs\",\"ufhfcbjysa\":\"kohdbiha\",\"xwczbyscnp\":\"ithxqhabifpi\",\"hiv\":\"x\"},\"id\":\"qniwbybrkxvdumj\",\"name\":\"rtfw\",\"type\":\"ukxgaud\"}")
             .toObject(ApimResource.class);
-        Assertions.assertEquals("ybjpozoks", model.tags().get("vgllixdgby"));
+        Assertions.assertEquals("zvgnwzs", model.tags().get("mglzufcy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApimResource model = new ApimResource().withTags(mapOf("vgllixdgby", "ybjpozoks"));
+        ApimResource model = new ApimResource()
+            .withTags(mapOf("mglzufcy", "zvgnwzs", "ufhfcbjysa", "kohdbiha", "xwczbyscnp", "ithxqhabifpi", "hiv", "x"));
         model = BinaryData.fromObject(model).toObject(ApimResource.class);
-        Assertions.assertEquals("ybjpozoks", model.tags().get("vgllixdgby"));
+        Assertions.assertEquals("zvgnwzs", model.tags().get("mglzufcy"));
     }
 
     // Use "Map.of" if available

@@ -3,6 +3,7 @@
 
 package com.azure.json.contract;
 
+import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -10,6 +11,8 @@ import com.azure.json.JsonWriter;
 import com.azure.json.ReadValueCallback;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,6 +33,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,16 +46,24 @@ import static org.junit.jupiter.api.Assertions.fail;
  * written to be considered an acceptable implementation.
  * <p>
  * Each test will only create a single instance of {@link JsonReader} to simplify the usage of
- * {@link #getJsonReader(String)}.
+ * {@link #getJsonReader(String, JsonOptions)}.
  */
 public abstract class JsonReaderContractTests {
+    private static final String JSON_WITH_COMMENTS = "{// single line comment\n\"single-line\":\"comment\","
+        + "\n/*\nmulti-line comment\n*/\n\"multi-line\":\"comment\"}";
+
+    private JsonReader getJsonReader(String json) throws IOException {
+        return getJsonReader(json, new JsonOptions());
+    }
+
     /**
      * Creates an instance of {@link JsonReader} that will be used by a test.
      *
      * @param json The JSON to be read.
+     * @param options The {@link JsonOptions} to be used.
      * @return The {@link JsonReader} that a test will use.
      */
-    protected abstract JsonReader getJsonReader(String json) throws IOException;
+    protected abstract JsonReader getJsonReader(String json, JsonOptions options) throws IOException;
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
@@ -445,9 +457,9 @@ public abstract class JsonReaderContractTests {
 
     private static Stream<Arguments> readUntypedSimpleSupplier() {
         return Stream.of(Arguments.of("null", 1, null), Arguments.of("true", 1, true), Arguments.of("false", 1, false),
-            Arguments.of("3.14", 1, 3.14), Arguments.of("NaN", 1, String.valueOf(Double.NaN)),
-            Arguments.of("-Infinity", 1, String.valueOf(Double.NEGATIVE_INFINITY)),
-            Arguments.of("Infinity", 1, String.valueOf(Double.POSITIVE_INFINITY)), Arguments.of("42", 1, 42),
+            Arguments.of("3.14", 1, 3.14D), Arguments.of("NaN", 1, Double.NaN),
+            Arguments.of("-Infinity", 1, Double.NEGATIVE_INFINITY),
+            Arguments.of("Infinity", 1, Double.POSITIVE_INFINITY), Arguments.of("42", 1, 42),
             Arguments.of("420000000000", 1, 420000000000L), Arguments.of("\"hello\"", 1, "hello"));
     }
 
@@ -745,6 +757,42 @@ public abstract class JsonReaderContractTests {
             Arguments.of("{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}", reader, map));
     }
 
+    @Execution(ExecutionMode.SAME_THREAD)
+    @ParameterizedTest
+    @MethodSource("readUntypedExponentNumbersSupplier")
+    public void readUntypedExponentNumbers(String numberString, Number expected) throws IOException {
+        readAndValidate(numberString, JsonReader::readUntyped, actual -> assertEquals(expected, actual));
+    }
+
+    private static Stream<Arguments> readUntypedExponentNumbersSupplier() {
+        return Stream.of(Arguments.of("1e-1", 0.1D), Arguments.of("1E-1", 0.1D), Arguments.of("1e+1", 10D),
+            Arguments.of("1E+1", 10D), Arguments.of("1e-01", 0.1D), Arguments.of("1E-01", 0.1D),
+            Arguments.of("1e+01", 10D), Arguments.of("1E+01", 10D), Arguments.of("1e0", 1D), Arguments.of("1E0", 1D),
+
+            Arguments.of("Infinity", Double.POSITIVE_INFINITY), Arguments.of("+Infinity", Double.POSITIVE_INFINITY),
+            Arguments.of("-Infinity", Double.NEGATIVE_INFINITY), Arguments.of("NaN", Double.NaN));
+    }
+
+    @Test
+    public void readJsonc() throws IOException {
+        try (JsonReader jsonReader = getJsonReader(JSON_WITH_COMMENTS, new JsonOptions().setJsoncSupported(true))) {
+            jsonReader.nextToken();
+            String outputJson = jsonReader.readChildren();
+            assertNotNull(outputJson);
+        }
+    }
+
+    @Test
+    public void readJsoncFails() {
+        assertThrows(IOException.class, () -> {
+            try (JsonReader jsonReader = getJsonReader(JSON_WITH_COMMENTS)) {
+                jsonReader.nextToken();
+                String outputJson = jsonReader.readChildren();
+                assertNotNull(outputJson);
+            }
+        });
+    }
+
     private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken)
         throws IOException {
         assertNull(reader.currentToken());
@@ -772,9 +820,8 @@ public abstract class JsonReaderContractTests {
             return test;
         }
 
-        public TestData setTest(String test) {
+        public void setTest(String test) {
             this.test = test;
-            return this;
         }
 
         @Override

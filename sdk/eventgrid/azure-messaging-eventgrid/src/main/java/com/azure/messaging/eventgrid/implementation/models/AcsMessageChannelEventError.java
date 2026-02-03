@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class AcsMessageChannelEventError implements JsonSerializable<AcsMe
     /*
      * The channel error code
      */
+    @Generated
     private String channelCode;
 
     /*
      * The channel error message
      */
+    @Generated
     private String channelMessage;
 
     /**
      * Creates an instance of AcsMessageChannelEventError class.
      */
+    @Generated
     public AcsMessageChannelEventError() {
     }
 
@@ -37,6 +41,7 @@ public final class AcsMessageChannelEventError implements JsonSerializable<AcsMe
      * 
      * @return the channelCode value.
      */
+    @Generated
     public String getChannelCode() {
         return this.channelCode;
     }
@@ -47,6 +52,7 @@ public final class AcsMessageChannelEventError implements JsonSerializable<AcsMe
      * @param channelCode the channelCode value to set.
      * @return the AcsMessageChannelEventError object itself.
      */
+    @Generated
     public AcsMessageChannelEventError setChannelCode(String channelCode) {
         this.channelCode = channelCode;
         return this;
@@ -57,6 +63,7 @@ public final class AcsMessageChannelEventError implements JsonSerializable<AcsMe
      * 
      * @return the channelMessage value.
      */
+    @Generated
     public String getChannelMessage() {
         return this.channelMessage;
     }
@@ -67,6 +74,7 @@ public final class AcsMessageChannelEventError implements JsonSerializable<AcsMe
      * @param channelMessage the channelMessage value to set.
      * @return the AcsMessageChannelEventError object itself.
      */
+    @Generated
     public AcsMessageChannelEventError setChannelMessage(String channelMessage) {
         this.channelMessage = channelMessage;
         return this;
@@ -75,6 +83,7 @@ public final class AcsMessageChannelEventError implements JsonSerializable<AcsMe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class AcsMessageChannelEventError implements JsonSerializable<AcsMe
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsMessageChannelEventError.
      */
+    @Generated
     public static AcsMessageChannelEventError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsMessageChannelEventError deserializedAcsMessageChannelEventError = new AcsMessageChannelEventError();

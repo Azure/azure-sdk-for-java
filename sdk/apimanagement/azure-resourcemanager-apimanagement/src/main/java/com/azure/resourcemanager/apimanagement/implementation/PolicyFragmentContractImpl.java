@@ -41,6 +41,10 @@ public final class PolicyFragmentContractImpl
         return this.innerModel().format();
     }
 
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }

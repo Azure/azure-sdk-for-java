@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.monitoring.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SparkJobListViewResponse implements JsonSerializable<SparkJob
     /*
      * The nJobs property.
      */
+    @Generated
     private Integer nJobs;
 
     /*
      * The sparkJobs property.
      */
+    @Generated
     private List<SparkJob> sparkJobs;
 
     /**
      * Creates an instance of SparkJobListViewResponse class.
      */
+    @Generated
     public SparkJobListViewResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class SparkJobListViewResponse implements JsonSerializable<SparkJob
      * 
      * @return the nJobs value.
      */
+    @Generated
     public Integer getNJobs() {
         return this.nJobs;
     }
@@ -48,6 +53,7 @@ public final class SparkJobListViewResponse implements JsonSerializable<SparkJob
      * @param nJobs the nJobs value to set.
      * @return the SparkJobListViewResponse object itself.
      */
+    @Generated
     public SparkJobListViewResponse setNJobs(Integer nJobs) {
         this.nJobs = nJobs;
         return this;
@@ -58,6 +64,7 @@ public final class SparkJobListViewResponse implements JsonSerializable<SparkJob
      * 
      * @return the sparkJobs value.
      */
+    @Generated
     public List<SparkJob> getSparkJobs() {
         return this.sparkJobs;
     }
@@ -68,6 +75,7 @@ public final class SparkJobListViewResponse implements JsonSerializable<SparkJob
      * @param sparkJobs the sparkJobs value to set.
      * @return the SparkJobListViewResponse object itself.
      */
+    @Generated
     public SparkJobListViewResponse setSparkJobs(List<SparkJob> sparkJobs) {
         this.sparkJobs = sparkJobs;
         return this;
@@ -76,6 +84,7 @@ public final class SparkJobListViewResponse implements JsonSerializable<SparkJob
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class SparkJobListViewResponse implements JsonSerializable<SparkJob
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkJobListViewResponse.
      */
+    @Generated
     public static SparkJobListViewResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkJobListViewResponse deserializedSparkJobListViewResponse = new SparkJobListViewResponse();

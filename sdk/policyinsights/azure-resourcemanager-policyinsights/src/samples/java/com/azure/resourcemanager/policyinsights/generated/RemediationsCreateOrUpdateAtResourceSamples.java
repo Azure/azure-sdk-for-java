@@ -12,7 +12,7 @@ import com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner;
 public final class RemediationsCreateOrUpdateAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CreateResourceScope.json
      */
     /**

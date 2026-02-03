@@ -33,7 +33,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void submitMessageAndRun(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
@@ -91,7 +91,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void submitMessageAndRunWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
@@ -152,7 +152,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createThreadAndRun(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();
@@ -204,7 +204,7 @@ public class AzureRunThreadAsyncTest extends AssistantsClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createThreadAndRunWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
-        client = getAssistantsAsyncClient(httpClient);
+        client = getAssistantsAsyncClient(httpClient, serviceVersion);
         String mathTutorAssistantId = createMathTutorAssistant(client);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             AtomicReference<ThreadRun> runReference = new AtomicReference<>();

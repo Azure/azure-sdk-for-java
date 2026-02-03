@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VaultSettin
 public final class ReplicationVaultSettingCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationVaultSetting_Create.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationVaultSettingCreateSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationVaultSettings()
             .define("default")
-            .withExistingVault("vault1", "resourceGroupPS1")
+            .withExistingVault("resourceGroupPS1", "vault1")
             .withProperties(new VaultSettingCreationInputProperties().withMigrationSolutionId(
                 "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.Migrate/MigrateProjects/resourceGroupPS1-MigrateProject/Solutions/Servers-Migration-ServerMigration"))
             .create();

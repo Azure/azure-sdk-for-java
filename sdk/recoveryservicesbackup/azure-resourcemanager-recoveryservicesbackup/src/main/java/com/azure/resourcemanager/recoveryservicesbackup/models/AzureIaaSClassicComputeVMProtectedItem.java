@@ -402,6 +402,8 @@ public final class AzureIaaSClassicComputeVMProtectedItem extends AzureIaaSvmPro
                 } else if ("extendedProperties".equals(fieldName)) {
                     deserializedAzureIaaSClassicComputeVMProtectedItem
                         .withExtendedProperties(ExtendedProperties.fromJson(reader));
+                } else if ("policyType".equals(fieldName)) {
+                    deserializedAzureIaaSClassicComputeVMProtectedItem.withPolicyType(reader.getString());
                 } else if ("protectedItemType".equals(fieldName)) {
                     deserializedAzureIaaSClassicComputeVMProtectedItem.protectedItemType = reader.getString();
                 } else {

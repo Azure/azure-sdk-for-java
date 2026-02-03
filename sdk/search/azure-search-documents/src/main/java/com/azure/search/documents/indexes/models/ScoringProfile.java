@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,22 +24,26 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
     /*
      * The name of the scoring profile.
      */
+    @Generated
     private final String name;
 
     /*
      * Parameters that boost scoring based on text matches in certain index fields.
      */
+    @Generated
     private TextWeights textWeights;
 
     /*
      * The collection of functions that influence the scoring of documents.
      */
+    @Generated
     private List<ScoringFunction> functions;
 
     /*
      * A value indicating how the results of individual scoring functions should be combined. Defaults to "Sum". Ignored
      * if there are no scoring functions.
      */
+    @Generated
     private ScoringFunctionAggregation functionAggregation;
 
     /**
@@ -46,6 +51,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      *
      * @param name the name value to set.
      */
+    @Generated
     public ScoringProfile(String name) {
         this.name = name;
     }
@@ -55,6 +61,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -64,6 +71,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      *
      * @return the textWeights value.
      */
+    @Generated
     public TextWeights getTextWeights() {
         return this.textWeights;
     }
@@ -74,6 +82,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      * @param textWeights the textWeights value to set.
      * @return the ScoringProfile object itself.
      */
+    @Generated
     public ScoringProfile setTextWeights(TextWeights textWeights) {
         this.textWeights = textWeights;
         return this;
@@ -84,6 +93,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      *
      * @return the functions value.
      */
+    @Generated
     public List<ScoringFunction> getFunctions() {
         return this.functions;
     }
@@ -94,6 +104,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      * @param functions the functions value to set.
      * @return the ScoringProfile object itself.
      */
+    @Generated
     public ScoringProfile setFunctions(List<ScoringFunction> functions) {
         this.functions = functions;
         return this;
@@ -105,6 +116,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      *
      * @return the functionAggregation value.
      */
+    @Generated
     public ScoringFunctionAggregation getFunctionAggregation() {
         return this.functionAggregation;
     }
@@ -116,6 +128,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      * @param functionAggregation the functionAggregation value to set.
      * @return the ScoringProfile object itself.
      */
+    @Generated
     public ScoringProfile setFunctionAggregation(ScoringFunctionAggregation functionAggregation) {
         this.functionAggregation = functionAggregation;
         return this;
@@ -124,6 +137,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +158,7 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ScoringProfile.
      */
+    @Generated
     public static ScoringProfile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

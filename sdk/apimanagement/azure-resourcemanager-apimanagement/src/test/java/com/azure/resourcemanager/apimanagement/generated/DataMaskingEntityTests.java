@@ -13,16 +13,16 @@ public final class DataMaskingEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataMaskingEntity model
-            = BinaryData.fromString("{\"value\":\"juqdbrx\",\"mode\":\"Hide\"}").toObject(DataMaskingEntity.class);
-        Assertions.assertEquals("juqdbrx", model.value());
+            = BinaryData.fromString("{\"value\":\"mcqmiciijqp\",\"mode\":\"Hide\"}").toObject(DataMaskingEntity.class);
+        Assertions.assertEquals("mcqmiciijqp", model.value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMaskingEntity model = new DataMaskingEntity().withValue("juqdbrx").withMode(DataMaskingMode.HIDE);
+        DataMaskingEntity model = new DataMaskingEntity().withValue("mcqmiciijqp").withMode(DataMaskingMode.HIDE);
         model = BinaryData.fromObject(model).toObject(DataMaskingEntity.class);
-        Assertions.assertEquals("juqdbrx", model.value());
+        Assertions.assertEquals("mcqmiciijqp", model.value());
         Assertions.assertEquals(DataMaskingMode.HIDE, model.mode());
     }
 }

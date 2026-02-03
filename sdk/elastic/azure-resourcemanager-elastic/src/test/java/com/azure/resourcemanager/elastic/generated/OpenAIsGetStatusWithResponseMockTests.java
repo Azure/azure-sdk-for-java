@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.OpenAIIntegrationStatusResponse;
@@ -20,19 +20,19 @@ import reactor.core.publisher.Mono;
 public final class OpenAIsGetStatusWithResponseMockTests {
     @Test
     public void testGetStatusWithResponse() throws Exception {
-        String responseStr = "{\"properties\":{\"status\":\"wifto\"}}";
+        String responseStr = "{\"properties\":{\"status\":\"lazszrn\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         OpenAIIntegrationStatusResponse response = manager.openAIs()
-            .getStatusWithResponse("jfqka", "e", "iipfpubj", com.azure.core.util.Context.NONE)
+            .getStatusWithResponse("lfzxiavrmbzonoki", "rjqc", "rgz", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wifto", response.properties().status());
+        Assertions.assertEquals("lazszrn", response.properties().status());
     }
 }

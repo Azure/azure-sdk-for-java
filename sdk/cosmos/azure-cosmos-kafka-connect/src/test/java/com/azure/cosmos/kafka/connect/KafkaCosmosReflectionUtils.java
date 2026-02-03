@@ -4,6 +4,7 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.IMetadataReader;
@@ -31,8 +32,8 @@ public class KafkaCosmosReflectionUtils {
         }
     }
 
-    public static void setCosmosClient(CosmosSourceConnector sourceConnector, CosmosAsyncClient cosmosAsyncClient) {
-        set(sourceConnector, cosmosAsyncClient,"cosmosClient");
+    public static void setCosmosClientCacheItem(CosmosSourceConnector sourceConnector, CosmosClientCacheItem clientCacheItem) {
+        set(sourceConnector, clientCacheItem,"cosmosClientItem");
     }
 
     public static void setCosmosSourceConfig(CosmosSourceConnector sourceConnector, CosmosSourceConfig sourceConfig) {
@@ -58,7 +59,8 @@ public class KafkaCosmosReflectionUtils {
     }
 
     public static CosmosAsyncClient getCosmosClient(CosmosSourceConnector sourceConnector) {
-        return get(sourceConnector,"cosmosClient");
+        CosmosClientCacheItem clientCacheItem = get(sourceConnector,"cosmosClientItem");
+        return clientCacheItem.getClient();
     }
 
     public static MetadataKafkaStorageManager getKafkaOffsetStorageReader(CosmosSourceConnector sourceConnector) {
@@ -74,7 +76,8 @@ public class KafkaCosmosReflectionUtils {
     }
 
     public static CosmosAsyncClient getSinkTaskCosmosClient(CosmosSinkTask sinkTask) {
-        return get(sinkTask,"cosmosClient");
+        CosmosClientCacheItem clientCacheItem = get(sinkTask,"cosmosClientItem");
+        return clientCacheItem.getClient();
     }
 
     public static void setConnectorName(CosmosSourceConnector sourceConnector, String connectorName) {

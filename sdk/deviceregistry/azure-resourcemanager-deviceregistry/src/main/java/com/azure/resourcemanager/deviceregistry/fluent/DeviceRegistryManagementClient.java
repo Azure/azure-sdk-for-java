@@ -82,18 +82,53 @@ public interface DeviceRegistryManagementClient {
     BillingContainersClient getBillingContainers();
 
     /**
-     * Gets the DiscoveredAssetsClient object to access its operations.
+     * Gets the NamespacesClient object to access its operations.
      * 
-     * @return the DiscoveredAssetsClient object.
+     * @return the NamespacesClient object.
      */
-    DiscoveredAssetsClient getDiscoveredAssets();
+    NamespacesClient getNamespaces();
 
     /**
-     * Gets the DiscoveredAssetEndpointProfilesClient object to access its operations.
+     * Gets the CredentialsClient object to access its operations.
      * 
-     * @return the DiscoveredAssetEndpointProfilesClient object.
+     * @return the CredentialsClient object.
      */
-    DiscoveredAssetEndpointProfilesClient getDiscoveredAssetEndpointProfiles();
+    CredentialsClient getCredentials();
+
+    /**
+     * Gets the PoliciesClient object to access its operations.
+     * 
+     * @return the PoliciesClient object.
+     */
+    PoliciesClient getPolicies();
+
+    /**
+     * Gets the NamespaceAssetsClient object to access its operations.
+     * 
+     * @return the NamespaceAssetsClient object.
+     */
+    NamespaceAssetsClient getNamespaceAssets();
+
+    /**
+     * Gets the NamespaceDevicesClient object to access its operations.
+     * 
+     * @return the NamespaceDevicesClient object.
+     */
+    NamespaceDevicesClient getNamespaceDevices();
+
+    /**
+     * Gets the NamespaceDiscoveredAssetsClient object to access its operations.
+     * 
+     * @return the NamespaceDiscoveredAssetsClient object.
+     */
+    NamespaceDiscoveredAssetsClient getNamespaceDiscoveredAssets();
+
+    /**
+     * Gets the NamespaceDiscoveredDevicesClient object to access its operations.
+     * 
+     * @return the NamespaceDiscoveredDevicesClient object.
+     */
+    NamespaceDiscoveredDevicesClient getNamespaceDiscoveredDevices();
 
     /**
      * Gets the SchemaRegistriesClient object to access its operations.

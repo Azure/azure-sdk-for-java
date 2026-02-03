@@ -5,11 +5,14 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.EventTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MessageTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.SeverityLevel;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.CodeIncubatingAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.semconv.incubating.ThreadIncubatingAttributes;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedTime;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -39,6 +42,8 @@ public class LogDataMapper {
     private static final AttributeKey<String> LOG4J_MARKER = stringKey("log4j.marker");
     private static final AttributeKey<List<String>> LOGBACK_MARKER = stringArrayKey("logback.marker");
 
+    private static final String CUSTOM_EVENT_NAME = "microsoft.custom_event.name";
+
     private static final Mappings MAPPINGS;
 
     static {
@@ -58,10 +63,10 @@ public class LogDataMapper {
             .prefix(LOG4J_MAP_MESSAGE_PREFIX, (telemetryBuilder, key, value) -> {
                 telemetryBuilder.addProperty(key.substring(LOG4J_MAP_MESSAGE_PREFIX.length()), String.valueOf(value));
             })
-            .exactString(SemanticAttributes.CODE_FILEPATH, "FileName")
-            .exactString(SemanticAttributes.CODE_NAMESPACE, "ClassName")
-            .exactString(SemanticAttributes.CODE_FUNCTION, "MethodName")
-            .exactLong(SemanticAttributes.CODE_LINENO, "LineNumber")
+            .exactString(CodeIncubatingAttributes.CODE_FILEPATH, "FileName")
+            .exactString(CodeIncubatingAttributes.CODE_NAMESPACE, "ClassName")
+            .exactString(CodeIncubatingAttributes.CODE_FUNCTION, "MethodName")
+            .exactLong(CodeIncubatingAttributes.CODE_LINENO, "LineNumber")
             .exactString(LOG4J_MARKER, "Marker")
             .exactStringArray(LOGBACK_MARKER, "Marker");
 
@@ -86,14 +91,44 @@ public class LogDataMapper {
         if (sampleRate == null) {
             sampleRate = getSampleRate(log);
         }
-        if (stack == null) {
-            return createMessageTelemetryItem(log, sampleRate);
-        } else {
+
+        if (stack != null) {
             return createExceptionTelemetryItem(log, stack, sampleRate);
         }
+
+        Attributes attributes = log.getAttributes();
+        String customEventName = attributes.get(AttributeKey.stringKey(CUSTOM_EVENT_NAME));
+        if (customEventName != null) {
+            return createEventTelemetryItem(log, attributes, customEventName, sampleRate);
+        }
+
+        return createMessageTelemetryItem(log, attributes, sampleRate);
     }
 
-    private TelemetryItem createMessageTelemetryItem(LogRecordData log, @Nullable Double sampleRate) {
+    public TelemetryItem createEventTelemetryItem(LogRecordData log, Attributes attributes, String eventName,
+        @Nullable Double sampleRate) {
+        EventTelemetryBuilder telemetryBuilder = EventTelemetryBuilder.create();
+        telemetryInitializer.accept(telemetryBuilder, log.getResource());
+
+        // set standard properties
+        setOperationTags(telemetryBuilder, log);
+        setTime(telemetryBuilder, log);
+        setSampleRate(telemetryBuilder, sampleRate);
+
+        // update tags
+        if (captureAzureFunctionsAttributes) {
+            setFunctionExtraTraceAttributes(telemetryBuilder, attributes);
+        }
+        MAPPINGS.map(attributes, telemetryBuilder);
+
+        // set event-specific properties
+        telemetryBuilder.setName(eventName);
+
+        return telemetryBuilder.build();
+    }
+
+    private TelemetryItem createMessageTelemetryItem(LogRecordData log, Attributes attributes,
+        @Nullable Double sampleRate) {
         MessageTelemetryBuilder telemetryBuilder = MessageTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, log.getResource());
 
@@ -103,7 +138,6 @@ public class LogDataMapper {
         setSampleRate(telemetryBuilder, sampleRate);
 
         // update tags
-        Attributes attributes = log.getAttributes();
         if (captureAzureFunctionsAttributes) {
             setFunctionExtraTraceAttributes(telemetryBuilder, attributes);
         }
@@ -114,7 +148,7 @@ public class LogDataMapper {
 
         // set message-specific properties
         setLoggerProperties(telemetryBuilder, log.getInstrumentationScopeInfo().getName(),
-            attributes.get(SemanticAttributes.THREAD_NAME), log.getSeverity());
+            attributes.get(ThreadIncubatingAttributes.THREAD_NAME), log.getSeverity());
 
         return telemetryBuilder.build();
     }
@@ -137,7 +171,7 @@ public class LogDataMapper {
 
         // set exception-specific properties
         setLoggerProperties(telemetryBuilder, log.getInstrumentationScopeInfo().getName(),
-            attributes.get(SemanticAttributes.THREAD_NAME), log.getSeverity());
+            attributes.get(ThreadIncubatingAttributes.THREAD_NAME), log.getSeverity());
 
         if (log.getBody() != null) {
             telemetryBuilder.addProperty("Logger Message", log.getBody().asString());

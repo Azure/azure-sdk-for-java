@@ -11,7 +11,7 @@ public final class HardwareInventoryNetworkInterfaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HardwareInventoryNetworkInterface model = BinaryData.fromString(
-            "{\"linkStatus\":\"gxsabkyq\",\"macAddress\":\"ujitcjcz\",\"name\":\"evndh\",\"networkInterfaceId\":\"wpdappdsbdkv\"}")
+            "{\"linkStatus\":\"zrkgqhcjrefovg\",\"macAddress\":\"qsl\",\"name\":\"yvxyqjp\",\"networkInterfaceId\":\"attpngjcrcczsq\"}")
             .toObject(HardwareInventoryNetworkInterface.class);
     }
 

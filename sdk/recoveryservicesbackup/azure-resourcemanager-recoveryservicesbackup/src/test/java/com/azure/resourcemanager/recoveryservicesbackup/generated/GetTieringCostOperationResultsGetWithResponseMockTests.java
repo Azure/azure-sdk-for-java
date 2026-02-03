@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringCostInfo;
@@ -26,10 +26,10 @@ public final class GetTieringCostOperationResultsGetWithResponseMockTests {
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TieringCostInfo response = manager.getTieringCostOperationResults()
-            .getWithResponse("bgbwwz", "dajfwnncfma", "iqgjjrlhiql", com.azure.core.util.Context.NONE)
+            .getWithResponse("jguwrjmwvv", "tu", "kxxi", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

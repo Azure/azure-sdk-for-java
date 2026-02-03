@@ -11,17 +11,17 @@ public final class MediaStreamingOptions {
     /*
      * Transport URL for media streaming
      */
-    private final String transportUrl;
+    private String transportUrl;
 
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
-    private final MediaStreamingTransport transportType;
+    private final StreamingTransport transportType;
 
     /*
      * Content type to stream, eg. audio, audio/video
      */
-    private final MediaStreamingContent contentType;
+    private MediaStreamingContentType contentType;
 
     /*
      * Audio channel type to stream, eg. unmixed audio, mixed audio
@@ -31,7 +31,7 @@ public final class MediaStreamingOptions {
     /*
      * The type of transport to be used for media streaming, eg. Websocket
      */
-    private final Boolean startMediaStreaming;
+    private Boolean startMediaStreaming;
 
     /*
      * A value indicating whether bidirectional streaming is enabled.
@@ -43,21 +43,29 @@ public final class MediaStreamingOptions {
      */
     private AudioFormat audioFormat;
 
-    /**
-     * Creates a new instance of MediaStreamingConfiguration
-     * @param transportUrl - The Transport URL
-     * @param transportType - Transport type
-     * @param contentType - Content Type
-     * @param audioChannelType - Audio Channel Type
-     * @param startMediaStreaming - Start media streaming flag
+    /*
+     * A value that indicates whether to stream the DTMF tones.
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType,
-        MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType, Boolean startMediaStreaming) {
-        this.transportUrl = transportUrl;
-        this.transportType = transportType;
-        this.contentType = contentType;
+    private Boolean enableDtmfTones;
+
+    /**
+     * Creates a new instance of MediaStreamingOptions
+     * @param audioChannelType - Audio Channel Type
+     * @param transportType - The type of transport to be used for media streaming, eg. Websocket
+     */
+    public MediaStreamingOptions(MediaStreamingAudioChannel audioChannelType, StreamingTransport transportType) {
+        this.transportType = StreamingTransport.WEBSOCKET;
+        this.contentType = MediaStreamingContentType.AUDIO;
         this.audioChannelType = audioChannelType;
-        this.startMediaStreaming = startMediaStreaming;
+        this.startMediaStreaming = false;
+    }
+
+    /**
+     * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
+     * @param audioChannelType - Audio Channel Type
+     */
+    public MediaStreamingOptions(MediaStreamingAudioChannel audioChannelType) {
+        this(audioChannelType, StreamingTransport.WEBSOCKET);
     }
 
     /**
@@ -70,11 +78,22 @@ public final class MediaStreamingOptions {
     }
 
     /**
+     * Set the transportUrl property: Transport URL for media streaming.
+     *
+     * @param transportUrl the transportUrl value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setTransportUrl(String transportUrl) {
+        this.transportUrl = transportUrl;
+        return this;
+    }
+
+    /**
      * Get the transportType property: The type of tranport to be used for media streaming, eg. Websocket.
      *
      * @return the transportType value.
      */
-    public MediaStreamingTransport getTransportType() {
+    public StreamingTransport getTransportType() {
         return this.transportType;
     }
 
@@ -83,13 +102,13 @@ public final class MediaStreamingOptions {
      *
      * @return the contentType value.
      */
-    public MediaStreamingContent getContentType() {
+    public MediaStreamingContentType getContentType() {
         return this.contentType;
     }
 
     /**
     * Get the startMediaStreaming property: Enables intermediate results for the transcribed speech.
-    * 
+    *
     * @return the startMediaStreaming value.
     */
     public Boolean isStartMediaStreamingEnabled() {
@@ -106,8 +125,61 @@ public final class MediaStreamingOptions {
     }
 
     /**
+    * Set the contentType property: The contentType property.
+    *
+    * @param contentType the contentType value to set.
+    * @return the MediaStreamingOptions object itself.
+    */
+    public MediaStreamingOptions setContentType(MediaStreamingContentType contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the startMediaStreaming property: A value indicating whether the media streaming should start immediately
+     * after the call is answered.
+     *
+     * @return the startMediaStreaming value.
+     */
+    public Boolean isStartMediaStreaming() {
+        return this.startMediaStreaming;
+    }
+
+    /**
+     * Set the startMediaStreaming property: A value indicating whether the media streaming should start immediately
+     * after the call is answered.
+     *
+     * @param startMediaStreaming the startMediaStreaming value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setStartMediaStreaming(Boolean startMediaStreaming) {
+        this.startMediaStreaming = startMediaStreaming;
+        return this;
+    }
+
+    /**
+     * Get the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     *
+     * @return the enableDtmfTones value.
+     */
+    public Boolean isEnableDtmfTones() {
+        return this.enableDtmfTones;
+    }
+
+    /**
+     * Set the enableDtmfTones property: A value that indicates whether to stream the DTMF tones.
+     *
+     * @param enableDtmfTones the enableDtmfTones value to set.
+     * @return the MediaStreamingOptions object itself.
+     */
+    public MediaStreamingOptions setEnableDtmfTones(Boolean enableDtmfTones) {
+        this.enableDtmfTones = enableDtmfTones;
+        return this;
+    }
+
+    /**
     * Get the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
-    * 
+    *
     * @return the enableBidirectional value.
     */
     public Boolean isEnableBidirectional() {
@@ -116,7 +188,7 @@ public final class MediaStreamingOptions {
 
     /**
      * Set the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
-     * 
+     *
      * @param enableBidirectional the enableBidirectional value to set.
      * @return the MediaStreamingOptions object itself.
      */
@@ -128,7 +200,7 @@ public final class MediaStreamingOptions {
     /**
      * Get the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
      * type.
-     * 
+     *
      * @return the audioFormat value.
      */
     public AudioFormat getAudioFormat() {
@@ -138,7 +210,7 @@ public final class MediaStreamingOptions {
     /**
      * Set the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
      * type.
-     * 
+     *
      * @param audioFormat the audioFormat value to set.
      * @return the MediaStreamingOptions object itself.
      */

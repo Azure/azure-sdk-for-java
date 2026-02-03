@@ -11,23 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailTemplateParametersContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailTemplateParametersContractProperties model = BinaryData
-            .fromString("{\"name\":\"gftrqrejdaahuqim\",\"title\":\"ahlfxlmuifmuadj\",\"description\":\"snc\"}")
-            .toObject(EmailTemplateParametersContractProperties.class);
-        Assertions.assertEquals("gftrqrejdaahuqim", model.name());
-        Assertions.assertEquals("ahlfxlmuifmuadj", model.title());
-        Assertions.assertEquals("snc", model.description());
+        EmailTemplateParametersContractProperties model
+            = BinaryData.fromString("{\"name\":\"vcpxtzhigqqbtimp\",\"title\":\"blornsih\",\"description\":\"uds\"}")
+                .toObject(EmailTemplateParametersContractProperties.class);
+        Assertions.assertEquals("vcpxtzhigqqbtimp", model.name());
+        Assertions.assertEquals("blornsih", model.title());
+        Assertions.assertEquals("uds", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EmailTemplateParametersContractProperties model
-            = new EmailTemplateParametersContractProperties().withName("gftrqrejdaahuqim")
-                .withTitle("ahlfxlmuifmuadj")
-                .withDescription("snc");
+            = new EmailTemplateParametersContractProperties().withName("vcpxtzhigqqbtimp")
+                .withTitle("blornsih")
+                .withDescription("uds");
         model = BinaryData.fromObject(model).toObject(EmailTemplateParametersContractProperties.class);
-        Assertions.assertEquals("gftrqrejdaahuqim", model.name());
-        Assertions.assertEquals("ahlfxlmuifmuadj", model.title());
-        Assertions.assertEquals("snc", model.description());
+        Assertions.assertEquals("vcpxtzhigqqbtimp", model.name());
+        Assertions.assertEquals("blornsih", model.title());
+        Assertions.assertEquals("uds", model.description());
     }
 }

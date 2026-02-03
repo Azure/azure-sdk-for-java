@@ -15,7 +15,7 @@ import java.io.IOException;
 public final class GlobalSchemaCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGlobalSchema1.json
      */
     /**
@@ -37,7 +37,7 @@ public final class GlobalSchemaCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGlobalSchema2.json
      */
     /**

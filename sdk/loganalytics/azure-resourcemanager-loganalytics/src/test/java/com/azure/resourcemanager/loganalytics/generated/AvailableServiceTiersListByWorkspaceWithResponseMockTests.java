@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.AvailableServiceTier;
@@ -21,17 +21,17 @@ public final class AvailableServiceTiersListByWorkspaceWithResponseMockTests {
     @Test
     public void testListByWorkspaceWithResponse() throws Exception {
         String responseStr
-            = "[{\"serviceTier\":\"CapacityReservation\",\"enabled\":true,\"minimumRetention\":3767644182859901371,\"maximumRetention\":7248546755237746462,\"defaultRetention\":840422895247134750,\"capacityReservationLevel\":8295020029995054755,\"lastSkuUpdate\":\"ujr\"},{\"serviceTier\":\"PerGB2018\",\"enabled\":false,\"minimumRetention\":120736086062160717,\"maximumRetention\":2641992673329436235,\"defaultRetention\":3461505183507942780,\"capacityReservationLevel\":854242813011904996,\"lastSkuUpdate\":\"ikzoeovvtzejetj\"},{\"serviceTier\":\"Free\",\"enabled\":false,\"minimumRetention\":7781117605646169012,\"maximumRetention\":159668866868514414,\"defaultRetention\":7370744360813533838,\"capacityReservationLevel\":700409671675457936,\"lastSkuUpdate\":\"rzvh\"}]";
+            = "[{\"serviceTier\":\"CapacityReservation\",\"enabled\":false,\"minimumRetention\":1432087697888177845,\"maximumRetention\":8313394416637011338,\"defaultRetention\":5559566767637280772,\"capacityReservationLevel\":6950782705334382897,\"lastSkuUpdate\":\"jg\"},{\"serviceTier\":\"Premium\",\"enabled\":true,\"minimumRetention\":5983360915282781316,\"maximumRetention\":4653983891463635460,\"defaultRetention\":3143366093760834812,\"capacityReservationLevel\":4708968390247773451,\"lastSkuUpdate\":\"ltxijjumfqwazln\"},{\"serviceTier\":\"PerGB2018\",\"enabled\":false,\"minimumRetention\":3523690994753868801,\"maximumRetention\":3035438207417975715,\"defaultRetention\":1193446146950584030,\"capacityReservationLevel\":6287732006458517592,\"lastSkuUpdate\":\"yfu\"},{\"serviceTier\":\"Standalone\",\"enabled\":true,\"minimumRetention\":3265340554220962405,\"maximumRetention\":1400392420008149330,\"defaultRetention\":2431415951490180842,\"capacityReservationLevel\":3788300585704298114,\"lastSkuUpdate\":\"hm\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<AvailableServiceTier> response = manager.availableServiceTiers()
-            .listByWorkspaceWithResponse("ztlvtmvagbwidqlv", "ukoveofi", com.azure.core.util.Context.NONE)
+            .listByWorkspaceWithResponse("qtferrqwexjkmf", "apjwogqqnobpudcd", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

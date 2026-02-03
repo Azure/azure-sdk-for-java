@@ -5,13 +5,14 @@
 package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
+import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineConfigurationData;
-import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchive;
-import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchiveEnabled;
 import com.azure.resourcemanager.networkcloud.models.ClusterType;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategyType;
+import com.azure.resourcemanager.networkcloud.models.CommandOutputOverride;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
+import com.azure.resourcemanager.networkcloud.models.CommandOutputType;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.IdentitySelector;
 import com.azure.resourcemanager.networkcloud.models.ManagedResourceGroupConfiguration;
@@ -21,12 +22,14 @@ import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionEnforcementLevel;
-import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
+import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceConfigurationData;
 import com.azure.resourcemanager.networkcloud.models.UserAssignedIdentity;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdGrouping;
 import com.azure.resourcemanager.networkcloud.models.ValidationThresholdType;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettings;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsContainerScan;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,8 +40,8 @@ import java.util.Map;
 public final class ClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
-     * Clusters_Create.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/Clusters_Create.
+     * json
      */
     /**
      * Sample code: Create or update cluster.
@@ -93,27 +96,33 @@ public final class ClustersCreateOrUpdateSamples {
                 .withUserAssignedIdentities(mapOf(
                     "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1",
                     new UserAssignedIdentity())))
-            .withAnalyticsWorkspaceId(
+            .withAnalyticsOutputSettings(new AnalyticsOutputSettings().withAnalyticsWorkspaceId(
                 "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/microsoft.operationalInsights/workspaces/logAnalyticsWorkspaceName")
+                .withAssociatedIdentity(new IdentitySelector()
+                    .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId(
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1")))
             .withClusterLocation("Foo Street, 3rd Floor, row 9")
-            .withClusterServicePrincipal(
-                new ServicePrincipalInformation().withApplicationId("12345678-1234-1234-1234-123456789012")
-                    .withPassword("fakeTokenPlaceholder")
-                    .withPrincipalId("00000008-0004-0004-0004-000000000012")
-                    .withTenantId("80000000-4000-4000-4000-120000000000"))
             .withCommandOutputSettings(new CommandOutputSettings().withAssociatedIdentity(new IdentitySelector()
                 .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
                 .withUserAssignedIdentityResourceId(
                     "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"))
-                .withContainerUrl("https://myaccount.blob.core.windows.net/mycontainer?restype=container"))
+                .withContainerUrl("https://myaccount.blob.core.windows.net/mycontainer?restype=container")
+                .withOverrides(Arrays.asList(new CommandOutputOverride().withAssociatedIdentity(new IdentitySelector()
+                    .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                    .withUserAssignedIdentityResourceId(
+                        "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity2"))
+                    .withCommandOutputType(CommandOutputType.STORAGE_RUN_READ_COMMANDS)
+                    .withContainerUrl("https://myaccount.blob.core.windows.net/myContainer2?restype=container"))))
             .withComputeDeploymentThreshold(
                 new ValidationThreshold().withGrouping(ValidationThresholdGrouping.PER_CLUSTER)
                     .withType(ValidationThresholdType.PERCENT_SUCCESS)
                     .withValue(90L))
             .withComputeRackDefinitions(Arrays.asList(new RackDefinition()
                 .withBareMetalMachineConfigurationData(Arrays.asList(
-                    new BareMetalMachineConfigurationData().withBmcCredentials(
-                        new AdministrativeCredentials().withPassword("fakeTokenPlaceholder").withUsername("username"))
+                    new BareMetalMachineConfigurationData()
+                        .withBmcCredentials(new AdministrativeCredentials().withPassword("fakeTokenPlaceholder")
+                            .withUsername("username"))
                         .withBmcMacAddress("AA:BB:CC:DD:EE:FF")
                         .withBootMacAddress("00:BB:CC:DD:EE:FF")
                         .withMachineDetails("extraDetails")
@@ -145,13 +154,18 @@ public final class ClustersCreateOrUpdateSamples {
                 new ManagedResourceGroupConfiguration().withLocation("East US").withName("my-managed-rg"))
             .withRuntimeProtectionConfiguration(
                 new RuntimeProtectionConfiguration().withEnforcementLevel(RuntimeProtectionEnforcementLevel.ON_DEMAND))
-            .withSecretArchive(new ClusterSecretArchive().withKeyVaultId("fakeTokenPlaceholder")
-                .withUseKeyVault(ClusterSecretArchiveEnabled.TRUE))
+            .withSecretArchiveSettings(new SecretArchiveSettings().withAssociatedIdentity(new IdentitySelector()
+                .withIdentityType(ManagedServiceIdentitySelectorType.USER_ASSIGNED_IDENTITY)
+                .withUserAssignedIdentityResourceId(
+                    "/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/userIdentity1"))
+                .withVaultUri("https://keyvaultname.vault.azure.net/"))
             .withUpdateStrategy(new ClusterUpdateStrategy().withMaxUnavailable(4L)
                 .withStrategyType(ClusterUpdateStrategyType.RACK)
                 .withThresholdType(ValidationThresholdType.COUNT_SUCCESS)
                 .withThresholdValue(4L)
                 .withWaitTimeMinutes(10L))
+            .withVulnerabilityScanningSettings(new VulnerabilityScanningSettings()
+                .withContainerScan(VulnerabilityScanningSettingsContainerScan.ENABLED))
             .create();
     }
 

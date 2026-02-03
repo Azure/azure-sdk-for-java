@@ -12,7 +12,7 @@ import com.azure.resourcemanager.storagecache.models.PrimingJobIdParameter;
 public final class CachesStopPrimingJobSamples {
     /*
      * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/StopPrimingJob.json
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/StopPrimingJob.json
      */
     /**
      * Sample code: StopPrimingJob.

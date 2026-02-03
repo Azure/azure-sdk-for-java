@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,17 +24,20 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Text.LanguageDetectionSkill";
 
     /*
      * A country code to use as a hint to the language detection model if it cannot disambiguate the language.
      */
+    @Generated
     private String defaultCountryHint;
 
     /*
      * The version of the model to use when calling the Text Analytics service. It will default to the latest available
      * when not specified. We recommend you do not specify this value unless absolutely necessary.
      */
+    @Generated
     private String modelVersion;
 
     /**
@@ -42,6 +46,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public LanguageDetectionSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -51,6 +56,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -62,6 +68,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the defaultCountryHint value.
      */
+    @Generated
     public String getDefaultCountryHint() {
         return this.defaultCountryHint;
     }
@@ -73,6 +80,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
      * @param defaultCountryHint the defaultCountryHint value to set.
      * @return the LanguageDetectionSkill object itself.
      */
+    @Generated
     public LanguageDetectionSkill setDefaultCountryHint(String defaultCountryHint) {
         this.defaultCountryHint = defaultCountryHint;
         return this;
@@ -85,6 +93,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
      * 
      * @return the modelVersion value.
      */
+    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -97,6 +106,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
      * @param modelVersion the modelVersion value to set.
      * @return the LanguageDetectionSkill object itself.
      */
+    @Generated
     public LanguageDetectionSkill setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
@@ -105,6 +115,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LanguageDetectionSkill setName(String name) {
         super.setName(name);
@@ -114,6 +125,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LanguageDetectionSkill setDescription(String description) {
         super.setDescription(description);
@@ -123,6 +135,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public LanguageDetectionSkill setContext(String context) {
         super.setContext(context);
@@ -132,6 +145,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -155,6 +169,7 @@ public final class LanguageDetectionSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LanguageDetectionSkill.
      */
+    @Generated
     public static LanguageDetectionSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

@@ -52,9 +52,6 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
-  - name: IgnoreVerifyTypeSpecCodeGenerationError
-    type: boolean
-    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -67,15 +64,32 @@ parameters:
 
 jobs:
   - job: 'Build'
+    # This timeout is being set high because some tasks in the pullrequest pipeline
+    # run longer depending on the number of libraries being affected. For example,
+    # a version increment for core or identity, AKA something that has a lot of
+    # dependent libraries, which will cause a large number of pom file updates (100+).
+    # All of these updates need to get scanned for API changes which can take a while,
+    # and the default timeout of 60 minutes is just simply not enough.
+    timeoutInMinutes: 120
 
     variables:
-      ArtifactName: 'packages'
       # The ServiceDirectory is an identifier. The pullrequest's ServiceDirectory of
       # 'auto' shouldn't cause any problems
       Codeql.Enabled: true
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
+
+    # Only run CG and codeql on internal build job
+    ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+      templateContext:
+        sdl:
+          componentgovernance:
+            enabled: true
+          codeql:
+            binaryLanguages: java # Need to specify the language because we clone after the codeql initialize step
+            compiled:
+              enabled: true
 
     pool:
       name: $(LINUXPOOL)
@@ -132,11 +146,15 @@ jobs:
         displayName: 'Tag scheduled builds'
         condition: and(succeeded(), eq(variables['Build.SourceBranchName'],'main'),eq(variables['Build.Reason'],'Schedule'))
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
+      - ${{ if eq(parameters.TestPipeline, true) }}:
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+          parameters:
+            Artifacts:
+              - ${{ each artifact in parameters.ReleaseArtifacts }}:
+                - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                  - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
 
       # The daily dev build variable isn't used for the PullRequests pipeline but is currently used
       # to save off the packageInfo files for all ci pipeline. This needs to be skipped for the
@@ -145,6 +163,7 @@ jobs:
         - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
           parameters:
             ServiceDirectory: ${{parameters.ServiceDirectory}}
+            Artifacts: ${{parameters.ReleaseArtifacts}}
 
       - task: PowerShell@2
         displayName: Setup Dev versioning
@@ -154,7 +173,6 @@ jobs:
           filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
           arguments: >
             -BuildNumber $(Build.BuildNumber)
-            -SdkType ${{parameters.SDKType}}
         env:
           ARTIFACTSJSON: $(ArtifactsJson)
 
@@ -166,10 +184,16 @@ jobs:
               -ServiceDirectory ${{parameters.ServiceDirectory}}
               -OutDirectory $(Build.ArtifactStagingDirectory)/PackageInfo
               -AddDevVersion
+              -artifactList @('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Select-Object -ExpandProperty name)
             pwsh: true
             workingDirectory: $(Pipeline.Workspace)
           displayName: Update package properties with dev version
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
+
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+          parameters:
+            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
 
       - script: |
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
@@ -226,7 +250,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
-          ArtifactName: '$(ArtifactName)'
+          ArtifactName: 'packages'
 
       # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
       # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
@@ -247,13 +271,17 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
-          Artifacts: ${{parameters.ReleaseArtifacts}}
+          PackageInfoFiles:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/common/pipelines/templates/steps/detect-api-changes.yml
 
       - template: /eng/common/pipelines/templates/steps/validate-all-packages.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
+          PackageInfoFiles:
+            - ${{ each artifact in parameters.ReleaseArtifacts }}:
+              - $(Build.ArtifactStagingDirectory)/PackageInfo/${{artifact.name}}.json
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
@@ -325,20 +353,15 @@ jobs:
           CspellConfigPath: .vscode/cspell.json
           ContinueOnError: false
 
-      - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-        parameters:
-          PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-          ServiceDirectory: "template"
-          TestPipeline: ${{ parameters.TestPipeline }}
-
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readmes.yml
+      - ${{ if eq(parameters.TestPipeline, true) }}:
+        - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
           parameters:
-            PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-      - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-          parameters:
-            ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
+            Artifacts:
+              - ${{ each artifact in parameters.ReleaseArtifacts }}:
+                - ${{ if contains(artifact.name, 'azure-sdk-template') }}:
+                  - ${{ artifact }}
+            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+            TestPipeline: ${{ parameters.TestPipeline }}
 
       - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
@@ -350,23 +373,31 @@ jobs:
           CheckLinkGuidance: $true
 
       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+        # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below and
+        # the verify samples
         - pwsh: |
-            $diffJson = Get-Content '$(Build.ArtifactStagingDirectory)/diff/diff.json' -Raw
-            $diff = ConvertFrom-Json $diffJson
-            $changedServicesString = ''
-            if ($diff.ChangedServices) {
-                $changedServicesString = $diff.ChangedServices -join ","
+            $packageInfoFiles = Get-ChildItem -Path '$(Build.ArtifactStagingDirectory)/PackageInfo' -Filter "*.json" -File
+            $serviceDirectories = @()
+            foreach ($packageInfoFile in $packageInfoFiles) {
+                $packageInfo = Get-Content -Path $packageInfoFile | ConvertFrom-Json
+                $serviceDirectories += $packageInfo.ServiceDirectory
             }
+            # dedupe the list
+            $serviceDirectories = $serviceDirectories | Select-Object -Unique
+            $changedServicesString = $serviceDirectories -join ","
             Write-Host "changedServicesString='$changedServicesString'"
-            Write-Host "##vso[task.setvariable variable=SamplesServiceDirectories;]$changedServicesString"
-          displayName: Get samples service directories from PR diff
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectories: $(SamplesServiceDirectories)
+            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+          displayName: Set PRServiceDirectories from PackageInfo files
       - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        - pwsh: |
+            $changedServicesString='${{ parameters.ServiceDirectory }}'
+            Write-Host "changedServicesString='$changedServicesString'"
+            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+          displayName: Set PRServiceDirectories to ServiceDirectory parameter
+
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectories: $(PRServiceDirectories)
 
       # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
@@ -374,42 +405,19 @@ jobs:
           SourceDirectory: $(Build.SourcesDirectory)
           BasePathLength: 38
 
-      - ${{if ne(parameters.SDKType, 'data')}}:
-        - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-          - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-            parameters:
-              PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-        - ${{ else }}:
-          - ${{ each artifact in parameters.Artifacts }}:
-            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                parameters:
-                  PackageName: ${{artifact.name}}
-                  ServiceName: ${{parameters.ServiceDirectory}}
-                  ForRelease: false
-
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: ${{ parameters.JavaBuildVersion }}
+      - task: UseNode@1
+        inputs:
+          version: 22.x
+        displayName: Use Node.js 22.x
 
       - task: PowerShell@2
-        displayName: Verify Code Generation
+        displayName: Verify Swagger and TypeSpec Code Generation
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
-            -Directory sdk/${{ parameters.ServiceDirectory }}
-
-      - task: PowerShell@2
-        displayName: Verify TypeSpec Code Generation
-        continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
-        inputs:
-          pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-          arguments: >
-            -Directory sdk/${{ parameters.ServiceDirectory }}
+            -ServiceDirectories '$(PRServiceDirectories)'
+            -RegenerationType 'All'
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
@@ -451,6 +459,29 @@ jobs:
           - ${{ config }}
         - ${{ each config in parameters.AdditionalMatrixConfigs }}:
           - ${{ config }}
+      ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
+        EnablePRGeneration: true
+        PRMatrixSparseIndirect: true
+        # Use a PR job batch size of 50 as the design of Java's CI doesn't increase CI times linear for each library
+        # added. So, using a smaller batch size means more CI jobs that are slightly faster than fewer larger jobs.
+        # Overall, using a large batch size reduces overall CI time.
+        PRJobBatchSize: 50
+        # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
+        PRMatrixKey: 'Name'
+        SparseCheckoutPaths:
+          - '**/*.xml'
+          - '**/*.md'
+          - '**/ci*.yml' # necessary for save-package-properties.yml
+          - "**/*matrix*.json" # necessary for test matrix generation
+        PreGenerationSteps:
+          - task: UsePythonVersion@0
+            displayName: 'Use Python $(PythonVersion)'
+            inputs:
+              versionSpec: $(PythonVersion)
+          - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
+            parameters:
+              ServiceDirectory: ${{parameters.ServiceDirectory}}
+              ExcludePaths: ${{parameters.ExcludePaths}}
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:

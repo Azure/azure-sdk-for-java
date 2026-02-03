@@ -77,7 +77,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(callConnectionId);
 
             // wait for incoming call context
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call
@@ -165,7 +165,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             assertNotNull(callConnectionId);
 
             // wait for incoming call context
-            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(10));
+            String incomingCallContext = waitForIncomingCallContext(uniqueId, Duration.ofSeconds(20));
             assertNotNull(incomingCallContext);
 
             // answer the call

@@ -3,42 +3,7 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.ai.personalizer.administration.models.PersonalizerEvaluation" />
-      <Class name="com.azure.ai.personalizer.administration.models.PersonalizerEvaluationOptions" />
-      <Class name="com.azure.ai.personalizer.administration.models.PersonalizerPolicyResult" />
-      <Class name="com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3Impl" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerError" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRankOptions" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRankResult" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRankableAction" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerSlotOptions" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.ai.personalizer.PersonalizerClientBuilder" />
-      <Class name="com.azure.ai.personalizer.administration.PersonalizerAdministrationClientBuilder" />
-      <Class name="com.azure.ai.personalizer.administration.models.PersonalizerEvaluationOptions" />
-      <Class name="com.azure.ai.personalizer.implementation.PersonalizerClientV1Preview3ImplBuilder" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRankMultiSlotOptions" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRankOptions" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRankableAction" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerRewardMultiSlotOptions" />
-      <Class name="com.azure.ai.personalizer.models.PersonalizerSlotOptions" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
     <Class name="com.azure.ai.personalizer.implementation.util.CreateEvaluationOperationResultHelper" />
-  </Match>
-  <Match>
-    <Bug pattern="NM_CONFUSING" />
-    <Class name="com.azure.ai.personalizer.models.InternalError" />
   </Match>
 </FindBugsFilter>

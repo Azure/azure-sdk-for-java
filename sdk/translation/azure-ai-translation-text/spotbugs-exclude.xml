@@ -3,37 +3,7 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.ai.translation.text.models.BreakSentenceItem" />
-      <Class name="com.azure.ai.translation.text.models.DictionaryExampleItem" />
-      <Class name="com.azure.ai.translation.text.models.DictionaryLookupItem" />
-      <Class name="com.azure.ai.translation.text.models.DictionaryTranslation" />
-      <Class name="com.azure.ai.translation.text.models.GetSupportedLanguagesResult" />
-      <Class name="com.azure.ai.translation.text.models.SentenceBoundaries" />
-      <Class name="com.azure.ai.translation.text.models.SourceDictionaryLanguage" />
-      <Class name="com.azure.ai.translation.text.models.TranslateOptions" />
-      <Class name="com.azure.ai.translation.text.models.TranslatedTextItem" />
-      <Class name="com.azure.ai.translation.text.models.TransliterableScript" />
-      <Class name="com.azure.ai.translation.text.models.TransliterationLanguage" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.ai.translation.text.TextTranslationClientBuilder" />
-      <Class name="com.azure.ai.translation.text.models.TranslateOptions" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="NP_NONNULL_PARAM_VIOLATION" />
     <Class name="com.azure.ai.translation.text.TextTranslationAsyncClient" />
-  </Match>
-  <Match>
-    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD" />
-    <Or>
-      <Class name="com.azure.ai.translation.text.TextTranslationClient" />
-      <Class name="com.azure.ai.translation.text.TextTranslationClientBuilder" />
-    </Or>
   </Match>
 </FindBugsFilter>

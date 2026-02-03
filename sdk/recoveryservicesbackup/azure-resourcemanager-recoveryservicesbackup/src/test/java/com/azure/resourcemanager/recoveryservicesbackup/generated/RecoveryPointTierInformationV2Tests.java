@@ -16,24 +16,23 @@ public final class RecoveryPointTierInformationV2Tests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPointTierInformationV2 model = BinaryData.fromString(
-            "{\"type\":\"ArchivedRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"twly\":\"wahfbousnfepgfew\",\"limmbcxf\":\"gncxykxhdj\",\"pxtgqscjav\":\"bcporxvxcjzhqizx\"}}")
+            "{\"type\":\"InstantRP\",\"status\":\"Rehydrated\",\"extendedInfo\":{\"rxvxcjzh\":\"mmbcxfhbcp\",\"qscjavftjuh\":\"izxfpxt\"}}")
             .toObject(RecoveryPointTierInformationV2.class);
-        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.type());
         Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
-        Assertions.assertEquals("wahfbousnfepgfew", model.extendedInfo().get("twly"));
+        Assertions.assertEquals("mmbcxfhbcp", model.extendedInfo().get("rxvxcjzh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPointTierInformationV2 model
-            = new RecoveryPointTierInformationV2().withType(RecoveryPointTierType.ARCHIVED_RP)
+            = new RecoveryPointTierInformationV2().withType(RecoveryPointTierType.INSTANT_RP)
                 .withStatus(RecoveryPointTierStatus.REHYDRATED)
-                .withExtendedInfo(
-                    mapOf("twly", "wahfbousnfepgfew", "limmbcxf", "gncxykxhdj", "pxtgqscjav", "bcporxvxcjzhqizx"));
+                .withExtendedInfo(mapOf("rxvxcjzh", "mmbcxfhbcp", "qscjavftjuh", "izxfpxt"));
         model = BinaryData.fromObject(model).toObject(RecoveryPointTierInformationV2.class);
-        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.type());
+        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.type());
         Assertions.assertEquals(RecoveryPointTierStatus.REHYDRATED, model.status());
-        Assertions.assertEquals("wahfbousnfepgfew", model.extendedInfo().get("twly"));
+        Assertions.assertEquals("mmbcxfhbcp", model.extendedInfo().get("rxvxcjzh"));
     }
 
     // Use "Map.of" if available

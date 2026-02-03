@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -24,51 +25,43 @@ public final class AnomalyFeedback extends MetricFeedback {
     /*
      * feedback type
      */
+    @Generated
     private FeedbackType feedbackType = FeedbackType.ANOMALY;
 
     /*
      * the start timestamp of feedback time range
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * the end timestamp of feedback time range, when equals to startTime means only one timestamp
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The value property.
      */
+    @Generated
     private AnomalyFeedbackValue value;
 
     /*
      * the corresponding anomaly detection configuration of this feedback
      */
+    @Generated
     private UUID anomalyDetectionConfigurationId;
 
     /*
      * The anomalyDetectionConfigurationSnapshot property.
      */
+    @Generated
     private AnomalyDetectionConfiguration anomalyDetectionConfigurationSnapshot;
-
-    /*
-     * user who gives this feedback
-     */
-    private String userPrincipal;
-
-    /*
-     * feedback created time
-     */
-    private OffsetDateTime createdTime;
-
-    /*
-     * feedback unique id
-     */
-    private UUID feedbackId;
 
     /**
      * Creates an instance of AnomalyFeedback class.
      */
+    @Generated
     public AnomalyFeedback() {
     }
 
@@ -77,6 +70,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * 
      * @return the feedbackType value.
      */
+    @Generated
     @Override
     public FeedbackType getFeedbackType() {
         return this.feedbackType;
@@ -87,6 +81,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -97,6 +92,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * @param startTime the startTime value to set.
      * @return the AnomalyFeedback object itself.
      */
+    @Generated
     public AnomalyFeedback setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -108,6 +104,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -119,6 +116,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * @param endTime the endTime value to set.
      * @return the AnomalyFeedback object itself.
      */
+    @Generated
     public AnomalyFeedback setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -129,6 +127,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * 
      * @return the value value.
      */
+    @Generated
     public AnomalyFeedbackValue getValue() {
         return this.value;
     }
@@ -139,6 +138,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * @param value the value value to set.
      * @return the AnomalyFeedback object itself.
      */
+    @Generated
     public AnomalyFeedback setValue(AnomalyFeedbackValue value) {
         this.value = value;
         return this;
@@ -150,6 +150,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * 
      * @return the anomalyDetectionConfigurationId value.
      */
+    @Generated
     public UUID getAnomalyDetectionConfigurationId() {
         return this.anomalyDetectionConfigurationId;
     }
@@ -161,6 +162,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * @param anomalyDetectionConfigurationId the anomalyDetectionConfigurationId value to set.
      * @return the AnomalyFeedback object itself.
      */
+    @Generated
     public AnomalyFeedback setAnomalyDetectionConfigurationId(UUID anomalyDetectionConfigurationId) {
         this.anomalyDetectionConfigurationId = anomalyDetectionConfigurationId;
         return this;
@@ -171,6 +173,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * 
      * @return the anomalyDetectionConfigurationSnapshot value.
      */
+    @Generated
     public AnomalyDetectionConfiguration getAnomalyDetectionConfigurationSnapshot() {
         return this.anomalyDetectionConfigurationSnapshot;
     }
@@ -181,6 +184,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * @param anomalyDetectionConfigurationSnapshot the anomalyDetectionConfigurationSnapshot value to set.
      * @return the AnomalyFeedback object itself.
      */
+    @Generated
     public AnomalyFeedback
         setAnomalyDetectionConfigurationSnapshot(AnomalyDetectionConfiguration anomalyDetectionConfigurationSnapshot) {
         this.anomalyDetectionConfigurationSnapshot = anomalyDetectionConfigurationSnapshot;
@@ -188,38 +192,9 @@ public final class AnomalyFeedback extends MetricFeedback {
     }
 
     /**
-     * Get the userPrincipal property: user who gives this feedback.
-     * 
-     * @return the userPrincipal value.
-     */
-    @Override
-    public String getUserPrincipal() {
-        return this.userPrincipal;
-    }
-
-    /**
-     * Get the createdTime property: feedback created time.
-     * 
-     * @return the createdTime value.
-     */
-    @Override
-    public OffsetDateTime getCreatedTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the feedbackId property: feedback unique id.
-     * 
-     * @return the feedbackId value.
-     */
-    @Override
-    public UUID getFeedbackId() {
-        return this.feedbackId;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnomalyFeedback setMetricId(UUID metricId) {
         super.setMetricId(metricId);
@@ -229,6 +204,7 @@ public final class AnomalyFeedback extends MetricFeedback {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AnomalyFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
         super.setDimensionFilter(dimensionFilter);
@@ -238,6 +214,7 @@ public final class AnomalyFeedback extends MetricFeedback {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -264,6 +241,7 @@ public final class AnomalyFeedback extends MetricFeedback {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnomalyFeedback.
      */
+    @Generated
     public static AnomalyFeedback fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AnomalyFeedback deserializedAnomalyFeedback = new AnomalyFeedback();
@@ -277,13 +255,13 @@ public final class AnomalyFeedback extends MetricFeedback {
                 } else if ("dimensionFilter".equals(fieldName)) {
                     deserializedAnomalyFeedback.setDimensionFilter(FeedbackDimensionFilter.fromJson(reader));
                 } else if ("feedbackId".equals(fieldName)) {
-                    deserializedAnomalyFeedback.feedbackId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedAnomalyFeedback
+                        .setFeedbackId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedAnomalyFeedback.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedAnomalyFeedback.setCreatedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("userPrincipal".equals(fieldName)) {
-                    deserializedAnomalyFeedback.userPrincipal = reader.getString();
+                    deserializedAnomalyFeedback.setUserPrincipal(reader.getString());
                 } else if ("startTime".equals(fieldName)) {
                     deserializedAnomalyFeedback.startTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

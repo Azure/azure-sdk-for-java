@@ -7,34 +7,33 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
-import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CorrelationFilterImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.EmptyRuleActionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.FalseFilterImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.KeyValueImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.ResponseAuthorImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SqlFilterImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SqlRuleActionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TitleImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TrueFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CorrelationFilter;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.EmptyRuleAction;
+import com.azure.messaging.servicebus.administration.implementation.models.FalseFilter;
+import com.azure.messaging.servicebus.administration.implementation.models.KeyValue;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryContent;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.ResponseAuthor;
+import com.azure.messaging.servicebus.administration.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryContent;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.SqlFilter;
+import com.azure.messaging.servicebus.administration.implementation.models.SqlRuleAction;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryContent;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.Title;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.TrueFilter;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -66,6 +65,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -98,13 +98,13 @@ class ServiceBusManagementSerializerTest {
         expected.getAuthorizationRules().add(rule);
 
         // Act
-        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntry entry = SERIALIZER.deserialize(contents, QueueDescriptionEntry.class);
 
         // Assert
         assertNotNull(entry);
         assertNotNull(entry.getContent());
 
-        final QueueDescriptionImpl actual = entry.getContent().getQueueDescription();
+        final QueueDescription actual = entry.getContent().getQueueDescription();
         assertQueueEquals(expected, EntityStatus.ACTIVE, actual);
 
         final List<AuthorizationRule> actualRules
@@ -133,7 +133,7 @@ class ServiceBusManagementSerializerTest {
             .setPartitioningEnabled(true);
 
         // Act
-        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntry entry = SERIALIZER.deserialize(contents, QueueDescriptionEntry.class);
 
         // Assert
         assertNotNull(entry);
@@ -142,7 +142,7 @@ class ServiceBusManagementSerializerTest {
         // The entry title is the name of the queue.
         assertTitle(queueName, entry.getTitle());
 
-        final QueueDescriptionImpl actual = entry.getContent().getQueueDescription();
+        final QueueDescription actual = entry.getContent().getQueueDescription();
         assertQueueEquals(expected, EntityStatus.DELETING, actual);
     }
 
@@ -158,14 +158,14 @@ class ServiceBusManagementSerializerTest {
         final OffsetDateTime accessedAt = OffsetDateTime.parse("0001-01-01T00:00:00Z");
         final int sizeInBytes = 2048;
         final int messageCount = 23;
-        final MessageCountDetailsImpl expectedCount = new MessageCountDetailsImpl().setActiveMessageCount(5)
+        final MessageCountDetails expectedCount = new MessageCountDetails().setActiveMessageCount(5)
             .setDeadLetterMessageCount(3)
             .setScheduledMessageCount(65)
             .setTransferMessageCount(10)
             .setTransferDeadLetterMessageCount(123);
 
         // Act
-        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntry entry = SERIALIZER.deserialize(contents, QueueDescriptionEntry.class);
         final QueueProperties properties = EntityHelper.toModel(entry.getContent().getQueueDescription());
         final QueueRuntimeProperties actual = new QueueRuntimeProperties(properties);
 
@@ -186,7 +186,7 @@ class ServiceBusManagementSerializerTest {
 
     /**
      * Verify we can deserialize feed XML from a list queues operation.  This caused errors in previous versions of
-     * jackson 2.10.0 because {@link QueueDescriptionEntryImpl#getTitle()} is a complex object.
+     * jackson 2.10.0 because {@link QueueDescriptionEntry#getTitle()} is a complex object.
      */
     @Test
     void deserializeQueueDescriptionFeedDoesNotError() throws IOException {
@@ -194,7 +194,7 @@ class ServiceBusManagementSerializerTest {
         final String contents = getContents("QueueDescriptionFeed-Errors.xml");
 
         // Act
-        final QueueDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeed actual = SERIALIZER.deserialize(contents, QueueDescriptionFeed.class);
 
         // Assert
         assertNotNull(actual);
@@ -207,10 +207,10 @@ class ServiceBusManagementSerializerTest {
     @Test
     void deserializeQueueDescriptionFeedPaged() throws IOException {
         final String contents = getContents("QueueDescriptionFeed-Paged.xml");
-        final List<ResponseLinkImpl> responseLinks = Arrays.asList(new ResponseLinkImpl().setRel("self")
+        final List<ResponseLink> responseLinks = Arrays.asList(new ResponseLink().setRel("self")
             .setHref(
                 "https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5"),
-            new ResponseLinkImpl().setRel("next")
+            new ResponseLink().setRel("next")
                 .setHref(
                     "https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&%24skip=5&%24top=5"));
 
@@ -226,48 +226,48 @@ class ServiceBusManagementSerializerTest {
             .setBatchedOperationsEnabled(true)
             .setAutoDeleteOnIdle(Duration.ofSeconds(5))
             .setPartitioningEnabled(true);
-        final QueueDescriptionImpl queueProperties = EntityHelper.getQueueDescription(options);
+        final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
 
-        final QueueDescriptionEntryImpl entry1 = new QueueDescriptionEntryImpl().setBase(
+        final QueueDescriptionEntry entry1 = new QueueDescriptionEntry().setBase(
             "https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2021-05")
             .setTitle(getResponseTitle("q-0"))
             .setPublished(OffsetDateTime.parse("2020-03-05T07:17:04Z"))
             .setUpdated(OffsetDateTime.parse("2020-01-05T07:17:04Z"))
-            .setAuthor(new ResponseAuthorImpl().setName("sb-java"))
-            .setLink(new ResponseLinkImpl().setRel("self").setHref("../q-0?api-version=2021-05"))
+            .setAuthor(new ResponseAuthor().setName("sb-java"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-0?api-version=2021-05"))
             .setContent(
-                new QueueDescriptionEntryContentImpl().setType("application/xml").setQueueDescription(queueProperties));
-        final QueueDescriptionEntryImpl entry2 = new QueueDescriptionEntryImpl().setBase(
+                new QueueDescriptionEntryContent().setType("application/xml").setQueueDescription(queueProperties));
+        final QueueDescriptionEntry entry2 = new QueueDescriptionEntry().setBase(
             "https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2021-05")
             .setTitle(getResponseTitle("q-1"))
             .setPublished(OffsetDateTime.parse("2020-06-10T07:16:25Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-15T07:16:25Z"))
-            .setAuthor(new ResponseAuthorImpl().setName("sb-java2"))
-            .setLink(new ResponseLinkImpl().setRel("self").setHref("../q-1?api-version=2021-05"))
+            .setAuthor(new ResponseAuthor().setName("sb-java2"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-1?api-version=2021-05"))
             .setContent(
-                new QueueDescriptionEntryContentImpl().setType("application/xml").setQueueDescription(queueProperties));
-        final QueueDescriptionEntryImpl entry3 = new QueueDescriptionEntryImpl().setBase(
+                new QueueDescriptionEntryContent().setType("application/xml").setQueueDescription(queueProperties));
+        final QueueDescriptionEntry entry3 = new QueueDescriptionEntry().setBase(
             "https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
             .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2021-05")
             .setTitle(getResponseTitle("q-2"))
             .setPublished(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
-            .setAuthor(new ResponseAuthorImpl().setName("sb-java3"))
-            .setLink(new ResponseLinkImpl().setRel("self").setHref("../q-2?api-version=2021-05"))
+            .setAuthor(new ResponseAuthor().setName("sb-java3"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-2?api-version=2021-05"))
             .setContent(
-                new QueueDescriptionEntryContentImpl().setType("application/xml").setQueueDescription(queueProperties));
+                new QueueDescriptionEntryContent().setType("application/xml").setQueueDescription(queueProperties));
 
-        final List<QueueDescriptionEntryImpl> entries = Arrays.asList(entry1, entry2, entry3);
-        final QueueDescriptionFeedImpl expected = new QueueDescriptionFeedImpl().setId("feed-id")
-            .setTitle(new TitleImpl().setType("type").setContent("Queues"))
+        final List<QueueDescriptionEntry> entries = Arrays.asList(entry1, entry2, entry3);
+        final QueueDescriptionFeed expected = new QueueDescriptionFeed().setId("feed-id")
+            .setTitle(new Title().setType("type").setContent("Queues"))
             .setUpdated(OffsetDateTime.parse("2020-12-05T07:17:21Z"))
             .setLink(responseLinks)
             .setEntry(entries);
 
         // Act
-        final QueueDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeed actual = SERIALIZER.deserialize(contents, QueueDescriptionFeed.class);
 
         // Assert
         assertEquals(expected.getId(), actual.getId());
@@ -277,8 +277,8 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(actual.getLink());
         assertEquals(expected.getLink().size(), actual.getLink().size());
         for (int i = 0; i < expected.getLink().size(); i++) {
-            final ResponseLinkImpl expectedLink = expected.getLink().get(i);
-            final ResponseLinkImpl actualLink = actual.getLink().get(i);
+            final ResponseLink expectedLink = expected.getLink().get(i);
+            final ResponseLink actualLink = actual.getLink().get(i);
 
             assertEquals(expectedLink.getRel(), actualLink.getRel());
             assertEquals(expectedLink.getHref(), actualLink.getHref());
@@ -287,8 +287,8 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(actual.getEntry());
         assertEquals(expected.getEntry().size(), actual.getEntry().size());
         for (int i = 0; i < expected.getEntry().size(); i++) {
-            final QueueDescriptionEntryImpl expectedEntry = expected.getEntry().get(i);
-            final QueueDescriptionEntryImpl actualEntry = actual.getEntry().get(i);
+            final QueueDescriptionEntry expectedEntry = expected.getEntry().get(i);
+            final QueueDescriptionEntry actualEntry = actual.getEntry().get(i);
 
             assertEquals(expected.getId(), actual.getId());
             assertNotNull(actual.getTitle());
@@ -317,7 +317,7 @@ class ServiceBusManagementSerializerTest {
         final NamespaceType namespaceType = NamespaceType.MESSAGING;
 
         // Act
-        final NamespacePropertiesEntryImpl entry = SERIALIZER.deserialize(contents, NamespacePropertiesEntryImpl.class);
+        final NamespacePropertiesEntry entry = SERIALIZER.deserialize(contents, NamespacePropertiesEntry.class);
 
         // Assert
         assertNotNull(entry);
@@ -342,25 +342,23 @@ class ServiceBusManagementSerializerTest {
     void deserializeSubscription() throws IOException {
         // Arrange
         final String contents = getContents("SubscriptionDescriptionEntry.xml");
-        final SubscriptionDescriptionImpl expected
-            = new SubscriptionDescriptionImpl().setLockDuration(Duration.ofSeconds(15))
-                .setRequiresSession(true)
-                .setDefaultMessageTimeToLive(ServiceBusConstants.MAX_DURATION)
-                .setDeadLetteringOnMessageExpiration(false)
-                .setDeadLetteringOnFilterEvaluationExceptions(true)
-                .setEnableBatchedOperations(true)
-                .setMaxDeliveryCount(5)
-                .setAutoDeleteOnIdle(Duration.ofHours(1).plusMinutes(48));
+        final SubscriptionDescription expected = new SubscriptionDescription().setLockDuration(Duration.ofSeconds(15))
+            .setRequiresSession(true)
+            .setDefaultMessageTimeToLive(ServiceBusConstants.MAX_DURATION)
+            .setDeadLetteringOnMessageExpiration(false)
+            .setDeadLetteringOnFilterEvaluationExceptions(true)
+            .setEnableBatchedOperations(true)
+            .setMaxDeliveryCount(5)
+            .setAutoDeleteOnIdle(Duration.ofHours(1).plusMinutes(48));
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry
-            = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntry entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntry.class);
 
         // Assert
         assertNotNull(entry);
         assertNotNull(entry.getContent());
 
-        final SubscriptionDescriptionImpl actual = entry.getContent().getSubscriptionDescription();
+        final SubscriptionDescription actual = entry.getContent().getSubscriptionDescription();
 
         assertSubscriptionEquals(expected, EntityStatus.ACTIVE, actual);
     }
@@ -374,7 +372,7 @@ class ServiceBusManagementSerializerTest {
         final String contents = getContents("CreateSubscriptionEntry.xml");
         final String topicName = "topic";
         final String subscriptionName = "sub46850f";
-        final SubscriptionDescriptionImpl expected = EntityHelper.getSubscriptionDescription(
+        final SubscriptionDescription expected = EntityHelper.getSubscriptionDescription(
             new CreateSubscriptionOptions().setAutoDeleteOnIdle(Duration.parse("P10675199DT2H48M5.477S"))
                 .setDefaultMessageTimeToLive(Duration.parse("P10675199DT2H48M5.477S"))
                 .setSessionRequired(false)
@@ -382,14 +380,13 @@ class ServiceBusManagementSerializerTest {
                 .setMaxDeliveryCount(7));
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry
-            = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntry entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntry.class);
 
         // Assert
         assertNotNull(entry);
         assertNotNull(entry.getContent());
 
-        final SubscriptionDescriptionImpl actual = entry.getContent().getSubscriptionDescription();
+        final SubscriptionDescription actual = entry.getContent().getSubscriptionDescription();
 
         assertSubscriptionEquals(expected, EntityStatus.ACTIVE, actual);
     }
@@ -406,15 +403,14 @@ class ServiceBusManagementSerializerTest {
         final OffsetDateTime updatedAt = OffsetDateTime.parse("2020-06-22T23:47:20.0131447Z");
         final OffsetDateTime accessedAt = OffsetDateTime.parse("2020-06-22T23:47:54.013Z");
         final int messageCount = 13;
-        final MessageCountDetailsImpl expectedCount = new MessageCountDetailsImpl().setActiveMessageCount(10)
+        final MessageCountDetails expectedCount = new MessageCountDetails().setActiveMessageCount(10)
             .setDeadLetterMessageCount(50)
             .setScheduledMessageCount(34)
             .setTransferMessageCount(11)
             .setTransferDeadLetterMessageCount(2);
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry
-            = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntry entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntry.class);
         final SubscriptionRuntimeProperties actual
             = new SubscriptionRuntimeProperties(EntityHelper.toModel(entry.getContent().getSubscriptionDescription()));
 
@@ -438,7 +434,7 @@ class ServiceBusManagementSerializerTest {
     void deserializeSubscriptionDescriptionFeed() throws IOException {
         // Arrange
         final String contents = getContents("SubscriptionDescriptionFeed.xml");
-        final List<ResponseLinkImpl> responseLinks = Collections.singletonList(new ResponseLinkImpl().setRel("self")
+        final List<ResponseLink> responseLinks = Collections.singletonList(new ResponseLink().setRel("self")
             .setHref(
                 "https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions?api-version=2021-05&enrich=false&$skip=0&$top=100"));
 
@@ -447,60 +443,59 @@ class ServiceBusManagementSerializerTest {
         final String subscriptionName2 = "subscription-session-0";
         final String subscriptionName3 = "subscription-session-1";
 
-        final SubscriptionDescriptionImpl subscription1 = EntityHelper
+        final SubscriptionDescription subscription1 = EntityHelper
             .getSubscriptionDescription(new CreateSubscriptionOptions().setLockDuration(Duration.ofSeconds(15))
                 .setDefaultMessageTimeToLive(Duration.ofMinutes(5))
                 .setMaxDeliveryCount(5)
                 .setAutoDeleteOnIdle(Duration.ofDays(1)));
-        final SubscriptionDescriptionImpl subscription2
+        final SubscriptionDescription subscription2
             = EntityHelper.getSubscriptionDescription(new CreateSubscriptionOptions().setSessionRequired(true)
                 .setLockDuration(Duration.ofSeconds(15))
                 .setMaxDeliveryCount(5));
-        final SubscriptionDescriptionImpl subscription3
+        final SubscriptionDescription subscription3
             = EntityHelper.getSubscriptionDescription(new CreateSubscriptionOptions().setSessionRequired(true)
                 .setLockDuration(Duration.ofSeconds(15))
                 .setMaxDeliveryCount(5));
-        final List<SubscriptionDescriptionImpl> expectedDescriptions
+        final List<SubscriptionDescription> expectedDescriptions
             = Arrays.asList(subscription1, subscription2, subscription3);
 
-        final SubscriptionDescriptionEntryImpl entry1 = new SubscriptionDescriptionEntryImpl().setId(
+        final SubscriptionDescriptionEntry entry1 = new SubscriptionDescriptionEntry().setId(
             "https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-0?api-version=2021-05")
             .setTitle(getResponseTitle(subscriptionName1))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-23T23:47:53Z"))
-            .setLink(new ResponseLinkImpl().setRel("self").setHref("Subscriptions/subscription-0?api-version=2021-05"))
-            .setContent(new SubscriptionDescriptionEntryContentImpl().setType("application/xml")
+            .setLink(new ResponseLink().setRel("self").setHref("Subscriptions/subscription-0?api-version=2021-05"))
+            .setContent(new SubscriptionDescriptionEntryContent().setType("application/xml")
                 .setSubscriptionDescription(subscription1));
-        final SubscriptionDescriptionEntryImpl entry2 = new SubscriptionDescriptionEntryImpl().setId(
+        final SubscriptionDescriptionEntry entry2 = new SubscriptionDescriptionEntry().setId(
             "https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-0?api-version=2021-05")
             .setTitle(getResponseTitle(subscriptionName2))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:53Z"))
             .setUpdated(OffsetDateTime.parse("2020-05-22T23:47:53Z"))
-            .setLink(new ResponseLinkImpl().setRel("self")
-                .setHref("Subscriptions/subscription-session-0?api-version=2021-05"))
-            .setContent(new SubscriptionDescriptionEntryContentImpl().setType("application/xml")
+            .setLink(
+                new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-0?api-version=2021-05"))
+            .setContent(new SubscriptionDescriptionEntryContent().setType("application/xml")
                 .setSubscriptionDescription(subscription2));
-        final SubscriptionDescriptionEntryImpl entry3 = new SubscriptionDescriptionEntryImpl().setId(
+        final SubscriptionDescriptionEntry entry3 = new SubscriptionDescriptionEntry().setId(
             "https://sb-java-conniey-5.servicebus.windows.net/topic/Subscriptions/subscription-session-1?api-version=2021-05")
             .setTitle(getResponseTitle(subscriptionName3))
             .setPublished(OffsetDateTime.parse("2020-06-22T23:47:54Z"))
             .setUpdated(OffsetDateTime.parse("2020-04-22T23:47:54Z"))
-            .setLink(new ResponseLinkImpl().setRel("self")
-                .setHref("Subscriptions/subscription-session-1?api-version=2021-05"))
-            .setContent(new SubscriptionDescriptionEntryContentImpl().setType("application/xml")
+            .setLink(
+                new ResponseLink().setRel("self").setHref("Subscriptions/subscription-session-1?api-version=2021-05"))
+            .setContent(new SubscriptionDescriptionEntryContent().setType("application/xml")
                 .setSubscriptionDescription(subscription3));
 
-        final List<SubscriptionDescriptionEntryImpl> entries = Arrays.asList(entry1, entry2, entry3);
-        final SubscriptionDescriptionFeedImpl expected = new SubscriptionDescriptionFeedImpl().setId("feed-id")
-            .setTitle(new TitleImpl().setType("text").setContent("Subscriptions"))
+        final List<SubscriptionDescriptionEntry> entries = Arrays.asList(entry1, entry2, entry3);
+        final SubscriptionDescriptionFeed expected = new SubscriptionDescriptionFeed().setId("feed-id")
+            .setTitle(new Title().setType("text").setContent("Subscriptions"))
             .setUpdated(OffsetDateTime.parse("2020-06-30T11:41:32Z"))
             .setLink(responseLinks)
             .setEntry(entries);
         final int expectedNumberOfEntries = 11;
 
         // Act
-        final SubscriptionDescriptionFeedImpl actual
-            = SERIALIZER.deserialize(contents, SubscriptionDescriptionFeedImpl.class);
+        final SubscriptionDescriptionFeed actual = SERIALIZER.deserialize(contents, SubscriptionDescriptionFeed.class);
 
         // Assert
         assertEquals(expected.getId(), actual.getId());
@@ -510,8 +505,8 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(actual.getLink());
         assertEquals(expected.getLink().size(), actual.getLink().size());
         for (int i = 0; i < expected.getLink().size(); i++) {
-            final ResponseLinkImpl expectedLink = expected.getLink().get(i);
-            final ResponseLinkImpl actualLink = actual.getLink().get(i);
+            final ResponseLink expectedLink = expected.getLink().get(i);
+            final ResponseLink actualLink = actual.getLink().get(i);
 
             assertEquals(expectedLink.getRel(), actualLink.getRel());
             assertEquals(expectedLink.getHref(), actualLink.getHref());
@@ -524,8 +519,8 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expectedNumberOfEntries, actual.getEntry().size());
 
         for (int i = 0; i < expected.getEntry().size(); i++) {
-            final SubscriptionDescriptionEntryImpl expectedEntry = expected.getEntry().get(i);
-            final SubscriptionDescriptionEntryImpl actualEntry = actual.getEntry().get(i);
+            final SubscriptionDescriptionEntry expectedEntry = expected.getEntry().get(i);
+            final SubscriptionDescriptionEntry actualEntry = actual.getEntry().get(i);
 
             assertEquals(expected.getId(), actual.getId());
             assertNotNull(actual.getTitle());
@@ -534,7 +529,7 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expectedEntry.getUpdated(), actualEntry.getUpdated());
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
 
-            final SubscriptionDescriptionImpl expectedSubscription = expectedDescriptions.get(i);
+            final SubscriptionDescription expectedSubscription = expectedDescriptions.get(i);
             assertSubscriptionEquals(expectedSubscription, EntityStatus.ACTIVE,
                 actualEntry.getContent().getSubscriptionDescription());
         }
@@ -547,19 +542,18 @@ class ServiceBusManagementSerializerTest {
     void deserializeSqlRule() throws IOException {
         // Arrange
         final String contents = getContents("SqlRuleFilter.xml");
-        final RuleDescriptionImpl expectedRule = new RuleDescriptionImpl().setName("foo")
+        final RuleDescription expectedRule = new RuleDescription().setName("foo")
             .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:32:20.9387321Z"))
-            .setAction(new EmptyRuleActionImpl())
-            .setFilter(new SqlFilterImpl().setCompatibilityLevel("20").setSqlExpression("type = \"TestType\""));
-        final RuleDescriptionEntryImpl expected = new RuleDescriptionEntryImpl().setId(
+            .setAction(new EmptyRuleAction())
+            .setFilter(new SqlFilter().setCompatibilityLevel("20").setSqlExpression("type = \"TestType\""));
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry().setId(
             "sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2021-05&enrich=false")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:34:20Z"))
-            .setContent(
-                new RuleDescriptionEntryContentImpl().setRuleDescription(expectedRule).setType("application/xml"));
+            .setContent(new RuleDescriptionEntryContent().setRuleDescription(expectedRule).setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntry actual = SERIALIZER.deserialize(contents, RuleDescriptionEntry.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -572,19 +566,18 @@ class ServiceBusManagementSerializerTest {
     void deserializeSqlRuleWithAction() throws IOException {
         // Arrange
         final String contents = getContents("SqlRuleFilterWithAction.xml");
-        final RuleDescriptionImpl expectedRule = new RuleDescriptionImpl().setName("foo")
+        final RuleDescription expectedRule = new RuleDescription().setName("foo")
             .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:51:24.9967451Z"))
-            .setAction(new SqlRuleActionImpl().setCompatibilityLevel("20").setSqlExpression("set FilterTag = 'true'"))
-            .setFilter(new SqlFilterImpl().setCompatibilityLevel("20").setSqlExpression("type = \"TestType\""));
-        final RuleDescriptionEntryImpl expected = new RuleDescriptionEntryImpl().setId(
+            .setAction(new SqlRuleAction().setCompatibilityLevel("20").setSqlExpression("set FilterTag = 'true'"))
+            .setFilter(new SqlFilter().setCompatibilityLevel("20").setSqlExpression("type = \"TestType\""));
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry().setId(
             "https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/foo?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:51:24Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:54:24Z"))
-            .setContent(
-                new RuleDescriptionEntryContentImpl().setRuleDescription(expectedRule).setType("application/xml"));
+            .setContent(new RuleDescriptionEntryContent().setRuleDescription(expectedRule).setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntry actual = SERIALIZER.deserialize(contents, RuleDescriptionEntry.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -597,19 +590,18 @@ class ServiceBusManagementSerializerTest {
     void deserializeCorrelationFilterRule() throws IOException {
         // Arrange
         final String contents = getContents("CorrelationRuleFilter.xml");
-        final RuleDescriptionImpl expectedRule = new RuleDescriptionImpl().setName("correlation-test")
+        final RuleDescription expectedRule = new RuleDescription().setName("correlation-test")
             .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:32:50.7697024Z"))
-            .setAction(new EmptyRuleActionImpl())
-            .setFilter(new CorrelationFilterImpl().setLabel("matching-label"));
-        final RuleDescriptionEntryImpl expected = new RuleDescriptionEntryImpl().setId(
+            .setAction(new EmptyRuleAction())
+            .setFilter(new CorrelationFilter().setLabel("matching-label"));
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry().setId(
             "sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/correl?api-version=2021-05&enrich=false")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:34:50Z"))
-            .setContent(
-                new RuleDescriptionEntryContentImpl().setRuleDescription(expectedRule).setType("application/xml"));
+            .setContent(new RuleDescriptionEntryContent().setRuleDescription(expectedRule).setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntry actual = SERIALIZER.deserialize(contents, RuleDescriptionEntry.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -623,59 +615,57 @@ class ServiceBusManagementSerializerTest {
         // Arrange
         final String contents = getContents("RuleDescriptionFeed.xml");
 
-        final RuleDescriptionImpl defaultRule = new RuleDescriptionImpl().setName("$Default")
+        final RuleDescription defaultRule = new RuleDescription().setName("$Default")
             .setCreatedAt(OffsetDateTime.parse("2020-08-12T18:48:00.1005312Z"))
-            .setAction(new EmptyRuleActionImpl())
-            .setFilter(new TrueFilterImpl().setCompatibilityLevel("20").setSqlExpression("1=1"));
-        final RuleDescriptionEntryImpl defaultRuleEntry = new RuleDescriptionEntryImpl().setId(
+            .setAction(new EmptyRuleAction())
+            .setFilter(new TrueFilter().setCompatibilityLevel("20").setSqlExpression("1=1"));
+        final RuleDescriptionEntry defaultRuleEntry = new RuleDescriptionEntry().setId(
             "https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/$Default?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-08-12T18:48:00Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-12T18:48:00Z"))
-            .setContent(
-                new RuleDescriptionEntryContentImpl().setRuleDescription(defaultRule).setType("application/xml"));
+            .setContent(new RuleDescriptionEntryContent().setRuleDescription(defaultRule).setType("application/xml"));
 
-        final RuleDescriptionImpl correlation = new RuleDescriptionImpl().setName("correl")
+        final RuleDescription correlation = new RuleDescription().setName("correl")
             .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:32:50.7697024Z"))
-            .setAction(new EmptyRuleActionImpl())
-            .setFilter(new CorrelationFilterImpl().setLabel("matching-label"));
-        final RuleDescriptionEntryImpl correlationEntry = new RuleDescriptionEntryImpl().setId(
+            .setAction(new EmptyRuleAction())
+            .setFilter(new CorrelationFilter().setLabel("matching-label"));
+        final RuleDescriptionEntry correlationEntry = new RuleDescriptionEntry().setId(
             "https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/correl?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:32:50Z"))
-            .setContent(
-                new RuleDescriptionEntryContentImpl().setRuleDescription(correlation).setType("application/xml"));
+            .setContent(new RuleDescriptionEntryContent().setRuleDescription(correlation).setType("application/xml"));
 
-        final RuleDescriptionImpl sqlRule = new RuleDescriptionImpl().setName("foo")
+        final RuleDescription sqlRule = new RuleDescription().setName("foo")
             .setCreatedAt(OffsetDateTime.parse("2020-08-28T04:51:24.9967451Z"))
-            .setAction(new SqlRuleActionImpl().setCompatibilityLevel("20").setSqlExpression("set FilterTag = 'true'"))
-            .setFilter(new SqlFilterImpl().setCompatibilityLevel("20").setSqlExpression("type = \"TestType\""));
-        final RuleDescriptionEntryImpl sqlRuleEntry = new RuleDescriptionEntryImpl().setId(
+            .setAction(new SqlRuleAction().setCompatibilityLevel("20").setSqlExpression("set FilterTag = 'true'"))
+            .setFilter(new SqlFilter().setCompatibilityLevel("20").setSqlExpression("type = \"TestType\""));
+        final RuleDescriptionEntry sqlRuleEntry = new RuleDescriptionEntry().setId(
             "https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules/foo?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
             .setUpdated(OffsetDateTime.parse("2020-08-28T04:32:20Z"))
-            .setContent(new RuleDescriptionEntryContentImpl().setRuleDescription(sqlRule).setType("application/xml"));
+            .setContent(new RuleDescriptionEntryContent().setRuleDescription(sqlRule).setType("application/xml"));
 
-        final List<RuleDescriptionEntryImpl> expectedEntries
+        final List<RuleDescriptionEntry> expectedEntries
             = Arrays.asList(defaultRuleEntry, correlationEntry, sqlRuleEntry);
-        final RuleDescriptionFeedImpl expected = new RuleDescriptionFeedImpl().setEntry(expectedEntries)
+        final RuleDescriptionFeed expected = new RuleDescriptionFeed().setEntry(expectedEntries)
             .setId(
                 "https://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/rules?api-version=2021-05&enrich=false&$skip=0&$top=100")
             .setUpdated(OffsetDateTime.parse("2020-08-28T14:59:16Z"));
 
         // Act
-        final RuleDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionFeedImpl.class);
+        final RuleDescriptionFeed actual = SERIALIZER.deserialize(contents, RuleDescriptionFeed.class);
 
         // Assert
         assertNotNull(actual);
         assertEquals(expected.getId(), actual.getId());
 
-        final List<RuleDescriptionEntryImpl> actualEntries = actual.getEntry();
+        final List<RuleDescriptionEntry> actualEntries = actual.getEntry();
         assertNotNull(actualEntries);
         assertEquals(expectedEntries.size(), actualEntries.size());
 
         for (int i = 0; i < expected.getEntry().size(); i++) {
-            final RuleDescriptionEntryImpl expectedRule = expectedEntries.get(i);
-            final RuleDescriptionEntryImpl actualRule = actualEntries.get(i);
+            final RuleDescriptionEntry expectedRule = expectedEntries.get(i);
+            final RuleDescriptionEntry actualRule = actualEntries.get(i);
 
             assertRuleEntryEquals(expectedRule, actualRule);
         }
@@ -686,15 +676,15 @@ class ServiceBusManagementSerializerTest {
         // Arrange
         final String contents = getContents("CreateRuleEntry.xml");
 
-        final RuleDescriptionImpl description = new RuleDescriptionImpl().setName("connies-bar")
-            .setAction(new SqlRuleActionImpl().setSqlExpression("SET Label = 'my-label'"))
-            .setFilter(new TrueFilterImpl().setSqlExpression("1=1"));
-        final RuleDescriptionEntryContentImpl content
-            = new RuleDescriptionEntryContentImpl().setRuleDescription(description).setType("application/xml");
-        final RuleDescriptionEntryImpl expected = new RuleDescriptionEntryImpl().setContent(content);
+        final RuleDescription description = new RuleDescription().setName("connies-bar")
+            .setAction(new SqlRuleAction().setSqlExpression("SET Label = 'my-label'"))
+            .setFilter(new TrueFilter().setSqlExpression("1=1"));
+        final RuleDescriptionEntryContent content
+            = new RuleDescriptionEntryContent().setRuleDescription(description).setType("application/xml");
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry().setContent(content);
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntry actual = SERIALIZER.deserialize(contents, RuleDescriptionEntry.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -705,23 +695,23 @@ class ServiceBusManagementSerializerTest {
         // Arrange
         final String contents = getContents("CreateRuleEntryResponse.xml");
 
-        final RuleDescriptionImpl description = new RuleDescriptionImpl().setName("connies-bar")
-            .setAction(new SqlRuleActionImpl().setSqlExpression("SET Label = 'my-label'").setCompatibilityLevel("20"))
-            .setFilter(new TrueFilterImpl().setSqlExpression("1=1").setCompatibilityLevel("20"))
+        final RuleDescription description = new RuleDescription().setName("connies-bar")
+            .setAction(new SqlRuleAction().setSqlExpression("SET Label = 'my-label'").setCompatibilityLevel("20"))
+            .setFilter(new TrueFilter().setSqlExpression("1=1").setCompatibilityLevel("20"))
             .setCreatedAt(OffsetDateTime.parse("2020-10-05T23:34:21.5963322Z"));
-        final RuleDescriptionEntryContentImpl content
-            = new RuleDescriptionEntryContentImpl().setRuleDescription(description).setType("application/xml");
-        final RuleDescriptionEntryImpl expected = new RuleDescriptionEntryImpl().setId(
+        final RuleDescriptionEntryContent content
+            = new RuleDescriptionEntryContent().setRuleDescription(description).setType("application/xml");
+        final RuleDescriptionEntry expected = new RuleDescriptionEntry().setId(
             "https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2021-05")
             .setPublished(OffsetDateTime.parse("2020-10-05T23:31:21Z"))
             .setUpdated(OffsetDateTime.parse("2020-10-05T23:30:21Z"))
-            .setLink(new ResponseLinkImpl().setRel("self")
+            .setLink(new ResponseLink().setRel("self")
                 .setHref(
                     "https://sb-java.servicebus.windows.net/topic-1/Subscriptions/subscription/Rules/connies-bar?api-version=2021-05"))
             .setContent(content);
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntry actual = SERIALIZER.deserialize(contents, RuleDescriptionEntry.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -730,14 +720,16 @@ class ServiceBusManagementSerializerTest {
     @Test
     void serializeTopicDescriptionXML() throws IOException {
         // Arrange
-        AuthorizationRuleImpl rule = new AuthorizationRuleImpl().setKeyName("test")
-            .setType("SharedAccessAuthorizationRule")
-            .setRights(Arrays.asList(AccessRights.MANAGE, AccessRights.LISTEN, AccessRights.SEND));
+        com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule rule
+            = new com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule()
+                .setKeyName("test")
+                .setType("SharedAccessAuthorizationRule")
+                .setRights(Arrays.asList(AccessRights.MANAGE, AccessRights.LISTEN, AccessRights.SEND));
 
-        TopicDescriptionImpl topicDescription = new TopicDescriptionImpl().setAuthorizationRules(Arrays.asList(rule));
+        TopicDescription topicDescription = new TopicDescription().setAuthorizationRules(Arrays.asList(rule));
 
-        CreateTopicBodyImpl createTopicBody = new CreateTopicBodyImpl()
-            .setContent(new CreateTopicBodyContentImpl().setTopicDescription(topicDescription));
+        CreateTopicBody createTopicBody
+            = new CreateTopicBody().setContent(new CreateTopicBodyContent().setTopicDescription(topicDescription));
 
         // Act
         String serialized = SERIALIZER.serialize(createTopicBody, SerializerEncoding.XML);
@@ -784,7 +776,7 @@ class ServiceBusManagementSerializerTest {
     }
 
     private static void assertQueueEquals(CreateQueueOptions expected, EntityStatus expectedStatus,
-        QueueDescriptionImpl actual) {
+        QueueDescription actual) {
 
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
@@ -805,8 +797,8 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expectedStatus, actual.getStatus());
     }
 
-    private static void assertSubscriptionEquals(SubscriptionDescriptionImpl expected, EntityStatus expectedStatus,
-        SubscriptionDescriptionImpl actual) {
+    private static void assertSubscriptionEquals(SubscriptionDescription expected, EntityStatus expectedStatus,
+        SubscriptionDescription actual) {
 
         assertEquals(expected.getAutoDeleteOnIdle(), actual.getAutoDeleteOnIdle());
         assertEquals(expected.getLockDuration(), actual.getLockDuration());
@@ -822,7 +814,7 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expectedStatus, actual.getStatus());
     }
 
-    private static void assertRuleEntryEquals(RuleDescriptionEntryImpl expected, RuleDescriptionEntryImpl actual) {
+    private static void assertRuleEntryEquals(RuleDescriptionEntry expected, RuleDescriptionEntry actual) {
         if (expected == null) {
             assertNull(actual);
             return;
@@ -839,13 +831,13 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(actual.getContent());
         assertEquals(expected.getContent().getType(), actual.getContent().getType());
 
-        final RuleDescriptionImpl expectedRule = expected.getContent().getRuleDescription();
-        final RuleDescriptionImpl actualRule = actual.getContent().getRuleDescription();
+        final RuleDescription expectedRule = expected.getContent().getRuleDescription();
+        final RuleDescription actualRule = actual.getContent().getRuleDescription();
         assertNotNull(actualRule);
         assertRuleEquals(expectedRule, actualRule);
     }
 
-    private static void assertRuleEquals(RuleDescriptionImpl expected, RuleDescriptionImpl actual) {
+    private static void assertRuleEquals(RuleDescription expected, RuleDescription actual) {
         if (expected == null) {
             assertNull(actual);
             return;
@@ -855,13 +847,13 @@ class ServiceBusManagementSerializerTest {
         assertEquals(expected.getName(), actual.getName());
 
         // Rule action assertions.
-        if (expected.getAction() instanceof EmptyRuleActionImpl) {
-            assertTrue(actual.getAction() instanceof EmptyRuleActionImpl);
-        } else if (expected.getAction() instanceof SqlRuleActionImpl) {
-            assertTrue(actual.getAction() instanceof SqlRuleActionImpl);
+        if (expected.getAction() instanceof EmptyRuleAction) {
+            assertInstanceOf(EmptyRuleAction.class, actual.getAction());
+        } else if (expected.getAction() instanceof SqlRuleAction) {
+            assertInstanceOf(SqlRuleAction.class, actual.getAction());
 
-            final SqlRuleActionImpl expectedAction = (SqlRuleActionImpl) expected.getAction();
-            final SqlRuleActionImpl actualAction = (SqlRuleActionImpl) actual.getAction();
+            final SqlRuleAction expectedAction = (SqlRuleAction) expected.getAction();
+            final SqlRuleAction actualAction = (SqlRuleAction) actual.getAction();
 
             assertEquals(expectedAction.getCompatibilityLevel(), actualAction.getCompatibilityLevel());
             assertEquals(expectedAction.getSqlExpression(), actualAction.getSqlExpression());
@@ -871,27 +863,27 @@ class ServiceBusManagementSerializerTest {
         }
 
         // Rule filter assertions.
-        if (expected.getFilter() instanceof TrueFilterImpl) {
-            assertTrue(actual.getFilter() instanceof TrueFilterImpl);
-        } else if (expected.getFilter() instanceof FalseFilterImpl) {
-            assertTrue(actual.getFilter() instanceof FalseFilterImpl);
+        if (expected.getFilter() instanceof TrueFilter) {
+            assertInstanceOf(TrueFilter.class, actual.getFilter());
+        } else if (expected.getFilter() instanceof FalseFilter) {
+            assertInstanceOf(FalseFilter.class, actual.getFilter());
         }
 
-        if (expected.getFilter() instanceof SqlFilterImpl) {
-            assertTrue(actual.getFilter() instanceof SqlFilterImpl);
+        if (expected.getFilter() instanceof SqlFilter) {
+            assertInstanceOf(SqlFilter.class, actual.getFilter());
 
-            final SqlFilterImpl expectedFilter = (SqlFilterImpl) expected.getFilter();
-            final SqlFilterImpl actualFilter = (SqlFilterImpl) actual.getFilter();
+            final SqlFilter expectedFilter = (SqlFilter) expected.getFilter();
+            final SqlFilter actualFilter = (SqlFilter) actual.getFilter();
 
             assertEquals(expectedFilter.getCompatibilityLevel(), actualFilter.getCompatibilityLevel());
             assertEquals(expectedFilter.getSqlExpression(), actualFilter.getSqlExpression());
 
             assertParameters(expectedFilter.getParameters(), actualFilter.getParameters());
-        } else if (expected.getFilter() instanceof CorrelationFilterImpl) {
-            assertTrue(actual.getFilter() instanceof CorrelationFilterImpl);
+        } else if (expected.getFilter() instanceof CorrelationFilter) {
+            assertInstanceOf(CorrelationFilter.class, actual.getFilter());
 
-            final CorrelationFilterImpl expectedFilter = (CorrelationFilterImpl) expected.getFilter();
-            final CorrelationFilterImpl actualFilter = (CorrelationFilterImpl) actual.getFilter();
+            final CorrelationFilter expectedFilter = (CorrelationFilter) expected.getFilter();
+            final CorrelationFilter actualFilter = (CorrelationFilter) actual.getFilter();
 
             assertEquals(expectedFilter.getCorrelationId(), actualFilter.getCorrelationId());
             assertEquals(expectedFilter.getMessageId(), actualFilter.getMessageId());
@@ -905,7 +897,7 @@ class ServiceBusManagementSerializerTest {
         }
     }
 
-    private static void assertParameters(List<KeyValueImpl> expected, List<KeyValueImpl> actual) {
+    private static void assertParameters(List<KeyValue> expected, List<KeyValue> actual) {
         if (expected == null) {
             assertNull(actual);
             return;
@@ -914,11 +906,11 @@ class ServiceBusManagementSerializerTest {
         assertNotNull(actual);
         assertEquals(expected.size(), actual.size());
 
-        final Map<String, KeyValueImpl> actualMap
-            = actual.stream().collect(Collectors.toMap(KeyValueImpl::getKey, Function.identity()));
+        final Map<String, KeyValue> actualMap
+            = actual.stream().collect(Collectors.toMap(KeyValue::getKey, Function.identity()));
 
-        for (KeyValueImpl item : expected) {
-            final KeyValueImpl removed = actualMap.remove(item.getKey());
+        for (KeyValue item : expected) {
+            final KeyValue removed = actualMap.remove(item.getKey());
 
             assertNotNull(removed);
             assertEquals(item.getValue(), removed.getValue());
@@ -927,16 +919,16 @@ class ServiceBusManagementSerializerTest {
         assertTrue(actualMap.isEmpty());
     }
 
-    private static void assertTitle(String expectedTitle, TitleImpl responseTitle) {
+    private static void assertTitle(String expectedTitle, Title responseTitle) {
         assertEquals(responseTitle.getContent(), expectedTitle);
     }
 
-    private static void assertResponseTitle(TitleImpl expectedResponseTitle, TitleImpl actualResponseTitle) {
+    private static void assertResponseTitle(Title expectedResponseTitle, Title actualResponseTitle) {
         assertEquals(expectedResponseTitle.getContent(), actualResponseTitle.getContent());
     }
 
-    private static TitleImpl getResponseTitle(String entityName) {
-        return new TitleImpl().setType("text").setContent(entityName);
+    private static Title getResponseTitle(String entityName) {
+        return new Title().setType("text").setContent(entityName);
     }
 
     private static class TestAuthorizationRule implements AuthorizationRule {
@@ -949,7 +941,8 @@ class ServiceBusManagementSerializerTest {
         private final String primaryKey;
         private final String secondaryKey;
 
-        TestAuthorizationRule(AuthorizationRuleImpl rule) {
+        TestAuthorizationRule(
+            com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRule rule) {
             this.accessRights = rule.getRights();
             this.claimType = rule.getClaimType();
             this.claimValue = rule.getClaimValue();

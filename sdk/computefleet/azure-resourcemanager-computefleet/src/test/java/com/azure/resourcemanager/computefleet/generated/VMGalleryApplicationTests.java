@@ -18,8 +18,8 @@ public final class VMGalleryApplicationTests {
         Assertions.assertEquals(1220568259, model.order());
         Assertions.assertEquals("tguvriuhp", model.packageReferenceId());
         Assertions.assertEquals("mdyvxqtayriw", model.configurationReference());
-        Assertions.assertEquals(false, model.treatFailureAsDeploymentFailure());
-        Assertions.assertEquals(false, model.enableAutomaticUpgrade());
+        Assertions.assertFalse(model.treatFailureAsDeploymentFailure());
+        Assertions.assertFalse(model.enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
@@ -35,7 +35,7 @@ public final class VMGalleryApplicationTests {
         Assertions.assertEquals(1220568259, model.order());
         Assertions.assertEquals("tguvriuhp", model.packageReferenceId());
         Assertions.assertEquals("mdyvxqtayriw", model.configurationReference());
-        Assertions.assertEquals(false, model.treatFailureAsDeploymentFailure());
-        Assertions.assertEquals(false, model.enableAutomaticUpgrade());
+        Assertions.assertFalse(model.treatFailureAsDeploymentFailure());
+        Assertions.assertFalse(model.enableAutomaticUpgrade());
     }
 }

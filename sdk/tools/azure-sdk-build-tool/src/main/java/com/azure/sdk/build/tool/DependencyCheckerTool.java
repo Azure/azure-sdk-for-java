@@ -3,24 +3,24 @@
 
 package com.azure.sdk.build.tool;
 
-import com.azure.sdk.build.tool.models.BuildErrorCode;
-import com.azure.sdk.build.tool.models.OutdatedDependency;
-import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
-import com.azure.sdk.build.tool.util.MavenUtils;
-import com.azure.sdk.build.tool.util.logging.Logger;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.model.DependencyManagement;
-import org.apache.maven.model.InputLocation;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.maven.model.Dependency;
+import org.apache.maven.model.DependencyManagement;
+import org.apache.maven.model.InputLocation;
+
+import com.azure.sdk.build.tool.models.BuildErrorCode;
+import com.azure.sdk.build.tool.models.OutdatedDependency;
+import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
+import com.azure.sdk.build.tool.util.MavenUtils;
 import static com.azure.sdk.build.tool.util.MojoUtils.failOrWarn;
 import static com.azure.sdk.build.tool.util.MojoUtils.getAllDependencies;
 import static com.azure.sdk.build.tool.util.MojoUtils.getDirectDependencies;
 import static com.azure.sdk.build.tool.util.MojoUtils.getString;
+import com.azure.sdk.build.tool.util.logging.Logger;
 
 /**
  * Performs the following tasks:

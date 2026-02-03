@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /*
      * data source type
      */
+    @Generated
     private DataSourceType dataSourceType = DataSourceType.INFLUX_DB;
 
     /*
      * The dataSourceParameter property.
      */
+    @Generated
     private InfluxDBParameterPatch dataSourceParameter;
 
     /**
      * Creates an instance of InfluxDBDataFeedPatch class.
      */
+    @Generated
     public InfluxDBDataFeedPatch() {
     }
 
@@ -40,6 +44,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      * 
      * @return the dataSourceType value.
      */
+    @Generated
     @Override
     public DataSourceType getDataSourceType() {
         return this.dataSourceType;
@@ -50,6 +55,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      * 
      * @return the dataSourceParameter value.
      */
+    @Generated
     public InfluxDBParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -60,6 +66,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the InfluxDBDataFeedPatch object itself.
      */
+    @Generated
     public InfluxDBDataFeedPatch setDataSourceParameter(InfluxDBParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
@@ -68,6 +75,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -77,6 +85,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -86,6 +95,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -95,6 +105,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -104,6 +115,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -113,6 +125,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -122,6 +135,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -131,6 +145,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -140,6 +155,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -149,6 +165,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -158,6 +175,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -167,6 +185,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -176,6 +195,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -185,6 +205,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -194,6 +215,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -203,6 +225,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -212,6 +235,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -221,6 +245,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setStatus(EntityStatus status) {
         super.setStatus(status);
@@ -230,6 +255,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -239,6 +265,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -248,6 +275,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public InfluxDBDataFeedPatch setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
@@ -257,6 +285,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -299,6 +328,7 @@ public final class InfluxDBDataFeedPatch extends DataFeedDetailPatch {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the InfluxDBDataFeedPatch.
      */
+    @Generated
     public static InfluxDBDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             InfluxDBDataFeedPatch deserializedInfluxDBDataFeedPatch = new InfluxDBDataFeedPatch();

@@ -87,4 +87,11 @@ public interface MongoClusterManagementClient {
      * @return the ReplicasClient object.
      */
     ReplicasClient getReplicas();
+
+    /**
+     * Gets the UsersClient object to access its operations.
+     * 
+     * @return the UsersClient object.
+     */
+    UsersClient getUsers();
 }

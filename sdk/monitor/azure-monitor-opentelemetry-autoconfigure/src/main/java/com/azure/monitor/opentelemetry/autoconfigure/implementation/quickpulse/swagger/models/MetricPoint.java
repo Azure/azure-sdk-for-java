@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
     /*
      * Metric name.
      */
+    @Generated
     private String name;
 
     /*
      * Metric value.
      */
+    @Generated
     private double value;
 
     /*
      * Metric weight.
      */
+    @Generated
     private int weight;
 
     /**
      * Creates an instance of MetricPoint class.
      */
+    @Generated
     public MetricPoint() {
     }
 
@@ -42,6 +47,7 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -52,6 +58,7 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
      * @param name the name value to set.
      * @return the MetricPoint object itself.
      */
+    @Generated
     public MetricPoint setName(String name) {
         this.name = name;
         return this;
@@ -62,6 +69,7 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
      * 
      * @return the value value.
      */
+    @Generated
     public double getValue() {
         return this.value;
     }
@@ -72,6 +80,7 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
      * @param value the value value to set.
      * @return the MetricPoint object itself.
      */
+    @Generated
     public MetricPoint setValue(double value) {
         this.value = value;
         return this;
@@ -82,6 +91,7 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
      * 
      * @return the weight value.
      */
+    @Generated
     public int getWeight() {
         return this.weight;
     }
@@ -92,6 +102,7 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
      * @param weight the weight value to set.
      * @return the MetricPoint object itself.
      */
+    @Generated
     public MetricPoint setWeight(int weight) {
         this.weight = weight;
         return this;
@@ -100,6 +111,7 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class MetricPoint implements JsonSerializable<MetricPoint> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetricPoint.
      */
+    @Generated
     public static MetricPoint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetricPoint deserializedMetricPoint = new MetricPoint();

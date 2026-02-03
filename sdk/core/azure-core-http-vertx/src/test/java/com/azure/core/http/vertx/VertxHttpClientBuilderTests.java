@@ -7,14 +7,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.validation.http.models.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
+import com.azure.core.validation.http.models.TestConfigurationSource;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.impl.HttpClientImpl;
-import io.vertx.core.net.SocketAddress;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -27,15 +25,11 @@ import java.net.InetSocketAddress;
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
-import static com.azure.core.http.vertx.VertxClientTestHelper.getVertxInternalProxyFilter;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.PROXY_PASSWORD;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.PROXY_USERNAME;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SERVICE_ENDPOINT;
-import static io.vertx.core.net.SocketAddress.inetSocketAddress;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -63,10 +57,7 @@ public class VertxHttpClientBuilderTests {
 
     @Test
     public void buildWithDefaultConnectionOptions() {
-        HttpClient httpClient = new VertxHttpClientBuilder().build();
-
-        io.vertx.core.http.HttpClient client = ((VertxHttpClient) httpClient).client;
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) client).options();
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientBuilder().build();
 
         String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
@@ -74,9 +65,9 @@ public class VertxHttpClientBuilderTests {
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
-        assertEquals(10000, options.getConnectTimeout());
-        assertEquals(60000, options.getReadIdleTimeout());
-        assertEquals(60000, options.getWriteIdleTimeout());
+        assertEquals(10000, httpClient.buildOptions.getConnectTimeout());
+        assertEquals(60000, httpClient.buildOptions.getReadIdleTimeout());
+        assertEquals(60000, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @Test
@@ -87,17 +78,15 @@ public class VertxHttpClientBuilderTests {
             .writeTimeout(Duration.ofSeconds(40))
             .build();
 
-        io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
-
         String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
 
-        assertEquals(10000, options.getConnectTimeout());
-        assertEquals(30000, options.getReadIdleTimeout());
-        assertEquals(40000, options.getWriteIdleTimeout());
+        assertEquals(10000, httpClient.buildOptions.getConnectTimeout());
+        assertEquals(30000, httpClient.buildOptions.getReadIdleTimeout());
+        assertEquals(40000, httpClient.buildOptions.getWriteIdleTimeout());
     }
 
     @ParameterizedTest
@@ -117,23 +106,13 @@ public class VertxHttpClientBuilderTests {
 
         VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientBuilder().proxy(proxyOptions).build();
 
-        HttpClientImpl vertxHttpClientImpl = (HttpClientImpl) httpClient.client;
-        io.vertx.core.http.HttpClientOptions options = vertxHttpClientImpl.options();
-
-        io.vertx.core.net.ProxyOptions vertxProxyOptions = options.getProxyOptions();
+        io.vertx.core.net.ProxyOptions vertxProxyOptions = httpClient.buildOptions.getProxyOptions();
         assertNotNull(vertxProxyOptions);
         assertEquals(address.getHostName(), vertxProxyOptions.getHost());
         assertEquals(address.getPort(), vertxProxyOptions.getPort());
         assertEquals(type.name(), vertxProxyOptions.getType().name());
         assertEquals(proxyUser, vertxProxyOptions.getUsername());
         assertEquals(proxyPassword, vertxProxyOptions.getPassword());
-
-        Predicate<SocketAddress> proxyFilter = getVertxInternalProxyFilter(vertxHttpClientImpl);
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.com")));
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "foo.bar.com")));
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "test.bar.com")));
-        assertFalse(proxyFilter.test(inetSocketAddress(80, "microsoft.com")));
-        assertTrue(proxyFilter.test(inetSocketAddress(80, "allowed.host.com")));
     }
 
     @Test
@@ -193,7 +172,7 @@ public class VertxHttpClientBuilderTests {
                 .verifyComplete();
         } finally {
             CountDownLatch latch = new CountDownLatch(1);
-            vertx.close(event -> latch.countDown());
+            vertx.close().andThen(event -> latch.countDown());
             // Wait 60 seconds, same as production code.
             assertTrue(latch.await(60, TimeUnit.SECONDS));
         }

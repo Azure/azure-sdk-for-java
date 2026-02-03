@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.managedprivateendpoints.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,46 +21,55 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
     /*
      * The name of managed private endpoint
      */
+    @Generated
     private String name;
 
     /*
      * The ARM resource ID of the resource to which the managed private endpoint is created
      */
+    @Generated
     private String privateLinkResourceId;
 
     /*
      * The groupId to which the managed private endpoint is created
      */
+    @Generated
     private String groupId;
 
     /*
      * The managed private endpoint provisioning state
      */
+    @Generated
     private String provisioningState;
 
     /*
      * The managed private endpoint connection state
      */
+    @Generated
     private ManagedPrivateEndpointConnectionState connectionState;
 
     /*
      * Denotes whether the managed private endpoint is reserved
      */
+    @Generated
     private Boolean isReserved;
 
     /*
      * List of fully qualified domain names
      */
+    @Generated
     private List<String> fqdns;
 
     /*
      * Denotes whether the managed private endpoint is compliant
      */
+    @Generated
     private Boolean isCompliant;
 
     /**
      * Creates an instance of ManagedPrivateEndpointProperties class.
      */
+    @Generated
     public ManagedPrivateEndpointProperties() {
     }
 
@@ -68,6 +78,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -78,6 +89,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * @param name the name value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
+    @Generated
     public ManagedPrivateEndpointProperties setName(String name) {
         this.name = name;
         return this;
@@ -89,6 +101,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * 
      * @return the privateLinkResourceId value.
      */
+    @Generated
     public String getPrivateLinkResourceId() {
         return this.privateLinkResourceId;
     }
@@ -100,6 +113,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
+    @Generated
     public ManagedPrivateEndpointProperties setPrivateLinkResourceId(String privateLinkResourceId) {
         this.privateLinkResourceId = privateLinkResourceId;
         return this;
@@ -110,6 +124,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * 
      * @return the groupId value.
      */
+    @Generated
     public String getGroupId() {
         return this.groupId;
     }
@@ -120,6 +135,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * @param groupId the groupId value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
+    @Generated
     public ManagedPrivateEndpointProperties setGroupId(String groupId) {
         this.groupId = groupId;
         return this;
@@ -130,6 +146,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * 
      * @return the provisioningState value.
      */
+    @Generated
     public String getProvisioningState() {
         return this.provisioningState;
     }
@@ -139,6 +156,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * 
      * @return the connectionState value.
      */
+    @Generated
     public ManagedPrivateEndpointConnectionState getConnectionState() {
         return this.connectionState;
     }
@@ -149,6 +167,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * @param connectionState the connectionState value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
+    @Generated
     public ManagedPrivateEndpointProperties setConnectionState(ManagedPrivateEndpointConnectionState connectionState) {
         this.connectionState = connectionState;
         return this;
@@ -159,6 +178,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * 
      * @return the isReserved value.
      */
+    @Generated
     public Boolean isReserved() {
         return this.isReserved;
     }
@@ -168,6 +188,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * 
      * @return the fqdns value.
      */
+    @Generated
     public List<String> getFqdns() {
         return this.fqdns;
     }
@@ -178,6 +199,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * @param fqdns the fqdns value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
+    @Generated
     public ManagedPrivateEndpointProperties setFqdns(List<String> fqdns) {
         this.fqdns = fqdns;
         return this;
@@ -188,6 +210,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * 
      * @return the isCompliant value.
      */
+    @Generated
     public Boolean isCompliant() {
         return this.isCompliant;
     }
@@ -198,6 +221,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * @param isCompliant the isCompliant value to set.
      * @return the ManagedPrivateEndpointProperties object itself.
      */
+    @Generated
     public ManagedPrivateEndpointProperties setIsCompliant(Boolean isCompliant) {
         this.isCompliant = isCompliant;
         return this;
@@ -206,6 +230,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -226,6 +251,7 @@ public final class ManagedPrivateEndpointProperties implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManagedPrivateEndpointProperties.
      */
+    @Generated
     public static ManagedPrivateEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManagedPrivateEndpointProperties deserializedManagedPrivateEndpointProperties

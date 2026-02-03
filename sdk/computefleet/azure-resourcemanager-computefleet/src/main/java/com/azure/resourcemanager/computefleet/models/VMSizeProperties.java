@@ -21,7 +21,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * specified in the request body the default behavior is to set it to the value of
      * vCPUs available for that VM size exposed in api response of [List all available
      * virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      */
     private Integer vCPUsAvailable;
 
@@ -30,7 +30,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * in the request body the default behavior is set to the value of vCPUsPerCore
      * for the VM Size exposed in api response of [List all available virtual machine
      * sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      * **Setting this property to 1 also means that hyper-threading is disabled.**
      */
     private Integer vCPUsPerCore;
@@ -46,7 +46,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * specified in the request body the default behavior is to set it to the value of
      * vCPUs available for that VM size exposed in api response of [List all available
      * virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      * 
      * @return the vCPUsAvailable value.
      */
@@ -59,7 +59,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * specified in the request body the default behavior is to set it to the value of
      * vCPUs available for that VM size exposed in api response of [List all available
      * virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      * 
      * @param vCPUsAvailable the vCPUsAvailable value to set.
      * @return the VMSizeProperties object itself.
@@ -74,7 +74,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * in the request body the default behavior is set to the value of vCPUsPerCore
      * for the VM Size exposed in api response of [List all available virtual machine
      * sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      * **Setting this property to 1 also means that hyper-threading is disabled.**.
      * 
      * @return the vCPUsPerCore value.
@@ -88,7 +88,7 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
      * in the request body the default behavior is set to the value of vCPUsPerCore
      * for the VM Size exposed in api response of [List all available virtual machine
      * sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * region](https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      * **Setting this property to 1 also means that hyper-threading is disabled.**.
      * 
      * @param vCPUsPerCore the vCPUsPerCore value to set.
@@ -97,14 +97,6 @@ public final class VMSizeProperties implements JsonSerializable<VMSizeProperties
     public VMSizeProperties withVCPUsPerCore(Integer vCPUsPerCore) {
         this.vCPUsPerCore = vCPUsPerCore;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

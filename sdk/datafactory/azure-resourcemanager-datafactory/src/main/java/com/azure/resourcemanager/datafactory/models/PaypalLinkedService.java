@@ -51,7 +51,7 @@ public final class PaypalLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private PaypalLinkedServiceTypeProperties innerTypeProperties() {
+    PaypalLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

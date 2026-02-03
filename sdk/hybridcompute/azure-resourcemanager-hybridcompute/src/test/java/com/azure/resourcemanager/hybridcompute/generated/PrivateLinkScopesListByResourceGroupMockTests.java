@@ -7,8 +7,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.models.HybridComputePrivateLinkScope;
@@ -23,21 +23,21 @@ public final class PrivateLinkScopesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"tywikd\",\"privateLinkScopeId\":\"lakuflgbhgauacd\",\"privateEndpointConnections\":[{\"id\":\"ufr\",\"name\":\"yjq\",\"type\":\"kfnozoeoqbvj\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"gwbmqj\",\"description\":\"hntasfaymx\"},\"provisioningState\":\"lpzealbmqkyojwyv\",\"groupIds\":[\"btsuahxs\",\"xjcmmzrrsc\",\"biwsd\"]}}]},\"location\":\"pxqwo\",\"tags\":{\"ogjo\":\"fjxcjrmmuabwibv\",\"in\":\"mcyefoyzbam\",\"boclzhzjknyuxgv\":\"ofvfkakpoldtve\",\"mrdixtreki\":\"txpnrupza\"},\"id\":\"swyskbruffg\",\"name\":\"lukkutvlxhrpqhvm\",\"type\":\"lcouqehbhbcdszir\"}]}";
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"rqgdgkkil\",\"privateLinkScopeId\":\"lkcsmknhwtbbae\",\"privateEndpointConnections\":[{\"id\":\"vmq\",\"name\":\"oygbdgwumgxd\",\"type\":\"hpabgdexjddvjs\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"tm\",\"description\":\"wllcolsr\"},\"provisioningState\":\"apte\",\"groupIds\":[\"xcgjokjljnhvlq\",\"bekpeeksnbksdqhj\",\"yklxe\",\"lkhhu\"]}},{\"id\":\"cpoq\",\"name\":\"vnwqjwgo\",\"type\":\"lejjjkxy\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bkjbz\",\"description\":\"ensvkzykjtj\"},\"provisioningState\":\"sxfwushcdp\",\"groupIds\":[\"nq\"]}},{\"id\":\"gjfbpkuwxeoi\",\"name\":\"fiz\",\"type\":\"vkjzwfbcyaykm\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"bfw\",\"description\":\"rzx\"},\"provisioningState\":\"ewsrsxkrplbjaze\",\"groupIds\":[\"viyoypsuhbrnnhjx\"]}}]},\"location\":\"wjh\",\"tags\":{\"c\":\"iwetpoz\",\"ledynojpz\":\"qiqyhgfsetzlexbs\"},\"id\":\"uwfbzkkdtnhqsy\",\"name\":\"ljselp\",\"type\":\"pbafvafhlbylc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<HybridComputePrivateLinkScope> response
-            = manager.privateLinkScopes().listByResourceGroup("v", com.azure.core.util.Context.NONE);
+            = manager.privateLinkScopes().listByResourceGroup("syeipqd", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pxqwo", response.iterator().next().location());
-        Assertions.assertEquals("fjxcjrmmuabwibv", response.iterator().next().tags().get("ogjo"));
-        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
+        Assertions.assertEquals("wjh", response.iterator().next().location());
+        Assertions.assertEquals("iwetpoz", response.iterator().next().tags().get("c"));
+        Assertions.assertEquals(PublicNetworkAccessType.ENABLED,
             response.iterator().next().properties().publicNetworkAccess());
     }
 }

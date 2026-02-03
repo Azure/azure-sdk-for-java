@@ -333,6 +333,6 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

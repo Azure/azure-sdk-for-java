@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,11 +17,13 @@ public final class GetRevisionsNextHeaders {
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The Sync-Token property.
      */
+    @Generated
     private String syncToken;
 
     private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
@@ -41,6 +44,7 @@ public final class GetRevisionsNextHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -51,6 +55,7 @@ public final class GetRevisionsNextHeaders {
      * @param eTag the eTag value to set.
      * @return the GetRevisionsNextHeaders object itself.
      */
+    @Generated
     public GetRevisionsNextHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -61,6 +66,7 @@ public final class GetRevisionsNextHeaders {
      * 
      * @return the syncToken value.
      */
+    @Generated
     public String getSyncToken() {
         return this.syncToken;
     }
@@ -71,6 +77,7 @@ public final class GetRevisionsNextHeaders {
      * @param syncToken the syncToken value to set.
      * @return the GetRevisionsNextHeaders object itself.
      */
+    @Generated
     public GetRevisionsNextHeaders setSyncToken(String syncToken) {
         this.syncToken = syncToken;
         return this;

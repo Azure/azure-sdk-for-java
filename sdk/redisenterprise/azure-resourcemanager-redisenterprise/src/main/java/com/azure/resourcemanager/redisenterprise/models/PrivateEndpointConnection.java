@@ -93,7 +93,8 @@ public interface PrivateEndpointConnection {
              * Specifies resourceGroupName, clusterName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param clusterName The name of the Redis Enterprise cluster.
+             * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+             * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
              * @return the next definition stage.
              */
             WithCreate withExistingRedisEnterprise(String resourceGroupName, String clusterName);

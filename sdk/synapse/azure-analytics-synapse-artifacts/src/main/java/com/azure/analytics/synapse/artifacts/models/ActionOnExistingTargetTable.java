@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ActionOnExistingTargetTable extends ExpandableStringEnum<Acti
     /**
      * Same existing tables on target database will be Failed.
      */
+    @Generated
     public static final ActionOnExistingTargetTable FAIL_ON_NON_EMPTY_TABLE = fromString("FailOnNonEmptyTable");
 
     /**
      * Same existing tables on target database will be dropped and recreated.
      */
+    @Generated
     public static final ActionOnExistingTargetTable DROP_AND_RECREATE_TABLE = fromString("DropAndRecreateTable");
 
     /**
      * Same existing tables on target database will be Merged together.
      */
+    @Generated
     public static final ActionOnExistingTargetTable MERGE_WITH_EXISTING_DATA = fromString("MergeWithExistingData");
 
     /**
@@ -31,6 +35,7 @@ public final class ActionOnExistingTargetTable extends ExpandableStringEnum<Acti
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ActionOnExistingTargetTable() {
     }
@@ -41,6 +46,7 @@ public final class ActionOnExistingTargetTable extends ExpandableStringEnum<Acti
      * @param name a name to look for.
      * @return the corresponding ActionOnExistingTargetTable.
      */
+    @Generated
     public static ActionOnExistingTargetTable fromString(String name) {
         return fromString(name, ActionOnExistingTargetTable.class);
     }
@@ -50,6 +56,7 @@ public final class ActionOnExistingTargetTable extends ExpandableStringEnum<Acti
      * 
      * @return known ActionOnExistingTargetTable values.
      */
+    @Generated
     public static Collection<ActionOnExistingTargetTable> values() {
         return values(ActionOnExistingTargetTable.class);
     }

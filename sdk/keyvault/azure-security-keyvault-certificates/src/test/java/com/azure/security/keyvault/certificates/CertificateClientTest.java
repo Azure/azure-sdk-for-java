@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -15,7 +16,6 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -169,7 +169,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.beginCreateCertificate("", CertificatePolicy.getDefault()),
-            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -186,7 +186,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
     public void createCertificateNull(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
-        assertThrows(NullPointerException.class, () -> certificateClient.beginCreateCertificate(null, null));
+        assertThrows(NullPointerException.class,
+            () -> certificateClient.beginCreateCertificate(null, CertificatePolicy.getDefault()));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -651,7 +652,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", "")),
-            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -660,7 +661,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", null)),
-            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -883,7 +884,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy importedCertificate
                 = certificateClient.importCertificate(importCertificateOptions);
 
-            assertTrue("73b4319cdf38e0797084535d9c02fd04d4b2b2e6"
+            assertTrue("931dd8219585752bc915684ca3967974c400de28"
                 .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
@@ -964,13 +965,12 @@ public class CertificateClientTest extends CertificateClientTestBase {
         assertResponseException(
             () -> certificateClient.mergeCertificate(new MergeCertificateOptions(
                 testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))),
-            KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion)
-        throws IOException {
+    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateClient(httpClient, serviceVersion);
 
         importPemCertificateRunner((importCertificateOptions) -> {

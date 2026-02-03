@@ -4,7 +4,6 @@ package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
-import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
  * A {@code QueueStorageExceptionInternal} is thrown whenever Azure Storage successfully returns an error code that
@@ -24,7 +23,7 @@ public final class QueueStorageExceptionInternal extends HttpResponseException {
      * @param value the deserialized error response.
      */
     public QueueStorageExceptionInternal(String message, HttpResponse response, QueueStorageError value) {
-        super(StorageImplUtils.convertStorageExceptionMessage(message, response), response, value);
+        super(message, response, value);
     }
 
     @Override

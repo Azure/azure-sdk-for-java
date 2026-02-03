@@ -13,22 +13,22 @@ public final class BareMetalMachineRunCommandParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BareMetalMachineRunCommandParameters model = BinaryData.fromString(
-            "{\"arguments\":[\"nbsoqeqalarv\",\"agunbtgfebw\",\"nbmhyree\"],\"limitTimeSeconds\":8991110670896119735,\"script\":\"qavbpdqmj\"}")
+            "{\"arguments\":[\"hiqakydiwfbrk\",\"pzdqtvhcspod\",\"qaxsipietgbebjf\"],\"limitTimeSeconds\":8805567120468423519,\"script\":\"moichdlpnfpubntn\"}")
             .toObject(BareMetalMachineRunCommandParameters.class);
-        Assertions.assertEquals("nbsoqeqalarv", model.arguments().get(0));
-        Assertions.assertEquals(8991110670896119735L, model.limitTimeSeconds());
-        Assertions.assertEquals("qavbpdqmj", model.script());
+        Assertions.assertEquals("hiqakydiwfbrk", model.arguments().get(0));
+        Assertions.assertEquals(8805567120468423519L, model.limitTimeSeconds());
+        Assertions.assertEquals("moichdlpnfpubntn", model.script());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachineRunCommandParameters model = new BareMetalMachineRunCommandParameters()
-            .withArguments(Arrays.asList("nbsoqeqalarv", "agunbtgfebw", "nbmhyree"))
-            .withLimitTimeSeconds(8991110670896119735L)
-            .withScript("qavbpdqmj");
+            .withArguments(Arrays.asList("hiqakydiwfbrk", "pzdqtvhcspod", "qaxsipietgbebjf"))
+            .withLimitTimeSeconds(8805567120468423519L)
+            .withScript("moichdlpnfpubntn");
         model = BinaryData.fromObject(model).toObject(BareMetalMachineRunCommandParameters.class);
-        Assertions.assertEquals("nbsoqeqalarv", model.arguments().get(0));
-        Assertions.assertEquals(8991110670896119735L, model.limitTimeSeconds());
-        Assertions.assertEquals("qavbpdqmj", model.script());
+        Assertions.assertEquals("hiqakydiwfbrk", model.arguments().get(0));
+        Assertions.assertEquals(8805567120468423519L, model.limitTimeSeconds());
+        Assertions.assertEquals("moichdlpnfpubntn", model.script());
     }
 }

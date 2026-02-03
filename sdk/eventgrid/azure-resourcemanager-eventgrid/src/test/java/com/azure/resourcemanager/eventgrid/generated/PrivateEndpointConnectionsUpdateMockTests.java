@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
@@ -28,32 +28,33 @@ public final class PrivateEndpointConnectionsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"imtcvvf\"},\"groupIds\":[\"ytzfsl\",\"izhqikmgobl\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"diiisklbonxxup\",\"actionsRequired\":\"vtrkfkg\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qnnp\",\"name\":\"wkosnyxigf\",\"type\":\"ujjcxgdqmrlhn\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"rzndasdnidmjqmvy\"},\"groupIds\":[\"iqlarhqtwvcaze\",\"d\",\"dzffzjwztsmpchg\",\"ryelgfyatigfg\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"knczgorywnvojtvm\",\"actionsRequired\":\"vdlhqvbkar\"},\"provisioningState\":\"Succeeded\"},\"id\":\"hssrlvkpkp\",\"name\":\"ocm\",\"type\":\"ccebxxopyicyvspe\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .update("dojq", PrivateEndpointConnectionsParentType.PARTNER_NAMESPACES, "zesi", "iysnjqyowaadc",
-                new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint().withId("a"))
-                    .withGroupIds(Arrays.asList("dtsewkaupwhlzyc", "remgjlms", "dorsirxxhy"))
+            .update("hyhnimxtns", PrivateEndpointConnectionsParentType.TOPICS, "isnomwnwnghoj", "vkeyymicj",
+                new PrivateEndpointConnectionInner()
+                    .withPrivateEndpoint(new PrivateEndpoint().withId("sfpcrtnuguefxxij"))
+                    .withGroupIds(Arrays.asList("dveywetkrhlol", "cnw", "pfgsvbbvaqdljnp"))
                     .withPrivateLinkServiceConnectionState(
-                        new ConnectionState().withStatus(PersistedConnectionStatus.DISCONNECTED)
-                            .withDescription("ofajfreprfvmkin")
-                            .withActionsRequired("eyrqshixbcejop"))
-                    .withProvisioningState(ResourceProvisioningState.UPDATING),
+                        new ConnectionState().withStatus(PersistedConnectionStatus.REJECTED)
+                            .withDescription("rdetawevxehuekdx")
+                            .withActionsRequired("zvdov"))
+                    .withProvisioningState(ResourceProvisioningState.SUCCEEDED),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("imtcvvf", response.privateEndpoint().id());
-        Assertions.assertEquals("ytzfsl", response.groupIds().get(0));
-        Assertions.assertEquals(PersistedConnectionStatus.APPROVED,
+        Assertions.assertEquals("rzndasdnidmjqmvy", response.privateEndpoint().id());
+        Assertions.assertEquals("iqlarhqtwvcaze", response.groupIds().get(0));
+        Assertions.assertEquals(PersistedConnectionStatus.DISCONNECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("diiisklbonxxup", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("vtrkfkg", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("knczgorywnvojtvm", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("vdlhqvbkar", response.privateLinkServiceConnectionState().actionsRequired());
         Assertions.assertEquals(ResourceProvisioningState.SUCCEEDED, response.provisioningState());
     }
 }

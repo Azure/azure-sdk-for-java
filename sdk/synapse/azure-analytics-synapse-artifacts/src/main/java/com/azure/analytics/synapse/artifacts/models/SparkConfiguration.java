@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -26,41 +27,49 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
     /*
      * Description about the SparkConfiguration.
      */
+    @Generated
     private String description;
 
     /*
      * SparkConfiguration configs.
      */
+    @Generated
     private Map<String, String> configs;
 
     /*
      * Annotations for SparkConfiguration.
      */
+    @Generated
     private List<String> annotations;
 
     /*
      * additional Notes.
      */
+    @Generated
     private String notes;
 
     /*
      * The identity that created the resource.
      */
+    @Generated
     private String createdBy;
 
     /*
      * The timestamp of resource creation.
      */
+    @Generated
     private OffsetDateTime created;
 
     /*
      * SparkConfiguration configMergeRule.
      */
+    @Generated
     private Map<String, String> configMergeRule;
 
     /**
      * Creates an instance of SparkConfiguration class.
      */
+    @Generated
     public SparkConfiguration() {
     }
 
@@ -69,6 +78,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -79,6 +89,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * @param description the description value to set.
      * @return the SparkConfiguration object itself.
      */
+    @Generated
     public SparkConfiguration setDescription(String description) {
         this.description = description;
         return this;
@@ -89,6 +100,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * 
      * @return the configs value.
      */
+    @Generated
     public Map<String, String> getConfigs() {
         return this.configs;
     }
@@ -99,6 +111,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * @param configs the configs value to set.
      * @return the SparkConfiguration object itself.
      */
+    @Generated
     public SparkConfiguration setConfigs(Map<String, String> configs) {
         this.configs = configs;
         return this;
@@ -109,6 +122,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * 
      * @return the annotations value.
      */
+    @Generated
     public List<String> getAnnotations() {
         return this.annotations;
     }
@@ -119,6 +133,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * @param annotations the annotations value to set.
      * @return the SparkConfiguration object itself.
      */
+    @Generated
     public SparkConfiguration setAnnotations(List<String> annotations) {
         this.annotations = annotations;
         return this;
@@ -129,6 +144,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * 
      * @return the notes value.
      */
+    @Generated
     public String getNotes() {
         return this.notes;
     }
@@ -139,6 +155,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * @param notes the notes value to set.
      * @return the SparkConfiguration object itself.
      */
+    @Generated
     public SparkConfiguration setNotes(String notes) {
         this.notes = notes;
         return this;
@@ -149,6 +166,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * 
      * @return the createdBy value.
      */
+    @Generated
     public String getCreatedBy() {
         return this.createdBy;
     }
@@ -159,6 +177,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * @param createdBy the createdBy value to set.
      * @return the SparkConfiguration object itself.
      */
+    @Generated
     public SparkConfiguration setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
         return this;
@@ -169,6 +188,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * 
      * @return the created value.
      */
+    @Generated
     public OffsetDateTime getCreated() {
         return this.created;
     }
@@ -179,6 +199,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * @param created the created value to set.
      * @return the SparkConfiguration object itself.
      */
+    @Generated
     public SparkConfiguration setCreated(OffsetDateTime created) {
         this.created = created;
         return this;
@@ -189,6 +210,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * 
      * @return the configMergeRule value.
      */
+    @Generated
     public Map<String, String> getConfigMergeRule() {
         return this.configMergeRule;
     }
@@ -199,6 +221,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * @param configMergeRule the configMergeRule value to set.
      * @return the SparkConfiguration object itself.
      */
+    @Generated
     public SparkConfiguration setConfigMergeRule(Map<String, String> configMergeRule) {
         this.configMergeRule = configMergeRule;
         return this;
@@ -207,6 +230,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -231,6 +255,7 @@ public final class SparkConfiguration implements JsonSerializable<SparkConfigura
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkConfiguration.
      */
+    @Generated
     public static SparkConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkConfiguration deserializedSparkConfiguration = new SparkConfiguration();

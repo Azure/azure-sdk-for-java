@@ -15,20 +15,21 @@ public final class DataflowResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"mode\":\"Enabled\",\"operations\":[{\"operationType\":\"BuiltInTransformation\",\"name\":\"h\",\"sourceSettings\":{\"endpointRef\":\"ykojoxafnndlpic\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"ymkcdyhb\",\"dataDestination\":\"kkpwdreqnovvq\"}},{\"operationType\":\"Source\",\"name\":\"ljxywsu\",\"sourceSettings\":{\"endpointRef\":\"yrs\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"ytgadgvraeaene\",\"dataDestination\":\"nzar\"}},{\"operationType\":\"Destination\",\"name\":\"q\",\"sourceSettings\":{\"endpointRef\":\"ijfqkacewiipfp\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"ibwwiftohqkv\",\"dataDestination\":\"uvksgplsaknynfsy\"}},{\"operationType\":\"Destination\",\"name\":\"ph\",\"sourceSettings\":{\"endpointRef\":\"pxodlqiyntorzih\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"sjswsrms\",\"dataDestination\":\"yzrpzbchckqqzq\"}}],\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"iysui\",\"type\":\"CustomLocation\"},\"id\":\"nkedyatrwyhqmib\",\"name\":\"yhwitsmypyynpcdp\",\"type\":\"mnzgmwznmabi\"},{\"properties\":{\"mode\":\"Disabled\",\"operations\":[{\"operationType\":\"Source\",\"name\":\"hxbld\",\"sourceSettings\":{\"endpointRef\":\"wwrlkdmtncv\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"tllxdyhgsyocogj\",\"dataDestination\":\"tdtbnnhadooc\"}},{\"operationType\":\"BuiltInTransformation\",\"name\":\"cikhnv\",\"sourceSettings\":{\"endpointRef\":\"mqg\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"u\",\"dataDestination\":\"zikywgg\"}}],\"provisioningState\":\"Failed\"},\"extendedLocation\":{\"name\":\"lla\",\"type\":\"CustomLocation\"},\"id\":\"lwuip\",\"name\":\"ccjzkzivgvv\",\"type\":\"nayrhyrnxxmueedn\"},{\"properties\":{\"mode\":\"Enabled\",\"operations\":[{\"operationType\":\"Source\",\"name\":\"wq\",\"sourceSettings\":{\"endpointRef\":\"chea\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"mtdaa\",\"dataDestination\":\"gdv\"}},{\"operationType\":\"Destination\",\"name\":\"piohgwxrtfu\",\"sourceSettings\":{\"endpointRef\":\"epxgyqagvr\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"pkukghi\",\"dataDestination\":\"dblx\"}},{\"operationType\":\"Destination\",\"name\":\"mfnjh\",\"sourceSettings\":{\"endpointRef\":\"xw\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"kkfoqr\",\"dataDestination\":\"yfkzik\"}}],\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"name\":\"wneaiv\",\"type\":\"CustomLocation\"},\"id\":\"zel\",\"name\":\"c\",\"type\":\"r\"}],\"nextLink\":\"sfeaenwabfat\"}")
+            "{\"value\":[{\"properties\":{\"mode\":\"Disabled\",\"requestDiskPersistence\":\"Disabled\",\"operations\":[{\"operationType\":\"Source\",\"name\":\"edplvwiwubmw\",\"sourceSettings\":{\"endpointRef\":\"esl\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"wwtppj\",\"dataDestination\":\"lcxog\"}},{\"operationType\":\"Source\",\"name\":\"onz\",\"sourceSettings\":{\"endpointRef\":\"sikvmkqzeqqkdlt\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"mhhv\",\"dataDestination\":\"gureodkwobdag\"}},{\"operationType\":\"BuiltInTransformation\",\"name\":\"bqdxbx\",\"sourceSettings\":{\"endpointRef\":\"kbogqxndlkzgx\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"iplbpodxunkbebxm\",\"dataDestination\":\"byyntwlrbqt\"}}],\"provisioningState\":\"Canceled\",\"healthState\":\"Unavailable\"},\"extendedLocation\":{\"name\":\"eotg\",\"type\":\"CustomLocation\"},\"id\":\"ltmuwlauwzizx\",\"name\":\"mpgcjefuzmuvpbt\",\"type\":\"d\"}],\"nextLink\":\"orppxebmnzbtb\"}")
             .toObject(DataflowResourceListResult.class);
-        Assertions.assertEquals(OperationalMode.ENABLED, model.value().get(0).properties().mode());
-        Assertions.assertEquals(OperationType.BUILT_IN_TRANSFORMATION,
+        Assertions.assertEquals(OperationalMode.DISABLED, model.value().get(0).properties().mode());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.value().get(0).properties().requestDiskPersistence());
+        Assertions.assertEquals(OperationType.SOURCE,
             model.value().get(0).properties().operations().get(0).operationType());
-        Assertions.assertEquals("h", model.value().get(0).properties().operations().get(0).name());
-        Assertions.assertEquals("ykojoxafnndlpic",
+        Assertions.assertEquals("edplvwiwubmw", model.value().get(0).properties().operations().get(0).name());
+        Assertions.assertEquals("esl",
             model.value().get(0).properties().operations().get(0).sourceSettings().endpointRef());
-        Assertions.assertEquals("ymkcdyhb",
+        Assertions.assertEquals("wwtppj",
             model.value().get(0).properties().operations().get(0).destinationSettings().endpointRef());
-        Assertions.assertEquals("kkpwdreqnovvq",
+        Assertions.assertEquals("lcxog",
             model.value().get(0).properties().operations().get(0).destinationSettings().dataDestination());
-        Assertions.assertEquals("iysui", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("eotg", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("sfeaenwabfat", model.nextLink());
+        Assertions.assertEquals("orppxebmnzbtb", model.nextLink());
     }
 }

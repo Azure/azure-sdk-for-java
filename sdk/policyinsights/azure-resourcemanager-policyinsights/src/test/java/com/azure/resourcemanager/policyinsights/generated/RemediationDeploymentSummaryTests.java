@@ -12,7 +12,7 @@ public final class RemediationDeploymentSummaryTests {
     public void testDeserialize() throws Exception {
         RemediationDeploymentSummary model = BinaryData
             .fromString(
-                "{\"totalDeployments\":234614005,\"successfulDeployments\":331087178,\"failedDeployments\":377543492}")
+                "{\"totalDeployments\":160493338,\"successfulDeployments\":527758336,\"failedDeployments\":391171694}")
             .toObject(RemediationDeploymentSummary.class);
     }
 

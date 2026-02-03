@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class AttestationResponse implements JsonSerializable<AttestationRe
     /*
      * An RFC 7519 JSON Web Token, the body of which is an AttestationResult object.
      */
+    @Generated
     private String token;
 
     /**
      * Creates an instance of AttestationResponse class.
      */
+    @Generated
     public AttestationResponse() {
     }
 
@@ -32,6 +35,7 @@ public final class AttestationResponse implements JsonSerializable<AttestationRe
      * 
      * @return the token value.
      */
+    @Generated
     public String getToken() {
         return this.token;
     }
@@ -42,6 +46,7 @@ public final class AttestationResponse implements JsonSerializable<AttestationRe
      * @param token the token value to set.
      * @return the AttestationResponse object itself.
      */
+    @Generated
     public AttestationResponse setToken(String token) {
         this.token = token;
         return this;
@@ -58,6 +63,7 @@ public final class AttestationResponse implements JsonSerializable<AttestationRe
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -73,6 +79,7 @@ public final class AttestationResponse implements JsonSerializable<AttestationRe
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AttestationResponse.
      */
+    @Generated
     public static AttestationResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AttestationResponse deserializedAttestationResponse = new AttestationResponse();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
     /*
      * Specifies whether to enable copy activity log. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enableCopyActivityLog;
 
     /*
      * Specifies settings for copy activity log.
      */
+    @Generated
     private CopyActivityLogSettings copyActivityLogSettings;
 
     /*
      * Log location settings customer needs to provide when enabling log.
      */
+    @Generated
     private LogLocationSettings logLocationSettings;
 
     /**
      * Creates an instance of LogSettings class.
      */
+    @Generated
     public LogSettings() {
     }
 
@@ -43,6 +48,7 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
      * 
      * @return the enableCopyActivityLog value.
      */
+    @Generated
     public Object getEnableCopyActivityLog() {
         return this.enableCopyActivityLog;
     }
@@ -54,6 +60,7 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
      * @param enableCopyActivityLog the enableCopyActivityLog value to set.
      * @return the LogSettings object itself.
      */
+    @Generated
     public LogSettings setEnableCopyActivityLog(Object enableCopyActivityLog) {
         this.enableCopyActivityLog = enableCopyActivityLog;
         return this;
@@ -64,6 +71,7 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
      * 
      * @return the copyActivityLogSettings value.
      */
+    @Generated
     public CopyActivityLogSettings getCopyActivityLogSettings() {
         return this.copyActivityLogSettings;
     }
@@ -74,6 +82,7 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
      * @param copyActivityLogSettings the copyActivityLogSettings value to set.
      * @return the LogSettings object itself.
      */
+    @Generated
     public LogSettings setCopyActivityLogSettings(CopyActivityLogSettings copyActivityLogSettings) {
         this.copyActivityLogSettings = copyActivityLogSettings;
         return this;
@@ -84,6 +93,7 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
      * 
      * @return the logLocationSettings value.
      */
+    @Generated
     public LogLocationSettings getLogLocationSettings() {
         return this.logLocationSettings;
     }
@@ -94,6 +104,7 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
      * @param logLocationSettings the logLocationSettings value to set.
      * @return the LogSettings object itself.
      */
+    @Generated
     public LogSettings setLogLocationSettings(LogLocationSettings logLocationSettings) {
         this.logLocationSettings = logLocationSettings;
         return this;
@@ -102,11 +113,14 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("logLocationSettings", this.logLocationSettings);
-        jsonWriter.writeUntypedField("enableCopyActivityLog", this.enableCopyActivityLog);
+        if (this.enableCopyActivityLog != null) {
+            jsonWriter.writeUntypedField("enableCopyActivityLog", this.enableCopyActivityLog);
+        }
         jsonWriter.writeJsonField("copyActivityLogSettings", this.copyActivityLogSettings);
         return jsonWriter.writeEndObject();
     }
@@ -120,6 +134,7 @@ public final class LogSettings implements JsonSerializable<LogSettings> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LogSettings.
      */
+    @Generated
     public static LogSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LogSettings deserializedLogSettings = new LogSettings();

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * listPolicySetDefinitions.json
      */
     /**
@@ -22,6 +22,6 @@ public final class PolicySetDefinitionsListSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .list(null, null, com.azure.core.util.Context.NONE);
+            .list(null, null, null, com.azure.core.util.Context.NONE);
     }
 }

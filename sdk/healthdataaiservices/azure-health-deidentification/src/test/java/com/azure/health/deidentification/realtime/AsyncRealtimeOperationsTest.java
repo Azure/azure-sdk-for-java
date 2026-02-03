@@ -5,13 +5,11 @@ package com.azure.health.deidentification.realtime;
 
 import com.azure.health.deidentification.DeidentificationAsyncClient;
 import com.azure.health.deidentification.batch.BatchOperationTestBase;
-import com.azure.health.deidentification.models.DeidentificationContent;
-import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
-import com.azure.health.deidentification.models.PhiCategory;
+import com.azure.health.deidentification.models.*;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
+
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -28,10 +26,12 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        content.setOperationType(DeidentificationOperationType.SURROGATE);
+        DeidentificationCustomizationOptions options = new DeidentificationCustomizationOptions();
+        options.setSurrogateLocale("en-US");
+        content.setCustomizations(options);
 
-        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentify(content);
+        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();
 
         assertNotNull(asyncResult);
@@ -46,17 +46,14 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.TAG);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        content.setOperationType(DeidentificationOperationType.TAG);
 
-        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentify(content);
+        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();
 
         assertNotNull(asyncResult);
         assertNotNull(asyncResult.getTaggerResult());
         assertNull(asyncResult.getOutputText());
-        assertNull(asyncResult.getTaggerResult().getEtag());
-        assertNull(asyncResult.getTaggerResult().getPath());
         assertFalse(asyncResult.getTaggerResult().getEntities().isEmpty());
         assertTrue(asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR)
             || asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));
@@ -65,4 +62,41 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         assertEquals(10, asyncResult.getTaggerResult().getEntities().get(0).getLength().getUtf8());
     }
 
+    @Test
+    void testRedactReturnsExpected() {
+        deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
+        String inputText = "Hello, my name is John Smith.";
+        DeidentificationContent content = new DeidentificationContent(inputText);
+        content.setOperationType(DeidentificationOperationType.REDACT);
+        DeidentificationCustomizationOptions options = new DeidentificationCustomizationOptions();
+        options.setInputLocale("en-US");
+        content.setCustomizations(options);
+
+        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
+        DeidentificationResult asyncResult = result.block();
+
+        assertNotNull(asyncResult);
+        assertNull(asyncResult.getTaggerResult());
+        assertNotNull(asyncResult.getOutputText());
+        assertEquals("Hello, my name is [patient].", asyncResult.getOutputText());
+    }
+
+    @Test
+    void testSurrogateOnlyReturnsExpected() {
+        deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
+        String inputText = "Hello, my name is John Smith.";
+        DeidentificationContent content = new DeidentificationContent(inputText);
+        content.setOperationType(DeidentificationOperationType.SURROGATE_ONLY);
+        content.setTaggedEntities(
+            new TaggedPhiEntities(Collections.singletonList(new SimplePhiEntity(PhiCategory.PATIENT, 18, 10))));
+
+        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
+        DeidentificationResult asyncResult = result.block();
+
+        assertNotNull(asyncResult);
+        assertNull(asyncResult.getTaggerResult());
+        assertNotNull(asyncResult.getOutputText());
+        assertTrue(asyncResult.getOutputText().length() > 21);
+        assertNotEquals(inputText, asyncResult.getOutputText());
+    }
 }

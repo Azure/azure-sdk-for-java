@@ -73,17 +73,6 @@ public final class OsProfile implements JsonSerializable<OsProfile> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (secretsManagementSettings() != null) {
-            secretsManagementSettings().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

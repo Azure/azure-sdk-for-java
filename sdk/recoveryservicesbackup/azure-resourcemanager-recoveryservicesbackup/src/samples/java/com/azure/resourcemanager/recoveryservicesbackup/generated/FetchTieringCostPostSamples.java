@@ -17,7 +17,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriori
 public final class FetchTieringCostPostSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/FetchTieringCostForRehydrate.json
      */
     /**
@@ -40,7 +40,7 @@ public final class FetchTieringCostPostSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/FetchTieringCostForProtectedItem.json
      */
     /**
@@ -62,7 +62,7 @@ public final class FetchTieringCostPostSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/FetchTieringCostForPolicy.json
      */
     /**
@@ -82,7 +82,7 @@ public final class FetchTieringCostPostSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * TieringCost/FetchTieringCostForVault.json
      */
     /**

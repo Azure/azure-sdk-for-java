@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -18,17 +19,20 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
     /**
      * Indexes just the standard blob properties and user-specified metadata.
      */
+    @Generated
     public static final BlobIndexerDataToExtract STORAGE_METADATA = fromString("storageMetadata");
 
     /**
      * Extracts metadata provided by the Azure blob storage subsystem and the content-type specific metadata (for
      * example, metadata unique to just .png files are indexed).
      */
+    @Generated
     public static final BlobIndexerDataToExtract ALL_METADATA = fromString("allMetadata");
 
     /**
      * Extracts all metadata and textual content from each blob.
      */
+    @Generated
     public static final BlobIndexerDataToExtract CONTENT_AND_METADATA = fromString("contentAndMetadata");
 
     /**
@@ -36,6 +40,7 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public BlobIndexerDataToExtract() {
     }
@@ -46,6 +51,7 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
      * @param name a name to look for.
      * @return the corresponding BlobIndexerDataToExtract.
      */
+    @Generated
     public static BlobIndexerDataToExtract fromString(String name) {
         return fromString(name, BlobIndexerDataToExtract.class);
     }
@@ -55,6 +61,7 @@ public final class BlobIndexerDataToExtract extends ExpandableStringEnum<BlobInd
      * 
      * @return known BlobIndexerDataToExtract values.
      */
+    @Generated
     public static Collection<BlobIndexerDataToExtract> values() {
         return values(BlobIndexerDataToExtract.class);
     }

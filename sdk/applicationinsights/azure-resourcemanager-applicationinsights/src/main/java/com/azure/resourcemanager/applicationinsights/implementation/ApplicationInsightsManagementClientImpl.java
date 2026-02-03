@@ -30,12 +30,13 @@ import com.azure.resourcemanager.applicationinsights.fluent.ApplicationInsightsM
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentAvailableFeaturesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentCurrentBillingFeaturesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentFeatureCapabilitiesClient;
+import com.azure.resourcemanager.applicationinsights.fluent.ComponentLinkedStorageAccountsOperationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentQuotaStatusClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentsClient;
+import com.azure.resourcemanager.applicationinsights.fluent.DeletedWorkbooksClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ExportConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.FavoritesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.LiveTokensClient;
-import com.azure.resourcemanager.applicationinsights.fluent.MyWorkbooksClient;
 import com.azure.resourcemanager.applicationinsights.fluent.OperationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ProactiveDetectionConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.WebTestLocationsClient;
@@ -352,20 +353,6 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
     }
 
     /**
-     * The MyWorkbooksClient object to access its operations.
-     */
-    private final MyWorkbooksClient myWorkbooks;
-
-    /**
-     * Gets the MyWorkbooksClient object to access its operations.
-     * 
-     * @return the MyWorkbooksClient object.
-     */
-    public MyWorkbooksClient getMyWorkbooks() {
-        return this.myWorkbooks;
-    }
-
-    /**
      * The WorkbooksClient object to access its operations.
      */
     private final WorkbooksClient workbooks;
@@ -391,6 +378,34 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
      */
     public LiveTokensClient getLiveTokens() {
         return this.liveTokens;
+    }
+
+    /**
+     * The ComponentLinkedStorageAccountsOperationsClient object to access its operations.
+     */
+    private final ComponentLinkedStorageAccountsOperationsClient componentLinkedStorageAccountsOperations;
+
+    /**
+     * Gets the ComponentLinkedStorageAccountsOperationsClient object to access its operations.
+     * 
+     * @return the ComponentLinkedStorageAccountsOperationsClient object.
+     */
+    public ComponentLinkedStorageAccountsOperationsClient getComponentLinkedStorageAccountsOperations() {
+        return this.componentLinkedStorageAccountsOperations;
+    }
+
+    /**
+     * The DeletedWorkbooksClient object to access its operations.
+     */
+    private final DeletedWorkbooksClient deletedWorkbooks;
+
+    /**
+     * Gets the DeletedWorkbooksClient object to access its operations.
+     * 
+     * @return the DeletedWorkbooksClient object.
+     */
+    public DeletedWorkbooksClient getDeletedWorkbooks() {
+        return this.deletedWorkbooks;
     }
 
     /**
@@ -426,9 +441,10 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         this.analyticsItems = new AnalyticsItemsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.workbookTemplates = new WorkbookTemplatesClientImpl(this);
-        this.myWorkbooks = new MyWorkbooksClientImpl(this);
         this.workbooks = new WorkbooksClientImpl(this);
         this.liveTokens = new LiveTokensClientImpl(this);
+        this.componentLinkedStorageAccountsOperations = new ComponentLinkedStorageAccountsOperationsClientImpl(this);
+        this.deletedWorkbooks = new DeletedWorkbooksClientImpl(this);
     }
 
     /**

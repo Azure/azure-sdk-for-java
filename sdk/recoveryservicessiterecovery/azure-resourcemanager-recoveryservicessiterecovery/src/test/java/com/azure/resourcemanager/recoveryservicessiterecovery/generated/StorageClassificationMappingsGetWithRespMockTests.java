@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.StorageClassificationMapping;
@@ -21,20 +21,21 @@ public final class StorageClassificationMappingsGetWithRespMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"targetStorageClassificationId\":\"sxaqqjhdfhfa\"},\"location\":\"qnjcsbozvcdqwssy\",\"id\":\"vwr\",\"name\":\"bivyw\",\"type\":\"tjnjuvtz\"}";
+            = "{\"properties\":{\"targetStorageClassificationId\":\"oiq\"},\"location\":\"zttqgtllwy\",\"id\":\"xzuhel\",\"name\":\"itpqvpivrsgqbm\",\"type\":\"lxeomebz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageClassificationMapping response = manager.storageClassificationMappings()
-            .getWithResponse("sobggva", "crqaxlmbrtvtgolm", "p", "gtla", "yxhxj", com.azure.core.util.Context.NONE)
+            .getWithResponse("eynqlsnrgaxoyv", "jjpfyxhsppvjs", "uouoqtenq", "omuogeqeapaseq", "ppypfreuwvzhnd",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sxaqqjhdfhfa", response.properties().targetStorageClassificationId());
-        Assertions.assertEquals("qnjcsbozvcdqwssy", response.location());
+        Assertions.assertEquals("oiq", response.properties().targetStorageClassificationId());
+        Assertions.assertEquals("zttqgtllwy", response.location());
     }
 }

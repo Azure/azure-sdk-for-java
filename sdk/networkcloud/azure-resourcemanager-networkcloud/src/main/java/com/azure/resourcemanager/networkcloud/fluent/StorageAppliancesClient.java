@@ -15,6 +15,7 @@ import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResul
 import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInner;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 
 /**
  * An instance of this class provides access to all the operations defined in StorageAppliancesClient.
@@ -38,6 +39,9 @@ public interface StorageAppliancesClient {
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,7 +50,7 @@ public interface StorageAppliancesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageApplianceInner> list(Context context);
+    PagedIterable<StorageApplianceInner> list(Integer top, String skipToken, Context context);
 
     /**
      * List storage appliances in the resource group.
@@ -69,6 +73,9 @@ public interface StorageAppliancesClient {
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +84,8 @@ public interface StorageAppliancesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the storage appliance.
@@ -114,8 +122,8 @@ public interface StorageAppliancesClient {
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -133,12 +141,16 @@ public interface StorageAppliancesClient {
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,13 +160,14 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(String resourceGroupName,
-        String storageApplianceName, StorageApplianceInner storageApplianceParameters, Context context);
+        String storageApplianceName, StorageApplianceInner storageApplianceParameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -171,12 +184,16 @@ public interface StorageAppliancesClient {
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,13 +202,13 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters, Context context);
+        StorageApplianceInner storageApplianceParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -207,11 +224,15 @@ public interface StorageAppliancesClient {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,13 +241,13 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String storageApplianceName, Context context);
+        String storageApplianceName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -241,11 +262,15 @@ public interface StorageAppliancesClient {
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,7 +278,8 @@ public interface StorageAppliancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the storage appliance.
@@ -281,6 +307,10 @@ public interface StorageAppliancesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,7 +321,8 @@ public interface StorageAppliancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
-        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
+        String storageApplianceName, String ifMatch, String ifNoneMatch,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
 
     /**
      * Patch the storage appliance.
@@ -317,6 +348,10 @@ public interface StorageAppliancesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -325,8 +360,8 @@ public interface StorageAppliancesClient {
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageApplianceInner update(String resourceGroupName, String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
+    StorageApplianceInner update(String resourceGroupName, String storageApplianceName, String ifMatch,
+        String ifNoneMatch, StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context);
 
     /**
      * Turn off remote vendor management for a storage appliance, if supported.
@@ -462,4 +497,76 @@ public interface StorageAppliancesClient {
     OperationStatusResultInner enableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
+        String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
+        String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context);
 }

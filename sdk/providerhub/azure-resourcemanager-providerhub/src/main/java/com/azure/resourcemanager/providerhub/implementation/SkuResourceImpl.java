@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.providerhub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.SkuResourceInner;
 import com.azure.resourcemanager.providerhub.models.SkuResource;
@@ -28,6 +29,10 @@ public final class SkuResourceImpl implements SkuResource, SkuResource.Definitio
 
     public SkuResourceProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public SkuResourceInner innerModel() {

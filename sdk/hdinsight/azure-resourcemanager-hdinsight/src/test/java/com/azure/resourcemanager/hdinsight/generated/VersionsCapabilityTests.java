@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hdinsight.models.VersionsCapability;
 import com.azure.resourcemanager.hdinsight.models.VersionSpec;
+import com.azure.resourcemanager.hdinsight.models.VersionsCapability;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,26 +16,26 @@ public final class VersionsCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VersionsCapability model = BinaryData.fromString(
-            "{\"available\":[{\"friendlyName\":\"jaltolmnc\",\"displayName\":\"obqwcsdbnwdcfh\",\"isDefault\":true,\"componentVersions\":{\"vxb\":\"fuvglsbjjca\",\"udutnco\":\"t\",\"xqtvcofu\":\"mr\"}}]}")
+            "{\"available\":[{\"friendlyName\":\"zfgs\",\"displayName\":\"yfxrx\",\"isDefault\":false,\"componentVersions\":{\"uqlcvydy\":\"ramxjezwlwnw\",\"oo\":\"atdooaojkniod\"}}]}")
             .toObject(VersionsCapability.class);
-        Assertions.assertEquals("jaltolmnc", model.available().get(0).friendlyName());
-        Assertions.assertEquals("obqwcsdbnwdcfh", model.available().get(0).displayName());
-        Assertions.assertEquals(true, model.available().get(0).isDefault());
-        Assertions.assertEquals("fuvglsbjjca", model.available().get(0).componentVersions().get("vxb"));
+        Assertions.assertEquals("zfgs", model.available().get(0).friendlyName());
+        Assertions.assertEquals("yfxrx", model.available().get(0).displayName());
+        Assertions.assertFalse(model.available().get(0).isDefault());
+        Assertions.assertEquals("ramxjezwlwnw", model.available().get(0).componentVersions().get("uqlcvydy"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VersionsCapability model
-            = new VersionsCapability().withAvailable(Arrays.asList(new VersionSpec().withFriendlyName("jaltolmnc")
-                .withDisplayName("obqwcsdbnwdcfh")
-                .withIsDefault(true)
-                .withComponentVersions(mapOf("vxb", "fuvglsbjjca", "udutnco", "t", "xqtvcofu", "mr"))));
+            = new VersionsCapability().withAvailable(Arrays.asList(new VersionSpec().withFriendlyName("zfgs")
+                .withDisplayName("yfxrx")
+                .withIsDefault(false)
+                .withComponentVersions(mapOf("uqlcvydy", "ramxjezwlwnw", "oo", "atdooaojkniod"))));
         model = BinaryData.fromObject(model).toObject(VersionsCapability.class);
-        Assertions.assertEquals("jaltolmnc", model.available().get(0).friendlyName());
-        Assertions.assertEquals("obqwcsdbnwdcfh", model.available().get(0).displayName());
-        Assertions.assertEquals(true, model.available().get(0).isDefault());
-        Assertions.assertEquals("fuvglsbjjca", model.available().get(0).componentVersions().get("vxb"));
+        Assertions.assertEquals("zfgs", model.available().get(0).friendlyName());
+        Assertions.assertEquals("yfxrx", model.available().get(0).displayName());
+        Assertions.assertFalse(model.available().get(0).isDefault());
+        Assertions.assertEquals("ramxjezwlwnw", model.available().get(0).componentVersions().get("uqlcvydy"));
     }
 
     // Use "Map.of" if available

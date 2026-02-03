@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PrivateEndpointConnection;
@@ -24,27 +24,27 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"edpnk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"axtmvmycvjpaxjd\",\"actionsRequired\":\"vyjehyvnfjngo\"},\"provisioningState\":\"Succeeded\"},\"id\":\"dvhbgtuhwhxunwe\",\"name\":\"bphylnuzgz\",\"type\":\"x\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"lop\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xtpprszeh\",\"actionsRequired\":\"lwrfe\"},\"provisioningState\":\"Succeeded\"},\"id\":\"jpghjmgpce\",\"name\":\"a\",\"type\":\"l\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("blmn")
-            .withExistingService("lzukego", "gxpypbmzqs")
+            .define("j")
+            .withExistingService("xwcndkdlxdlh", "alz")
             .withProperties(new PrivateEndpointConnectionRequestProperties().withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                    .withDescription("xxyfo")
-                    .withActionsRequired("godywxjikfrx")))
+                    .withDescription("xiaj")
+                    .withActionsRequired("rsd")))
             .create();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("axtmvmycvjpaxjd", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("vyjehyvnfjngo", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("xtpprszeh", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("lwrfe", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

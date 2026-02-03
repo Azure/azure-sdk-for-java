@@ -14,6 +14,167 @@ var exec = require("child_process").exec;
 
 const mappings = require("./api-specs.json");
 const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main";
+const repoRoot = path.resolve(__dirname, "../..");
+
+// Get current version from eng/versioning/version_client.txt normal entry
+function getCurrentVersionForArtifact(artifactId) {
+  try {
+    const versionClientPath = path.resolve(repoRoot, "eng/versioning/version_client.txt");
+    if (!fs.existsSync(versionClientPath)) {
+      return undefined;
+    }
+    const content = fs.readFileSync(versionClientPath, "utf8");
+    const lines = content.split(/\r?\n/);
+    const normalPrefix = `com.azure.resourcemanager:${artifactId};`;
+    const normalLine = lines.find((l) => l.startsWith(normalPrefix));
+    if (!normalLine) return undefined;
+    const parts = normalLine.split(";");
+    return parts.length >= 3 ? parts[2].trim() : undefined;
+  } catch (_) {
+    return undefined;
+  }
+}
+
+// Determine whether project has been split to sdk/{service}
+function isSplitProject(project) {
+  const dir = mappings[project] && mappings[project].dir;
+  if (!dir) return false;
+  // Split projects use ../{service}/azure-resourcemanager-xxx
+  // Exclude ../resourcemanagerhybrid
+  return /^\.\.\/(?!resourcemanagerhybrid\/).+/.test(dir);
+}
+
+// ensure unreleased entry exists in eng/versioning/version_client.txt
+function ensureUnreleasedVersionClientEntry(artifactId) {
+  try {
+    const versionClientPath = path.resolve(repoRoot, "eng/versioning/version_client.txt");
+    if (!fs.existsSync(versionClientPath)) {
+      console.warn(`version_client.txt not found at ${versionClientPath}`);
+      return;
+    }
+    const content = fs.readFileSync(versionClientPath, "utf8");
+    const lines = content.split(/\r?\n/);
+
+    const unreleasedPrefix = `unreleased_com.azure.resourcemanager:${artifactId};`;
+    const normalPrefix = `com.azure.resourcemanager:${artifactId};`;
+
+    // If unreleased entry already exists, nothing to do
+    if (lines.some((l) => l.startsWith(unreleasedPrefix))) {
+      return;
+    }
+
+    // Find normal line to get current version (the 3rd semicolon-delimited token)
+    const normalLine = lines.find((l) => l.startsWith(normalPrefix));
+    if (!normalLine) {
+      console.warn(`Normal version entry for ${artifactId} not found in version_client.txt`);
+      return;
+    }
+    const parts = normalLine.split(";");
+    // Expected: group:artifact;released;current
+    let currentVersion = parts.length >= 3 ? parts[2].trim() : "";
+    if (!currentVersion) {
+      console.warn(`Unable to parse current version for ${artifactId} from: ${normalLine}`);
+      return;
+    }
+
+    const newLine = `${unreleasedPrefix}${currentVersion}`;
+
+    // Insert within the Unreleased dependencies section using the blank line after the last unreleased_ entry
+    const unreleasedHeaderIndex = lines.findIndex((l) => l.startsWith("# Unreleased dependencies"));
+    if (unreleasedHeaderIndex !== -1) {
+      // Scan for the unreleased block and blank line after it
+      let lastUnreleasedIdx = -1;
+      let endOfSectionIdx = -1;
+      let seenUnreleased = false;
+      for (let i = unreleasedHeaderIndex + 1; i < lines.length; i++) {
+        const line = lines[i];
+        if (line.startsWith("unreleased_")) {
+          seenUnreleased = true;
+          lastUnreleasedIdx = i;
+          continue;
+        }
+        if (seenUnreleased) {
+          // First blank line after we started seeing unreleased entries marks end of section
+          if (line.trim() === "") {
+            endOfSectionIdx = i; // insert before this blank line
+            break;
+          }
+          // If not blank, but a new header starts, still treat as end of section
+          if (line.startsWith("# ")) {
+            endOfSectionIdx = i;
+            break;
+          }
+        }
+      }
+
+      let insertIndex;
+      if (lastUnreleasedIdx !== -1) {
+        // There are existing unreleased entries
+        insertIndex = endOfSectionIdx !== -1 ? endOfSectionIdx : lastUnreleasedIdx + 1;
+      } else {
+        // No existing entries, insert after header comments and the following blank line if present
+        insertIndex = unreleasedHeaderIndex + 1;
+        // Skip comment lines immediately following the header
+        while (insertIndex < lines.length && lines[insertIndex].startsWith("#")) insertIndex++;
+        // If next is a blank line, insert after it to keep formatting clean
+        if (insertIndex < lines.length && lines[insertIndex].trim() === "") insertIndex++;
+      }
+
+      lines.splice(insertIndex, 0, newLine);
+      const updated = lines.join("\n");
+      fs.writeFileSync(versionClientPath, updated.endsWith("\n") ? updated : updated + "\n", "utf8");
+    } else {
+      // Fallback: append at end of file
+      const updated = content.endsWith("\n") ? content + newLine + "\n" : content + "\n" + newLine + "\n";
+      fs.writeFileSync(versionClientPath, updated, "utf8");
+    }
+    console.log(`Added unreleased entry to version_client.txt: ${newLine}`);
+  } catch (e) {
+    console.warn(`Failed to update version_client.txt for ${artifactId}: ${e && e.message ? e.message : e}`);
+  }
+}
+
+// Update sdk/resourcemanager/azure-resourcemanager/pom.xml to refer to the package by unreleased version
+function updateAggregatorPomUnreleased(artifactId) {
+  try {
+    const pomPath = path.resolve(__dirname, "azure-resourcemanager/pom.xml");
+    if (!fs.existsSync(pomPath)) {
+      console.warn(`azure-resourcemanager/pom.xml not found at ${pomPath}`);
+      return;
+    }
+    let pom = fs.readFileSync(pomPath, "utf8");
+
+    // Only update if this artifact is referenced
+    const artifactRef = `<artifactId>${artifactId}</artifactId>`;
+    if (pom.indexOf(artifactRef) === -1) {
+      return; // dependency not present in aggregator pom
+    }
+
+    // Update the x-version-update comment target to unreleased_ for this artifact
+    const currentVersion = getCurrentVersionForArtifact(artifactId);
+    if (currentVersion) {
+      const groupId = "com.azure.resourcemanager";
+      const project = `${groupId}:${artifactId}`;
+      // Match either existing or already-unreleased marker in the version update comment
+      const dependencyPattern = new RegExp(
+        `(<groupId>com.azure.resourcemanager</groupId>\\s*<artifactId>${artifactId}</artifactId>\\s*<version>)[^<]+(</version>\\s*<!-- \\{x-version-update;)(?:unreleased_)?${project}(;dependency\\} -->)`,
+        'gs'
+      );
+
+      newPom = pom.replace(
+        dependencyPattern,
+        (_, g1, g2, g3) => `${g1}${currentVersion}${g2}unreleased_${project}${g3}`
+      );
+    }
+
+    if (newPom !== pom) {
+      fs.writeFileSync(pomPath, newPom, "utf8");
+      console.log(`Updated azure-resourcemanager/pom.xml to use unreleased reference for ${artifactId} with version ${currentVersion || "(unchanged)"}`);
+    }
+  } catch (e) {
+    console.warn(`Failed to update azure-resourcemanager/pom.xml for ${artifactId}: ${e && e.message ? e.message : e}`);
+  }
+}
 
 async function defaultInfo() {
     console.log(
@@ -169,6 +330,13 @@ function codegen(project, cb) {
 
     copyFolderRecursiveSync(generatedSamplesSource, generatedSamplesTarget);
     deleteFolderRecursive(generatedSamplesSource);
+
+    // If already split, ensure version_client and pom updates
+    if (isSplitProject(project)) {
+        const artifactId = path.basename(path.resolve(mappings[project].dir)); // e.g., azure-resourcemanager-search
+        ensureUnreleasedVersionClientEntry(artifactId);
+        updateAggregatorPomUnreleased(artifactId);
+    }
 
     return autorest_result;
 }

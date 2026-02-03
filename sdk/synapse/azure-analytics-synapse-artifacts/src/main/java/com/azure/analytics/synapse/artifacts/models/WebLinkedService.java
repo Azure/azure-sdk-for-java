@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public final class WebLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Web";
 
     /*
      * Web linked service properties.
      */
+    @Generated
     private WebLinkedServiceTypeProperties typeProperties;
 
     /**
      * Creates an instance of WebLinkedService class.
      */
+    @Generated
     public WebLinkedService() {
     }
 
@@ -39,6 +43,7 @@ public final class WebLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public final class WebLinkedService extends LinkedService {
      * 
      * @return the typeProperties value.
      */
+    @Generated
     public WebLinkedServiceTypeProperties getTypeProperties() {
         return this.typeProperties;
     }
@@ -59,6 +65,7 @@ public final class WebLinkedService extends LinkedService {
      * @param typeProperties the typeProperties value to set.
      * @return the WebLinkedService object itself.
      */
+    @Generated
     public WebLinkedService setTypeProperties(WebLinkedServiceTypeProperties typeProperties) {
         this.typeProperties = typeProperties;
         return this;
@@ -67,6 +74,17 @@ public final class WebLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public WebLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public WebLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -76,6 +94,7 @@ public final class WebLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -85,6 +104,7 @@ public final class WebLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -94,6 +114,7 @@ public final class WebLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -103,9 +124,11 @@ public final class WebLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -129,6 +152,7 @@ public final class WebLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebLinkedService.
      */
+    @Generated
     public static WebLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebLinkedService deserializedWebLinkedService = new WebLinkedService();
@@ -137,7 +161,9 @@ public final class WebLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedWebLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedWebLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedWebLinkedService.setDescription(reader.getString());

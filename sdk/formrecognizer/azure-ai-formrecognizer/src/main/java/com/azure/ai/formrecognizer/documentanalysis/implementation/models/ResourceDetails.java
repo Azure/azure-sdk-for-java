@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
     /*
      * Details regarding custom document models.
      */
+    @Generated
     private final CustomDocumentModelsDetails customDocumentModels;
 
     /*
      * Quota used, limit, and next reset date/time.
      */
+    @Generated
     private final QuotaDetails customNeuralDocumentModelBuilds;
 
     /**
@@ -34,6 +37,7 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
      * @param customDocumentModels the customDocumentModels value to set.
      * @param customNeuralDocumentModelBuilds the customNeuralDocumentModelBuilds value to set.
      */
+    @Generated
     public ResourceDetails(CustomDocumentModelsDetails customDocumentModels,
         QuotaDetails customNeuralDocumentModelBuilds) {
         this.customDocumentModels = customDocumentModels;
@@ -45,6 +49,7 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
      * 
      * @return the customDocumentModels value.
      */
+    @Generated
     public CustomDocumentModelsDetails getCustomDocumentModels() {
         return this.customDocumentModels;
     }
@@ -54,6 +59,7 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
      * 
      * @return the customNeuralDocumentModelBuilds value.
      */
+    @Generated
     public QuotaDetails getCustomNeuralDocumentModelBuilds() {
         return this.customNeuralDocumentModelBuilds;
     }
@@ -61,6 +67,7 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -78,6 +85,7 @@ public final class ResourceDetails implements JsonSerializable<ResourceDetails> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ResourceDetails.
      */
+    @Generated
     public static ResourceDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean customDocumentModelsFound = false;

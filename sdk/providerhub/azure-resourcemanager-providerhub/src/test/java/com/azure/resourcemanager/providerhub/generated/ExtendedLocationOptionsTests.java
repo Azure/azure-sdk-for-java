@@ -6,24 +6,26 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.providerhub.models.ExtendedLocationOptions;
+import com.azure.resourcemanager.providerhub.models.ExtendedLocationType;
+import com.azure.resourcemanager.providerhub.models.ResourceTypeExtendedLocationPolicy;
 import org.junit.jupiter.api.Assertions;
 
 public final class ExtendedLocationOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtendedLocationOptions model
-            = BinaryData.fromString("{\"type\":\"hjdauwhvylwz\",\"supportedPolicy\":\"dhxujznbmpo\"}")
+            = BinaryData.fromString("{\"type\":\"CustomLocation\",\"supportedPolicy\":\"NotSpecified\"}")
                 .toObject(ExtendedLocationOptions.class);
-        Assertions.assertEquals("hjdauwhvylwz", model.type());
-        Assertions.assertEquals("dhxujznbmpo", model.supportedPolicy());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.type());
+        Assertions.assertEquals(ResourceTypeExtendedLocationPolicy.NOT_SPECIFIED, model.supportedPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtendedLocationOptions model
-            = new ExtendedLocationOptions().withType("hjdauwhvylwz").withSupportedPolicy("dhxujznbmpo");
+        ExtendedLocationOptions model = new ExtendedLocationOptions().withType(ExtendedLocationType.CUSTOM_LOCATION)
+            .withSupportedPolicy(ResourceTypeExtendedLocationPolicy.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(ExtendedLocationOptions.class);
-        Assertions.assertEquals("hjdauwhvylwz", model.type());
-        Assertions.assertEquals("dhxujznbmpo", model.supportedPolicy());
+        Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.type());
+        Assertions.assertEquals(ResourceTypeExtendedLocationPolicy.NOT_SPECIFIED, model.supportedPolicy());
     }
 }

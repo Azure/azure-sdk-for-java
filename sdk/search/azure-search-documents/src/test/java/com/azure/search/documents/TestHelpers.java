@@ -13,11 +13,15 @@ import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.*;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredential;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -47,7 +51,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static com.azure.search.documents.SearchTestBase.ENDPOINT;
+import static com.azure.search.documents.SearchTestBase.SEARCH_ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.SERVICE_THROTTLE_SAFE_RETRY_POLICY;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -295,8 +299,8 @@ public final class TestHelpers {
     }
 
     public static void waitForIndexing() {
-        // Wait 2 seconds to allow index request to finish.
-        sleepIfRunningAgainstService(2000);
+        // Wait 5 seconds to allow index request to finish.
+        sleepIfRunningAgainstService(5000);
     }
 
     public static void sleepIfRunningAgainstService(long millis) {
@@ -386,7 +390,7 @@ public final class TestHelpers {
         try (JsonReader jsonReader = JsonProviders.createReader(loadResource(indexDefinition))) {
             SearchIndex baseIndex = SearchIndex.fromJson(jsonReader);
 
-            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().endpoint(ENDPOINT)
+            SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .credential(TestHelpers.getTestTokenCredential())
                 .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
@@ -410,13 +414,45 @@ public final class TestHelpers {
      * @return The appropriate token credential
      */
     public static TokenCredential getTestTokenCredential() {
-        if (testMode == TestMode.PLAYBACK) {
-            return new MockTokenCredential();
+        if (testMode == TestMode.LIVE) {
+            TokenCredential pipelineCredential = tryGetPipelineCredential();
+            if (pipelineCredential != null) {
+                return pipelineCredential;
+            }
+            return new AzureCliCredentialBuilder().build();
         } else if (testMode == TestMode.RECORD) {
             return new DefaultAzureCredentialBuilder().build();
         } else {
-            return new AzurePowerShellCredentialBuilder().build();
+            return new MockTokenCredential();
         }
+    }
+
+    /**
+     * Attempts to speculate an {@link AzurePipelinesCredential} from the environment if the running context is within
+     * Azure DevOps. If not, returns null.
+     *
+     * @return The AzurePipelinesCredential if running in Azure DevOps, or null.
+     */
+    @SuppressWarnings("deprecation")
+    private static TokenCredential tryGetPipelineCredential() {
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        String serviceConnectionId = configuration.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+        String clientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
+        String systemAccessToken = configuration.get("SYSTEM_ACCESSTOKEN");
+
+        if (CoreUtils.isNullOrEmpty(serviceConnectionId)
+            || CoreUtils.isNullOrEmpty(clientId)
+            || CoreUtils.isNullOrEmpty(tenantId)
+            || CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            return null;
+        }
+
+        return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .build();
     }
 
     static SearchIndex createTestIndex(String testIndexName, SearchIndex baseIndex) {
@@ -442,7 +478,7 @@ public final class TestHelpers {
     }
 
     public static SearchIndexClient createSharedSearchIndexClient() {
-        return new SearchIndexClientBuilder().endpoint(ENDPOINT)
+        return new SearchIndexClientBuilder().endpoint(SEARCH_ENDPOINT)
             .credential(getTestTokenCredential())
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))

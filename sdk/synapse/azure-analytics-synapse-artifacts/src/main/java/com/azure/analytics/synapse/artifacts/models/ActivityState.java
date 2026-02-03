@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class ActivityState extends ExpandableStringEnum<ActivityState> {
     /**
      * Static value Active for ActivityState.
      */
+    @Generated
     public static final ActivityState ACTIVE = fromString("Active");
 
     /**
      * Static value Inactive for ActivityState.
      */
+    @Generated
     public static final ActivityState INACTIVE = fromString("Inactive");
 
     /**
@@ -26,6 +29,7 @@ public final class ActivityState extends ExpandableStringEnum<ActivityState> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ActivityState() {
     }
@@ -36,6 +40,7 @@ public final class ActivityState extends ExpandableStringEnum<ActivityState> {
      * @param name a name to look for.
      * @return the corresponding ActivityState.
      */
+    @Generated
     public static ActivityState fromString(String name) {
         return fromString(name, ActivityState.class);
     }
@@ -45,6 +50,7 @@ public final class ActivityState extends ExpandableStringEnum<ActivityState> {
      * 
      * @return known ActivityState values.
      */
+    @Generated
     public static Collection<ActivityState> values() {
         return values(ActivityState.class);
     }

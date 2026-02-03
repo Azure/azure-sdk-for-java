@@ -52,7 +52,7 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzurePostgreSqlLinkedServiceTypeProperties innerTypeProperties() {
+    AzurePostgreSqlLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -436,6 +436,213 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
             this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalId property: The ID of the service principal used to authenticate against Azure Database
+     * for PostgreSQL Flexible server. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalId value.
+     */
+    public Object servicePrincipalId() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalId();
+    }
+
+    /**
+     * Set the servicePrincipalId property: The ID of the service principal used to authenticate against Azure Database
+     * for PostgreSQL Flexible server. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalId the servicePrincipalId value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withServicePrincipalId(Object servicePrincipalId) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalId(servicePrincipalId);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalKey property: The key of the service principal used to authenticate against Azure
+     * Database for PostgreSQL Flexible server.
+     * 
+     * @return the servicePrincipalKey value.
+     */
+    public SecretBase servicePrincipalKey() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalKey();
+    }
+
+    /**
+     * Set the servicePrincipalKey property: The key of the service principal used to authenticate against Azure
+     * Database for PostgreSQL Flexible server.
+     * 
+     * @param servicePrincipalKey the servicePrincipalKey value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withServicePrincipalKey(SecretBase servicePrincipalKey) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalKey(servicePrincipalKey);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the servicePrincipalCredentialType value.
+     */
+    public Object servicePrincipalCredentialType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalCredentialType();
+    }
+
+    /**
+     * Set the servicePrincipalCredentialType property: The service principal credential type to use in Server-To-Server
+     * authentication. 'ServicePrincipalKey' for key/secret, 'ServicePrincipalCert' for certificate. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param servicePrincipalCredentialType the servicePrincipalCredentialType value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withServicePrincipalCredentialType(Object servicePrincipalCredentialType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalCredentialType(servicePrincipalCredentialType);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCert value.
+     */
+    public SecretBase servicePrincipalEmbeddedCert() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().servicePrincipalEmbeddedCert();
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCert property: Specify the base64 encoded certificate of your application
+     * registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCert the servicePrincipalEmbeddedCert value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withServicePrincipalEmbeddedCert(SecretBase servicePrincipalEmbeddedCert) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalEmbeddedCert(servicePrincipalEmbeddedCert);
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @return the servicePrincipalEmbeddedCertPassword value.
+     */
+    public SecretBase servicePrincipalEmbeddedCertPassword() {
+        return this.innerTypeProperties() == null
+            ? null
+            : this.innerTypeProperties().servicePrincipalEmbeddedCertPassword();
+    }
+
+    /**
+     * Set the servicePrincipalEmbeddedCertPassword property: Specify the password of your certificate if your
+     * certificate has a password and you are using AadServicePrincipal authentication. Type: string (or Expression with
+     * resultType string).
+     * 
+     * @param servicePrincipalEmbeddedCertPassword the servicePrincipalEmbeddedCertPassword value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService
+        withServicePrincipalEmbeddedCertPassword(SecretBase servicePrincipalEmbeddedCertPassword) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServicePrincipalEmbeddedCertPassword(servicePrincipalEmbeddedCertPassword);
+        return this;
+    }
+
+    /**
+     * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the tenant value.
+     */
+    public Object tenant() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().tenant();
+    }
+
+    /**
+     * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param tenant the tenant value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withTenant(Object tenant) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withTenant(tenant);
+        return this;
+    }
+
+    /**
+     * Get the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
+     * 
+     * @return the azureCloudType value.
+     */
+    public Object azureCloudType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().azureCloudType();
+    }
+
+    /**
+     * Set the azureCloudType property: Indicates the azure cloud type of the service principle auth. Allowed values are
+     * AzurePublic, AzureChina, AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type.
+     * Type: string (or Expression with resultType string).
+     * 
+     * @param azureCloudType the azureCloudType value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withAzureCloudType(Object azureCloudType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAzureCloudType(azureCloudType);
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the AzurePostgreSqlLinkedService object itself.
+     */
+    public AzurePostgreSqlLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzurePostgreSqlLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
         return this;
     }
 

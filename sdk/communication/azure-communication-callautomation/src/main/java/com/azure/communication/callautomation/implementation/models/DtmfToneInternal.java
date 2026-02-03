@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,81 +15,97 @@ public final class DtmfToneInternal extends ExpandableStringEnum<DtmfToneInterna
     /**
      * Static value zero for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal ZERO = fromString("zero");
 
     /**
      * Static value one for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal ONE = fromString("one");
 
     /**
      * Static value two for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal TWO = fromString("two");
 
     /**
      * Static value three for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal THREE = fromString("three");
 
     /**
      * Static value four for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal FOUR = fromString("four");
 
     /**
      * Static value five for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal FIVE = fromString("five");
 
     /**
      * Static value six for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal SIX = fromString("six");
 
     /**
      * Static value seven for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal SEVEN = fromString("seven");
 
     /**
      * Static value eight for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal EIGHT = fromString("eight");
 
     /**
      * Static value nine for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal NINE = fromString("nine");
 
     /**
      * Static value a for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal A = fromString("a");
 
     /**
      * Static value b for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal B = fromString("b");
 
     /**
      * Static value c for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal C = fromString("c");
 
     /**
      * Static value d for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal D = fromString("d");
 
     /**
      * Static value pound for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal POUND = fromString("pound");
 
     /**
      * Static value asterisk for DtmfToneInternal.
      */
+    @Generated
     public static final DtmfToneInternal ASTERISK = fromString("asterisk");
 
     /**
@@ -96,6 +113,7 @@ public final class DtmfToneInternal extends ExpandableStringEnum<DtmfToneInterna
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DtmfToneInternal() {
     }
@@ -106,6 +124,7 @@ public final class DtmfToneInternal extends ExpandableStringEnum<DtmfToneInterna
      * @param name a name to look for.
      * @return the corresponding DtmfToneInternal.
      */
+    @Generated
     public static DtmfToneInternal fromString(String name) {
         return fromString(name, DtmfToneInternal.class);
     }
@@ -115,6 +134,7 @@ public final class DtmfToneInternal extends ExpandableStringEnum<DtmfToneInterna
      * 
      * @return known DtmfToneInternal values.
      */
+    @Generated
     public static Collection<DtmfToneInternal> values() {
         return values(DtmfToneInternal.class);
     }

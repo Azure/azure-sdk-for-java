@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class DynamicsSinkWriteBehavior extends ExpandableStringEnum<Dynami
     /**
      * Static value Upsert for DynamicsSinkWriteBehavior.
      */
+    @Generated
     public static final DynamicsSinkWriteBehavior UPSERT = fromString("Upsert");
 
     /**
@@ -21,6 +23,7 @@ public final class DynamicsSinkWriteBehavior extends ExpandableStringEnum<Dynami
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DynamicsSinkWriteBehavior() {
     }
@@ -31,6 +34,7 @@ public final class DynamicsSinkWriteBehavior extends ExpandableStringEnum<Dynami
      * @param name a name to look for.
      * @return the corresponding DynamicsSinkWriteBehavior.
      */
+    @Generated
     public static DynamicsSinkWriteBehavior fromString(String name) {
         return fromString(name, DynamicsSinkWriteBehavior.class);
     }
@@ -40,6 +44,7 @@ public final class DynamicsSinkWriteBehavior extends ExpandableStringEnum<Dynami
      * 
      * @return known DynamicsSinkWriteBehavior values.
      */
+    @Generated
     public static Collection<DynamicsSinkWriteBehavior> values() {
         return values(DynamicsSinkWriteBehavior.class);
     }

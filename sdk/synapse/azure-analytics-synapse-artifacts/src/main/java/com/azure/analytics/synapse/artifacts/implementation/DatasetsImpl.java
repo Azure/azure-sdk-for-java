@@ -62,7 +62,7 @@ public final class DatasetsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientDatas")
+    @ServiceInterface(name = "ArtifactsClientDatasets")
     public interface DatasetsService {
         @Get("/datasets")
         @ExpectedResponses({ 200 })

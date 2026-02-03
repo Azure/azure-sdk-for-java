@@ -18,7 +18,7 @@ import java.util.Map;
 public final class ElasticSansUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-07-01-preview/examples/
      * ElasticSans_Update_MinimumSet_Gen.json
      */
     /**
@@ -35,7 +35,7 @@ public final class ElasticSansUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-07-01-preview/examples/
      * ElasticSans_Update_MaximumSet_Gen.json
      */
     /**
@@ -48,9 +48,9 @@ public final class ElasticSansUpdateSamples {
             .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key5945", "fakeTokenPlaceholder"))
-            .withBaseSizeTiB(21L)
-            .withExtendedCapacitySizeTiB(10L)
+            .withTags(mapOf("key1931", "fakeTokenPlaceholder"))
+            .withBaseSizeTiB(13L)
+            .withExtendedCapacitySizeTiB(29L)
             .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
             .withAutoScaleProperties(
                 new AutoScaleProperties().withScaleUpProperties(new ScaleUpProperties().withUnusedSizeTiB(24L)

@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class BackendReconnectContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackendReconnectContract model = BinaryData
-            .fromString(
-                "{\"properties\":{\"after\":\"PT143H2M24S\"},\"id\":\"d\",\"name\":\"djchlr\",\"type\":\"pwctofl\"}")
+        BackendReconnectContract model = BinaryData.fromString(
+            "{\"properties\":{\"after\":\"PT231H8M47S\"},\"id\":\"jcayerzrransyby\",\"name\":\"polwzrghsrlei\",\"type\":\"kfscjfncjwv\"}")
             .toObject(BackendReconnectContract.class);
-        Assertions.assertEquals(Duration.parse("PT143H2M24S"), model.after());
+        Assertions.assertEquals(Duration.parse("PT231H8M47S"), model.after());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackendReconnectContract model = new BackendReconnectContract().withAfter(Duration.parse("PT143H2M24S"));
+        BackendReconnectContract model = new BackendReconnectContract().withAfter(Duration.parse("PT231H8M47S"));
         model = BinaryData.fromObject(model).toObject(BackendReconnectContract.class);
-        Assertions.assertEquals(Duration.parse("PT143H2M24S"), model.after());
+        Assertions.assertEquals(Duration.parse("PT231H8M47S"), model.after());
     }
 }

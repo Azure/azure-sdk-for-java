@@ -14,22 +14,22 @@ public final class EndpointDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EndpointDependency model = BinaryData.fromString(
-            "{\"domainName\":\"gzlgpyaixihz\",\"endpointDetails\":[{\"port\":271809891,\"region\":\"uy\"},{\"port\":850797696,\"region\":\"tkacybdueurgmcd\"},{\"port\":1677529495,\"region\":\"hlo\"}]}")
+            "{\"domainName\":\"vxfaqufqizj\",\"endpointDetails\":[{\"port\":966171929,\"region\":\"a\"},{\"port\":28520684,\"region\":\"jmjjxi\"},{\"port\":1021707486,\"region\":\"hnzlslekctt\"}]}")
             .toObject(EndpointDependency.class);
-        Assertions.assertEquals("gzlgpyaixihz", model.domainName());
-        Assertions.assertEquals(271809891, model.endpointDetails().get(0).port());
-        Assertions.assertEquals("uy", model.endpointDetails().get(0).region());
+        Assertions.assertEquals("vxfaqufqizj", model.domainName());
+        Assertions.assertEquals(966171929, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("a", model.endpointDetails().get(0).region());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDependency model = new EndpointDependency().withDomainName("gzlgpyaixihz")
-            .withEndpointDetails(Arrays.asList(new EndpointDetail().withPort(271809891).withRegion("uy"),
-                new EndpointDetail().withPort(850797696).withRegion("tkacybdueurgmcd"),
-                new EndpointDetail().withPort(1677529495).withRegion("hlo")));
+        EndpointDependency model = new EndpointDependency().withDomainName("vxfaqufqizj")
+            .withEndpointDetails(Arrays.asList(new EndpointDetail().withPort(966171929).withRegion("a"),
+                new EndpointDetail().withPort(28520684).withRegion("jmjjxi"),
+                new EndpointDetail().withPort(1021707486).withRegion("hnzlslekctt")));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
-        Assertions.assertEquals("gzlgpyaixihz", model.domainName());
-        Assertions.assertEquals(271809891, model.endpointDetails().get(0).port());
-        Assertions.assertEquals("uy", model.endpointDetails().get(0).region());
+        Assertions.assertEquals("vxfaqufqizj", model.domainName());
+        Assertions.assertEquals(966171929, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("a", model.endpointDetails().get(0).region());
     }
 }

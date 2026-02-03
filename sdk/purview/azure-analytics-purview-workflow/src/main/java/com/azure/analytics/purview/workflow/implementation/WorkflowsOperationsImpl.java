@@ -71,7 +71,7 @@ public final class WorkflowsOperationsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/workflow")
-    @ServiceInterface(name = "PurviewWorkflowWorkf")
+    @ServiceInterface(name = "PurviewWorkflowWorkflowsOperations")
     public interface WorkflowsService {
         @Get("/workflows/{workflowId}")
         @ExpectedResponses({ 200 })

@@ -16,24 +16,24 @@ import java.io.IOException;
  * The CheckinManifestInfo model.
  */
 @Fluent
-public final class CheckinManifestInfoInner implements JsonSerializable<CheckinManifestInfoInner> {
+public class CheckinManifestInfoInner implements JsonSerializable<CheckinManifestInfoInner> {
     /*
-     * The isCheckedIn property.
+     * Whether the manifest is checked in.
      */
     private boolean isCheckedIn;
 
     /*
-     * The statusMessage property.
+     * The status message.
      */
     private String statusMessage;
 
     /*
-     * The pullRequest property.
+     * The pull request.
      */
     private String pullRequest;
 
     /*
-     * The commitId property.
+     * The commit id.
      */
     private String commitId;
 
@@ -44,7 +44,7 @@ public final class CheckinManifestInfoInner implements JsonSerializable<CheckinM
     }
 
     /**
-     * Get the isCheckedIn property: The isCheckedIn property.
+     * Get the isCheckedIn property: Whether the manifest is checked in.
      * 
      * @return the isCheckedIn value.
      */
@@ -53,7 +53,7 @@ public final class CheckinManifestInfoInner implements JsonSerializable<CheckinM
     }
 
     /**
-     * Set the isCheckedIn property: The isCheckedIn property.
+     * Set the isCheckedIn property: Whether the manifest is checked in.
      * 
      * @param isCheckedIn the isCheckedIn value to set.
      * @return the CheckinManifestInfoInner object itself.
@@ -64,7 +64,7 @@ public final class CheckinManifestInfoInner implements JsonSerializable<CheckinM
     }
 
     /**
-     * Get the statusMessage property: The statusMessage property.
+     * Get the statusMessage property: The status message.
      * 
      * @return the statusMessage value.
      */
@@ -73,7 +73,7 @@ public final class CheckinManifestInfoInner implements JsonSerializable<CheckinM
     }
 
     /**
-     * Set the statusMessage property: The statusMessage property.
+     * Set the statusMessage property: The status message.
      * 
      * @param statusMessage the statusMessage value to set.
      * @return the CheckinManifestInfoInner object itself.
@@ -84,7 +84,7 @@ public final class CheckinManifestInfoInner implements JsonSerializable<CheckinM
     }
 
     /**
-     * Get the pullRequest property: The pullRequest property.
+     * Get the pullRequest property: The pull request.
      * 
      * @return the pullRequest value.
      */
@@ -93,7 +93,7 @@ public final class CheckinManifestInfoInner implements JsonSerializable<CheckinM
     }
 
     /**
-     * Set the pullRequest property: The pullRequest property.
+     * Set the pullRequest property: The pull request.
      * 
      * @param pullRequest the pullRequest value to set.
      * @return the CheckinManifestInfoInner object itself.
@@ -104,7 +104,7 @@ public final class CheckinManifestInfoInner implements JsonSerializable<CheckinM
     }
 
     /**
-     * Get the commitId property: The commitId property.
+     * Get the commitId property: The commit id.
      * 
      * @return the commitId value.
      */
@@ -113,7 +113,7 @@ public final class CheckinManifestInfoInner implements JsonSerializable<CheckinM
     }
 
     /**
-     * Set the commitId property: The commitId property.
+     * Set the commitId property: The commit id.
      * 
      * @param commitId the commitId value to set.
      * @return the CheckinManifestInfoInner object itself.

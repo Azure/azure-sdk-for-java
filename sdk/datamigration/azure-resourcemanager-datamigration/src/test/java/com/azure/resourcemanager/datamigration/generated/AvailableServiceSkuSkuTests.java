@@ -11,23 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableServiceSkuSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableServiceSkuSku model
-            = BinaryData.fromString("{\"name\":\"jbiksqrglssai\",\"family\":\"p\",\"size\":\"nzl\",\"tier\":\"fmppe\"}")
-                .toObject(AvailableServiceSkuSku.class);
-        Assertions.assertEquals("jbiksqrglssai", model.name());
-        Assertions.assertEquals("p", model.family());
-        Assertions.assertEquals("nzl", model.size());
-        Assertions.assertEquals("fmppe", model.tier());
+        AvailableServiceSkuSku model = BinaryData
+            .fromString("{\"name\":\"cr\",\"family\":\"bwccsnjvcdwxlpqe\",\"size\":\"tn\",\"tier\":\"tjsyin\"}")
+            .toObject(AvailableServiceSkuSku.class);
+        Assertions.assertEquals("cr", model.name());
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", model.family());
+        Assertions.assertEquals("tn", model.size());
+        Assertions.assertEquals("tjsyin", model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableServiceSkuSku model
-            = new AvailableServiceSkuSku().withName("jbiksqrglssai").withFamily("p").withSize("nzl").withTier("fmppe");
+        AvailableServiceSkuSku model = new AvailableServiceSkuSku().withName("cr")
+            .withFamily("bwccsnjvcdwxlpqe")
+            .withSize("tn")
+            .withTier("tjsyin");
         model = BinaryData.fromObject(model).toObject(AvailableServiceSkuSku.class);
-        Assertions.assertEquals("jbiksqrglssai", model.name());
-        Assertions.assertEquals("p", model.family());
-        Assertions.assertEquals("nzl", model.size());
-        Assertions.assertEquals("fmppe", model.tier());
+        Assertions.assertEquals("cr", model.name());
+        Assertions.assertEquals("bwccsnjvcdwxlpqe", model.family());
+        Assertions.assertEquals("tn", model.size());
+        Assertions.assertEquals("tjsyin", model.tier());
     }
 }

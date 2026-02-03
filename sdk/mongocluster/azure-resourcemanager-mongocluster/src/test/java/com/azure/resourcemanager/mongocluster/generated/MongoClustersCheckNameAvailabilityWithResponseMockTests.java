@@ -6,8 +6,8 @@ package com.azure.resourcemanager.mongocluster.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mongocluster.MongoClusterManager;
 import com.azure.resourcemanager.mongocluster.models.CheckNameAvailabilityReason;
@@ -22,23 +22,23 @@ import reactor.core.publisher.Mono;
 public final class MongoClustersCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
-        String responseStr = "{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"wqsmbsur\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"txfvjrbirph\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MongoClusterManager manager = MongoClusterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckNameAvailabilityResponse response = manager.mongoClusters()
-            .checkNameAvailabilityWithResponse("uiuaodsfcpkvxodp",
-                new CheckNameAvailabilityRequest().withName("zmyzydagf").withType("xbezyiuokktwh"),
+            .checkNameAvailabilityWithResponse("lihkaetcktvfc",
+                new CheckNameAvailabilityRequest().withName("fsnkymuctq").withType("fbebrjcxer"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertTrue(response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("wqsmbsur", response.message());
+        Assertions.assertEquals("txfvjrbirph", response.message());
     }
 }

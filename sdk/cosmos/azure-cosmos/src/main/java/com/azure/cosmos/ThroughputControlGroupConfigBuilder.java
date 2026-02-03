@@ -19,6 +19,7 @@ public class ThroughputControlGroupConfigBuilder {
     private Double targetThroughputThreshold;
     private boolean isDefault;
     private PriorityLevel priorityLevel;
+    private Integer throughputBucket;
     private boolean continueOnInitError = DEFAULT_CONTINUE_ON_INIT_ERROR;
 
     /**
@@ -158,6 +159,22 @@ public class ThroughputControlGroupConfigBuilder {
     }
 
     /**
+     * Set the throughput bucket of the group.
+     * <p>
+     * For more information about throughput bucket please visit
+     * <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/throughput-buckets">Throughput buckets in Azure Cosmos DB</a>
+     *
+     * @param throughputBucket the throughput bucket id.
+     * @return The {@link ThroughputControlGroupConfigBuilder}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_74_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroupConfigBuilder throughputBucket(int throughputBucket) {
+        checkArgument(throughputBucket >= 0, "Throughput bucket should be no smaller than 0");
+        this.throughputBucket = throughputBucket;
+        return this;
+    }
+
+    /**
      * Set whether allow request to continue on original request flow if throughput control controller failed on initialization.
      * If set to true, requests will be able to fall back to original request flow if throughput control controller failed on initialization.
      *
@@ -178,9 +195,15 @@ public class ThroughputControlGroupConfigBuilder {
         if (StringUtils.isEmpty(this.groupName)) {
             throw new IllegalArgumentException("Group name cannot be null nor empty");
         }
-        if (this.targetThroughput == null && this.targetThroughputThreshold == null && this.priorityLevel == null) {
-            throw new IllegalArgumentException("All targetThroughput, targetThroughputThreshold and priorityLevel cannot be null or empty.");
+
+        if (this.targetThroughput == null
+            && this.targetThroughputThreshold == null
+            && this.priorityLevel == null
+            && this.throughputBucket == null) {
+            throw new IllegalArgumentException(
+                "All targetThroughput, targetThroughputThreshold, priorityLevel and throughput bucket cannot be null or empty.");
         }
+
         if (this.targetThroughput == null && this.targetThroughputThreshold == null) {
             this.targetThroughput = Integer.MAX_VALUE;
         }
@@ -190,6 +213,7 @@ public class ThroughputControlGroupConfigBuilder {
                 this.targetThroughput,
                 this.targetThroughputThreshold,
                 this.priorityLevel,
+                this.throughputBucket,
                 this.isDefault,
                 this.continueOnInitError);
     }

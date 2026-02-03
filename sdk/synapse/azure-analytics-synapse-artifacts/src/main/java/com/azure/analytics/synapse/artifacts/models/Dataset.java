@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,54 +24,64 @@ public class Dataset implements JsonSerializable<Dataset> {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Dataset";
 
     /*
      * Dataset description.
      */
+    @Generated
     private String description;
 
     /*
      * Columns that define the structure of the dataset. Type: array (or Expression with resultType array), itemType:
      * DatasetDataElement.
      */
+    @Generated
     private Object structure;
 
     /*
      * Columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array),
      * itemType: DatasetSchemaDataElement.
      */
+    @Generated
     private Object schema;
 
     /*
      * Linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedServiceName;
 
     /*
      * Parameters for dataset.
      */
+    @Generated
     private Map<String, ParameterSpecification> parameters;
 
     /*
      * List of tags that can be used for describing the Dataset.
      */
+    @Generated
     private List<Object> annotations;
 
     /*
      * The folder that this Dataset is in. If not specified, Dataset will appear at the root level.
      */
+    @Generated
     private DatasetFolder folder;
 
     /*
      * The Azure Data Factory nested object which identifies data within different data stores, such as tables, files,
      * folders, and documents.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of Dataset class.
      */
+    @Generated
     public Dataset() {
     }
 
@@ -79,6 +90,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -88,6 +100,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -98,6 +111,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @param description the description value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset setDescription(String description) {
         this.description = description;
         return this;
@@ -109,6 +123,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the structure value.
      */
+    @Generated
     public Object getStructure() {
         return this.structure;
     }
@@ -120,6 +135,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @param structure the structure value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset setStructure(Object structure) {
         this.structure = structure;
         return this;
@@ -131,6 +147,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the schema value.
      */
+    @Generated
     public Object getSchema() {
         return this.schema;
     }
@@ -142,6 +159,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @param schema the schema value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset setSchema(Object schema) {
         this.schema = schema;
         return this;
@@ -152,6 +170,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -162,6 +181,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -172,6 +192,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, ParameterSpecification> getParameters() {
         return this.parameters;
     }
@@ -182,6 +203,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @param parameters the parameters value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset setParameters(Map<String, ParameterSpecification> parameters) {
         this.parameters = parameters;
         return this;
@@ -192,6 +214,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the annotations value.
      */
+    @Generated
     public List<Object> getAnnotations() {
         return this.annotations;
     }
@@ -202,6 +225,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @param annotations the annotations value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset setAnnotations(List<Object> annotations) {
         this.annotations = annotations;
         return this;
@@ -213,6 +237,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the folder value.
      */
+    @Generated
     public DatasetFolder getFolder() {
         return this.folder;
     }
@@ -224,6 +249,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @param folder the folder value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset setFolder(DatasetFolder folder) {
         this.folder = folder;
         return this;
@@ -235,6 +261,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -246,6 +273,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the Dataset object itself.
      */
+    @Generated
     public Dataset setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -254,14 +282,19 @@ public class Dataset implements JsonSerializable<Dataset> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("structure", this.structure);
-        jsonWriter.writeUntypedField("schema", this.schema);
+        if (this.structure != null) {
+            jsonWriter.writeUntypedField("structure", this.structure);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", this.folder);
@@ -282,6 +315,7 @@ public class Dataset implements JsonSerializable<Dataset> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Dataset.
      */
+    @Generated
     public static Dataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -316,6 +350,8 @@ public class Dataset implements JsonSerializable<Dataset> {
                     return OrcDataset.fromJson(readerToUse.reset());
                 } else if ("Binary".equals(discriminatorValue)) {
                     return BinaryDataset.fromJson(readerToUse.reset());
+                } else if ("Iceberg".equals(discriminatorValue)) {
+                    return IcebergDataset.fromJson(readerToUse.reset());
                 } else if ("AzureBlob".equals(discriminatorValue)) {
                     return AzureBlobDataset.fromJson(readerToUse.reset());
                 } else if ("AzureTable".equals(discriminatorValue)) {
@@ -496,7 +532,7 @@ public class Dataset implements JsonSerializable<Dataset> {
                     return SharePointOnlineListResourceDataset.fromJson(readerToUse.reset());
                 } else if ("AzureDatabricksDeltaLakeDataset".equals(discriminatorValue)) {
                     return AzureDatabricksDeltaLakeDataset.fromJson(readerToUse.reset());
-                } else if ("LakeHouseTable".equals(discriminatorValue)) {
+                } else if ("LakehouseTable".equals(discriminatorValue)) {
                     return LakeHouseTableDataset.fromJson(readerToUse.reset());
                 } else if ("SalesforceV2Object".equals(discriminatorValue)) {
                     return SalesforceV2ObjectDataset.fromJson(readerToUse.reset());
@@ -513,6 +549,7 @@ public class Dataset implements JsonSerializable<Dataset> {
         });
     }
 
+    @Generated
     static Dataset fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Dataset deserializedDataset = new Dataset();

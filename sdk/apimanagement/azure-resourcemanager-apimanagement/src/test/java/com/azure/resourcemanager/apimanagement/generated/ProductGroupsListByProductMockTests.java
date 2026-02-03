@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GroupContract;
@@ -23,22 +23,22 @@ public final class ProductGroupsListByProductMockTests {
     @Test
     public void testListByProduct() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"tngiqcypmonfco\",\"description\":\"nhfycigcbmay\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"ponajzdjqzbrw\"},\"id\":\"frmhoufokrbg\",\"name\":\"ojcksirsnqunn\",\"type\":\"klyxdeggnzadqmv\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"jinzosxrsmvnnjwn\",\"description\":\"xvezwwqchxowp\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"cto\"},\"id\":\"qehnqi\",\"name\":\"rgnvuolvptv\",\"type\":\"lbkize\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GroupContract> response = manager.productGroups()
-            .listByProduct("fwxmcxhwkgihif", "yocmgadh", "qyuf", "fowwey", 1677030263, 1010996960,
+            .listByProduct("laqqfrgiplxr", "fbsbkvfkvdbbpo", "jsxvrutjituuf", "narscx", 933302110, 750216060,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tngiqcypmonfco", response.iterator().next().displayName());
-        Assertions.assertEquals("nhfycigcbmay", response.iterator().next().description());
+        Assertions.assertEquals("jinzosxrsmvnnjwn", response.iterator().next().displayName());
+        Assertions.assertEquals("xvezwwqchxowp", response.iterator().next().description());
         Assertions.assertEquals(GroupType.SYSTEM, response.iterator().next().typePropertiesType());
-        Assertions.assertEquals("ponajzdjqzbrw", response.iterator().next().externalId());
+        Assertions.assertEquals("cto", response.iterator().next().externalId());
     }
 }

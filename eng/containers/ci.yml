@@ -32,7 +32,7 @@ extends:
       - job:
         displayName: Docker Build and Publish
         pool:
-          name: $(LINUXNEXTPOOL)
+          name: $(LINUXPOOL)
           image: $(LINUXNEXTVMIMAGE)
           os: linux
 

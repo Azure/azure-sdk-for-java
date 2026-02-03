@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public final class IspCacheNodesOperationsUpdateSamples {
     /*
-     * x-ms-original-file: 2023-05-01-preview/IspCacheNodesOperations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2024-11-30-preview/IspCacheNodesOperations_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: IspCacheNodesOperations_Update.

@@ -51,7 +51,7 @@ public final class SnowflakeV2LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SnowflakeLinkedV2ServiceTypeProperties innerTypeProperties() {
+    SnowflakeLinkedV2ServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -389,7 +389,33 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the host property: The host name of the Snowflake account.
+     * Get the role property: The default access control role to use in the Snowflake session. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the role value.
+     */
+    public Object role() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().role();
+    }
+
+    /**
+     * Set the role property: The default access control role to use in the Snowflake session. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param role the role value to set.
+     * @return the SnowflakeV2LinkedService object itself.
+     */
+    public SnowflakeV2LinkedService withRole(Object role) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SnowflakeLinkedV2ServiceTypeProperties();
+        }
+        this.innerTypeProperties().withRole(role);
+        return this;
+    }
+
+    /**
+     * Get the host property: The host name of the Snowflake account. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the host value.
      */
@@ -398,7 +424,8 @@ public final class SnowflakeV2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the host property: The host name of the Snowflake account.
+     * Set the host property: The host name of the Snowflake account. Type: string (or Expression with resultType
+     * string).
      * 
      * @param host the host value to set.
      * @return the SnowflakeV2LinkedService object itself.
@@ -408,6 +435,29 @@ public final class SnowflakeV2LinkedService extends LinkedService {
             this.innerTypeProperties = new SnowflakeLinkedV2ServiceTypeProperties();
         }
         this.innerTypeProperties().withHost(host);
+        return this;
+    }
+
+    /**
+     * Get the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     * 
+     * @return the schema value.
+     */
+    public Object schema() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().schema();
+    }
+
+    /**
+     * Set the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     * 
+     * @param schema the schema value to set.
+     * @return the SnowflakeV2LinkedService object itself.
+     */
+    public SnowflakeV2LinkedService withSchema(Object schema) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SnowflakeLinkedV2ServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSchema(schema);
         return this;
     }
 

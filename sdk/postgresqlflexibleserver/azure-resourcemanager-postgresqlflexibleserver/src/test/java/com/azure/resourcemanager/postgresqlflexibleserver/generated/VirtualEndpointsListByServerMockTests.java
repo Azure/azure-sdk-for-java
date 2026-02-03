@@ -7,11 +7,11 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResource;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoint;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,19 +23,19 @@ public final class VirtualEndpointsListByServerMockTests {
     @Test
     public void testListByServer() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"whslwkoj\",\"name\":\"l\",\"type\":\"npdwr\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"gsnnf\"],\"virtualEndpoints\":[\"tefypococtfjgti\"]}}]}";
+            = "{\"value\":[{\"id\":\"nxwbjsidbirkfp\",\"name\":\"okdgoge\",\"type\":\"jymrhbg\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"wnf\"],\"virtualEndpoints\":[\"hhqosmffjku\",\"ycyarnroohg\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<VirtualEndpointResource> response
-            = manager.virtualEndpoints().listByServer("kauxof", "hfphwpnulaiywze", com.azure.core.util.Context.NONE);
+        PagedIterable<VirtualEndpoint> response
+            = manager.virtualEndpoints().listByServer("wfekaumrrqmb", "mqkra", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.iterator().next().endpointType());
-        Assertions.assertEquals("gsnnf", response.iterator().next().members().get(0));
+        Assertions.assertEquals("wnf", response.iterator().next().members().get(0));
     }
 }

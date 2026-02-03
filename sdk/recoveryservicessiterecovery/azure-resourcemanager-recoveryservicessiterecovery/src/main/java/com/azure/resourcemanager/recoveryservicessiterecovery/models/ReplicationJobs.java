@@ -17,22 +17,22 @@ public interface ReplicationJobs {
      * 
      * Gets the list of Azure Site Recovery Jobs for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Azure Site Recovery Jobs for the vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Job> list(String resourceName, String resourceGroupName);
+    PagedIterable<Job> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of jobs.
      * 
      * Gets the list of Azure Site Recovery Jobs for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,15 +40,15 @@ public interface ReplicationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Azure Site Recovery Jobs for the vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Job> list(String resourceName, String resourceGroupName, String filter, Context context);
+    PagedIterable<Job> list(String resourceGroupName, String resourceName, String filter, Context context);
 
     /**
      * Gets the job details.
      * 
      * Get the details of an Azure Site Recovery job.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobName Job identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,45 +56,45 @@ public interface ReplicationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Azure Site Recovery job along with {@link Response}.
      */
-    Response<Job> getWithResponse(String resourceName, String resourceGroupName, String jobName, Context context);
+    Response<Job> getWithResponse(String resourceGroupName, String resourceName, String jobName, Context context);
 
     /**
      * Gets the job details.
      * 
      * Get the details of an Azure Site Recovery job.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Azure Site Recovery job.
      */
-    Job get(String resourceName, String resourceGroupName, String jobName);
+    Job get(String resourceGroupName, String resourceName, String jobName);
 
     /**
      * Cancels the specified job.
      * 
      * The operation to cancel an Azure Site Recovery job.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job cancel(String resourceName, String resourceGroupName, String jobName);
+    Job cancel(String resourceGroupName, String resourceName, String jobName);
 
     /**
      * Cancels the specified job.
      * 
      * The operation to cancel an Azure Site Recovery job.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobName Job identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,30 +102,30 @@ public interface ReplicationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job cancel(String resourceName, String resourceGroupName, String jobName, Context context);
+    Job cancel(String resourceGroupName, String resourceName, String jobName, Context context);
 
     /**
      * Restarts the specified job.
      * 
      * The operation to restart an Azure Site Recovery job.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job restart(String resourceName, String resourceGroupName, String jobName);
+    Job restart(String resourceGroupName, String resourceName, String jobName);
 
     /**
      * Restarts the specified job.
      * 
      * The operation to restart an Azure Site Recovery job.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobName Job identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,15 +133,15 @@ public interface ReplicationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job restart(String resourceName, String resourceGroupName, String jobName, Context context);
+    Job restart(String resourceGroupName, String resourceName, String jobName, Context context);
 
     /**
      * Resumes the specified job.
      * 
      * The operation to resume an Azure Site Recovery job.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobName Job identifier.
      * @param resumeJobParams Resume rob comments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,15 +149,15 @@ public interface ReplicationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job resume(String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams);
+    Job resume(String resourceGroupName, String resourceName, String jobName, ResumeJobParams resumeJobParams);
 
     /**
      * Resumes the specified job.
      * 
      * The operation to resume an Azure Site Recovery job.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobName Job identifier.
      * @param resumeJobParams Resume rob comments.
      * @param context The context to associate with this operation.
@@ -166,7 +166,7 @@ public interface ReplicationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job resume(String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams,
+    Job resume(String resourceGroupName, String resourceName, String jobName, ResumeJobParams resumeJobParams,
         Context context);
 
     /**
@@ -174,23 +174,23 @@ public interface ReplicationJobs {
      * 
      * The operation to export the details of the Azure Site Recovery jobs of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobQueryParameter job query filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job export(String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter);
+    Job export(String resourceGroupName, String resourceName, JobQueryParameter jobQueryParameter);
 
     /**
      * Exports the details of the Azure Site Recovery jobs of the vault.
      * 
      * The operation to export the details of the Azure Site Recovery jobs of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param jobQueryParameter job query filter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,5 +198,5 @@ public interface ReplicationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job details.
      */
-    Job export(String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter, Context context);
+    Job export(String resourceGroupName, String resourceName, JobQueryParameter jobQueryParameter, Context context);
 }

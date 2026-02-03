@@ -4,13 +4,18 @@ pr: none
 
 stages:
   - stage: AnalyzeAndGeneratePatches
+    variables:
+    - template: /eng/pipelines/templates/variables/globals.yml
+    - template: /eng/pipelines/templates/variables/image.yml
 
     jobs:
       - job: PatchGeneration
         timeoutInMinutes: 180
 
         pool:
-          vmImage: 'windows-2022'
+          name: $(WINDOWSPOOL)
+          image: $(WINDOWSVMIMAGE)
+          os: windows
 
         steps:
         - pwsh: |

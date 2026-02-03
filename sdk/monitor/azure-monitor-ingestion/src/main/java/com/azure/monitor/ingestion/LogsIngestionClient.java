@@ -3,6 +3,13 @@
 
 package com.azure.monitor.ingestion;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -20,23 +27,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.ingestion.implementation.Batcher;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClient;
+import com.azure.monitor.ingestion.implementation.LogsIngestionClientImpl;
 import com.azure.monitor.ingestion.implementation.LogsIngestionRequest;
 import com.azure.monitor.ingestion.implementation.UploadLogsResponseHolder;
-import com.azure.monitor.ingestion.models.LogsUploadError;
-import com.azure.monitor.ingestion.models.LogsUploadException;
-import com.azure.monitor.ingestion.models.LogsUploadOptions;
-
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import static com.azure.monitor.ingestion.implementation.Utils.GZIP;
 import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
+import com.azure.monitor.ingestion.models.LogsUploadError;
+import com.azure.monitor.ingestion.models.LogsUploadException;
+import com.azure.monitor.ingestion.models.LogsUploadOptions;
 
 /**
  * <p>This class provides a synchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
@@ -95,14 +94,14 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 @ServiceClient(builder = LogsIngestionClientBuilder.class)
 public final class LogsIngestionClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClient.class);
-    private final IngestionUsingDataCollectionRulesClient client;
+    private final LogsIngestionClientImpl client;
 
     /**
      * Creates a {@link LogsIngestionClient} that sends requests to the data collection endpoint.
      *
-     * @param client The {@link IngestionUsingDataCollectionRulesClient} that the client routes its request through.
+     * @param client The {@link LogsIngestionClientImpl} that the client routes its request through.
      */
-    LogsIngestionClient(IngestionUsingDataCollectionRulesClient client) {
+    LogsIngestionClient(LogsIngestionClientImpl client) {
         this.client = client;
     }
 

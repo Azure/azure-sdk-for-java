@@ -248,11 +248,19 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
         jsonWriter.writeJsonField("scriptLinkedService", this.scriptLinkedService);
-        jsonWriter.writeUntypedField("degreeOfParallelism", this.degreeOfParallelism);
-        jsonWriter.writeUntypedField("priority", this.priority);
+        if (this.degreeOfParallelism != null) {
+            jsonWriter.writeUntypedField("degreeOfParallelism", this.degreeOfParallelism);
+        }
+        if (this.priority != null) {
+            jsonWriter.writeUntypedField("priority", this.priority);
+        }
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("runtimeVersion", this.runtimeVersion);
-        jsonWriter.writeUntypedField("compilationMode", this.compilationMode);
+        if (this.runtimeVersion != null) {
+            jsonWriter.writeUntypedField("runtimeVersion", this.runtimeVersion);
+        }
+        if (this.compilationMode != null) {
+            jsonWriter.writeUntypedField("compilationMode", this.compilationMode);
+        }
         return jsonWriter.writeEndObject();
     }
 

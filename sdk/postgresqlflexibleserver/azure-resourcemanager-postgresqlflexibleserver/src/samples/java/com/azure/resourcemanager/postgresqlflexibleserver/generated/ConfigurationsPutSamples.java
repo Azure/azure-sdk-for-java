@@ -10,19 +10,21 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 public final class ConfigurationsPutSamples {
     /*
      * x-ms-original-file:
-     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
-     * ConfigurationUpdate.json
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2025-08-01/examples/
+     * ConfigurationsUpdateUsingPut.json
      */
     /**
-     * Sample code: Update a user configuration.
+     * Sample code: Update, using Put verb, the value assigned to a specific modifiable configuration (also known as
+     * server parameter) of a server.
      * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void
-        updateAUserConfiguration(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        updateUsingPutVerbTheValueAssignedToASpecificModifiableConfigurationAlsoKnownAsServerParameterOfAServer(
+            com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
         manager.configurations()
-            .define("event_scheduler")
-            .withExistingFlexibleServer("testrg", "testserver")
+            .define("constraint_exclusion")
+            .withExistingFlexibleServer("exampleresourcegroup", "exampleserver")
             .withValue("on")
             .withSource("user-override")
             .create();

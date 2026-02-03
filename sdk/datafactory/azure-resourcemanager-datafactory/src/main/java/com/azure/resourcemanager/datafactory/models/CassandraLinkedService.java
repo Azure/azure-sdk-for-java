@@ -51,7 +51,7 @@ public final class CassandraLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private CassandraLinkedServiceTypeProperties innerTypeProperties() {
+    CassandraLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

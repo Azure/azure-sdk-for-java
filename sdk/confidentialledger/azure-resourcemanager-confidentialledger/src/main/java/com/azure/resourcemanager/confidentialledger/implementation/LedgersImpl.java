@@ -10,8 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confidentialledger.fluent.LedgersClient;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerBackupResponseInner;
 import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerInner;
+import com.azure.resourcemanager.confidentialledger.fluent.models.ConfidentialLedgerRestoreResponseInner;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerBackup;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerBackupResponse;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerRestore;
+import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedgerRestoreResponse;
 import com.azure.resourcemanager.confidentialledger.models.Ledgers;
 
 public final class LedgersImpl implements Ledgers {
@@ -76,6 +82,50 @@ public final class LedgersImpl implements Ledgers {
     public PagedIterable<ConfidentialLedger> list(String filter, Context context) {
         PagedIterable<ConfidentialLedgerInner> inner = this.serviceClient().list(filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfidentialLedgerImpl(inner1, this.manager()));
+    }
+
+    public ConfidentialLedgerBackupResponse backup(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerBackup confidentialLedger) {
+        ConfidentialLedgerBackupResponseInner inner
+            = this.serviceClient().backup(resourceGroupName, ledgerName, confidentialLedger);
+        if (inner != null) {
+            return new ConfidentialLedgerBackupResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ConfidentialLedgerBackupResponse backup(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerBackup confidentialLedger, Context context) {
+        ConfidentialLedgerBackupResponseInner inner
+            = this.serviceClient().backup(resourceGroupName, ledgerName, confidentialLedger, context);
+        if (inner != null) {
+            return new ConfidentialLedgerBackupResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ConfidentialLedgerRestoreResponse restore(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerRestore confidentialLedger) {
+        ConfidentialLedgerRestoreResponseInner inner
+            = this.serviceClient().restore(resourceGroupName, ledgerName, confidentialLedger);
+        if (inner != null) {
+            return new ConfidentialLedgerRestoreResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ConfidentialLedgerRestoreResponse restore(String resourceGroupName, String ledgerName,
+        ConfidentialLedgerRestore confidentialLedger, Context context) {
+        ConfidentialLedgerRestoreResponseInner inner
+            = this.serviceClient().restore(resourceGroupName, ledgerName, confidentialLedger, context);
+        if (inner != null) {
+            return new ConfidentialLedgerRestoreResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public ConfidentialLedger getById(String id) {

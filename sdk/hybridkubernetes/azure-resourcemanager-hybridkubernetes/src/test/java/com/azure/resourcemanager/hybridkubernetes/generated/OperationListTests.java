@@ -12,15 +12,15 @@ public final class OperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationList model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"jzyflu\",\"display\":{\"provider\":\"hmofc\",\"resource\":\"smy\",\"operation\":\"kdtmlxhekuk\",\"description\":\"txukcdmp\"}}],\"nextLink\":\"cryuan\"}")
+            "{\"value\":[{\"name\":\"dfdosygexp\",\"display\":{\"provider\":\"akhmsbzjhcrz\",\"resource\":\"dphlxaolt\",\"operation\":\"trg\",\"description\":\"bpf\"}},{\"name\":\"s\",\"display\":{\"provider\":\"gvfcj\",\"resource\":\"zoxxjtf\",\"operation\":\"luwfzitonpeqfpjk\",\"description\":\"xofpdvhpfxxypi\"}},{\"name\":\"nmayhuybb\",\"display\":{\"provider\":\"depoog\",\"resource\":\"uvamiheognarxzxt\",\"operation\":\"o\",\"description\":\"si\"}},{\"name\":\"evcciqihnhun\",\"display\":{\"provider\":\"jzrnf\",\"resource\":\"xgispemvtzfkufu\",\"operation\":\"jofxqe\",\"description\":\"jaeq\"}}],\"nextLink\":\"qjbasvms\"}")
             .toObject(OperationList.class);
-        Assertions.assertEquals("cryuan", model.nextLink());
+        Assertions.assertEquals("qjbasvms", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationList model = new OperationList().withNextLink("cryuan");
+        OperationList model = new OperationList().withNextLink("qjbasvms");
         model = BinaryData.fromObject(model).toObject(OperationList.class);
-        Assertions.assertEquals("cryuan", model.nextLink());
+        Assertions.assertEquals("qjbasvms", model.nextLink());
     }
 }

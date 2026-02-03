@@ -3,14 +3,14 @@
 
 package io.clientcore.core.shared;
 
-import io.clientcore.core.util.configuration.ConfigurationSource;
+import io.clientcore.core.utils.configuration.ConfigurationSource;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 public class TestConfigurationSource implements ConfigurationSource {
-    private Map<String, String> testData;
+    private final Map<String, String> testData;
 
     public TestConfigurationSource() {
         this.testData = new HashMap<>();
@@ -22,13 +22,13 @@ public class TestConfigurationSource implements ConfigurationSource {
     }
 
     @Override
-    public Map<String, String> getProperties(String path) {
-        if (path == null) {
-            return testData;
-        }
-        return testData.entrySet()
-            .stream()
-            .filter(prop -> prop.getKey().startsWith(path + "."))
-            .collect(Collectors.toMap(Map.Entry<String, String>::getKey, Map.Entry<String, String>::getValue));
+    public String getProperty(String name) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        return testData.get(name);
+    }
+
+    @Override
+    public boolean isMutable() {
+        return true;
     }
 }

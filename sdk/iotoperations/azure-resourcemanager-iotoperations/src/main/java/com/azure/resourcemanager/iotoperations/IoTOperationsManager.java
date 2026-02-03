@@ -22,31 +22,41 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotoperations.fluent.IoTOperationsManagementClient;
+import com.azure.resourcemanager.iotoperations.implementation.AkriConnectorTemplatesImpl;
+import com.azure.resourcemanager.iotoperations.implementation.AkriConnectorsImpl;
 import com.azure.resourcemanager.iotoperations.implementation.BrokerAuthenticationsImpl;
 import com.azure.resourcemanager.iotoperations.implementation.BrokerAuthorizationsImpl;
 import com.azure.resourcemanager.iotoperations.implementation.BrokerListenersImpl;
 import com.azure.resourcemanager.iotoperations.implementation.BrokersImpl;
 import com.azure.resourcemanager.iotoperations.implementation.DataflowEndpointsImpl;
+import com.azure.resourcemanager.iotoperations.implementation.DataflowGraphsImpl;
 import com.azure.resourcemanager.iotoperations.implementation.DataflowProfilesImpl;
 import com.azure.resourcemanager.iotoperations.implementation.DataflowsImpl;
 import com.azure.resourcemanager.iotoperations.implementation.InstancesImpl;
 import com.azure.resourcemanager.iotoperations.implementation.IoTOperationsManagementClientBuilder;
 import com.azure.resourcemanager.iotoperations.implementation.OperationsImpl;
+import com.azure.resourcemanager.iotoperations.implementation.RegistryEndpointsImpl;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectorTemplates;
+import com.azure.resourcemanager.iotoperations.models.AkriConnectors;
 import com.azure.resourcemanager.iotoperations.models.BrokerAuthentications;
 import com.azure.resourcemanager.iotoperations.models.BrokerAuthorizations;
 import com.azure.resourcemanager.iotoperations.models.BrokerListeners;
 import com.azure.resourcemanager.iotoperations.models.Brokers;
 import com.azure.resourcemanager.iotoperations.models.DataflowEndpoints;
+import com.azure.resourcemanager.iotoperations.models.DataflowGraphs;
 import com.azure.resourcemanager.iotoperations.models.DataflowProfiles;
 import com.azure.resourcemanager.iotoperations.models.Dataflows;
 import com.azure.resourcemanager.iotoperations.models.Instances;
 import com.azure.resourcemanager.iotoperations.models.Operations;
+import com.azure.resourcemanager.iotoperations.models.RegistryEndpoints;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -72,6 +82,14 @@ public final class IoTOperationsManager {
     private Dataflows dataflows;
 
     private DataflowEndpoints dataflowEndpoints;
+
+    private DataflowGraphs dataflowGraphs;
+
+    private RegistryEndpoints registryEndpoints;
+
+    private AkriConnectorTemplates akriConnectorTemplates;
+
+    private AkriConnectors akriConnectors;
 
     private final IoTOperationsManagementClient clientObject;
 
@@ -125,6 +143,9 @@ public final class IoTOperationsManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-iotoperations.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -232,12 +253,14 @@ public final class IoTOperationsManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.iotoperations")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -389,6 +412,55 @@ public final class IoTOperationsManager {
             this.dataflowEndpoints = new DataflowEndpointsImpl(clientObject.getDataflowEndpoints(), this);
         }
         return dataflowEndpoints;
+    }
+
+    /**
+     * Gets the resource collection API of DataflowGraphs. It manages DataflowGraphResource.
+     * 
+     * @return Resource collection API of DataflowGraphs.
+     */
+    public DataflowGraphs dataflowGraphs() {
+        if (this.dataflowGraphs == null) {
+            this.dataflowGraphs = new DataflowGraphsImpl(clientObject.getDataflowGraphs(), this);
+        }
+        return dataflowGraphs;
+    }
+
+    /**
+     * Gets the resource collection API of RegistryEndpoints. It manages RegistryEndpointResource.
+     * 
+     * @return Resource collection API of RegistryEndpoints.
+     */
+    public RegistryEndpoints registryEndpoints() {
+        if (this.registryEndpoints == null) {
+            this.registryEndpoints = new RegistryEndpointsImpl(clientObject.getRegistryEndpoints(), this);
+        }
+        return registryEndpoints;
+    }
+
+    /**
+     * Gets the resource collection API of AkriConnectorTemplates. It manages AkriConnectorTemplateResource.
+     * 
+     * @return Resource collection API of AkriConnectorTemplates.
+     */
+    public AkriConnectorTemplates akriConnectorTemplates() {
+        if (this.akriConnectorTemplates == null) {
+            this.akriConnectorTemplates
+                = new AkriConnectorTemplatesImpl(clientObject.getAkriConnectorTemplates(), this);
+        }
+        return akriConnectorTemplates;
+    }
+
+    /**
+     * Gets the resource collection API of AkriConnectors. It manages AkriConnectorResource.
+     * 
+     * @return Resource collection API of AkriConnectors.
+     */
+    public AkriConnectors akriConnectors() {
+        if (this.akriConnectors == null) {
+            this.akriConnectors = new AkriConnectorsImpl(clientObject.getAkriConnectors(), this);
+        }
+        return akriConnectors;
     }
 
     /**

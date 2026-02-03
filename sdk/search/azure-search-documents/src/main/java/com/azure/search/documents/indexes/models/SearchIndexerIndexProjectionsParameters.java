@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,17 +26,20 @@ public final class SearchIndexerIndexProjectionsParameters
     /*
      * Defines behavior of the index projections in relation to the rest of the indexer.
      */
+    @Generated
     private IndexProjectionMode projectionMode;
 
     /*
      * A dictionary of index projection-specific configuration properties. Each name is the name of a specific property.
      * Each value must be of a primitive type.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SearchIndexerIndexProjectionsParameters class.
      */
+    @Generated
     public SearchIndexerIndexProjectionsParameters() {
     }
 
@@ -45,6 +49,7 @@ public final class SearchIndexerIndexProjectionsParameters
      * 
      * @return the projectionMode value.
      */
+    @Generated
     public IndexProjectionMode getProjectionMode() {
         return this.projectionMode;
     }
@@ -56,6 +61,7 @@ public final class SearchIndexerIndexProjectionsParameters
      * @param projectionMode the projectionMode value to set.
      * @return the SearchIndexerIndexProjectionsParameters object itself.
      */
+    @Generated
     public SearchIndexerIndexProjectionsParameters setProjectionMode(IndexProjectionMode projectionMode) {
         this.projectionMode = projectionMode;
         return this;
@@ -67,6 +73,7 @@ public final class SearchIndexerIndexProjectionsParameters
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -78,6 +85,7 @@ public final class SearchIndexerIndexProjectionsParameters
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchIndexerIndexProjectionsParameters object itself.
      */
+    @Generated
     public SearchIndexerIndexProjectionsParameters setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -86,6 +94,7 @@ public final class SearchIndexerIndexProjectionsParameters
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -107,6 +116,7 @@ public final class SearchIndexerIndexProjectionsParameters
      * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerIndexProjectionsParameters.
      */
+    @Generated
     public static SearchIndexerIndexProjectionsParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchIndexerIndexProjectionsParameters deserializedSearchIndexerIndexProjectionsParameters

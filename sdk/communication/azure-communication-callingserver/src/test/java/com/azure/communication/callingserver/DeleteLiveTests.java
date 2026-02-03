@@ -12,9 +12,7 @@ import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 // Package marked to be deprecated
@@ -51,7 +49,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
         try {
             Response<Void> response = callingServerAsyncClient.getCallRecording()
                 .deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE);
-            assertThat(response.getStatusCode(), is(equalTo(200)));
+            assertEquals(200, response.getStatusCode());
         } catch (Exception e) {
             fail("Unexpected exception received", e);
         }
@@ -69,7 +67,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
         CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecording404Async");
         Response<Void> response
             = callAutomationClient.getCallRecording().deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE);
-        assertThat(response.getStatusCode(), is(equalTo(401)));
+        assertEquals(401, response.getStatusCode());
     }
 
     @ParameterizedTest
@@ -84,7 +82,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
         CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecording404Async");
         Response<Void> response = callAutomationClient.getCallRecording()
             .deleteRecordingWithResponse(RECORDING_DELETE_URL_404, Context.NONE);
-        assertThat(response.getStatusCode(), is(equalTo(404)));
+        assertEquals(404, response.getStatusCode());
     }
 
     private CallAutomationClient setupClient(CallAutomationClientBuilder builder, String testName) {

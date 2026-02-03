@@ -12,24 +12,24 @@ public final class InMageBasePolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageBasePolicyDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageBasePolicyDetails\",\"recoveryPointThresholdInMinutes\":1501835760,\"recoveryPointHistory\":1196368599,\"appConsistentFrequencyInMinutes\":612698857,\"multiVmSyncStatus\":\"tb\"}")
+            "{\"instanceType\":\"InMageBasePolicyDetails\",\"recoveryPointThresholdInMinutes\":873645416,\"recoveryPointHistory\":1536606623,\"appConsistentFrequencyInMinutes\":1155371464,\"multiVmSyncStatus\":\"aslavxj\"}")
             .toObject(InMageBasePolicyDetails.class);
-        Assertions.assertEquals(1501835760, model.recoveryPointThresholdInMinutes());
-        Assertions.assertEquals(1196368599, model.recoveryPointHistory());
-        Assertions.assertEquals(612698857, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals("tb", model.multiVmSyncStatus());
+        Assertions.assertEquals(873645416, model.recoveryPointThresholdInMinutes());
+        Assertions.assertEquals(1536606623, model.recoveryPointHistory());
+        Assertions.assertEquals(1155371464, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("aslavxj", model.multiVmSyncStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageBasePolicyDetails model = new InMageBasePolicyDetails().withRecoveryPointThresholdInMinutes(1501835760)
-            .withRecoveryPointHistory(1196368599)
-            .withAppConsistentFrequencyInMinutes(612698857)
-            .withMultiVmSyncStatus("tb");
+        InMageBasePolicyDetails model = new InMageBasePolicyDetails().withRecoveryPointThresholdInMinutes(873645416)
+            .withRecoveryPointHistory(1536606623)
+            .withAppConsistentFrequencyInMinutes(1155371464)
+            .withMultiVmSyncStatus("aslavxj");
         model = BinaryData.fromObject(model).toObject(InMageBasePolicyDetails.class);
-        Assertions.assertEquals(1501835760, model.recoveryPointThresholdInMinutes());
-        Assertions.assertEquals(1196368599, model.recoveryPointHistory());
-        Assertions.assertEquals(612698857, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals("tb", model.multiVmSyncStatus());
+        Assertions.assertEquals(873645416, model.recoveryPointThresholdInMinutes());
+        Assertions.assertEquals(1536606623, model.recoveryPointHistory());
+        Assertions.assertEquals(1155371464, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("aslavxj", model.multiVmSyncStatus());
     }
 }

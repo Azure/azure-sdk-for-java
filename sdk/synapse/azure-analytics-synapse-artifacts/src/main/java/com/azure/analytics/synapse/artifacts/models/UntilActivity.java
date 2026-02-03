@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,11 +23,13 @@ public class UntilActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Until";
 
     /*
      * An expression that would evaluate to Boolean. The loop will continue until this expression evaluates to true
      */
+    @Generated
     private Expression expression;
 
     /*
@@ -35,16 +38,19 @@ public class UntilActivity extends ControlActivity {
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with resultType string),
      * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object timeout;
 
     /*
      * List of activities to execute.
      */
+    @Generated
     private List<Activity> activities;
 
     /**
      * Creates an instance of UntilActivity class.
      */
+    @Generated
     public UntilActivity() {
     }
 
@@ -53,6 +59,7 @@ public class UntilActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +71,7 @@ public class UntilActivity extends ControlActivity {
      * 
      * @return the expression value.
      */
+    @Generated
     public Expression getExpression() {
         return this.expression;
     }
@@ -75,6 +83,7 @@ public class UntilActivity extends ControlActivity {
      * @param expression the expression value to set.
      * @return the UntilActivity object itself.
      */
+    @Generated
     public UntilActivity setExpression(Expression expression) {
         this.expression = expression;
         return this;
@@ -88,6 +97,7 @@ public class UntilActivity extends ControlActivity {
      * 
      * @return the timeout value.
      */
+    @Generated
     public Object getTimeout() {
         return this.timeout;
     }
@@ -101,6 +111,7 @@ public class UntilActivity extends ControlActivity {
      * @param timeout the timeout value to set.
      * @return the UntilActivity object itself.
      */
+    @Generated
     public UntilActivity setTimeout(Object timeout) {
         this.timeout = timeout;
         return this;
@@ -111,6 +122,7 @@ public class UntilActivity extends ControlActivity {
      * 
      * @return the activities value.
      */
+    @Generated
     public List<Activity> getActivities() {
         return this.activities;
     }
@@ -121,6 +133,7 @@ public class UntilActivity extends ControlActivity {
      * @param activities the activities value to set.
      * @return the UntilActivity object itself.
      */
+    @Generated
     public UntilActivity setActivities(List<Activity> activities) {
         this.activities = activities;
         return this;
@@ -129,6 +142,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public UntilActivity setName(String name) {
         super.setName(name);
@@ -138,6 +152,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public UntilActivity setDescription(String description) {
         super.setDescription(description);
@@ -147,6 +162,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public UntilActivity setState(ActivityState state) {
         super.setState(state);
@@ -156,6 +172,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public UntilActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -165,6 +182,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public UntilActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -174,6 +192,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public UntilActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -183,6 +202,7 @@ public class UntilActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -198,7 +218,9 @@ public class UntilActivity extends ControlActivity {
         if (expression != null || timeout != null || activities != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("expression", this.expression);
-            jsonWriter.writeUntypedField("timeout", this.timeout);
+            if (this.timeout != null) {
+                jsonWriter.writeUntypedField("timeout", this.timeout);
+            }
             jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
             jsonWriter.writeEndObject();
         }
@@ -219,6 +241,7 @@ public class UntilActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UntilActivity.
      */
+    @Generated
     public static UntilActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             UntilActivity deserializedUntilActivity = new UntilActivity();

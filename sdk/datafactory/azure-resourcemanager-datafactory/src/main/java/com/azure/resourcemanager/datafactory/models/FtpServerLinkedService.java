@@ -51,7 +51,7 @@ public final class FtpServerLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private FtpServerLinkedServiceTypeProperties innerTypeProperties() {
+    FtpServerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

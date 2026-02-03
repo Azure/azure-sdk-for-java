@@ -4,7 +4,9 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,46 +22,55 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
     /*
      * The id of the phone number, e.g. 11234567890.
      */
+    @Generated
     private String id;
 
     /*
      * String of the E.164 format of the phone number, e.g. +11234567890.
      */
+    @Generated
     private String phoneNumber;
 
     /*
      * The ISO 3166-2 code of the phone number's country, e.g. US.
      */
+    @Generated
     private String countryCode;
 
     /*
-     * The phone number's type, e.g. geographic, tollFree.
+     * The phone number's type, e.g. geographic, tollFree, mobile.
      */
+    @Generated
     private PhoneNumberType phoneNumberType;
 
     /*
      * Capabilities of a phone number.
      */
+    @Generated
     private PhoneNumberCapabilities capabilities;
 
     /*
      * The assignment type of the phone number. A phone number can be assigned to a person, or to an application.
      */
+    @Generated
     private PhoneNumberAssignmentType assignmentType;
 
     /*
      * The date and time that the phone number was purchased.
      */
+    @Generated
     private OffsetDateTime purchaseDate;
 
     /*
      * The incurred cost for a single phone number.
      */
+    @Generated
     private PhoneNumberCost cost;
 
     /**
      * Creates an instance of PurchasedPhoneNumber class.
      */
+    @Generated
     public PurchasedPhoneNumber() {
     }
 
@@ -68,6 +79,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -77,6 +89,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
      * 
      * @return the phoneNumber value.
      */
+    @Generated
     public String getPhoneNumber() {
         return this.phoneNumber;
     }
@@ -86,15 +99,17 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
      * 
      * @return the countryCode value.
      */
+    @Generated
     public String getCountryCode() {
         return this.countryCode;
     }
 
     /**
-     * Get the phoneNumberType property: The phone number's type, e.g. geographic, tollFree.
+     * Get the phoneNumberType property: The phone number's type, e.g. geographic, tollFree, mobile.
      * 
      * @return the phoneNumberType value.
      */
+    @Generated
     public PhoneNumberType getPhoneNumberType() {
         return this.phoneNumberType;
     }
@@ -104,6 +119,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
      * 
      * @return the capabilities value.
      */
+    @Generated
     public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
@@ -114,6 +130,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
      * 
      * @return the assignmentType value.
      */
+    @Generated
     public PhoneNumberAssignmentType getAssignmentType() {
         return this.assignmentType;
     }
@@ -123,6 +140,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
      * 
      * @return the purchaseDate value.
      */
+    @Generated
     public OffsetDateTime getPurchaseDate() {
         return this.purchaseDate;
     }
@@ -132,6 +150,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
      * 
      * @return the cost value.
      */
+    @Generated
     public PhoneNumberCost getCost() {
         return this.cost;
     }
@@ -139,6 +158,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -154,6 +174,7 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PurchasedPhoneNumber.
      */
+    @Generated
     public static PurchasedPhoneNumber fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PurchasedPhoneNumber deserializedPurchasedPhoneNumber = new PurchasedPhoneNumber();
@@ -175,8 +196,8 @@ public final class PurchasedPhoneNumber implements JsonSerializable<PurchasedPho
                     deserializedPurchasedPhoneNumber.assignmentType
                         = PhoneNumberAssignmentType.fromString(reader.getString());
                 } else if ("purchaseDate".equals(fieldName)) {
-                    deserializedPurchasedPhoneNumber.purchaseDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPurchasedPhoneNumber.purchaseDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("cost".equals(fieldName)) {
                     deserializedPurchasedPhoneNumber.cost = PhoneNumberCost.fromJson(reader);
                 } else {

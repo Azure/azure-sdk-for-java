@@ -12,14 +12,14 @@ public final class BgpConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BgpConfiguration model
-            = BinaryData.fromString("{\"asnToIpAddressMapping\":\"yegu\"}").toObject(BgpConfiguration.class);
-        Assertions.assertEquals("yegu", model.asnToIpAddressMapping());
+            = BinaryData.fromString("{\"asnToIpAddressMapping\":\"yhxdeoejzicwi\"}").toObject(BgpConfiguration.class);
+        Assertions.assertEquals("yhxdeoejzicwi", model.asnToIpAddressMapping());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BgpConfiguration model = new BgpConfiguration().withAsnToIpAddressMapping("yegu");
+        BgpConfiguration model = new BgpConfiguration().withAsnToIpAddressMapping("yhxdeoejzicwi");
         model = BinaryData.fromObject(model).toObject(BgpConfiguration.class);
-        Assertions.assertEquals("yegu", model.asnToIpAddressMapping());
+        Assertions.assertEquals("yhxdeoejzicwi", model.asnToIpAddressMapping());
     }
 }

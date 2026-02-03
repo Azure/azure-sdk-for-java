@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class PolicyRestrictionsCheckAtManagementGroupScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyRestrictions_CheckAtManagementGroupScope.json
      */
     /**

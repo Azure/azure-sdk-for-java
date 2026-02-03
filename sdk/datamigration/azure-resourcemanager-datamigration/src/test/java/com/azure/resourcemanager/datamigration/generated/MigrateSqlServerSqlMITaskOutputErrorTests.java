@@ -11,7 +11,7 @@ public final class MigrateSqlServerSqlMITaskOutputErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MigrateSqlServerSqlMITaskOutputError model = BinaryData.fromString(
-            "{\"resultType\":\"ErrorOutput\",\"error\":{\"message\":\"qyrxp\",\"actionableMessage\":\"cgq\",\"filePath\":\"ismjqfrddgamqu\",\"lineNumber\":\"os\",\"hResult\":303395076,\"stackTrace\":\"ivfcdisyirnx\"},\"id\":\"czexrxzbujrtrhqv\"}")
+            "{\"resultType\":\"ErrorOutput\",\"error\":{\"message\":\"nrd\",\"actionableMessage\":\"ibqbnaomhjrm\",\"filePath\":\"hmaxljalfi\",\"lineNumber\":\"jmobca\",\"hResult\":516966793,\"stackTrace\":\"xxqcwgaxf\"},\"id\":\"aknokzwjjzrl\"}")
             .toObject(MigrateSqlServerSqlMITaskOutputError.class);
     }
 

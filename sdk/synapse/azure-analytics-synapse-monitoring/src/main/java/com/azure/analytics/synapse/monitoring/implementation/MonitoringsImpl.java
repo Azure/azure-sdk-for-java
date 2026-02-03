@@ -53,7 +53,7 @@ public final class MonitoringsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "MonitoringClientMoni")
+    @ServiceInterface(name = "MonitoringClientMonitorings")
     public interface MonitoringsService {
         @Get("/monitoring/workloadTypes/spark/Applications")
         @ExpectedResponses({ 200 })

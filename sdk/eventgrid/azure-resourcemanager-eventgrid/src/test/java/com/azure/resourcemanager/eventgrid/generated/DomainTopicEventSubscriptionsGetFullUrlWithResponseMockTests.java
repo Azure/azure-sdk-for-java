@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFullUrl;
@@ -20,20 +20,20 @@ import reactor.core.publisher.Mono;
 public final class DomainTopicEventSubscriptionsGetFullUrlWithResponseMockTests {
     @Test
     public void testGetFullUrlWithResponse() throws Exception {
-        String responseStr = "{\"endpointUrl\":\"hwilz\"}";
+        String responseStr = "{\"endpointUrl\":\"xudnmckap\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EventSubscriptionFullUrl response = manager.domainTopicEventSubscriptions()
-            .getFullUrlWithResponse("qsratjhd", "zybspijhfrzgdkk", "gv", "ukhsusmmorf",
+            .getFullUrlWithResponse("czygxv", "ajpxecxqnwhscoza", "mvgxsmpknpwir", "ljfewxqo",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hwilz", response.endpointUrl());
+        Assertions.assertEquals("xudnmckap", response.endpointUrl());
     }
 }

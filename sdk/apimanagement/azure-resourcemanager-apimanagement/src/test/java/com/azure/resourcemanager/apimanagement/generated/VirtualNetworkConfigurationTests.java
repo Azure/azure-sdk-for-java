@@ -13,15 +13,15 @@ public final class VirtualNetworkConfigurationTests {
     public void testDeserialize() throws Exception {
         VirtualNetworkConfiguration model = BinaryData
             .fromString(
-                "{\"vnetid\":\"nwcehaqidoyzl\",\"subnetname\":\"iomqoqpepiaea\",\"subnetResourceId\":\"sergdtpe\"}")
+                "{\"vnetid\":\"ioshjgczetybn\",\"subnetname\":\"ztlcgc\",\"subnetResourceId\":\"chfjvmywjzebe\"}")
             .toObject(VirtualNetworkConfiguration.class);
-        Assertions.assertEquals("sergdtpe", model.subnetResourceId());
+        Assertions.assertEquals("chfjvmywjzebe", model.subnetResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkConfiguration model = new VirtualNetworkConfiguration().withSubnetResourceId("sergdtpe");
+        VirtualNetworkConfiguration model = new VirtualNetworkConfiguration().withSubnetResourceId("chfjvmywjzebe");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkConfiguration.class);
-        Assertions.assertEquals("sergdtpe", model.subnetResourceId());
+        Assertions.assertEquals("chfjvmywjzebe", model.subnetResourceId());
     }
 }

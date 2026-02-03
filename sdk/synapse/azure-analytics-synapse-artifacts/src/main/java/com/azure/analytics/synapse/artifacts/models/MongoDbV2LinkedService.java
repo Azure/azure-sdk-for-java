@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class MongoDbV2LinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "MongoDbV2";
 
     /*
      * The MongoDB connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
      * SecureString or AzureKeyVaultSecretReference.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object database;
 
     /**
      * Creates an instance of MongoDbV2LinkedService class.
      */
+    @Generated
     public MongoDbV2LinkedService() {
     }
 
@@ -45,6 +50,7 @@ public class MongoDbV2LinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -56,6 +62,7 @@ public class MongoDbV2LinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -67,6 +74,7 @@ public class MongoDbV2LinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the MongoDbV2LinkedService object itself.
      */
+    @Generated
     public MongoDbV2LinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -78,6 +86,7 @@ public class MongoDbV2LinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -89,6 +98,7 @@ public class MongoDbV2LinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the MongoDbV2LinkedService object itself.
      */
+    @Generated
     public MongoDbV2LinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -97,6 +107,17 @@ public class MongoDbV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public MongoDbV2LinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public MongoDbV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -106,6 +127,7 @@ public class MongoDbV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbV2LinkedService setDescription(String description) {
         super.setDescription(description);
@@ -115,6 +137,7 @@ public class MongoDbV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -124,6 +147,7 @@ public class MongoDbV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbV2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -133,9 +157,11 @@ public class MongoDbV2LinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -164,6 +190,7 @@ public class MongoDbV2LinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MongoDbV2LinkedService.
      */
+    @Generated
     public static MongoDbV2LinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MongoDbV2LinkedService deserializedMongoDbV2LinkedService = new MongoDbV2LinkedService();
@@ -172,7 +199,9 @@ public class MongoDbV2LinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedMongoDbV2LinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedMongoDbV2LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedMongoDbV2LinkedService.setDescription(reader.getString());

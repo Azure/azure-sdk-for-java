@@ -11,11 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.nginx.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.nginx.fluent.models.AnalysisResultInner;
-import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationResponseInner;
 import com.azure.resourcemanager.nginx.models.AnalysisCreate;
 import com.azure.resourcemanager.nginx.models.AnalysisResult;
 import com.azure.resourcemanager.nginx.models.Configurations;
-import com.azure.resourcemanager.nginx.models.NginxConfiguration;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationResponse;
 
 public final class ConfigurationsImpl implements Configurations {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationsImpl.class);
@@ -30,33 +30,38 @@ public final class ConfigurationsImpl implements Configurations {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<NginxConfiguration> list(String resourceGroupName, String deploymentName) {
-        PagedIterable<NginxConfigurationInner> inner = this.serviceClient().list(resourceGroupName, deploymentName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NginxConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<NginxConfigurationResponse> list(String resourceGroupName, String deploymentName) {
+        PagedIterable<NginxConfigurationResponseInner> inner
+            = this.serviceClient().list(resourceGroupName, deploymentName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new NginxConfigurationResponseImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NginxConfiguration> list(String resourceGroupName, String deploymentName, Context context) {
-        PagedIterable<NginxConfigurationInner> inner
+    public PagedIterable<NginxConfigurationResponse> list(String resourceGroupName, String deploymentName,
+        Context context) {
+        PagedIterable<NginxConfigurationResponseInner> inner
             = this.serviceClient().list(resourceGroupName, deploymentName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new NginxConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new NginxConfigurationResponseImpl(inner1, this.manager()));
     }
 
-    public Response<NginxConfiguration> getWithResponse(String resourceGroupName, String deploymentName,
+    public Response<NginxConfigurationResponse> getWithResponse(String resourceGroupName, String deploymentName,
         String configurationName, Context context) {
-        Response<NginxConfigurationInner> inner
+        Response<NginxConfigurationResponseInner> inner
             = this.serviceClient().getWithResponse(resourceGroupName, deploymentName, configurationName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new NginxConfigurationImpl(inner.getValue(), this.manager()));
+                new NginxConfigurationResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public NginxConfiguration get(String resourceGroupName, String deploymentName, String configurationName) {
-        NginxConfigurationInner inner = this.serviceClient().get(resourceGroupName, deploymentName, configurationName);
+    public NginxConfigurationResponse get(String resourceGroupName, String deploymentName, String configurationName) {
+        NginxConfigurationResponseInner inner
+            = this.serviceClient().get(resourceGroupName, deploymentName, configurationName);
         if (inner != null) {
-            return new NginxConfigurationImpl(inner, this.manager());
+            return new NginxConfigurationResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -91,7 +96,7 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public NginxConfiguration getById(String id) {
+    public NginxConfigurationResponse getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -110,7 +115,7 @@ public final class ConfigurationsImpl implements Configurations {
         return this.getWithResponse(resourceGroupName, deploymentName, configurationName, Context.NONE).getValue();
     }
 
-    public Response<NginxConfiguration> getByIdWithResponse(String id, Context context) {
+    public Response<NginxConfigurationResponse> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -175,7 +180,7 @@ public final class ConfigurationsImpl implements Configurations {
         return this.serviceManager;
     }
 
-    public NginxConfigurationImpl define(String name) {
-        return new NginxConfigurationImpl(name, this.manager());
+    public NginxConfigurationResponseImpl define(String name) {
+        return new NginxConfigurationResponseImpl(name, this.manager());
     }
 }

@@ -1,0 +1,52 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/compute/
+    exclude:
+      - sdk/compute/pom.xml
+      - sdk/compute/azure-resourcemanager-compute/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/compute/
+    exclude:
+      - sdk/compute/pom.xml
+      - sdk/compute/azure-resourcemanager-compute/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercompute
+    displayName: azure-resourcemanager-compute
+    type: boolean
+    default: false
+  - name: release_azureresourcemanagercomputerecommender
+    displayName: azure-resourcemanager-compute-recommender
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: compute
+    Artifacts:
+      - name: azure-resourcemanager-compute
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercompute
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercompute }}
+      - name: azure-resourcemanager-compute-recommender
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercomputerecommender
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercomputerecommender }}

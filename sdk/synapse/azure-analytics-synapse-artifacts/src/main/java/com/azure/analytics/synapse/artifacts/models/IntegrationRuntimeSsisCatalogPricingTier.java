@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,21 +17,25 @@ public final class IntegrationRuntimeSsisCatalogPricingTier
     /**
      * Static value Basic for IntegrationRuntimeSsisCatalogPricingTier.
      */
+    @Generated
     public static final IntegrationRuntimeSsisCatalogPricingTier BASIC = fromString("Basic");
 
     /**
      * Static value Standard for IntegrationRuntimeSsisCatalogPricingTier.
      */
+    @Generated
     public static final IntegrationRuntimeSsisCatalogPricingTier STANDARD = fromString("Standard");
 
     /**
      * Static value Premium for IntegrationRuntimeSsisCatalogPricingTier.
      */
+    @Generated
     public static final IntegrationRuntimeSsisCatalogPricingTier PREMIUM = fromString("Premium");
 
     /**
      * Static value PremiumRS for IntegrationRuntimeSsisCatalogPricingTier.
      */
+    @Generated
     public static final IntegrationRuntimeSsisCatalogPricingTier PREMIUM_RS = fromString("PremiumRS");
 
     /**
@@ -38,6 +43,7 @@ public final class IntegrationRuntimeSsisCatalogPricingTier
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IntegrationRuntimeSsisCatalogPricingTier() {
     }
@@ -48,6 +54,7 @@ public final class IntegrationRuntimeSsisCatalogPricingTier
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeSsisCatalogPricingTier.
      */
+    @Generated
     public static IntegrationRuntimeSsisCatalogPricingTier fromString(String name) {
         return fromString(name, IntegrationRuntimeSsisCatalogPricingTier.class);
     }
@@ -57,6 +64,7 @@ public final class IntegrationRuntimeSsisCatalogPricingTier
      * 
      * @return known IntegrationRuntimeSsisCatalogPricingTier values.
      */
+    @Generated
     public static Collection<IntegrationRuntimeSsisCatalogPricingTier> values() {
         return values(IntegrationRuntimeSsisCatalogPricingTier.class);
     }

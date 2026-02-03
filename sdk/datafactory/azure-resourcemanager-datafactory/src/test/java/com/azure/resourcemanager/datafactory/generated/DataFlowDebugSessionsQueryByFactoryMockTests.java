@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessionInfo;
@@ -22,26 +22,26 @@ public final class DataFlowDebugSessionsQueryByFactoryMockTests {
     @Test
     public void testQueryByFactory() throws Exception {
         String responseStr
-            = "{\"value\":[{\"dataFlowName\":\"zqcymdj\",\"computeType\":\"ojykytpyirctdaoj\",\"coreCount\":733493660,\"nodeCount\":550438817,\"integrationRuntimeName\":\"ikqagmlhs\",\"sessionId\":\"pihenvhlpuobha\",\"startTime\":\"aowpm\",\"timeToLiveInMinutes\":701601830,\"lastActivityTime\":\"uziogboaimwxswfy\",\"\":{\"gtgc\":\"datacjhjrwn\",\"w\":\"datampjdrhxfg\"}}]}";
+            = "{\"value\":[{\"dataFlowName\":\"lxqjshyyrc\",\"computeType\":\"wzqsfaurmqpkgwfb\",\"coreCount\":570698010,\"nodeCount\":1408597782,\"integrationRuntimeName\":\"rhhxlibdn\",\"sessionId\":\"amslvpxsy\",\"startTime\":\"ifv\",\"timeToLiveInMinutes\":1795872243,\"lastActivityTime\":\"aauls\",\"gx\":\"datahvcvveb\",\"bhkyas\":\"datarpho\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DataFlowDebugSessionInfo> response = manager.dataFlowDebugSessions()
-            .queryByFactory("lbjccjorovr", "dfgdvifo", com.azure.core.util.Context.NONE);
+            .queryByFactory("uupw", "oohzifbbsncorini", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zqcymdj", response.iterator().next().dataFlowName());
-        Assertions.assertEquals("ojykytpyirctdaoj", response.iterator().next().computeType());
-        Assertions.assertEquals(733493660, response.iterator().next().coreCount());
-        Assertions.assertEquals(550438817, response.iterator().next().nodeCount());
-        Assertions.assertEquals("ikqagmlhs", response.iterator().next().integrationRuntimeName());
-        Assertions.assertEquals("pihenvhlpuobha", response.iterator().next().sessionId());
-        Assertions.assertEquals("aowpm", response.iterator().next().startTime());
-        Assertions.assertEquals(701601830, response.iterator().next().timeToLiveInMinutes());
-        Assertions.assertEquals("uziogboaimwxswfy", response.iterator().next().lastActivityTime());
+        Assertions.assertEquals("lxqjshyyrc", response.iterator().next().dataFlowName());
+        Assertions.assertEquals("wzqsfaurmqpkgwfb", response.iterator().next().computeType());
+        Assertions.assertEquals(570698010, response.iterator().next().coreCount());
+        Assertions.assertEquals(1408597782, response.iterator().next().nodeCount());
+        Assertions.assertEquals("rhhxlibdn", response.iterator().next().integrationRuntimeName());
+        Assertions.assertEquals("amslvpxsy", response.iterator().next().sessionId());
+        Assertions.assertEquals("ifv", response.iterator().next().startTime());
+        Assertions.assertEquals(1795872243, response.iterator().next().timeToLiveInMinutes());
+        Assertions.assertEquals("aauls", response.iterator().next().lastActivityTime());
     }
 }

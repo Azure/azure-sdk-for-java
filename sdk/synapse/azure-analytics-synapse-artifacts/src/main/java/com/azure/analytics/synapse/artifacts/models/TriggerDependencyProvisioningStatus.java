@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class TriggerDependencyProvisioningStatus
     /*
      * Trigger name.
      */
+    @Generated
     private String triggerName;
 
     /*
      * Provisioning status.
      */
+    @Generated
     private String provisioningStatus;
 
     /**
      * Creates an instance of TriggerDependencyProvisioningStatus class.
      */
+    @Generated
     public TriggerDependencyProvisioningStatus() {
     }
 
@@ -38,6 +42,7 @@ public final class TriggerDependencyProvisioningStatus
      * 
      * @return the triggerName value.
      */
+    @Generated
     public String getTriggerName() {
         return this.triggerName;
     }
@@ -48,6 +53,7 @@ public final class TriggerDependencyProvisioningStatus
      * @param triggerName the triggerName value to set.
      * @return the TriggerDependencyProvisioningStatus object itself.
      */
+    @Generated
     public TriggerDependencyProvisioningStatus setTriggerName(String triggerName) {
         this.triggerName = triggerName;
         return this;
@@ -58,6 +64,7 @@ public final class TriggerDependencyProvisioningStatus
      * 
      * @return the provisioningStatus value.
      */
+    @Generated
     public String getProvisioningStatus() {
         return this.provisioningStatus;
     }
@@ -68,6 +75,7 @@ public final class TriggerDependencyProvisioningStatus
      * @param provisioningStatus the provisioningStatus value to set.
      * @return the TriggerDependencyProvisioningStatus object itself.
      */
+    @Generated
     public TriggerDependencyProvisioningStatus setProvisioningStatus(String provisioningStatus) {
         this.provisioningStatus = provisioningStatus;
         return this;
@@ -76,6 +84,7 @@ public final class TriggerDependencyProvisioningStatus
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class TriggerDependencyProvisioningStatus
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TriggerDependencyProvisioningStatus.
      */
+    @Generated
     public static TriggerDependencyProvisioningStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TriggerDependencyProvisioningStatus deserializedTriggerDependencyProvisioningStatus

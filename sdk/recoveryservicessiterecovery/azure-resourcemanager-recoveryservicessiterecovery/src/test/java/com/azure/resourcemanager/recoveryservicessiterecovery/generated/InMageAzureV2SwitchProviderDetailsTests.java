@@ -11,7 +11,7 @@ public final class InMageAzureV2SwitchProviderDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2SwitchProviderDetails model = BinaryData.fromString(
-            "{\"targetVaultId\":\"asmcolmugpyvaos\",\"targetResourceId\":\"l\",\"targetFabricId\":\"zxeygzvtye\",\"targetApplianceId\":\"hubnobgu\"}")
+            "{\"targetVaultId\":\"oczhapejovtk\",\"targetResourceId\":\"nhwhhnoyrzaao\",\"targetFabricId\":\"hpm\",\"targetApplianceId\":\"nvjeateaxxc\"}")
             .toObject(InMageAzureV2SwitchProviderDetails.class);
     }
 

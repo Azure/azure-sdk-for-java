@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ResourceProviderType.
+ * The provider type.
  */
 public final class ResourceProviderType extends ExpandableStringEnum<ResourceProviderType> {
     /**

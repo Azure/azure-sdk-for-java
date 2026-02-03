@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class ODataResourceDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "ODataResource";
 
     /*
      * The OData resource path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object path;
 
     /**
      * Creates an instance of ODataResourceDataset class.
      */
+    @Generated
     public ODataResourceDataset() {
     }
 
@@ -39,6 +43,7 @@ public class ODataResourceDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public class ODataResourceDataset extends Dataset {
      * 
      * @return the path value.
      */
+    @Generated
     public Object getPath() {
         return this.path;
     }
@@ -59,6 +65,7 @@ public class ODataResourceDataset extends Dataset {
      * @param path the path value to set.
      * @return the ODataResourceDataset object itself.
      */
+    @Generated
     public ODataResourceDataset setPath(Object path) {
         this.path = path;
         return this;
@@ -67,6 +74,7 @@ public class ODataResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ODataResourceDataset setDescription(String description) {
         super.setDescription(description);
@@ -76,6 +84,7 @@ public class ODataResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ODataResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -85,6 +94,7 @@ public class ODataResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ODataResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -94,6 +104,7 @@ public class ODataResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ODataResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -103,6 +114,7 @@ public class ODataResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ODataResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -112,6 +124,7 @@ public class ODataResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ODataResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -121,6 +134,7 @@ public class ODataResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ODataResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -130,20 +144,27 @@ public class ODataResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (path != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("path", this.path);
+            if (this.path != null) {
+                jsonWriter.writeUntypedField("path", this.path);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -163,6 +184,7 @@ public class ODataResourceDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ODataResourceDataset.
      */
+    @Generated
     public static ODataResourceDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ODataResourceDataset deserializedODataResourceDataset = new ODataResourceDataset();

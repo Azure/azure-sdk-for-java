@@ -13,33 +13,33 @@ public final class InMageAzureV2ReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2ReprotectInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageAzureV2\",\"masterTargetId\":\"sqsqkpdmioyjpnml\",\"processServerId\":\"qcpszp\",\"storageAccountId\":\"vqdvrdmvxyrxdhg\",\"runAsAccountId\":\"oj\",\"policyId\":\"aotcgbzxmbtp\",\"logStorageAccountId\":\"foioyidoxzn\",\"disksToInclude\":[\"dtmuuvd\",\"wsxmrszb\"]}")
+            "{\"instanceType\":\"InMageAzureV2\",\"masterTargetId\":\"oxdjxldnaryy\",\"processServerId\":\"zkdolrndwdbvxvza\",\"storageAccountId\":\"doyqx\",\"runAsAccountId\":\"nkfthmcxqqxmyz\",\"policyId\":\"a\",\"logStorageAccountId\":\"n\",\"disksToInclude\":[\"rvmzrqra\",\"a\",\"ivznllas\",\"k\"]}")
             .toObject(InMageAzureV2ReprotectInput.class);
-        Assertions.assertEquals("sqsqkpdmioyjpnml", model.masterTargetId());
-        Assertions.assertEquals("qcpszp", model.processServerId());
-        Assertions.assertEquals("vqdvrdmvxyrxdhg", model.storageAccountId());
-        Assertions.assertEquals("oj", model.runAsAccountId());
-        Assertions.assertEquals("aotcgbzxmbtp", model.policyId());
-        Assertions.assertEquals("foioyidoxzn", model.logStorageAccountId());
-        Assertions.assertEquals("dtmuuvd", model.disksToInclude().get(0));
+        Assertions.assertEquals("oxdjxldnaryy", model.masterTargetId());
+        Assertions.assertEquals("zkdolrndwdbvxvza", model.processServerId());
+        Assertions.assertEquals("doyqx", model.storageAccountId());
+        Assertions.assertEquals("nkfthmcxqqxmyz", model.runAsAccountId());
+        Assertions.assertEquals("a", model.policyId());
+        Assertions.assertEquals("n", model.logStorageAccountId());
+        Assertions.assertEquals("rvmzrqra", model.disksToInclude().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2ReprotectInput model = new InMageAzureV2ReprotectInput().withMasterTargetId("sqsqkpdmioyjpnml")
-            .withProcessServerId("qcpszp")
-            .withStorageAccountId("vqdvrdmvxyrxdhg")
-            .withRunAsAccountId("oj")
-            .withPolicyId("aotcgbzxmbtp")
-            .withLogStorageAccountId("foioyidoxzn")
-            .withDisksToInclude(Arrays.asList("dtmuuvd", "wsxmrszb"));
+        InMageAzureV2ReprotectInput model = new InMageAzureV2ReprotectInput().withMasterTargetId("oxdjxldnaryy")
+            .withProcessServerId("zkdolrndwdbvxvza")
+            .withStorageAccountId("doyqx")
+            .withRunAsAccountId("nkfthmcxqqxmyz")
+            .withPolicyId("a")
+            .withLogStorageAccountId("n")
+            .withDisksToInclude(Arrays.asList("rvmzrqra", "a", "ivznllas", "k"));
         model = BinaryData.fromObject(model).toObject(InMageAzureV2ReprotectInput.class);
-        Assertions.assertEquals("sqsqkpdmioyjpnml", model.masterTargetId());
-        Assertions.assertEquals("qcpszp", model.processServerId());
-        Assertions.assertEquals("vqdvrdmvxyrxdhg", model.storageAccountId());
-        Assertions.assertEquals("oj", model.runAsAccountId());
-        Assertions.assertEquals("aotcgbzxmbtp", model.policyId());
-        Assertions.assertEquals("foioyidoxzn", model.logStorageAccountId());
-        Assertions.assertEquals("dtmuuvd", model.disksToInclude().get(0));
+        Assertions.assertEquals("oxdjxldnaryy", model.masterTargetId());
+        Assertions.assertEquals("zkdolrndwdbvxvza", model.processServerId());
+        Assertions.assertEquals("doyqx", model.storageAccountId());
+        Assertions.assertEquals("nkfthmcxqqxmyz", model.runAsAccountId());
+        Assertions.assertEquals("a", model.policyId());
+        Assertions.assertEquals("n", model.logStorageAccountId());
+        Assertions.assertEquals("rvmzrqra", model.disksToInclude().get(0));
     }
 }

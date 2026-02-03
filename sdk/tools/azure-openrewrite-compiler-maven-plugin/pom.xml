@@ -1,0 +1,56 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-openrewrite-compiler-maven-plugin</artifactId>
+  <version>1.0.0-beta.1</version>
+  <packaging>maven-plugin</packaging>
+
+  <name>Azure OpenRewrite Golden Image Compiler</name>
+  <description>A custom Maven plugin for compiling golden images.</description>
+
+  <properties>
+    <maven-plugin-tools.version>3.15.1</maven-plugin-tools.version> <!-- {x-version-update;org.apache.maven.plugin-tools:maven-plugin-annotations;external_dependency} -->
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>3.9.11</version> <!-- {x-version-update;org.apache.maven:maven-plugin-api;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>3.9.11</version> <!-- {x-version-update;org.apache.maven:maven-core;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>${maven-plugin-tools.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${maven-plugin-tools.version}</version>
+          <executions>
+            <execution>
+              <id>help-mojo</id>
+              <goals>
+                <goal>helpmojo</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>

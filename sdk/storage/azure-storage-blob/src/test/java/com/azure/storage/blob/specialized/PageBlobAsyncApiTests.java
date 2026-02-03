@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
@@ -12,8 +13,11 @@ import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -35,6 +39,7 @@ import com.azure.storage.blob.options.ListPageRangesDiffOptions;
 import com.azure.storage.blob.options.ListPageRangesOptions;
 import com.azure.storage.blob.options.PageBlobCopyIncrementalOptions;
 import com.azure.storage.blob.options.PageBlobCreateOptions;
+import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
@@ -52,6 +57,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -554,21 +560,24 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         }).verifyComplete();
     }
 
-    /*@RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2024-08-04")
     @Test
     public void uploadPageFromURLSourceErrorAndStatusCode() {
         PageBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
-    
+
         PageRange pageRange = new PageRange().setStart(0).setEnd(PageBlobClient.PAGE_BYTES - 1);
-    
-        StepVerifier.create(destBlob.createIfNotExists(Constants.KB).then(destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null)))
-            .verifyErrorSatisfies(r -> {
+
+        StepVerifier.create(destBlob.createIfNotExists(Constants.KB)
+            .then(destBlob.uploadPagesFromUrl(pageRange, bc.getBlobUrl(), null))).verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertTrue(e.getStatusCode() == 409);
-                assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
-                assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
+                assertTrue(e.getStatusCode() == 401);
+                assertTrue(e.getServiceMessage().contains("NoAuthenticationInformation"));
+                assertTrue(e.getServiceMessage()
+                    .contains(
+                        "Server failed to authenticate the request. Please refer to the information in the www-authenticate header."));
+
             });
-    }*/
+    }
 
     @Test
     public void uploadPageFromURLRange() {
@@ -1799,6 +1808,40 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             = getSpecializedBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildPageBlobAsyncClient();
 
         StepVerifier.create(aadBlob.exists()).expectNext(true).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        PageBlobAsyncClient destBlob
+            = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
+
+        PageBlobUploadPagesFromUrlOptions options
+            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(destBlob.create(Constants.KB))
+                .then(destBlob.uploadPagesFromUrlWithResponse(options))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
+            .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
+            .verifyComplete();
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
     }
 
 }

@@ -15,6 +15,7 @@ import java.time.Instant;
 public abstract class ScenarioBase<TOptions extends StressOptions> extends PerfStressTest<TOptions> {
     private final TelemetryHelper telemetryHelper;
     private final Instant startTime = Instant.now();
+
     /**
      * Creates a stress test.
      *

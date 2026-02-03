@@ -152,23 +152,6 @@ public final class SapDatabaseProperties implements JsonSerializable<SapDatabase
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (loadBalancerDetails() != null) {
-            loadBalancerDetails().validate();
-        }
-        if (vmDetails() != null) {
-            vmDetails().forEach(e -> e.validate());
-        }
-        if (errors() != null) {
-            errors().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

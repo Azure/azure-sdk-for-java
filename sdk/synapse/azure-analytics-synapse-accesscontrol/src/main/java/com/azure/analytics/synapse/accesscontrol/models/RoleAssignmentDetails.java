@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
     /*
      * Role Assignment ID
      */
+    @Generated
     private String id;
 
     /*
      * Role ID of the Synapse Built-In Role
      */
+    @Generated
     private UUID roleDefinitionId;
 
     /*
      * Object ID of the AAD principal or security-group
      */
+    @Generated
     private UUID principalId;
 
     /*
      * Scope at the role assignment is created
      */
+    @Generated
     private String scope;
 
     /*
      * Type of the principal Id: User, Group or ServicePrincipal
      */
+    @Generated
     private String principalType;
 
     /**
      * Creates an instance of RoleAssignmentDetails class.
      */
+    @Generated
     public RoleAssignmentDetails() {
     }
 
@@ -54,6 +61,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -64,6 +72,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * @param id the id value to set.
      * @return the RoleAssignmentDetails object itself.
      */
+    @Generated
     public RoleAssignmentDetails setId(String id) {
         this.id = id;
         return this;
@@ -74,6 +83,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * 
      * @return the roleDefinitionId value.
      */
+    @Generated
     public UUID getRoleDefinitionId() {
         return this.roleDefinitionId;
     }
@@ -84,6 +94,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentDetails object itself.
      */
+    @Generated
     public RoleAssignmentDetails setRoleDefinitionId(UUID roleDefinitionId) {
         this.roleDefinitionId = roleDefinitionId;
         return this;
@@ -94,6 +105,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * 
      * @return the principalId value.
      */
+    @Generated
     public UUID getPrincipalId() {
         return this.principalId;
     }
@@ -104,6 +116,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentDetails object itself.
      */
+    @Generated
     public RoleAssignmentDetails setPrincipalId(UUID principalId) {
         this.principalId = principalId;
         return this;
@@ -114,6 +127,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * 
      * @return the scope value.
      */
+    @Generated
     public String getScope() {
         return this.scope;
     }
@@ -124,6 +138,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * @param scope the scope value to set.
      * @return the RoleAssignmentDetails object itself.
      */
+    @Generated
     public RoleAssignmentDetails setScope(String scope) {
         this.scope = scope;
         return this;
@@ -134,6 +149,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * 
      * @return the principalType value.
      */
+    @Generated
     public String getPrincipalType() {
         return this.principalType;
     }
@@ -144,6 +160,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * @param principalType the principalType value to set.
      * @return the RoleAssignmentDetails object itself.
      */
+    @Generated
     public RoleAssignmentDetails setPrincipalType(String principalType) {
         this.principalType = principalType;
         return this;
@@ -152,6 +169,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -171,6 +189,7 @@ public final class RoleAssignmentDetails implements JsonSerializable<RoleAssignm
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RoleAssignmentDetails.
      */
+    @Generated
     public static RoleAssignmentDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RoleAssignmentDetails deserializedRoleAssignmentDetails = new RoleAssignmentDetails();

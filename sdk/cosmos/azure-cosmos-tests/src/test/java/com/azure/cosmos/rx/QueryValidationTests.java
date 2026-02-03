@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -37,13 +38,12 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -56,6 +56,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -355,7 +356,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
         // group by should not be cached
-        sqlQuerySpec.setQueryText("select max(c.id) from c order by c.name group by c.name");
+        sqlQuerySpec.setQueryText("select max(c.id) from c group by c.name order by c.name");
         values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
@@ -370,7 +371,7 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
     }
 
-    @Test(groups = {"split"}, timeOut = TIMEOUT * 40)
+    @Test(groups = {"split"}, timeOut = TIMEOUT * 40, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;
@@ -609,10 +610,12 @@ public class QueryValidationTests extends TestSuiteBase {
 
     private <T> List<T> queryAndGetResults(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> type) {
         CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(querySpec, options, type);
-        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
-        queryPagedFlux.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-        return testSubscriber.values();
+        AtomicReference<List<T>> value = new AtomicReference<>();
+        StepVerifier.create(queryPagedFlux.collectList())
+            .consumeNextWith(value::set)
+            .expectComplete()
+            .verify(Duration.ofMillis(TIMEOUT));
+        return value.get();
     }
 
     private <T> List<T> queryWithContinuationTokens(String query, int pageSize, CosmosAsyncContainer container, Class<T> klass) {

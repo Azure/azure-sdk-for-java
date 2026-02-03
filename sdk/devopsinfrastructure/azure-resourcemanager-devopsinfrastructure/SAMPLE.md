@@ -11,6 +11,7 @@
 
 ## Pools
 
+- [CheckNameAvailability](#pools_checknameavailability)
 - [CreateOrUpdate](#pools_createorupdate)
 - [Delete](#pools_delete)
 - [GetByResourceGroup](#pools_getbyresourcegroup)
@@ -37,7 +38,7 @@
  */
 public final class ImageVersionsListByImageSamples {
     /*
-     * x-ms-original-file: 2024-10-19/ImageVersions_ListByImage.json
+     * x-ms-original-file: 2025-01-21/ImageVersions_ListByImage.json
      */
     /**
      * Sample code: ImageVersions_ListByImage.
@@ -59,7 +60,7 @@ public final class ImageVersionsListByImageSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-10-19/ListOperations.json
+     * x-ms-original-file: 2025-01-21/ListOperations.json
      */
     /**
      * Sample code: Operations_List.
@@ -73,15 +74,48 @@ public final class OperationsListSamples {
 }
 ```
 
+### Pools_CheckNameAvailability
+
+```java
+import com.azure.resourcemanager.devopsinfrastructure.models.CheckNameAvailability;
+import com.azure.resourcemanager.devopsinfrastructure.models.DevOpsInfrastructureResourceType;
+
+/**
+ * Samples for Pools CheckNameAvailability.
+ */
+public final class PoolsCheckNameAvailabilitySamples {
+    /*
+     * x-ms-original-file: 2025-01-21/Pools_CheckNameAvailability.json
+     */
+    /**
+     * Sample code: Pools_CheckNameAvailability.
+     * 
+     * @param manager Entry point to DevOpsInfrastructureManager.
+     */
+    public static void
+        poolsCheckNameAvailability(com.azure.resourcemanager.devopsinfrastructure.DevOpsInfrastructureManager manager) {
+        manager.pools()
+            .checkNameAvailabilityWithResponse(
+                new CheckNameAvailability().withName("mydevopspool")
+                    .withType(DevOpsInfrastructureResourceType.MICROSOFT_DEV_OPS_INFRASTRUCTURE_POOLS),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Pools_CreateOrUpdate
 
 ```java
 import com.azure.resourcemanager.devopsinfrastructure.models.AzureDevOpsOrganizationProfile;
+import com.azure.resourcemanager.devopsinfrastructure.models.CertificateStoreNameOption;
 import com.azure.resourcemanager.devopsinfrastructure.models.DevOpsAzureSku;
+import com.azure.resourcemanager.devopsinfrastructure.models.EphemeralType;
 import com.azure.resourcemanager.devopsinfrastructure.models.Organization;
+import com.azure.resourcemanager.devopsinfrastructure.models.OsProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolImage;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolProperties;
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
+import com.azure.resourcemanager.devopsinfrastructure.models.SecretsManagementSettings;
 import com.azure.resourcemanager.devopsinfrastructure.models.StatelessAgentProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.VmssFabricProfile;
 import java.util.Arrays;
@@ -91,7 +125,7 @@ import java.util.Arrays;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-10-19/CreateOrUpdatePool.json
+     * x-ms-original-file: 2025-01-21/CreateOrUpdatePool.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -106,12 +140,19 @@ public final class PoolsCreateOrUpdateSamples {
             .withExistingResourceGroup("rg")
             .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
                 .withMaximumConcurrency(10)
-                .withOrganizationProfile(new AzureDevOpsOrganizationProfile()
-                    .withOrganizations(Arrays.asList(new Organization().withUrl("https://mseng.visualstudio.com"))))
+                .withOrganizationProfile(new AzureDevOpsOrganizationProfile().withOrganizations(
+                    Arrays.asList(new Organization().withUrl("https://mseng.visualstudio.com").withOpenAccess(true))))
                 .withAgentProfile(new StatelessAgentProfile())
-                .withFabricProfile(new VmssFabricProfile().withSku(new DevOpsAzureSku().withName("Standard_D4ads_v5"))
-                    .withImages(Arrays.asList(new PoolImage()
-                        .withResourceId("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"))))
+                .withFabricProfile(
+                    new VmssFabricProfile().withSku(new DevOpsAzureSku().withName("Standard_D4ads_v5"))
+                        .withImages(Arrays.asList(new PoolImage()
+                            .withResourceId("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest")
+                            .withEphemeralType(EphemeralType.AUTOMATIC)))
+                        .withOsProfile(
+                            new OsProfile().withSecretsManagementSettings(new SecretsManagementSettings()
+                                .withCertificateStoreName(CertificateStoreNameOption.ROOT)
+                                .withObservedCertificates(Arrays.asList("https://abc.vault.azure.net/secrets/one"))
+                                .withKeyExportable(false))))
                 .withDevCenterProjectResourceId(
                     "/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"))
             .create();
@@ -127,7 +168,7 @@ public final class PoolsCreateOrUpdateSamples {
  */
 public final class PoolsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-10-19/DeletePool.json
+     * x-ms-original-file: 2025-01-21/DeletePool.json
      */
     /**
      * Sample code: Pools_Delete.
@@ -148,7 +189,7 @@ public final class PoolsDeleteSamples {
  */
 public final class PoolsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-10-19/GetPool.json
+     * x-ms-original-file: 2025-01-21/GetPool.json
      */
     /**
      * Sample code: Pools_Get.
@@ -169,7 +210,7 @@ public final class PoolsGetByResourceGroupSamples {
  */
 public final class PoolsListSamples {
     /*
-     * x-ms-original-file: 2024-10-19/ListPoolsBySubscription.json
+     * x-ms-original-file: 2025-01-21/ListPoolsBySubscription.json
      */
     /**
      * Sample code: Pools_ListBySubscription.
@@ -191,7 +232,7 @@ public final class PoolsListSamples {
  */
 public final class PoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-10-19/ListPoolsBySubscriptionAndResourceGroup.json
+     * x-ms-original-file: 2025-01-21/ListPoolsBySubscriptionAndResourceGroup.json
      */
     /**
      * Sample code: Pools_ListByResourceGroup.
@@ -215,7 +256,7 @@ import com.azure.resourcemanager.devopsinfrastructure.models.Pool;
  */
 public final class PoolsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-10-19/UpdatePool.json
+     * x-ms-original-file: 2025-01-21/UpdatePool.json
      */
     /**
      * Sample code: Pools_Update.
@@ -238,7 +279,7 @@ public final class PoolsUpdateSamples {
  */
 public final class ResourceDetailsListByPoolSamples {
     /*
-     * x-ms-original-file: 2024-10-19/ResourceDetails_ListByPool.json
+     * x-ms-original-file: 2025-01-21/ResourceDetails_ListByPool.json
      */
     /**
      * Sample code: ResourceDetails_ListByPool.
@@ -260,7 +301,7 @@ public final class ResourceDetailsListByPoolSamples {
  */
 public final class SkuListByLocationSamples {
     /*
-     * x-ms-original-file: 2024-10-19/Sku_ListByLocation.json
+     * x-ms-original-file: 2025-01-21/Sku_ListByLocation.json
      */
     /**
      * Sample code: Sku_ListByLocation.
@@ -282,7 +323,7 @@ public final class SkuListByLocationSamples {
  */
 public final class SubscriptionUsagesUsagesSamples {
     /*
-     * x-ms-original-file: 2024-10-19/SubscriptionUsages_Usages.json
+     * x-ms-original-file: 2025-01-21/SubscriptionUsages_Usages.json
      */
     /**
      * Sample code: SubscriptionUsages_Usages.

@@ -15,35 +15,43 @@ public final class GroupCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"dgwxfkzsifcu\",\"description\":\"dujgcwxve\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"rdxrizagbbgiarks\"},\"id\":\"kpgdqxwabzrwiq\",\"name\":\"xhaclcdosqkptjq\",\"type\":\"kifmmainw\"},{\"properties\":{\"displayName\":\"d\",\"description\":\"pbqwuntobu\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"lw\"},\"id\":\"vydjufbnk\",\"name\":\"blaxpegj\",\"type\":\"dabalfdxaglzfytl\"}],\"count\":3895152665051881707,\"nextLink\":\"opxouvmrsif\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"xzs\",\"description\":\"zezbzu\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"zskejcgwfsgqksty\"},\"id\":\"cupyuijpar\",\"name\":\"avsjcfmazpzdq\",\"type\":\"uzvcmcok\"},{\"properties\":{\"displayName\":\"zeku\",\"description\":\"rjwuca\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"bvb\"},\"id\":\"krdemdi\",\"name\":\"ackzidgzw\",\"type\":\"ydamisvpztdivykp\"},{\"properties\":{\"displayName\":\"qejtpjfojiunrl\",\"description\":\"xuknsykdtoi\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"rcoanvxuldx\"},\"id\":\"nck\",\"name\":\"nlb\",\"type\":\"fxlupibaq\"},{\"properties\":{\"displayName\":\"zxzpzwegh\",\"description\":\"wbogvgfklqiy\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"lsb\"},\"id\":\"vd\",\"name\":\"trkzxsgtznsvlrds\",\"type\":\"o\"}],\"count\":1214962265869374829,\"nextLink\":\"ndnoxaxnrqaq\"}")
             .toObject(GroupCollection.class);
-        Assertions.assertEquals("dgwxfkzsifcu", model.value().get(0).displayName());
-        Assertions.assertEquals("dujgcwxve", model.value().get(0).description());
-        Assertions.assertEquals(GroupType.EXTERNAL, model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("rdxrizagbbgiarks", model.value().get(0).externalId());
-        Assertions.assertEquals(3895152665051881707L, model.count());
-        Assertions.assertEquals("opxouvmrsif", model.nextLink());
+        Assertions.assertEquals("xzs", model.value().get(0).displayName());
+        Assertions.assertEquals("zezbzu", model.value().get(0).description());
+        Assertions.assertEquals(GroupType.CUSTOM, model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("zskejcgwfsgqksty", model.value().get(0).externalId());
+        Assertions.assertEquals(1214962265869374829L, model.count());
+        Assertions.assertEquals("ndnoxaxnrqaq", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GroupCollection model = new GroupCollection().withValue(Arrays.asList(
-            new GroupContractInner().withDisplayName("dgwxfkzsifcu")
-                .withDescription("dujgcwxve")
-                .withTypePropertiesType(GroupType.EXTERNAL)
-                .withExternalId("rdxrizagbbgiarks"),
-            new GroupContractInner().withDisplayName("d")
-                .withDescription("pbqwuntobu")
+            new GroupContractInner().withDisplayName("xzs")
+                .withDescription("zezbzu")
+                .withTypePropertiesType(GroupType.CUSTOM)
+                .withExternalId("zskejcgwfsgqksty"),
+            new GroupContractInner().withDisplayName("zeku")
+                .withDescription("rjwuca")
                 .withTypePropertiesType(GroupType.SYSTEM)
-                .withExternalId("lw")))
-            .withCount(3895152665051881707L)
-            .withNextLink("opxouvmrsif");
+                .withExternalId("bvb"),
+            new GroupContractInner().withDisplayName("qejtpjfojiunrl")
+                .withDescription("xuknsykdtoi")
+                .withTypePropertiesType(GroupType.SYSTEM)
+                .withExternalId("rcoanvxuldx"),
+            new GroupContractInner().withDisplayName("zxzpzwegh")
+                .withDescription("wbogvgfklqiy")
+                .withTypePropertiesType(GroupType.EXTERNAL)
+                .withExternalId("lsb")))
+            .withCount(1214962265869374829L)
+            .withNextLink("ndnoxaxnrqaq");
         model = BinaryData.fromObject(model).toObject(GroupCollection.class);
-        Assertions.assertEquals("dgwxfkzsifcu", model.value().get(0).displayName());
-        Assertions.assertEquals("dujgcwxve", model.value().get(0).description());
-        Assertions.assertEquals(GroupType.EXTERNAL, model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("rdxrizagbbgiarks", model.value().get(0).externalId());
-        Assertions.assertEquals(3895152665051881707L, model.count());
-        Assertions.assertEquals("opxouvmrsif", model.nextLink());
+        Assertions.assertEquals("xzs", model.value().get(0).displayName());
+        Assertions.assertEquals("zezbzu", model.value().get(0).description());
+        Assertions.assertEquals(GroupType.CUSTOM, model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("zskejcgwfsgqksty", model.value().get(0).externalId());
+        Assertions.assertEquals(1214962265869374829L, model.count());
+        Assertions.assertEquals("ndnoxaxnrqaq", model.nextLink());
     }
 }

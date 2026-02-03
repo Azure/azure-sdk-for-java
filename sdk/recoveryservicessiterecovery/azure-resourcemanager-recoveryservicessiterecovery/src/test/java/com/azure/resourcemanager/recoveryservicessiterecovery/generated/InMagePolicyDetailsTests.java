@@ -12,24 +12,24 @@ public final class InMagePolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMagePolicyDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"InMage\",\"recoveryPointThresholdInMinutes\":841361482,\"recoveryPointHistory\":1070639613,\"appConsistentFrequencyInMinutes\":977949832,\"multiVmSyncStatus\":\"ac\"}")
+            "{\"instanceType\":\"InMage\",\"recoveryPointThresholdInMinutes\":1276780384,\"recoveryPointHistory\":299578892,\"appConsistentFrequencyInMinutes\":1181605400,\"multiVmSyncStatus\":\"bhrpgiqsttc\"}")
             .toObject(InMagePolicyDetails.class);
-        Assertions.assertEquals(841361482, model.recoveryPointThresholdInMinutes());
-        Assertions.assertEquals(1070639613, model.recoveryPointHistory());
-        Assertions.assertEquals(977949832, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals("ac", model.multiVmSyncStatus());
+        Assertions.assertEquals(1276780384, model.recoveryPointThresholdInMinutes());
+        Assertions.assertEquals(299578892, model.recoveryPointHistory());
+        Assertions.assertEquals(1181605400, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("bhrpgiqsttc", model.multiVmSyncStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMagePolicyDetails model = new InMagePolicyDetails().withRecoveryPointThresholdInMinutes(841361482)
-            .withRecoveryPointHistory(1070639613)
-            .withAppConsistentFrequencyInMinutes(977949832)
-            .withMultiVmSyncStatus("ac");
+        InMagePolicyDetails model = new InMagePolicyDetails().withRecoveryPointThresholdInMinutes(1276780384)
+            .withRecoveryPointHistory(299578892)
+            .withAppConsistentFrequencyInMinutes(1181605400)
+            .withMultiVmSyncStatus("bhrpgiqsttc");
         model = BinaryData.fromObject(model).toObject(InMagePolicyDetails.class);
-        Assertions.assertEquals(841361482, model.recoveryPointThresholdInMinutes());
-        Assertions.assertEquals(1070639613, model.recoveryPointHistory());
-        Assertions.assertEquals(977949832, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals("ac", model.multiVmSyncStatus());
+        Assertions.assertEquals(1276780384, model.recoveryPointThresholdInMinutes());
+        Assertions.assertEquals(299578892, model.recoveryPointHistory());
+        Assertions.assertEquals(1181605400, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("bhrpgiqsttc", model.multiVmSyncStatus());
     }
 }

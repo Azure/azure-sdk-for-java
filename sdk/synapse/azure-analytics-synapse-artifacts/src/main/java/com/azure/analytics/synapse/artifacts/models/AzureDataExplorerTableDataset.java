@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "AzureDataExplorerTable";
 
     /*
      * The table name of the Azure Data Explorer database. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object table;
 
     /**
      * Creates an instance of AzureDataExplorerTableDataset class.
      */
+    @Generated
     public AzureDataExplorerTableDataset() {
     }
 
@@ -39,6 +43,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
      * 
      * @return the table value.
      */
+    @Generated
     public Object getTable() {
         return this.table;
     }
@@ -61,6 +67,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
      * @param table the table value to set.
      * @return the AzureDataExplorerTableDataset object itself.
      */
+    @Generated
     public AzureDataExplorerTableDataset setTable(Object table) {
         this.table = table;
         return this;
@@ -69,6 +76,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerTableDataset setDescription(String description) {
         super.setDescription(description);
@@ -78,6 +86,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerTableDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -87,6 +96,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerTableDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -96,6 +106,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -105,6 +116,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -114,6 +126,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -123,6 +136,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDataExplorerTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -132,20 +146,27 @@ public class AzureDataExplorerTableDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
         jsonWriter.writeStringField("type", this.type);
         if (table != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("table", this.table);
+            if (this.table != null) {
+                jsonWriter.writeUntypedField("table", this.table);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -165,6 +186,7 @@ public class AzureDataExplorerTableDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureDataExplorerTableDataset.
      */
+    @Generated
     public static AzureDataExplorerTableDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDataExplorerTableDataset deserializedAzureDataExplorerTableDataset

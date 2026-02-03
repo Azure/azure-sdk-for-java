@@ -1189,7 +1189,9 @@ public final class BlocklistClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of TextBlocklistItem items along with {@link PagedResponse} on successful completion of
+     * @return all BlocklistItems By blocklistName
+     * 
+     * Get all blocklistItems in a text blocklist along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1225,7 +1227,9 @@ public final class BlocklistClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of TextBlocklistItem items along with {@link PagedResponse}.
+     * @return all BlocklistItems By blocklistName
+     * 
+     * Get all blocklistItems in a text blocklist along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listTextBlocklistItemsNextSinglePage(String nextLink,
@@ -1258,8 +1262,9 @@ public final class BlocklistClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of TextBlocklist items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return all Text Blocklists
+     * 
+     * Get all text blocklists details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listTextBlocklistsNextSinglePageAsync(String nextLink,
@@ -1292,7 +1297,9 @@ public final class BlocklistClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of TextBlocklist items along with {@link PagedResponse}.
+     * @return all Text Blocklists
+     * 
+     * Get all text blocklists details along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listTextBlocklistsNextSinglePage(String nextLink, RequestOptions requestOptions) {

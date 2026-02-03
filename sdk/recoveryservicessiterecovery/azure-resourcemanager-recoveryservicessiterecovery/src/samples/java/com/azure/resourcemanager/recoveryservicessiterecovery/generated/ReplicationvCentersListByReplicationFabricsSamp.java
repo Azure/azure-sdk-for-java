@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationvCentersListByReplicationFabricsSamp {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationvCenters_ListByReplicationFabrics.json
      */
     /**
@@ -21,6 +21,6 @@ public final class ReplicationvCentersListByReplicationFabricsSamp {
     public static void getsTheListOfVCenterRegisteredUnderAFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationvCenters()
-            .listByReplicationFabrics("MadhaviVault", "MadhaviVRG", "MadhaviFabric", com.azure.core.util.Context.NONE);
+            .listByReplicationFabrics("MadhaviVRG", "MadhaviVault", "MadhaviFabric", com.azure.core.util.Context.NONE);
     }
 }

@@ -52,6 +52,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -128,14 +129,14 @@ public class FlatteningSerializerTests {
 
         AnimalWithTypeIdContainingDot rabbitDeserialized
             = deserialize(rabbitSerialized, AnimalWithTypeIdContainingDot.class);
-        assertTrue(rabbitDeserialized instanceof RabbitWithTypeIdContainingDot);
+        assertInstanceOf(RabbitWithTypeIdContainingDot.class, rabbitDeserialized);
         assertNotNull(rabbitDeserialized);
 
         AnimalShelter shelterDeserialized = deserialize(shelterSerialized, AnimalShelter.class);
         assertNotNull(shelterDeserialized);
         assertEquals(2, shelterDeserialized.animalsInfo().size());
         for (FlattenableAnimalInfo animalInfo : shelterDeserialized.animalsInfo()) {
-            assertTrue(animalInfo.animal() instanceof RabbitWithTypeIdContainingDot);
+            assertInstanceOf(RabbitWithTypeIdContainingDot.class, animalInfo.animal());
             assertNotNull(animalInfo.animal());
         }
     }
@@ -160,10 +161,10 @@ public class FlatteningSerializerTests {
         // De-Serialize
         //
         AnimalWithTypeIdContainingDot animalDeserialized = deserialize(serialized, AnimalWithTypeIdContainingDot.class);
-        assertTrue(animalDeserialized instanceof RabbitWithTypeIdContainingDot);
+        assertInstanceOf(RabbitWithTypeIdContainingDot.class, animalDeserialized);
         RabbitWithTypeIdContainingDot rabbit = (RabbitWithTypeIdContainingDot) animalDeserialized;
         assertNotNull(rabbit.meals());
-        assertEquals(rabbit.meals().size(), 2);
+        assertEquals(2, rabbit.meals().size());
     }
 
     /**
@@ -188,7 +189,7 @@ public class FlatteningSerializerTests {
         RabbitWithTypeIdContainingDot rabbitDeserialized = deserialize(serialized, RabbitWithTypeIdContainingDot.class);
         assertNotNull(rabbitDeserialized);
         assertNotNull(rabbitDeserialized.meals());
-        assertEquals(rabbitDeserialized.meals().size(), 2);
+        assertEquals(2, rabbitDeserialized.meals().size());
     }
 
     /**
@@ -214,11 +215,11 @@ public class FlatteningSerializerTests {
 
         // de-serialization
         AnimalWithTypeIdContainingDot animalDeserialized = deserialize(serialized, AnimalWithTypeIdContainingDot.class);
-        assertTrue(animalDeserialized instanceof DogWithTypeIdContainingDot);
+        assertInstanceOf(DogWithTypeIdContainingDot.class, animalDeserialized);
         DogWithTypeIdContainingDot dogDeserialized = (DogWithTypeIdContainingDot) animalDeserialized;
         assertNotNull(dogDeserialized);
-        assertEquals(dogDeserialized.breed(), "AKITA");
-        assertEquals(dogDeserialized.cuteLevel(), (Integer) 10);
+        assertEquals("AKITA", dogDeserialized.breed());
+        assertEquals((Integer) 10, dogDeserialized.cuteLevel());
     }
 
     /**
@@ -245,8 +246,8 @@ public class FlatteningSerializerTests {
         // de-serialization
         DogWithTypeIdContainingDot dogDeserialized = deserialize(serialized, DogWithTypeIdContainingDot.class);
         assertNotNull(dogDeserialized);
-        assertEquals(dogDeserialized.breed(), "AKITA");
-        assertEquals(dogDeserialized.cuteLevel(), (Integer) 10);
+        assertEquals("AKITA", dogDeserialized.breed());
+        assertEquals((Integer) 10, dogDeserialized.cuteLevel());
     }
 
     /**
@@ -274,10 +275,10 @@ public class FlatteningSerializerTests {
         assertNotNull(animalsDeserialized);
         assertEquals(1, animalsDeserialized.size());
         AnimalWithTypeIdContainingDot animalDeserialized = animalsDeserialized.get(0);
-        assertTrue(animalDeserialized instanceof RabbitWithTypeIdContainingDot);
+        assertInstanceOf(RabbitWithTypeIdContainingDot.class, animalDeserialized);
         RabbitWithTypeIdContainingDot rabbitDeserialized = (RabbitWithTypeIdContainingDot) animalDeserialized;
         assertNotNull(rabbitDeserialized.meals());
-        assertEquals(rabbitDeserialized.meals().size(), 2);
+        assertEquals(2, rabbitDeserialized.meals().size());
     }
 
     /**
@@ -306,7 +307,7 @@ public class FlatteningSerializerTests {
         assertEquals(1, rabbitsDeserialized.size());
         RabbitWithTypeIdContainingDot rabbitDeserialized = rabbitsDeserialized.get(0);
         assertNotNull(rabbitDeserialized.meals());
-        assertEquals(rabbitDeserialized.meals().size(), 2);
+        assertEquals(2, rabbitDeserialized.meals().size());
     }
 
     /**
@@ -330,15 +331,15 @@ public class FlatteningSerializerTests {
         //
         AnimalShelter shelterDeserialized = deserialize(serialized, AnimalShelter.class);
         assertNotNull(shelterDeserialized.animalsInfo());
-        assertEquals(shelterDeserialized.animalsInfo().size(), 1);
+        assertEquals(1, shelterDeserialized.animalsInfo().size());
         FlattenableAnimalInfo animalsInfoDeserialized = shelterDeserialized.animalsInfo().get(0);
-        assertTrue(animalsInfoDeserialized.animal() instanceof RabbitWithTypeIdContainingDot);
+        assertInstanceOf(RabbitWithTypeIdContainingDot.class, animalsInfoDeserialized.animal());
         AnimalWithTypeIdContainingDot animalDeserialized = animalsInfoDeserialized.animal();
-        assertTrue(animalDeserialized instanceof RabbitWithTypeIdContainingDot);
+        assertInstanceOf(RabbitWithTypeIdContainingDot.class, animalDeserialized);
         RabbitWithTypeIdContainingDot rabbitDeserialized = (RabbitWithTypeIdContainingDot) animalDeserialized;
         assertNotNull(rabbitDeserialized);
         assertNotNull(rabbitDeserialized.meals());
-        assertEquals(rabbitDeserialized.meals().size(), 2);
+        assertEquals(2, rabbitDeserialized.meals().size());
     }
 
     @Test
@@ -432,8 +433,8 @@ public class FlatteningSerializerTests {
         assertNotNull(composedTurtleDeserialized.turtlesSet2());
         assertEquals(2, composedTurtleDeserialized.turtlesSet2().size());
         //
-        assertTrue(composedTurtleDeserialized.turtlesSet2().get(0) instanceof TurtleWithTypeIdContainingDot);
-        assertTrue(composedTurtleDeserialized.turtlesSet2().get(1) instanceof TurtleWithTypeIdContainingDot);
+        assertInstanceOf(TurtleWithTypeIdContainingDot.class, composedTurtleDeserialized.turtlesSet2().get(0));
+        assertInstanceOf(TurtleWithTypeIdContainingDot.class, composedTurtleDeserialized.turtlesSet2().get(1));
         //
         serialize(composedTurtleDeserialized);
         //
@@ -446,7 +447,7 @@ public class FlatteningSerializerTests {
         composedTurtleDeserialized = deserialize(serializedScalarWithTypeId, ComposeTurtles.class);
         assertNotNull(composedTurtleDeserialized);
         assertNotNull(composedTurtleDeserialized.turtlesSet2Lead());
-        assertTrue(composedTurtleDeserialized.turtlesSet2Lead() instanceof TurtleWithTypeIdContainingDot);
+        assertInstanceOf(TurtleWithTypeIdContainingDot.class, composedTurtleDeserialized.turtlesSet2Lead());
         assertEquals(10, (long) ((TurtleWithTypeIdContainingDot) composedTurtleDeserialized.turtlesSet2Lead()).size());
         assertEquals(100, (long) composedTurtleDeserialized.turtlesSet2Lead().age());
         //
@@ -500,7 +501,7 @@ public class FlatteningSerializerTests {
         assertNotNull(composedTurtleDeserialized.turtlesSet2());
         assertEquals(2, composedTurtleDeserialized.turtlesSet2().size());
         //
-        assertTrue(composedTurtleDeserialized.turtlesSet2().get(0) instanceof TurtleWithTypeIdContainingDot);
+        assertInstanceOf(TurtleWithTypeIdContainingDot.class, composedTurtleDeserialized.turtlesSet2().get(0));
         assertNotNull(composedTurtleDeserialized.turtlesSet2().get(1));
         //
         serialize(composedTurtleDeserialized);
@@ -523,8 +524,8 @@ public class FlatteningSerializerTests {
         //
         FlattenedProduct productDeserialized = deserialize(serialized, FlattenedProduct.class);
         assertNotNull(productDeserialized);
-        assertEquals(productDeserialized.getProductName(), "drink");
-        assertEquals(productDeserialized.getProductType(), "chai");
+        assertEquals("drink", productDeserialized.getProductName());
+        assertEquals("chai", productDeserialized.getProductType());
     }
 
     @Test

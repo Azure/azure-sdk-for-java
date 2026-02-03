@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiskAccountType;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureManagedDiskDetails;
 import org.junit.jupiter.api.Assertions;
 
@@ -12,24 +13,30 @@ public final class HyperVReplicaAzureManagedDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzureManagedDiskDetails model = BinaryData.fromString(
-            "{\"diskId\":\"edrympmlqo\",\"seedManagedDiskId\":\"hzdue\",\"replicaDiskType\":\"hapfjiik\",\"diskEncryptionSetId\":\"diqfliejhpclbi\"}")
+            "{\"diskId\":\"wuk\",\"seedManagedDiskId\":\"zgpmnma\",\"replicaDiskType\":\"ddqil\",\"diskEncryptionSetId\":\"d\",\"targetDiskAccountType\":\"Premium_LRS\",\"sectorSizeInBytes\":2121315360}")
             .toObject(HyperVReplicaAzureManagedDiskDetails.class);
-        Assertions.assertEquals("edrympmlqo", model.diskId());
-        Assertions.assertEquals("hzdue", model.seedManagedDiskId());
-        Assertions.assertEquals("hapfjiik", model.replicaDiskType());
-        Assertions.assertEquals("diqfliejhpclbi", model.diskEncryptionSetId());
+        Assertions.assertEquals("wuk", model.diskId());
+        Assertions.assertEquals("zgpmnma", model.seedManagedDiskId());
+        Assertions.assertEquals("ddqil", model.replicaDiskType());
+        Assertions.assertEquals("d", model.diskEncryptionSetId());
+        Assertions.assertEquals(DiskAccountType.PREMIUM_LRS, model.targetDiskAccountType());
+        Assertions.assertEquals(2121315360, model.sectorSizeInBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureManagedDiskDetails model = new HyperVReplicaAzureManagedDiskDetails().withDiskId("edrympmlqo")
-            .withSeedManagedDiskId("hzdue")
-            .withReplicaDiskType("hapfjiik")
-            .withDiskEncryptionSetId("diqfliejhpclbi");
+        HyperVReplicaAzureManagedDiskDetails model = new HyperVReplicaAzureManagedDiskDetails().withDiskId("wuk")
+            .withSeedManagedDiskId("zgpmnma")
+            .withReplicaDiskType("ddqil")
+            .withDiskEncryptionSetId("d")
+            .withTargetDiskAccountType(DiskAccountType.PREMIUM_LRS)
+            .withSectorSizeInBytes(2121315360);
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureManagedDiskDetails.class);
-        Assertions.assertEquals("edrympmlqo", model.diskId());
-        Assertions.assertEquals("hzdue", model.seedManagedDiskId());
-        Assertions.assertEquals("hapfjiik", model.replicaDiskType());
-        Assertions.assertEquals("diqfliejhpclbi", model.diskEncryptionSetId());
+        Assertions.assertEquals("wuk", model.diskId());
+        Assertions.assertEquals("zgpmnma", model.seedManagedDiskId());
+        Assertions.assertEquals("ddqil", model.replicaDiskType());
+        Assertions.assertEquals("d", model.diskEncryptionSetId());
+        Assertions.assertEquals(DiskAccountType.PREMIUM_LRS, model.targetDiskAccountType());
+        Assertions.assertEquals(2121315360, model.sectorSizeInBytes());
     }
 }

@@ -1,0 +1,24 @@
+{
+  "displayNames": {
+    "-Pfi-thinclient-multi-region": "FaultInjectionThinClientMultiRegion",
+    "Session": "",
+    "ubuntu": "",
+    "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }": ""},
+  "include": [
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "ArmConfig": {
+        "MultiRegion_TC": {
+          "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true }",
+          "PREFERRED_LOCATIONS": "[]"
+        }
+      },
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Pfi-thinclient-multi-region" ],
+      "Agent": {
+        "ubuntu": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      }
+    }
+  ]
+}

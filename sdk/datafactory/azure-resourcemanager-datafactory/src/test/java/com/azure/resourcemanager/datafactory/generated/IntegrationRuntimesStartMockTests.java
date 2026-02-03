@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeStatusResponse;
@@ -20,17 +20,17 @@ public final class IntegrationRuntimesStartMockTests {
     @Test
     public void testStart() throws Exception {
         String responseStr
-            = "{\"name\":\"ighnunptjmz\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"rjnddaov\",\"state\":\"Started\",\"\":{\"cvjdvxucqxjxxmsi\":\"dataztrln\",\"yclv\":\"dataliegzjktfsci\",\"woahfaqlcq\":\"dataivsagrfjhcrq\"}}}";
+            = "{\"name\":\"mn\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"qaqt\",\"state\":\"Online\",\"chzoboeeiakwdtu\":\"datawdhjbvhfl\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IntegrationRuntimeStatusResponse response = manager.integrationRuntimes()
-            .start("j", "wgakghvaqbk", "zmwbxautspnyutf", com.azure.core.util.Context.NONE);
+            .start("oxgrvsavoq", "squwkuszl", "ognledhvlleny", com.azure.core.util.Context.NONE);
 
     }
 }

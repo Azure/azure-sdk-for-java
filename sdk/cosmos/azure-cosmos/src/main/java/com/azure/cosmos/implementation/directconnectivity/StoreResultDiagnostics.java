@@ -240,6 +240,14 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeObjectField("channelStatistics", storeResponseDiagnostics.getRntbdChannelStatistics());
             jsonGenerator.writeObjectField("serviceEndpointStatistics", storeResponseDiagnostics.getRntbdEndpointStatistics());
 
+            this.writeNonNullStringField(
+                jsonGenerator,
+                "requestTCG",
+                storeResponseDiagnostics.getRequestThroughputControlGroupName());
+            this.writeNonNullStringField(
+                jsonGenerator,
+                "requestTCGConfig",
+                storeResponseDiagnostics.getRequestThroughputControlGroupConfig());
             jsonGenerator.writeEndObject();
         }
 

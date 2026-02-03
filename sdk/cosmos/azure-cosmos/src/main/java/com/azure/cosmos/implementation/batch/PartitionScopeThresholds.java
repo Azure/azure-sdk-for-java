@@ -5,11 +5,12 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
+import com.azure.cosmos.implementation.CosmosTransactionalBulkExecutionOptionsImpl;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -20,40 +21,74 @@ public class PartitionScopeThresholds {
     private final static Logger logger = LoggerFactory.getLogger(PartitionScopeThresholds.class);
 
     private final String pkRangeId;
-    private final CosmosBulkExecutionOptionsImpl options;
     private final AtomicInteger targetMicroBatchSize;
     private final AtomicLong totalOperationCount;
     private final AtomicReference<CurrentIntervalThresholds> currentThresholds;
-    private final String identifier = UUID.randomUUID().toString();
+    private final String identifier = UUIDs.nonBlockingRandomUUID().toString();
     private final double minRetryRate;
     private final double maxRetryRate;
     private final double avgRetryRate;
     private final int maxMicroBatchSize;
     private final int minTargetMicroBatchSize;
 
-    public PartitionScopeThresholds(String pkRangeId, CosmosBulkExecutionOptionsImpl options) {
-        checkNotNull(pkRangeId, "expected non-null pkRangeId");
+    private static CosmosBulkExecutionOptionsImpl validateOptions(CosmosBulkExecutionOptionsImpl options) {
         checkNotNull(options, "expected non-null options");
+        return options;
+    }
+
+    private static CosmosTransactionalBulkExecutionOptionsImpl validateOptions(CosmosTransactionalBulkExecutionOptionsImpl options) {
+        checkNotNull(options, "expected non-null options");
+        return options;
+    }
+
+    public PartitionScopeThresholds(String pkRangeId, CosmosBulkExecutionOptionsImpl options) {
+        this(
+            pkRangeId,
+            validateOptions(options).getMinTargetedMicroBatchRetryRate(),
+            validateOptions(options).getMaxTargetedMicroBatchRetryRate(),
+            validateOptions(options).getInitialMicroBatchSize(),
+            validateOptions(options).getMaxMicroBatchSize(),
+            validateOptions(options).getMinTargetMicroBatchSize());
+
+    }
+
+    public PartitionScopeThresholds(String pkRangeId, CosmosTransactionalBulkExecutionOptionsImpl options) {
+        this(
+            pkRangeId,
+            validateOptions(options).getMinBatchRetryRate(),
+            validateOptions(options).getMaxBatchRetryRate(),
+            1, // for transactional batch, we start with small batch size to avoid sudden RU spike
+            validateOptions(options).getMaxOperationsConcurrency(),
+            1);
+    }
+
+    PartitionScopeThresholds(
+        String pkRangeId,
+        double minRetryRate,
+        double maxRetryRate,
+        int initialMicroBatchSize,
+        int maxMicroBatchSize,
+        int minMicroBatchSize) {
+        checkNotNull(pkRangeId, "expected non-null pkRangeId");
 
         this.pkRangeId = pkRangeId;
-        this.options = options;
         this.totalOperationCount = new AtomicLong(0);
         this.currentThresholds = new AtomicReference<>(new CurrentIntervalThresholds());
 
-        this.minRetryRate = options.getMinTargetedMicroBatchRetryRate();
-        this.maxRetryRate = options.getMaxTargetedMicroBatchRetryRate();
+        this.minRetryRate = minRetryRate;
+        this.maxRetryRate = maxRetryRate;
         this.avgRetryRate = ((this.maxRetryRate + this.minRetryRate)/2);
         this.maxMicroBatchSize = Math.min(
-            options.getMaxMicroBatchSize(),
+            maxMicroBatchSize,
             BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);
         this.minTargetMicroBatchSize = Math.max(
-            options.getMinTargetMicroBatchSize(),
+            minMicroBatchSize,
             Configs.getMinTargetBulkMicroBatchSize()
         );
         this.targetMicroBatchSize =
             new AtomicInteger(
                 Math.max(
-                    Math.min(options.getInitialMicroBatchSize(), this.maxMicroBatchSize),
+                    Math.min(initialMicroBatchSize, this.maxMicroBatchSize),
                     Math.min(this.minTargetMicroBatchSize,  this.maxMicroBatchSize)));
     }
 

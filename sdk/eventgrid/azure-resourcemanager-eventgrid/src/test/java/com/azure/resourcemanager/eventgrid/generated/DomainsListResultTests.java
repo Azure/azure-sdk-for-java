@@ -49,9 +49,9 @@ public final class DomainsListResultTests {
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.value().get(0).publicNetworkAccess());
         Assertions.assertEquals("qxn", model.value().get(0).inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.value().get(0).inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, model.value().get(0).disableLocalAuth());
-        Assertions.assertEquals(true, model.value().get(0).autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, model.value().get(0).autoDeleteTopicWithLastSubscription());
+        Assertions.assertTrue(model.value().get(0).disableLocalAuth());
+        Assertions.assertTrue(model.value().get(0).autoCreateTopicWithFirstSubscription());
+        Assertions.assertFalse(model.value().get(0).autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.value().get(0).dataResidencyBoundary());
         Assertions.assertEquals("oebwnujhemms", model.nextLink());
     }
@@ -180,9 +180,9 @@ public final class DomainsListResultTests {
         Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, model.value().get(0).publicNetworkAccess());
         Assertions.assertEquals("qxn", model.value().get(0).inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.value().get(0).inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, model.value().get(0).disableLocalAuth());
-        Assertions.assertEquals(true, model.value().get(0).autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, model.value().get(0).autoDeleteTopicWithLastSubscription());
+        Assertions.assertTrue(model.value().get(0).disableLocalAuth());
+        Assertions.assertTrue(model.value().get(0).autoCreateTopicWithFirstSubscription());
+        Assertions.assertFalse(model.value().get(0).autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.value().get(0).dataResidencyBoundary());
         Assertions.assertEquals("oebwnujhemms", model.nextLink());
     }

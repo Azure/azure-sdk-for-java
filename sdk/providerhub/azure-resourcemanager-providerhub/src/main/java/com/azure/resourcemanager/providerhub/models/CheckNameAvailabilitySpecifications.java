@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public class CheckNameAvailabilitySpecifications implements JsonSerializable<CheckNameAvailabilitySpecifications> {
     /*
-     * The enableDefaultValidation property.
+     * Whether default validation is enabled.
      */
     private Boolean enableDefaultValidation;
 
     /*
-     * The resourceTypesWithCustomValidation property.
+     * The resource types with custom validation.
      */
     private List<String> resourceTypesWithCustomValidation;
 
@@ -34,7 +34,7 @@ public class CheckNameAvailabilitySpecifications implements JsonSerializable<Che
     }
 
     /**
-     * Get the enableDefaultValidation property: The enableDefaultValidation property.
+     * Get the enableDefaultValidation property: Whether default validation is enabled.
      * 
      * @return the enableDefaultValidation value.
      */
@@ -43,7 +43,7 @@ public class CheckNameAvailabilitySpecifications implements JsonSerializable<Che
     }
 
     /**
-     * Set the enableDefaultValidation property: The enableDefaultValidation property.
+     * Set the enableDefaultValidation property: Whether default validation is enabled.
      * 
      * @param enableDefaultValidation the enableDefaultValidation value to set.
      * @return the CheckNameAvailabilitySpecifications object itself.
@@ -54,7 +54,7 @@ public class CheckNameAvailabilitySpecifications implements JsonSerializable<Che
     }
 
     /**
-     * Get the resourceTypesWithCustomValidation property: The resourceTypesWithCustomValidation property.
+     * Get the resourceTypesWithCustomValidation property: The resource types with custom validation.
      * 
      * @return the resourceTypesWithCustomValidation value.
      */
@@ -63,7 +63,7 @@ public class CheckNameAvailabilitySpecifications implements JsonSerializable<Che
     }
 
     /**
-     * Set the resourceTypesWithCustomValidation property: The resourceTypesWithCustomValidation property.
+     * Set the resourceTypesWithCustomValidation property: The resource types with custom validation.
      * 
      * @param resourceTypesWithCustomValidation the resourceTypesWithCustomValidation value to set.
      * @return the CheckNameAvailabilitySpecifications object itself.

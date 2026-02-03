@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.accesscontrol.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
     /*
      * Subject details
      */
+    @Generated
     private SubjectInfo subject;
 
     /*
      * List of actions.
      */
+    @Generated
     private List<RequiredAction> actions;
 
     /*
      * Scope at which the check access is done.
      */
+    @Generated
     private String scope;
 
     /**
      * Creates an instance of CheckPrincipalAccessRequest class.
      */
+    @Generated
     public CheckPrincipalAccessRequest() {
     }
 
@@ -43,6 +48,7 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
      * 
      * @return the subject value.
      */
+    @Generated
     public SubjectInfo getSubject() {
         return this.subject;
     }
@@ -53,6 +59,7 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
      * @param subject the subject value to set.
      * @return the CheckPrincipalAccessRequest object itself.
      */
+    @Generated
     public CheckPrincipalAccessRequest setSubject(SubjectInfo subject) {
         this.subject = subject;
         return this;
@@ -63,6 +70,7 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
      * 
      * @return the actions value.
      */
+    @Generated
     public List<RequiredAction> getActions() {
         return this.actions;
     }
@@ -73,6 +81,7 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
      * @param actions the actions value to set.
      * @return the CheckPrincipalAccessRequest object itself.
      */
+    @Generated
     public CheckPrincipalAccessRequest setActions(List<RequiredAction> actions) {
         this.actions = actions;
         return this;
@@ -83,6 +92,7 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
      * 
      * @return the scope value.
      */
+    @Generated
     public String getScope() {
         return this.scope;
     }
@@ -93,6 +103,7 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
      * @param scope the scope value to set.
      * @return the CheckPrincipalAccessRequest object itself.
      */
+    @Generated
     public CheckPrincipalAccessRequest setScope(String scope) {
         this.scope = scope;
         return this;
@@ -101,6 +112,7 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class CheckPrincipalAccessRequest implements JsonSerializable<Check
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CheckPrincipalAccessRequest.
      */
+    @Generated
     public static CheckPrincipalAccessRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CheckPrincipalAccessRequest deserializedCheckPrincipalAccessRequest = new CheckPrincipalAccessRequest();

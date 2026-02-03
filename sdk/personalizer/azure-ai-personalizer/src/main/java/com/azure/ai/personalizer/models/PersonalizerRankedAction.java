@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,16 +20,19 @@ public final class PersonalizerRankedAction implements JsonSerializable<Personal
     /*
      * Id of the action
      */
+    @Generated
     private String id;
 
     /*
      * Probability of the action
      */
+    @Generated
     private Float probability;
 
     /**
      * Creates an instance of PersonalizerRankedAction class.
      */
+    @Generated
     public PersonalizerRankedAction() {
     }
 
@@ -37,6 +41,7 @@ public final class PersonalizerRankedAction implements JsonSerializable<Personal
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -46,6 +51,7 @@ public final class PersonalizerRankedAction implements JsonSerializable<Personal
      * 
      * @return the probability value.
      */
+    @Generated
     public Float getProbability() {
         return this.probability;
     }
@@ -53,6 +59,7 @@ public final class PersonalizerRankedAction implements JsonSerializable<Personal
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,6 +74,7 @@ public final class PersonalizerRankedAction implements JsonSerializable<Personal
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PersonalizerRankedAction.
      */
+    @Generated
     public static PersonalizerRankedAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerRankedAction deserializedPersonalizerRankedAction = new PersonalizerRankedAction();

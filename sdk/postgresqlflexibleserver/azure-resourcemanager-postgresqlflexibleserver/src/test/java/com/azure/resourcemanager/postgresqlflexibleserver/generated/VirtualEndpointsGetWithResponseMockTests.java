@@ -6,11 +6,11 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResource;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoint;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,20 +22,20 @@ public final class VirtualEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"jqirwrw\",\"name\":\"oxffif\",\"type\":\"wrsnewmozqvbu\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"ycxhxzgaztta\",\"o\",\"dvmfqhppub\"],\"virtualEndpoints\":[\"epdfgkmtdherng\",\"tcjuahokqto\"]}}";
+            = "{\"id\":\"rmkfqlwxldykals\",\"name\":\"aolnjpnnbmjk\",\"type\":\"bjgsjjxxahmrn\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"xyivpinbm\",\"wbjijkgq\",\"nhmbkez\"],\"virtualEndpoints\":[\"ujvaannggi\",\"cwkdtaaw\"]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        VirtualEndpointResource response = manager.virtualEndpoints()
-            .getWithResponse("viauogphua", "tvt", "ukyefchnmnahmnxh", com.azure.core.util.Context.NONE)
+        VirtualEndpoint response = manager.virtualEndpoints()
+            .getWithResponse("bhbcdszir", "randoypmb", "t", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.endpointType());
-        Assertions.assertEquals("ycxhxzgaztta", response.members().get(0));
+        Assertions.assertEquals("xyivpinbm", response.members().get(0));
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,51 +22,61 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "HDInsightHive";
 
     /*
      * Storage linked service references.
      */
+    @Generated
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
      * User specified arguments to HDInsightActivity.
      */
+    @Generated
     private List<Object> arguments;
 
     /*
      * Debug info option.
      */
+    @Generated
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
      * Script path. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object scriptPath;
 
     /*
      * Script linked service reference.
      */
+    @Generated
     private LinkedServiceReference scriptLinkedService;
 
     /*
      * Allows user to specify defines for Hive job request.
      */
+    @Generated
     private Map<String, Object> defines;
 
     /*
      * User specified arguments under hivevar namespace.
      */
+    @Generated
     private List<Object> variables;
 
     /*
      * Query timeout value (in minutes). Effective when the HDInsight cluster is with ESP (Enterprise Security Package)
      */
+    @Generated
     private Integer queryTimeout;
 
     /**
      * Creates an instance of HDInsightHiveActivity class.
      */
+    @Generated
     public HDInsightHiveActivity() {
     }
 
@@ -74,6 +85,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -84,6 +96,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the storageLinkedServices value.
      */
+    @Generated
     public List<LinkedServiceReference> getStorageLinkedServices() {
         return this.storageLinkedServices;
     }
@@ -94,6 +107,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightHiveActivity object itself.
      */
+    @Generated
     public HDInsightHiveActivity setStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
         this.storageLinkedServices = storageLinkedServices;
         return this;
@@ -104,6 +118,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the arguments value.
      */
+    @Generated
     public List<Object> getArguments() {
         return this.arguments;
     }
@@ -114,6 +129,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @param arguments the arguments value to set.
      * @return the HDInsightHiveActivity object itself.
      */
+    @Generated
     public HDInsightHiveActivity setArguments(List<Object> arguments) {
         this.arguments = arguments;
         return this;
@@ -124,6 +140,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the getDebugInfo value.
      */
+    @Generated
     public HDInsightActivityDebugInfoOption getGetDebugInfo() {
         return this.getDebugInfo;
     }
@@ -134,6 +151,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightHiveActivity object itself.
      */
+    @Generated
     public HDInsightHiveActivity setGetDebugInfo(HDInsightActivityDebugInfoOption getDebugInfo) {
         this.getDebugInfo = getDebugInfo;
         return this;
@@ -144,6 +162,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the scriptPath value.
      */
+    @Generated
     public Object getScriptPath() {
         return this.scriptPath;
     }
@@ -154,6 +173,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @param scriptPath the scriptPath value to set.
      * @return the HDInsightHiveActivity object itself.
      */
+    @Generated
     public HDInsightHiveActivity setScriptPath(Object scriptPath) {
         this.scriptPath = scriptPath;
         return this;
@@ -164,6 +184,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the scriptLinkedService value.
      */
+    @Generated
     public LinkedServiceReference getScriptLinkedService() {
         return this.scriptLinkedService;
     }
@@ -174,6 +195,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the HDInsightHiveActivity object itself.
      */
+    @Generated
     public HDInsightHiveActivity setScriptLinkedService(LinkedServiceReference scriptLinkedService) {
         this.scriptLinkedService = scriptLinkedService;
         return this;
@@ -184,6 +206,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the defines value.
      */
+    @Generated
     public Map<String, Object> getDefines() {
         return this.defines;
     }
@@ -194,6 +217,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @param defines the defines value to set.
      * @return the HDInsightHiveActivity object itself.
      */
+    @Generated
     public HDInsightHiveActivity setDefines(Map<String, Object> defines) {
         this.defines = defines;
         return this;
@@ -204,6 +228,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the variables value.
      */
+    @Generated
     public List<Object> getVariables() {
         return this.variables;
     }
@@ -214,6 +239,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @param variables the variables value to set.
      * @return the HDInsightHiveActivity object itself.
      */
+    @Generated
     public HDInsightHiveActivity setVariables(List<Object> variables) {
         this.variables = variables;
         return this;
@@ -225,6 +251,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the queryTimeout value.
      */
+    @Generated
     public Integer getQueryTimeout() {
         return this.queryTimeout;
     }
@@ -236,6 +263,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @param queryTimeout the queryTimeout value to set.
      * @return the HDInsightHiveActivity object itself.
      */
+    @Generated
     public HDInsightHiveActivity setQueryTimeout(Integer queryTimeout) {
         this.queryTimeout = queryTimeout;
         return this;
@@ -244,6 +272,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightHiveActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -253,6 +282,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightHiveActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -262,6 +292,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightHiveActivity setName(String name) {
         super.setName(name);
@@ -271,6 +302,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightHiveActivity setDescription(String description) {
         super.setDescription(description);
@@ -280,6 +312,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightHiveActivity setState(ActivityState state) {
         super.setState(state);
@@ -289,6 +322,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightHiveActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -298,6 +332,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightHiveActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -307,6 +342,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HDInsightHiveActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -316,6 +352,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -344,7 +381,9 @@ public class HDInsightHiveActivity extends ExecutionActivity {
             jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeStringField("getDebugInfo",
                 this.getDebugInfo == null ? null : this.getDebugInfo.toString());
-            jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+            if (this.scriptPath != null) {
+                jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+            }
             jsonWriter.writeJsonField("scriptLinkedService", this.scriptLinkedService);
             jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
             jsonWriter.writeArrayField("variables", this.variables, (writer, element) -> writer.writeUntyped(element));
@@ -368,6 +407,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HDInsightHiveActivity.
      */
+    @Generated
     public static HDInsightHiveActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HDInsightHiveActivity deserializedHDInsightHiveActivity = new HDInsightHiveActivity();

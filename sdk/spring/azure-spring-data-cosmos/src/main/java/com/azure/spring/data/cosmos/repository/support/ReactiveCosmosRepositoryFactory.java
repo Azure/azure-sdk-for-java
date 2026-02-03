@@ -12,8 +12,8 @@ import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.ReactiveRepositoryFactorySupport;
 import org.springframework.data.repository.query.QueryLookupStrategy;
-import org.springframework.data.repository.query.QueryMethodEvaluationContextProvider;
 import org.springframework.data.repository.query.RepositoryQuery;
+import org.springframework.data.repository.query.ValueExpressionDelegate;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
@@ -37,6 +37,7 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public <T, ID> EntityInformation<T, ID> getEntityInformation(Class<T> domainType) {
         return new CosmosEntityInformation<>(domainType);
     }
@@ -54,20 +55,16 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(
-        QueryLookupStrategy.Key key,
-        QueryMethodEvaluationContextProvider evaluationContextProvider) {
+    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key,
+                                                                   ValueExpressionDelegate valueExpressionDelegate) {
         return Optional.of(new ReactiveCosmosQueryLookupStrategy(cosmosOperations,
-            evaluationContextProvider));
+            valueExpressionDelegate));
     }
 
-    @SuppressWarnings("deprecation")
     private static class ReactiveCosmosQueryLookupStrategy implements QueryLookupStrategy {
         private final ReactiveCosmosOperations cosmosOperations;
 
-        ReactiveCosmosQueryLookupStrategy(
-            ReactiveCosmosOperations operations, QueryMethodEvaluationContextProvider provider) {
+        ReactiveCosmosQueryLookupStrategy(ReactiveCosmosOperations operations, ValueExpressionDelegate delegate) {
             this.cosmosOperations = operations;
         }
 

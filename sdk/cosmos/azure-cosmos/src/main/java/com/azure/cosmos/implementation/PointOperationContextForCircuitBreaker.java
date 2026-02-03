@@ -12,6 +12,7 @@ public class PointOperationContextForCircuitBreaker {
     private boolean isRequestHedged;
     private final String collectionLink;
     private final SerializationDiagnosticsContext serializationDiagnosticsContext;
+    private final AtomicBoolean shouldUsePerPartitionAutomaticFailoverOverride;
 
     public PointOperationContextForCircuitBreaker(
         AtomicBoolean hasOperationSeenSuccess,
@@ -23,6 +24,7 @@ public class PointOperationContextForCircuitBreaker {
         this.isThresholdBasedAvailabilityStrategyEnabled = isThresholdBasedAvailabilityStrategyEnabled;
         this.collectionLink = collectionLink;
         this.serializationDiagnosticsContext = serializationDiagnosticsContext;
+        this.shouldUsePerPartitionAutomaticFailoverOverride = new AtomicBoolean(false);
     }
 
     public void setIsRequestHedged(boolean isRequestHedged) {
@@ -51,5 +53,13 @@ public class PointOperationContextForCircuitBreaker {
 
     public SerializationDiagnosticsContext getSerializationDiagnosticsContext() {
         return serializationDiagnosticsContext;
+    }
+
+    public boolean shouldUsePerPartitionAutomaticFailoverOverride() {
+        return this.shouldUsePerPartitionAutomaticFailoverOverride.get();
+    }
+
+    public void setShouldUsePerPartitionAutomaticFailover(boolean shouldUsePerPartitionAutomaticFailoverOverride) {
+        this.shouldUsePerPartitionAutomaticFailoverOverride.set(shouldUsePerPartitionAutomaticFailoverOverride);
     }
 }

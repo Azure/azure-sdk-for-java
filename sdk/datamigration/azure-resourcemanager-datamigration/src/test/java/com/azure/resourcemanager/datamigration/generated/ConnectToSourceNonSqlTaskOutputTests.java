@@ -11,7 +11,7 @@ public final class ConnectToSourceNonSqlTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToSourceNonSqlTaskOutput model = BinaryData.fromString(
-            "{\"id\":\"w\",\"sourceServerBrandVersion\":\"sjttgzfbish\",\"serverProperties\":{\"serverPlatform\":\"hajdeyeamdpha\",\"serverName\":\"lpbuxwgipwhonowk\",\"serverVersion\":\"hwankixzbinjepu\",\"serverEdition\":\"mryw\",\"serverOperatingSystemVersion\":\"zoqftiyqzrnkcqvy\",\"serverDatabaseCount\":798441434},\"databases\":[\"lsicohoqqnwv\",\"ryavwhheunmmqh\"],\"validationErrors\":[{\"message\":\"konocu\",\"actionableMessage\":\"klyaxuconu\",\"filePath\":\"zf\",\"lineNumber\":\"eyp\",\"hResult\":1039817033,\"stackTrace\":\"jmwvvj\"}]}")
+            "{\"id\":\"rtneemmja\",\"sourceServerBrandVersion\":\"cgxefnohaitraniz\",\"serverProperties\":{\"serverPlatform\":\"gudasmxubvfb\",\"serverName\":\"fcocefhpr\",\"serverVersion\":\"lfmpztr\",\"serverEdition\":\"dsvh\",\"serverOperatingSystemVersion\":\"dculregp\",\"serverDatabaseCount\":573797574},\"databases\":[\"hvrztnvg\",\"shqrdgrt\",\"mewjzlpyk\",\"fa\"],\"validationErrors\":[{\"message\":\"cayer\",\"actionableMessage\":\"ransyby\",\"filePath\":\"ol\",\"lineNumber\":\"rghsrleinkfsc\",\"hResult\":1984999234,\"stackTrace\":\"jwvuag\"},{\"message\":\"wtltngvmreuptrk\",\"actionableMessage\":\"m\",\"filePath\":\"ajwolxfs\",\"lineNumber\":\"ghmp\",\"hResult\":297293023,\"stackTrace\":\"slrcigtzj\"},{\"message\":\"bxqla\",\"actionableMessage\":\"nssovyxpav\",\"filePath\":\"nievwffc\",\"lineNumber\":\"yezslpu\",\"hResult\":1842033064,\"stackTrace\":\"dsvalpnptwtrkx\"}]}")
             .toObject(ConnectToSourceNonSqlTaskOutput.class);
     }
 

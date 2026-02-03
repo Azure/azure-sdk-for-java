@@ -32,6 +32,11 @@ public final class PlatformVersion extends ExpandableStringEnum<PlatformVersion>
     public static final PlatformVersion MTV1 = fromString("mtv1");
 
     /**
+     * Static value stv2.1 for PlatformVersion.
+     */
+    public static final PlatformVersion STV2_1 = fromString("stv2.1");
+
+    /**
      * Creates a new instance of PlatformVersion value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

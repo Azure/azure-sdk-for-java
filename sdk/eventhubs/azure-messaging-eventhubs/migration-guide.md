@@ -450,18 +450,18 @@ More examples can be found at:
 
 <!-- Links -->
 [azure-messaging-eventhubs-checkpointstore-blob]: https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob
-[CheckpointStore]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/CheckpointStore.html
-[CreateBatchOptions]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/models/CreateBatchOptions.html
-[EventData]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventData.html
-[EventDataBatch]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventDataBatch.html
-[EventHubClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubClientBuilder.html
-[EventHubConsumerAsyncClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubConsumerAsyncClient.html
-[EventHubConsumerClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubConsumerClient.html
-[EventHubProducerAsyncClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubProducerAsyncClient.html
-[EventHubProducerClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubProducerClient.html
-[EventProcessorClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventProcessorClient.html
-[EventProcessorClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventProcessorClientBuilder.html
-[EventProcessorClientBuilder-CheckpointStore]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventProcessorClientBuilder.html#checkpointStore-com.azure.messaging.eventhubs.CheckpointStore-
+[CheckpointStore]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/CheckpointStore.html
+[CreateBatchOptions]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/models/CreateBatchOptions.html
+[EventData]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventData.html
+[EventDataBatch]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventDataBatch.html
+[EventHubClientBuilder]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubClientBuilder.html
+[EventHubConsumerAsyncClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubConsumerAsyncClient.html
+[EventHubConsumerClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubConsumerClient.html
+[EventHubProducerAsyncClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubProducerAsyncClient.html
+[EventHubProducerClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubProducerClient.html
+[EventProcessorClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventProcessorClient.html
+[EventProcessorClientBuilder]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventProcessorClientBuilder.html
+[EventProcessorClientBuilder-CheckpointStore]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventProcessorClientBuilder.html#checkpointStore-com.azure.messaging.eventhubs.CheckpointStore-
 [Guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [GuidelinesJava]: https://azure.github.io/azure-sdk/java_introduction.html
 [GuidelinesJavaDesign]: https://azure.github.io/azure-sdk/java_introduction.html#namespaces
@@ -471,4 +471,5 @@ More examples can be found at:
 [README-Samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/src/samples/README.md
 [README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/README.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2Fmigration-guide.png)
+
+

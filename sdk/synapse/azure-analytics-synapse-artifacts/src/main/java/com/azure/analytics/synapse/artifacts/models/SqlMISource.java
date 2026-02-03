@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,22 +21,26 @@ public final class SqlMISource extends TabularSource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SqlMISource";
 
     /*
      * SQL reader query. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sqlReaderQuery;
 
     /*
      * Name of the stored procedure for a Azure SQL Managed Instance source. This cannot be used at the same time as
      * SqlReaderQuery. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sqlReaderStoredProcedureName;
 
     /*
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
+    @Generated
     private Object storedProcedureParameters;
 
     /*
@@ -43,27 +48,32 @@ public final class SqlMISource extends TabularSource {
      * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object isolationLevel;
 
     /*
      * Which additional types to produce.
      */
+    @Generated
     private Object produceAdditionalTypes;
 
     /*
      * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
      * "PhysicalPartitionsOfTable", "DynamicRange".
      */
+    @Generated
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for Sql source partitioning.
      */
+    @Generated
     private SqlPartitionSettings partitionSettings;
 
     /**
      * Creates an instance of SqlMISource class.
      */
+    @Generated
     public SqlMISource() {
     }
 
@@ -72,6 +82,7 @@ public final class SqlMISource extends TabularSource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -82,6 +93,7 @@ public final class SqlMISource extends TabularSource {
      * 
      * @return the sqlReaderQuery value.
      */
+    @Generated
     public Object getSqlReaderQuery() {
         return this.sqlReaderQuery;
     }
@@ -92,6 +104,7 @@ public final class SqlMISource extends TabularSource {
      * @param sqlReaderQuery the sqlReaderQuery value to set.
      * @return the SqlMISource object itself.
      */
+    @Generated
     public SqlMISource setSqlReaderQuery(Object sqlReaderQuery) {
         this.sqlReaderQuery = sqlReaderQuery;
         return this;
@@ -104,6 +117,7 @@ public final class SqlMISource extends TabularSource {
      * 
      * @return the sqlReaderStoredProcedureName value.
      */
+    @Generated
     public Object getSqlReaderStoredProcedureName() {
         return this.sqlReaderStoredProcedureName;
     }
@@ -116,6 +130,7 @@ public final class SqlMISource extends TabularSource {
      * @param sqlReaderStoredProcedureName the sqlReaderStoredProcedureName value to set.
      * @return the SqlMISource object itself.
      */
+    @Generated
     public SqlMISource setSqlReaderStoredProcedureName(Object sqlReaderStoredProcedureName) {
         this.sqlReaderStoredProcedureName = sqlReaderStoredProcedureName;
         return this;
@@ -127,6 +142,7 @@ public final class SqlMISource extends TabularSource {
      * 
      * @return the storedProcedureParameters value.
      */
+    @Generated
     public Object getStoredProcedureParameters() {
         return this.storedProcedureParameters;
     }
@@ -138,6 +154,7 @@ public final class SqlMISource extends TabularSource {
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlMISource object itself.
      */
+    @Generated
     public SqlMISource setStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
         return this;
@@ -150,6 +167,7 @@ public final class SqlMISource extends TabularSource {
      * 
      * @return the isolationLevel value.
      */
+    @Generated
     public Object getIsolationLevel() {
         return this.isolationLevel;
     }
@@ -162,6 +180,7 @@ public final class SqlMISource extends TabularSource {
      * @param isolationLevel the isolationLevel value to set.
      * @return the SqlMISource object itself.
      */
+    @Generated
     public SqlMISource setIsolationLevel(Object isolationLevel) {
         this.isolationLevel = isolationLevel;
         return this;
@@ -172,6 +191,7 @@ public final class SqlMISource extends TabularSource {
      * 
      * @return the produceAdditionalTypes value.
      */
+    @Generated
     public Object getProduceAdditionalTypes() {
         return this.produceAdditionalTypes;
     }
@@ -182,6 +202,7 @@ public final class SqlMISource extends TabularSource {
      * @param produceAdditionalTypes the produceAdditionalTypes value to set.
      * @return the SqlMISource object itself.
      */
+    @Generated
     public SqlMISource setProduceAdditionalTypes(Object produceAdditionalTypes) {
         this.produceAdditionalTypes = produceAdditionalTypes;
         return this;
@@ -193,6 +214,7 @@ public final class SqlMISource extends TabularSource {
      * 
      * @return the partitionOption value.
      */
+    @Generated
     public Object getPartitionOption() {
         return this.partitionOption;
     }
@@ -204,6 +226,7 @@ public final class SqlMISource extends TabularSource {
      * @param partitionOption the partitionOption value to set.
      * @return the SqlMISource object itself.
      */
+    @Generated
     public SqlMISource setPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
@@ -214,6 +237,7 @@ public final class SqlMISource extends TabularSource {
      * 
      * @return the partitionSettings value.
      */
+    @Generated
     public SqlPartitionSettings getPartitionSettings() {
         return this.partitionSettings;
     }
@@ -224,6 +248,7 @@ public final class SqlMISource extends TabularSource {
      * @param partitionSettings the partitionSettings value to set.
      * @return the SqlMISource object itself.
      */
+    @Generated
     public SqlMISource setPartitionSettings(SqlPartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
         return this;
@@ -232,6 +257,7 @@ public final class SqlMISource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlMISource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
@@ -241,6 +267,7 @@ public final class SqlMISource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlMISource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
@@ -250,6 +277,7 @@ public final class SqlMISource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlMISource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -259,6 +287,7 @@ public final class SqlMISource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlMISource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -268,6 +297,7 @@ public final class SqlMISource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlMISource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -277,21 +307,44 @@ public final class SqlMISource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getQueryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        }
+        if (getAdditionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("sqlReaderQuery", this.sqlReaderQuery);
-        jsonWriter.writeUntypedField("sqlReaderStoredProcedureName", this.sqlReaderStoredProcedureName);
-        jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
-        jsonWriter.writeUntypedField("isolationLevel", this.isolationLevel);
-        jsonWriter.writeUntypedField("produceAdditionalTypes", this.produceAdditionalTypes);
-        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        if (this.sqlReaderQuery != null) {
+            jsonWriter.writeUntypedField("sqlReaderQuery", this.sqlReaderQuery);
+        }
+        if (this.sqlReaderStoredProcedureName != null) {
+            jsonWriter.writeUntypedField("sqlReaderStoredProcedureName", this.sqlReaderStoredProcedureName);
+        }
+        if (this.storedProcedureParameters != null) {
+            jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        }
+        if (this.isolationLevel != null) {
+            jsonWriter.writeUntypedField("isolationLevel", this.isolationLevel);
+        }
+        if (this.produceAdditionalTypes != null) {
+            jsonWriter.writeUntypedField("produceAdditionalTypes", this.produceAdditionalTypes);
+        }
+        if (this.partitionOption != null) {
+            jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        }
         jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -309,6 +362,7 @@ public final class SqlMISource extends TabularSource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SqlMISource.
      */
+    @Generated
     public static SqlMISource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlMISource deserializedSqlMISource = new SqlMISource();

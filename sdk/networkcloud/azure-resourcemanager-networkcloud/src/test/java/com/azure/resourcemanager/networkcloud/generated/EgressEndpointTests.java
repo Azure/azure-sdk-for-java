@@ -14,24 +14,22 @@ public final class EgressEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EgressEndpoint model = BinaryData.fromString(
-            "{\"category\":\"gkvtmelmqkrhah\",\"endpoints\":[{\"domainName\":\"juahaquhcdhmdual\",\"port\":495813413204095798},{\"domainName\":\"pvfadmwsrcr\",\"port\":5411587900664634399},{\"domainName\":\"vgomz\",\"port\":8511094552590420060}]}")
+            "{\"category\":\"ahvljuaha\",\"endpoints\":[{\"domainName\":\"hcdhmdual\",\"port\":495813413204095798},{\"domainName\":\"pvfadmwsrcr\",\"port\":5411587900664634399}]}")
             .toObject(EgressEndpoint.class);
-        Assertions.assertEquals("gkvtmelmqkrhah", model.category());
-        Assertions.assertEquals("juahaquhcdhmdual", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("ahvljuaha", model.category());
+        Assertions.assertEquals("hcdhmdual", model.endpoints().get(0).domainName());
         Assertions.assertEquals(495813413204095798L, model.endpoints().get(0).port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EgressEndpoint model
-            = new EgressEndpoint().withCategory("gkvtmelmqkrhah")
-                .withEndpoints(Arrays.asList(
-                    new EndpointDependency().withDomainName("juahaquhcdhmdual").withPort(495813413204095798L),
-                    new EndpointDependency().withDomainName("pvfadmwsrcr").withPort(5411587900664634399L),
-                    new EndpointDependency().withDomainName("vgomz").withPort(8511094552590420060L)));
+        EgressEndpoint model = new EgressEndpoint().withCategory("ahvljuaha")
+            .withEndpoints(
+                Arrays.asList(new EndpointDependency().withDomainName("hcdhmdual").withPort(495813413204095798L),
+                    new EndpointDependency().withDomainName("pvfadmwsrcr").withPort(5411587900664634399L)));
         model = BinaryData.fromObject(model).toObject(EgressEndpoint.class);
-        Assertions.assertEquals("gkvtmelmqkrhah", model.category());
-        Assertions.assertEquals("juahaquhcdhmdual", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("ahvljuaha", model.category());
+        Assertions.assertEquals("hcdhmdual", model.endpoints().get(0).domainName());
         Assertions.assertEquals(495813413204095798L, model.endpoints().get(0).port());
     }
 }

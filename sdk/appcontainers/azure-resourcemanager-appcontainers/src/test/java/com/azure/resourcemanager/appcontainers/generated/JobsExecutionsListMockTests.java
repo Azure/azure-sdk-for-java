@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.JobExecution;
@@ -22,32 +22,30 @@ public final class JobsExecutionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"eoftnorwai\",\"id\":\"ioctqk\",\"type\":\"ja\",\"properties\":{\"status\":\"Succeeded\",\"startTime\":\"2021-08-22T09:01:23Z\",\"endTime\":\"2021-05-14T08:05:49Z\",\"template\":{\"containers\":[{\"image\":\"oss\",\"name\":\"jxtvlxxzqfcwrrio\",\"command\":[\"ezwy\",\"j\"],\"args\":[\"iqegm\",\"db\",\"ohcwhpyv\"],\"env\":[{},{},{},{}],\"resources\":{}},{\"image\":\"tszwcanzb\",\"name\":\"kwuyck\",\"command\":[\"ensmuffiwjbct\",\"bpzujqjtotdxp\",\"scsl\"],\"args\":[\"usiecktybhjuxid\",\"hxomilddxjx\",\"ugxwjwilmqrslaat\"],\"env\":[{},{}],\"resources\":{}}],\"initContainers\":[{\"image\":\"zgxqgqwlxr\",\"name\":\"tvhvtqqy\",\"command\":[\"kteo\"],\"args\":[\"ogmkorvvmvmco\"],\"env\":[{},{},{},{}],\"resources\":{}},{\"image\":\"bsn\",\"name\":\"nqliwkmzoj\",\"command\":[\"yalhtgm\",\"nazgbjbhrpgiq\"],\"args\":[\"cucrcm\",\"aixpqj\",\"wifhbksldttohq\"],\"env\":[{},{},{},{}],\"resources\":{}},{\"image\":\"h\",\"name\":\"siqikvllrht\",\"command\":[\"lxkoi\",\"mtrawrqkza\",\"bun\",\"paklw\"],\"args\":[\"eeprnejzl\"],\"env\":[{},{}],\"resources\":{}}]},\"detailedStatus\":{\"replicas\":[{\"name\":\"xscbduxapgrcqe\",\"containers\":[{},{}]},{\"name\":\"djomlnwsbvvdl\",\"containers\":[{},{},{}]},{\"name\":\"kq\",\"containers\":[{},{}]}]}}}]}";
+            = "{\"value\":[{\"name\":\"fiijrykwlefksxqc\",\"id\":\"zfpxgnmqvzvluy\",\"type\":\"aiossscyvaifp\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-06-18T06:17:35Z\",\"endTime\":\"2021-10-04T22:51:20Z\",\"template\":{\"containers\":[{\"image\":\"fxtjdhsoym\",\"name\":\"v\",\"command\":[\"ftteh\",\"pboujs\",\"kfvvdshxcde\",\"suenyg\"],\"args\":[\"g\",\"tfrnquk\",\"rf\",\"s\"],\"env\":[{}],\"resources\":{}}],\"initContainers\":[{\"image\":\"ylt\",\"name\":\"ntf\",\"command\":[\"g\",\"jdxwnazkurrdre\",\"zjwhsetwwjwz\"],\"args\":[\"e\",\"zuukykcyqhyqq\"],\"env\":[{},{}],\"resources\":{}}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<JobExecution> response
-            = manager.jobsExecutions().list("euynh", "okayrg", "ybriop", com.azure.core.util.Context.NONE);
+        PagedIterable<JobExecution> response = manager.jobsExecutions()
+            .list("nkbtlwljss", "ctsnldkpwol", "isubxbteog", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eoftnorwai", response.iterator().next().name());
-        Assertions.assertEquals("ioctqk", response.iterator().next().id());
-        Assertions.assertEquals("ja", response.iterator().next().type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-22T09:01:23Z"), response.iterator().next().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T08:05:49Z"), response.iterator().next().endTime());
-        Assertions.assertEquals("oss", response.iterator().next().template().containers().get(0).image());
-        Assertions.assertEquals("jxtvlxxzqfcwrrio", response.iterator().next().template().containers().get(0).name());
-        Assertions.assertEquals("ezwy", response.iterator().next().template().containers().get(0).command().get(0));
-        Assertions.assertEquals("iqegm", response.iterator().next().template().containers().get(0).args().get(0));
-        Assertions.assertEquals("zgxqgqwlxr", response.iterator().next().template().initContainers().get(0).image());
-        Assertions.assertEquals("tvhvtqqy", response.iterator().next().template().initContainers().get(0).name());
-        Assertions.assertEquals("kteo", response.iterator().next().template().initContainers().get(0).command().get(0));
-        Assertions.assertEquals("ogmkorvvmvmco",
-            response.iterator().next().template().initContainers().get(0).args().get(0));
-        Assertions.assertEquals("xscbduxapgrcqe", response.iterator().next().detailedStatus().replicas().get(0).name());
+        Assertions.assertEquals("fiijrykwlefksxqc", response.iterator().next().name());
+        Assertions.assertEquals("zfpxgnmqvzvluy", response.iterator().next().id());
+        Assertions.assertEquals("aiossscyvaifp", response.iterator().next().type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-18T06:17:35Z"), response.iterator().next().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-04T22:51:20Z"), response.iterator().next().endTime());
+        Assertions.assertEquals("fxtjdhsoym", response.iterator().next().template().containers().get(0).image());
+        Assertions.assertEquals("v", response.iterator().next().template().containers().get(0).name());
+        Assertions.assertEquals("ftteh", response.iterator().next().template().containers().get(0).command().get(0));
+        Assertions.assertEquals("g", response.iterator().next().template().containers().get(0).args().get(0));
+        Assertions.assertEquals("ylt", response.iterator().next().template().initContainers().get(0).image());
+        Assertions.assertEquals("ntf", response.iterator().next().template().initContainers().get(0).name());
+        Assertions.assertEquals("g", response.iterator().next().template().initContainers().get(0).command().get(0));
+        Assertions.assertEquals("e", response.iterator().next().template().initContainers().get(0).args().get(0));
     }
 }

@@ -13,33 +13,33 @@ public final class ProductUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProductUpdateProperties model = BinaryData.fromString(
-            "{\"displayName\":\"swt\",\"description\":\"qqcqikclsmal\",\"terms\":\"swoykdn\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":2138658673,\"state\":\"published\"}")
+            "{\"displayName\":\"vdlsflxkqesdfeds\",\"description\":\"zancoinmp\",\"terms\":\"mcqidkltvdhqnufb\",\"subscriptionRequired\":false,\"approvalRequired\":false,\"subscriptionsLimit\":2120747022,\"state\":\"published\"}")
             .toObject(ProductUpdateProperties.class);
-        Assertions.assertEquals("qqcqikclsmal", model.description());
-        Assertions.assertEquals("swoykdn", model.terms());
-        Assertions.assertEquals(false, model.subscriptionRequired());
-        Assertions.assertEquals(true, model.approvalRequired());
-        Assertions.assertEquals(2138658673, model.subscriptionsLimit());
+        Assertions.assertEquals("zancoinmp", model.description());
+        Assertions.assertEquals("mcqidkltvdhqnufb", model.terms());
+        Assertions.assertFalse(model.subscriptionRequired());
+        Assertions.assertFalse(model.approvalRequired());
+        Assertions.assertEquals(2120747022, model.subscriptionsLimit());
         Assertions.assertEquals(ProductState.PUBLISHED, model.state());
-        Assertions.assertEquals("swt", model.displayName());
+        Assertions.assertEquals("vdlsflxkqesdfeds", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductUpdateProperties model = new ProductUpdateProperties().withDescription("qqcqikclsmal")
-            .withTerms("swoykdn")
+        ProductUpdateProperties model = new ProductUpdateProperties().withDescription("zancoinmp")
+            .withTerms("mcqidkltvdhqnufb")
             .withSubscriptionRequired(false)
-            .withApprovalRequired(true)
-            .withSubscriptionsLimit(2138658673)
+            .withApprovalRequired(false)
+            .withSubscriptionsLimit(2120747022)
             .withState(ProductState.PUBLISHED)
-            .withDisplayName("swt");
+            .withDisplayName("vdlsflxkqesdfeds");
         model = BinaryData.fromObject(model).toObject(ProductUpdateProperties.class);
-        Assertions.assertEquals("qqcqikclsmal", model.description());
-        Assertions.assertEquals("swoykdn", model.terms());
-        Assertions.assertEquals(false, model.subscriptionRequired());
-        Assertions.assertEquals(true, model.approvalRequired());
-        Assertions.assertEquals(2138658673, model.subscriptionsLimit());
+        Assertions.assertEquals("zancoinmp", model.description());
+        Assertions.assertEquals("mcqidkltvdhqnufb", model.terms());
+        Assertions.assertFalse(model.subscriptionRequired());
+        Assertions.assertFalse(model.approvalRequired());
+        Assertions.assertEquals(2120747022, model.subscriptionsLimit());
         Assertions.assertEquals(ProductState.PUBLISHED, model.state());
-        Assertions.assertEquals("swt", model.displayName());
+        Assertions.assertEquals("vdlsflxkqesdfeds", model.displayName());
     }
 }

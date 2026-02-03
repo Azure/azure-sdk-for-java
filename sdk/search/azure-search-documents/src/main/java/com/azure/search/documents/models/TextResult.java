@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class TextResult implements JsonSerializable<TextResult> {
     /*
      * The BM25 or Classic score for the text portion of the query.
      */
+    @Generated
     private Double searchScore;
 
     /**
      * Creates an instance of TextResult class.
      */
+    @Generated
     public TextResult() {
     }
 
@@ -34,6 +37,7 @@ public final class TextResult implements JsonSerializable<TextResult> {
      * 
      * @return the searchScore value.
      */
+    @Generated
     public Double getSearchScore() {
         return this.searchScore;
     }
@@ -41,6 +45,7 @@ public final class TextResult implements JsonSerializable<TextResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -55,6 +60,7 @@ public final class TextResult implements JsonSerializable<TextResult> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the TextResult.
      */
+    @Generated
     public static TextResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TextResult deserializedTextResult = new TextResult();

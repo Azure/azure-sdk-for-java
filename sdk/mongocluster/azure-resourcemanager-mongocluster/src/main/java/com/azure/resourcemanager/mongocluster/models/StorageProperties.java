@@ -22,6 +22,11 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
      */
     private Long sizeGb;
 
+    /*
+     * The type of storage to provision the cluster servers with.
+     */
+    private StorageType type;
+
     /**
      * Creates an instance of StorageProperties class.
      */
@@ -49,11 +54,23 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
     }
 
     /**
-     * Validates the instance.
+     * Get the type property: The type of storage to provision the cluster servers with.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the type value.
      */
-    public void validate() {
+    public StorageType type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The type of storage to provision the cluster servers with.
+     * 
+     * @param type the type value to set.
+     * @return the StorageProperties object itself.
+     */
+    public StorageProperties withType(StorageType type) {
+        this.type = type;
+        return this;
     }
 
     /**
@@ -63,6 +80,7 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("sizeGb", this.sizeGb);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -83,6 +101,8 @@ public final class StorageProperties implements JsonSerializable<StorageProperti
 
                 if ("sizeGb".equals(fieldName)) {
                     deserializedStorageProperties.sizeGb = reader.getNullable(JsonReader::getLong);
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageProperties.type = StorageType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class PolicyCertificatesModifyResponse implements JsonSerializable<
     /*
      * An RFC7519 JSON Web Token structure whose body is a PolicyCertificatesModificationResult object.
      */
+    @Generated
     private String token;
 
     /**
      * Creates an instance of PolicyCertificatesModifyResponse class.
      */
+    @Generated
     public PolicyCertificatesModifyResponse() {
     }
 
@@ -33,6 +36,7 @@ public final class PolicyCertificatesModifyResponse implements JsonSerializable<
      * 
      * @return the token value.
      */
+    @Generated
     public String getToken() {
         return this.token;
     }
@@ -44,6 +48,7 @@ public final class PolicyCertificatesModifyResponse implements JsonSerializable<
      * @param token the token value to set.
      * @return the PolicyCertificatesModifyResponse object itself.
      */
+    @Generated
     public PolicyCertificatesModifyResponse setToken(String token) {
         this.token = token;
         return this;
@@ -60,6 +65,7 @@ public final class PolicyCertificatesModifyResponse implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -75,6 +81,7 @@ public final class PolicyCertificatesModifyResponse implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PolicyCertificatesModifyResponse.
      */
+    @Generated
     public static PolicyCertificatesModifyResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PolicyCertificatesModifyResponse deserializedPolicyCertificatesModifyResponse

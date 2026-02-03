@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.DaprSecretsCollection;
@@ -20,17 +20,17 @@ public final class ConnectedEnvironmentsDaprComponentsListSecretsWithResponseMoc
     @Test
     public void testListSecretsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"oqar\",\"value\":\"yxqicladv\"},{\"name\":\"davuqmcbyms\",\"value\":\"bjlquv\"},{\"name\":\"zcjumvpsimioyoig\",\"value\":\"miqwnnrac\"}]}";
+            = "{\"value\":[{\"name\":\"brlc\",\"value\":\"duczkgof\"},{\"name\":\"fsrucv\",\"value\":\"rpcjttbstvjeaqnr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DaprSecretsCollection response = manager.connectedEnvironmentsDaprComponents()
-            .listSecretsWithResponse("kwsdgkj", "yacwrasekwefc", "o", com.azure.core.util.Context.NONE)
+            .listSecretsWithResponse("fulopmjnlexwhcb", "pibkephuu", "erctatoyin", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

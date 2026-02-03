@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * A user-provided string representing the id of this relationship, unique in the context of the source digital
      * twin, i.e. sourceId + relationshipId is unique in the context of the service.
      */
+    @Generated
     private String relationshipId;
 
     /*
      * The id of the source digital twin.
      */
+    @Generated
     private String sourceId;
 
     /*
      * The name of the relationship.
      */
+    @Generated
     private String relationshipName;
 
     /*
      * Link to the relationship, to be used for deletion.
      */
+    @Generated
     private String relationshipLink;
 
     /**
      * Creates an instance of IncomingRelationship class.
      */
+    @Generated
     public IncomingRelationship() {
     }
 
@@ -49,6 +55,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * 
      * @return the relationshipId value.
      */
+    @Generated
     public String getRelationshipId() {
         return this.relationshipId;
     }
@@ -60,6 +67,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * @param relationshipId the relationshipId value to set.
      * @return the IncomingRelationship object itself.
      */
+    @Generated
     public IncomingRelationship setRelationshipId(String relationshipId) {
         this.relationshipId = relationshipId;
         return this;
@@ -70,6 +78,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * 
      * @return the sourceId value.
      */
+    @Generated
     public String getSourceId() {
         return this.sourceId;
     }
@@ -80,6 +89,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * @param sourceId the sourceId value to set.
      * @return the IncomingRelationship object itself.
      */
+    @Generated
     public IncomingRelationship setSourceId(String sourceId) {
         this.sourceId = sourceId;
         return this;
@@ -90,6 +100,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * 
      * @return the relationshipName value.
      */
+    @Generated
     public String getRelationshipName() {
         return this.relationshipName;
     }
@@ -100,6 +111,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * @param relationshipName the relationshipName value to set.
      * @return the IncomingRelationship object itself.
      */
+    @Generated
     public IncomingRelationship setRelationshipName(String relationshipName) {
         this.relationshipName = relationshipName;
         return this;
@@ -110,6 +122,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * 
      * @return the relationshipLink value.
      */
+    @Generated
     public String getRelationshipLink() {
         return this.relationshipLink;
     }
@@ -120,6 +133,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * @param relationshipLink the relationshipLink value to set.
      * @return the IncomingRelationship object itself.
      */
+    @Generated
     public IncomingRelationship setRelationshipLink(String relationshipLink) {
         this.relationshipLink = relationshipLink;
         return this;
@@ -128,6 +142,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -146,6 +161,7 @@ public final class IncomingRelationship implements JsonSerializable<IncomingRela
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the IncomingRelationship.
      */
+    @Generated
     public static IncomingRelationship fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             IncomingRelationship deserializedIncomingRelationship = new IncomingRelationship();

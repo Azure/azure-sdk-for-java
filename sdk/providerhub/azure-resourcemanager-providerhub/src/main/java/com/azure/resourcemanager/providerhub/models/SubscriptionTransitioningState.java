@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for SubscriptionTransitioningState.
+ * The state.
  */
 public final class SubscriptionTransitioningState extends ExpandableStringEnum<SubscriptionTransitioningState> {
     /**

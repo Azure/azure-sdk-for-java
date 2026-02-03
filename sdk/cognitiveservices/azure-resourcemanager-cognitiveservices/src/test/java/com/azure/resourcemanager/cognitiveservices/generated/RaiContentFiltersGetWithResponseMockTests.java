@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.RaiContentFilter;
@@ -22,21 +22,21 @@ public final class RaiContentFiltersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"name\":\"zowpuohdkcprgukx\",\"isMultiLevelFilter\":true,\"source\":\"Prompt\"},\"id\":\"chlutixmqru\",\"name\":\"jizcbfzmcrunfhiu\",\"type\":\"nmfbc\"}";
+            = "{\"properties\":{\"name\":\"jusuzgfjzc\",\"isMultiLevelFilter\":true,\"source\":\"Completion\"},\"id\":\"alahf\",\"name\":\"wcco\",\"type\":\"dxku\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiContentFilter response = manager.raiContentFilters()
-            .getWithResponse("hfupetasvvoqsbpk", "lanfkgxsya", com.azure.core.util.Context.NONE)
+            .getWithResponse("lzaahzbhuroolk", "lirh", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zowpuohdkcprgukx", response.properties().name());
-        Assertions.assertEquals(true, response.properties().isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, response.properties().source());
+        Assertions.assertEquals("jusuzgfjzc", response.properties().name());
+        Assertions.assertTrue(response.properties().isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, response.properties().source());
     }
 }

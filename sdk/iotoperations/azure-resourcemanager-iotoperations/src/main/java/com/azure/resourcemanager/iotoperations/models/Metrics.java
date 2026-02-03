@@ -48,14 +48,6 @@ public final class Metrics implements JsonSerializable<Metrics> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

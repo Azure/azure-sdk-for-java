@@ -52,7 +52,7 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private GoogleCloudStorageLinkedServiceTypeProperties innerTypeProperties() {
+    GoogleCloudStorageLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

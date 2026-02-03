@@ -5,26 +5,24 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.channel.ConnectTimeoutException;
-import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.timeout.ReadTimeoutException;
-import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.SocketException;
 import java.net.URI;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -80,9 +78,10 @@ public class RxGatewayStoreModelTest {
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
-        Mockito.doReturn(new URI("https://localhost"))
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("https://localhost"));
+
+        Mockito.doReturn(regionalRoutingContext)
                 .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
@@ -105,7 +104,7 @@ public class RxGatewayStoreModelTest {
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put("key", "value");
         dsr.requestContext = new DocumentServiceRequestContext();
-
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
         validateFailure(resp, FailureValidator.builder()
@@ -124,8 +123,9 @@ public class RxGatewayStoreModelTest {
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
-        Mockito.doReturn(new URI("https://localhost"))
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("https://localhost"));
+        Mockito.doReturn(regionalRoutingContext)
                .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(new SocketException("Dummy SocketException")))
@@ -148,7 +148,7 @@ public class RxGatewayStoreModelTest {
             OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.getHeaders().put("key", "value");
         dsr.requestContext = new DocumentServiceRequestContext();
-
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         Mono<RxDocumentServiceResponse> resp = storeModel.processMessage(dsr);
         validateFailure(resp, FailureValidator.builder()
@@ -177,9 +177,11 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
-        Mockito.doReturn(new URI("https://localhost"))
+        URI locationEndpointToRoute = new URI("https://localhost");
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(locationEndpointToRoute);
+
+        Mockito.doReturn(regionalRoutingContext)
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -201,12 +203,18 @@ public class RxGatewayStoreModelTest {
             apiType);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
-        httpClient = ReflectionUtils.getHttpClient(storeModel);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,
             operationType,
             "/fakeResourceFullName",
             resourceType);
+
+        if (resourceType != ResourceType.DatabaseAccount) {
+            dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
+        } else {
+            dsr.setEndpointOverride(locationEndpointToRoute);
+        }
+
         if (sessionTokenFromUser) {
             dsr.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN, userControlledSessionToken);
         }
@@ -248,9 +256,8 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
-        Mockito.doReturn(new URI("https://localhost"))
+        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -294,13 +301,9 @@ public class RxGatewayStoreModelTest {
     public static void validateFailure(Mono<RxDocumentServiceResponse> observable,
                                        FailureValidator validator,
                                        long timeout) {
-        TestSubscriber<RxDocumentServiceResponse> testSubscriber = new TestSubscriber<>();
-        observable.subscribe(testSubscriber);
-        testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        testSubscriber.assertNotComplete();
-        testSubscriber.assertTerminated();
-        assertThat(testSubscriber.errorCount()).isEqualTo(1);
-        validator.validate(testSubscriber.errors().get(0));
+        StepVerifier.create(observable)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
     }
 
     enum SessionTokenType {

@@ -5,6 +5,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is regenerated.
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -24,17 +25,20 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
     /**
      * The key of a document that was in the indexing request.
      */
+    @Generated
     private final String key;
 
     /**
      * The error message explaining why the indexing operation failed for the document identified by the key; null if
      * indexing succeeded.
      */
+    @Generated
     private String errorMessage;
 
     /**
      * A value indicating whether the indexing operation succeeded for the document identified by the key.
      */
+    @Generated
     private final boolean succeeded;
 
     /**
@@ -42,6 +46,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      * for successful document creation, 400 for a malformed input document, 404 for document not found, 409 for a
      * version conflict, 422 when the index is temporarily unavailable, or 503 for when the service is too busy.
      */
+    @Generated
     private final int statusCode;
 
     /**
@@ -51,6 +56,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      * @param succeeded the succeeded value to set.
      * @param statusCode the statusCode value to set.
      */
+    @Generated
     public IndexingResult(String key, boolean succeeded, int statusCode) {
         this.key = key;
         this.succeeded = succeeded;
@@ -62,6 +68,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      *
      * @return the key value.
      */
+    @Generated
     public String getKey() {
         return this.key;
     }
@@ -72,6 +79,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      *
      * @return the errorMessage value.
      */
+    @Generated
     public String getErrorMessage() {
         return this.errorMessage;
     }
@@ -82,6 +90,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      *
      * @return the succeeded value.
      */
+    @Generated
     public boolean isSucceeded() {
         return this.succeeded;
     }
@@ -94,6 +103,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      *
      * @return the statusCode value.
      */
+    @Generated
     public int getStatusCode() {
         return this.statusCode;
     }
@@ -101,6 +111,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -116,6 +127,7 @@ public final class IndexingResult implements JsonSerializable<IndexingResult>, S
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexingResult.
      */
+    @Generated
     public static IndexingResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean keyFound = false;

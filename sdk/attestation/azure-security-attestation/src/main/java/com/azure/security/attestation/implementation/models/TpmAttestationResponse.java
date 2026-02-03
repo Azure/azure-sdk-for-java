@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -22,11 +23,13 @@ public final class TpmAttestationResponse implements JsonSerializable<TpmAttesta
     /*
      * Protocol data containing attestation service response.
      */
+    @Generated
     private Base64Url data;
 
     /**
      * Creates an instance of TpmAttestationResponse class.
      */
+    @Generated
     public TpmAttestationResponse() {
     }
 
@@ -35,6 +38,7 @@ public final class TpmAttestationResponse implements JsonSerializable<TpmAttesta
      * 
      * @return the data value.
      */
+    @Generated
     public byte[] getData() {
         if (this.data == null) {
             return null;
@@ -48,6 +52,7 @@ public final class TpmAttestationResponse implements JsonSerializable<TpmAttesta
      * @param data the data value to set.
      * @return the TpmAttestationResponse object itself.
      */
+    @Generated
     public TpmAttestationResponse setData(byte[] data) {
         if (data == null) {
             this.data = null;
@@ -68,6 +73,7 @@ public final class TpmAttestationResponse implements JsonSerializable<TpmAttesta
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -83,6 +89,7 @@ public final class TpmAttestationResponse implements JsonSerializable<TpmAttesta
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TpmAttestationResponse.
      */
+    @Generated
     public static TpmAttestationResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TpmAttestationResponse deserializedTpmAttestationResponse = new TpmAttestationResponse();

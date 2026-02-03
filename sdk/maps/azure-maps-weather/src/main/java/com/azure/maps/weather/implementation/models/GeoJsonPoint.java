@@ -5,6 +5,7 @@
 package com.azure.maps.weather.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,18 +19,24 @@ import java.util.List;
 @Fluent
 public final class GeoJsonPoint extends GeoJsonGeometry {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_POINT;
 
     /*
-     * A `Position` is an array of numbers with two or more elements. The first two elements are _longitude_ and _latitude_, precisely in that order. _Altitude/Elevation_ is an optional third element. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.1) for details.
+     * A `Position` is an array of numbers with two or more elements. The first two elements are _longitude_ and
+     * _latitude_, precisely in that order. _Altitude/Elevation_ is an optional third element. Please refer to [RFC
+     * 7946](https://tools.ietf.org/html/rfc7946#section-3.1.1) for details.
      */
+    @Generated
     private List<Double> coordinates;
 
     /**
      * Creates an instance of GeoJsonPoint class.
      */
+    @Generated
     public GeoJsonPoint() {
     }
 
@@ -40,6 +47,7 @@ public final class GeoJsonPoint extends GeoJsonGeometry {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -52,6 +60,7 @@ public final class GeoJsonPoint extends GeoJsonGeometry {
      * 
      * @return the coordinates value.
      */
+    @Generated
     public List<Double> getCoordinates() {
         return this.coordinates;
     }
@@ -64,6 +73,7 @@ public final class GeoJsonPoint extends GeoJsonGeometry {
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonPoint object itself.
      */
+    @Generated
     public GeoJsonPoint setCoordinates(List<Double> coordinates) {
         this.coordinates = coordinates;
         return this;
@@ -72,6 +82,7 @@ public final class GeoJsonPoint extends GeoJsonGeometry {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -89,6 +100,7 @@ public final class GeoJsonPoint extends GeoJsonGeometry {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonPoint.
      */
+    @Generated
     public static GeoJsonPoint fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonPoint deserializedGeoJsonPoint = new GeoJsonPoint();

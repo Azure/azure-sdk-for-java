@@ -4,29 +4,27 @@
 package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.HttpProtocolVersion;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.shared.InsecureTrustManager;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
-import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 import static io.clientcore.http.okhttp3.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -52,7 +51,7 @@ public class OkHttpHttpClientTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = new LocalTestServer((req, resp, requestBody) -> {
+        server = new LocalTestServer(HttpProtocolVersion.HTTP_1_1, false, (req, resp, requestBody) -> {
             String path = req.getServletPath();
             boolean get = "GET".equalsIgnoreCase(req.getMethod());
             boolean post = "POST".equalsIgnoreCase(req.getMethod());
@@ -85,7 +84,7 @@ public class OkHttpHttpClientTests {
             } else {
                 throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
             }
-        }, 20);
+        });
 
         server.start();
     }
@@ -98,21 +97,22 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void testFlowableResponseShortBodyAsByteArrayAsync() throws IOException {
+    public void testFlowableResponseShortBodyAsByteArrayAsync() {
         checkBodyReceived(SHORT_BODY, "/short");
     }
 
     @Test
-    public void testFlowableResponseLongBodyAsByteArrayAsync() throws IOException {
+    public void testFlowableResponseLongBodyAsByteArrayAsync() {
         checkBodyReceived(LONG_BODY, "/long");
     }
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, "/connectionClose"));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, "/connectionClose"));
 
-        assertThrows(IOException.class, () -> client.send(request).getBody().toBytes());
+        CoreException exception = assertThrows(CoreException.class, () -> client.send(request).getValue().toBytes());
+        assertInstanceOf(IOException.class, exception.getCause());
     }
 
     @Test
@@ -120,13 +120,13 @@ public class OkHttpHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
 
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (Response<?> response = doRequest(client, "/long")) {
-                    byte[] body = response.getBody().toBytes();
+                try (Response<BinaryData> response = doRequest(client, "/long")) {
+                    byte[] body = response.getValue().toBytes();
                     assertArraysEqual(LONG_BODY, body);
 
                     return null;
@@ -141,7 +141,7 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() throws IOException {
+    public void validateHeadersReturnAsIs() {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -151,8 +151,9 @@ public class OkHttpHttpClientTests {
         HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (Response<?> response = client
-            .send(new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri(uri(server, RETURN_HEADERS_AS_IS_PATH))
+            .setHeaders(headers))) {
 
             assertEquals(200, response.getStatusCode());
 
@@ -169,35 +170,9 @@ public class OkHttpHttpClientTests {
         }
     }
 
-    @Test
-    public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
-        SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
-
-        // Initialize the SSL context with a trust manager that trusts all certificates.
-        X509TrustManager[] trustManagers = new X509TrustManager[] { new InsecureTrustManager() };
-        sslContext.init(null, trustManagers, null);
-
-        HttpClient httpClient
-            = new OkHttpHttpClientBuilder().sslSocketFactory(sslContext.getSocketFactory(), trustManagers[0])
-                .hostnameVerifier((hostname, session) -> true)
-                .build();
-
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
-        }
-    }
-
     static URI uri(LocalTestServer server, String path) {
         try {
-            return new URI(server.getHttpUri() + path);
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static URI httpsUri(LocalTestServer server, String path) {
-        try {
-            return new URI(server.getHttpsUri() + path);
+            return new URI(server.getUri() + path);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -214,17 +189,17 @@ public class OkHttpHttpClientTests {
         return longBody;
     }
 
-    private static void checkBodyReceived(byte[] expectedBody, String path) throws IOException {
+    private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        try (Response<?> response = doRequest(client, path)) {
-            byte[] bytes = response.getBody().toBytes();
+        try (Response<BinaryData> response = doRequest(client, path)) {
+            byte[] bytes = response.getValue().toBytes();
 
             assertArraysEqual(expectedBody, bytes);
         }
     }
 
-    private static Response<?> doRequest(HttpClient client, String path) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, path));
+    private static Response<BinaryData> doRequest(HttpClient client, String path) {
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);
     }

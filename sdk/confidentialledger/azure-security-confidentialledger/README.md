@@ -21,7 +21,7 @@ portfolio, Azure Confidential Ledger runs in SGX enclaves. It is built on Micros
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-security-confidentialledger</artifactId>
-  <version>1.0.11</version>
+  <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -42,6 +42,10 @@ As an alternative to Azure Active Directory, clients may choose to use a client 
 
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 
+After setup, you can choose which type of [credential][azure_identity_credential_type] from `azure-identity` to use.
+We recommend using [DefaultAzureCredential][identity_dac], configured through the `AZURE_TOKEN_CREDENTIALS` environment variable.
+Set this variable as described in the [Learn documentation][customize_defaultAzureCredential], which provides the most up-to-date guidance and examples.
+
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -49,17 +53,20 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ## Key concepts
 
 ### Ledger entries and transactions
 
 Every write to Azure Confidential Ledger generates an immutable ledger entry in the service. Writes, also referred to as transactions, are uniquely identified by transaction ids that increment with each write. Once written, ledger entries may be retrieved at any time.
+
+#### Tags
+It is possible to further organize data within a collection as part of the latest preview version dated `2024-12-09-preview` or newer.
+
+Specify the `tags` parameter as part of the create entry operation. Multiple tags can be specified using commas. There is a limit of five tags per transaction.
 
 ### Receipts
 
@@ -126,6 +133,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[customize_defaultAzureCredential]: https://aka.ms/azsdk/java/identity/credential-chains#how-to-customize-defaultazurecredential
+[identity_dac]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fconfidentialledger%2Fazure-security-confidentialledger%2FREADME.png)

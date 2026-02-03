@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,31 +20,37 @@ public final class Request extends DocumentIngress {
     /*
      * Telemetry type. Types not defined in enum will get replaced with a 'Unknown' type.
      */
+    @Generated
     private DocumentType documentType = DocumentType.REQUEST;
 
     /*
      * Name of the request, e.g., 'GET /values/{id}'.
      */
+    @Generated
     private String name;
 
     /*
      * Request URL with all query string parameters.
      */
+    @Generated
     private String url;
 
     /*
      * Result of a request execution. For http requests, it could be some HTTP status code.
      */
+    @Generated
     private String responseCode;
 
     /*
      * Request duration in ISO 8601 duration format, i.e., P[n]Y[n]M[n]DT[n]H[n]M[n]S or P[n]W.
      */
+    @Generated
     private String duration;
 
     /**
      * Creates an instance of Request class.
      */
+    @Generated
     public Request() {
     }
 
@@ -52,6 +59,7 @@ public final class Request extends DocumentIngress {
      * 
      * @return the documentType value.
      */
+    @Generated
     @Override
     public DocumentType getDocumentType() {
         return this.documentType;
@@ -62,6 +70,7 @@ public final class Request extends DocumentIngress {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -72,6 +81,7 @@ public final class Request extends DocumentIngress {
      * @param name the name value to set.
      * @return the Request object itself.
      */
+    @Generated
     public Request setName(String name) {
         this.name = name;
         return this;
@@ -82,6 +92,7 @@ public final class Request extends DocumentIngress {
      * 
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -92,6 +103,7 @@ public final class Request extends DocumentIngress {
      * @param url the url value to set.
      * @return the Request object itself.
      */
+    @Generated
     public Request setUrl(String url) {
         this.url = url;
         return this;
@@ -103,6 +115,7 @@ public final class Request extends DocumentIngress {
      * 
      * @return the responseCode value.
      */
+    @Generated
     public String getResponseCode() {
         return this.responseCode;
     }
@@ -114,6 +127,7 @@ public final class Request extends DocumentIngress {
      * @param responseCode the responseCode value to set.
      * @return the Request object itself.
      */
+    @Generated
     public Request setResponseCode(String responseCode) {
         this.responseCode = responseCode;
         return this;
@@ -125,6 +139,7 @@ public final class Request extends DocumentIngress {
      * 
      * @return the duration value.
      */
+    @Generated
     public String getDuration() {
         return this.duration;
     }
@@ -136,6 +151,7 @@ public final class Request extends DocumentIngress {
      * @param duration the duration value to set.
      * @return the Request object itself.
      */
+    @Generated
     public Request setDuration(String duration) {
         this.duration = duration;
         return this;
@@ -144,6 +160,7 @@ public final class Request extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Request setDocumentStreamIds(List<String> documentStreamIds) {
         super.setDocumentStreamIds(documentStreamIds);
@@ -153,6 +170,7 @@ public final class Request extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Request setProperties(List<KeyValuePairString> properties) {
         super.setProperties(properties);
@@ -162,6 +180,7 @@ public final class Request extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -184,6 +203,7 @@ public final class Request extends DocumentIngress {
      * JSON null.
      * @throws IOException If an error occurs while reading the Request.
      */
+    @Generated
     public static Request fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Request deserializedRequest = new Request();

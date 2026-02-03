@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.deviceregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -101,26 +100,6 @@ public final class Authentication implements JsonSerializable<Authentication> {
         this.x509Credentials = x509Credentials;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (method() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property method in model Authentication"));
-        }
-        if (usernamePasswordCredentials() != null) {
-            usernamePasswordCredentials().validate();
-        }
-        if (x509Credentials() != null) {
-            x509Credentials().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(Authentication.class);
 
     /**
      * {@inheritDoc}

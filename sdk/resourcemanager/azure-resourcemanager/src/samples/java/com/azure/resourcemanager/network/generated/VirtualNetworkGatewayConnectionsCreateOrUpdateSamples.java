@@ -11,10 +11,13 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInne
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
+import com.azure.resourcemanager.network.models.CertificateAuthentication;
+import com.azure.resourcemanager.network.models.ConnectionAuthenticationType;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionMode;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionTunnelProperties;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionType;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySkuName;
@@ -30,7 +33,7 @@ import java.util.Map;
  */
 public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2025-03-01/examples/
      * VirtualNetworkGatewayConnectionCreate.json
      */
     /**
@@ -79,6 +82,11 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                 .withRoutingWeight(0)
                 .withDpdTimeoutSeconds(30)
                 .withConnectionMode(VirtualNetworkGatewayConnectionMode.DEFAULT)
+                .withTunnelProperties(Arrays.asList(
+                    new VirtualNetworkGatewayConnectionTunnelProperties().withTunnelIpAddress("10.78.1.5")
+                        .withBgpPeeringAddress("10.78.1.17"),
+                    new VirtualNetworkGatewayConnectionTunnelProperties().withTunnelIpAddress("10.78.1.7")
+                        .withBgpPeeringAddress("10.78.1.20")))
                 .withSharedKey("fakeTokenPlaceholder")
                 .withEnableBgp(false)
                 .withGatewayCustomBgpIpAddresses(Arrays.asList(
@@ -90,7 +98,14 @@ public final class VirtualNetworkGatewayConnectionsCreateOrUpdateSamples {
                         .withCustomBgpIpAddress("169.254.21.3")))
                 .withUsePolicyBasedTrafficSelectors(false)
                 .withIpsecPolicies(Arrays.asList())
-                .withTrafficSelectorPolicies(Arrays.asList()), com.azure.core.util.Context.NONE);
+                .withTrafficSelectorPolicies(Arrays.asList())
+                .withAuthenticationType(ConnectionAuthenticationType.CERTIFICATE)
+                .withCertificateAuthentication(new CertificateAuthentication()
+                    .withOutboundAuthCertificate("https://customerKv.vault.azure.net/Certificates/outBoundcert/Version")
+                    .withInboundAuthCertificateSubjectName("CN=rootCert.com")
+                    .withInboundAuthCertificateChain(Arrays.asList("MIIC+TCCAeGgAwIBAgIQFOJUqDaxV5xJcKpTKO...",
+                        "MIIC+TCCAeGgAwIBAgIQPJerInitNblK7yBgkqh..."))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

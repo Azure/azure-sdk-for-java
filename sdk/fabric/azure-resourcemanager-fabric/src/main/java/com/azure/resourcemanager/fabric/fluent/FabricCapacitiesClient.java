@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.fabric.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.fabric.fluent.models.FabricCapacityInner;
+import com.azure.resourcemanager.fabric.fluent.models.QuotaInner;
 import com.azure.resourcemanager.fabric.fluent.models.RpSkuDetailsForExistingResourceInner;
 import com.azure.resourcemanager.fabric.fluent.models.RpSkuDetailsForNewResourceInner;
 import com.azure.resourcemanager.fabric.models.CheckNameAvailabilityRequest;
@@ -429,7 +430,8 @@ public interface FabricCapacitiesClient {
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -444,7 +446,8 @@ public interface FabricCapacitiesClient {
      * List eligible SKUs for a Microsoft Fabric resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param capacityName The name of the capacity.
+     * @param capacityName The name of the Microsoft Fabric capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -479,4 +482,29 @@ public interface FabricCapacitiesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RpSkuDetailsForNewResourceInner> listSkus(Context context);
+
+    /**
+     * List the current consumption and limit in this location for the provided subscription.
+     * 
+     * @param location The location name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<QuotaInner> listUsages(String location);
+
+    /**
+     * List the current consumption and limit in this location for the provided subscription.
+     * 
+     * @param location The location name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Quota items as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<QuotaInner> listUsages(String location, Context context);
 }

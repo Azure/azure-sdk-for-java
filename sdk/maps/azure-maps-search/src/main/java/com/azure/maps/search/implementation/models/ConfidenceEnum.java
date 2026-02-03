@@ -4,6 +4,7 @@
 
 package com.azure.maps.search.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -25,6 +26,7 @@ public final class ConfidenceEnum extends ExpandableStringEnum<ConfidenceEnum> {
      * ranked first due to importance unless a user location indicates that the user is in or very close to Paris, TX or
      * the map view indicates that the user is searching in that area.
      */
+    @Generated
     public static final ConfidenceEnum HIGH = fromString("High");
 
     /**
@@ -44,11 +46,13 @@ public final class ConfidenceEnum extends ExpandableStringEnum<ConfidenceEnum> {
      * provided, but a match is not found for the house number, the geocode result with a Roadblock entity type may be
      * returned.
      */
+    @Generated
     public static final ConfidenceEnum MEDIUM = fromString("Medium");
 
     /**
      * Static value Low for ConfidenceEnum.
      */
+    @Generated
     public static final ConfidenceEnum LOW = fromString("Low");
 
     /**
@@ -56,6 +60,7 @@ public final class ConfidenceEnum extends ExpandableStringEnum<ConfidenceEnum> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ConfidenceEnum() {
     }
@@ -66,6 +71,7 @@ public final class ConfidenceEnum extends ExpandableStringEnum<ConfidenceEnum> {
      * @param name a name to look for.
      * @return the corresponding ConfidenceEnum.
      */
+    @Generated
     public static ConfidenceEnum fromString(String name) {
         return fromString(name, ConfidenceEnum.class);
     }
@@ -75,6 +81,7 @@ public final class ConfidenceEnum extends ExpandableStringEnum<ConfidenceEnum> {
      * 
      * @return known ConfidenceEnum values.
      */
+    @Generated
     public static Collection<ConfidenceEnum> values() {
         return values(ConfidenceEnum.class);
     }

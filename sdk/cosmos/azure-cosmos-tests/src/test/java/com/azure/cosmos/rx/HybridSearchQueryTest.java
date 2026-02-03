@@ -19,6 +19,8 @@ import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -85,14 +87,6 @@ public class HybridSearchQueryTest {
         for (Document doc : documents) {
             container.createItem(doc).block();
         }
-
-        // Wait for 10 minutes to allow indexing
-        try {
-            Thread.sleep(10 * 60 * 1000); // 8 minutes in milliseconds
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while waiting for indexing", e);
-        }
     }
 
     @AfterClass(groups = {"query", "split"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -104,49 +98,165 @@ public class HybridSearchQueryTest {
     @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
     public void hybridQueryTest() {
 
-        String query = "SELECT TOP 10 c.id, c.text, c.title FROM c WHERE FullTextContains(c.text, 'John') OR " +
-            "FullTextContains(c.title, 'John') ORDER BY RANK FullTextScore(c.title, ['John'])";
-        List<Document> resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+        String query = "SELECT TOP 10 c.id, c.text, c.title FROM c WHERE FullTextContains(c.text, @term1) OR " +
+            "FullTextContains(c.title, @term1) ORDER BY RANK FullTextScore(c.title, @term1)";
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John")
+        ));
+        List<Document> resultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(3);
         validateResults(Arrays.asList("2","57","85"), resultDocs);
 
-        query = "SELECT c.id, c.title FROM c WHERE FullTextContains(c.title, 'John') " +
-            "OR FullTextContains(c.text, 'John') ORDER BY RANK FullTextScore(c.title, ['John']) OFFSET 1 LIMIT 5";
-        resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+        query = "SELECT c.id, c.title FROM c WHERE FullTextContains(c.title, @term1) " +
+            "OR FullTextContains(c.text, @term1) ORDER BY RANK FullTextScore(c.title, @term1) OFFSET 1 LIMIT 5";
+        querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John")
+        ));
+        resultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(2);
         validateResults(Arrays.asList("57","85"), resultDocs);
 
-        query = "SELECT TOP 20 c.id, c.title FROM c WHERE FullTextContains(c.title, 'John') OR " +
-            "FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States') " +
-            "ORDER BY RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States']))";
-        resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+        query = "SELECT TOP 20 c.id, c.title FROM c WHERE FullTextContains(c.title, @term1) OR " +
+            "FullTextContains(c.text, @term1) OR FullTextContains(c.text, @term2) " +
+            "ORDER BY RANK RRF(FullTextScore(c.title, @term1), FullTextScore(c.text, @term2))";
+        querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United")
+        ));
+        resultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(15);
-        validateResults(Arrays.asList("61", "51", "49", "54", "75", "24", "77", "76", "80", "25", "22", "2", "66", "57", "85"), resultDocs);
+        validateResults(Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77", "57", "76", "66", "80", "85"), resultDocs);
 
-        query = "SELECT c.id, c.title FROM c WHERE FullTextContains(c.title, 'John') " +
-            "OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United States') ORDER BY " +
-            "RANK RRF(FullTextScore(c.title, ['John']), FullTextScore(c.text, ['United States'])) OFFSET 5 LIMIT 10";
-        resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+        query = "SELECT c.id, c.title FROM c WHERE FullTextContains(c.title, @term1) " +
+            "OR FullTextContains(c.text, @term1) OR FullTextContains(c.text, @term2) ORDER BY " +
+            "RANK RRF(FullTextScore(c.title, @term1), FullTextScore(c.text, @term2)) OFFSET 5 LIMIT 10";
+        querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United")
+        ));
+        resultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(10);
-        validateResults(Arrays.asList("24", "77", "76", "80", "25", "22", "2", "66", "57", "85"), resultDocs);
+        validateResults(Arrays.asList("22", "2", "25", "75", "77", "57", "76", "66", "80", "85"), resultDocs);
 
-        String vector = getQueryVector();
-        query = String.format("SELECT TOP 10 c.id, c.text, c.title FROM c " +
-            "ORDER BY RANK RRF(FullTextScore(c.text, ['John']), FullTextScore(c.text, ['United States']), " +
-            "VectorDistance(c.vector, [%s]))",vector);
-        resultDocs = container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
+        List<Float> vector = getQueryVector();
+        query = "SELECT TOP 10 c.id, c.text, c.title FROM c " +
+            "ORDER BY RANK RRF(FullTextScore(c.text, @term1), FullTextScore(c.text, @term2), " +
+            "VectorDistance(c.vector, @vector))";
+        querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United"),
+            new SqlParameter("@vector", vector)
+        ));
+        resultDocs = container.queryItems(querySpec, new CosmosQueryRequestOptions(), Document.class).byPage()
             .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
             .collectList().block();
         assertThat(resultDocs).hasSize(10);
-        validateResults(Arrays.asList("21", "75", "37", "24", "26", "35", "49", "87", "55", "9"), resultDocs);
+        validateResults(Arrays.asList("4", "24", "6", "9", "2", "3", "21", "5", "49", "13"), resultDocs);
+    }
+
+    @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
+    public void hybridQueryWeightedRRFTest(){
+        // test case 1
+        String query = "SELECT TOP 15 c.id, c.text, c.title FROM c " +
+            "WHERE FullTextContains(c.title, @term1) OR FullTextContains(c.text, @term1) OR FullTextContains(c.text, @term2)" +
+            "ORDER BY RANK RRF(FullTextScore(c.title, @term1), FullTextScore(c.text, @term2), [1, 1])";
+        SqlQuerySpec querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United")
+        ));
+        List<HybridSearchQueryTest.Document> results = container.queryItems(querySpec, new CosmosQueryRequestOptions(), HybridSearchQueryTest.Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(results).hasSize(15);
+        assertThat(results).isNotNull();
+
+        validateResults(
+            Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77", "57", "76", "66", "80", "85"),
+            results
+        );
+
+
+        // test case 2
+        query = "SELECT TOP 15 c.id, c.text, c.title AS Text FROM c " +
+            "WHERE FullTextContains(c.title, @term1) OR FullTextContains(c.text, @term1) OR FullTextContains(c.text, @term2)" +
+            "ORDER BY RANK RRF(FullTextScore(c.title, @term1), FullTextScore(c.text, @term2), [10, 10])";
+        querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United")
+        ));
+        results = container.queryItems(querySpec, new CosmosQueryRequestOptions(), HybridSearchQueryTest.Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(results).hasSize(15);
+        assertThat(results).isNotNull();
+        validateResults(
+            Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77", "57", "76", "66", "80", "85"),
+            results
+        );
+
+        // test case 3
+        query = "SELECT TOP 10 c.id, c.text, c.title FROM c " +
+            "WHERE FullTextContains(c.title, @term1) OR FullTextContains(c.text, @term1) OR FullTextContains(c.text, @term2)" +
+            "ORDER BY RANK RRF(FullTextScore(c.title, @term1), FullTextScore(c.text, @term2), [0.1, 0.1])";
+        querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United")
+        ));
+        results = container.queryItems(querySpec, new CosmosQueryRequestOptions(), HybridSearchQueryTest.Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(results).hasSize(10);
+        assertThat(results).isNotNull();
+        validateResults(
+            Arrays.asList("51", "49", "24", "61", "54", "22", "2", "25", "75", "77"),
+            results
+        );
+
+        // test case 4
+        query = "SELECT TOP 10 c.id, c.text, c.title FROM c " +
+            "WHERE FullTextContains(c.title, @term1) OR FullTextContains(c.text, @term1) OR FullTextContains(c.text, @term2)" +
+            "ORDER BY RANK RRF(FullTextScore(c.title, @term1), FullTextScore(c.text, @term2), [-1, -1])";
+        querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United")
+        ));
+        results = container.queryItems(querySpec, new CosmosQueryRequestOptions(), HybridSearchQueryTest.Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(results).hasSize(10);
+        assertThat(results).isNotNull();
+        validateResults(
+            Arrays.asList("22", "57", "25", "24", "66", "2", "85", "49", "51", "54"),
+            results
+        );
+
+        // test case 5
+        List<Float> vector = getQueryVector();
+        query = "SELECT c.id, c.title FROM c " +
+            "ORDER BY RANK RRF(FullTextScore(c.text, @term2), VectorDistance(c.vector, @vector), [1,1]) " +
+            "OFFSET 0 LIMIT 10";
+        querySpec = new SqlQuerySpec(query, Arrays.asList(
+            new SqlParameter("@term1", "John"),
+            new SqlParameter("@term2", "United"),
+            new SqlParameter("@vector", vector)
+        ));
+        results = container.queryItems(querySpec, new CosmosQueryRequestOptions(), HybridSearchQueryTest.Document.class).byPage()
+            .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+            .collectList().block();
+        assertThat(results).hasSize(10);
+        assertThat(results).isNotNull();
+        validateResults(
+            Arrays.asList("75", "24", "49", "61", "21", "9", "26", "4", "6", "37"),
+            results
+        );
     }
 
     @Test(groups = {"query", "split"}, timeOut = TIMEOUT)
@@ -164,7 +274,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK FullTextScore(c.title, ['John']) DESC";
+            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK FullTextScore(c.title, 'John') DESC";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -175,7 +285,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) DESC";
+            query = "SELECT TOP 10 c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, 'John'), VectorDistance(c.vector, [1,2,3])) DESC";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -186,7 +296,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3]))";
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, 'John'), VectorDistance(c.vector, [1,2,3]))";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -198,7 +308,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 5";
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, 'John'), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 5";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -209,7 +319,7 @@ public class HybridSearchQueryTest {
         }
 
         try {
-            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, ['John']), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 10";
+            query = "SELECT c.id FROM c WHERE FullTextContains(c.title, 'John') ORDER BY RANK RRF(FullTextScore(c.title, 'John'), VectorDistance(c.vector, [1,2,3])) OFFSET 10 LIMIT 10";
             container.queryItems(query, new CosmosQueryRequestOptions(), Document.class).byPage()
                 .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
                 .collectList().block();
@@ -218,6 +328,37 @@ public class HybridSearchQueryTest {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
             assertThat(ex.getMessage()).contains("Executing a hybrid or full-text query with an offset(Skip) greater than or equal to limit(Take).");
         }
+
+        try {
+            query = "SELECT TOP 15 c.id, c.text, c.title FROM c " +
+                "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United')" +
+                "ORDER BY RANK RRF(FullTextScore(c.title, 'John'), FullTextScore(c.text, 'United'), [1, 1, 1])";
+            container.queryItems(query, new CosmosQueryRequestOptions(), HybridSearchQueryTest.Document.class).byPage()
+                .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+                .collectList().block();
+            fail("The last parameter of the RRF function is an optional array of weights. When present, " +
+                "it must be a literal array of numbers, one for each of the component scores used for the RRF function. " +
+                "The length of this array must be the same as the number of the component scores.");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage()).contains("The length of this array must be the same as the number of the component scores.");
+        }
+
+        try {
+            query = "SELECT TOP 15 c.id, c.text, c.title FROM c " +
+                "WHERE FullTextContains(c.title, 'John') OR FullTextContains(c.text, 'John') OR FullTextContains(c.text, 'United')" +
+                "ORDER BY RANK RRF(FullTextScore(c.title, 'John'), FullTextScore(c.text, 'United'), [1])";
+            container.queryItems(query, new CosmosQueryRequestOptions(), HybridSearchQueryTest.Document.class).byPage()
+                .flatMap(feedResponse -> Flux.fromIterable(feedResponse.getResults()))
+                .collectList().block();
+            fail("The last parameter of the RRF function is an optional array of weights. When present, " +
+                "it must be a literal array of numbers, one for each of the component scores used for the RRF function. " +
+                "The length of this array must be the same as the number of the component scores.");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
+            assertThat(ex.getMessage()).contains("The length of this array must be the same as the number of the component scores.");
+        }
+
     }
 
     private IndexingPolicy populateIndexingPolicy() {
@@ -258,9 +399,12 @@ public class HybridSearchQueryTest {
         assertThat(resultsIds).isEqualTo(actualIds);
     }
 
-
-    public static String getQueryVector() {
-        return "0.02, 0, -0.02, 0, -0.04, -0.01, -0.04, -0.01, 0.06, 0.08, -0.05, -0.04, -0.03, 0.05, -0.03, 0, -0.03, 0, 0.05, 0, 0.03,0.02, 0, 0.04, 0.05, 0.03, 0, 0, 0, -0.03, -0.01, 0.01, 0, -0.01, -0.03, -0.02, -0.05, 0.01, 0, 0.01, 0, 0.01, -0.03, -0.02, 0.02, 0.02, 0.04, 0.01, 0.04, 0.02, -0.01, -0.01, 0.02, 0.01, 0.02, -0.04, -0.01, 0.06, -0.01, -0.03, -0.04, -0.01, -0.01, 0, 0.03, -0.02, 0.03, 0.05, 0.01, 0.04, 0.05, -0.05, -0.01, 0.03, 0.02, -0.02, 0, -0.02, -0.02, -0.04, 0.01, -0.05, 0.01, 0.05, 0, -0.02, 0.03, -0.07, 0.05, 0.02, 0.03, 0.05, 0.05, -0.01, 0.03, -0.08, -0.01, -0.03, 0.04, -0.01, -0.02, -0.01, -0.02, -0.03, 0.03, 0.03,-0.04, 0.04, 0.02, 0, 0.03, -0.02, -0.04, 0.02, 0.01, 0.02, -0.01, 0.03, 0.02, 0.01, -0.02, 0, 0.02, 0, -0.01, 0.02, -0.05, 0.03, 0.03, 0.04, -0.02, 0.04, -0.04, 0.03, 0.03, -0.03, 0, 0.02, 0.06, 0.02, 0.02, -0.01, 0.03, 0, -0.03, -0.06, 0.02, 0, 0.02, -0.04,-0.05, 0.01, 0.02, 0.02, 0.07, 0.05, -0.01, 0.03, -0.03, -0.06, 0.04, 0.01, -0.01, 0.04, 0.02, 0.03, -0.03, 0.03, -0.01, 0.03, -0.04, -0.02, 0.02, -0.02, -0.03, -0.02, 0.02, -0.01, -0.05, -0.07, 0.02, -0.01, 0, -0.01, -0.02, -0.02, -0.03, -0.03, 0, -0.08, -0.01,0, -0.01, -0.03, 0.01, 0, -0.02, -0.03, -0.04, -0.01, 0.02, 0, 0, -0.04, 0.04, -0.01, 0.04, 0, -0.06, 0.02, 0.03, 0.01, 0.06, -0.02, 0, 0.01, 0.01, 0.01, 0, -0.02, 0.03, 0.02, 0.01, -0.01, -0.05, 0.03, -0.04, 0, 0.01, -0.02, -0.04, 0.02, 0, 0.09, -0.04, -0.01,0.02, 0.01, -0.03, 0.04, 0.02, -0.02, -0.02, -0.01, 0.01, -0.04, -0.01, 0.02, 0, 0, 0.07, 0.02, 0, 0, -0.01, 0.01, 0.03, -0.02, 0, 0.03, -0.02, -0.07, -0.04, -0.03, 0, -0.03, -0.02, 0, -0.02, -0.02, -0.05, -0.02, 0, 0.05, 0.01, -0.01, -0.04, 0.02, 0, 0, 0.03,0.02, -0.03, -0.01, -0.02, 0.06, -0.02, 0.01, 0.01, 0.04, -0.04, 0.06, -0.02, 0.01, 0.03, 0.01, 0.02, -0.02, 0.01, -0.04, 0.05, -0.03, 0.01, -0.01, 0, -0.03, -0.03, 0.04, 0.02, -0.03, -0.03, -0.02, 0.06, 0.04, -0.01, 0.01, 0.01, -0.01, -0.02, -0.02, 0.04, 0.01,-0.01, 0.01, -0.01, 0, 0.01, -0.04, 0.01, 0, -0.04, 0.05, 0.01, 0.01, 0.09, -0.04, -0.02, 0.04, 0, 0.04, -0.04, -0.04, 0, 0, -0.01, 0.05, -0.01, 0.02, 0.01, -0.03, 0, -0.06, 0.02, 0.04, 0.01, 0.03, 0.01, -0.04, 0, 0.01, 0.05, 0.02, -0.02, 0.02, 0, -0.02, -0.04,-0.07, -0.02, -0.05, 0.06, 0.01, 0.02, -0.03, 0.06, -0.01, -0.02, -0.02, -0.01, 0, -0.05, 0.06, -0.05, 0, -0.02, -0.02, 0, -0.01, 0.01, 0, -0.01, 0.05, 0.02, 0, 0.02, -0.02, 0.02, 0, 0.08, -0.02, 0.01, -0.03, 0.02, -0.03, 0, -0.01, -0.02, -0.04, 0.06, 0.01,-0.03, -0.03, 0.01, -0.01, 0.01, -0.01, 0.02, -0.03, 0.03, 0.04, 0.02, -0.02, 0.04, 0.01, 0.01, 0.02, 0.01, 0, -0.03, 0.03, -0.02, -0.03, -0.02, 0.02, 0, -0.01, -0.02, -0.02, 0, -0.01, -0.03, 0.02, -0.01, 0.01, -0.08, 0.01, -0.04, -0.05, 0.02, -0.01, -0.03,0.02, 0.01, -0.03, 0.01, 0.02, 0.03, 0.04, -0.04, 0.02, 0, 0.02, 0.02, 0.04, -0.04, -0.1, 0, 0.05, -0.01, 0.03, 0.05, 0.03, -0.02, 0.01, 0.02, -0.05, 0.01, 0, 0.05, -0.01, 0.03, -0.01, 0, 0.04, 0, 0, 0.08, 0.01, 0, -0.04, -0.03, 0, -0.02, -0.01, 0.02, 0.03,0, -0.01, 0, 0, 0, 0.06, 0, 0, 0.01, -0.01, 0.01, 0.04, 0.07, -0.01, 0.01, 0, -0.01, -0.02, 0.01, 0.01, 0, 0.02, 0.01, 0, -0.02, 0.03, 0.02, 0.06, 0.02, -0.01, 0.03, 0.02, -0.02, 0.01, -0.01, 0.03, 0.05, 0.02, 0.01, 0, 0, 0.01, 0.03, -0.03, -0.01, -0.04, 0.03,-0.02, 0.02, -0.02, -0.01, -0.02, 0.01, -0.04, 0.01, -0.04, 0.03, -0.02, -0.02, -0.01, -0.01, 0.07, 0.04, -0.01, 0.08, -0.04, -0.04, 0, 0, -0.01, -0.01, 0.03, -0.04, 0.02, -0.01, -0.04, 0.02, -0.07, -0.02, 0.02, -0.01, 0.02, 0.01, 0, 0.07, -0.01, 0.03, 0.01,-0.05, 0.02, 0.02, -0.01, 0.02, 0.02, -0.03, -0.02, 0.03, -0.01, 0.02, 0, 0, 0.02, -0.01, -0.02, 0.05, 0.02, 0.01, 0.01, -0.03, -0.05, -0.03, 0.01, 0.03, -0.02, -0.01, -0.01, -0.01, 0.03, -0.01, -0.03, 0.02, -0.02, -0.03, -0.02, -0.01, -0.01, -0.01, 0, -0.01,-0.04, -0.02, -0.02, -0.03, 0.04, 0.03, 0, -0.02, -0.01, -0.03, -0.01, -0.04, -0.04, 0.02, 0.01, -0.05, 0.04, -0.03, 0.01, -0.01, -0.03, 0.01, 0.01, 0.01, 0.02, -0.01, -0.02, -0.03, -0.01, -0.01, -0.01, -0.01, -0.03, 0, 0.01, -0.02, -0.01, -0.01, 0.01, 0, -0.04,0.01, -0.01, 0.02, 0, 0, -0.01, 0, 0, 0.03, -0.01, -0.06, -0.04, -0.01, 0, 0.02, -0.05, -0.02, 0.02, -0.01, 0.01, 0.01, -0.01, -0.02, 0, 0.02, -0.01, -0.02, 0.04, -0.01, 0, -0.02, -0.04, -0.03, -0.03, 0, 0.03, -0.01, -0.02, 0, 0.01, -0.01, -0.04, 0.01, -0.03,0.01, 0.03, 0, -0.02, 0, -0.04, -0.02, -0.02, 0.03, -0.02, 0.05, 0.02, 0.03, -0.02, -0.05, -0.01, 0.02, -0.04, 0.02, 0.01, -0.03, 0.01, 0.02, 0, 0.04, 0, -0.01, 0.02, 0.01, 0.02, 0.02, -0.02, 0.04, -0.01, 0, -0.01, 0, 0.01, -0.02, -0.04, 0.06, 0.01, 0, 0.01,-0.02, 0.02, 0.05, 0, 0.03, -0.02, 0.02, -0.03, -0.02, 0.01, 0, 0.06, -0.01, 0, -0.02, -0.02, 0.01, -0.01, 0, -0.03, 0.02, 0, -0.01, -0.02, -0.01, 0.03, -0.03, 0, 0, 0, -0.03, -0.06, 0.04, 0.02, -0.03, -0.06, -0.03, -0.01, -0.03, -0.02, -0.04, 0.01, 0, -0.01,0.02, -0.01, 0.03, 0.02, -0.02, -0.01, -0.02, -0.03, -0.01, 0.01, -0.04, 0.04, 0.03, 0.02, 0, -0.07, -0.02, -0.01, 0, 0.03, -0.01, -0.03, 0, 0.03, 0, -0.01, 0.02, 0.01, 0.02, -0.03, 0, 0.01, -0.02, 0.04, -0.04, 0, -0.05, 0, -0.02, -0.01, 0.03, 0.01, 0, -0.02,0, -0.05, 0.01, -0.01, 0, -0.08, -0.01, -0.02, 0.02, 0.01, -0.01, -0.01, -0.01, 0, 0, -0.01, -0.03, 0, 0, -0.02, 0.05, -0.03, 0.02, 0.01, -0.02, 0.01, 0.01, 0, 0.01, -0.01, 0, -0.04, -0.06, 0.03, -0.02, 0, -0.02, 0.01, 0.03, 0.03, -0.03, -0.01, 0, 0, 0.01,-0.02, -0.01, -0.01, -0.03, -0.02, 0.03, -0.02, 0.03, 0.01, 0.04, -0.04, 0.02, 0.02, 0.02, 0.03, 0, 0.06, -0.01, 0.02, -0.01, 0.01, -0.01, -0.01, -0.03, -0.01, 0.02, 0.01, 0.01, 0, -0.02, 0.03, 0.02, -0.01, -0.02, 0.01, 0.01, 0.04, -0.01, -0.05, 0, -0.01, 0,0.03, -0.01, 0.02, 0.02, -0.04, 0.01, -0.03, -0.02, 0, 0.02, 0, -0.01, 0.02, 0.01, 0.04, -0.04, 0, -0.01, -0.02, 0, -0.02, 0.01, -0.02, 0, 0, 0.03, 0.04, -0.01, 0, 0, 0.03, -0.02, 0.01, -0.02, 0, -0.03, 0.04, 0, 0.01, 0.04, 0, 0.03, -0.02, 0.01, 0.01, -0.02,0.02, -0.05, 0.03, -0.02, -0.01, 0.01, -0.01, 0.02, 0.04, 0.02, 0, -0.02, 0.02, -0.01, -0.03, -0.06, -0.01, -0.01, -0.04, 0.01, -0.01, -0.01, -0.01, -0.02, 0.03, -0.03, 0.05, 0, -0.01, -0.03, 0.03, 0.01, -0.01, -0.01, 0, 0.01, 0.01, 0.02, -0.01, 0.02, -0.02,-0.03, 0.03, -0.02, 0.01, 0, -0.03, 0.02, 0.02, -0.02, 0.01, 0.02, -0.01, 0.02, 0, 0.02, 0.01, 0, 0.05, -0.03, 0.01, 0.03, 0.04, 0.01, 0.01, -0.01, 0.02, -0.03, 0.02, 0.01, 0, -0.01, -0.03, -0.01, 0.02, 0.03, 0, 0.03, 0.02, 0, 0.01, 0.01, 0.02, 0.01, 0.02, 0.03,0.01, -0.03, 0.02, 0.01, 0.02, 0.03, -0.01, 0.01, -0.03, -0.01, -0.02, 0.01, 0, 0, -0.01, -0.02, -0.01, -0.01, 0.01, 0.06, 0.01, 0, -0.01, 0.01, 0, 0, -0.01, -0.01, 0, -0.02, -0.02, -0.01, -0.02, -0.01, -0.05, -0.02, 0.03, 0.02, 0, 0.03, -0.03, -0.03, 0.03, 0,0.02, -0.03, 0.04, -0.04, 0, -0.04, 0.04, 0.01, -0.03, 0.01, -0.02, -0.01, -0.04, 0.02, -0.01, 0.01, 0.01, 0.02, -0.02, 0.03, -0.01, 0, 0.01, 0, 0.02, 0.01, 0.01, 0.03, -0.06, 0.02, 0, -0.02, 0, 0.04, -0.03, 0, 0, -0.02, 0.06, 0.01, -0.03, -0.02, -0.01, -0.03,-0.04, 0.04, 0.03, -0.02, 0, 0.03, -0.04, -0.01, -0.02, -0.02, -0.01, 0.02, 0.02, 0.01, 0.01, 0.01, -0.02, -0.02, -0.03, -0.01, 0.01, 0, 0, 0, 0.02, -0.04, -0.01, -0.01, 0.04, -0.01, 0.01, -0.01, 0.01, -0.03, 0.01, -0.01, 0, -0.01, 0.01, 0, 0.01, -0.04, 0.01, 0,0, 0, 0, 0.02, 0.04, 0.01, 0.01, -0.01, -0.02, 0, 0, 0.01, -0.01, 0.01, -0.01, 0, 0.04, -0.01, -0.02, -0.01, -0.01, -0.01, 0, 0, 0.01, 0.01, 0.04, -0.01, -0.01, 0, -0.03, -0.01, 0.01, -0.01, -0.02, 0.01, -0.02, 0.01, -0.03, 0.02, 0, 0.03, 0.01, -0.03, -0.01,-0.01, 0.02, 0.01, 0, -0.01, 0.03, -0.04, 0.01, -0.01, -0.03, -0.02, 0.02, -0.01, 0, -0.01, 0.02, 0.02, 0.01, 0.03, 0, -0.03, 0, 0.02, -0.03, -0.01, 0.01, 0.06, -0.01, -0.02, 0.01, 0, 0.04, -0.04, 0.01, -0.02, 0, -0.04, 0, 0.02, 0.02, -0.02, 0.04, -0.01, 0.01,0, 0.03, -0.03, 0.04, -0.01, -0.02, -0.02, 0.01, -0.02, -0.01, 0, -0.03, -0.01, 0.02, -0.01, -0.05, 0.02, 0.01, 0, -0.02, -0.03, 0, 0, 0, -0.01, 0.02, 0, 0.02, 0.03, -0.02, 0.02, -0.02, 0.02, -0.01, 0.02, 0, -0.07, -0.01, 0.01, 0.01, -0.01, 0.02, 0, -0.01, 0,0.01, 0.01, -0.06, 0.04, 0, -0.04, -0.01, -0.03, -0.04, -0.01, -0.01, 0.03, -0.02, -0.01, 0.02, 0, -0.04, 0.01, 0.01, -0.01, 0.02, 0.01, 0.03, -0.01, 0, -0.02, -0.02, -0.01, 0.04, -0.02, 0.06, 0, 0, -0.02, 0, 0.01, 0, -0.02, 0.02, 0.02, -0.06, -0.02, 0, 0.02,0.01, -0.01, 0, 0, -0.01, 0.01, -0.04, -0.01, -0.01, 0.01, -0.02, -0.03, 0.01, 0.03, -0.01, -0.01, 0, -0.01, 0, -0.01, 0.05, 0.02, 0, 0, 0.02, -0.01, 0.02, -0.03, -0.01, -0.02, 0.02, 0, 0.01, -0.06, -0.01, 0.01, 0.01, 0.02, 0.02, -0.02, 0.03, 0.01, -0.01, -0.01,0, 0, 0.03, 0.05, 0.05, -0.01, 0.01, -0.03, 0, -0.01, -0.01, 0, -0.02, 0.02, 0, 0.02, -0.01, 0.01, -0.02, 0.01, 0, -0.02, 0.02, 0.01, -0.03, 0.03, -0.04, -0.02, -0.01, 0.01, -0.04, -0.03, -0.02, -0.03, 0.01, 0, 0, -0.02, -0.01, 0.02, 0.01, -0.01, 0.01, 0.03,-0.01, -0.02, -0.01, 0, 0, -0.03, 0, 0.02, 0.03, 0.01, -0.01, 0.02, 0.04, -0.04, 0.02, 0.01, -0.02, -0.01, 0.03, -0.04, -0.01, 0, 0.01, 0.01, 0, 0.03, 0.05, 0, 0, 0.05, 0.01, -0.01, 0, -0.01, 0, -0.01, -0.01, 0.03, -0.01, 0.02, 0, 0, -0.01, 0, -0.02, -0.02,0.05,-0.02, -0.01, -0.01, -0.01, 0.02, 0, -0.01, 0, 0, 0, -0.02, -0.04, 0.01, 0.01, -0.01, 0.01, 0, -0.06, -0.01, -0.04, -0.03, 0.01, 0, -0.01, 0.03, -0.04, -0.01, 0, 0.04, 0.03";
+    public static List<Float> getQueryVector() {
+        String vector = "0.02, 0, -0.02, 0, -0.04, -0.01, -0.04, -0.01, 0.06, 0.08, -0.05, -0.04, -0.03, 0.05, -0.03, 0, -0.03, 0, 0.05, 0, 0.03,0.02, 0, 0.04, 0.05, 0.03, 0, 0, 0, -0.03, -0.01, 0.01, 0, -0.01, -0.03, -0.02, -0.05, 0.01, 0, 0.01, 0, 0.01, -0.03, -0.02, 0.02, 0.02, 0.04, 0.01, 0.04, 0.02, -0.01, -0.01, 0.02, 0.01, 0.02, -0.04, -0.01, 0.06, -0.01, -0.03, -0.04, -0.01, -0.01, 0, 0.03, -0.02, 0.03, 0.05, 0.01, 0.04, 0.05, -0.05, -0.01, 0.03, 0.02, -0.02, 0, -0.02, -0.02, -0.04, 0.01, -0.05, 0.01, 0.05, 0, -0.02, 0.03, -0.07, 0.05, 0.02, 0.03, 0.05, 0.05, -0.01, 0.03, -0.08, -0.01, -0.03, 0.04, -0.01, -0.02, -0.01, -0.02, -0.03, 0.03, 0.03,-0.04, 0.04, 0.02, 0, 0.03, -0.02, -0.04, 0.02, 0.01, 0.02, -0.01, 0.03, 0.02, 0.01, -0.02, 0, 0.02, 0, -0.01, 0.02, -0.05, 0.03, 0.03, 0.04, -0.02, 0.04, -0.04, 0.03, 0.03, -0.03, 0, 0.02, 0.06, 0.02, 0.02, -0.01, 0.03, 0, -0.03, -0.06, 0.02, 0, 0.02, -0.04,-0.05, 0.01, 0.02, 0.02, 0.07, 0.05, -0.01, 0.03, -0.03, -0.06, 0.04, 0.01, -0.01, 0.04, 0.02, 0.03, -0.03, 0.03, -0.01, 0.03, -0.04, -0.02, 0.02, -0.02, -0.03, -0.02, 0.02, -0.01, -0.05, -0.07, 0.02, -0.01, 0, -0.01, -0.02, -0.02, -0.03, -0.03, 0, -0.08, -0.01,0, -0.01, -0.03, 0.01, 0, -0.02, -0.03, -0.04, -0.01, 0.02, 0, 0, -0.04, 0.04, -0.01, 0.04, 0, -0.06, 0.02, 0.03, 0.01, 0.06, -0.02, 0, 0.01, 0.01, 0.01, 0, -0.02, 0.03, 0.02, 0.01, -0.01, -0.05, 0.03, -0.04, 0, 0.01, -0.02, -0.04, 0.02, 0, 0.09, -0.04, -0.01,0.02, 0.01, -0.03, 0.04, 0.02, -0.02, -0.02, -0.01, 0.01, -0.04, -0.01, 0.02, 0, 0, 0.07, 0.02, 0, 0, -0.01, 0.01, 0.03, -0.02, 0, 0.03, -0.02, -0.07, -0.04, -0.03, 0, -0.03, -0.02, 0, -0.02, -0.02, -0.05, -0.02, 0, 0.05, 0.01, -0.01, -0.04, 0.02, 0, 0, 0.03,0.02, -0.03, -0.01, -0.02, 0.06, -0.02, 0.01, 0.01, 0.04, -0.04, 0.06, -0.02, 0.01, 0.03, 0.01, 0.02, -0.02, 0.01, -0.04, 0.05, -0.03, 0.01, -0.01, 0, -0.03, -0.03, 0.04, 0.02, -0.03, -0.03, -0.02, 0.06, 0.04, -0.01, 0.01, 0.01, -0.01, -0.02, -0.02, 0.04, 0.01,-0.01, 0.01, -0.01, 0, 0.01, -0.04, 0.01, 0, -0.04, 0.05, 0.01, 0.01, 0.09, -0.04, -0.02, 0.04, 0, 0.04, -0.04, -0.04, 0, 0, -0.01, 0.05, -0.01, 0.02, 0.01, -0.03, 0, -0.06, 0.02, 0.04, 0.01, 0.03, 0.01, -0.04, 0, 0.01, 0.05, 0.02, -0.02, 0.02, 0, -0.02, -0.04,-0.07, -0.02, -0.05, 0.06, 0.01, 0.02, -0.03, 0.06, -0.01, -0.02, -0.02, -0.01, 0, -0.05, 0.06, -0.05, 0, -0.02, -0.02, 0, -0.01, 0.01, 0, -0.01, 0.05, 0.02, 0, 0.02, -0.02, 0.02, 0, 0.08, -0.02, 0.01, -0.03, 0.02, -0.03, 0, -0.01, -0.02, -0.04, 0.06, 0.01,-0.03, -0.03, 0.01, -0.01, 0.01, -0.01, 0.02, -0.03, 0.03, 0.04, 0.02, -0.02, 0.04, 0.01, 0.01, 0.02, 0.01, 0, -0.03, 0.03, -0.02, -0.03, -0.02, 0.02, 0, -0.01, -0.02, -0.02, 0, -0.01, -0.03, 0.02, -0.01, 0.01, -0.08, 0.01, -0.04, -0.05, 0.02, -0.01, -0.03,0.02, 0.01, -0.03, 0.01, 0.02, 0.03, 0.04, -0.04, 0.02, 0, 0.02, 0.02, 0.04, -0.04, -0.1, 0, 0.05, -0.01, 0.03, 0.05, 0.03, -0.02, 0.01, 0.02, -0.05, 0.01, 0, 0.05, -0.01, 0.03, -0.01, 0, 0.04, 0, 0, 0.08, 0.01, 0, -0.04, -0.03, 0, -0.02, -0.01, 0.02, 0.03,0, -0.01, 0, 0, 0, 0.06, 0, 0, 0.01, -0.01, 0.01, 0.04, 0.07, -0.01, 0.01, 0, -0.01, -0.02, 0.01, 0.01, 0, 0.02, 0.01, 0, -0.02, 0.03, 0.02, 0.06, 0.02, -0.01, 0.03, 0.02, -0.02, 0.01, -0.01, 0.03, 0.05, 0.02, 0.01, 0, 0, 0.01, 0.03, -0.03, -0.01, -0.04, 0.03,-0.02, 0.02, -0.02, -0.01, -0.02, 0.01, -0.04, 0.01, -0.04, 0.03, -0.02, -0.02, -0.01, -0.01, 0.07, 0.04, -0.01, 0.08, -0.04, -0.04, 0, 0, -0.01, -0.01, 0.03, -0.04, 0.02, -0.01, -0.04, 0.02, -0.07, -0.02, 0.02, -0.01, 0.02, 0.01, 0, 0.07, -0.01, 0.03, 0.01,-0.05, 0.02, 0.02, -0.01, 0.02, 0.02, -0.03, -0.02, 0.03, -0.01, 0.02, 0, 0, 0.02, -0.01, -0.02, 0.05, 0.02, 0.01, 0.01, -0.03, -0.05, -0.03, 0.01, 0.03, -0.02, -0.01, -0.01, -0.01, 0.03, -0.01, -0.03, 0.02, -0.02, -0.03, -0.02, -0.01, -0.01, -0.01, 0, -0.01,-0.04, -0.02, -0.02, -0.03, 0.04, 0.03, 0, -0.02, -0.01, -0.03, -0.01, -0.04, -0.04, 0.02, 0.01, -0.05, 0.04, -0.03, 0.01, -0.01, -0.03, 0.01, 0.01, 0.01, 0.02, -0.01, -0.02, -0.03, -0.01, -0.01, -0.01, -0.01, -0.03, 0, 0.01, -0.02, -0.01, -0.01, 0.01, 0, -0.04,0.01, -0.01, 0.02, 0, 0, -0.01, 0, 0, 0.03, -0.01, -0.06, -0.04, -0.01, 0, 0.02, -0.05, -0.02, 0.02, -0.01, 0.01, 0.01, -0.01, -0.02, 0, 0.02, -0.01, -0.02, 0.04, -0.01, 0, -0.02, -0.04, -0.03, -0.03, 0, 0.03, -0.01, -0.02, 0, 0.01, -0.01, -0.04, 0.01, -0.03,0.01, 0.03, 0, -0.02, 0, -0.04, -0.02, -0.02, 0.03, -0.02, 0.05, 0.02, 0.03, -0.02, -0.05, -0.01, 0.02, -0.04, 0.02, 0.01, -0.03, 0.01, 0.02, 0, 0.04, 0, -0.01, 0.02, 0.01, 0.02, 0.02, -0.02, 0.04, -0.01, 0, -0.01, 0, 0.01, -0.02, -0.04, 0.06, 0.01, 0, 0.01,-0.02, 0.02, 0.05, 0, 0.03, -0.02, 0.02, -0.03, -0.02, 0.01, 0, 0.06, -0.01, 0, -0.02, -0.02, 0.01, -0.01, 0, -0.03, 0.02, 0, -0.01, -0.02, -0.01, 0.03, -0.03, 0, 0, 0, -0.03, -0.06, 0.04, 0.02, -0.03, -0.06, -0.03, -0.01, -0.03, -0.02, -0.04, 0.01, 0, -0.01,0.02, -0.01, 0.03, 0.02, -0.02, -0.01, -0.02, -0.03, -0.01, 0.01, -0.04, 0.04, 0.03, 0.02, 0, -0.07, -0.02, -0.01, 0, 0.03, -0.01, -0.03, 0, 0.03, 0, -0.01, 0.02, 0.01, 0.02, -0.03, 0, 0.01, -0.02, 0.04, -0.04, 0, -0.05, 0, -0.02, -0.01, 0.03, 0.01, 0, -0.02,0, -0.05, 0.01, -0.01, 0, -0.08, -0.01, -0.02, 0.02, 0.01, -0.01, -0.01, -0.01, 0, 0, -0.01, -0.03, 0, 0, -0.02, 0.05, -0.03, 0.02, 0.01, -0.02, 0.01, 0.01, 0, 0.01, -0.01, 0, -0.04, -0.06, 0.03, -0.02, 0, -0.02, 0.01, 0.03, 0.03, -0.03, -0.01, 0, 0, 0.01,-0.02, -0.01, -0.01, -0.03, -0.02, 0.03, -0.02, 0.03, 0.01, 0.04, -0.04, 0.02, 0.02, 0.02, 0.03, 0, 0.06, -0.01, 0.02, -0.01, 0.01, -0.01, -0.01, -0.03, -0.01, 0.02, 0.01, 0.01, 0, -0.02, 0.03, 0.02, -0.01, -0.02, 0.01, 0.01, 0.04, -0.01, -0.05, 0, -0.01, 0,0.03, -0.01, 0.02, 0.02, -0.04, 0.01, -0.03, -0.02, 0, 0.02, 0, -0.01, 0.02, 0.01, 0.04, -0.04, 0, -0.01, -0.02, 0, -0.02, 0.01, -0.02, 0, 0, 0.03, 0.04, -0.01, 0, 0, 0.03, -0.02, 0.01, -0.02, 0, -0.03, 0.04, 0, 0.01, 0.04, 0, 0.03, -0.02, 0.01, 0.01, -0.02,0.02, -0.05, 0.03, -0.02, -0.01, 0.01, -0.01, 0.02, 0.04, 0.02, 0, -0.02, 0.02, -0.01, -0.03, -0.06, -0.01, -0.01, -0.04, 0.01, -0.01, -0.01, -0.01, -0.02, 0.03, -0.03, 0.05, 0, -0.01, -0.03, 0.03, 0.01, -0.01, -0.01, 0, 0.01, 0.01, 0.02, -0.01, 0.02, -0.02,-0.03, 0.03, -0.02, 0.01, 0, -0.03, 0.02, 0.02, -0.02, 0.01, 0.02, -0.01, 0.02, 0, 0.02, 0.01, 0, 0.05, -0.03, 0.01, 0.03, 0.04, 0.01, 0.01, -0.01, 0.02, -0.03, 0.02, 0.01, 0, -0.01, -0.03, -0.01, 0.02, 0.03, 0, 0.03, 0.02, 0, 0.01, 0.01, 0.02, 0.01, 0.02, 0.03,0.01, -0.03, 0.02, 0.01, 0.02, 0.03, -0.01, 0.01, -0.03, -0.01, -0.02, 0.01, 0, 0, -0.01, -0.02, -0.01, -0.01, 0.01, 0.06, 0.01, 0, -0.01, 0.01, 0, 0, -0.01, -0.01, 0, -0.02, -0.02, -0.01, -0.02, -0.01, -0.05, -0.02, 0.03, 0.02, 0, 0.03, -0.03, -0.03, 0.03, 0,0.02, -0.03, 0.04, -0.04, 0, -0.04, 0.04, 0.01, -0.03, 0.01, -0.02, -0.01, -0.04, 0.02, -0.01, 0.01, 0.01, 0.02, -0.02, 0.03, -0.01, 0, 0.01, 0, 0.02, 0.01, 0.01, 0.03, -0.06, 0.02, 0, -0.02, 0, 0.04, -0.03, 0, 0, -0.02, 0.06, 0.01, -0.03, -0.02, -0.01, -0.03,-0.04, 0.04, 0.03, -0.02, 0, 0.03, -0.04, -0.01, -0.02, -0.02, -0.01, 0.02, 0.02, 0.01, 0.01, 0.01, -0.02, -0.02, -0.03, -0.01, 0.01, 0, 0, 0, 0.02, -0.04, -0.01, -0.01, 0.04, -0.01, 0.01, -0.01, 0.01, -0.03, 0.01, -0.01, 0, -0.01, 0.01, 0, 0.01, -0.04, 0.01, 0,0, 0, 0, 0.02, 0.04, 0.01, 0.01, -0.01, -0.02, 0, 0, 0.01, -0.01, 0.01, -0.01, 0, 0.04, -0.01, -0.02, -0.01, -0.01, -0.01, 0, 0, 0.01, 0.01, 0.04, -0.01, -0.01, 0, -0.03, -0.01, 0.01, -0.01, -0.02, 0.01, -0.02, 0.01, -0.03, 0.02, 0, 0.03, 0.01, -0.03, -0.01,-0.01, 0.02, 0.01, 0, -0.01, 0.03, -0.04, 0.01, -0.01, -0.03, -0.02, 0.02, -0.01, 0, -0.01, 0.02, 0.02, 0.01, 0.03, 0, -0.03, 0, 0.02, -0.03, -0.01, 0.01, 0.06, -0.01, -0.02, 0.01, 0, 0.04, -0.04, 0.01, -0.02, 0, -0.04, 0, 0.02, 0.02, -0.02, 0.04, -0.01, 0.01,0, 0.03, -0.03, 0.04, -0.01, -0.02, -0.02, 0.01, -0.02, -0.01, 0, -0.03, -0.01, 0.02, -0.01, -0.05, 0.02, 0.01, 0, -0.02, -0.03, 0, 0, 0, -0.01, 0.02, 0, 0.02, 0.03, -0.02, 0.02, -0.02, 0.02, -0.01, 0.02, 0, -0.07, -0.01, 0.01, 0.01, -0.01, 0.02, 0, -0.01, 0,0.01, 0.01, -0.06, 0.04, 0, -0.04, -0.01, -0.03, -0.04, -0.01, -0.01, 0.03, -0.02, -0.01, 0.02, 0, -0.04, 0.01, 0.01, -0.01, 0.02, 0.01, 0.03, -0.01, 0, -0.02, -0.02, -0.01, 0.04, -0.02, 0.06, 0, 0, -0.02, 0, 0.01, 0, -0.02, 0.02, 0.02, -0.06, -0.02, 0, 0.02,0.01, -0.01, 0, 0, -0.01, 0.01, -0.04, -0.01, -0.01, 0.01, -0.02, -0.03, 0.01, 0.03, -0.01, -0.01, 0, -0.01, 0, -0.01, 0.05, 0.02, 0, 0, 0.02, -0.01, 0.02, -0.03, -0.01, -0.02, 0.02, 0, 0.01, -0.06, -0.01, 0.01, 0.01, 0.02, 0.02, -0.02, 0.03, 0.01, -0.01, -0.01,0, 0, 0.03, 0.05, 0.05, -0.01, 0.01, -0.03, 0, -0.01, -0.01, 0, -0.02, 0.02, 0, 0.02, -0.01, 0.01, -0.02, 0.01, 0, -0.02, 0.02, 0.01, -0.03, 0.03, -0.04, -0.02, -0.01, 0.01, -0.04, -0.03, -0.02, -0.03, 0.01, 0, 0, -0.02, -0.01, 0.02, 0.01, -0.01, 0.01, 0.03,-0.01, -0.02, -0.01, 0, 0, -0.03, 0, 0.02, 0.03, 0.01, -0.01, 0.02, 0.04, -0.04, 0.02, 0.01, -0.02, -0.01, 0.03, -0.04, -0.01, 0, 0.01, 0.01, 0, 0.03, 0.05, 0, 0, 0.05, 0.01, -0.01, 0, -0.01, 0, -0.01, -0.01, 0.03, -0.01, 0.02, 0, 0, -0.01, 0, -0.02, -0.02,0.05,-0.02, -0.01, -0.01, -0.01, 0.02, 0, -0.01, 0, 0, 0, -0.02, -0.04, 0.01, 0.01, -0.01, 0.01, 0, -0.06, -0.01, -0.04, -0.03, 0.01, 0, -0.01, 0.03, -0.04, -0.01, 0, 0.04, 0.03";
+        return Arrays.stream(vector.split(","))
+            .map(String::trim)
+            .map(Float::parseFloat)
+            .collect(Collectors.toList());
     }
 
     static class Document {

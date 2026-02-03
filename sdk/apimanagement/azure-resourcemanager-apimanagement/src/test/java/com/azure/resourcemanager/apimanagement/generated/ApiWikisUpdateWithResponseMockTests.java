@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.WikiContract;
@@ -24,24 +24,25 @@ public final class ApiWikisUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"documents\":[{\"documentationId\":\"rjgobekxeheowsec\"},{\"documentationId\":\"drzzbskiwrjsb\"}]},\"id\":\"bmseesacuicnvq\",\"name\":\"qsuivmrfaptndrmm\",\"type\":\"lh\"}";
+            = "{\"properties\":{\"documents\":[{\"documentationId\":\"zyhzydyvtuqvi\"},{\"documentationId\":\"unssky\"},{\"documentationId\":\"gtvjxsocsvje\"}]},\"id\":\"ejchxzjdcw\",\"name\":\"zscyfyi\",\"type\":\"ecmasjnfgngxaoje\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         WikiContract response = manager.apiWikis()
-            .updateWithResponse("ysy", "vldeehcbsaip", "suo", "kegbvbbdledf",
+            .updateWithResponse("cqxu", "jxug", "crrfbplvhmh", "rosdjlzbd",
                 new WikiUpdateContract()
-                    .withDocuments(Arrays.asList(new WikiDocumentationContract().withDocumentationId("luazzx"),
-                        new WikiDocumentationContract().withDocumentationId("veugpx"),
-                        new WikiDocumentationContract().withDocumentationId("empupbscboxra"))),
+                    .withDocuments(Arrays.asList(new WikiDocumentationContract().withDocumentationId("qe"),
+                        new WikiDocumentationContract().withDocumentationId("aorservpve"),
+                        new WikiDocumentationContract().withDocumentationId("rs"),
+                        new WikiDocumentationContract().withDocumentationId("gclme"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rjgobekxeheowsec", response.documents().get(0).documentationId());
+        Assertions.assertEquals("zyhzydyvtuqvi", response.documents().get(0).documentationId());
     }
 }

@@ -6,6 +6,8 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.databox.models.DatacenterAddressRequest;
+import com.azure.resourcemanager.databox.models.DeviceCapabilityRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityRequest;
 import com.azure.resourcemanager.databox.models.SkuName;
@@ -16,28 +18,43 @@ public final class RegionConfigurationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionConfigurationRequest model = BinaryData.fromString(
-            "{\"scheduleAvailabilityRequest\":{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"nedgfbc\",\"country\":\"cvqvpkeqdcv\"},\"transportAvailabilityRequest\":{\"skuName\":\"DataBox\"},\"datacenterAddressRequest\":{\"storageLocation\":\"odsotbobzdop\",\"skuName\":\"DataBox\"}}")
+            "{\"scheduleAvailabilityRequest\":{\"skuName\":\"ScheduleAvailabilityRequest\",\"storageLocation\":\"esl\",\"country\":\"k\",\"model\":\"AzureDataBox120\"},\"transportAvailabilityRequest\":{\"skuName\":\"DataBoxDisk\",\"model\":\"DataBoxDisk\"},\"datacenterAddressRequest\":{\"storageLocation\":\"xogaokonzmnsikv\",\"skuName\":\"DataBox\",\"model\":\"DataBoxHeavy\"},\"deviceCapabilityRequest\":{\"skuName\":\"DataBoxDisk\",\"model\":\"AzureDataBox120\"}}")
             .toObject(RegionConfigurationRequest.class);
-        Assertions.assertEquals("nedgfbc", model.scheduleAvailabilityRequest().storageLocation());
-        Assertions.assertEquals("cvqvpkeqdcv", model.scheduleAvailabilityRequest().country());
-        Assertions.assertEquals(SkuName.DATA_BOX, model.transportAvailabilityRequest().skuName());
-        Assertions.assertEquals("odsotbobzdop", model.datacenterAddressRequest().storageLocation());
+        Assertions.assertEquals("esl", model.scheduleAvailabilityRequest().storageLocation());
+        Assertions.assertEquals("k", model.scheduleAvailabilityRequest().country());
+        Assertions.assertEquals(ModelName.AZURE_DATA_BOX120, model.scheduleAvailabilityRequest().model());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.transportAvailabilityRequest().skuName());
+        Assertions.assertEquals(ModelName.DATA_BOX_DISK, model.transportAvailabilityRequest().model());
+        Assertions.assertEquals("xogaokonzmnsikv", model.datacenterAddressRequest().storageLocation());
         Assertions.assertEquals(SkuName.DATA_BOX, model.datacenterAddressRequest().skuName());
+        Assertions.assertEquals(ModelName.DATA_BOX_HEAVY, model.datacenterAddressRequest().model());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.deviceCapabilityRequest().skuName());
+        Assertions.assertEquals(ModelName.AZURE_DATA_BOX120, model.deviceCapabilityRequest().model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RegionConfigurationRequest model = new RegionConfigurationRequest()
-            .withScheduleAvailabilityRequest(
-                new ScheduleAvailabilityRequest().withStorageLocation("nedgfbc").withCountry("cvqvpkeqdcv"))
-            .withTransportAvailabilityRequest(new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX))
-            .withDatacenterAddressRequest(
-                new DatacenterAddressRequest().withStorageLocation("odsotbobzdop").withSkuName(SkuName.DATA_BOX));
+            .withScheduleAvailabilityRequest(new ScheduleAvailabilityRequest().withStorageLocation("esl")
+                .withCountry("k")
+                .withModel(ModelName.AZURE_DATA_BOX120))
+            .withTransportAvailabilityRequest(new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_DISK)
+                .withModel(ModelName.DATA_BOX_DISK))
+            .withDatacenterAddressRequest(new DatacenterAddressRequest().withStorageLocation("xogaokonzmnsikv")
+                .withSkuName(SkuName.DATA_BOX)
+                .withModel(ModelName.DATA_BOX_HEAVY))
+            .withDeviceCapabilityRequest(new DeviceCapabilityRequest().withSkuName(SkuName.DATA_BOX_DISK)
+                .withModel(ModelName.AZURE_DATA_BOX120));
         model = BinaryData.fromObject(model).toObject(RegionConfigurationRequest.class);
-        Assertions.assertEquals("nedgfbc", model.scheduleAvailabilityRequest().storageLocation());
-        Assertions.assertEquals("cvqvpkeqdcv", model.scheduleAvailabilityRequest().country());
-        Assertions.assertEquals(SkuName.DATA_BOX, model.transportAvailabilityRequest().skuName());
-        Assertions.assertEquals("odsotbobzdop", model.datacenterAddressRequest().storageLocation());
+        Assertions.assertEquals("esl", model.scheduleAvailabilityRequest().storageLocation());
+        Assertions.assertEquals("k", model.scheduleAvailabilityRequest().country());
+        Assertions.assertEquals(ModelName.AZURE_DATA_BOX120, model.scheduleAvailabilityRequest().model());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.transportAvailabilityRequest().skuName());
+        Assertions.assertEquals(ModelName.DATA_BOX_DISK, model.transportAvailabilityRequest().model());
+        Assertions.assertEquals("xogaokonzmnsikv", model.datacenterAddressRequest().storageLocation());
         Assertions.assertEquals(SkuName.DATA_BOX, model.datacenterAddressRequest().skuName());
+        Assertions.assertEquals(ModelName.DATA_BOX_HEAVY, model.datacenterAddressRequest().model());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.deviceCapabilityRequest().skuName());
+        Assertions.assertEquals(ModelName.AZURE_DATA_BOX120, model.deviceCapabilityRequest().model());
     }
 }

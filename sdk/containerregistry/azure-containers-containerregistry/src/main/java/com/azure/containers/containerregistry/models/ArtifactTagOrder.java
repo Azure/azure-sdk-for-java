@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrde
     /**
      * Do not provide an orderby value in the request.
      */
+    @Generated
     public static final ArtifactTagOrder NONE = fromString("none");
 
     /**
      * Order tags by LastUpdatedOn field, from most recently updated to least recently updated.
      */
+    @Generated
     public static final ArtifactTagOrder LAST_UPDATED_ON_DESCENDING = fromString("timedesc");
 
     /**
      * Order tags by LastUpdatedOn field, from least recently updated to most recently updated.
      */
+    @Generated
     public static final ArtifactTagOrder LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
 
     /**
@@ -31,6 +35,7 @@ public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrde
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ArtifactTagOrder() {
     }
@@ -41,6 +46,7 @@ public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrde
      * @param name a name to look for.
      * @return the corresponding ArtifactTagOrder.
      */
+    @Generated
     public static ArtifactTagOrder fromString(String name) {
         return fromString(name, ArtifactTagOrder.class);
     }
@@ -50,6 +56,7 @@ public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrde
      * 
      * @return known ArtifactTagOrder values.
      */
+    @Generated
     public static Collection<ArtifactTagOrder> values() {
         return values(ArtifactTagOrder.class);
     }

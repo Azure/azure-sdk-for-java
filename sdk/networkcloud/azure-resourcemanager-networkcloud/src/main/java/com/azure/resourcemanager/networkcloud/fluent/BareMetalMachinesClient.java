@@ -43,6 +43,9 @@ public interface BareMetalMachinesClient {
      * 
      * Get a list of bare metal machines in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,7 +54,7 @@ public interface BareMetalMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BareMetalMachineInner> list(Context context);
+    PagedIterable<BareMetalMachineInner> list(Integer top, String skipToken, Context context);
 
     /**
      * List bare metal machines in the resource group.
@@ -74,6 +77,9 @@ public interface BareMetalMachinesClient {
      * Get a list of bare metal machines in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,7 +88,8 @@ public interface BareMetalMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<BareMetalMachineInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the bare metal machine.
@@ -119,8 +126,8 @@ public interface BareMetalMachinesClient {
     /**
      * Create or update the bare metal machine.
      * 
-     * Create a new bare metal machine or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+     * will be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -137,12 +144,16 @@ public interface BareMetalMachinesClient {
     /**
      * Create or update the bare metal machine.
      * 
-     * Create a new bare metal machine or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+     * will be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,13 +162,14 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginCreateOrUpdate(String resourceGroupName,
-        String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters, Context context);
+        String bareMetalMachineName, BareMetalMachineInner bareMetalMachineParameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Create or update the bare metal machine.
      * 
-     * Create a new bare metal machine or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+     * will be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -174,12 +186,16 @@ public interface BareMetalMachinesClient {
     /**
      * Create or update the bare metal machine.
      * 
-     * Create a new bare metal machine or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new bare metal machine or update the properties of the existing one. All customer initiated requests
+     * will be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
      * @param bareMetalMachineParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,13 +204,13 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BareMetalMachineInner createOrUpdate(String resourceGroupName, String bareMetalMachineName,
-        BareMetalMachineInner bareMetalMachineParameters, Context context);
+        BareMetalMachineInner bareMetalMachineParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the bare metal machine.
      * 
-     * Delete the provided bare metal machine.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
+     * this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -210,11 +226,15 @@ public interface BareMetalMachinesClient {
     /**
      * Delete the bare metal machine.
      * 
-     * Delete the provided bare metal machine.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
+     * this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -223,13 +243,13 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String bareMetalMachineName, Context context);
+        String bareMetalMachineName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the bare metal machine.
      * 
-     * Delete the provided bare metal machine.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
+     * this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
@@ -244,11 +264,15 @@ public interface BareMetalMachinesClient {
     /**
      * Delete the bare metal machine.
      * 
-     * Delete the provided bare metal machine.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided bare metal machine. All customer initiated requests will be rejected as the life cycle of
+     * this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -256,7 +280,8 @@ public interface BareMetalMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String bareMetalMachineName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String bareMetalMachineName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the bare metal machine.
@@ -283,6 +308,10 @@ public interface BareMetalMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -292,7 +321,8 @@ public interface BareMetalMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineInner>, BareMetalMachineInner> beginUpdate(String resourceGroupName,
-        String bareMetalMachineName, BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
+        String bareMetalMachineName, String ifMatch, String ifNoneMatch,
+        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
 
     /**
      * Patch the bare metal machine.
@@ -318,6 +348,10 @@ public interface BareMetalMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param bareMetalMachineName The name of the bare metal machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param bareMetalMachineUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,8 +360,8 @@ public interface BareMetalMachinesClient {
      * @return bareMetalMachine represents the physical machine in the rack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineInner update(String resourceGroupName, String bareMetalMachineName,
-        BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
+    BareMetalMachineInner update(String resourceGroupName, String bareMetalMachineName, String ifMatch,
+        String ifNoneMatch, BareMetalMachinePatchParameters bareMetalMachineUpdateParameters, Context context);
 
     /**
      * Cordon the bare metal machine.
@@ -812,6 +846,86 @@ public interface BareMetalMachinesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     OperationStatusResultInner runDataExtracts(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtractsRestricted(
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunDataExtractsRestricted(
+        String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters, Context context);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param bareMetalMachineName The name of the bare metal machine.
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner runDataExtractsRestricted(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.

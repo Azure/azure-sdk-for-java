@@ -10,7 +10,7 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class StorageAppliancesListSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2025-09-01/examples/
      * StorageAppliances_ListBySubscription.json
      */
     /**
@@ -20,6 +20,6 @@ public final class StorageAppliancesListSamples {
      */
     public static void
         listStorageAppliancesForSubscription(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager.storageAppliances().list(com.azure.core.util.Context.NONE);
+        manager.storageAppliances().list(null, null, com.azure.core.util.Context.NONE);
     }
 }

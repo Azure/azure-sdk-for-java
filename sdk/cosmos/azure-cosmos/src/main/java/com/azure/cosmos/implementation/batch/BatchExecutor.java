@@ -10,10 +10,8 @@ import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.models.CosmosBatch;
-import com.azure.cosmos.models.CosmosBatchRequestOptions;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemOperation;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -26,12 +24,14 @@ public final class BatchExecutor {
     private final RequestOptions options;
     private final CosmosBatch cosmosBatch;
     private final CosmosItemSerializer effectiveItemSerializer;
+    private final boolean disableRetryForThrottledBatchRequest;
 
 
     public BatchExecutor(
         final CosmosAsyncContainer container,
         final CosmosBatch cosmosBatch,
-        final RequestOptions options) {
+        final RequestOptions options,
+        final boolean disableRetryForThrottledBatchRequest) {
 
         this.container = container;
         this.cosmosBatch = cosmosBatch;
@@ -40,6 +40,7 @@ public final class BatchExecutor {
         this.effectiveItemSerializer = docClientWrapper.getEffectiveItemSerializer(
             this.options != null ? this.options.getEffectiveItemSerializer() : null
         );
+        this.disableRetryForThrottledBatchRequest = disableRetryForThrottledBatchRequest;
     }
 
     /**
@@ -60,6 +61,12 @@ public final class BatchExecutor {
         request.setShouldContinueOnError(false);
 
         return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase())
-            .executeBatchRequest(BridgeInternal.getLink(container), request, options, false);
+            .executeBatchRequest(
+                BridgeInternal.getLink(container),
+                request,
+                options,
+                false,
+                false,
+                this.disableRetryForThrottledBatchRequest);
     }
 }

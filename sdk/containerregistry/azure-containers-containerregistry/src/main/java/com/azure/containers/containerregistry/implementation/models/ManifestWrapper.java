@@ -7,6 +7,7 @@ package com.azure.containers.containerregistry.implementation.models;
 import com.azure.containers.containerregistry.models.OciAnnotations;
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,61 +22,73 @@ public final class ManifestWrapper extends Manifest {
     /*
      * Media type for this Manifest
      */
+    @Generated
     private String mediaType;
 
     /*
      * (ManifestList, OCIIndex) List of V2 image layer information
      */
+    @Generated
     private List<ManifestListAttributes> manifests;
 
     /*
      * (V2, OCI) Image config descriptor
      */
+    @Generated
     private OciDescriptor config;
 
     /*
      * (V2, OCI) List of V2 image layer information
      */
+    @Generated
     private List<OciDescriptor> layers;
 
     /*
      * (OCI, OCIIndex) Additional metadata
      */
+    @Generated
     private OciAnnotations annotations;
 
     /*
      * (V1) CPU architecture
      */
+    @Generated
     private String architecture;
 
     /*
      * (V1) Image name
      */
+    @Generated
     private String name;
 
     /*
      * (V1) Image tag
      */
+    @Generated
     private String tag;
 
     /*
      * (V1) List of layer information
      */
+    @Generated
     private List<FsLayer> fsLayers;
 
     /*
      * (V1) Image history
      */
+    @Generated
     private List<History> history;
 
     /*
      * (V1) Image signature
      */
+    @Generated
     private List<ImageSignature> signatures;
 
     /**
      * Creates an instance of ManifestWrapper class.
      */
+    @Generated
     public ManifestWrapper() {
     }
 
@@ -84,6 +97,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the mediaType value.
      */
+    @Generated
     public String getMediaType() {
         return this.mediaType;
     }
@@ -94,6 +108,7 @@ public final class ManifestWrapper extends Manifest {
      * @param mediaType the mediaType value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
@@ -104,6 +119,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the manifests value.
      */
+    @Generated
     public List<ManifestListAttributes> getManifests() {
         return this.manifests;
     }
@@ -114,6 +130,7 @@ public final class ManifestWrapper extends Manifest {
      * @param manifests the manifests value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setManifests(List<ManifestListAttributes> manifests) {
         this.manifests = manifests;
         return this;
@@ -124,6 +141,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the config value.
      */
+    @Generated
     public OciDescriptor getConfig() {
         return this.config;
     }
@@ -134,6 +152,7 @@ public final class ManifestWrapper extends Manifest {
      * @param config the config value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setConfig(OciDescriptor config) {
         this.config = config;
         return this;
@@ -144,6 +163,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the layers value.
      */
+    @Generated
     public List<OciDescriptor> getLayers() {
         return this.layers;
     }
@@ -154,6 +174,7 @@ public final class ManifestWrapper extends Manifest {
      * @param layers the layers value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setLayers(List<OciDescriptor> layers) {
         this.layers = layers;
         return this;
@@ -164,6 +185,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the annotations value.
      */
+    @Generated
     public OciAnnotations getAnnotations() {
         return this.annotations;
     }
@@ -174,6 +196,7 @@ public final class ManifestWrapper extends Manifest {
      * @param annotations the annotations value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
         return this;
@@ -184,6 +207,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the architecture value.
      */
+    @Generated
     public String getArchitecture() {
         return this.architecture;
     }
@@ -194,6 +218,7 @@ public final class ManifestWrapper extends Manifest {
      * @param architecture the architecture value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setArchitecture(String architecture) {
         this.architecture = architecture;
         return this;
@@ -204,6 +229,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -214,6 +240,7 @@ public final class ManifestWrapper extends Manifest {
      * @param name the name value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setName(String name) {
         this.name = name;
         return this;
@@ -224,6 +251,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the tag value.
      */
+    @Generated
     public String getTag() {
         return this.tag;
     }
@@ -234,6 +262,7 @@ public final class ManifestWrapper extends Manifest {
      * @param tag the tag value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setTag(String tag) {
         this.tag = tag;
         return this;
@@ -244,6 +273,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the fsLayers value.
      */
+    @Generated
     public List<FsLayer> getFsLayers() {
         return this.fsLayers;
     }
@@ -254,6 +284,7 @@ public final class ManifestWrapper extends Manifest {
      * @param fsLayers the fsLayers value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setFsLayers(List<FsLayer> fsLayers) {
         this.fsLayers = fsLayers;
         return this;
@@ -264,6 +295,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the history value.
      */
+    @Generated
     public List<History> getHistory() {
         return this.history;
     }
@@ -274,6 +306,7 @@ public final class ManifestWrapper extends Manifest {
      * @param history the history value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setHistory(List<History> history) {
         this.history = history;
         return this;
@@ -284,6 +317,7 @@ public final class ManifestWrapper extends Manifest {
      * 
      * @return the signatures value.
      */
+    @Generated
     public List<ImageSignature> getSignatures() {
         return this.signatures;
     }
@@ -294,6 +328,7 @@ public final class ManifestWrapper extends Manifest {
      * @param signatures the signatures value to set.
      * @return the ManifestWrapper object itself.
      */
+    @Generated
     public ManifestWrapper setSignatures(List<ImageSignature> signatures) {
         this.signatures = signatures;
         return this;
@@ -302,6 +337,7 @@ public final class ManifestWrapper extends Manifest {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ManifestWrapper setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
@@ -311,6 +347,7 @@ public final class ManifestWrapper extends Manifest {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -337,6 +374,7 @@ public final class ManifestWrapper extends Manifest {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManifestWrapper.
      */
+    @Generated
     public static ManifestWrapper fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManifestWrapper deserializedManifestWrapper = new ManifestWrapper();

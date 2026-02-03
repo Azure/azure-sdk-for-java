@@ -26,11 +26,6 @@ jobs:
       image: $(LINUXVMIMAGE)
       os: linux
 
-    strategy:
-      matrix:
-        Client Libraries:
-          ArtifactName: 'packages'
-
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
@@ -53,23 +48,18 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
 
-      - template: /eng/common/pipelines/templates/steps/verify-readme.yml
-        parameters:
-          ScanPath: $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }}
-
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build and Validate'
-
-      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
       - ${{ each artifact in parameters.Artifacts }}:
         - task: Maven@4
           displayName: 'Prepare POM: ${{artifact.groupId}}:${{artifact.name}}'
           inputs:
-            mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
+            ${{ if endsWith(artifact.safeName, 'v2') }}:
+              mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}-v2/pom.xml
+            ${{ else }}:
+              mavenPomFile: sdk/${{parameters.ServiceDirectory}}/${{artifact.name}}/pom.xml
             goals: 'deploy'
             options: '$(DefaultOptions) -pl ${{artifact.groupId}}:${{artifact.name}} -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build -Dgpg.skip'
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
@@ -93,4 +83,4 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
           ArtifactPath: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: '$(ArtifactName)'
+          ArtifactName: 'packages'

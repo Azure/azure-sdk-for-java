@@ -6,8 +6,8 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReadReplicaPromoteMode;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.ReadReplicaPromoteOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationPromoteOption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import org.junit.jupiter.api.Assertions;
 
@@ -15,21 +15,21 @@ public final class ReplicaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Replica model = BinaryData.fromString(
-            "{\"role\":\"AsyncReplica\",\"capacity\":1026391011,\"replicationState\":\"Updating\",\"promoteMode\":\"switchover\",\"promoteOption\":\"planned\"}")
+            "{\"role\":\"GeoAsyncReplica\",\"capacity\":118535522,\"replicationState\":\"Updating\",\"promoteMode\":\"Switchover\",\"promoteOption\":\"Forced\"}")
             .toObject(Replica.class);
-        Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
+        Assertions.assertEquals(ReplicationRole.GEO_ASYNC_REPLICA, model.role());
         Assertions.assertEquals(ReadReplicaPromoteMode.SWITCHOVER, model.promoteMode());
-        Assertions.assertEquals(ReplicationPromoteOption.PLANNED, model.promoteOption());
+        Assertions.assertEquals(ReadReplicaPromoteOption.FORCED, model.promoteOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Replica model = new Replica().withRole(ReplicationRole.ASYNC_REPLICA)
+        Replica model = new Replica().withRole(ReplicationRole.GEO_ASYNC_REPLICA)
             .withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
-            .withPromoteOption(ReplicationPromoteOption.PLANNED);
+            .withPromoteOption(ReadReplicaPromoteOption.FORCED);
         model = BinaryData.fromObject(model).toObject(Replica.class);
-        Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
+        Assertions.assertEquals(ReplicationRole.GEO_ASYNC_REPLICA, model.role());
         Assertions.assertEquals(ReadReplicaPromoteMode.SWITCHOVER, model.promoteMode());
-        Assertions.assertEquals(ReplicationPromoteOption.PLANNED, model.promoteOption());
+        Assertions.assertEquals(ReadReplicaPromoteOption.FORCED, model.promoteOption());
     }
 }

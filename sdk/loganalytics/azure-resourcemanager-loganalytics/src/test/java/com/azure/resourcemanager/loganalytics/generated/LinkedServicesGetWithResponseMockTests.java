@@ -6,8 +6,8 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.LinkedService;
@@ -22,22 +22,22 @@ public final class LinkedServicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"resourceId\":\"atzv\",\"writeAccessResourceId\":\"glbyvi\",\"provisioningState\":\"Updating\"},\"tags\":{\"fbkgozxwopdby\":\"rxkjzwrgxffmshk\",\"zqaclna\":\"p\"},\"id\":\"xbiygnugjknfsmf\",\"name\":\"ttuxuuyilflqoiqu\",\"type\":\"rehmr\"}";
+            = "{\"properties\":{\"resourceId\":\"rnxousxauzlwvsg\",\"writeAccessResourceId\":\"ohqfzizv\",\"provisioningState\":\"Updating\"},\"tags\":{\"mribiat\":\"jsvthnwpzteko\",\"zcugswvxwlmzqw\":\"gplucfotangcfhny\",\"cvclxynpdk\":\"vtxnjmxmcuqud\",\"neiknpg\":\"gfabuiyjibuzphdu\"},\"id\":\"xgjiuqh\",\"name\":\"btozipqwje\",\"type\":\"mur\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         LogAnalyticsManager manager = LogAnalyticsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LinkedService response = manager.linkedServices()
-            .getWithResponse("saasiixtmkzj", "kv", "irhgfgrwsdp", com.azure.core.util.Context.NONE)
+            .getWithResponse("picrmnzhrgmqgjsx", "pqcbfrmbodthsq", "gvriibakclac", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rxkjzwrgxffmshk", response.tags().get("fbkgozxwopdby"));
-        Assertions.assertEquals("atzv", response.resourceId());
-        Assertions.assertEquals("glbyvi", response.writeAccessResourceId());
+        Assertions.assertEquals("jsvthnwpzteko", response.tags().get("mribiat"));
+        Assertions.assertEquals("rnxousxauzlwvsg", response.resourceId());
+        Assertions.assertEquals("ohqfzizv", response.writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.UPDATING, response.provisioningState());
     }
 }

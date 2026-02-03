@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
- * Table level result for Sql Server to Azure Sql DB migration.
+ * The MigrateSqlServerSqlDbTaskOutputTableLevel model.
  */
 @Immutable
 public final class MigrateSqlServerSqlDbTaskOutputTableLevel extends MigrateSqlServerSqlDbTaskOutput {

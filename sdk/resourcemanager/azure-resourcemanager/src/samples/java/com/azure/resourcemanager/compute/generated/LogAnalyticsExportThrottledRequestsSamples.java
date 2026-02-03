@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 public final class LogAnalyticsExportThrottledRequestsSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/logAnalyticExamples
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2025-04-01/examples/logAnalyticExamples
      * /LogAnalytics_ThrottledRequests.json
      */
     /**

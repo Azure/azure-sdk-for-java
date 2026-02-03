@@ -17,9 +17,9 @@ public class ScanRulesetsGet {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildScanRulesetsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.scanrulesetsget.scanrulesetsget
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scan-rulesets-get.scan-rulesets-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = scanRulesetsClient.getWithResponse("myRuleSetName", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.scanrulesetsget.scanrulesetsget
+        // END:com.azure.analytics.purview.scanning.generated.scan-rulesets-get.scan-rulesets-get
     }
 }

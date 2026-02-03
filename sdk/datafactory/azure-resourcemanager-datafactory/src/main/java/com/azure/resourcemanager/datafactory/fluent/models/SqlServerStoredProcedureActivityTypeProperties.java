@@ -99,7 +99,9 @@ public final class SqlServerStoredProcedureActivityTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("storedProcedureName", this.storedProcedureName);
-        jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        if (this.storedProcedureParameters != null) {
+            jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -4,20 +4,21 @@
 package com.azure.maps.search.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.search.implementation.models.GeoJsonFeatureCollection;
-import java.io.IOException;
-import java.util.List;
-import com.azure.maps.search.implementation.models.GeoJsonPoint;
-import com.azure.maps.search.implementation.models.GeoJsonMultiPoint;
+import com.azure.maps.search.implementation.models.GeoJsonGeometryCollection;
 import com.azure.maps.search.implementation.models.GeoJsonLineString;
 import com.azure.maps.search.implementation.models.GeoJsonMultiLineString;
-import com.azure.maps.search.implementation.models.GeoJsonPolygon;
+import com.azure.maps.search.implementation.models.GeoJsonMultiPoint;
 import com.azure.maps.search.implementation.models.GeoJsonMultiPolygon;
-import com.azure.maps.search.implementation.models.GeoJsonGeometryCollection;
+import com.azure.maps.search.implementation.models.GeoJsonPoint;
+import com.azure.maps.search.implementation.models.GeoJsonPolygon;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * A valid `GeoJSON` object. Please refer to [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3) for details.
@@ -26,20 +27,24 @@ import com.azure.maps.search.implementation.models.GeoJsonGeometryCollection;
 public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
 
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type;
 
     /*
-     * Bounding box. Projection used - EPSG:3857. Please refer to [RFC 7946](https://datatracker.ietf.org/doc/html/rfc7946#section-5) for details.
+     * Bounding box. Projection used - EPSG:3857. Please refer to [RFC
+     * 7946](https://datatracker.ietf.org/doc/html/rfc7946#section-5) for details.
      */
+    @Generated
     private List<Double> bbox;
 
     /**
      * Creates an instance of GeoJsonObject class.
      */
+    @Generated
     public GeoJsonObject() {
-        this.type = GeoJsonObjectType.fromString("GeoJsonObject");
     }
 
     /**
@@ -49,6 +54,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
      *
      * @return the type value.
      */
+    @Generated
     public GeoJsonObjectType getType() {
         return this.type;
     }
@@ -59,6 +65,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
      *
      * @return the bbox value.
      */
+    @Generated
     public List<Double> getBbox() {
         return this.bbox;
     }
@@ -70,6 +77,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
      * @param bbox the bbox value to set.
      * @return the GeoJsonObject object itself.
      */
+    @Generated
     public GeoJsonObject setBbox(List<Double> bbox) {
         this.bbox = bbox;
         return this;
@@ -78,6 +86,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -94,6 +103,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the GeoJsonObject.
      */
+    @Generated
     public static GeoJsonObject fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -140,6 +150,7 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
         });
     }
 
+    @Generated
     static GeoJsonObject fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonObject deserializedGeoJsonObject = new GeoJsonObject();

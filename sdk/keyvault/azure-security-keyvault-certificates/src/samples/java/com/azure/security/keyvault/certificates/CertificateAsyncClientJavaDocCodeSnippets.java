@@ -12,6 +12,7 @@ import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
 import com.azure.security.keyvault.certificates.models.CertificateProperties;
+import com.azure.security.keyvault.certificates.models.CreateCertificateOptions;
 import com.azure.security.keyvault.certificates.models.ImportCertificateOptions;
 import com.azure.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.security.keyvault.certificates.models.MergeCertificateOptions;
@@ -141,15 +142,31 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
 
     /**
      * Method to insert code snippets for
-     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map)} and
-     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy)}.
+     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy)}
+     * {@link CertificateAsyncClient#beginCreateCertificate(String, CertificatePolicy, Boolean, Map)}, and
+     * {@link CertificateAsyncClient#beginCreateCertificate(CreateCertificateOptions)}.
      */
     public void createCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
+        CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+
+        certificateAsyncClient.beginCreateCertificate("certificateName", certPolicy)
+            .subscribe(pollResponse -> {
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.println(pollResponse.getStatus());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
+            });
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
+
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
         Map<String, String> tags = new HashMap<>();
+
         tags.put("foo", "bar");
+
         certificateAsyncClient.beginCreateCertificate("certificateName", policy, true, tags)
             .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
@@ -159,16 +176,26 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
-        CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
-        certificateAsyncClient.beginCreateCertificate("certificateName", certPolicy)
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#CreateCertificateOptions
+        CertificatePolicy certificatePolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+        Map<String, String> certTags = new HashMap<>();
+
+        tags.put("foo", "bar");
+
+        CreateCertificateOptions createCertificateOptions =
+            new CreateCertificateOptions("certificateName", new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12"))
+                .setEnabled(true)
+                .setTags(certTags)
+                .setCertificateOrderPreserved(true);
+
+        certificateAsyncClient.beginCreateCertificate(createCertificateOptions)
             .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());
                 System.out.println(pollResponse.getValue().getStatusDetails());
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#CreateCertificateOptions
     }
 
     /**

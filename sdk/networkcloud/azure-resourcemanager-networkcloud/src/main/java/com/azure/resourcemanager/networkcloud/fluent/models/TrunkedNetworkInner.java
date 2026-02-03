@@ -26,6 +26,11 @@ import java.util.Map;
 @Fluent
 public final class TrunkedNetworkInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster associated with the resource.
      */
     private ExtendedLocation extendedLocation;
@@ -59,6 +64,15 @@ public final class TrunkedNetworkInner extends Resource {
      * Creates an instance of TrunkedNetworkInner class.
      */
     public TrunkedNetworkInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -380,6 +394,8 @@ public final class TrunkedNetworkInner extends Resource {
                     deserializedTrunkedNetworkInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedTrunkedNetworkInner.innerProperties = TrunkedNetworkProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedTrunkedNetworkInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedTrunkedNetworkInner.systemData = SystemData.fromJson(reader);
                 } else {

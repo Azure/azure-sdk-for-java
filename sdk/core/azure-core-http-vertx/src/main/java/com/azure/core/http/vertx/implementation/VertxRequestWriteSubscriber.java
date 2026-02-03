@@ -4,9 +4,11 @@
 package com.azure.core.http.vertx.implementation;
 
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import io.netty.buffer.Unpooled;
+import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
@@ -18,6 +20,10 @@ import reactor.util.context.Context;
 import reactor.util.context.ContextView;
 
 import java.nio.ByteBuffer;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link HttpClientRequest Vert.x request}.
@@ -26,7 +32,10 @@ import java.nio.ByteBuffer;
 public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     private static final ClientLogger LOGGER = new ClientLogger(VertxRequestWriteSubscriber.class);
 
-    private final HttpClientRequest request;
+    private final Function<Buffer, Future<Void>> writeHandler;
+    private final Supplier<Boolean> isWriteQueueFull;
+    private final BiConsumer<Long, Throwable> reset;
+    private final Supplier<Future<Void>> end;
     private final Promise<HttpResponse> promise;
     private final ProgressReporter progressReporter;
     private final ContextView contextView;
@@ -41,14 +50,28 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
      * Creates a new {@link VertxRequestWriteSubscriber} that writes a stream of {@link ByteBuffer ByteBuffers} to a
      * {@link HttpClientRequest Vert.x request}.
      *
-     * @param request The {@link HttpClientRequest Vert.x request} to write to.
+     * @param exceptionHandlerUpdater A {@link Handler} that updates the
+     * {@link HttpClientRequest#exceptionHandler(Handler)} to be {@link #onError(Throwable)}.
+     * @param drainHandlerUpdater A {@link Handler} that updates the {@link HttpClientRequest#drainHandler(Handler)}
+     * to be {@link #requestNext()}.
+     * @param writeHandler A {@link Function} that will call {@link HttpClientRequest}.
+     * @param isWriteQueueFull A {@link Supplier} that will call {@link HttpClientRequest#writeQueueFull()}.
+     * @param reset A {@link BiConsumer} that will call {@link HttpClientRequest#reset(long, Throwable)}.
+     * @param end A {@link Supplier} that will call {@link HttpClientRequest#end()}.
      * @param promise The {@link MonoSink} to emit the {@link HttpResponse response} to.
      * @param progressReporter The {@link ProgressReporter} to report progress to.
      * @param contextView The {@link ContextView} to use when dropping errors.
      */
-    public VertxRequestWriteSubscriber(HttpClientRequest request, Promise<HttpResponse> promise,
-        ProgressReporter progressReporter, ContextView contextView) {
-        this.request = request.exceptionHandler(this::onError).drainHandler(ignored -> requestNext());
+    public VertxRequestWriteSubscriber(Consumer<Handler<Throwable>> exceptionHandlerUpdater,
+        Consumer<Handler<Void>> drainHandlerUpdater, Function<Buffer, Future<Void>> writeHandler,
+        Supplier<Boolean> isWriteQueueFull, BiConsumer<Long, Throwable> reset, Supplier<Future<Void>> end,
+        Promise<HttpResponse> promise, ProgressReporter progressReporter, ContextView contextView) {
+        exceptionHandlerUpdater.accept(this::onError);
+        drainHandlerUpdater.accept(ignored -> requestNext());
+        this.writeHandler = writeHandler;
+        this.isWriteQueueFull = isWriteQueueFull;
+        this.reset = reset;
+        this.end = end;
         this.promise = promise;
         this.progressReporter = progressReporter;
         this.contextView = contextView;
@@ -81,25 +104,24 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
         }
     }
 
-    @SuppressWarnings("deprecation")
     private void write(ByteBuffer bytes) {
-        int remaining = bytes.remaining();
-        request.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes)), result -> {
+        final int remaining = bytes.remaining();
+        writeHandler.apply(Buffer.buffer(FluxUtil.byteBufferToArray(bytes))).onComplete(result -> {
             State state = this.state;
             if (state == State.WRITING) {
                 this.state = State.UNINITIALIZED;
             }
 
             if (result.succeeded()) {
-                if (progressReporter != null) {
-                    progressReporter.reportProgress(remaining);
-                }
                 if (state == State.WRITING) {
-                    if (!request.writeQueueFull()) {
+                    if (remaining > 0 && progressReporter != null) {
+                        progressReporter.reportProgress(remaining);
+                    }
+                    if (!isWriteQueueFull.get()) {
                         requestNext();
                     }
                 } else if (state == State.COMPLETE) {
-                    endRequest();
+                    endRequest(remaining);
                 } else if (state == State.ERROR) {
                     resetRequest(error);
                 }
@@ -177,7 +199,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
                         + "completed successfully.", throwable);
             }
         }
-        request.reset(0, throwable);
+        reset.accept(0L, throwable);
     }
 
     @Override
@@ -192,12 +214,15 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
 
         this.state = State.COMPLETE;
         if (state != State.WRITING) {
-            endRequest();
+            endRequest(0);
         }
     }
 
-    private void endRequest() {
-        request.end().onFailure(promise::fail);
+    private void endRequest(int finishingWriteSize) {
+        if (finishingWriteSize > 0 && progressReporter != null) {
+            progressReporter.reportProgress(finishingWriteSize);
+        }
+        end.get().onFailure(promise::fail);
     }
 
     private enum State {

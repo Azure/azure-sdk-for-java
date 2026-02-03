@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -16,11 +17,13 @@ public final class EncryptionScope {
      * provided in the request. If not specified, encryption is performed with the default account encryption scope. For
      * more information, see Encryption at Rest for Azure Storage Services.
      */
+    @Generated
     private String encryptionScope;
 
     /**
      * Creates an instance of EncryptionScope class.
      */
+    @Generated
     public EncryptionScope() {
     }
 
@@ -31,6 +34,7 @@ public final class EncryptionScope {
      * 
      * @return the encryptionScope value.
      */
+    @Generated
     public String getEncryptionScope() {
         return this.encryptionScope;
     }
@@ -43,6 +47,7 @@ public final class EncryptionScope {
      * @param encryptionScope the encryptionScope value to set.
      * @return the EncryptionScope object itself.
      */
+    @Generated
     public EncryptionScope setEncryptionScope(String encryptionScope) {
         this.encryptionScope = encryptionScope;
         return this;

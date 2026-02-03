@@ -1,0 +1,126 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.credential
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.data.appconfiguration.models
+displayName: Migrate from azure.data.appconfiguration.models to next generation stack
+description: This recipe migrates the azure.data.appconfiguration.models package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # ConfigurationAudience
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # ConfigurationSetting
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.ConfigurationSetting
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.ConfigurationSetting
+
+  # --------------------------------------------------------------------
+  # SettingLabelSelector
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.SettingLabelSelector
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.SettingLabelSelector
+
+  # --------------------------------------------------------------------
+  # ConfigurationSettingsFilter
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.ConfigurationSettingsFilter
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.ConfigurationSettingsFilter
+
+  # --------------------------------------------------------------------
+  # ConfigurationSnapshot
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.ConfigurationSnapshot
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.ConfigurationSnapshot
+
+  # --------------------------------------------------------------------
+  # ConfigurationSnapshotStatus
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # FeatureFlagConfigurationSetting
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.FeatureFlagConfigurationSetting
+
+  # --------------------------------------------------------------------
+  # FeatureFlagFilter
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.FeatureFlagFilter
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.FeatureFlagFilter
+
+  # --------------------------------------------------------------------
+  # SecretReferenceConfigurationSetting
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.SecretReferenceConfigurationSetting
+
+  # --------------------------------------------------------------------
+  # SettingFields
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # SettingLabel
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # SettingLabelFields
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # SettingLabelSelector
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # SettingSelector
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.data.appconfiguration.models.SettingSelector
+      newFullyQualifiedTypeName: com.azure.v2.data.appconfiguration.models.SettingSelector
+
+  # --------------------------------------------------------------------
+  # SnapshotComposition
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # SnapshotFields
+  # --------------------------------------------------------------------
+
+
+
+  # --------------------------------------------------------------------
+  # SnapshotSelector
+  # --------------------------------------------------------------------

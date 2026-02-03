@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,22 +20,26 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
     /*
      * The PII domain used for PII Entity Recognition.
      */
+    @Generated
     private PiiDomain domain;
 
     /*
      * (Optional) describes the PII categories to return
      */
+    @Generated
     private List<PiiCategory> piiCategories;
 
     /*
      * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
      * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
+    @Generated
     private StringIndexType stringIndexType;
 
     /**
      * Creates an instance of PiiTaskParameters class.
      */
+    @Generated
     public PiiTaskParameters() {
     }
 
@@ -43,6 +48,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * 
      * @return the domain value.
      */
+    @Generated
     public PiiDomain getDomain() {
         return this.domain;
     }
@@ -53,6 +59,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * @param domain the domain value to set.
      * @return the PiiTaskParameters object itself.
      */
+    @Generated
     public PiiTaskParameters setDomain(PiiDomain domain) {
         this.domain = domain;
         return this;
@@ -63,6 +70,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * 
      * @return the piiCategories value.
      */
+    @Generated
     public List<PiiCategory> getPiiCategories() {
         return this.piiCategories;
     }
@@ -73,6 +81,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * @param piiCategories the piiCategories value to set.
      * @return the PiiTaskParameters object itself.
      */
+    @Generated
     public PiiTaskParameters setPiiCategories(List<PiiCategory> piiCategories) {
         this.piiCategories = piiCategories;
         return this;
@@ -85,6 +94,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * 
      * @return the stringIndexType value.
      */
+    @Generated
     public StringIndexType getStringIndexType() {
         return this.stringIndexType;
     }
@@ -97,6 +107,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * @param stringIndexType the stringIndexType value to set.
      * @return the PiiTaskParameters object itself.
      */
+    @Generated
     public PiiTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         this.stringIndexType = stringIndexType;
         return this;
@@ -105,6 +116,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiTaskParameters setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
@@ -114,6 +126,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PiiTaskParameters setLoggingOptOut(Boolean loggingOptOut) {
         super.setLoggingOptOut(loggingOptOut);
@@ -123,6 +136,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +158,7 @@ public final class PiiTaskParameters extends PreBuiltTaskParameters {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PiiTaskParameters.
      */
+    @Generated
     public static PiiTaskParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PiiTaskParameters deserializedPiiTaskParameters = new PiiTaskParameters();

@@ -4,6 +4,8 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -11,7 +13,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Batch Query object.
@@ -22,15 +23,18 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
     /*
      * id of the request which would show in corresponding batchItem
      */
+    @Generated
     private String optionalId;
 
     /*
      * The coordinates of the location that you want to reverse geocode. Example: [lon,lat]
      */
+    @Generated
     private List<Double> coordinates;
 
     /*
-     * Specify entity types that you want in the response. Only the types you specify will be returned. If the point cannot be mapped to the entity types you specify, no location information is returned in the response.
+     * Specify entity types that you want in the response. Only the types you specify will be returned. If the point
+     * cannot be mapped to the entity types you specify, no location information is returned in the response.
      * Default value is all possible entities.
      * A comma separated list of entity types selected from the following options.
      * 
@@ -42,18 +46,26 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      * - AdminDivision2
      * - CountryRegion
      * 
-     * These entity types are ordered from the most specific entity to the least specific entity. When entities of more than one entity type are found, only the most specific entity is returned. For example, if you specify Address and AdminDistrict1 as entity types and entities were found for both types, only the Address entity information is returned in the response.
+     * These entity types are ordered from the most specific entity to the least specific entity. When entities of more
+     * than one entity type are found, only the most specific entity is returned. For example, if you specify Address
+     * and AdminDistrict1 as entity types and entities were found for both types, only the Address entity information is
+     * returned in the response.
      */
+    @Generated
     private List<ResultTypeEnum> resultTypes;
 
     /*
-     * A string that specifies an [ISO 3166-1 Alpha-2 region/country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This will alter Geopolitical disputed borders and labels to align with the specified user region.
+     * A string that specifies an [ISO 3166-1 Alpha-2 region/country
+     * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2). This will alter Geopolitical disputed borders and labels
+     * to align with the specified user region.
      */
+    @Generated
     private String view;
 
     /**
      * Creates an instance of ReverseGeocodingBatchRequestItem class.
      */
+    @Generated
     public ReverseGeocodingBatchRequestItem() {
     }
 
@@ -62,6 +74,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      *
      * @return the optionalId value.
      */
+    @Generated
     public String getOptionalId() {
         return this.optionalId;
     }
@@ -72,6 +85,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      * @param optionalId the optionalId value to set.
      * @return the ReverseGeocodingBatchRequestItem object itself.
      */
+    @Generated
     public ReverseGeocodingBatchRequestItem setOptionalId(String optionalId) {
         this.optionalId = optionalId;
         return this;
@@ -83,6 +97,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      *
      * @return the coordinates value.
      */
+    @Generated
     public GeoPosition getCoordinates() {
         return com.azure.maps.search.implementation.helpers.Utility.fromDoubleList(this.coordinates);
     }
@@ -94,6 +109,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      * @param coordinates the coordinates value to set.
      * @return the ReverseGeocodingBatchRequestItem object itself.
      */
+    @Generated
     public ReverseGeocodingBatchRequestItem setCoordinates(GeoPosition coordinates) {
         this.coordinates = new ArrayList<>();
         this.coordinates.add(coordinates.getLongitude());
@@ -123,6 +139,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      *
      * @return the resultTypes value.
      */
+    @Generated
     public List<ResultTypeEnum> getResultTypes() {
         return this.resultTypes;
     }
@@ -150,6 +167,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      * @param resultTypes the resultTypes value to set.
      * @return the ReverseGeocodingBatchRequestItem object itself.
      */
+    @Generated
     public ReverseGeocodingBatchRequestItem setResultTypes(List<ResultTypeEnum> resultTypes) {
         this.resultTypes = resultTypes;
         return this;
@@ -162,6 +180,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      *
      * @return the view value.
      */
+    @Generated
     public String getView() {
         return this.view;
     }
@@ -174,6 +193,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      * @param view the view value to set.
      * @return the ReverseGeocodingBatchRequestItem object itself.
      */
+    @Generated
     public ReverseGeocodingBatchRequestItem setView(String view) {
         this.view = view;
         return this;
@@ -182,6 +202,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -201,6 +222,7 @@ public final class ReverseGeocodingBatchRequestItem implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ReverseGeocodingBatchRequestItem.
      */
+    @Generated
     public static ReverseGeocodingBatchRequestItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ReverseGeocodingBatchRequestItem deserializedReverseGeocodingBatchRequestItem

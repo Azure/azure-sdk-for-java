@@ -15,29 +15,23 @@ public final class StorageClassificationMappingCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageClassificationMappingCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"targetStorageClassificationId\":\"mlnwiaaomylweazu\"},\"location\":\"sethwwn\",\"id\":\"jhlfzswpchwahf\",\"name\":\"ousnfepgfewe\",\"type\":\"wlyxgncxyk\"},{\"properties\":{\"targetStorageClassificationId\":\"jhlimmbcxfhbcpo\"},\"location\":\"vxcjzhqizxfpxtgq\",\"id\":\"cja\",\"name\":\"ftjuh\",\"type\":\"qaz\"}],\"nextLink\":\"tgguwpijrajcivmm\"}")
+            "{\"value\":[{\"properties\":{\"targetStorageClassificationId\":\"aqi\"},\"location\":\"hheioqaqhvseuf\",\"id\":\"qyrxp\",\"name\":\"lcgqlsismj\",\"type\":\"frddgamquhiosrsj\"}],\"nextLink\":\"vfcdisyirn\"}")
             .toObject(StorageClassificationMappingCollection.class);
-        Assertions.assertEquals("mlnwiaaomylweazu", model.value().get(0).properties().targetStorageClassificationId());
-        Assertions.assertEquals("sethwwn", model.value().get(0).location());
-        Assertions.assertEquals("tgguwpijrajcivmm", model.nextLink());
+        Assertions.assertEquals("aqi", model.value().get(0).properties().targetStorageClassificationId());
+        Assertions.assertEquals("hheioqaqhvseuf", model.value().get(0).location());
+        Assertions.assertEquals("vfcdisyirn", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageClassificationMappingCollection model
-            = new StorageClassificationMappingCollection().withValue(Arrays.asList(
-                new StorageClassificationMappingInner()
-                    .withProperties(new StorageClassificationMappingProperties()
-                        .withTargetStorageClassificationId("mlnwiaaomylweazu"))
-                    .withLocation("sethwwn"),
-                new StorageClassificationMappingInner()
-                    .withProperties(new StorageClassificationMappingProperties()
-                        .withTargetStorageClassificationId("jhlimmbcxfhbcpo"))
-                    .withLocation("vxcjzhqizxfpxtgq")))
-                .withNextLink("tgguwpijrajcivmm");
+        StorageClassificationMappingCollection model = new StorageClassificationMappingCollection()
+            .withValue(Arrays.asList(new StorageClassificationMappingInner()
+                .withProperties(new StorageClassificationMappingProperties().withTargetStorageClassificationId("aqi"))
+                .withLocation("hheioqaqhvseuf")))
+            .withNextLink("vfcdisyirn");
         model = BinaryData.fromObject(model).toObject(StorageClassificationMappingCollection.class);
-        Assertions.assertEquals("mlnwiaaomylweazu", model.value().get(0).properties().targetStorageClassificationId());
-        Assertions.assertEquals("sethwwn", model.value().get(0).location());
-        Assertions.assertEquals("tgguwpijrajcivmm", model.nextLink());
+        Assertions.assertEquals("aqi", model.value().get(0).properties().targetStorageClassificationId());
+        Assertions.assertEquals("hheioqaqhvseuf", model.value().get(0).location());
+        Assertions.assertEquals("vfcdisyirn", model.nextLink());
     }
 }

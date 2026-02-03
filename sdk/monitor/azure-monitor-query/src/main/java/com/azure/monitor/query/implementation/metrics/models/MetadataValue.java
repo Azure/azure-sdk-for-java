@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class MetadataValue implements JsonSerializable<MetadataValue> {
     /*
      * The name of the metadata.
      */
+    @Generated
     private LocalizableString name;
 
     /*
      * The value of the metadata.
      */
+    @Generated
     private String value;
 
     /**
      * Creates an instance of MetadataValue class.
      */
+    @Generated
     public MetadataValue() {
     }
 
@@ -37,6 +41,7 @@ public final class MetadataValue implements JsonSerializable<MetadataValue> {
      * 
      * @return the name value.
      */
+    @Generated
     public LocalizableString getName() {
         return this.name;
     }
@@ -47,6 +52,7 @@ public final class MetadataValue implements JsonSerializable<MetadataValue> {
      * @param name the name value to set.
      * @return the MetadataValue object itself.
      */
+    @Generated
     public MetadataValue setName(LocalizableString name) {
         this.name = name;
         return this;
@@ -57,6 +63,7 @@ public final class MetadataValue implements JsonSerializable<MetadataValue> {
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -67,6 +74,7 @@ public final class MetadataValue implements JsonSerializable<MetadataValue> {
      * @param value the value value to set.
      * @return the MetadataValue object itself.
      */
+    @Generated
     public MetadataValue setValue(String value) {
         this.value = value;
         return this;
@@ -75,6 +83,7 @@ public final class MetadataValue implements JsonSerializable<MetadataValue> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class MetadataValue implements JsonSerializable<MetadataValue> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MetadataValue.
      */
+    @Generated
     public static MetadataValue fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetadataValue deserializedMetadataValue = new MetadataValue();

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotoperations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -148,30 +147,6 @@ public final class DataflowOperation implements JsonSerializable<DataflowOperati
         this.destinationSettings = destinationSettings;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (operationType() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property operationType in model DataflowOperation"));
-        }
-        if (sourceSettings() != null) {
-            sourceSettings().validate();
-        }
-        if (builtInTransformationSettings() != null) {
-            builtInTransformationSettings().validate();
-        }
-        if (destinationSettings() != null) {
-            destinationSettings().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(DataflowOperation.class);
 
     /**
      * {@inheritDoc}

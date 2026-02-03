@@ -12,7 +12,6 @@ import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOp
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.HoldOptions;
-import com.azure.communication.callautomation.models.InterruptAudioAndAnnounceOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognitionChoice;
@@ -563,17 +562,6 @@ public class CallMediaAsyncUnitTests {
         StopMediaStreamingOptions options = new StopMediaStreamingOptions();
         options.setOperationCallbackUrl("https://localhost");
         StepVerifier.create(callMedia.stopMediaStreamingWithResponse(options))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void interruptAudioAndAnnounceWithResponseTest() {
-        callMedia = getMockCallMedia(202);
-        InterruptAudioAndAnnounceOptions options
-            = new InterruptAudioAndAnnounceOptions(playTextSource, new CommunicationUserIdentifier("id"));
-        options.setOperationContext("operationContext");
-        StepVerifier.create(callMedia.interruptAudioAndAnnounceWithResponse(options))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }

@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NginxConfigurationPackageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NginxConfigurationPackage model
-            = BinaryData.fromString("{\"data\":\"zevdphlx\",\"protectedFiles\":[\"thqt\",\"gqjbpfzfsin\",\"gvfcj\"]}")
-                .toObject(NginxConfigurationPackage.class);
-        Assertions.assertEquals("zevdphlx", model.data());
-        Assertions.assertEquals("thqt", model.protectedFiles().get(0));
+        NginxConfigurationPackage model = BinaryData
+            .fromString("{\"data\":\"qulngsntnbybkzgc\",\"protectedFiles\":[\"clxxwrljdo\",\"skcqvkocrcjd\"]}")
+            .toObject(NginxConfigurationPackage.class);
+        Assertions.assertEquals("qulngsntnbybkzgc", model.data());
+        Assertions.assertEquals("clxxwrljdo", model.protectedFiles().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxConfigurationPackage model = new NginxConfigurationPackage().withData("zevdphlx")
-            .withProtectedFiles(Arrays.asList("thqt", "gqjbpfzfsin", "gvfcj"));
+        NginxConfigurationPackage model = new NginxConfigurationPackage().withData("qulngsntnbybkzgc")
+            .withProtectedFiles(Arrays.asList("clxxwrljdo", "skcqvkocrcjd"));
         model = BinaryData.fromObject(model).toObject(NginxConfigurationPackage.class);
-        Assertions.assertEquals("zevdphlx", model.data());
-        Assertions.assertEquals("thqt", model.protectedFiles().get(0));
+        Assertions.assertEquals("qulngsntnbybkzgc", model.data());
+        Assertions.assertEquals("clxxwrljdo", model.protectedFiles().get(0));
     }
 }

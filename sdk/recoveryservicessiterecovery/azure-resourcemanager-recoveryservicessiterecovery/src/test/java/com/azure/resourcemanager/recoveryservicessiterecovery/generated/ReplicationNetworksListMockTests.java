@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Network;
@@ -22,25 +22,25 @@ public final class ReplicationNetworksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"fabricType\":\"gxqbfkce\",\"subnets\":[{\"name\":\"recjb\",\"friendlyName\":\"wevsfgdrmnszdosm\",\"addressList\":[\"svz\",\"mxtc\",\"ghndae\"]},{\"name\":\"gsulwvgseufigvfj\",\"friendlyName\":\"zkilmciwuh\",\"addressList\":[\"kypy\",\"vljlbzdlby\",\"paxhpz\"]}],\"friendlyName\":\"ov\",\"networkType\":\"wbh\"},\"location\":\"zges\",\"id\":\"hshagpa\",\"name\":\"nezpby\",\"type\":\"yvynpmggqgage\"}]}";
+            = "{\"value\":[{\"properties\":{\"fabricType\":\"zyyrwnmwtqiljknn\",\"subnets\":[{\"name\":\"s\",\"friendlyName\":\"tf\",\"addressList\":[\"fphfxaqjyihjcww\",\"aos\",\"kfavhkhpsp\"]},{\"name\":\"eifdyfa\",\"friendlyName\":\"xnguwn\",\"addressList\":[\"uzlai\"]},{\"name\":\"ujtg\",\"friendlyName\":\"bszam\",\"addressList\":[\"ejpdcliqwzutiy\",\"lrnhhjtvhqsz\"]}],\"friendlyName\":\"yovqmqcudptoqwr\",\"networkType\":\"ckjt\"},\"location\":\"okmxwawfubknge\",\"id\":\"jxumowynj\",\"name\":\"oozmxuk\",\"type\":\"drsjtmn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Network> response
-            = manager.replicationNetworks().list("sybxhqvov", "pmhttuvsqjsrvjnq", com.azure.core.util.Context.NONE);
+            = manager.replicationNetworks().list("usrjzhdtrsyfezf", "my", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gxqbfkce", response.iterator().next().properties().fabricType());
-        Assertions.assertEquals("recjb", response.iterator().next().properties().subnets().get(0).name());
-        Assertions.assertEquals("wevsfgdrmnszdosm",
-            response.iterator().next().properties().subnets().get(0).friendlyName());
-        Assertions.assertEquals("svz", response.iterator().next().properties().subnets().get(0).addressList().get(0));
-        Assertions.assertEquals("ov", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals("wbh", response.iterator().next().properties().networkType());
-        Assertions.assertEquals("zges", response.iterator().next().location());
+        Assertions.assertEquals("zyyrwnmwtqiljknn", response.iterator().next().properties().fabricType());
+        Assertions.assertEquals("s", response.iterator().next().properties().subnets().get(0).name());
+        Assertions.assertEquals("tf", response.iterator().next().properties().subnets().get(0).friendlyName());
+        Assertions.assertEquals("fphfxaqjyihjcww",
+            response.iterator().next().properties().subnets().get(0).addressList().get(0));
+        Assertions.assertEquals("yovqmqcudptoqwr", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("ckjt", response.iterator().next().properties().networkType());
+        Assertions.assertEquals("okmxwawfubknge", response.iterator().next().location());
     }
 }

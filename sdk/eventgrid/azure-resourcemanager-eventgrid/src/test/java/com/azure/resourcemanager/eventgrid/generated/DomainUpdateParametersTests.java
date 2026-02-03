@@ -42,9 +42,9 @@ public final class DomainUpdateParametersTests {
         Assertions.assertEquals("ttouwaboekqvkel", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
         Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
-        Assertions.assertEquals(true, model.disableLocalAuth());
-        Assertions.assertEquals(true, model.autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, model.autoDeleteTopicWithLastSubscription());
+        Assertions.assertTrue(model.disableLocalAuth());
+        Assertions.assertTrue(model.autoCreateTopicWithFirstSubscription());
+        Assertions.assertFalse(model.autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.dataResidencyBoundary());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
         Assertions.assertEquals("jixisxyawjoyaqcs",
@@ -103,9 +103,9 @@ public final class DomainUpdateParametersTests {
         Assertions.assertEquals("ttouwaboekqvkel", model.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, model.inboundIpRules().get(0).action());
         Assertions.assertEquals(TlsVersion.ONE_ZERO, model.minimumTlsVersionAllowed());
-        Assertions.assertEquals(true, model.disableLocalAuth());
-        Assertions.assertEquals(true, model.autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, model.autoDeleteTopicWithLastSubscription());
+        Assertions.assertTrue(model.disableLocalAuth());
+        Assertions.assertTrue(model.autoCreateTopicWithFirstSubscription());
+        Assertions.assertFalse(model.autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, model.dataResidencyBoundary());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
         Assertions.assertEquals("jixisxyawjoyaqcs",

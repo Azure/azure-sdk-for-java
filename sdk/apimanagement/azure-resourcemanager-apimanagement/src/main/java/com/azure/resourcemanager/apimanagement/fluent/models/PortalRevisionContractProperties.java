@@ -49,6 +49,11 @@ public final class PortalRevisionContractProperties implements JsonSerializable<
      */
     private OffsetDateTime updatedDateTime;
 
+    /*
+     * The provisioning state
+     */
+    private String provisioningState;
+
     /**
      * Creates an instance of PortalRevisionContractProperties class.
      */
@@ -132,6 +137,15 @@ public final class PortalRevisionContractProperties implements JsonSerializable<
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -181,6 +195,8 @@ public final class PortalRevisionContractProperties implements JsonSerializable<
                 } else if ("updatedDateTime".equals(fieldName)) {
                     deserializedPortalRevisionContractProperties.updatedDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPortalRevisionContractProperties.provisioningState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.trustedsigning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.trustedsigning.TrustedSigningManager;
 import com.azure.resourcemanager.trustedsigning.models.RevokeCertificate;
@@ -26,15 +26,15 @@ public final class CertificateProfilesRevokeCertificateWithResponseMockTests {
         TrustedSigningManager manager = TrustedSigningManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.certificateProfiles()
-            .revokeCertificateWithResponse("sxlzevgbmqj", "abcypmivk", "lzu",
-                new RevokeCertificate().withSerialNumber("ccfwnfnbacfion")
-                    .withThumbprint("ebxetqgtzxdp")
-                    .withEffectiveAt(OffsetDateTime.parse("2021-07-26T08:40:09Z"))
-                    .withReason("bqqwxrj")
-                    .withRemarks("al"),
+            .revokeCertificateWithResponse("topbobjogh", "e", "u",
+                new RevokeCertificate().withSerialNumber("m")
+                    .withThumbprint("uhrzayvvt")
+                    .withEffectiveAt(OffsetDateTime.parse("2021-02-28T09:00:19Z"))
+                    .withReason("vdfgiotk")
+                    .withRemarks("utqxlngx"),
                 com.azure.core.util.Context.NONE);
 
     }

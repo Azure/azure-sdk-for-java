@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -23,12 +24,14 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Vision.VectorizeSkill";
 
     /*
      * The version of the model to use when calling the AI Services Vision service. It will default to the latest
      * available when not specified.
      */
+    @Generated
     private final String modelVersion;
 
     /**
@@ -38,6 +41,7 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
      * @param outputs the outputs value to set.
      * @param modelVersion the modelVersion value to set.
      */
+    @Generated
     public VisionVectorizeSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs,
         String modelVersion) {
         super(inputs, outputs);
@@ -49,6 +53,7 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -60,6 +65,7 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
      * 
      * @return the modelVersion value.
      */
+    @Generated
     public String getModelVersion() {
         return this.modelVersion;
     }
@@ -67,6 +73,7 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VisionVectorizeSkill setName(String name) {
         super.setName(name);
@@ -76,6 +83,7 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VisionVectorizeSkill setDescription(String description) {
         super.setDescription(description);
@@ -85,6 +93,7 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public VisionVectorizeSkill setContext(String context) {
         super.setContext(context);
@@ -94,6 +103,7 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -116,6 +126,7 @@ public final class VisionVectorizeSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VisionVectorizeSkill.
      */
+    @Generated
     public static VisionVectorizeSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

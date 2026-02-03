@@ -11,7 +11,7 @@ public final class DeletedServicesCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeletedServicesCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"serviceId\":\"iyu\",\"scheduledPurgeDate\":\"2021-06-15T23:07:24Z\",\"deletionDate\":\"2021-09-19T14:43:44Z\"},\"location\":\"t\",\"id\":\"lvhyibdrqrswhbu\",\"name\":\"bpyrowtjoxzt\",\"type\":\"wfqchvcz\"},{\"properties\":{\"serviceId\":\"nnctagfyvrt\",\"scheduledPurgeDate\":\"2021-08-30T15:03:45Z\",\"deletionDate\":\"2021-07-13T14:02:58Z\"},\"location\":\"cgkrepdqhqy\",\"id\":\"wqwemvxqabckmze\",\"name\":\"xin\",\"type\":\"greohtwhlpuzjp\"},{\"properties\":{\"serviceId\":\"znzangprbfaxy\",\"scheduledPurgeDate\":\"2021-11-11T09:51:41Z\",\"deletionDate\":\"2021-07-09T18:27:13Z\"},\"location\":\"phmsexroq\",\"id\":\"ndktxfv\",\"name\":\"nfee\",\"type\":\"gpkrie\"}],\"nextLink\":\"gnixxowwzkyfwnw\"}")
+            "{\"value\":[{\"properties\":{\"serviceId\":\"mesrfsvpi\",\"scheduledPurgeDate\":\"2021-08-20T00:33:20Z\",\"deletionDate\":\"2021-03-09T01:39:07Z\"},\"location\":\"qtdiswxspvckoj\",\"id\":\"zbbgspftesubzpvp\",\"name\":\"dylytcovq\",\"type\":\"eu\"}],\"nextLink\":\"fjb\"}")
             .toObject(DeletedServicesCollection.class);
     }
 

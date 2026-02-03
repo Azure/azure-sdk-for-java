@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
     /*
      * The minimum number of nodes the Big Data pool can support.
      */
+    @Generated
     private Integer minNodeCount;
 
     /*
      * Whether automatic scaling is enabled for the Big Data pool.
      */
+    @Generated
     private Boolean enabled;
 
     /*
      * The maximum number of nodes the Big Data pool can support.
      */
+    @Generated
     private Integer maxNodeCount;
 
     /**
      * Creates an instance of AutoScaleProperties class.
      */
+    @Generated
     public AutoScaleProperties() {
     }
 
@@ -44,6 +49,7 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
      * 
      * @return the minNodeCount value.
      */
+    @Generated
     public Integer getMinNodeCount() {
         return this.minNodeCount;
     }
@@ -54,6 +60,7 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
      * @param minNodeCount the minNodeCount value to set.
      * @return the AutoScaleProperties object itself.
      */
+    @Generated
     public AutoScaleProperties setMinNodeCount(Integer minNodeCount) {
         this.minNodeCount = minNodeCount;
         return this;
@@ -64,6 +71,7 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
      * 
      * @return the enabled value.
      */
+    @Generated
     public Boolean isEnabled() {
         return this.enabled;
     }
@@ -74,6 +82,7 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
      * @param enabled the enabled value to set.
      * @return the AutoScaleProperties object itself.
      */
+    @Generated
     public AutoScaleProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -84,6 +93,7 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
      * 
      * @return the maxNodeCount value.
      */
+    @Generated
     public Integer getMaxNodeCount() {
         return this.maxNodeCount;
     }
@@ -94,6 +104,7 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
      * @param maxNodeCount the maxNodeCount value to set.
      * @return the AutoScaleProperties object itself.
      */
+    @Generated
     public AutoScaleProperties setMaxNodeCount(Integer maxNodeCount) {
         this.maxNodeCount = maxNodeCount;
         return this;
@@ -102,6 +113,7 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class AutoScaleProperties implements JsonSerializable<AutoScaleProp
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AutoScaleProperties.
      */
+    @Generated
     public static AutoScaleProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AutoScaleProperties deserializedAutoScaleProperties = new AutoScaleProperties();

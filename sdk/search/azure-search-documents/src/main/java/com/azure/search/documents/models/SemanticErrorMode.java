@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,12 +18,14 @@ public final class SemanticErrorMode extends ExpandableStringEnum<SemanticErrorM
      * If the semantic processing fails, partial results still return. The definition of partial results depends on what
      * semantic step failed and what was the reason for failure.
      */
+    @Generated
     public static final SemanticErrorMode PARTIAL = fromString("partial");
 
     /**
      * If there is an exception during the semantic processing step, the query will fail and return the appropriate HTTP
      * code depending on the error.
      */
+    @Generated
     public static final SemanticErrorMode FAIL = fromString("fail");
 
     /**
@@ -30,6 +33,7 @@ public final class SemanticErrorMode extends ExpandableStringEnum<SemanticErrorM
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SemanticErrorMode() {
     }
@@ -40,6 +44,7 @@ public final class SemanticErrorMode extends ExpandableStringEnum<SemanticErrorM
      * @param name a name to look for.
      * @return the corresponding SemanticErrorMode.
      */
+    @Generated
     public static SemanticErrorMode fromString(String name) {
         return fromString(name, SemanticErrorMode.class);
     }
@@ -49,6 +54,7 @@ public final class SemanticErrorMode extends ExpandableStringEnum<SemanticErrorM
      * 
      * @return known SemanticErrorMode values.
      */
+    @Generated
     public static Collection<SemanticErrorMode> values() {
         return values(SemanticErrorMode.class);
     }

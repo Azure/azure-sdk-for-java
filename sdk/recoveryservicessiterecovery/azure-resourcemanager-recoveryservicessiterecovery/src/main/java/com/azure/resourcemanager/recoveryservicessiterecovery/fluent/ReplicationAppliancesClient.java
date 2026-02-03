@@ -19,8 +19,8 @@ public interface ReplicationAppliancesClient {
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -28,15 +28,15 @@ public interface ReplicationAppliancesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationApplianceInner> list(String resourceName, String resourceGroupName);
+    PagedIterable<ReplicationApplianceInner> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of appliances.
      * 
      * Gets the list of Azure Site Recovery appliances for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,6 +46,6 @@ public interface ReplicationAppliancesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationApplianceInner> list(String resourceName, String resourceGroupName, String filter,
+    PagedIterable<ReplicationApplianceInner> list(String resourceGroupName, String resourceName, String filter,
         Context context);
 }

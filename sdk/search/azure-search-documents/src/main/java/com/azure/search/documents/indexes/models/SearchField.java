@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,11 +25,13 @@ public final class SearchField implements JsonSerializable<SearchField> {
     /*
      * The name of the field, which must be unique within the fields collection of the index or parent field.
      */
+    @Generated
     private final String name;
 
     /*
      * The data type of the field.
      */
+    @Generated
     private final SearchFieldDataType type;
 
     /*
@@ -37,6 +40,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * documents directly and update or delete specific documents. Default is false for simple fields and null for
      * complex fields.
      */
+    @Generated
     private Boolean key;
 
     /*
@@ -45,6 +49,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * as a filter, for sorting, or for scoring. This property can also be changed on existing fields and enabling it
      * does not cause an increase in index storage requirements.
      */
+    @Generated
     private Boolean hidden;
 
     /*
@@ -56,6 +61,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * for non-vector fields, and it must be null for complex fields. Disabling this property will reduce index storage
      * requirements. The default is true for vector fields.
      */
+    @Generated
     private Boolean stored;
 
     /*
@@ -68,6 +74,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * If you want to save space in your index and you don't need a field to be included in searches, set searchable to
      * false.
      */
+    @Generated
     private Boolean searchable;
 
     /*
@@ -77,6 +84,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * "sunny day", $filter=f eq 'sunny' will find no matches, but $filter=f eq 'sunny day' will. This property must be
      * null for complex fields. Default is true for simple fields and null for complex fields.
      */
+    @Generated
     private Boolean filterable;
 
     /*
@@ -89,6 +97,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * sortable property must be null for such fields. The default for sortable is true for single-valued simple fields,
      * false for multi-valued simple fields, and null for complex fields.
      */
+    @Generated
     private Boolean sortable;
 
     /*
@@ -98,13 +107,28 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * type Edm.GeographyPoint or Collection(Edm.GeographyPoint) cannot be facetable. Default is true for all other
      * simple fields.
      */
+    @Generated
     private Boolean facetable;
+
+    /*
+     * A value indicating whether the field should be used as a permission filter.
+     */
+    @Generated
+    private PermissionFilter permissionFilter;
+
+    /*
+     * A value indicating whether the field should be used for sensitivity label filtering. This enables document-level
+     * filtering based on Microsoft Purview sensitivity labels.
+     */
+    @Generated
+    private Boolean sensitivityLabel;
 
     /*
      * The name of the analyzer to use for the field. This option can be used only with searchable fields and it can't
      * be set together with either searchAnalyzer or indexAnalyzer. Once the analyzer is chosen, it cannot be changed
      * for the field. Must be null for complex fields.
      */
+    @Generated
     private LexicalAnalyzerName analyzerName;
 
     /*
@@ -113,6 +137,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * cannot be set to the name of a language analyzer; use the analyzer property instead if you need a language
      * analyzer. This analyzer can be updated on an existing field. Must be null for complex fields.
      */
+    @Generated
     private LexicalAnalyzerName searchAnalyzerName;
 
     /*
@@ -122,6 +147,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * language analyzer. Once the analyzer is chosen, it cannot be changed for the field. Must be null for complex
      * fields.
      */
+    @Generated
     private LexicalAnalyzerName indexAnalyzerName;
 
     /*
@@ -129,22 +155,26 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for the field. Must be null
      * for complex fields.
      */
-    private LexicalNormalizerName normalizer;
+    @Generated
+    private LexicalNormalizerName normalizerName;
 
     /*
      * The dimensionality of the vector field.
      */
+    @Generated
     private Integer vectorSearchDimensions;
 
     /*
      * The name of the vector search profile that specifies the algorithm and vectorizer to use when searching the
      * vector field.
      */
+    @Generated
     private String vectorSearchProfileName;
 
     /*
      * The encoding format to interpret the field contents.
      */
+    @Generated
     private VectorEncodingFormat vectorEncodingFormat;
 
     /*
@@ -153,12 +183,14 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * query terms targeting that field are expanded at query-time using the rules in the synonym map. This attribute
      * can be changed on existing fields. Must be null or an empty collection for complex fields.
      */
+    @Generated
     private List<String> synonymMapNames;
 
     /*
      * A list of sub-fields if this is a field of type Edm.ComplexType or Collection(Edm.ComplexType). Must be null or
      * empty for simple fields.
      */
+    @Generated
     private List<SearchField> fields;
 
     /**
@@ -167,6 +199,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param name the name value to set.
      * @param type the type value to set.
      */
+    @Generated
     public SearchField(String name, SearchFieldDataType type) {
         this.name = name;
         this.type = type;
@@ -178,6 +211,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -187,6 +221,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the type value.
      */
+    @Generated
     public SearchFieldDataType getType() {
         return this.type;
     }
@@ -199,6 +234,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the key value.
      */
+    @Generated
     public Boolean isKey() {
         return this.key;
     }
@@ -212,6 +248,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param key the key value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setKey(Boolean key) {
         this.key = key;
         return this;
@@ -225,6 +262,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the hidden value.
      */
+    @Generated
     public Boolean isHidden() {
         return (this.hidden == null) ? null : !this.hidden;
     }
@@ -238,6 +276,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param hidden the hidden value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setHidden(Boolean hidden) {
         this.hidden = (hidden == null) ? null : !hidden;
         return this;
@@ -254,6 +293,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the stored value.
      */
+    @Generated
     public Boolean isStored() {
         return this.stored;
     }
@@ -270,6 +310,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param stored the stored value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setStored(Boolean stored) {
         this.stored = stored;
         return this;
@@ -287,6 +328,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the searchable value.
      */
+    @Generated
     public Boolean isSearchable() {
         return this.searchable;
     }
@@ -304,6 +346,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param searchable the searchable value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setSearchable(Boolean searchable) {
         this.searchable = searchable;
         return this;
@@ -319,6 +362,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the filterable value.
      */
+    @Generated
     public Boolean isFilterable() {
         return this.filterable;
     }
@@ -334,6 +378,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param filterable the filterable value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setFilterable(Boolean filterable) {
         this.filterable = filterable;
         return this;
@@ -351,6 +396,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the sortable value.
      */
+    @Generated
     public Boolean isSortable() {
         return this.sortable;
     }
@@ -368,6 +414,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param sortable the sortable value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setSortable(Boolean sortable) {
         this.sortable = sortable;
         return this;
@@ -382,6 +429,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the facetable value.
      */
+    @Generated
     public Boolean isFacetable() {
         return this.facetable;
     }
@@ -396,8 +444,55 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param facetable the facetable value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setFacetable(Boolean facetable) {
         this.facetable = facetable;
+        return this;
+    }
+
+    /**
+     * Get the permissionFilter property: A value indicating whether the field should be used as a permission filter.
+     *
+     * @return the permissionFilter value.
+     */
+    @Generated
+    public PermissionFilter getPermissionFilter() {
+        return this.permissionFilter;
+    }
+
+    /**
+     * Set the permissionFilter property: A value indicating whether the field should be used as a permission filter.
+     *
+     * @param permissionFilter the permissionFilter value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setPermissionFilter(PermissionFilter permissionFilter) {
+        this.permissionFilter = permissionFilter;
+        return this;
+    }
+
+    /**
+     * Get the sensitivityLabel property: A value indicating whether the field should be used for sensitivity label
+     * filtering. This enables document-level filtering based on Microsoft Purview sensitivity labels.
+     *
+     * @return the sensitivityLabel value.
+     */
+    @Generated
+    public Boolean isSensitivityLabel() {
+        return this.sensitivityLabel;
+    }
+
+    /**
+     * Set the sensitivityLabel property: A value indicating whether the field should be used for sensitivity label
+     * filtering. This enables document-level filtering based on Microsoft Purview sensitivity labels.
+     *
+     * @param sensitivityLabel the sensitivityLabel value to set.
+     * @return the SearchField object itself.
+     */
+    @Generated
+    public SearchField setSensitivityLabel(Boolean sensitivityLabel) {
+        this.sensitivityLabel = sensitivityLabel;
         return this;
     }
 
@@ -408,6 +503,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the analyzerName value.
      */
+    @Generated
     public LexicalAnalyzerName getAnalyzerName() {
         return this.analyzerName;
     }
@@ -420,6 +516,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param analyzerName the analyzerName value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setAnalyzerName(LexicalAnalyzerName analyzerName) {
         this.analyzerName = analyzerName;
         return this;
@@ -434,6 +531,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the searchAnalyzerName value.
      */
+    @Generated
     public LexicalAnalyzerName getSearchAnalyzerName() {
         return this.searchAnalyzerName;
     }
@@ -448,6 +546,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param searchAnalyzerName the searchAnalyzerName value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setSearchAnalyzerName(LexicalAnalyzerName searchAnalyzerName) {
         this.searchAnalyzerName = searchAnalyzerName;
         return this;
@@ -462,6 +561,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the indexAnalyzerName value.
      */
+    @Generated
     public LexicalAnalyzerName getIndexAnalyzerName() {
         return this.indexAnalyzerName;
     }
@@ -476,32 +576,35 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param indexAnalyzerName the indexAnalyzerName value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setIndexAnalyzerName(LexicalAnalyzerName indexAnalyzerName) {
         this.indexAnalyzerName = indexAnalyzerName;
         return this;
     }
 
     /**
-     * Get the normalizer property: The name of the normalizer to use for the field. This option can be used only with
-     * fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for
-     * the field. Must be null for complex fields.
+     * Get the normalizerName property: The name of the normalizer to use for the field. This option can be used only
+     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
+     * for the field. Must be null for complex fields.
      *
-     * @return the normalizer value.
+     * @return the normalizerName value.
      */
-    public LexicalNormalizerName getNormalizer() {
-        return this.normalizer;
+    @Generated
+    public LexicalNormalizerName getNormalizerName() {
+        return this.normalizerName;
     }
 
     /**
-     * Set the normalizer property: The name of the normalizer to use for the field. This option can be used only with
-     * fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed for
-     * the field. Must be null for complex fields.
+     * Set the normalizerName property: The name of the normalizer to use for the field. This option can be used only
+     * with fields with filterable, sortable, or facetable enabled. Once the normalizer is chosen, it cannot be changed
+     * for the field. Must be null for complex fields.
      *
-     * @param normalizer the normalizer value to set.
+     * @param normalizerName the normalizerName value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setNormalizer(LexicalNormalizerName normalizer) {
-        this.normalizer = normalizer;
+    @Generated
+    public SearchField setNormalizerName(LexicalNormalizerName normalizerName) {
+        this.normalizerName = normalizerName;
         return this;
     }
 
@@ -510,6 +613,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the vectorSearchDimensions value.
      */
+    @Generated
     public Integer getVectorSearchDimensions() {
         return this.vectorSearchDimensions;
     }
@@ -520,6 +624,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param vectorSearchDimensions the vectorSearchDimensions value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setVectorSearchDimensions(Integer vectorSearchDimensions) {
         this.vectorSearchDimensions = vectorSearchDimensions;
         return this;
@@ -531,6 +636,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the vectorSearchProfileName value.
      */
+    @Generated
     public String getVectorSearchProfileName() {
         return this.vectorSearchProfileName;
     }
@@ -542,6 +648,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param vectorSearchProfileName the vectorSearchProfileName value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setVectorSearchProfileName(String vectorSearchProfileName) {
         this.vectorSearchProfileName = vectorSearchProfileName;
         return this;
@@ -552,6 +659,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the vectorEncodingFormat value.
      */
+    @Generated
     public VectorEncodingFormat getVectorEncodingFormat() {
         return this.vectorEncodingFormat;
     }
@@ -562,6 +670,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param vectorEncodingFormat the vectorEncodingFormat value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setVectorEncodingFormat(VectorEncodingFormat vectorEncodingFormat) {
         this.vectorEncodingFormat = vectorEncodingFormat;
         return this;
@@ -576,6 +685,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the synonymMapNames value.
      */
+    @Generated
     public List<String> getSynonymMapNames() {
         return this.synonymMapNames;
     }
@@ -590,6 +700,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param synonymMapNames the synonymMapNames value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setSynonymMapNames(List<String> synonymMapNames) {
         this.synonymMapNames = synonymMapNames;
         return this;
@@ -601,6 +712,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      *
      * @return the fields value.
      */
+    @Generated
     public List<SearchField> getFields() {
         return this.fields;
     }
@@ -612,6 +724,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @param fields the fields value to set.
      * @return the SearchField object itself.
      */
+    @Generated
     public SearchField setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
@@ -620,6 +733,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -632,12 +746,15 @@ public final class SearchField implements JsonSerializable<SearchField> {
         jsonWriter.writeBooleanField("filterable", this.filterable);
         jsonWriter.writeBooleanField("sortable", this.sortable);
         jsonWriter.writeBooleanField("facetable", this.facetable);
+        jsonWriter.writeStringField("permissionFilter",
+            this.permissionFilter == null ? null : this.permissionFilter.toString());
+        jsonWriter.writeBooleanField("sensitivityLabel", this.sensitivityLabel);
         jsonWriter.writeStringField("analyzer", this.analyzerName == null ? null : this.analyzerName.toString());
         jsonWriter.writeStringField("searchAnalyzer",
             this.searchAnalyzerName == null ? null : this.searchAnalyzerName.toString());
         jsonWriter.writeStringField("indexAnalyzer",
             this.indexAnalyzerName == null ? null : this.indexAnalyzerName.toString());
-        jsonWriter.writeStringField("normalizer", this.normalizer == null ? null : this.normalizer.toString());
+        jsonWriter.writeStringField("normalizer", this.normalizerName == null ? null : this.normalizerName.toString());
         jsonWriter.writeNumberField("dimensions", this.vectorSearchDimensions);
         jsonWriter.writeStringField("vectorSearchProfile", this.vectorSearchProfileName);
         jsonWriter.writeStringField("vectorEncoding",
@@ -657,6 +774,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchField.
      */
+    @Generated
     public static SearchField fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;
@@ -670,10 +788,12 @@ public final class SearchField implements JsonSerializable<SearchField> {
             Boolean filterable = null;
             Boolean sortable = null;
             Boolean facetable = null;
+            PermissionFilter permissionFilter = null;
+            Boolean sensitivityLabel = null;
             LexicalAnalyzerName analyzerName = null;
             LexicalAnalyzerName searchAnalyzerName = null;
             LexicalAnalyzerName indexAnalyzerName = null;
-            LexicalNormalizerName normalizer = null;
+            LexicalNormalizerName normalizerName = null;
             Integer vectorSearchDimensions = null;
             String vectorSearchProfileName = null;
             VectorEncodingFormat vectorEncodingFormat = null;
@@ -702,6 +822,10 @@ public final class SearchField implements JsonSerializable<SearchField> {
                     sortable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("facetable".equals(fieldName)) {
                     facetable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("permissionFilter".equals(fieldName)) {
+                    permissionFilter = PermissionFilter.fromString(reader.getString());
+                } else if ("sensitivityLabel".equals(fieldName)) {
+                    sensitivityLabel = reader.getNullable(JsonReader::getBoolean);
                 } else if ("analyzer".equals(fieldName)) {
                     analyzerName = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("searchAnalyzer".equals(fieldName)) {
@@ -709,7 +833,7 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 } else if ("indexAnalyzer".equals(fieldName)) {
                     indexAnalyzerName = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("normalizer".equals(fieldName)) {
-                    normalizer = LexicalNormalizerName.fromString(reader.getString());
+                    normalizerName = LexicalNormalizerName.fromString(reader.getString());
                 } else if ("dimensions".equals(fieldName)) {
                     vectorSearchDimensions = reader.getNullable(JsonReader::getInt);
                 } else if ("vectorSearchProfile".equals(fieldName)) {
@@ -733,10 +857,12 @@ public final class SearchField implements JsonSerializable<SearchField> {
                 deserializedSearchField.filterable = filterable;
                 deserializedSearchField.sortable = sortable;
                 deserializedSearchField.facetable = facetable;
+                deserializedSearchField.permissionFilter = permissionFilter;
+                deserializedSearchField.sensitivityLabel = sensitivityLabel;
                 deserializedSearchField.analyzerName = analyzerName;
                 deserializedSearchField.searchAnalyzerName = searchAnalyzerName;
                 deserializedSearchField.indexAnalyzerName = indexAnalyzerName;
-                deserializedSearchField.normalizer = normalizer;
+                deserializedSearchField.normalizerName = normalizerName;
                 deserializedSearchField.vectorSearchDimensions = vectorSearchDimensions;
                 deserializedSearchField.vectorSearchProfileName = vectorSearchProfileName;
                 deserializedSearchField.vectorEncodingFormat = vectorEncodingFormat;

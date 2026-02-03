@@ -54,6 +54,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
@@ -62,6 +63,7 @@ import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptio
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
 import com.azure.storage.file.datalake.options.ReadToFileOptions;
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
@@ -3901,12 +3903,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         FileQuerySerialization outSer = output ? ser : null;
         String expression = "SELECT * from BlobStorage";
 
-        liveTestScenarioWithRetry(() -> {
-            StepVerifier.create(fc.queryWithResponse(
-                new FileQueryOptions(expression, new ByteArrayOutputStream()).setInputSerialization(inSer)
-                    .setOutputSerialization(outSer)))
-                .verifyError(IllegalArgumentException.class);
-        });
+        FileQueryOptions options
+            = new FileQueryOptions(expression, new ByteArrayOutputStream()).setInputSerialization(inSer)
+                .setOutputSerialization(outSer);
+
+        // The IllegalArgumentException is thrown synchronously by the fc.queryWithResponse(options) method call itself,
+        // before StepVerifier.create() can subscribe to the Mono. StepVerifier.verifyError() is designed to verify an
+        // onError signal emitted by a reactive stream. It does not catch exceptions thrown during the assembly or
+        // creation of the stream.
+        assertThrows(IllegalArgumentException.class, () -> fc.queryWithResponse(options));
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
@@ -3971,19 +3976,6 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         liveTestScenarioWithRetry(() -> {
             StepVerifier.create(response).assertNext(Assertions::assertNotNull).verifyComplete();
         });
-    }
-
-    private void liveTestScenarioWithRetry(Runnable runnable) {
-        int retry = 0;
-        while (retry < 5) {
-            try {
-                runnable.run();
-                break;
-            } catch (Exception ex) {
-                retry++;
-                sleepIfLiveTesting(5000);
-            }
-        }
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
@@ -4334,4 +4326,75 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         return Stream.of(Arguments.of(false), Arguments.of(true), Arguments.of((Boolean) null));
     }
 
+    @Test
+    public void pathGetSystemPropertiesFile() {
+        // setup
+        FileSystemEncryptionScopeOptions encryptionScope
+            = new FileSystemEncryptionScopeOptions().setDefaultEncryptionScope(ENCRYPTION_SCOPE_STRING)
+                .setEncryptionScopeOverridePrevented(true);
+
+        dataLakeFileSystemAsyncClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName());
+        DataLakeFileSystemAsyncClient client
+            = getFileSystemClientBuilder(dataLakeFileSystemAsyncClient.getFileSystemUrl())
+                .credential(getDataLakeCredential())
+                .fileSystemEncryptionScopeOptions(encryptionScope)
+                .buildAsyncClient();
+
+        DataLakeFileAsyncClient fc = client.getFileAsyncClient(generatePathName());
+
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions();
+        options.setPermissions("rwxr-x---");
+        String owner = testResourceNamer.randomUuid();
+        String group = testResourceNamer.randomUuid();
+        options.setOwner(owner);
+        options.setGroup(group);
+        options.setScheduleDeletionOptions(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)));
+
+        PathHttpHeaders headers = new PathHttpHeaders().setCacheControl("control")
+            .setContentDisposition("disposition")
+            .setContentEncoding("encoding")
+            .setContentLanguage("language")
+            .setContentType("type");
+        options.setPathHttpHeaders(headers);
+        options.setProposedLeaseId(CoreUtils.randomUuid().toString());
+        options.setLeaseDuration(15);
+        options.setMetadata(Collections.singletonMap("foo", "bar"));
+
+        StepVerifier
+            .create(client.create().then(fc.createWithResponse(options)).then(fc.getSystemPropertiesWithResponse(null)))
+            .assertNext(r -> {
+                PathSystemProperties value = r.getValue();
+
+                // should be present in the response
+                assertEquals(200, r.getStatusCode());
+                assertNotNull(value.getCreationTime());
+                assertNotNull(value.getLastModified());
+                assertNotNull(value.getETag());
+                assertEquals(0, value.getFileSize());
+                assertFalse(value.isDirectory());
+                assertTrue(value.isServerEncrypted());
+                assertNotNull(value.getExpiresOn());
+                assertEquals(ENCRYPTION_SCOPE_STRING, value.getEncryptionScope());
+                assertEquals(owner, value.getOwner());
+                assertEquals(group, value.getGroup());
+                assertEquals(PathPermissions.parseSymbolic("rwxr-x---").toString(), value.getPermissions().toString());
+
+                // should not be present in the response
+                validateUserDefinedHeadersNotPresent(r);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    public void pathGetSystemPropertiesFileMin() {
+        StepVerifier.create(fc.getSystemProperties()).expectNextCount(1).verifyComplete();
+    }
+
+    @Test
+    public void fileNameEncodingOnGetPathUrl() {
+        DataLakeFileAsyncClient fileClient = dataLakeFileSystemAsyncClient.getFileAsyncClient("my file");
+        String expectedName = "my%20file";
+        assertTrue(fileClient.getPathUrl().contains(expectedName));
+    }
 }

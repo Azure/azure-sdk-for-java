@@ -3,11 +3,11 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.core.annotation.Fluent;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 
 /** The PlayOptions model. */
 @Fluent

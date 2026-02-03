@@ -58,6 +58,13 @@ public interface MongoCluster {
     MongoClusterProperties properties();
 
     /**
+     * Gets the identity property: The managed service identities assigned to this resource.
+     * 
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -147,7 +154,8 @@ public interface MongoCluster {
          * The stage of the MongoCluster definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithProperties {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              * 
@@ -189,6 +197,19 @@ public interface MongoCluster {
              */
             WithCreate withProperties(MongoClusterProperties properties);
         }
+
+        /**
+         * The stage of the MongoCluster definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identities assigned to this resource..
+             * 
+             * @param identity The managed service identities assigned to this resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
     }
 
     /**
@@ -201,7 +222,7 @@ public interface MongoCluster {
     /**
      * The template for MongoCluster update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -233,6 +254,19 @@ public interface MongoCluster {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the MongoCluster update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The managed service identities assigned to this resource..
+             * 
+             * @param identity The managed service identities assigned to this resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
         }
 
         /**

@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,36 +23,43 @@ public final class Error implements JsonSerializable<Error> {
     /*
      * One of a server-defined set of error codes.
      */
+    @Generated
     private ErrorCode code;
 
     /*
      * A human-readable representation of the error.
      */
+    @Generated
     private String message;
 
     /*
      * The target of the error.
      */
+    @Generated
     private String target;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
+    @Generated
     private List<Error> details;
 
     /*
      * An object containing more specific information than the current object about the error.
      */
+    @Generated
     private InnerErrorModel innererror;
 
     /*
      * The error object.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of Error class.
      */
+    @Generated
     public Error() {
     }
 
@@ -60,6 +68,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the code value.
      */
+    @Generated
     public ErrorCode getCode() {
         return this.code;
     }
@@ -70,6 +79,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param code the code value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setCode(ErrorCode code) {
         this.code = code;
         return this;
@@ -80,6 +90,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -90,6 +101,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param message the message value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setMessage(String message) {
         this.message = message;
         return this;
@@ -100,6 +112,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -110,6 +123,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param target the target value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setTarget(String target) {
         this.target = target;
         return this;
@@ -120,6 +134,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the details value.
      */
+    @Generated
     public List<Error> getDetails() {
         return this.details;
     }
@@ -130,6 +145,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param details the details value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setDetails(List<Error> details) {
         this.details = details;
         return this;
@@ -141,6 +157,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the innererror value.
      */
+    @Generated
     public InnerErrorModel getInnererror() {
         return this.innererror;
     }
@@ -152,6 +169,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param innererror the innererror value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setInnererror(InnerErrorModel innererror) {
         this.innererror = innererror;
         return this;
@@ -162,6 +180,7 @@ public final class Error implements JsonSerializable<Error> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -172,6 +191,7 @@ public final class Error implements JsonSerializable<Error> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the Error object itself.
      */
+    @Generated
     public Error setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -180,6 +200,7 @@ public final class Error implements JsonSerializable<Error> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -205,6 +226,7 @@ public final class Error implements JsonSerializable<Error> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Error.
      */
+    @Generated
     public static Error fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Error deserializedError = new Error();

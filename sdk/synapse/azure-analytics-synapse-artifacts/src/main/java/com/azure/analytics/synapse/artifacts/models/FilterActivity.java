@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class FilterActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Filter";
 
     /*
      * Input array on which filter should be applied.
      */
+    @Generated
     private Expression items;
 
     /*
      * Condition to be used for filtering the input.
      */
+    @Generated
     private Expression condition;
 
     /**
      * Creates an instance of FilterActivity class.
      */
+    @Generated
     public FilterActivity() {
     }
 
@@ -44,6 +49,7 @@ public class FilterActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class FilterActivity extends ControlActivity {
      * 
      * @return the items value.
      */
+    @Generated
     public Expression getItems() {
         return this.items;
     }
@@ -64,6 +71,7 @@ public class FilterActivity extends ControlActivity {
      * @param items the items value to set.
      * @return the FilterActivity object itself.
      */
+    @Generated
     public FilterActivity setItems(Expression items) {
         this.items = items;
         return this;
@@ -74,6 +82,7 @@ public class FilterActivity extends ControlActivity {
      * 
      * @return the condition value.
      */
+    @Generated
     public Expression getCondition() {
         return this.condition;
     }
@@ -84,6 +93,7 @@ public class FilterActivity extends ControlActivity {
      * @param condition the condition value to set.
      * @return the FilterActivity object itself.
      */
+    @Generated
     public FilterActivity setCondition(Expression condition) {
         this.condition = condition;
         return this;
@@ -92,6 +102,7 @@ public class FilterActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FilterActivity setName(String name) {
         super.setName(name);
@@ -101,6 +112,7 @@ public class FilterActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FilterActivity setDescription(String description) {
         super.setDescription(description);
@@ -110,6 +122,7 @@ public class FilterActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FilterActivity setState(ActivityState state) {
         super.setState(state);
@@ -119,6 +132,7 @@ public class FilterActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FilterActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -128,6 +142,7 @@ public class FilterActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FilterActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -137,6 +152,7 @@ public class FilterActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public FilterActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -146,6 +162,7 @@ public class FilterActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -181,6 +198,7 @@ public class FilterActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FilterActivity.
      */
+    @Generated
     public static FilterActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FilterActivity deserializedFilterActivity = new FilterActivity();

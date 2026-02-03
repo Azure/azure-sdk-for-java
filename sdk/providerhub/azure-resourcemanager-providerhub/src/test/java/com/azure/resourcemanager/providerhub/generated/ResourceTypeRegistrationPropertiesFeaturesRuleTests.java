@@ -13,16 +13,16 @@ public final class ResourceTypeRegistrationPropertiesFeaturesRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesFeaturesRule model
-            = BinaryData.fromString("{\"requiredFeaturesPolicy\":\"Any\"}")
+            = BinaryData.fromString("{\"requiredFeaturesPolicy\":\"All\"}")
                 .toObject(ResourceTypeRegistrationPropertiesFeaturesRule.class);
-        Assertions.assertEquals(FeaturesPolicy.ANY, model.requiredFeaturesPolicy());
+        Assertions.assertEquals(FeaturesPolicy.ALL, model.requiredFeaturesPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesFeaturesRule model
-            = new ResourceTypeRegistrationPropertiesFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ANY);
+            = new ResourceTypeRegistrationPropertiesFeaturesRule().withRequiredFeaturesPolicy(FeaturesPolicy.ALL);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesFeaturesRule.class);
-        Assertions.assertEquals(FeaturesPolicy.ANY, model.requiredFeaturesPolicy());
+        Assertions.assertEquals(FeaturesPolicy.ALL, model.requiredFeaturesPolicy());
     }
 }

@@ -19,8 +19,8 @@ public interface TargetComputeSizesClient {
      * 
      * Lists the available target compute sizes for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName protection container name.
      * @param replicatedProtectedItemName Replication protected item name.
@@ -30,7 +30,7 @@ public interface TargetComputeSizesClient {
      * @return target compute size collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TargetComputeSizeInner> listByReplicationProtectedItems(String resourceName, String resourceGroupName,
+    PagedIterable<TargetComputeSizeInner> listByReplicationProtectedItems(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName);
 
     /**
@@ -38,8 +38,8 @@ public interface TargetComputeSizesClient {
      * 
      * Lists the available target compute sizes for a replication protected item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName protection container name.
      * @param replicatedProtectedItemName Replication protected item name.
@@ -50,6 +50,6 @@ public interface TargetComputeSizesClient {
      * @return target compute size collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TargetComputeSizeInner> listByReplicationProtectedItems(String resourceName, String resourceGroupName,
+    PagedIterable<TargetComputeSizeInner> listByReplicationProtectedItems(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context);
 }

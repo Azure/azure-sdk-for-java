@@ -5,7 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -24,36 +24,43 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
     /*
      * The ServiceEndpoint property.
      */
+    @Generated
     private String serviceEndpoint;
 
     /*
      * The Prefix property.
      */
+    @Generated
     private String prefix;
 
     /*
      * The Marker property.
      */
+    @Generated
     private String marker;
 
     /*
      * The MaxResults property.
      */
+    @Generated
     private Integer maxResults;
 
     /*
      * The NextMarker property.
      */
+    @Generated
     private String nextMarker;
 
     /*
      * The BlobContainerItems property.
      */
+    @Generated
     private List<BlobContainerItem> blobContainerItems;
 
     /**
      * Creates an instance of BlobContainersSegment class.
      */
+    @Generated
     public BlobContainersSegment() {
     }
 
@@ -62,6 +69,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * 
      * @return the serviceEndpoint value.
      */
+    @Generated
     public String getServiceEndpoint() {
         return this.serviceEndpoint;
     }
@@ -72,6 +80,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * @param serviceEndpoint the serviceEndpoint value to set.
      * @return the BlobContainersSegment object itself.
      */
+    @Generated
     public BlobContainersSegment setServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
@@ -82,6 +91,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * 
      * @return the prefix value.
      */
+    @Generated
     public String getPrefix() {
         return this.prefix;
     }
@@ -92,6 +102,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * @param prefix the prefix value to set.
      * @return the BlobContainersSegment object itself.
      */
+    @Generated
     public BlobContainersSegment setPrefix(String prefix) {
         this.prefix = prefix;
         return this;
@@ -102,6 +113,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * 
      * @return the marker value.
      */
+    @Generated
     public String getMarker() {
         return this.marker;
     }
@@ -112,6 +124,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * @param marker the marker value to set.
      * @return the BlobContainersSegment object itself.
      */
+    @Generated
     public BlobContainersSegment setMarker(String marker) {
         this.marker = marker;
         return this;
@@ -122,6 +135,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * 
      * @return the maxResults value.
      */
+    @Generated
     public Integer getMaxResults() {
         return this.maxResults;
     }
@@ -132,6 +146,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * @param maxResults the maxResults value to set.
      * @return the BlobContainersSegment object itself.
      */
+    @Generated
     public BlobContainersSegment setMaxResults(Integer maxResults) {
         this.maxResults = maxResults;
         return this;
@@ -142,6 +157,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * 
      * @return the nextMarker value.
      */
+    @Generated
     public String getNextMarker() {
         return this.nextMarker;
     }
@@ -152,6 +168,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * @param nextMarker the nextMarker value to set.
      * @return the BlobContainersSegment object itself.
      */
+    @Generated
     public BlobContainersSegment setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
@@ -162,6 +179,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * 
      * @return the blobContainerItems value.
      */
+    @Generated
     public List<BlobContainerItem> getBlobContainerItems() {
         if (this.blobContainerItems == null) {
             this.blobContainerItems = new ArrayList<>();
@@ -175,19 +193,22 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * @param blobContainerItems the blobContainerItems value to set.
      * @return the BlobContainersSegment object itself.
      */
+    @Generated
     public BlobContainersSegment setBlobContainerItems(List<BlobContainerItem> blobContainerItems) {
         this.blobContainerItems = blobContainerItems;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
         xmlWriter.writeStringElement("Prefix", this.prefix);
@@ -212,6 +233,7 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobContainersSegment.
      */
+    @Generated
     public static BlobContainersSegment fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -226,8 +248,10 @@ public final class BlobContainersSegment implements XmlSerializable<BlobContaine
      * was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobContainersSegment.
      */
+    @Generated
     public static BlobContainersSegment fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "EnumerationResults" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobContainersSegment deserializedBlobContainersSegment = new BlobContainersSegment();
             deserializedBlobContainersSegment.serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");

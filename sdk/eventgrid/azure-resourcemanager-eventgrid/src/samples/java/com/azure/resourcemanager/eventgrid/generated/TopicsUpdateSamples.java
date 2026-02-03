@@ -18,7 +18,7 @@ import java.util.Map;
 public final class TopicsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/Topics_Update.
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/Topics_Update.
      * json
      */
     /**

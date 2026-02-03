@@ -15,11 +15,11 @@ public final class L2ServiceLoadBalancerConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2ServiceLoadBalancerConfiguration model = BinaryData.fromString(
-            "{\"ipAddressPools\":[{\"addresses\":[\"gkfbtndoaong\",\"jcntuj\"],\"autoAssign\":\"True\",\"name\":\"jed\",\"onlyUseHostIps\":\"True\"},{\"addresses\":[\"ae\",\"kojvd\",\"pzfoqoui\"],\"autoAssign\":\"False\",\"name\":\"xarzgszufoxciq\",\"onlyUseHostIps\":\"False\"}]}")
+            "{\"ipAddressPools\":[{\"addresses\":[\"xzb\",\"voowvr\",\"mtg\"],\"autoAssign\":\"False\",\"name\":\"pyostronzmyhgfi\",\"onlyUseHostIps\":\"True\"},{\"addresses\":[\"kmcwaekrrjreafx\",\"sgumhjglikkxwsl\",\"lbqpvuzlmvfelf\",\"tgp\"],\"autoAssign\":\"True\",\"name\":\"pwjxezn\",\"onlyUseHostIps\":\"True\"},{\"addresses\":[\"rnjwmw\",\"pn\"],\"autoAssign\":\"True\",\"name\":\"zejjoqk\",\"onlyUseHostIps\":\"False\"}]}")
             .toObject(L2ServiceLoadBalancerConfiguration.class);
-        Assertions.assertEquals("gkfbtndoaong", model.ipAddressPools().get(0).addresses().get(0));
-        Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).autoAssign());
-        Assertions.assertEquals("jed", model.ipAddressPools().get(0).name());
+        Assertions.assertEquals("xzb", model.ipAddressPools().get(0).addresses().get(0));
+        Assertions.assertEquals(BfdEnabled.FALSE, model.ipAddressPools().get(0).autoAssign());
+        Assertions.assertEquals("pyostronzmyhgfi", model.ipAddressPools().get(0).name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).onlyUseHostIps());
     }
 
@@ -27,18 +27,23 @@ public final class L2ServiceLoadBalancerConfigurationTests {
     public void testSerialize() throws Exception {
         L2ServiceLoadBalancerConfiguration model
             = new L2ServiceLoadBalancerConfiguration().withIpAddressPools(Arrays.asList(
-                new IpAddressPool().withAddresses(Arrays.asList("gkfbtndoaong", "jcntuj"))
-                    .withAutoAssign(BfdEnabled.TRUE)
-                    .withName("jed")
-                    .withOnlyUseHostIps(BfdEnabled.TRUE),
-                new IpAddressPool().withAddresses(Arrays.asList("ae", "kojvd", "pzfoqoui"))
+                new IpAddressPool().withAddresses(Arrays.asList("xzb", "voowvr", "mtg"))
                     .withAutoAssign(BfdEnabled.FALSE)
-                    .withName("xarzgszufoxciq")
+                    .withName("pyostronzmyhgfi")
+                    .withOnlyUseHostIps(BfdEnabled.TRUE),
+                new IpAddressPool()
+                    .withAddresses(Arrays.asList("kmcwaekrrjreafx", "sgumhjglikkxwsl", "lbqpvuzlmvfelf", "tgp"))
+                    .withAutoAssign(BfdEnabled.TRUE)
+                    .withName("pwjxezn")
+                    .withOnlyUseHostIps(BfdEnabled.TRUE),
+                new IpAddressPool().withAddresses(Arrays.asList("rnjwmw", "pn"))
+                    .withAutoAssign(BfdEnabled.TRUE)
+                    .withName("zejjoqk")
                     .withOnlyUseHostIps(BfdEnabled.FALSE)));
         model = BinaryData.fromObject(model).toObject(L2ServiceLoadBalancerConfiguration.class);
-        Assertions.assertEquals("gkfbtndoaong", model.ipAddressPools().get(0).addresses().get(0));
-        Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).autoAssign());
-        Assertions.assertEquals("jed", model.ipAddressPools().get(0).name());
+        Assertions.assertEquals("xzb", model.ipAddressPools().get(0).addresses().get(0));
+        Assertions.assertEquals(BfdEnabled.FALSE, model.ipAddressPools().get(0).autoAssign());
+        Assertions.assertEquals("pyostronzmyhgfi", model.ipAddressPools().get(0).name());
         Assertions.assertEquals(BfdEnabled.TRUE, model.ipAddressPools().get(0).onlyUseHostIps());
     }
 }

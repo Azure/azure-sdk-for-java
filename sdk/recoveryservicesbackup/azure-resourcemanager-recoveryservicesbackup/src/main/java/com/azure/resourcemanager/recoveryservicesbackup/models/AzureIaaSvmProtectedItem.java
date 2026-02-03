@@ -85,6 +85,11 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
      */
     private ExtendedProperties extendedProperties;
 
+    /*
+     * Type of the policy used for protection
+     */
+    private String policyType;
+
     /**
      * Creates an instance of AzureIaaSvmProtectedItem class.
      */
@@ -338,6 +343,26 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
      */
     public AzureIaaSvmProtectedItem withExtendedProperties(ExtendedProperties extendedProperties) {
         this.extendedProperties = extendedProperties;
+        return this;
+    }
+
+    /**
+     * Get the policyType property: Type of the policy used for protection.
+     * 
+     * @return the policyType value.
+     */
+    public String policyType() {
+        return this.policyType;
+    }
+
+    /**
+     * Set the policyType property: Type of the policy used for protection.
+     * 
+     * @param policyType the policyType value to set.
+     * @return the AzureIaaSvmProtectedItem object itself.
+     */
+    AzureIaaSvmProtectedItem withPolicyType(String policyType) {
+        this.policyType = policyType;
         return this;
     }
 
@@ -660,6 +685,8 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
                         = AzureIaaSvmProtectedItemExtendedInfo.fromJson(reader);
                 } else if ("extendedProperties".equals(fieldName)) {
                     deserializedAzureIaaSvmProtectedItem.extendedProperties = ExtendedProperties.fromJson(reader);
+                } else if ("policyType".equals(fieldName)) {
+                    deserializedAzureIaaSvmProtectedItem.policyType = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

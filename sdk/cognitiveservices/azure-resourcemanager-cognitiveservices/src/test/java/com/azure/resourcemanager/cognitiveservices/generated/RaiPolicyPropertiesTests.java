@@ -7,6 +7,7 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.ContentLevel;
 import com.azure.resourcemanager.cognitiveservices.models.CustomBlocklistConfig;
+import com.azure.resourcemanager.cognitiveservices.models.CustomTopicConfig;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyContentFilter;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyContentSource;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicyMode;
@@ -18,52 +19,72 @@ public final class RaiPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyProperties model = BinaryData.fromString(
-            "{\"type\":\"UserManaged\",\"mode\":\"Deferred\",\"basePolicyName\":\"lhlv\",\"contentFilters\":[{\"name\":\"pzlrphw\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"Completion\"},{\"name\":\"dunvmnnrwrbiorkt\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"Prompt\"}],\"customBlocklists\":[{\"source\":\"Prompt\",\"blocklistName\":\"ivfomiloxgg\",\"blocking\":false},{\"source\":\"Prompt\",\"blocklistName\":\"dieuzaofj\",\"blocking\":false}]}")
+            "{\"type\":\"UserManaged\",\"mode\":\"Default\",\"basePolicyName\":\"gkxnyedabg\",\"contentFilters\":[{\"name\":\"tjuewbcihx\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Prompt\"},{\"name\":\"ybvpay\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":false,\"source\":\"Prompt\"},{\"name\":\"jplmagstcy\",\"enabled\":true,\"severityThreshold\":\"High\",\"blocking\":true,\"source\":\"Prompt\"}],\"customBlocklists\":[{\"source\":\"Completion\",\"blocklistName\":\"gsj\",\"blocking\":false}],\"customTopics\":[{\"source\":\"Completion\",\"topicName\":\"baiyhddviaceg\",\"blocking\":false},{\"source\":\"Completion\",\"topicName\":\"pmvmemfnczdwvv\",\"blocking\":true},{\"source\":\"Completion\",\"topicName\":\"lchpodbzevwrdn\",\"blocking\":false},{\"source\":\"Prompt\",\"topicName\":\"sjcswsmystuluqyp\",\"blocking\":true}]}")
             .toObject(RaiPolicyProperties.class);
-        Assertions.assertEquals(RaiPolicyMode.DEFERRED, model.mode());
-        Assertions.assertEquals("lhlv", model.basePolicyName());
-        Assertions.assertEquals("pzlrphw", model.contentFilters().get(0).name());
-        Assertions.assertEquals(true, model.contentFilters().get(0).enabled());
-        Assertions.assertEquals(ContentLevel.LOW, model.contentFilters().get(0).severityThreshold());
-        Assertions.assertEquals(true, model.contentFilters().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.contentFilters().get(0).source());
-        Assertions.assertEquals("ivfomiloxgg", model.customBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(false, model.customBlocklists().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.customBlocklists().get(0).source());
+        Assertions.assertEquals(RaiPolicyMode.DEFAULT, model.mode());
+        Assertions.assertEquals("gkxnyedabg", model.basePolicyName());
+        Assertions.assertEquals("tjuewbcihx", model.contentFilters().get(0).name());
+        Assertions.assertFalse(model.contentFilters().get(0).enabled());
+        Assertions.assertEquals(ContentLevel.MEDIUM, model.contentFilters().get(0).severityThreshold());
+        Assertions.assertFalse(model.contentFilters().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.contentFilters().get(0).source());
+        Assertions.assertEquals("gsj", model.customBlocklists().get(0).blocklistName());
+        Assertions.assertFalse(model.customBlocklists().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.customBlocklists().get(0).source());
+        Assertions.assertEquals("baiyhddviaceg", model.customTopics().get(0).topicName());
+        Assertions.assertFalse(model.customTopics().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.customTopics().get(0).source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiPolicyProperties model = new RaiPolicyProperties().withMode(RaiPolicyMode.DEFERRED)
-            .withBasePolicyName("lhlv")
+        RaiPolicyProperties model = new RaiPolicyProperties().withMode(RaiPolicyMode.DEFAULT)
+            .withBasePolicyName("gkxnyedabg")
             .withContentFilters(Arrays.asList(
-                new RaiPolicyContentFilter().withName("pzlrphw")
-                    .withEnabled(true)
-                    .withSeverityThreshold(ContentLevel.LOW)
-                    .withBlocking(true)
-                    .withSource(RaiPolicyContentSource.COMPLETION),
-                new RaiPolicyContentFilter().withName("dunvmnnrwrbiorkt")
-                    .withEnabled(true)
-                    .withSeverityThreshold(ContentLevel.LOW)
-                    .withBlocking(true)
-                    .withSource(RaiPolicyContentSource.PROMPT)))
-            .withCustomBlocklists(Arrays.asList(
-                new CustomBlocklistConfig().withBlocklistName("ivfomiloxgg")
+                new RaiPolicyContentFilter().withName("tjuewbcihx")
+                    .withEnabled(false)
+                    .withSeverityThreshold(ContentLevel.MEDIUM)
                     .withBlocking(false)
                     .withSource(RaiPolicyContentSource.PROMPT),
-                new CustomBlocklistConfig().withBlocklistName("dieuzaofj")
+                new RaiPolicyContentFilter().withName("ybvpay")
+                    .withEnabled(true)
+                    .withSeverityThreshold(ContentLevel.LOW)
                     .withBlocking(false)
+                    .withSource(RaiPolicyContentSource.PROMPT),
+                new RaiPolicyContentFilter().withName("jplmagstcy")
+                    .withEnabled(true)
+                    .withSeverityThreshold(ContentLevel.HIGH)
+                    .withBlocking(true)
+                    .withSource(RaiPolicyContentSource.PROMPT)))
+            .withCustomBlocklists(Arrays.asList(new CustomBlocklistConfig().withBlocklistName("gsj")
+                .withBlocking(false)
+                .withSource(RaiPolicyContentSource.COMPLETION)))
+            .withCustomTopics(Arrays.asList(
+                new CustomTopicConfig().withTopicName("baiyhddviaceg")
+                    .withBlocking(false)
+                    .withSource(RaiPolicyContentSource.COMPLETION),
+                new CustomTopicConfig().withTopicName("pmvmemfnczdwvv")
+                    .withBlocking(true)
+                    .withSource(RaiPolicyContentSource.COMPLETION),
+                new CustomTopicConfig().withTopicName("lchpodbzevwrdn")
+                    .withBlocking(false)
+                    .withSource(RaiPolicyContentSource.COMPLETION),
+                new CustomTopicConfig().withTopicName("sjcswsmystuluqyp")
+                    .withBlocking(true)
                     .withSource(RaiPolicyContentSource.PROMPT)));
         model = BinaryData.fromObject(model).toObject(RaiPolicyProperties.class);
-        Assertions.assertEquals(RaiPolicyMode.DEFERRED, model.mode());
-        Assertions.assertEquals("lhlv", model.basePolicyName());
-        Assertions.assertEquals("pzlrphw", model.contentFilters().get(0).name());
-        Assertions.assertEquals(true, model.contentFilters().get(0).enabled());
-        Assertions.assertEquals(ContentLevel.LOW, model.contentFilters().get(0).severityThreshold());
-        Assertions.assertEquals(true, model.contentFilters().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.contentFilters().get(0).source());
-        Assertions.assertEquals("ivfomiloxgg", model.customBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(false, model.customBlocklists().get(0).blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.customBlocklists().get(0).source());
+        Assertions.assertEquals(RaiPolicyMode.DEFAULT, model.mode());
+        Assertions.assertEquals("gkxnyedabg", model.basePolicyName());
+        Assertions.assertEquals("tjuewbcihx", model.contentFilters().get(0).name());
+        Assertions.assertFalse(model.contentFilters().get(0).enabled());
+        Assertions.assertEquals(ContentLevel.MEDIUM, model.contentFilters().get(0).severityThreshold());
+        Assertions.assertFalse(model.contentFilters().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.contentFilters().get(0).source());
+        Assertions.assertEquals("gsj", model.customBlocklists().get(0).blocklistName());
+        Assertions.assertFalse(model.customBlocklists().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.customBlocklists().get(0).source());
+        Assertions.assertEquals("baiyhddviaceg", model.customTopics().get(0).topicName());
+        Assertions.assertFalse(model.customTopics().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.customTopics().get(0).source());
     }
 }

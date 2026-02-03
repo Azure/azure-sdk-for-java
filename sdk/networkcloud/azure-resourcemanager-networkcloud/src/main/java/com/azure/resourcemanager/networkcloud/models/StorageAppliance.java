@@ -51,6 +51,13 @@ public interface StorageAppliance {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the extendedLocation property: The extended location of the cluster associated with the resource.
      * 
      * @return the extendedLocation value.
@@ -73,14 +80,23 @@ public interface StorageAppliance {
     AdministrativeCredentials administratorCredentials();
 
     /**
-     * Gets the capacity property: The total capacity of the storage appliance.
+     * Gets the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
+     * interfaces for the storage appliance. Callers add this certificate to their trusted CA store to allow secure
+     * communication with the storage appliance.
+     * 
+     * @return the caCertificate value.
+     */
+    CertificateInfo caCertificate();
+
+    /**
+     * Gets the capacity property: The total capacity of the storage appliance. Measured in GiB.
      * 
      * @return the capacity value.
      */
     Long capacity();
 
     /**
-     * Gets the capacityUsed property: The amount of storage consumed.
+     * Gets the capacityUsed property: The amount of storage consumed. Measured in GiB.
      * 
      * @return the capacityUsed value.
      */
@@ -360,7 +376,8 @@ public interface StorageAppliance {
          * The stage of the StorageAppliance definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -389,6 +406,37 @@ public interface StorageAppliance {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
+        /**
+         * The stage of the StorageAppliance definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the StorageAppliance definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
+        }
     }
 
     /**
@@ -401,7 +449,8 @@ public interface StorageAppliance {
     /**
      * The template for StorageAppliance update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSerialNumber {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSerialNumber, UpdateStages.WithIfMatch,
+        UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -446,6 +495,37 @@ public interface StorageAppliance {
              * @return the next definition stage.
              */
             Update withSerialNumber(String serialNumber);
+        }
+
+        /**
+         * The stage of the StorageAppliance update allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the StorageAppliance update allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
 
@@ -514,4 +594,33 @@ public interface StorageAppliance {
     OperationStatusResult enableRemoteVendorManagement(
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult
+        runReadCommands(StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters);
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult runReadCommands(
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context);
 }

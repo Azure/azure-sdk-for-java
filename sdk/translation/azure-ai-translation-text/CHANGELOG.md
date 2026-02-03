@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 2.0.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,93 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.8 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 2.0.0-beta.1 (2026-01-08)
+
+### Features Added
+
+- Added support for the Azure AI Translator API 2025-10-01-preview, including translations using LLM models, adaptive custom translation, tone variant translations, and gender-specific translations.
+- Added `TranslationTarget` class for configuring translation options.
+
+### Breaking Changes
+
+- Added `Models` property to `GetSupportedLanguagesResult` to include the list of LLM models available for translations.
+- Changed the name of `TargetLanguage` property to `Language` in `TranslationText`.
+- Changed the name of `Confidence` property to `Score` in `DetectedLanguage`.
+- Removed `SourceText` and `Transliteration` properties in translation responses.
+- Dictionary, sentence boundaries and text alignments features have been deprecated and relevant classes and properties have been removed.
+
+## 1.1.7 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
+## 1.1.6 (2025-09-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.0` to version `1.16.1`.
+- Upgraded `azure-core` from `1.56.0` to version `1.56.1`.
+
+## 1.1.5 (2025-08-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.5` to version `1.56.0`.
+- Upgraded `azure-core-http-netty` from `1.15.13` to version `1.16.0`.
+
+## 1.1.4 (2025-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.4` to version `1.55.5`.
+- Upgraded `azure-core-http-netty` from `1.15.12` to version `1.15.13`.
+
+## 1.1.3 (2025-06-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.3` to version `1.55.4`.
+- Upgraded `azure-core-http-netty` from `1.15.11` to version `1.15.12`.
+
+## 1.1.2 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 1.1.1 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
 
 ## 1.1.0 (2024-11-15)
 

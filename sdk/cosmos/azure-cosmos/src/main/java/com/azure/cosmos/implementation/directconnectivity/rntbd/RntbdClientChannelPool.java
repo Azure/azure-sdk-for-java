@@ -52,7 +52,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -61,7 +60,6 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdReporter.reportIssueUnless;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 /**
  * A {@link ChannelPool} implementation that enforces a maximum number of concurrent direct TCP Cosmos connections.
@@ -191,7 +189,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         Comparator.comparingLong((task) -> task.originalPromise.getExpiryTimeInNanos()));
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
-    private final ClientTelemetry clientTelemetry;
     private final RntbdServerErrorInjector serverErrorInjector;
     private final RntbdServiceEndpoint endpoint;
     private final RntbdConnectionStateListener connectionStateListener;
@@ -221,7 +218,13 @@ public final class RntbdClientChannelPool implements ChannelPool {
         checkNotNull(durableEndpointMetrics, "expected non-null durableEndpointMetrics");
 
         RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetry);
-        this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
+        this.poolHandler = new RntbdClientChannelHandler(
+            config,
+            healthChecker,
+            connectionStateListener,
+            serverErrorInjector,
+            endpoint.serverKeyUsedAsActualRemoteAddress());
+
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
         this.serverErrorInjector = serverErrorInjector;
@@ -261,8 +264,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 task.originalPromise.setFailure(ACQUISITION_TIMEOUT);
                 RntbdChannelAcquisitionTimeline.startNewEvent(
                     task.originalPromise.getChannelAcquisitionTimeline(),
-                    RntbdChannelAcquisitionEventType.PENDING_TIME_OUT,
-                    clientTelemetry);
+                    RntbdChannelAcquisitionEventType.PENDING_TIME_OUT);
             }
         };
 
@@ -278,7 +280,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         } else {
             this.pendingAcquisitionExpirationFuture = null;
         }
-        this.clientTelemetry = clientTelemetry;
     }
 
     // region Accessors
@@ -684,8 +685,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     RntbdChannelAcquisitionTimeline.startNewEvent(
                         channelAcquisitionTimeline,
-                        RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL,
-                        clientTelemetry);
+                        RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL);
 
                     if (this.serverErrorInjector != null) {
                         Consumer<Duration> openConnectionConsumer =
@@ -838,8 +838,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             } else {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
                     promise.getChannelAcquisitionTimeline(),
-                    RntbdChannelAcquisitionEventType.ADD_TO_PENDING_QUEUE,
-                    clientTelemetry);
+                    RntbdChannelAcquisitionEventType.ADD_TO_PENDING_QUEUE);
             }
         }
     }
@@ -1219,8 +1218,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (promise instanceof ChannelPromiseWithExpiryTime) {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
                     ((ChannelPromiseWithExpiryTime) promise).getChannelAcquisitionTimeline(),
-                    RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE,
-                    clientTelemetry
+                    RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE
                 );
             }
             this.connecting.set(false);
@@ -1323,8 +1321,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             RntbdChannelAcquisitionTimeline.startNewPollEvent(
                 channelAcquisitionTimeline,
                 this.availableChannels.size(),
-                this.acquiredChannels.size(),
-                this.clientTelemetry);
+                this.acquiredChannels.size());
 
         final Channel first = this.availableChannels.pollFirst();
 
@@ -1443,7 +1440,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 this.poolHandler.channelReleased(channel);
                 promise.setSuccess(null);
             } else {
-                final ChannelAcquisitionException error = new ChannelAcquisitionException(lenientFormat(
+                final ChannelAcquisitionException error = new ChannelAcquisitionException(String.format(
                     "cannot offer channel back to pool because the pool is at capacity (%s)\n  %s\n  %s",
                     this.maxChannels,
                     this,
@@ -1522,7 +1519,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
             }
         } else {
-            final IllegalStateException error = new IllegalStateException(lenientFormat(
+            final IllegalStateException error = new IllegalStateException(String.format(
                 "%s cannot be released because it was not acquired by this pool: %s",
                 RntbdObjectMapper.toJson(channel),
                 this));

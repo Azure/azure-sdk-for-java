@@ -52,17 +52,6 @@ public final class StorageConfiguration implements JsonSerializable<StorageConfi
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (transportFileShareConfiguration() != null) {
-            transportFileShareConfiguration().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

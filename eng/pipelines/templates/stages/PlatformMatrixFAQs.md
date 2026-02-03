@@ -6,7 +6,7 @@ If the latest version of Java is a non-LTS version, then the `IsLatestNonLtsJdk`
 ```json
 {
   "Agent": {
-    "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+    "ubuntu-24.04": { "OSVmImage": "ubuntu-24.04", "Pool": "azsdk-pool" }
   },
   "JavaTestVersion": "1.20",
   "AZURE_TEST_HTTP_CLIENTS": "netty",

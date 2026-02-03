@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,31 +22,37 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
     /*
      * The description of the SQL script.
      */
+    @Generated
     private String description;
 
     /*
      * The type of the SQL script.
      */
+    @Generated
     private SqlScriptType type;
 
     /*
      * The content of the SQL script.
      */
+    @Generated
     private SqlScriptContent content;
 
     /*
      * The folder that this SQL script is in. If not specified, this SQL script will appear at the root level.
      */
+    @Generated
     private SqlScriptFolder folder;
 
     /*
      * SQL script.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SqlScript class.
      */
+    @Generated
     public SqlScript() {
     }
 
@@ -54,6 +61,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -64,6 +72,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * @param description the description value to set.
      * @return the SqlScript object itself.
      */
+    @Generated
     public SqlScript setDescription(String description) {
         this.description = description;
         return this;
@@ -74,6 +83,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * 
      * @return the type value.
      */
+    @Generated
     public SqlScriptType getType() {
         return this.type;
     }
@@ -84,6 +94,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * @param type the type value to set.
      * @return the SqlScript object itself.
      */
+    @Generated
     public SqlScript setType(SqlScriptType type) {
         this.type = type;
         return this;
@@ -94,6 +105,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * 
      * @return the content value.
      */
+    @Generated
     public SqlScriptContent getContent() {
         return this.content;
     }
@@ -104,6 +116,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * @param content the content value to set.
      * @return the SqlScript object itself.
      */
+    @Generated
     public SqlScript setContent(SqlScriptContent content) {
         this.content = content;
         return this;
@@ -115,6 +128,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * 
      * @return the folder value.
      */
+    @Generated
     public SqlScriptFolder getFolder() {
         return this.folder;
     }
@@ -126,6 +140,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * @param folder the folder value to set.
      * @return the SqlScript object itself.
      */
+    @Generated
     public SqlScript setFolder(SqlScriptFolder folder) {
         this.folder = folder;
         return this;
@@ -136,6 +151,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -146,6 +162,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the SqlScript object itself.
      */
+    @Generated
     public SqlScript setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -154,6 +171,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -178,6 +196,7 @@ public final class SqlScript implements JsonSerializable<SqlScript> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlScript.
      */
+    @Generated
     public static SqlScript fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlScript deserializedSqlScript = new SqlScript();

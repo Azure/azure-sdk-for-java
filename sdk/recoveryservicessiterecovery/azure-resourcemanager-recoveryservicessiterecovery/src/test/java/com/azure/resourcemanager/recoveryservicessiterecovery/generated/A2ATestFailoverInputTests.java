@@ -12,18 +12,18 @@ public final class A2ATestFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2ATestFailoverInput model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"recoveryPointId\":\"omeikjcl\",\"cloudServiceCreationOption\":\"acnmwpfsuqtaaz\"}")
+            "{\"instanceType\":\"A2A\",\"recoveryPointId\":\"jti\",\"cloudServiceCreationOption\":\"nzqgxxgfbbmtlpq\"}")
             .toObject(A2ATestFailoverInput.class);
-        Assertions.assertEquals("omeikjcl", model.recoveryPointId());
-        Assertions.assertEquals("acnmwpfsuqtaaz", model.cloudServiceCreationOption());
+        Assertions.assertEquals("jti", model.recoveryPointId());
+        Assertions.assertEquals("nzqgxxgfbbmtlpq", model.cloudServiceCreationOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2ATestFailoverInput model = new A2ATestFailoverInput().withRecoveryPointId("omeikjcl")
-            .withCloudServiceCreationOption("acnmwpfsuqtaaz");
+        A2ATestFailoverInput model
+            = new A2ATestFailoverInput().withRecoveryPointId("jti").withCloudServiceCreationOption("nzqgxxgfbbmtlpq");
         model = BinaryData.fromObject(model).toObject(A2ATestFailoverInput.class);
-        Assertions.assertEquals("omeikjcl", model.recoveryPointId());
-        Assertions.assertEquals("acnmwpfsuqtaaz", model.cloudServiceCreationOption());
+        Assertions.assertEquals("jti", model.recoveryPointId());
+        Assertions.assertEquals("nzqgxxgfbbmtlpq", model.cloudServiceCreationOption());
     }
 }

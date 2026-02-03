@@ -49,6 +49,10 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
@@ -115,6 +119,14 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
 
     private String consoleName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private ConsolePatchParameters updateConsoleUpdateParameters;
 
     public ConsoleImpl withExistingVirtualMachine(String resourceGroupName, String virtualMachineName) {
@@ -126,14 +138,16 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     public Console create() {
         this.innerObject = serviceManager.serviceClient()
             .getConsoles()
-            .createOrUpdate(resourceGroupName, virtualMachineName, consoleName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, virtualMachineName, consoleName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public Console create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConsoles()
-            .createOrUpdate(resourceGroupName, virtualMachineName, consoleName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, virtualMachineName, consoleName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -141,9 +155,13 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
         this.innerObject = new ConsoleInner();
         this.serviceManager = serviceManager;
         this.consoleName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public ConsoleImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateConsoleUpdateParameters = new ConsolePatchParameters();
         return this;
     }
@@ -151,14 +169,16 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
     public Console apply() {
         this.innerObject = serviceManager.serviceClient()
             .getConsoles()
-            .update(resourceGroupName, virtualMachineName, consoleName, updateConsoleUpdateParameters, Context.NONE);
+            .update(resourceGroupName, virtualMachineName, consoleName, updateIfMatch, updateIfNoneMatch,
+                updateConsoleUpdateParameters, Context.NONE);
         return this;
     }
 
     public Console apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getConsoles()
-            .update(resourceGroupName, virtualMachineName, consoleName, updateConsoleUpdateParameters, context);
+            .update(resourceGroupName, virtualMachineName, consoleName, updateIfMatch, updateIfNoneMatch,
+                updateConsoleUpdateParameters, context);
         return this;
     }
 
@@ -241,7 +261,27 @@ public final class ConsoleImpl implements Console, Console.Definition, Console.U
         }
     }
 
+    public ConsoleImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public ConsoleImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

@@ -11,95 +11,115 @@ import java.util.Collection;
  * Defines values for EncryptionAlgorithm.
  */
 public final class EncryptionAlgorithm extends ExpandableStringEnum<EncryptionAlgorithm> {
-
     /**
-     * Static value RSA_OAEP for EncryptionAlgorithm.
+     * [Not recommended] RSAES using Optimal Asymmetric Encryption Padding (OAEP), as described in
+     * https://tools.ietf.org/html/rfc3447, with the default parameters specified by RFC 3447 in Section A.2.1. Those
+     * default parameters are using a hash function of SHA-1 and a mask generation function of MGF1 with SHA-1.
+     * Microsoft recommends using RSA_OAEP_256 or stronger algorithms for enhanced security. Microsoft does *not*
+     * recommend RSA_OAEP, which is included solely for backwards compatibility. RSA_OAEP utilizes SHA1, which has known
+     * collision problems.
      */
     public static final EncryptionAlgorithm RSA_OAEP = fromString("RSA-OAEP");
 
     /**
-     * Static value RSA_OAEP_256 for EncryptionAlgorithm.
+     * RSAES using Optimal Asymmetric Encryption Padding with a hash function of SHA-256 and a mask generation function
+     * of MGF1 with SHA-256.
      */
     public static final EncryptionAlgorithm RSA_OAEP_256 = fromString("RSA-OAEP-256");
 
     /**
-     * Static value RSA1_5 for EncryptionAlgorithm.
+     * [Not recommended] RSAES-PKCS1-V1_5 key encryption, as described in https://tools.ietf.org/html/rfc3447. Microsoft
+     * recommends using RSA_OAEP_256 or stronger algorithms for enhanced security. Microsoft does *not* recommend
+     * RSA_1_5, which is included solely for backwards compatibility. Cryptographic standards no longer consider RSA
+     * with the PKCS#1 v1.5 padding scheme secure for encryption.
      */
     public static final EncryptionAlgorithm RSA1_5 = fromString("RSA1_5");
 
     /**
-     * Static value A128CBC for EncryptionAlgorithm.
+     * 128-bit AES-CBC.
      */
     public static final EncryptionAlgorithm A128CBC = fromString("A128CBC");
 
     /**
-     * Static value A192CBC for EncryptionAlgorithm.
+     * 192-bit AES-CBC.
      */
     public static final EncryptionAlgorithm A192CBC = fromString("A192CBC");
 
     /**
-     * Static value A256CBC for EncryptionAlgorithm.
+     * 256-bit AES-CBC.
      */
     public static final EncryptionAlgorithm A256CBC = fromString("A256CBC");
 
     /**
-     * Static value A128CBCPAD for EncryptionAlgorithm.
+     * 128-bit AES-CBC with PKCS padding.
      */
     public static final EncryptionAlgorithm A128CBCPAD = fromString("A128CBCPAD");
 
     /**
-     * Static value A192CBCPAD for EncryptionAlgorithm.
+     * 192-bit AES-CBC with PKCS padding.
      */
     public static final EncryptionAlgorithm A192CBCPAD = fromString("A192CBCPAD");
 
     /**
-     * Static value A256CBCPAD for EncryptionAlgorithm.
+     * 256-bit AES-CBC with PKCS padding.
      */
     public static final EncryptionAlgorithm A256CBCPAD = fromString("A256CBCPAD");
 
     /**
-     * Static value A128CBC_HS256 for EncryptionAlgorithm.
+     * 128-bit AES-CBC with 256-bit HMAC.
      */
     public static final EncryptionAlgorithm A128CBC_HS256 = fromString("A128CBC-HS256");
 
     /**
-     * Static value A192CBC_HS384 for EncryptionAlgorithm.
+     * 256-bit AES-CBC with 384-bit HMAC.
      */
     public static final EncryptionAlgorithm A192CBC_HS384 = fromString("A192CBC-HS384");
 
     /**
-     * Static value A256CBC_HS512 for EncryptionAlgorithm.
+     * 256-bit AES-CBC with 512-bit HMAC.
      */
     public static final EncryptionAlgorithm A256CBC_HS512 = fromString("A256CBC-HS512");
 
     /**
-     * Static value A128GCM for EncryptionAlgorithm.
+     * 128-bit AES-GCM.
      */
     public static final EncryptionAlgorithm A128GCM = fromString("A128GCM");
 
     /**
-     * Static value A192GCM for EncryptionAlgorithm.
+     * 192-bit AES-GCM.
      */
     public static final EncryptionAlgorithm A192GCM = fromString("A192GCM");
 
     /**
-     * Static value A256GCM for EncryptionAlgorithm.
+     * 256-bit AES-GCM.
      */
     public static final EncryptionAlgorithm A256GCM = fromString("A256GCM");
 
     /**
-     * Static value A128KW for EncryptionAlgorithm.
+     * 128-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A128KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A128KW = fromString("A128KW");
 
     /**
-     * Static value A192KW for EncryptionAlgorithm.
+     * 192-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A192KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A192KW = fromString("A192KW");
 
     /**
-     * Static value A256KW for EncryptionAlgorithm.
+     * 256-bit AES key wrap.
+     *
+     * @deprecated This value is not supported for encrypt/decrypt operations. For key wrapping/unwrapping, use
+     * {@link KeyWrapAlgorithm#A256KW} in {@link KeyWrapAlgorithm} instead.
      */
+    @Deprecated
     public static final EncryptionAlgorithm A256KW = fromString("A256KW");
 
     /**

@@ -15,22 +15,24 @@ public final class ResourceTypeExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeExtension model = BinaryData.fromString(
-            "{\"endpointUri\":\"wzbhvgyugu\",\"extensionCategories\":[\"ResourceMoveBegin\",\"ResourceDeletionBegin\",\"ResourcePostAction\"],\"timeout\":\"PT7H8S\"}")
+            "{\"endpointUri\":\"eupfhyhltrpm\",\"extensionCategories\":[\"ResourceCreationCompleted\",\"ResourcePatchValidate\",\"ResourceReadValidate\",\"ResourceReadValidate\"],\"timeout\":\"PT194H2M43S\"}")
             .toObject(ResourceTypeExtension.class);
-        Assertions.assertEquals("wzbhvgyugu", model.endpointUri());
-        Assertions.assertEquals(ExtensionCategory.RESOURCE_MOVE_BEGIN, model.extensionCategories().get(0));
-        Assertions.assertEquals(Duration.parse("PT7H8S"), model.timeout());
+        Assertions.assertEquals("eupfhyhltrpm", model.endpointUri());
+        Assertions.assertEquals(ExtensionCategory.RESOURCE_CREATION_COMPLETED, model.extensionCategories().get(0));
+        Assertions.assertEquals(Duration.parse("PT194H2M43S"), model.timeout());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceTypeExtension model = new ResourceTypeExtension().withEndpointUri("wzbhvgyugu")
-            .withExtensionCategories(Arrays.asList(ExtensionCategory.RESOURCE_MOVE_BEGIN,
-                ExtensionCategory.RESOURCE_DELETION_BEGIN, ExtensionCategory.RESOURCE_POST_ACTION))
-            .withTimeout(Duration.parse("PT7H8S"));
+        ResourceTypeExtension model
+            = new ResourceTypeExtension().withEndpointUri("eupfhyhltrpm")
+                .withExtensionCategories(Arrays.asList(ExtensionCategory.RESOURCE_CREATION_COMPLETED,
+                    ExtensionCategory.RESOURCE_PATCH_VALIDATE, ExtensionCategory.RESOURCE_READ_VALIDATE,
+                    ExtensionCategory.RESOURCE_READ_VALIDATE))
+                .withTimeout(Duration.parse("PT194H2M43S"));
         model = BinaryData.fromObject(model).toObject(ResourceTypeExtension.class);
-        Assertions.assertEquals("wzbhvgyugu", model.endpointUri());
-        Assertions.assertEquals(ExtensionCategory.RESOURCE_MOVE_BEGIN, model.extensionCategories().get(0));
-        Assertions.assertEquals(Duration.parse("PT7H8S"), model.timeout());
+        Assertions.assertEquals("eupfhyhltrpm", model.endpointUri());
+        Assertions.assertEquals(ExtensionCategory.RESOURCE_CREATION_COMPLETED, model.extensionCategories().get(0));
+        Assertions.assertEquals(Duration.parse("PT194H2M43S"), model.timeout());
     }
 }

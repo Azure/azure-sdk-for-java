@@ -3,6 +3,14 @@
 
 package com.azure.data.appconfiguration;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
@@ -33,27 +41,21 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import static com.azure.core.util.CoreUtils.getApplicationId;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
+import com.azure.data.appconfiguration.implementation.AudiencePolicy;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
+import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
+import com.azure.data.appconfiguration.implementation.QueryParamPolicy;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
-
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import static com.azure.core.util.CoreUtils.getApplicationId;
-import static com.azure.data.appconfiguration.implementation.ClientConstants.APP_CONFIG_TRACING_NAMESPACE_VALUE;
+import com.azure.data.appconfiguration.models.ConfigurationAudience;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -143,6 +145,8 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     private RetryOptions retryOptions;
     private Configuration configuration;
     private ConfigurationServiceVersion version;
+
+    private ConfigurationAudience audience;
 
     /**
      * Constructs a new builder used to configure and build {@link ConfigurationClient ConfigurationClients} and
@@ -260,6 +264,9 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(ADD_HEADERS_POLICY);
 
+        // Add query parameter reordering policy
+        policies.add(new QueryParamPolicy());
+
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -270,7 +277,7 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
 
         if (tokenCredential != null) {
             // User token based policy
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, String.format("%s/.default", endpoint)));
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, getDefaultScope(endpoint)));
         } else if (credentials != null) {
             // Use credentialS based policy
             policies.add(new ConfigurationCredentialsPolicy(credentials));
@@ -281,6 +288,9 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
         }
         policies.add(syncTokenPolicy);
         policies.addAll(perRetryPolicies);
+
+        // Add policy to provide better error messages for AAD audience authentication failures
+        policies.add(new AudiencePolicy(audience));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
         localClientOptions.getHeaders()
@@ -536,5 +546,37 @@ public final class ConfigurationClientBuilder implements TokenCredentialTrait<Co
     public ConfigurationClientBuilder serviceVersion(ConfigurationServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Sets the {@link ConfigurationAudience} to use for authentication with Microsoft Entra. The audience is not
+     * considered when using a shared key.
+     *
+     * @param audience {@link ConfigurationAudience} of the service to be used when making requests.
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public ConfigurationClientBuilder audience(ConfigurationAudience audience) {
+        this.audience = audience;
+        return this;
+    }
+
+    /**
+     * Gets the default scope for the given endpoint.
+     *
+     * @param endpoint The endpoint to get the default scope for.
+     * @return The default scope for the given endpoint.
+     */
+    private String getDefaultScope(String endpoint) {
+        String defaultValue = "/.default";
+        if (audience == null || audience.toString().isEmpty()) {
+            if (endpoint.endsWith("azconfig.azure.us") || endpoint.endsWith("appconfig.azure.us")) {
+                return ConfigurationAudience.AZURE_GOVERNMENT + defaultValue;
+            } else if (endpoint.endsWith("azconfig.azure.cn") || endpoint.endsWith("appconfig.azure.cn")) {
+                return ConfigurationAudience.AZURE_CHINA + defaultValue;
+            } else {
+                return ConfigurationAudience.AZURE_PUBLIC_CLOUD + defaultValue;
+            }
+        }
+        return audience + defaultValue;
     }
 }

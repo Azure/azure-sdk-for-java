@@ -280,14 +280,28 @@ public final class SquareLinkedServiceTypeProperties implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
-        jsonWriter.writeUntypedField("host", this.host);
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.connectionProperties != null) {
+            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        }
+        if (this.host != null) {
+            jsonWriter.writeUntypedField("host", this.host);
+        }
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("redirectUri", this.redirectUri);
-        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        if (this.redirectUri != null) {
+            jsonWriter.writeUntypedField("redirectUri", this.redirectUri);
+        }
+        if (this.useEncryptedEndpoints != null) {
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        }
+        if (this.useHostVerification != null) {
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        }
+        if (this.usePeerVerification != null) {
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

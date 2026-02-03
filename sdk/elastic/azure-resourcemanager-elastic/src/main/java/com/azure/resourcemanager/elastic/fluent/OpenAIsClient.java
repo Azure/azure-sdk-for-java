@@ -17,7 +17,8 @@ import com.azure.resourcemanager.elastic.fluent.models.OpenAIIntegrationStatusRe
  */
 public interface OpenAIsClient {
     /**
-     * List OpenAI integration rule for a given monitor resource.
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -30,7 +31,8 @@ public interface OpenAIsClient {
     PagedIterable<OpenAIIntegrationRPModelInner> list(String resourceGroupName, String monitorName);
 
     /**
-     * List OpenAI integration rule for a given monitor resource.
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -44,7 +46,7 @@ public interface OpenAIsClient {
     PagedIterable<OpenAIIntegrationRPModelInner> list(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Get OpenAI integration rule for a given monitor resource.
+     * Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -53,14 +55,15 @@ public interface OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration rule for a given monitor resource along with {@link Response}.
+     * @return detailed information about OpenAI integration rules for a given Elastic monitor resource along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OpenAIIntegrationRPModelInner> getWithResponse(String resourceGroupName, String monitorName,
         String integrationName, Context context);
 
     /**
-     * Get OpenAI integration rule for a given monitor resource.
+     * Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -68,13 +71,14 @@ public interface OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration rule for a given monitor resource.
+     * @return detailed information about OpenAI integration rules for a given Elastic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OpenAIIntegrationRPModelInner get(String resourceGroupName, String monitorName, String integrationName);
 
     /**
-     * Create or update a OpenAI integration rule for a given monitor resource.
+     * Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -91,7 +95,8 @@ public interface OpenAIsClient {
         String integrationName, OpenAIIntegrationRPModelInner body, Context context);
 
     /**
-     * Create or update a OpenAI integration rule for a given monitor resource.
+     * Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -105,7 +110,8 @@ public interface OpenAIsClient {
     OpenAIIntegrationRPModelInner createOrUpdate(String resourceGroupName, String monitorName, String integrationName);
 
     /**
-     * Delete OpenAI integration rule for a given monitor resource.
+     * Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and
+     * monitoring capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -121,7 +127,8 @@ public interface OpenAIsClient {
         Context context);
 
     /**
-     * Delete OpenAI integration rule for a given monitor resource.
+     * Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and
+     * monitoring capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -134,7 +141,8 @@ public interface OpenAIsClient {
     void delete(String resourceGroupName, String monitorName, String integrationName);
 
     /**
-     * Get OpenAI integration status for a given integration.
+     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -143,14 +151,16 @@ public interface OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration along with {@link Response}.
+     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OpenAIIntegrationStatusResponseInner> getStatusWithResponse(String resourceGroupName, String monitorName,
         String integrationName, Context context);
 
     /**
-     * Get OpenAI integration status for a given integration.
+     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -158,7 +168,8 @@ public interface OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration.
+     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OpenAIIntegrationStatusResponseInner getStatus(String resourceGroupName, String monitorName,

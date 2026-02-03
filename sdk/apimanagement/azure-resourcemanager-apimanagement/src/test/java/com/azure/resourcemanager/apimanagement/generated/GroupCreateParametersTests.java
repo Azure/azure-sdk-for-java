@@ -13,24 +13,24 @@ public final class GroupCreateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupCreateParameters model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"fmdafbgymqtnap\",\"description\":\"ojxrjnbsconxavi\",\"type\":\"external\",\"externalId\":\"chbj\"}}")
+            "{\"properties\":{\"displayName\":\"kvyhzokpoyu\",\"description\":\"uensn\",\"type\":\"external\",\"externalId\":\"hmpoe\"}}")
             .toObject(GroupCreateParameters.class);
-        Assertions.assertEquals("fmdafbgymqtnap", model.displayName());
-        Assertions.assertEquals("ojxrjnbsconxavi", model.description());
+        Assertions.assertEquals("kvyhzokpoyu", model.displayName());
+        Assertions.assertEquals("uensn", model.description());
         Assertions.assertEquals(GroupType.EXTERNAL, model.type());
-        Assertions.assertEquals("chbj", model.externalId());
+        Assertions.assertEquals("hmpoe", model.externalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupCreateParameters model = new GroupCreateParameters().withDisplayName("fmdafbgymqtnap")
-            .withDescription("ojxrjnbsconxavi")
+        GroupCreateParameters model = new GroupCreateParameters().withDisplayName("kvyhzokpoyu")
+            .withDescription("uensn")
             .withType(GroupType.EXTERNAL)
-            .withExternalId("chbj");
+            .withExternalId("hmpoe");
         model = BinaryData.fromObject(model).toObject(GroupCreateParameters.class);
-        Assertions.assertEquals("fmdafbgymqtnap", model.displayName());
-        Assertions.assertEquals("ojxrjnbsconxavi", model.description());
+        Assertions.assertEquals("kvyhzokpoyu", model.displayName());
+        Assertions.assertEquals("uensn", model.description());
         Assertions.assertEquals(GroupType.EXTERNAL, model.type());
-        Assertions.assertEquals("chbj", model.externalId());
+        Assertions.assertEquals("hmpoe", model.externalId());
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
     /**
      * Static value Basic for HttpAuthenticationType.
      */
+    @Generated
     public static final HttpAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Anonymous for HttpAuthenticationType.
      */
+    @Generated
     public static final HttpAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value Digest for HttpAuthenticationType.
      */
+    @Generated
     public static final HttpAuthenticationType DIGEST = fromString("Digest");
 
     /**
      * Static value Windows for HttpAuthenticationType.
      */
+    @Generated
     public static final HttpAuthenticationType WINDOWS = fromString("Windows");
 
     /**
      * Static value ClientCertificate for HttpAuthenticationType.
      */
+    @Generated
     public static final HttpAuthenticationType CLIENT_CERTIFICATE = fromString("ClientCertificate");
 
     /**
@@ -41,6 +47,7 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HttpAuthenticationType() {
     }
@@ -51,6 +58,7 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
      * @param name a name to look for.
      * @return the corresponding HttpAuthenticationType.
      */
+    @Generated
     public static HttpAuthenticationType fromString(String name) {
         return fromString(name, HttpAuthenticationType.class);
     }
@@ -60,6 +68,7 @@ public final class HttpAuthenticationType extends ExpandableStringEnum<HttpAuthe
      * 
      * @return known HttpAuthenticationType values.
      */
+    @Generated
     public static Collection<HttpAuthenticationType> values() {
         return values(HttpAuthenticationType.class);
     }

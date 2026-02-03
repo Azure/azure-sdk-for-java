@@ -52,7 +52,7 @@ public final class AzureTableStorageLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureTableStorageLinkedServiceTypeProperties innerTypeProperties() {
+    AzureTableStorageLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

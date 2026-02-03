@@ -51,7 +51,7 @@ public final class AzureStorageLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureStorageLinkedServiceTypeProperties innerTypeProperties() {
+    AzureStorageLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

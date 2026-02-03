@@ -10,20 +10,20 @@
   <suppress files="com.azure.core.implementation.jackson.OptionSerializerProvider.java" checks="HeaderCheck" />
   <suppress files="com.azure.core.implementation.jackson.OptionTypeModifier.java" checks="HeaderCheck" />
   <suppress files="com.azure.core.implementation.jackson.MemberNameConverterImplTests.java" checks="VisibilityModifierCheck" />
-  <suppress files="com.azure.core.util.serializer.JacksonAdapter.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
-  <suppress files="com.azure.core.implementation.accesshelpers.ClientLoggerAccessHelper.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="com.azure.core.implementation.logging.DefaultLogger.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="com.azure.core.util.logging.ClientLogger.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="com.azure.core.util.logging.LoggingEventBuilder.java" checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" />
-  <suppress files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck" />
-  <suppress files="com.azure.core.http.policy.HttpLoggingPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.implementation.AccessTokenCache.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.implementation.AccessibleByteArrayOutputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.implementation.http.rest.SyncRestProxy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.implementation.jackson.MemberNameConverterImpl.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.implementation.jackson.ObjectMapperFactory.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.implementation.jackson.XmlMapperFactory.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.util.logging.LoggingEventBuilder.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.core.http.policy.RetryPolicy.java" checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" />
+  <suppress files="com.azure.core.util.serializer.JacksonAdapter.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ExternalDependencyExposedCheck" />
+  <suppress files="com.azure.core.implementation.accesshelpers.ClientLoggerAccessHelper.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
+  <suppress files="com.azure.core.implementation.logging.DefaultLogger.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
+  <suppress files="com.azure.core.util.logging.ClientLogger.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
+  <suppress files="com.azure.core.util.logging.LoggingEventBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLoggingCheck" />
+  <suppress files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.HttpPipelinePolicyCheck" />
+  <suppress files="com.azure.core.http.policy.HttpLoggingPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.implementation.AccessTokenCache.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.implementation.AccessibleByteArrayOutputStream.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.implementation.http.policy.InstrumentationPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.implementation.http.rest.SyncRestProxy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.implementation.jackson.MemberNameConverterImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.implementation.jackson.ObjectMapperFactory.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.implementation.jackson.XmlMapperFactory.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.util.logging.LoggingEventBuilder.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="com.azure.core.http.policy.RetryPolicy.java" checks="io.clientcore.linting.extensions.checkstyle.checks.UseCaughtExceptionCauseCheck" />
 </suppressions>

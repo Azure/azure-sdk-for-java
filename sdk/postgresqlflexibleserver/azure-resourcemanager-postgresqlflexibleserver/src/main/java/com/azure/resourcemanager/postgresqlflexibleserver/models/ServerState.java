@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * A state of a server that is visible to user.
+ * Possible states of a server.
  */
 public final class ServerState extends ExpandableStringEnum<ServerState> {
     /**
@@ -45,6 +45,21 @@ public final class ServerState extends ExpandableStringEnum<ServerState> {
      * Static value Updating for ServerState.
      */
     public static final ServerState UPDATING = fromString("Updating");
+
+    /**
+     * Static value Restarting for ServerState.
+     */
+    public static final ServerState RESTARTING = fromString("Restarting");
+
+    /**
+     * Static value Inaccessible for ServerState.
+     */
+    public static final ServerState INACCESSIBLE = fromString("Inaccessible");
+
+    /**
+     * Static value Provisioning for ServerState.
+     */
+    public static final ServerState PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of ServerState value.

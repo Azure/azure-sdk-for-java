@@ -10,15 +10,16 @@ package com.azure.resourcemanager.compute.generated;
 public final class DiskAccessesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
-     * DiskAccess_Get.json
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/diskAccessExamples/
+     * DiskAccess_Get_WithPrivateEndpoints.json
      */
     /**
-     * Sample code: Get information about a disk access resource.
+     * Sample code: get information about a disk access resource with private endpoints.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getInformationAboutADiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getInformationAboutADiskAccessResourceWithPrivateEndpoints(
+        com.azure.resourcemanager.AzureResourceManager azure) {
         azure.virtualMachines()
             .manager()
             .serviceClient()
@@ -28,16 +29,15 @@ public final class DiskAccessesGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
-     * DiskAccess_Get_WithPrivateEndpoints.json
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/diskAccessExamples/
+     * DiskAccess_Get.json
      */
     /**
-     * Sample code: Get information about a disk access resource with private endpoints.
+     * Sample code: get information about a disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getInformationAboutADiskAccessResourceWithPrivateEndpoints(
-        com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getInformationAboutADiskAccessResource(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.virtualMachines()
             .manager()
             .serviceClient()

@@ -20,8 +20,8 @@ import java.time.Duration;
  *
  * For more information on timeouts for different services, see here:
  * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting timeouts for blob service operations</a>
- * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-file-service-operations">Setting timeouts for file service operations</a>
- * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations">Setting timeouts for queue service operations</a>
+ * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations">Setting timeouts for file service operations</a>
+ * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations">Setting timeouts for queue service operations</a>
  */
 public final class ServiceTimeoutPolicy implements HttpPipelinePolicy {
     private final boolean applyTimeout;
@@ -36,9 +36,9 @@ public final class ServiceTimeoutPolicy implements HttpPipelinePolicy {
      * 30-second maximum. For more information, see here:
      * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations">Setting timeouts for blob service operations</a>
      * For more information on setting timeouts for file shares, see here:
-     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-file-service-operations">Setting timeouts for file service operations</a>
+     * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-file-service-operations">Setting timeouts for file service operations</a>
      * For more information on setting timeouts on queues, see here:
-     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations">Setting timeouts for queue service operations</a>
+     * <a href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-queue-service-operations">Setting timeouts for queue service operations</a>
      *
      * @param timeout The timeout duration.
      */

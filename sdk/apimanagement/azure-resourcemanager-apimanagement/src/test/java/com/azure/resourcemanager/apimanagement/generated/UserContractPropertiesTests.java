@@ -16,39 +16,38 @@ public final class UserContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserContractProperties model = BinaryData.fromString(
-            "{\"firstName\":\"tif\",\"lastName\":\"bcngkegxc\",\"email\":\"xbbfetwil\",\"registrationDate\":\"2021-02-17T00:32:27Z\",\"groups\":[{\"displayName\":\"pdxqlfrolqownkiu\",\"description\":\"ewnahwkxjjmzt\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"dtmvecdhdyswcrp\"},{\"displayName\":\"veajczxvlgsrg\",\"description\":\"fizrpywlptyuqhr\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"kpfuofix\"},{\"displayName\":\"npcfyk\",\"description\":\"yycpawmpjprdpw\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"fjfw\"},{\"displayName\":\"lgzawkgyepeyamnn\",\"description\":\"mdiawpzx\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"kctd\"}],\"state\":\"deleted\",\"note\":\"gwqpsqazih\",\"identities\":[{\"provider\":\"qgcnbhcbmjk\",\"id\":\"ibniynts\"},{\"provider\":\"mfmeftvhkmoo\",\"id\":\"rh\"},{\"provider\":\"bwgmjgrul\",\"id\":\"ogxhcxn\"},{\"provider\":\"tpfdzxcouzfwofwa\",\"id\":\"kzkdtzxsoednlwg\"}]}")
+            "{\"firstName\":\"ieopexelxqdwr\",\"lastName\":\"yil\",\"email\":\"ibkgxyxyau\",\"registrationDate\":\"2021-09-13T13:52:05Z\",\"groups\":[{\"displayName\":\"obmc\",\"description\":\"tmwytkujsqycm\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"lqgpwbmwhrialiw\"}],\"state\":\"deleted\",\"note\":\"nwplrr\",\"identities\":[{\"provider\":\"tsbbibtic\",\"id\":\"qvumspbfsfeqbbe\"},{\"provider\":\"cuq\",\"id\":\"yyxmzrmtmvwituw\"},{\"provider\":\"yjshcyb\",\"id\":\"upp\"}]}")
             .toObject(UserContractProperties.class);
         Assertions.assertEquals(UserState.DELETED, model.state());
-        Assertions.assertEquals("gwqpsqazih", model.note());
-        Assertions.assertEquals("qgcnbhcbmjk", model.identities().get(0).provider());
-        Assertions.assertEquals("ibniynts", model.identities().get(0).id());
-        Assertions.assertEquals("tif", model.firstName());
-        Assertions.assertEquals("bcngkegxc", model.lastName());
-        Assertions.assertEquals("xbbfetwil", model.email());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T00:32:27Z"), model.registrationDate());
+        Assertions.assertEquals("nwplrr", model.note());
+        Assertions.assertEquals("tsbbibtic", model.identities().get(0).provider());
+        Assertions.assertEquals("qvumspbfsfeqbbe", model.identities().get(0).id());
+        Assertions.assertEquals("ieopexelxqdwr", model.firstName());
+        Assertions.assertEquals("yil", model.lastName());
+        Assertions.assertEquals("ibkgxyxyau", model.email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T13:52:05Z"), model.registrationDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UserContractProperties model = new UserContractProperties().withState(UserState.DELETED)
-            .withNote("gwqpsqazih")
+            .withNote("nwplrr")
             .withIdentities(
-                Arrays.asList(new UserIdentityContractInner().withProvider("qgcnbhcbmjk").withId("ibniynts"),
-                    new UserIdentityContractInner().withProvider("mfmeftvhkmoo").withId("rh"),
-                    new UserIdentityContractInner().withProvider("bwgmjgrul").withId("ogxhcxn"),
-                    new UserIdentityContractInner().withProvider("tpfdzxcouzfwofwa").withId("kzkdtzxsoednlwg")))
-            .withFirstName("tif")
-            .withLastName("bcngkegxc")
-            .withEmail("xbbfetwil")
-            .withRegistrationDate(OffsetDateTime.parse("2021-02-17T00:32:27Z"));
+                Arrays.asList(new UserIdentityContractInner().withProvider("tsbbibtic").withId("qvumspbfsfeqbbe"),
+                    new UserIdentityContractInner().withProvider("cuq").withId("yyxmzrmtmvwituw"),
+                    new UserIdentityContractInner().withProvider("yjshcyb").withId("upp")))
+            .withFirstName("ieopexelxqdwr")
+            .withLastName("yil")
+            .withEmail("ibkgxyxyau")
+            .withRegistrationDate(OffsetDateTime.parse("2021-09-13T13:52:05Z"));
         model = BinaryData.fromObject(model).toObject(UserContractProperties.class);
         Assertions.assertEquals(UserState.DELETED, model.state());
-        Assertions.assertEquals("gwqpsqazih", model.note());
-        Assertions.assertEquals("qgcnbhcbmjk", model.identities().get(0).provider());
-        Assertions.assertEquals("ibniynts", model.identities().get(0).id());
-        Assertions.assertEquals("tif", model.firstName());
-        Assertions.assertEquals("bcngkegxc", model.lastName());
-        Assertions.assertEquals("xbbfetwil", model.email());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T00:32:27Z"), model.registrationDate());
+        Assertions.assertEquals("nwplrr", model.note());
+        Assertions.assertEquals("tsbbibtic", model.identities().get(0).provider());
+        Assertions.assertEquals("qvumspbfsfeqbbe", model.identities().get(0).id());
+        Assertions.assertEquals("ieopexelxqdwr", model.firstName());
+        Assertions.assertEquals("yil", model.lastName());
+        Assertions.assertEquals("ibkgxyxyau", model.email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-13T13:52:05Z"), model.registrationDate());
     }
 }

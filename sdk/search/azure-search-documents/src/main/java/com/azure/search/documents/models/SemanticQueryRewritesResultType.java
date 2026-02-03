@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,6 +18,7 @@ public final class SemanticQueryRewritesResultType extends ExpandableStringEnum<
      * Query rewrites were not successfully generated for this request. Only the original query was used to retrieve the
      * results.
      */
+    @Generated
     public static final SemanticQueryRewritesResultType ORIGINAL_QUERY_ONLY = fromString("originalQueryOnly");
 
     /**
@@ -24,6 +26,7 @@ public final class SemanticQueryRewritesResultType extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SemanticQueryRewritesResultType() {
     }
@@ -34,6 +37,7 @@ public final class SemanticQueryRewritesResultType extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding SemanticQueryRewritesResultType.
      */
+    @Generated
     public static SemanticQueryRewritesResultType fromString(String name) {
         return fromString(name, SemanticQueryRewritesResultType.class);
     }
@@ -43,6 +47,7 @@ public final class SemanticQueryRewritesResultType extends ExpandableStringEnum<
      * 
      * @return known SemanticQueryRewritesResultType values.
      */
+    @Generated
     public static Collection<SemanticQueryRewritesResultType> values() {
         return values(SemanticQueryRewritesResultType.class);
     }

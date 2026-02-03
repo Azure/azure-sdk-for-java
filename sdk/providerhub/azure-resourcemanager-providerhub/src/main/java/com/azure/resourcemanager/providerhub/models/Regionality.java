@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for Regionality.
+ * The regionality.
  */
 public final class Regionality extends ExpandableStringEnum<Regionality> {
     /**

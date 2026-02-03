@@ -23,8 +23,8 @@ public final class ConnectToTargetSqlMISyncTaskInput implements JsonSerializable
     private MiSqlConnectionInfo targetConnectionInfo;
 
     /*
-     * Azure Active Directory Application the DMS instance will use to connect to the target instance of Azure SQL
-     * Database Managed Instance and the Azure Storage Account
+     * Azure Active Directory Application the DMS (classic) instance will use to connect to the target instance of Azure
+     * SQL Database Managed Instance and the Azure Storage Account
      */
     private AzureActiveDirectoryApp azureApp;
 
@@ -55,8 +55,8 @@ public final class ConnectToTargetSqlMISyncTaskInput implements JsonSerializable
     }
 
     /**
-     * Get the azureApp property: Azure Active Directory Application the DMS instance will use to connect to the target
-     * instance of Azure SQL Database Managed Instance and the Azure Storage Account.
+     * Get the azureApp property: Azure Active Directory Application the DMS (classic) instance will use to connect to
+     * the target instance of Azure SQL Database Managed Instance and the Azure Storage Account.
      * 
      * @return the azureApp value.
      */
@@ -65,8 +65,8 @@ public final class ConnectToTargetSqlMISyncTaskInput implements JsonSerializable
     }
 
     /**
-     * Set the azureApp property: Azure Active Directory Application the DMS instance will use to connect to the target
-     * instance of Azure SQL Database Managed Instance and the Azure Storage Account.
+     * Set the azureApp property: Azure Active Directory Application the DMS (classic) instance will use to connect to
+     * the target instance of Azure SQL Database Managed Instance and the Azure Storage Account.
      * 
      * @param azureApp the azureApp value to set.
      * @return the ConnectToTargetSqlMISyncTaskInput object itself.

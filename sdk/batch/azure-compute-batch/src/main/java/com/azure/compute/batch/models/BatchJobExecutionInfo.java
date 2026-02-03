@@ -49,6 +49,19 @@ public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExe
     @Generated
     private BatchJobSchedulingError schedulingError;
 
+    /*
+     * A string describing the reason the Job ended. This property is set only if the Job is in the completed state. If
+     * the Batch service terminates the Job, it sets the reason as follows: JMComplete - the Job Manager Task completed,
+     * and killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the Job reached its maxWallClockTime
+     * constraint. TerminateJobSchedule - the Job ran as part of a schedule, and the schedule terminated.
+     * AllTasksComplete - the Job's onAllTasksComplete attribute is set to terminatejob, and all Tasks in the Job are
+     * complete. TaskFailed - the Job's onTaskFailure attribute is set to performExitOptionsJobAction, and a Task in the
+     * Job failed with an exit condition that specified a jobAction of terminatejob. Any other string is a user-defined
+     * reason specified in a call to the 'Terminate a Job' operation.
+     */
+    @Generated
+    private String terminationReason;
+
     /**
      * Creates an instance of BatchJobExecutionInfo class.
      *
@@ -104,19 +117,6 @@ public final class BatchJobExecutionInfo implements JsonSerializable<BatchJobExe
     public BatchJobSchedulingError getSchedulingError() {
         return this.schedulingError;
     }
-
-    /*
-     * A string describing the reason the Job ended. This property is set only if the Job is in the completed state. If
-     * the Batch service terminates the Job, it sets the reason as follows: JMComplete - the Job Manager Task completed,
-     * and killJobOnCompletion was set to true. MaxWallClockTimeExpiry - the Job reached its maxWallClockTime
-     * constraint. TerminateJobSchedule - the Job ran as part of a schedule, and the schedule terminated.
-     * AllTasksComplete - the Job's onAllTasksComplete attribute is set to terminatejob, and all Tasks in the Job are
-     * complete. TaskFailed - the Job's onTaskFailure attribute is set to performExitOptionsJobAction, and a Task in the
-     * Job failed with an exit condition that specified a jobAction of terminatejob. Any other string is a user-defined
-     * reason specified in a call to the 'Terminate a Job' operation.
-     */
-    @Generated
-    private String terminationReason;
 
     /**
      * Get the terminationReason property: A string describing the reason the Job ended. This property is set only if

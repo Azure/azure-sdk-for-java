@@ -10,6 +10,6 @@ import com.azure.resourcemanager.workloadssapvirtualinstance.models.LoadBalancer
 public final class LoadBalancerDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancerDetails model = BinaryData.fromString("{\"id\":\"xgwim\"}").toObject(LoadBalancerDetails.class);
+        LoadBalancerDetails model = BinaryData.fromString("{\"id\":\"vpuvks\"}").toObject(LoadBalancerDetails.class);
     }
 }

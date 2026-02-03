@@ -22,22 +22,31 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.providerhub.fluent.ProviderHub;
+import com.azure.resourcemanager.providerhub.implementation.AuthorizedApplicationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.CustomRolloutsImpl;
 import com.azure.resourcemanager.providerhub.implementation.DefaultRolloutsImpl;
+import com.azure.resourcemanager.providerhub.implementation.NewRegionFrontloadReleasesImpl;
 import com.azure.resourcemanager.providerhub.implementation.NotificationRegistrationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.OperationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.ProviderHubBuilder;
+import com.azure.resourcemanager.providerhub.implementation.ProviderMonitorSettingsImpl;
 import com.azure.resourcemanager.providerhub.implementation.ProviderRegistrationsImpl;
+import com.azure.resourcemanager.providerhub.implementation.ResourceActionsImpl;
 import com.azure.resourcemanager.providerhub.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.providerhub.implementation.ResourceTypeRegistrationsImpl;
 import com.azure.resourcemanager.providerhub.implementation.SkusImpl;
+import com.azure.resourcemanager.providerhub.models.AuthorizedApplications;
 import com.azure.resourcemanager.providerhub.models.CustomRollouts;
 import com.azure.resourcemanager.providerhub.models.DefaultRollouts;
+import com.azure.resourcemanager.providerhub.models.NewRegionFrontloadReleases;
 import com.azure.resourcemanager.providerhub.models.NotificationRegistrations;
 import com.azure.resourcemanager.providerhub.models.Operations;
+import com.azure.resourcemanager.providerhub.models.ProviderMonitorSettings;
 import com.azure.resourcemanager.providerhub.models.ProviderRegistrations;
+import com.azure.resourcemanager.providerhub.models.ResourceActions;
 import com.azure.resourcemanager.providerhub.models.ResourceProviders;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrations;
 import com.azure.resourcemanager.providerhub.models.Skus;
@@ -45,12 +54,13 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
  * Entry point to ProviderHubManager.
- * Microsoft ProviderHub.
+ * Provider Hub.
  */
 public final class ProviderHubManager {
     private CustomRollouts customRollouts;
@@ -68,6 +78,14 @@ public final class ProviderHubManager {
     private ResourceTypeRegistrations resourceTypeRegistrations;
 
     private Skus skus;
+
+    private ResourceActions resourceActions;
+
+    private AuthorizedApplications authorizedApplications;
+
+    private ProviderMonitorSettings providerMonitorSettings;
+
+    private NewRegionFrontloadReleases newRegionFrontloadReleases;
 
     private final ProviderHub clientObject;
 
@@ -121,6 +139,9 @@ public final class ProviderHubManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-providerhub.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -228,12 +249,14 @@ public final class ProviderHubManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.providerhub")
                 .append("/")
-                .append("1.1.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -375,6 +398,57 @@ public final class ProviderHubManager {
             this.skus = new SkusImpl(clientObject.getSkus(), this);
         }
         return skus;
+    }
+
+    /**
+     * Gets the resource collection API of ResourceActions.
+     * 
+     * @return Resource collection API of ResourceActions.
+     */
+    public ResourceActions resourceActions() {
+        if (this.resourceActions == null) {
+            this.resourceActions = new ResourceActionsImpl(clientObject.getResourceActions(), this);
+        }
+        return resourceActions;
+    }
+
+    /**
+     * Gets the resource collection API of AuthorizedApplications. It manages AuthorizedApplication.
+     * 
+     * @return Resource collection API of AuthorizedApplications.
+     */
+    public AuthorizedApplications authorizedApplications() {
+        if (this.authorizedApplications == null) {
+            this.authorizedApplications
+                = new AuthorizedApplicationsImpl(clientObject.getAuthorizedApplications(), this);
+        }
+        return authorizedApplications;
+    }
+
+    /**
+     * Gets the resource collection API of ProviderMonitorSettings. It manages ProviderMonitorSetting.
+     * 
+     * @return Resource collection API of ProviderMonitorSettings.
+     */
+    public ProviderMonitorSettings providerMonitorSettings() {
+        if (this.providerMonitorSettings == null) {
+            this.providerMonitorSettings
+                = new ProviderMonitorSettingsImpl(clientObject.getProviderMonitorSettings(), this);
+        }
+        return providerMonitorSettings;
+    }
+
+    /**
+     * Gets the resource collection API of NewRegionFrontloadReleases.
+     * 
+     * @return Resource collection API of NewRegionFrontloadReleases.
+     */
+    public NewRegionFrontloadReleases newRegionFrontloadReleases() {
+        if (this.newRegionFrontloadReleases == null) {
+            this.newRegionFrontloadReleases
+                = new NewRegionFrontloadReleasesImpl(clientObject.getNewRegionFrontloadReleases(), this);
+        }
+        return newRegionFrontloadReleases;
     }
 
     /**

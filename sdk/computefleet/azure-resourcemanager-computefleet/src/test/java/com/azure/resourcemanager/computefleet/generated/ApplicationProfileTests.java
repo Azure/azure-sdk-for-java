@@ -20,8 +20,8 @@ public final class ApplicationProfileTests {
         Assertions.assertEquals(741975656, model.galleryApplications().get(0).order());
         Assertions.assertEquals("veual", model.galleryApplications().get(0).packageReferenceId());
         Assertions.assertEquals("j", model.galleryApplications().get(0).configurationReference());
-        Assertions.assertEquals(true, model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
-        Assertions.assertEquals(true, model.galleryApplications().get(0).enableAutomaticUpgrade());
+        Assertions.assertTrue(model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
+        Assertions.assertTrue(model.galleryApplications().get(0).enableAutomaticUpgrade());
     }
 
     @org.junit.jupiter.api.Test
@@ -50,7 +50,7 @@ public final class ApplicationProfileTests {
         Assertions.assertEquals(741975656, model.galleryApplications().get(0).order());
         Assertions.assertEquals("veual", model.galleryApplications().get(0).packageReferenceId());
         Assertions.assertEquals("j", model.galleryApplications().get(0).configurationReference());
-        Assertions.assertEquals(true, model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
-        Assertions.assertEquals(true, model.galleryApplications().get(0).enableAutomaticUpgrade());
+        Assertions.assertTrue(model.galleryApplications().get(0).treatFailureAsDeploymentFailure());
+        Assertions.assertTrue(model.galleryApplications().get(0).enableAutomaticUpgrade());
     }
 }

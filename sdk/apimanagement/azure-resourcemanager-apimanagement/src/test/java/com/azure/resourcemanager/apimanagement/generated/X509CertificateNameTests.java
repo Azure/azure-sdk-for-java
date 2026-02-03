@@ -12,18 +12,18 @@ public final class X509CertificateNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         X509CertificateName model
-            = BinaryData.fromString("{\"name\":\"arvsx\",\"issuerCertificateThumbprint\":\"bglcjkayspthzodu\"}")
+            = BinaryData.fromString("{\"name\":\"hwzdanojisgglmv\",\"issuerCertificateThumbprint\":\"atuztjct\"}")
                 .toObject(X509CertificateName.class);
-        Assertions.assertEquals("arvsx", model.name());
-        Assertions.assertEquals("bglcjkayspthzodu", model.issuerCertificateThumbprint());
+        Assertions.assertEquals("hwzdanojisgglmv", model.name());
+        Assertions.assertEquals("atuztjct", model.issuerCertificateThumbprint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         X509CertificateName model
-            = new X509CertificateName().withName("arvsx").withIssuerCertificateThumbprint("bglcjkayspthzodu");
+            = new X509CertificateName().withName("hwzdanojisgglmv").withIssuerCertificateThumbprint("atuztjct");
         model = BinaryData.fromObject(model).toObject(X509CertificateName.class);
-        Assertions.assertEquals("arvsx", model.name());
-        Assertions.assertEquals("bglcjkayspthzodu", model.issuerCertificateThumbprint());
+        Assertions.assertEquals("hwzdanojisgglmv", model.name());
+        Assertions.assertEquals("atuztjct", model.issuerCertificateThumbprint());
     }
 }

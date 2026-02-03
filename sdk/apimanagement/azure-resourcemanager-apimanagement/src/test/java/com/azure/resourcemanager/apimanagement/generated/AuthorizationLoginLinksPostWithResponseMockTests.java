@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginRequestContract;
@@ -21,21 +21,21 @@ import reactor.core.publisher.Mono;
 public final class AuthorizationLoginLinksPostWithResponseMockTests {
     @Test
     public void testPostWithResponse() throws Exception {
-        String responseStr = "{\"loginLink\":\"fewxatktwjrppi\"}";
+        String responseStr = "{\"loginLink\":\"oqxtvyt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthorizationLoginResponseContract response = manager.authorizationLoginLinks()
-            .postWithResponse("pvfpnrzikvoxloeo", "yf", "vxdifbwblijhpx", "kxgoyxontb",
-                new AuthorizationLoginRequestContract().withPostLoginRedirectUrl("qrxrosuqrrldxfu"),
+            .postWithResponse("sjbpwjwzqgipdzy", "zkhxfp", "cuudqhadxjvvl", "ibweua",
+                new AuthorizationLoginRequestContract().withPostLoginRedirectUrl("txlz"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fewxatktwjrppi", response.loginLink());
+        Assertions.assertEquals("oqxtvyt", response.loginLink());
     }
 }

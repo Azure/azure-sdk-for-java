@@ -346,22 +346,50 @@ public final class SqlSink extends CopySink {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (writeBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        }
+        if (writeBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        }
+        if (sinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        }
+        if (sinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("sqlWriterStoredProcedureName", this.sqlWriterStoredProcedureName);
-        jsonWriter.writeUntypedField("sqlWriterTableType", this.sqlWriterTableType);
-        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
-        jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
-        jsonWriter.writeUntypedField("storedProcedureTableTypeParameterName",
-            this.storedProcedureTableTypeParameterName);
-        jsonWriter.writeUntypedField("tableOption", this.tableOption);
-        jsonWriter.writeUntypedField("sqlWriterUseTableLock", this.sqlWriterUseTableLock);
-        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        if (this.sqlWriterStoredProcedureName != null) {
+            jsonWriter.writeUntypedField("sqlWriterStoredProcedureName", this.sqlWriterStoredProcedureName);
+        }
+        if (this.sqlWriterTableType != null) {
+            jsonWriter.writeUntypedField("sqlWriterTableType", this.sqlWriterTableType);
+        }
+        if (this.preCopyScript != null) {
+            jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        }
+        if (this.storedProcedureParameters != null) {
+            jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+        }
+        if (this.storedProcedureTableTypeParameterName != null) {
+            jsonWriter.writeUntypedField("storedProcedureTableTypeParameterName",
+                this.storedProcedureTableTypeParameterName);
+        }
+        if (this.tableOption != null) {
+            jsonWriter.writeUntypedField("tableOption", this.tableOption);
+        }
+        if (this.sqlWriterUseTableLock != null) {
+            jsonWriter.writeUntypedField("sqlWriterUseTableLock", this.sqlWriterUseTableLock);
+        }
+        if (this.writeBehavior != null) {
+            jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        }
         jsonWriter.writeJsonField("upsertSettings", this.upsertSettings);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

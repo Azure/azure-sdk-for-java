@@ -5,23 +5,29 @@
 package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.providerhub.models.Readiness;
 import com.azure.resourcemanager.providerhub.models.ServiceTreeInfo;
 import org.junit.jupiter.api.Assertions;
 
 public final class ServiceTreeInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceTreeInfo model = BinaryData.fromString("{\"serviceId\":\"ionpimexg\",\"componentId\":\"xgcp\"}")
+        ServiceTreeInfo model = BinaryData
+            .fromString("{\"serviceId\":\"hurzafblj\",\"componentId\":\"pbtoqcjmkl\",\"readiness\":\"PrivatePreview\"}")
             .toObject(ServiceTreeInfo.class);
-        Assertions.assertEquals("ionpimexg", model.serviceId());
-        Assertions.assertEquals("xgcp", model.componentId());
+        Assertions.assertEquals("hurzafblj", model.serviceId());
+        Assertions.assertEquals("pbtoqcjmkl", model.componentId());
+        Assertions.assertEquals(Readiness.PRIVATE_PREVIEW, model.readiness());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceTreeInfo model = new ServiceTreeInfo().withServiceId("ionpimexg").withComponentId("xgcp");
+        ServiceTreeInfo model = new ServiceTreeInfo().withServiceId("hurzafblj")
+            .withComponentId("pbtoqcjmkl")
+            .withReadiness(Readiness.PRIVATE_PREVIEW);
         model = BinaryData.fromObject(model).toObject(ServiceTreeInfo.class);
-        Assertions.assertEquals("ionpimexg", model.serviceId());
-        Assertions.assertEquals("xgcp", model.componentId());
+        Assertions.assertEquals("hurzafblj", model.serviceId());
+        Assertions.assertEquals("pbtoqcjmkl", model.componentId());
+        Assertions.assertEquals(Readiness.PRIVATE_PREVIEW, model.readiness());
     }
 }

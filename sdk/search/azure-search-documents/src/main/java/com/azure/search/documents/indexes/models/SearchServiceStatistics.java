@@ -6,7 +6,8 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,18 +17,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Response from a get service statistics request. If successful, it includes service level counters and limits.
+ * Response from a get service statistics request. If successful, it includes service level counters, indexer runtime
+ * information, and limits.
  */
-@Immutable
+@Fluent
 public final class SearchServiceStatistics implements JsonSerializable<SearchServiceStatistics> {
     /*
      * Service level resource counters.
      */
+    @Generated
     private final SearchServiceCounters counters;
+
+    /*
+     * Service level indexers runtime information.
+     */
+    @Generated
+    private ServiceIndexersRuntime indexersRuntime;
 
     /*
      * Service level general limits.
      */
+    @Generated
     private final SearchServiceLimits limits;
 
     /**
@@ -36,6 +46,7 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
      * @param counters the counters value to set.
      * @param limits the limits value to set.
      */
+    @Generated
     public SearchServiceStatistics(SearchServiceCounters counters, SearchServiceLimits limits) {
         this.counters = counters;
         this.limits = limits;
@@ -46,8 +57,31 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
      * 
      * @return the counters value.
      */
+    @Generated
     public SearchServiceCounters getCounters() {
         return this.counters;
+    }
+
+    /**
+     * Get the indexersRuntime property: Service level indexers runtime information.
+     * 
+     * @return the indexersRuntime value.
+     */
+    @Generated
+    public ServiceIndexersRuntime getIndexersRuntime() {
+        return this.indexersRuntime;
+    }
+
+    /**
+     * Set the indexersRuntime property: Service level indexers runtime information.
+     * 
+     * @param indexersRuntime the indexersRuntime value to set.
+     * @return the SearchServiceStatistics object itself.
+     */
+    @Generated
+    public SearchServiceStatistics setIndexersRuntime(ServiceIndexersRuntime indexersRuntime) {
+        this.indexersRuntime = indexersRuntime;
+        return this;
     }
 
     /**
@@ -55,6 +89,7 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
      * 
      * @return the limits value.
      */
+    @Generated
     public SearchServiceLimits getLimits() {
         return this.limits;
     }
@@ -62,11 +97,13 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("counters", this.counters);
         jsonWriter.writeJsonField("limits", this.limits);
+        jsonWriter.writeJsonField("indexersRuntime", this.indexersRuntime);
         return jsonWriter.writeEndObject();
     }
 
@@ -79,12 +116,14 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchServiceStatistics.
      */
+    @Generated
     public static SearchServiceStatistics fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean countersFound = false;
             SearchServiceCounters counters = null;
             boolean limitsFound = false;
             SearchServiceLimits limits = null;
+            ServiceIndexersRuntime indexersRuntime = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -95,12 +134,18 @@ public final class SearchServiceStatistics implements JsonSerializable<SearchSer
                 } else if ("limits".equals(fieldName)) {
                     limits = SearchServiceLimits.fromJson(reader);
                     limitsFound = true;
+                } else if ("indexersRuntime".equals(fieldName)) {
+                    indexersRuntime = ServiceIndexersRuntime.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             if (countersFound && limitsFound) {
-                return new SearchServiceStatistics(counters, limits);
+                SearchServiceStatistics deserializedSearchServiceStatistics
+                    = new SearchServiceStatistics(counters, limits);
+                deserializedSearchServiceStatistics.indexersRuntime = indexersRuntime;
+
+                return deserializedSearchServiceStatistics;
             }
             List<String> missingProperties = new ArrayList<>();
             if (!countersFound) {

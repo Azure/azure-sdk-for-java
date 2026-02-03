@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -53,7 +52,7 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * @param name the name of the database account location.
      */
     public void setName(String name) {
-        super.set( Constants.Properties.Name, name, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        super.set( Constants.Properties.Name, name);
     }
 
     /**
@@ -71,6 +70,6 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * @param endpoint the endpoint of the database account location.
      */
     public void setEndpoint(String endpoint) {
-        super.set(Constants.Properties.DATABASE_ACCOUNT_ENDPOINT, endpoint, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        super.set(Constants.Properties.DATABASE_ACCOUNT_ENDPOINT, endpoint);
     }
 }

@@ -17,6 +17,6 @@ class SpringMonitorPropertyFileTest {
             CoreUtils.getProperties("azure-spring-cloud-azure-starter-monitor.properties");
 
         assertThat(properties).hasFieldOrPropertyWithValue("name", "spring-cloud-azure-starter-monitor");
-        assertThat(properties).hasEntrySatisfying("version", value -> assertThat(value).matches("[0-9].[0-9].[0-9].*"));
+        assertThat(properties).hasEntrySatisfying("version", value -> assertThat(value).matches("\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9.]+)?"));
     }
 }

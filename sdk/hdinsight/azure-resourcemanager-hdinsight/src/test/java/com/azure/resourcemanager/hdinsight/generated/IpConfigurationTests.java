@@ -17,7 +17,7 @@ public final class IpConfigurationTests {
             "{\"id\":\"tvfcivfsn\",\"name\":\"ymuctqhjfbebrj\",\"type\":\"erfuwuttt\",\"properties\":{\"provisioningState\":\"Failed\",\"primary\":true,\"privateIPAddress\":\"rp\",\"privateIPAllocationMethod\":\"static\",\"subnet\":{\"id\":\"yva\"}}}")
             .toObject(IpConfiguration.class);
         Assertions.assertEquals("ymuctqhjfbebrj", model.name());
-        Assertions.assertEquals(true, model.primary());
+        Assertions.assertTrue(model.primary());
         Assertions.assertEquals("rp", model.privateIpAddress());
         Assertions.assertEquals(PrivateIpAllocationMethod.STATIC, model.privateIpAllocationMethod());
         Assertions.assertEquals("yva", model.subnet().id());
@@ -32,7 +32,7 @@ public final class IpConfigurationTests {
             .withSubnet(new ResourceId().withId("yva"));
         model = BinaryData.fromObject(model).toObject(IpConfiguration.class);
         Assertions.assertEquals("ymuctqhjfbebrj", model.name());
-        Assertions.assertEquals(true, model.primary());
+        Assertions.assertTrue(model.primary());
         Assertions.assertEquals("rp", model.privateIpAddress());
         Assertions.assertEquals(PrivateIpAllocationMethod.STATIC, model.privateIpAllocationMethod());
         Assertions.assertEquals("yva", model.subnet().id());

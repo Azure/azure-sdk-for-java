@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class DependencyCondition extends ExpandableStringEnum<DependencyCo
     /**
      * Static value Succeeded for DependencyCondition.
      */
+    @Generated
     public static final DependencyCondition SUCCEEDED = fromString("Succeeded");
 
     /**
      * Static value Failed for DependencyCondition.
      */
+    @Generated
     public static final DependencyCondition FAILED = fromString("Failed");
 
     /**
      * Static value Skipped for DependencyCondition.
      */
+    @Generated
     public static final DependencyCondition SKIPPED = fromString("Skipped");
 
     /**
      * Static value Completed for DependencyCondition.
      */
+    @Generated
     public static final DependencyCondition COMPLETED = fromString("Completed");
 
     /**
@@ -36,6 +41,7 @@ public final class DependencyCondition extends ExpandableStringEnum<DependencyCo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DependencyCondition() {
     }
@@ -46,6 +52,7 @@ public final class DependencyCondition extends ExpandableStringEnum<DependencyCo
      * @param name a name to look for.
      * @return the corresponding DependencyCondition.
      */
+    @Generated
     public static DependencyCondition fromString(String name) {
         return fromString(name, DependencyCondition.class);
     }
@@ -55,6 +62,7 @@ public final class DependencyCondition extends ExpandableStringEnum<DependencyCo
      * 
      * @return known DependencyCondition values.
      */
+    @Generated
     public static Collection<DependencyCondition> values() {
         return values(DependencyCondition.class);
     }

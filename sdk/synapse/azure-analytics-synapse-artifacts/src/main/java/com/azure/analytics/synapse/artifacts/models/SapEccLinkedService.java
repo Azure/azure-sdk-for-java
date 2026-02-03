@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class SapEccLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "SapEcc";
 
     /*
      * The URL of SAP ECC OData API. For example, '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string
      * (or Expression with resultType string).
      */
+    @Generated
     private String url;
 
     /*
      * The username for Basic authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private String username;
 
     /*
      * The password for Basic authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
@@ -44,11 +49,13 @@ public class SapEccLinkedService extends LinkedService {
      * credential manager. Either encryptedCredential or username/password must be provided. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private String encryptedCredential;
 
     /**
      * Creates an instance of SapEccLinkedService class.
      */
+    @Generated
     public SapEccLinkedService() {
     }
 
@@ -57,6 +64,7 @@ public class SapEccLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -68,6 +76,7 @@ public class SapEccLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public String getUrl() {
         return this.url;
     }
@@ -79,6 +88,7 @@ public class SapEccLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the SapEccLinkedService object itself.
      */
+    @Generated
     public SapEccLinkedService setUrl(String url) {
         this.url = url;
         return this;
@@ -90,6 +100,7 @@ public class SapEccLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public String getUsername() {
         return this.username;
     }
@@ -101,6 +112,7 @@ public class SapEccLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the SapEccLinkedService object itself.
      */
+    @Generated
     public SapEccLinkedService setUsername(String username) {
         this.username = username;
         return this;
@@ -111,6 +123,7 @@ public class SapEccLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -121,6 +134,7 @@ public class SapEccLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the SapEccLinkedService object itself.
      */
+    @Generated
     public SapEccLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -133,6 +147,7 @@ public class SapEccLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public String getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -145,6 +160,7 @@ public class SapEccLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapEccLinkedService object itself.
      */
+    @Generated
     public SapEccLinkedService setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -153,6 +169,17 @@ public class SapEccLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SapEccLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SapEccLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -162,6 +189,7 @@ public class SapEccLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapEccLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -171,6 +199,7 @@ public class SapEccLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapEccLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -180,6 +209,7 @@ public class SapEccLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapEccLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -189,9 +219,11 @@ public class SapEccLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -222,6 +254,7 @@ public class SapEccLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapEccLinkedService.
      */
+    @Generated
     public static SapEccLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapEccLinkedService deserializedSapEccLinkedService = new SapEccLinkedService();
@@ -230,7 +263,9 @@ public class SapEccLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSapEccLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSapEccLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedSapEccLinkedService.setDescription(reader.getString());

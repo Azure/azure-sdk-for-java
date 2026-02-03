@@ -11,7 +11,7 @@ public final class ApiManagementSkuZoneDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiManagementSkuZoneDetails model = BinaryData.fromString(
-            "{\"name\":[\"puugkw\",\"rq\",\"rpahuuonjkkxuk\"],\"capabilities\":[{\"name\":\"vvpxjoeg\",\"value\":\"ojlleu\"}]}")
+            "{\"name\":[\"snomwnwnghoj\",\"vkeyymicj\",\"xxf\",\"fpcrtnuguef\"],\"capabilities\":[{\"name\":\"t\",\"value\":\"dveywetkrhlol\"}]}")
             .toObject(ApiManagementSkuZoneDetails.class);
     }
 

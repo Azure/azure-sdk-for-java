@@ -6,6 +6,7 @@ package com.azure.ai.personalizer.administration.models;
 
 import com.azure.ai.personalizer.models.LearningMode;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -27,21 +28,25 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @Generated
     private Duration rewardWaitTime;
 
     /*
      * The reward given if a reward is not received within the specified wait time.
      */
+    @Generated
     private float defaultReward;
 
     /*
      * The function used to process rewards, if multiple reward scores are received before rewardWaitTime is over.
      */
+    @Generated
     private String rewardAggregation;
 
     /*
      * The percentage of rank responses that will use exploration.
      */
+    @Generated
     private float explorationPercentage;
 
     /*
@@ -50,37 +55,44 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @Generated
     private Duration modelExportFrequency;
 
     /*
      * Flag indicates whether log mirroring is enabled.
      */
+    @Generated
     private Boolean logMirrorEnabled;
 
     /*
      * Azure storage account container SAS URI for log mirroring.
      */
+    @Generated
     private String logMirrorSasUrl;
 
     /*
      * Number of days historical logs are to be maintained. -1 implies the logs will never be deleted.
      */
+    @Generated
     private int logRetentionDays;
 
     /*
      * Last time model training configuration was updated
      */
+    @Generated
     private OffsetDateTime lastConfigurationEditDate;
 
     /*
      * Learning Modes for Personalizer
      */
+    @Generated
     private LearningMode learningMode;
 
     /*
      * Flag indicating whether Personalizer will automatically optimize Learning Settings by running Offline Evaluations
      * periodically.
      */
+    @Generated
     private Boolean isAutoOptimizationEnabled;
 
     /*
@@ -88,17 +100,20 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * For example, PT5M (5 mins). For information about the time format,
      * \r\nsee http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
+    @Generated
     private Duration autoOptimizationFrequency;
 
     /*
      * Date when the first automatic optimization evaluation must be performed. Only relevant if
      * IsAutoOptimizationEnabled is true.
      */
+    @Generated
     private OffsetDateTime autoOptimizationStartDate;
 
     /**
      * Creates an instance of PersonalizerServiceProperties class.
      */
+    @Generated
     public PersonalizerServiceProperties() {
     }
 
@@ -110,6 +125,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the rewardWaitTime value.
      */
+    @Generated
     public Duration getRewardWaitTime() {
         return this.rewardWaitTime;
     }
@@ -123,6 +139,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param rewardWaitTime the rewardWaitTime value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setRewardWaitTime(Duration rewardWaitTime) {
         this.rewardWaitTime = rewardWaitTime;
         return this;
@@ -133,6 +150,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the defaultReward value.
      */
+    @Generated
     public float getDefaultReward() {
         return this.defaultReward;
     }
@@ -143,6 +161,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param defaultReward the defaultReward value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setDefaultReward(float defaultReward) {
         this.defaultReward = defaultReward;
         return this;
@@ -154,6 +173,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the rewardAggregation value.
      */
+    @Generated
     public String getRewardAggregation() {
         return this.rewardAggregation;
     }
@@ -165,6 +185,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param rewardAggregation the rewardAggregation value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setRewardAggregation(String rewardAggregation) {
         this.rewardAggregation = rewardAggregation;
         return this;
@@ -175,6 +196,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the explorationPercentage value.
      */
+    @Generated
     public float getExplorationPercentage() {
         return this.explorationPercentage;
     }
@@ -185,6 +207,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param explorationPercentage the explorationPercentage value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setExplorationPercentage(float explorationPercentage) {
         this.explorationPercentage = explorationPercentage;
         return this;
@@ -198,6 +221,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the modelExportFrequency value.
      */
+    @Generated
     public Duration getModelExportFrequency() {
         return this.modelExportFrequency;
     }
@@ -211,6 +235,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param modelExportFrequency the modelExportFrequency value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setModelExportFrequency(Duration modelExportFrequency) {
         this.modelExportFrequency = modelExportFrequency;
         return this;
@@ -221,6 +246,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the logMirrorEnabled value.
      */
+    @Generated
     public Boolean isLogMirrorEnabled() {
         return this.logMirrorEnabled;
     }
@@ -231,6 +257,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param logMirrorEnabled the logMirrorEnabled value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setLogMirrorEnabled(Boolean logMirrorEnabled) {
         this.logMirrorEnabled = logMirrorEnabled;
         return this;
@@ -241,6 +268,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the logMirrorSasUrl value.
      */
+    @Generated
     public String getLogMirrorSasUrl() {
         return this.logMirrorSasUrl;
     }
@@ -251,6 +279,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param logMirrorSasUrl the logMirrorSasUrl value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setLogMirrorSasUrl(String logMirrorSasUrl) {
         this.logMirrorSasUrl = logMirrorSasUrl;
         return this;
@@ -262,6 +291,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the logRetentionDays value.
      */
+    @Generated
     public int getLogRetentionDays() {
         return this.logRetentionDays;
     }
@@ -273,6 +303,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param logRetentionDays the logRetentionDays value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setLogRetentionDays(int logRetentionDays) {
         this.logRetentionDays = logRetentionDays;
         return this;
@@ -283,6 +314,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the lastConfigurationEditDate value.
      */
+    @Generated
     public OffsetDateTime getLastConfigurationEditDate() {
         return this.lastConfigurationEditDate;
     }
@@ -293,6 +325,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param lastConfigurationEditDate the lastConfigurationEditDate value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setLastConfigurationEditDate(OffsetDateTime lastConfigurationEditDate) {
         this.lastConfigurationEditDate = lastConfigurationEditDate;
         return this;
@@ -303,6 +336,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the learningMode value.
      */
+    @Generated
     public LearningMode getLearningMode() {
         return this.learningMode;
     }
@@ -313,6 +347,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param learningMode the learningMode value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setLearningMode(LearningMode learningMode) {
         this.learningMode = learningMode;
         return this;
@@ -324,6 +359,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the isAutoOptimizationEnabled value.
      */
+    @Generated
     public Boolean isAutoOptimizationEnabled() {
         return this.isAutoOptimizationEnabled;
     }
@@ -335,6 +371,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param isAutoOptimizationEnabled the isAutoOptimizationEnabled value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setIsAutoOptimizationEnabled(Boolean isAutoOptimizationEnabled) {
         this.isAutoOptimizationEnabled = isAutoOptimizationEnabled;
         return this;
@@ -348,6 +385,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the autoOptimizationFrequency value.
      */
+    @Generated
     public Duration getAutoOptimizationFrequency() {
         return this.autoOptimizationFrequency;
     }
@@ -361,6 +399,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param autoOptimizationFrequency the autoOptimizationFrequency value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setAutoOptimizationFrequency(Duration autoOptimizationFrequency) {
         this.autoOptimizationFrequency = autoOptimizationFrequency;
         return this;
@@ -372,6 +411,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * 
      * @return the autoOptimizationStartDate value.
      */
+    @Generated
     public OffsetDateTime getAutoOptimizationStartDate() {
         return this.autoOptimizationStartDate;
     }
@@ -383,6 +423,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @param autoOptimizationStartDate the autoOptimizationStartDate value to set.
      * @return the PersonalizerServiceProperties object itself.
      */
+    @Generated
     public PersonalizerServiceProperties setAutoOptimizationStartDate(OffsetDateTime autoOptimizationStartDate) {
         this.autoOptimizationStartDate = autoOptimizationStartDate;
         return this;
@@ -391,6 +432,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -427,6 +469,7 @@ public final class PersonalizerServiceProperties implements JsonSerializable<Per
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerServiceProperties.
      */
+    @Generated
     public static PersonalizerServiceProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerServiceProperties deserializedPersonalizerServiceProperties

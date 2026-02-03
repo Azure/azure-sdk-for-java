@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.common;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -52,13 +51,13 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
         synchronized(this) {
             this.set(
                 com.azure.cosmos.implementation.Constants.Properties.CHANGE_FEED_START_FROM_TYPE,
-                ChangeFeedStartFromTypes.POINT_IN_TIME,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                ChangeFeedStartFromTypes.POINT_IN_TIME
+            );
 
             this.set(
                 Constants.Properties.CHANGE_FEED_START_FROM_POINT_IN_TIME_MS,
-                this.pointInTime.toEpochMilli(),
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.pointInTime.toEpochMilli()
+            );
         }
     }
 

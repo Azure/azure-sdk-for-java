@@ -11,20 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmUnplannedFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmUnplannedFailoverInput model = BinaryData
-            .fromString(
-                "{\"instanceType\":\"InMageRcm\",\"performShutdown\":\"xqjsiuepm\",\"recoveryPointId\":\"fnzlpqmp\"}")
+        InMageRcmUnplannedFailoverInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageRcm\",\"performShutdown\":\"smkaqldqab\",\"recoveryPointId\":\"vpaqbqxfb\",\"osUpgradeVersion\":\"gcfddofxnfb\"}")
             .toObject(InMageRcmUnplannedFailoverInput.class);
-        Assertions.assertEquals("xqjsiuepm", model.performShutdown());
-        Assertions.assertEquals("fnzlpqmp", model.recoveryPointId());
+        Assertions.assertEquals("smkaqldqab", model.performShutdown());
+        Assertions.assertEquals("vpaqbqxfb", model.recoveryPointId());
+        Assertions.assertEquals("gcfddofxnfb", model.osUpgradeVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmUnplannedFailoverInput model
-            = new InMageRcmUnplannedFailoverInput().withPerformShutdown("xqjsiuepm").withRecoveryPointId("fnzlpqmp");
+        InMageRcmUnplannedFailoverInput model = new InMageRcmUnplannedFailoverInput().withPerformShutdown("smkaqldqab")
+            .withRecoveryPointId("vpaqbqxfb")
+            .withOsUpgradeVersion("gcfddofxnfb");
         model = BinaryData.fromObject(model).toObject(InMageRcmUnplannedFailoverInput.class);
-        Assertions.assertEquals("xqjsiuepm", model.performShutdown());
-        Assertions.assertEquals("fnzlpqmp", model.recoveryPointId());
+        Assertions.assertEquals("smkaqldqab", model.performShutdown());
+        Assertions.assertEquals("vpaqbqxfb", model.recoveryPointId());
+        Assertions.assertEquals("gcfddofxnfb", model.osUpgradeVersion());
     }
 }

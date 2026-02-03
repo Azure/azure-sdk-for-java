@@ -14,17 +14,18 @@ public final class DiagnosticsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticsDefinition model = BinaryData.fromString(
-            "{\"id\":\"ddm\",\"name\":\"huytxzvtzn\",\"description\":\"xbannovvoxc\",\"author\":\"tprwnw\",\"category\":\"oevytlyokr\",\"supportTopicList\":[{\"id\":\"uxvnsasbcrymodi\",\"pesId\":\"xkl\"}],\"analysisTypes\":[\"xnazpmkml\"],\"type\":\"evfxzopjhbzxlioh\",\"score\":9.690398}")
+            "{\"id\":\"fnczdwvvbalx\",\"name\":\"lchpodbzevwrdn\",\"description\":\"ukuv\",\"author\":\"cswsmystul\",\"category\":\"ypfcvlerchpqbmf\",\"supportTopicList\":[{\"id\":\"bwidfcxsspuunn\",\"pesId\":\"yhkx\"},{\"id\":\"ddrihpf\",\"pesId\":\"qcaaewdaomdjvl\"},{\"id\":\"x\",\"pesId\":\"zb\"}],\"analysisTypes\":[\"geivsiykzkdncj\",\"xonbzoggculapz\"],\"type\":\"rpgogtqxep\",\"score\":23.087067}")
             .toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("xnazpmkml", model.analysisTypes().get(0));
+        Assertions.assertEquals("geivsiykzkdncj", model.analysisTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticsDefinition model
-            = new DiagnosticsDefinition().withSupportTopicList(Arrays.asList(new DiagnosticSupportTopic()))
-                .withAnalysisTypes(Arrays.asList("xnazpmkml"));
+        DiagnosticsDefinition model = new DiagnosticsDefinition()
+            .withSupportTopicList(
+                Arrays.asList(new DiagnosticSupportTopic(), new DiagnosticSupportTopic(), new DiagnosticSupportTopic()))
+            .withAnalysisTypes(Arrays.asList("geivsiykzkdncj", "xonbzoggculapz"));
         model = BinaryData.fromObject(model).toObject(DiagnosticsDefinition.class);
-        Assertions.assertEquals("xnazpmkml", model.analysisTypes().get(0));
+        Assertions.assertEquals("geivsiykzkdncj", model.analysisTypes().get(0));
     }
 }

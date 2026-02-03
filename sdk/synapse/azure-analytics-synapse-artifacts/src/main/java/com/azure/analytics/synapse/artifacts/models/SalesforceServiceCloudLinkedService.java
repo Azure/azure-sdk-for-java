@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,6 +22,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "SalesforceServiceCloud";
 
     /*
@@ -28,43 +30,51 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example,
      * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object environmentUrl;
 
     /*
      * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object username;
 
     /*
      * The password for Basic authentication of the Salesforce instance.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The security token is optional to remotely access Salesforce instance.
      */
+    @Generated
     private SecretBase securityToken;
 
     /*
      * The Salesforce API version used in ADF. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object apiVersion;
 
     /*
      * Extended properties appended to the connection string. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object extendedProperties;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SalesforceServiceCloudLinkedService class.
      */
+    @Generated
     public SalesforceServiceCloudLinkedService() {
     }
 
@@ -73,6 +83,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -86,6 +97,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * 
      * @return the environmentUrl value.
      */
+    @Generated
     public Object getEnvironmentUrl() {
         return this.environmentUrl;
     }
@@ -99,6 +111,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * @param environmentUrl the environmentUrl value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceServiceCloudLinkedService setEnvironmentUrl(Object environmentUrl) {
         this.environmentUrl = environmentUrl;
         return this;
@@ -110,6 +123,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -121,6 +135,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceServiceCloudLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -131,6 +146,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -141,6 +157,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceServiceCloudLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -151,6 +168,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * 
      * @return the securityToken value.
      */
+    @Generated
     public SecretBase getSecurityToken() {
         return this.securityToken;
     }
@@ -161,6 +179,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * @param securityToken the securityToken value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceServiceCloudLinkedService setSecurityToken(SecretBase securityToken) {
         this.securityToken = securityToken;
         return this;
@@ -172,6 +191,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * 
      * @return the apiVersion value.
      */
+    @Generated
     public Object getApiVersion() {
         return this.apiVersion;
     }
@@ -183,6 +203,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * @param apiVersion the apiVersion value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceServiceCloudLinkedService setApiVersion(Object apiVersion) {
         this.apiVersion = apiVersion;
         return this;
@@ -194,6 +215,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * 
      * @return the extendedProperties value.
      */
+    @Generated
     public Object getExtendedProperties() {
         return this.extendedProperties;
     }
@@ -205,6 +227,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * @param extendedProperties the extendedProperties value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceServiceCloudLinkedService setExtendedProperties(Object extendedProperties) {
         this.extendedProperties = extendedProperties;
         return this;
@@ -216,6 +239,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -227,6 +251,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceServiceCloudLinkedService object itself.
      */
+    @Generated
     public SalesforceServiceCloudLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -235,6 +260,17 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SalesforceServiceCloudLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SalesforceServiceCloudLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -244,6 +280,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -253,6 +290,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -262,6 +300,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SalesforceServiceCloudLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -271,9 +310,11 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -287,13 +328,23 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
             || extendedProperties != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.environmentUrl != null) {
+                jsonWriter.writeUntypedField("environmentUrl", this.environmentUrl);
+            }
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
             jsonWriter.writeJsonField("securityToken", this.securityToken);
-            jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
-            jsonWriter.writeUntypedField("extendedProperties", this.extendedProperties);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.apiVersion != null) {
+                jsonWriter.writeUntypedField("apiVersion", this.apiVersion);
+            }
+            if (this.extendedProperties != null) {
+                jsonWriter.writeUntypedField("extendedProperties", this.extendedProperties);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -312,6 +363,7 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SalesforceServiceCloudLinkedService.
      */
+    @Generated
     public static SalesforceServiceCloudLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SalesforceServiceCloudLinkedService deserializedSalesforceServiceCloudLinkedService
@@ -321,7 +373,9 @@ public class SalesforceServiceCloudLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSalesforceServiceCloudLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSalesforceServiceCloudLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {

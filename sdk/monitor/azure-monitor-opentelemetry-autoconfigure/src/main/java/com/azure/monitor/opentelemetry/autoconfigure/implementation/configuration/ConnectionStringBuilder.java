@@ -16,6 +16,7 @@ class ConnectionStringBuilder {
 
     // visible for testing
     static final int CONNECTION_STRING_MAX_LENGTH = 4096;
+    static final String DEFAULT_AAD_AUDIENCE = "https://monitor.azure.com/";
 
     private String originalString;
 
@@ -24,6 +25,7 @@ class ConnectionStringBuilder {
     private URL ingestionEndpoint;
     private URL liveEndpoint;
     private URL profilerEndpoint;
+    private String aadAudience;
 
     ConnectionStringBuilder() {
         try {
@@ -33,6 +35,7 @@ class ConnectionStringBuilder {
         } catch (MalformedURLException e) {
             throw new IllegalStateException("ConnectionString.Defaults are invalid", e);
         }
+        aadAudience = DEFAULT_AAD_AUDIENCE;
     }
 
     ConnectionStringBuilder setConnectionString(String connectionString) {
@@ -43,7 +46,7 @@ class ConnectionStringBuilder {
 
     ConnectionString build() {
         return new ConnectionString(instrumentationKey, ingestionEndpoint, liveEndpoint, profilerEndpoint,
-            originalString);
+            originalString, aadAudience);
     }
 
     private static Map<String, String> getKeyValuePairs(String connectionString) {
@@ -95,6 +98,12 @@ class ConnectionStringBuilder {
             setProfilerEndpoint("https://" + EndpointPrefixes.PROFILER_ENDPOINT_PREFIX + "." + suffix);
         }
 
+        // set aad audience
+        String aadAudience = kvps.get(Keywords.AAD_AUDIENCE);
+        if (!CoreUtils.isNullOrEmpty(aadAudience)) {
+            setAadAudience(aadAudience);
+        }
+
         // set explicit endpoints
         String liveEndpoint = kvps.get(Keywords.LIVE_ENDPOINT);
         if (!CoreUtils.isNullOrEmpty(liveEndpoint)) {
@@ -122,6 +131,10 @@ class ConnectionStringBuilder {
 
     void setProfilerEndpoint(String profilerEndpoint) {
         this.profilerEndpoint = toUrlOrThrow(profilerEndpoint, Keywords.PROFILER_ENDPOINT);
+    }
+
+    void setAadAudience(String aadAudience) {
+        this.aadAudience = aadAudience;
     }
 
     private static URL toUrlOrThrow(String url, String field) {
@@ -155,6 +168,7 @@ class ConnectionStringBuilder {
         static final String INGESTION_ENDPOINT = "IngestionEndpoint";
         static final String LIVE_ENDPOINT = "LiveEndpoint";
         static final String PROFILER_ENDPOINT = "ProfilerEndpoint";
+        static final String AAD_AUDIENCE = "AADAudience";
     }
 
     // visible for testing

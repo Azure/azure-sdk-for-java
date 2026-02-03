@@ -12,21 +12,21 @@ public final class AccessInformationContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessInformationContractProperties model
-            = BinaryData.fromString("{\"id\":\"lrynjpchamk\",\"principalId\":\"plraj\",\"enabled\":true}")
+            = BinaryData.fromString("{\"id\":\"nzujsji\",\"principalId\":\"rpskcjhmmo\",\"enabled\":true}")
                 .toObject(AccessInformationContractProperties.class);
-        Assertions.assertEquals("lrynjpchamk", model.id());
-        Assertions.assertEquals("plraj", model.principalId());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("nzujsji", model.id());
+        Assertions.assertEquals("rpskcjhmmo", model.principalId());
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessInformationContractProperties model = new AccessInformationContractProperties().withId("lrynjpchamk")
-            .withPrincipalId("plraj")
+        AccessInformationContractProperties model = new AccessInformationContractProperties().withId("nzujsji")
+            .withPrincipalId("rpskcjhmmo")
             .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(AccessInformationContractProperties.class);
-        Assertions.assertEquals("lrynjpchamk", model.id());
-        Assertions.assertEquals("plraj", model.principalId());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("nzujsji", model.id());
+        Assertions.assertEquals("rpskcjhmmo", model.principalId());
+        Assertions.assertTrue(model.enabled());
     }
 }

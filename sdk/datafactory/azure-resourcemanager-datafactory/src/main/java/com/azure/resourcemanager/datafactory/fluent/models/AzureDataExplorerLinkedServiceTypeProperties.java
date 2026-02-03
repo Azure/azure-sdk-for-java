@@ -221,9 +221,13 @@ public final class AzureDataExplorerLinkedServiceTypeProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("endpoint", this.endpoint);
         jsonWriter.writeUntypedField("database", this.database);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
         jsonWriter.writeJsonField("credential", this.credential);
         return jsonWriter.writeEndObject();
     }

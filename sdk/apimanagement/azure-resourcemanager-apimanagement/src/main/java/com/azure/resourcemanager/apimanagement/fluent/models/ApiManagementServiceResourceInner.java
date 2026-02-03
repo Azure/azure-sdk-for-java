@@ -16,7 +16,10 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceSkuPro
 import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.ApimResource;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
+import com.azure.resourcemanager.apimanagement.models.ConfigurationApi;
+import com.azure.resourcemanager.apimanagement.models.DeveloperPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.LegacyPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
 import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
@@ -488,6 +491,29 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     }
 
     /**
+     * Get the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @return the configurationApi value.
+     */
+    public ConfigurationApi configurationApi() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationApi();
+    }
+
+    /**
+     * Set the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @param configurationApi the configurationApi value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withConfigurationApi(ConfigurationApi configurationApi) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withConfigurationApi(configurationApi);
+        return this;
+    }
+
+    /**
      * Get the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
      * 
      * @return the virtualNetworkConfiguration value.
@@ -819,6 +845,52 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      */
     public PlatformVersion platformVersion() {
         return this.innerProperties() == null ? null : this.innerProperties().platformVersion();
+    }
+
+    /**
+     * Get the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @return the legacyPortalStatus value.
+     */
+    public LegacyPortalStatus legacyPortalStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().legacyPortalStatus();
+    }
+
+    /**
+     * Set the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @param legacyPortalStatus the legacyPortalStatus value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withLegacyPortalStatus(legacyPortalStatus);
+        return this;
+    }
+
+    /**
+     * Get the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @return the developerPortalStatus value.
+     */
+    public DeveloperPortalStatus developerPortalStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().developerPortalStatus();
+    }
+
+    /**
+     * Set the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @param developerPortalStatus the developerPortalStatus value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withDeveloperPortalStatus(developerPortalStatus);
+        return this;
     }
 
     /**

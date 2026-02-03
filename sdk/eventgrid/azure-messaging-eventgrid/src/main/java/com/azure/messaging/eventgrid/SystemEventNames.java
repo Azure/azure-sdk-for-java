@@ -1,9 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.models.CloudEvent;
+import com.azure.messaging.eventgrid.systemevents.AcsCallEndedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsCallParticipantAddedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsCallParticipantRemovedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsCallStartedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatAzureBotCommandReceivedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
@@ -22,6 +26,7 @@ import com.azure.messaging.eventgrid.systemevents.AcsChatThreadDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadPropertiesUpdatedPerUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatThreadWithUserDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsChatTypingIndicatorReceivedInThreadEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsEmailDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsEmailEngagementTrackingReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsIncomingCallEventData;
@@ -61,6 +66,8 @@ import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseCreated
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementCircuitBreakerClosedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementCircuitBreakerOpenedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayApiAddedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayApiRemovedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayCertificateAuthorityCreatedEventData;
@@ -71,6 +78,8 @@ import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayDeletedEve
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayHostnameConfigurationUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayTokenExpiredEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayTokenNearExpiryEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementGatewayUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementProductCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementProductDeletedEventData;
@@ -231,14 +240,41 @@ import java.util.Map;
 
 /**
  * This class contains a number of constants that correspond to the value of {@code eventType} of
- * {@link EventGridEvent}s
- * and {@code type} of {@link CloudEvent}s, when the event originated from an Azure service. This list should be
- * updated with all the service event strings. It also contains a mapping from each service event string to the
- * model class that the event string corresponds to in the {@code data} field, which is used to automatically
- * deserialize
- * system events by their known string.
+ * {@link EventGridEvent}s and {@code type} of {@link CloudEvent}s, when the event originated from an Azure service.
+ * This list should be updated with all the service event strings. It also contains a mapping from each service event
+ * string to the model class that the event string corresponds to in the {@code data} field, which is used to
+ * automatically deserialize system events by their known string.
  */
 public final class SystemEventNames {
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallEnded event.
+     */
+    public static final String COMMUNICATION_CALL_ENDED = "Microsoft.Communication.CallEnded";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallParticipantAdded event.
+     */
+    public static final String COMMUNICATION_CALL_PARTICIPANT_ADDED = "Microsoft.Communication.CallParticipantAdded";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallParticipantRemoved event.
+     */
+    public static final String COMMUNICATION_CALL_PARTICIPANT_REMOVED
+        = "Microsoft.Communication.CallParticipantRemoved";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.CallStarted event.
+     */
+    public static final String COMMUNICATION_CALL_STARTED = "Microsoft.Communication.CallStarted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.ChatAzureBotCommandReceivedInThread event.
+     */
+    public static final String COMMUNICATION_CHAT_AZURE_BOT_COMMAND_RECEIVED_IN_THREAD
+        = "Microsoft.Communication.ChatAzureBotCommandReceivedInThread";
+
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted event.
      */
@@ -333,6 +369,13 @@ public final class SystemEventNames {
      */
     public static final String COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED
         = "Microsoft.Communication.ChatThreadWithUserDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.ChatTypingIndicatorReceivedInThread event.
+     */
+    public static final String COMMUNICATION_CHAT_TYPING_INDICATOR_RECEIVED_IN_THREAD
+        = "Microsoft.Communication.ChatTypingIndicatorReceivedInThread";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.EmailDeliveryReportReceived event.
@@ -552,6 +595,16 @@ public final class SystemEventNames {
     public static final String API_MANAGEMENT_API_UPDATED = "Microsoft.ApiManagement.APIUpdated";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.CircuitBreaker.Closed event.
+     */
+    public static final String API_MANAGEMENT_CIRCUIT_BREAKER_CLOSED = "Microsoft.ApiManagement.CircuitBreaker.Closed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.CircuitBreaker.Opened event.
+     */
+    public static final String API_MANAGEMENT_CIRCUIT_BREAKER_OPENED = "Microsoft.ApiManagement.CircuitBreaker.Opened";
+
+    /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayAPIAdded event.
      */
     public static final String API_MANAGEMENT_GATEWAY_API_ADDED = "Microsoft.ApiManagement.GatewayAPIAdded";
@@ -612,6 +665,17 @@ public final class SystemEventNames {
      */
     public static final String API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_UPDATED
         = "Microsoft.ApiManagement.GatewayHostnameConfigurationUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayTokenExpired event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_TOKEN_EXPIRED = "Microsoft.ApiManagement.GatewayTokenExpired";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayTokenNearExpiry event.
+     */
+    public static final String API_MANAGEMENT_GATEWAY_TOKEN_NEAR_EXPIRY
+        = "Microsoft.ApiManagement.GatewayTokenNearExpiry";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.GatewayUpdated event.
@@ -1462,280 +1526,348 @@ public final class SystemEventNames {
     @Deprecated
     public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER
         = "Microsoft.Communication.ChatMemberAddedToThreadWithUser";
+
     /**
      * @deprecated This event does not exist.
      */
     @Deprecated
     public static final String COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER
         = "Microsoft.Communication.ChatMemberRemovedFromThreadWithUser";
+
     /**
      * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD}.
      */
     @Deprecated
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD
         = "Microsoft.Communication.ChatThreadParticipantRemoved";
+
     /**
      * @deprecated As of 4.1.0, replaced by {@link #COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER}.
      */
     @Deprecated
     public static final String COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER
         = "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
-    private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
-        {
-            put(COMMUNICATION_CHAT_MESSAGE_DELETED, AcsChatMessageDeletedEventData.class);
-            put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
-            put(COMMUNICATION_CHAT_MESSAGE_EDITED, AcsChatMessageEditedEventData.class);
-            put(COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD, AcsChatMessageEditedInThreadEventData.class);
-            put(COMMUNICATION_CHAT_MESSAGE_RECEIVED, AcsChatMessageReceivedEventData.class);
-            put(COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD, AcsChatMessageReceivedInThreadEventData.class);
-            put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD, AcsChatParticipantAddedToThreadEventData.class);
-            put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER,
-                AcsChatParticipantAddedToThreadWithUserEventData.class);
-            put(COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);
-            put(COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER,
-                AcsChatParticipantRemovedFromThreadWithUserEventData.class);
-            put(COMMUNICATION_CHAT_THREAD_CREATED, AcsChatThreadCreatedEventData.class);
-            put(COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER, AcsChatThreadCreatedWithUserEventData.class);
-            put(COMMUNICATION_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
-            put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED, AcsChatThreadPropertiesUpdatedEventData.class);
-            put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER,
-                AcsChatThreadPropertiesUpdatedPerUserEventData.class);
-            put(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED, AcsChatThreadWithUserDeletedEventData.class);
-            put(COMMUNICATION_EMAIL_DELIVERY_REPORT_RECEIVED, AcsEmailDeliveryReportReceivedEventData.class);
-            put(COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
-                AcsEmailEngagementTrackingReportReceivedEventData.class);
-            put(COMMUNICATION_INCOMING_CALL, AcsIncomingCallEventData.class);
-            put(COMMUNICATION_MESSAGE_DELIVERY_STATUS_UPDATED, AcsMessageDeliveryStatusUpdatedEventData.class);
-            put(COMMUNICATION_MESSAGE_RECEIVED, AcsMessageReceivedEventData.class);
-            put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED, AcsRecordingFileStatusUpdatedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_CANCELLED, AcsRouterJobCancelledEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_CLASSIFICATION_FAILED, AcsRouterJobClassificationFailedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_CLASSIFIED, AcsRouterJobClassifiedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_CLOSED, AcsRouterJobClosedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_COMPLETED, AcsRouterJobCompletedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_DELETED, AcsRouterJobDeletedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_EXCEPTION_TRIGGERED, AcsRouterJobExceptionTriggeredEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_QUEUED, AcsRouterJobQueuedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_RECEIVED, AcsRouterJobReceivedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_SCHEDULING_FAILED, AcsRouterJobSchedulingFailedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_UNASSIGNED, AcsRouterJobUnassignedEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_WAITING_FOR_ACTIVATION, AcsRouterJobWaitingForActivationEventData.class);
-            put(COMMUNICATION_ROUTER_JOB_WORKER_SELECTORS_EXPIRED, AcsRouterJobWorkerSelectorsExpiredEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_DELETED, AcsRouterWorkerDeletedEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_DEREGISTERED, AcsRouterWorkerDeregisteredEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_OFFER_ACCEPTED, AcsRouterWorkerOfferAcceptedEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_OFFER_DECLINED, AcsRouterWorkerOfferDeclinedEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_OFFER_EXPIRED, AcsRouterWorkerOfferExpiredEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_OFFER_ISSUED, AcsRouterWorkerOfferIssuedEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_OFFER_REVOKED, AcsRouterWorkerOfferRevokedEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_REGISTERED, AcsRouterWorkerRegisteredEventData.class);
-            put(COMMUNICATION_ROUTER_WORKER_UPDATED, AcsRouterWorkerUpdatedEventData.class);
-            put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
-            put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
-            put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
-            put(API_CENTER_API_DEFINITION_ADDED, ApiCenterApiDefinitionAddedEventData.class);
-            put(API_CENTER_API_DEFINITION_UPDATED, ApiCenterApiDefinitionUpdatedEventData.class);
-            put(API_MANAGEMENT_API_CREATED, ApiManagementApiCreatedEventData.class);
-            put(API_MANAGEMENT_API_DELETED, ApiManagementApiDeletedEventData.class);
-            put(API_MANAGEMENT_API_RELEASE_CREATED, ApiManagementApiReleaseCreatedEventData.class);
-            put(API_MANAGEMENT_API_RELEASE_DELETED, ApiManagementApiReleaseDeletedEventData.class);
-            put(API_MANAGEMENT_API_RELEASE_UPDATED, ApiManagementApiReleaseUpdatedEventData.class);
-            put(API_MANAGEMENT_API_UPDATED, ApiManagementApiUpdatedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_API_ADDED, ApiManagementGatewayApiAddedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_API_REMOVED, ApiManagementGatewayApiRemovedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_CREATED,
-                ApiManagementGatewayCertificateAuthorityCreatedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_DELETED,
-                ApiManagementGatewayCertificateAuthorityDeletedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_UPDATED,
-                ApiManagementGatewayCertificateAuthorityUpdatedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_CREATED, ApiManagementGatewayCreatedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_DELETED, ApiManagementGatewayDeletedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_CREATED,
-                ApiManagementGatewayHostnameConfigurationCreatedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_DELETED,
-                ApiManagementGatewayHostnameConfigurationDeletedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_UPDATED,
-                ApiManagementGatewayHostnameConfigurationUpdatedEventData.class);
-            put(API_MANAGEMENT_GATEWAY_UPDATED, ApiManagementGatewayUpdatedEventData.class);
-            put(API_MANAGEMENT_PRODUCT_CREATED, ApiManagementProductCreatedEventData.class);
-            put(API_MANAGEMENT_PRODUCT_DELETED, ApiManagementProductDeletedEventData.class);
-            put(API_MANAGEMENT_PRODUCT_UPDATED, ApiManagementProductUpdatedEventData.class);
-            put(API_MANAGEMENT_SUBSCRIPTION_CREATED, ApiManagementSubscriptionCreatedEventData.class);
-            put(API_MANAGEMENT_SUBSCRIPTION_DELETED, ApiManagementSubscriptionDeletedEventData.class);
-            put(API_MANAGEMENT_SUBSCRIPTION_UPDATED, ApiManagementSubscriptionUpdatedEventData.class);
-            put(API_MANAGEMENT_USER_CREATED, ApiManagementUserCreatedEventData.class);
-            put(API_MANAGEMENT_USER_DELETED, ApiManagementUserDeletedEventData.class);
-            put(API_MANAGEMENT_USER_UPDATED, ApiManagementUserUpdatedEventData.class);
-            put(APP_CONFIGURATION_KEY_VALUE_DELETED, AppConfigurationKeyValueDeletedEventData.class);
-            put(APP_CONFIGURATION_KEY_VALUE_MODIFIED, AppConfigurationKeyValueModifiedEventData.class);
-            put(APP_CONFIGURATION_SNAPSHOT_CREATED, AppConfigurationSnapshotCreatedEventData.class);
-            put(APP_CONFIGURATION_SNAPSHOT_MODIFIED, AppConfigurationSnapshotModifiedEventData.class);
-            put(AVS_CLUSTER_CREATED, AvsClusterCreatedEventData.class);
-            put(AVS_CLUSTER_DELETED, AvsClusterDeletedEventData.class);
-            put(AVS_CLUSTER_FAILED, AvsClusterFailedEventData.class);
-            put(AVS_CLUSTER_UPDATED, AvsClusterUpdatedEventData.class);
-            put(AVS_CLUSTER_UPDATING, AvsClusterUpdatingEventData.class);
-            put(AVS_PRIVATE_CLOUD_FAILED, AvsPrivateCloudFailedEventData.class);
-            put(AVS_PRIVATE_CLOUD_UPDATED, AvsPrivateCloudUpdatedEventData.class);
-            put(AVS_PRIVATE_CLOUD_UPDATING, AvsPrivateCloudUpdatingEventData.class);
-            put(AVS_SCRIPT_EXECUTION_CANCELLED, AvsScriptExecutionCancelledEventData.class);
-            put(AVS_SCRIPT_EXECUTION_FAILED, AvsScriptExecutionFailedEventData.class);
-            put(AVS_SCRIPT_EXECUTION_FINISHED, AvsScriptExecutionFinishedEventData.class);
-            put(AVS_SCRIPT_EXECUTION_STARTED, AvsScriptExecutionStartedEventData.class);
-            put(CONTAINER_REGISTRY_CHART_DELETED, ContainerRegistryChartDeletedEventData.class);
-            put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
-            put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
-            put(CONTAINER_REGISTRY_IMAGE_PUSHED, ContainerRegistryImagePushedEventData.class);
-            put(CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDED, ContainerServiceClusterSupportEndedEventData.class);
-            put(CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDING, ContainerServiceClusterSupportEndingEventData.class);
-            put(CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
-                ContainerServiceNewKubernetesVersionAvailableEventData.class);
-            put(CONTAINER_SERVICE_NODE_POOL_ROLLING_FAILED, ContainerServiceNodePoolRollingFailedEventData.class);
-            put(CONTAINER_SERVICE_NODE_POOL_ROLLING_STARTED, ContainerServiceNodePoolRollingStartedEventData.class);
-            put(CONTAINER_SERVICE_NODE_POOL_ROLLING_SUCCEEDED, ContainerServiceNodePoolRollingSucceededEventData.class);
-            put(DATA_BOX_COPY_COMPLETED, DataBoxCopyCompletedEventData.class);
-            put(DATA_BOX_COPY_STARTED, DataBoxCopyStartedEventData.class);
-            put(DATA_BOX_ORDER_COMPLETED, DataBoxOrderCompletedEventData.class);
-            put(EVENT_GRID_MQTT_CLIENT_CREATED_OR_UPDATED, EventGridMqttClientCreatedOrUpdatedEventData.class);
-            put(EVENT_GRID_MQTT_CLIENT_DELETED, EventGridMqttClientDeletedEventData.class);
-            put(EVENT_GRID_MQTT_CLIENT_SESSION_CONNECTED, EventGridMqttClientSessionConnectedEventData.class);
-            put(EVENT_GRID_MQTT_CLIENT_SESSION_DISCONNECTED, EventGridMqttClientSessionDisconnectedEventData.class);
-            put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
-            put(HEALTHCARE_DICOM_IMAGE_CREATED, HealthcareDicomImageCreatedEventData.class);
-            put(HEALTHCARE_DICOM_IMAGE_DELETED, HealthcareDicomImageDeletedEventData.class);
-            put(HEALTHCARE_DICOM_IMAGE_UPDATED, HealthcareDicomImageUpdatedEventData.class);
-            put(HEALTHCARE_FHIR_RESOURCE_CREATED, HealthcareFhirResourceCreatedEventData.class);
-            put(HEALTHCARE_FHIR_RESOURCE_DELETED, HealthcareFhirResourceDeletedEventData.class);
-            put(HEALTHCARE_FHIR_RESOURCE_UPDATED, HealthcareFhirResourceUpdatedEventData.class);
-            put(IOT_HUB_DEVICE_CONNECTED, IotHubDeviceConnectedEventData.class);
-            put(IOT_HUB_DEVICE_CREATED, IotHubDeviceCreatedEventData.class);
-            put(IOT_HUB_DEVICE_DELETED, IotHubDeviceDeletedEventData.class);
-            put(IOT_HUB_DEVICE_DISCONNECTED, IotHubDeviceDisconnectedEventData.class);
-            put(IOT_HUB_DEVICE_TELEMETRY, IotHubDeviceTelemetryEventData.class);
-            put(KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED, KeyVaultAccessPolicyChangedEventData.class);
-            put(KEY_VAULT_CERTIFICATE_EXPIRED, KeyVaultCertificateExpiredEventData.class);
-            put(KEY_VAULT_CERTIFICATE_NEAR_EXPIRY, KeyVaultCertificateNearExpiryEventData.class);
-            put(KEY_VAULT_CERTIFICATE_NEW_VERSION_CREATED, KeyVaultCertificateNewVersionCreatedEventData.class);
-            put(KEY_VAULT_KEY_EXPIRED, KeyVaultKeyExpiredEventData.class);
-            put(KEY_VAULT_KEY_NEAR_EXPIRY, KeyVaultKeyNearExpiryEventData.class);
-            put(KEY_VAULT_KEY_NEW_VERSION_CREATED, KeyVaultKeyNewVersionCreatedEventData.class);
-            put(KEY_VAULT_SECRET_EXPIRED, KeyVaultSecretExpiredEventData.class);
-            put(KEY_VAULT_SECRET_NEAR_EXPIRY, KeyVaultSecretNearExpiryEventData.class);
-            put(KEY_VAULT_SECRET_NEW_VERSION_CREATED, KeyVaultSecretNewVersionCreatedEventData.class);
-            put(MACHINE_LEARNING_DATASET_DRIFT_DETECTED, MachineLearningServicesDatasetDriftDetectedEventData.class);
-            put(MACHINE_LEARNING_MODEL_DEPLOYED, MachineLearningServicesModelDeployedEventData.class);
-            put(MACHINE_LEARNING_MODEL_REGISTERED, MachineLearningServicesModelRegisteredEventData.class);
-            put(MACHINE_LEARNING_RUN_COMPLETED, MachineLearningServicesRunCompletedEventData.class);
-            put(MACHINE_LEARNING_RUN_STATUS_CHANGED, MachineLearningServicesRunStatusChangedEventData.class);
-            put(MAPS_GEOFENCE_ENTERED, MapsGeofenceEnteredEventData.class);
-            put(MAPS_GEOFENCE_EXITED, MapsGeofenceExitedEventData.class);
-            put(MAPS_GEOFENCE_RESULT, MapsGeofenceResultEventData.class);
-            put(MEDIA_JOB_CANCELED, MediaJobCanceledEventData.class);
-            put(MEDIA_JOB_CANCELING, MediaJobCancelingEventData.class);
-            put(MEDIA_JOB_ERRORED, MediaJobErroredEventData.class);
-            put(MEDIA_JOB_FINISHED, MediaJobFinishedEventData.class);
-            put(MEDIA_JOB_OUTPUT_CANCELED, MediaJobOutputCanceledEventData.class);
-            put(MEDIA_JOB_OUTPUT_CANCELING, MediaJobOutputCancelingEventData.class);
-            put(MEDIA_JOB_OUTPUT_ERRORED, MediaJobOutputErroredEventData.class);
-            put(MEDIA_JOB_OUTPUT_FINISHED, MediaJobOutputFinishedEventData.class);
-            put(MEDIA_JOB_OUTPUT_PROCESSING, MediaJobOutputProcessingEventData.class);
-            put(MEDIA_JOB_OUTPUT_PROGRESS, MediaJobOutputProgressEventData.class);
-            put(MEDIA_JOB_OUTPUT_SCHEDULED, MediaJobOutputScheduledEventData.class);
-            put(MEDIA_JOB_OUTPUT_STATE_CHANGE, MediaJobOutputStateChangeEventData.class);
-            put(MEDIA_JOB_PROCESSING, MediaJobProcessingEventData.class);
-            put(MEDIA_JOB_SCHEDULED, MediaJobScheduledEventData.class);
-            put(MEDIA_JOB_STATE_CHANGE, MediaJobStateChangeEventData.class);
-            put(MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT, MediaLiveEventChannelArchiveHeartbeatEventData.class);
-            put(MEDIA_LIVE_EVENT_CONNECTION_REJECTED, MediaLiveEventConnectionRejectedEventData.class);
-            put(MEDIA_LIVE_EVENT_ENCODER_CONNECTED, MediaLiveEventEncoderConnectedEventData.class);
-            put(MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED, MediaLiveEventEncoderDisconnectedEventData.class);
-            put(MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED, MediaLiveEventIncomingDataChunkDroppedEventData.class);
-            put(MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED, MediaLiveEventIncomingStreamReceivedEventData.class);
-            put(MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUTOFSYNC, MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
-            put(MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUTOFSYNC,
-                MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
-            put(MEDIA_LIVE_EVENT_INGEST_HEARTBEAT, MediaLiveEventIngestHeartbeatEventData.class);
-            put(MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED, MediaLiveEventTrackDiscontinuityDetectedEventData.class);
-            put(POLICY_INSIGHTS_POLICY_STATE_CHANGED, PolicyInsightsPolicyStateChangedEventData.class);
-            put(POLICY_INSIGHTS_POLICY_STATE_CREATED, PolicyInsightsPolicyStateCreatedEventData.class);
-            put(POLICY_INSIGHTS_POLICY_STATE_DELETED, PolicyInsightsPolicyStateDeletedEventData.class);
-            put(REDIS_EXPORT_RDB_COMPLETED, RedisExportRdbCompletedEventData.class);
-            put(REDIS_IMPORT_RDB_COMPLETED, RedisImportRdbCompletedEventData.class);
-            put(REDIS_PATCHING_COMPLETED, RedisPatchingCompletedEventData.class);
-            put(REDIS_SCALING_COMPLETED, RedisScalingCompletedEventData.class);
-            put(RESOURCE_ACTION_CANCEL, ResourceActionCancelEventData.class);
-            put(RESOURCE_ACTION_FAILURE, ResourceActionFailureEventData.class);
-            put(RESOURCE_ACTION_SUCCESS, ResourceActionSuccessEventData.class);
-            put(RESOURCE_DELETE_CANCEL, ResourceDeleteCancelEventData.class);
-            put(RESOURCE_DELETE_FAILURE, ResourceDeleteFailureEventData.class);
-            put(RESOURCE_DELETE_SUCCESS, ResourceDeleteSuccessEventData.class);
-            put(RESOURCE_NOTIFICATIONS_CONTAINER_SERVICE_EVENT_RESOURCES_SCHEDULED,
-                ResourceNotificationsContainerServiceEventResourcesScheduledEventData.class);
-            put(RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_ANNOTATED,
-                ResourceNotificationsHealthResourcesAnnotatedEventData.class);
-            put(RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED,
-                ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData.class);
-            put(RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_CREATED_OR_UPDATED,
-                ResourceNotificationsResourceManagementCreatedOrUpdatedEventData.class);
-            put(RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_DELETED,
-                ResourceNotificationsResourceManagementDeletedEventData.class);
-            put(RESOURCE_WRITE_CANCEL, ResourceWriteCancelEventData.class);
-            put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureEventData.class);
-            put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessEventData.class);
-            put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION,
-                ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.class);
-            put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_WITH_NO_LISTENERS,
-                ServiceBusActiveMessagesAvailableWithNoListenersEventData.class);
-            put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION,
-                ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData.class);
-            put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER,
-                ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class);
-            put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED, SignalRServiceClientConnectionConnectedEventData.class);
-            put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED,
-                SignalRServiceClientConnectionDisconnectedEventData.class);
-            put(STORAGE_ASYNC_OPERATION_INITIATED, StorageAsyncOperationInitiatedEventData.class);
-            put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
-            put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
-            put(STORAGE_BLOB_INVENTORY_POLICY_COMPLETED, StorageBlobInventoryPolicyCompletedEventData.class);
-            put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
-            put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
-            put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
-            put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
-            put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
-            put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
-            put(STORAGE_TASK_ASSIGNMENT_COMPLETED, StorageTaskAssignmentCompletedEventData.class);
-            put(STORAGE_TASK_ASSIGNMENT_QUEUED, StorageTaskAssignmentQueuedEventData.class);
-            put(STORAGE_TASK_COMPLETED, StorageTaskCompletedEventData.class);
-            put(STORAGE_TASK_QUEUED, StorageTaskQueuedEventData.class);
-            put(EVENT_GRID_SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
-            put(EVENT_GRID_SUBSCRIPTION_VALIDATION, SubscriptionValidationEventData.class);
-            put(WEB_APP_SERVICE_PLAN_UPDATED, WebAppServicePlanUpdatedEventData.class);
-            put(WEB_APP_UPDATED, WebAppUpdatedEventData.class);
-            put(WEB_BACKUP_OPERATION_COMPLETED, WebBackupOperationCompletedEventData.class);
-            put(WEB_BACKUP_OPERATION_FAILED, WebBackupOperationFailedEventData.class);
-            put(WEB_BACKUP_OPERATION_STARTED, WebBackupOperationStartedEventData.class);
-            put(WEB_RESTORE_OPERATION_COMPLETED, WebRestoreOperationCompletedEventData.class);
-            put(WEB_RESTORE_OPERATION_FAILED, WebRestoreOperationFailedEventData.class);
-            put(WEB_RESTORE_OPERATION_STARTED, WebRestoreOperationStartedEventData.class);
-            put(WEB_SLOT_SWAP_COMPLETED, WebSlotSwapCompletedEventData.class);
-            put(WEB_SLOT_SWAP_FAILED, WebSlotSwapFailedEventData.class);
-            put(WEB_SLOT_SWAP_STARTED, WebSlotSwapStartedEventData.class);
-            put(WEB_SLOT_SWAP_WITH_PREVIEW_CANCELLED, WebSlotSwapWithPreviewCancelledEventData.class);
-            put(WEB_SLOT_SWAP_WITH_PREVIEW_STARTED, WebSlotSwapWithPreviewStartedEventData.class);
-            put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD, AcsChatParticipantRemovedFromThreadEventData.class);
-            put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER,
-                AcsChatParticipantRemovedFromThreadWithUserEventData.class);
-            put(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER, AcsChatMemberAddedToThreadWithUserEventData.class);
-            put(COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER,
-                AcsChatMemberRemovedFromThreadWithUserEventData.class);
-        }
-    };
+
+    private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<>();
+
+    static {
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CALL_ENDED, AcsCallEndedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CALL_PARTICIPANT_ADDED, AcsCallParticipantAddedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CALL_PARTICIPANT_REMOVED, AcsCallParticipantRemovedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CALL_STARTED, AcsCallStartedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_AZURE_BOT_COMMAND_RECEIVED_IN_THREAD,
+            AcsChatAzureBotCommandReceivedInThreadEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MESSAGE_DELETED, AcsChatMessageDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD,
+            AcsChatMessageDeletedInThreadEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MESSAGE_EDITED, AcsChatMessageEditedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MESSAGE_EDITED_IN_THREAD,
+            AcsChatMessageEditedInThreadEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MESSAGE_RECEIVED, AcsChatMessageReceivedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MESSAGE_RECEIVED_IN_THREAD,
+            AcsChatMessageReceivedInThreadEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD,
+            AcsChatParticipantAddedToThreadEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_PARTICIPANT_ADDED_TO_THREAD_WITH_USER,
+            AcsChatParticipantAddedToThreadWithUserEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD,
+            AcsChatParticipantRemovedFromThreadEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_PARTICIPANT_REMOVED_FROM_THREAD_WITH_USER,
+            AcsChatParticipantRemovedFromThreadWithUserEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_THREAD_CREATED, AcsChatThreadCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_THREAD_CREATED_WITH_USER,
+            AcsChatThreadCreatedWithUserEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_THREAD_DELETED, AcsChatThreadDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED,
+            AcsChatThreadPropertiesUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_THREAD_PROPERTIES_UPDATED_PER_USER,
+            AcsChatThreadPropertiesUpdatedPerUserEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_THREAD_WITH_USER_DELETED,
+            AcsChatThreadWithUserDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_TYPING_INDICATOR_RECEIVED_IN_THREAD,
+            AcsChatTypingIndicatorReceivedInThreadEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_EMAIL_DELIVERY_REPORT_RECEIVED,
+            AcsEmailDeliveryReportReceivedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_EMAIL_ENGAGEMENT_TRACKING_REPORT_RECEIVED,
+            AcsEmailEngagementTrackingReportReceivedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_INCOMING_CALL, AcsIncomingCallEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_MESSAGE_DELIVERY_STATUS_UPDATED,
+            AcsMessageDeliveryStatusUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_MESSAGE_RECEIVED, AcsMessageReceivedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_RECORDING_FILE_STATUS_UPDATED,
+            AcsRecordingFileStatusUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_CANCELLED, AcsRouterJobCancelledEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_CLASSIFICATION_FAILED,
+            AcsRouterJobClassificationFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_CLASSIFIED, AcsRouterJobClassifiedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_CLOSED, AcsRouterJobClosedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_COMPLETED, AcsRouterJobCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_DELETED, AcsRouterJobDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_EXCEPTION_TRIGGERED,
+            AcsRouterJobExceptionTriggeredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_QUEUED, AcsRouterJobQueuedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_RECEIVED, AcsRouterJobReceivedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_SCHEDULING_FAILED,
+            AcsRouterJobSchedulingFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_UNASSIGNED, AcsRouterJobUnassignedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_WAITING_FOR_ACTIVATION,
+            AcsRouterJobWaitingForActivationEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_JOB_WORKER_SELECTORS_EXPIRED,
+            AcsRouterJobWorkerSelectorsExpiredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_DELETED, AcsRouterWorkerDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_DEREGISTERED, AcsRouterWorkerDeregisteredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_OFFER_ACCEPTED,
+            AcsRouterWorkerOfferAcceptedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_OFFER_DECLINED,
+            AcsRouterWorkerOfferDeclinedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_OFFER_EXPIRED,
+            AcsRouterWorkerOfferExpiredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_OFFER_ISSUED, AcsRouterWorkerOfferIssuedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_OFFER_REVOKED,
+            AcsRouterWorkerOfferRevokedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_REGISTERED, AcsRouterWorkerRegisteredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_ROUTER_WORKER_UPDATED, AcsRouterWorkerUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED,
+            AcsSmsDeliveryReportReceivedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_CENTER_API_DEFINITION_ADDED, ApiCenterApiDefinitionAddedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_CENTER_API_DEFINITION_UPDATED, ApiCenterApiDefinitionUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_API_CREATED, ApiManagementApiCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_API_DELETED, ApiManagementApiDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_API_RELEASE_CREATED, ApiManagementApiReleaseCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_API_RELEASE_DELETED, ApiManagementApiReleaseDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_API_RELEASE_UPDATED, ApiManagementApiReleaseUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_API_UPDATED, ApiManagementApiUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_CIRCUIT_BREAKER_CLOSED,
+            ApiManagementCircuitBreakerClosedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_CIRCUIT_BREAKER_OPENED,
+            ApiManagementCircuitBreakerOpenedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_API_ADDED, ApiManagementGatewayApiAddedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_API_REMOVED, ApiManagementGatewayApiRemovedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_CREATED,
+            ApiManagementGatewayCertificateAuthorityCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_DELETED,
+            ApiManagementGatewayCertificateAuthorityDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_CERTIFICATE_AUTHORITY_UPDATED,
+            ApiManagementGatewayCertificateAuthorityUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_CREATED, ApiManagementGatewayCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_DELETED, ApiManagementGatewayDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_CREATED,
+            ApiManagementGatewayHostnameConfigurationCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_DELETED,
+            ApiManagementGatewayHostnameConfigurationDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_HOSTNAME_CONFIGURATION_UPDATED,
+            ApiManagementGatewayHostnameConfigurationUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_TOKEN_EXPIRED,
+            ApiManagementGatewayTokenExpiredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_TOKEN_NEAR_EXPIRY,
+            ApiManagementGatewayTokenNearExpiryEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_GATEWAY_UPDATED, ApiManagementGatewayUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_PRODUCT_CREATED, ApiManagementProductCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_PRODUCT_DELETED, ApiManagementProductDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_PRODUCT_UPDATED, ApiManagementProductUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_SUBSCRIPTION_CREATED, ApiManagementSubscriptionCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_SUBSCRIPTION_DELETED, ApiManagementSubscriptionDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_SUBSCRIPTION_UPDATED, ApiManagementSubscriptionUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_USER_CREATED, ApiManagementUserCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_USER_DELETED, ApiManagementUserDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(API_MANAGEMENT_USER_UPDATED, ApiManagementUserUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(APP_CONFIGURATION_KEY_VALUE_DELETED, AppConfigurationKeyValueDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(APP_CONFIGURATION_KEY_VALUE_MODIFIED,
+            AppConfigurationKeyValueModifiedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(APP_CONFIGURATION_SNAPSHOT_CREATED, AppConfigurationSnapshotCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(APP_CONFIGURATION_SNAPSHOT_MODIFIED, AppConfigurationSnapshotModifiedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_CLUSTER_CREATED, AvsClusterCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_CLUSTER_DELETED, AvsClusterDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_CLUSTER_FAILED, AvsClusterFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_CLUSTER_UPDATED, AvsClusterUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_CLUSTER_UPDATING, AvsClusterUpdatingEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_PRIVATE_CLOUD_FAILED, AvsPrivateCloudFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_PRIVATE_CLOUD_UPDATED, AvsPrivateCloudUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_PRIVATE_CLOUD_UPDATING, AvsPrivateCloudUpdatingEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_SCRIPT_EXECUTION_CANCELLED, AvsScriptExecutionCancelledEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_SCRIPT_EXECUTION_FAILED, AvsScriptExecutionFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_SCRIPT_EXECUTION_FINISHED, AvsScriptExecutionFinishedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(AVS_SCRIPT_EXECUTION_STARTED, AvsScriptExecutionStartedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_REGISTRY_CHART_DELETED, ContainerRegistryChartDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_REGISTRY_IMAGE_PUSHED, ContainerRegistryImagePushedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDED,
+            ContainerServiceClusterSupportEndedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_SERVICE_CLUSTER_SUPPORT_ENDING,
+            ContainerServiceClusterSupportEndingEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_SERVICE_NEW_KUBERNETES_VERSION_AVAILABLE,
+            ContainerServiceNewKubernetesVersionAvailableEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_SERVICE_NODE_POOL_ROLLING_FAILED,
+            ContainerServiceNodePoolRollingFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_SERVICE_NODE_POOL_ROLLING_STARTED,
+            ContainerServiceNodePoolRollingStartedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(CONTAINER_SERVICE_NODE_POOL_ROLLING_SUCCEEDED,
+            ContainerServiceNodePoolRollingSucceededEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(DATA_BOX_COPY_COMPLETED, DataBoxCopyCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(DATA_BOX_COPY_STARTED, DataBoxCopyStartedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(DATA_BOX_ORDER_COMPLETED, DataBoxOrderCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(EVENT_GRID_MQTT_CLIENT_CREATED_OR_UPDATED,
+            EventGridMqttClientCreatedOrUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(EVENT_GRID_MQTT_CLIENT_DELETED, EventGridMqttClientDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(EVENT_GRID_MQTT_CLIENT_SESSION_CONNECTED,
+            EventGridMqttClientSessionConnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(EVENT_GRID_MQTT_CLIENT_SESSION_DISCONNECTED,
+            EventGridMqttClientSessionDisconnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(HEALTHCARE_DICOM_IMAGE_CREATED, HealthcareDicomImageCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(HEALTHCARE_DICOM_IMAGE_DELETED, HealthcareDicomImageDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(HEALTHCARE_DICOM_IMAGE_UPDATED, HealthcareDicomImageUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(HEALTHCARE_FHIR_RESOURCE_CREATED, HealthcareFhirResourceCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(HEALTHCARE_FHIR_RESOURCE_DELETED, HealthcareFhirResourceDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(HEALTHCARE_FHIR_RESOURCE_UPDATED, HealthcareFhirResourceUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(IOT_HUB_DEVICE_CONNECTED, IotHubDeviceConnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(IOT_HUB_DEVICE_CREATED, IotHubDeviceCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(IOT_HUB_DEVICE_DELETED, IotHubDeviceDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(IOT_HUB_DEVICE_DISCONNECTED, IotHubDeviceDisconnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(IOT_HUB_DEVICE_TELEMETRY, IotHubDeviceTelemetryEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_VAULT_ACCESS_POLICY_CHANGED, KeyVaultAccessPolicyChangedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_CERTIFICATE_EXPIRED, KeyVaultCertificateExpiredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_CERTIFICATE_NEAR_EXPIRY, KeyVaultCertificateNearExpiryEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_CERTIFICATE_NEW_VERSION_CREATED,
+            KeyVaultCertificateNewVersionCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_KEY_EXPIRED, KeyVaultKeyExpiredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_KEY_NEAR_EXPIRY, KeyVaultKeyNearExpiryEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_KEY_NEW_VERSION_CREATED, KeyVaultKeyNewVersionCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_SECRET_EXPIRED, KeyVaultSecretExpiredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_SECRET_NEAR_EXPIRY, KeyVaultSecretNearExpiryEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(KEY_VAULT_SECRET_NEW_VERSION_CREATED, KeyVaultSecretNewVersionCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MACHINE_LEARNING_DATASET_DRIFT_DETECTED,
+            MachineLearningServicesDatasetDriftDetectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MACHINE_LEARNING_MODEL_DEPLOYED, MachineLearningServicesModelDeployedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MACHINE_LEARNING_MODEL_REGISTERED,
+            MachineLearningServicesModelRegisteredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MACHINE_LEARNING_RUN_COMPLETED, MachineLearningServicesRunCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MACHINE_LEARNING_RUN_STATUS_CHANGED,
+            MachineLearningServicesRunStatusChangedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MAPS_GEOFENCE_ENTERED, MapsGeofenceEnteredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MAPS_GEOFENCE_EXITED, MapsGeofenceExitedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MAPS_GEOFENCE_RESULT, MapsGeofenceResultEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_CANCELED, MediaJobCanceledEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_CANCELING, MediaJobCancelingEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_ERRORED, MediaJobErroredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_FINISHED, MediaJobFinishedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_OUTPUT_CANCELED, MediaJobOutputCanceledEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_OUTPUT_CANCELING, MediaJobOutputCancelingEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_OUTPUT_ERRORED, MediaJobOutputErroredEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_OUTPUT_FINISHED, MediaJobOutputFinishedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_OUTPUT_PROCESSING, MediaJobOutputProcessingEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_OUTPUT_PROGRESS, MediaJobOutputProgressEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_OUTPUT_SCHEDULED, MediaJobOutputScheduledEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_OUTPUT_STATE_CHANGE, MediaJobOutputStateChangeEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_PROCESSING, MediaJobProcessingEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_SCHEDULED, MediaJobScheduledEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_JOB_STATE_CHANGE, MediaJobStateChangeEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_CHANNEL_ARCHIVE_HEARTBEAT,
+            MediaLiveEventChannelArchiveHeartbeatEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_CONNECTION_REJECTED,
+            MediaLiveEventConnectionRejectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_ENCODER_CONNECTED, MediaLiveEventEncoderConnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_ENCODER_DISCONNECTED,
+            MediaLiveEventEncoderDisconnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_INCOMING_DATA_CHUNK_DROPPED,
+            MediaLiveEventIncomingDataChunkDroppedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_INCOMING_STREAM_RECEIVED,
+            MediaLiveEventIncomingStreamReceivedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_INCOMING_STREAMS_OUTOFSYNC,
+            MediaLiveEventIncomingStreamsOutOfSyncEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_INCOMING_VIDEO_STREAMS_OUTOFSYNC,
+            MediaLiveEventIncomingVideoStreamsOutOfSyncEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_INGEST_HEARTBEAT, MediaLiveEventIngestHeartbeatEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED,
+            MediaLiveEventTrackDiscontinuityDetectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(POLICY_INSIGHTS_POLICY_STATE_CHANGED,
+            PolicyInsightsPolicyStateChangedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(POLICY_INSIGHTS_POLICY_STATE_CREATED,
+            PolicyInsightsPolicyStateCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(POLICY_INSIGHTS_POLICY_STATE_DELETED,
+            PolicyInsightsPolicyStateDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(REDIS_EXPORT_RDB_COMPLETED, RedisExportRdbCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(REDIS_IMPORT_RDB_COMPLETED, RedisImportRdbCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(REDIS_PATCHING_COMPLETED, RedisPatchingCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(REDIS_SCALING_COMPLETED, RedisScalingCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_ACTION_CANCEL, ResourceActionCancelEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_ACTION_FAILURE, ResourceActionFailureEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_ACTION_SUCCESS, ResourceActionSuccessEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_DELETE_CANCEL, ResourceDeleteCancelEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_DELETE_FAILURE, ResourceDeleteFailureEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_DELETE_SUCCESS, ResourceDeleteSuccessEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_CONTAINER_SERVICE_EVENT_RESOURCES_SCHEDULED,
+            ResourceNotificationsContainerServiceEventResourcesScheduledEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_ANNOTATED,
+            ResourceNotificationsHealthResourcesAnnotatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_HEALTH_RESOURCES_AVAILABILITY_STATUS_CHANGED,
+            ResourceNotificationsHealthResourcesAvailabilityStatusChangedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_CREATED_OR_UPDATED,
+            ResourceNotificationsResourceManagementCreatedOrUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_NOTIFICATIONS_RESOURCE_MANAGEMENT_DELETED,
+            ResourceNotificationsResourceManagementDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_WRITE_CANCEL, ResourceWriteCancelEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_WRITE_FAILURE, ResourceWriteFailureEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(RESOURCE_WRITE_SUCCESS, ResourceWriteSuccessEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION,
+            ServiceBusActiveMessagesAvailablePeriodicNotificationsEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(SERVICE_BUS_ACTIVE_MESSAGES_AVAILABLE_WITH_NO_LISTENERS,
+            ServiceBusActiveMessagesAvailableWithNoListenersEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_PERIODIC_NOTIFICATION,
+            ServiceBusDeadletterMessagesAvailablePeriodicNotificationsEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER,
+            ServiceBusDeadletterMessagesAvailableWithNoListenersEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_CONNECTED,
+            SignalRServiceClientConnectionConnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(SIGNAL_R_SERVICE_CLIENT_CONNECTION_DISCONNECTED,
+            SignalRServiceClientConnectionDisconnectedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_ASYNC_OPERATION_INITIATED, StorageAsyncOperationInitiatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_BLOB_CREATED, StorageBlobCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_BLOB_DELETED, StorageBlobDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_BLOB_INVENTORY_POLICY_COMPLETED,
+            StorageBlobInventoryPolicyCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_BLOB_RENAMED, StorageBlobRenamedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_BLOB_TIER_CHANGED, StorageBlobTierChangedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_DIRECTORY_CREATED, StorageDirectoryCreatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_TASK_ASSIGNMENT_COMPLETED, StorageTaskAssignmentCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_TASK_ASSIGNMENT_QUEUED, StorageTaskAssignmentQueuedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_TASK_COMPLETED, StorageTaskCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(STORAGE_TASK_QUEUED, StorageTaskQueuedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(EVENT_GRID_SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(EVENT_GRID_SUBSCRIPTION_VALIDATION, SubscriptionValidationEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_APP_SERVICE_PLAN_UPDATED, WebAppServicePlanUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_APP_UPDATED, WebAppUpdatedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_BACKUP_OPERATION_COMPLETED, WebBackupOperationCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_BACKUP_OPERATION_FAILED, WebBackupOperationFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_BACKUP_OPERATION_STARTED, WebBackupOperationStartedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_RESTORE_OPERATION_COMPLETED, WebRestoreOperationCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_RESTORE_OPERATION_FAILED, WebRestoreOperationFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_RESTORE_OPERATION_STARTED, WebRestoreOperationStartedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_SLOT_SWAP_COMPLETED, WebSlotSwapCompletedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_SLOT_SWAP_FAILED, WebSlotSwapFailedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_SLOT_SWAP_STARTED, WebSlotSwapStartedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_SLOT_SWAP_WITH_PREVIEW_CANCELLED, WebSlotSwapWithPreviewCancelledEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(WEB_SLOT_SWAP_WITH_PREVIEW_STARTED, WebSlotSwapWithPreviewStartedEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD,
+            AcsChatParticipantRemovedFromThreadEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MESSAGE_REMOVED_FROM_THREAD_WITH_USER,
+            AcsChatParticipantRemovedFromThreadWithUserEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER,
+            AcsChatMemberAddedToThreadWithUserEventData.class);
+        SYSTEM_EVENT_MAPPINGS.put(COMMUNICATION_CHAT_MEMBER_REMOVED_FROM_THREAD_WITH_USER,
+            AcsChatMemberRemovedFromThreadWithUserEventData.class);
+    }
 
     /**
-     * Get a mapping of all the system event type strings to their respective class. This is used by default in
-     * the {@link EventGridEvent} and {@link CloudEvent} classes.
-     * 
+     * Get a mapping of all the system event type strings to their respective class. This is used by default in the
+     * {@link EventGridEvent} and {@link CloudEvent} classes.
+     *
      * @return a mapping of all the system event strings to system event objects.
      */
     public static Map<String, Class<?>> getSystemEventMappings() {

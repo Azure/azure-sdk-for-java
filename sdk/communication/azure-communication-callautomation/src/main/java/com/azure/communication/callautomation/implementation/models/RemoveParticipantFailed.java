@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,36 +20,43 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     /*
      * Call connection ID.
      */
+    @Generated
     private String callConnectionId;
 
     /*
      * Server call ID.
      */
+    @Generated
     private String serverCallId;
 
     /*
      * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
+    @Generated
     private String correlationId;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
+    @Generated
     private String operationContext;
 
     /*
      * Contains the resulting SIP code, sub-code and message.
      */
+    @Generated
     private ResultInformation resultInformation;
 
     /*
      * Participant
      */
+    @Generated
     private CommunicationIdentifierModel participant;
 
     /**
      * Creates an instance of RemoveParticipantFailed class.
      */
+    @Generated
     public RemoveParticipantFailed() {
     }
 
@@ -57,6 +65,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * 
      * @return the callConnectionId value.
      */
+    @Generated
     public String getCallConnectionId() {
         return this.callConnectionId;
     }
@@ -67,6 +76,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * @param callConnectionId the callConnectionId value to set.
      * @return the RemoveParticipantFailed object itself.
      */
+    @Generated
     public RemoveParticipantFailed setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
         return this;
@@ -77,6 +87,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * 
      * @return the serverCallId value.
      */
+    @Generated
     public String getServerCallId() {
         return this.serverCallId;
     }
@@ -87,6 +98,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * @param serverCallId the serverCallId value to set.
      * @return the RemoveParticipantFailed object itself.
      */
+    @Generated
     public RemoveParticipantFailed setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
@@ -98,6 +110,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * 
      * @return the correlationId value.
      */
+    @Generated
     public String getCorrelationId() {
         return this.correlationId;
     }
@@ -109,6 +122,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * @param correlationId the correlationId value to set.
      * @return the RemoveParticipantFailed object itself.
      */
+    @Generated
     public RemoveParticipantFailed setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
@@ -120,6 +134,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -131,6 +146,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantFailed object itself.
      */
+    @Generated
     public RemoveParticipantFailed setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -141,6 +157,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * 
      * @return the resultInformation value.
      */
+    @Generated
     public ResultInformation getResultInformation() {
         return this.resultInformation;
     }
@@ -151,6 +168,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * @param resultInformation the resultInformation value to set.
      * @return the RemoveParticipantFailed object itself.
      */
+    @Generated
     public RemoveParticipantFailed setResultInformation(ResultInformation resultInformation) {
         this.resultInformation = resultInformation;
         return this;
@@ -161,6 +179,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * 
      * @return the participant value.
      */
+    @Generated
     public CommunicationIdentifierModel getParticipant() {
         return this.participant;
     }
@@ -171,6 +190,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * @param participant the participant value to set.
      * @return the RemoveParticipantFailed object itself.
      */
+    @Generated
     public RemoveParticipantFailed setParticipant(CommunicationIdentifierModel participant) {
         this.participant = participant;
         return this;
@@ -179,6 +199,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -199,6 +220,7 @@ public final class RemoveParticipantFailed implements JsonSerializable<RemovePar
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RemoveParticipantFailed.
      */
+    @Generated
     public static RemoveParticipantFailed fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RemoveParticipantFailed deserializedRemoveParticipantFailed = new RemoveParticipantFailed();

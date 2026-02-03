@@ -27,9 +27,29 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
     private String serverName;
 
     /*
+     * Data source
+     */
+    private String dataSource;
+
+    /*
      * Port for Server
      */
     private int port;
+
+    /*
+     * Whether to encrypt the connection
+     */
+    private Boolean encryptConnection;
+
+    /*
+     * Authentication type to use for connection
+     */
+    private AuthenticationType authentication;
+
+    /*
+     * Additional connection settings
+     */
+    private String additionalSettings;
 
     /**
      * Creates an instance of MySqlConnectionInfo class.
@@ -68,6 +88,26 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
     }
 
     /**
+     * Get the dataSource property: Data source.
+     * 
+     * @return the dataSource value.
+     */
+    public String dataSource() {
+        return this.dataSource;
+    }
+
+    /**
+     * Set the dataSource property: Data source.
+     * 
+     * @param dataSource the dataSource value to set.
+     * @return the MySqlConnectionInfo object itself.
+     */
+    public MySqlConnectionInfo withDataSource(String dataSource) {
+        this.dataSource = dataSource;
+        return this;
+    }
+
+    /**
      * Get the port property: Port for Server.
      * 
      * @return the port value.
@@ -84,6 +124,66 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
      */
     public MySqlConnectionInfo withPort(int port) {
         this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the encryptConnection property: Whether to encrypt the connection.
+     * 
+     * @return the encryptConnection value.
+     */
+    public Boolean encryptConnection() {
+        return this.encryptConnection;
+    }
+
+    /**
+     * Set the encryptConnection property: Whether to encrypt the connection.
+     * 
+     * @param encryptConnection the encryptConnection value to set.
+     * @return the MySqlConnectionInfo object itself.
+     */
+    public MySqlConnectionInfo withEncryptConnection(Boolean encryptConnection) {
+        this.encryptConnection = encryptConnection;
+        return this;
+    }
+
+    /**
+     * Get the authentication property: Authentication type to use for connection.
+     * 
+     * @return the authentication value.
+     */
+    public AuthenticationType authentication() {
+        return this.authentication;
+    }
+
+    /**
+     * Set the authentication property: Authentication type to use for connection.
+     * 
+     * @param authentication the authentication value to set.
+     * @return the MySqlConnectionInfo object itself.
+     */
+    public MySqlConnectionInfo withAuthentication(AuthenticationType authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
+    /**
+     * Get the additionalSettings property: Additional connection settings.
+     * 
+     * @return the additionalSettings value.
+     */
+    public String additionalSettings() {
+        return this.additionalSettings;
+    }
+
+    /**
+     * Set the additionalSettings property: Additional connection settings.
+     * 
+     * @param additionalSettings the additionalSettings value to set.
+     * @return the MySqlConnectionInfo object itself.
+     */
+    public MySqlConnectionInfo withAdditionalSettings(String additionalSettings) {
+        this.additionalSettings = additionalSettings;
         return this;
     }
 
@@ -131,6 +231,11 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
         jsonWriter.writeStringField("serverName", this.serverName);
         jsonWriter.writeIntField("port", this.port);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("dataSource", this.dataSource);
+        jsonWriter.writeBooleanField("encryptConnection", this.encryptConnection);
+        jsonWriter.writeStringField("authentication",
+            this.authentication == null ? null : this.authentication.toString());
+        jsonWriter.writeStringField("additionalSettings", this.additionalSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -160,6 +265,14 @@ public final class MySqlConnectionInfo extends ConnectionInfo {
                     deserializedMySqlConnectionInfo.port = reader.getInt();
                 } else if ("type".equals(fieldName)) {
                     deserializedMySqlConnectionInfo.type = reader.getString();
+                } else if ("dataSource".equals(fieldName)) {
+                    deserializedMySqlConnectionInfo.dataSource = reader.getString();
+                } else if ("encryptConnection".equals(fieldName)) {
+                    deserializedMySqlConnectionInfo.encryptConnection = reader.getNullable(JsonReader::getBoolean);
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedMySqlConnectionInfo.authentication = AuthenticationType.fromString(reader.getString());
+                } else if ("additionalSettings".equals(fieldName)) {
+                    deserializedMySqlConnectionInfo.additionalSettings = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

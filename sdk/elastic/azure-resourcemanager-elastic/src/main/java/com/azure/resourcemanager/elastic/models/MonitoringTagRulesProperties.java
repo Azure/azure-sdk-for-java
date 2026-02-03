@@ -42,17 +42,6 @@ public final class MonitoringTagRulesProperties implements JsonSerializable<Moni
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the monitoring tag rules.
-     * 
-     * @param provisioningState the provisioningState value to set.
-     * @return the MonitoringTagRulesProperties object itself.
-     */
-    public MonitoringTagRulesProperties withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get the logRules property: Rules for sending logs.
      * 
      * @return the logRules value.
@@ -89,8 +78,6 @@ public final class MonitoringTagRulesProperties implements JsonSerializable<Moni
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("provisioningState",
-            this.provisioningState == null ? null : this.provisioningState.toString());
         jsonWriter.writeJsonField("logRules", this.logRules);
         return jsonWriter.writeEndObject();
     }

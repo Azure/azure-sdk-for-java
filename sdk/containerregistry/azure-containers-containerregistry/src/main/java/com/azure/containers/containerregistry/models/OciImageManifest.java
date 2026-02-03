@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
     /*
      * V2 image config descriptor
      */
+    @Generated
     private OciDescriptor configuration;
 
     /*
      * List of V2 image layer information
      */
+    @Generated
     private List<OciDescriptor> layers;
 
     /*
      * Additional information provided through arbitrary metadata.
      */
+    @Generated
     private OciAnnotations annotations;
 
     /*
      * Schema version
      */
+    @Generated
     private int schemaVersion;
 
     /**
      * Creates an instance of OciImageManifest class.
      */
+    @Generated
     public OciImageManifest() {
     }
 
@@ -48,6 +54,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * 
      * @return the configuration value.
      */
+    @Generated
     public OciDescriptor getConfiguration() {
         return this.configuration;
     }
@@ -58,6 +65,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * @param configuration the configuration value to set.
      * @return the OciImageManifest object itself.
      */
+    @Generated
     public OciImageManifest setConfiguration(OciDescriptor configuration) {
         this.configuration = configuration;
         return this;
@@ -68,6 +76,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * 
      * @return the layers value.
      */
+    @Generated
     public List<OciDescriptor> getLayers() {
         return this.layers;
     }
@@ -78,6 +87,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * @param layers the layers value to set.
      * @return the OciImageManifest object itself.
      */
+    @Generated
     public OciImageManifest setLayers(List<OciDescriptor> layers) {
         this.layers = layers;
         return this;
@@ -88,6 +98,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * 
      * @return the annotations value.
      */
+    @Generated
     public OciAnnotations getAnnotations() {
         return this.annotations;
     }
@@ -98,6 +109,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * @param annotations the annotations value to set.
      * @return the OciImageManifest object itself.
      */
+    @Generated
     public OciImageManifest setAnnotations(OciAnnotations annotations) {
         this.annotations = annotations;
         return this;
@@ -108,6 +120,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * 
      * @return the schemaVersion value.
      */
+    @Generated
     public int getSchemaVersion() {
         return this.schemaVersion;
     }
@@ -118,6 +131,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * @param schemaVersion the schemaVersion value to set.
      * @return the OciImageManifest object itself.
      */
+    @Generated
     public OciImageManifest setSchemaVersion(int schemaVersion) {
         this.schemaVersion = schemaVersion;
         return this;
@@ -126,6 +140,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -145,6 +160,7 @@ public final class OciImageManifest implements JsonSerializable<OciImageManifest
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OciImageManifest.
      */
+    @Generated
     public static OciImageManifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             OciImageManifest deserializedOciImageManifest = new OciImageManifest();

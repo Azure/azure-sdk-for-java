@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class CustomActivityReferenceObject implements JsonSerializable<Cus
     /*
      * Linked service references.
      */
+    @Generated
     private List<LinkedServiceReference> linkedServices;
 
     /*
      * Dataset references.
      */
+    @Generated
     private List<DatasetReference> datasets;
 
     /**
      * Creates an instance of CustomActivityReferenceObject class.
      */
+    @Generated
     public CustomActivityReferenceObject() {
     }
 
@@ -38,6 +42,7 @@ public final class CustomActivityReferenceObject implements JsonSerializable<Cus
      * 
      * @return the linkedServices value.
      */
+    @Generated
     public List<LinkedServiceReference> getLinkedServices() {
         return this.linkedServices;
     }
@@ -48,6 +53,7 @@ public final class CustomActivityReferenceObject implements JsonSerializable<Cus
      * @param linkedServices the linkedServices value to set.
      * @return the CustomActivityReferenceObject object itself.
      */
+    @Generated
     public CustomActivityReferenceObject setLinkedServices(List<LinkedServiceReference> linkedServices) {
         this.linkedServices = linkedServices;
         return this;
@@ -58,6 +64,7 @@ public final class CustomActivityReferenceObject implements JsonSerializable<Cus
      * 
      * @return the datasets value.
      */
+    @Generated
     public List<DatasetReference> getDatasets() {
         return this.datasets;
     }
@@ -68,6 +75,7 @@ public final class CustomActivityReferenceObject implements JsonSerializable<Cus
      * @param datasets the datasets value to set.
      * @return the CustomActivityReferenceObject object itself.
      */
+    @Generated
     public CustomActivityReferenceObject setDatasets(List<DatasetReference> datasets) {
         this.datasets = datasets;
         return this;
@@ -76,6 +84,7 @@ public final class CustomActivityReferenceObject implements JsonSerializable<Cus
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class CustomActivityReferenceObject implements JsonSerializable<Cus
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CustomActivityReferenceObject.
      */
+    @Generated
     public static CustomActivityReferenceObject fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CustomActivityReferenceObject deserializedCustomActivityReferenceObject

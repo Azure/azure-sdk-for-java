@@ -3,16 +3,15 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.MockHttpResponse;
-import io.clientcore.core.http.NoOpHttpClient;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.DateTimeRfc1123;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -45,22 +44,18 @@ public class RetryPolicyTests {
     @ValueSource(ints = { 408, 500, 502, 503 })
     public void defaultRetryPolicyRetriesExpectedErrorCodes(int returnCode) throws IOException {
         AtomicInteger attemptCount = new AtomicInteger();
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
-                @Override
-                public Response<?> send(HttpRequest request) {
-                    int count = attemptCount.getAndIncrement();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> {
+            int count = attemptCount.getAndIncrement();
 
-                    if (count == 0) {
-                        return new MockHttpResponse(request, returnCode);
-                    } else if (count == 1) {
-                        return new MockHttpResponse(request, 200);
-                    } else {
-                        // Too many requests have been made.
-                        return new MockHttpResponse(request, 400);
-                    }
-                }
-            }).build();
+            if (count == 0) {
+                return new Response<>(request, returnCode, new HttpHeaders(), BinaryData.empty());
+            } else if (count == 1) {
+                return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+            } else {
+                // Too many requests have been made.
+                return new Response<>(request, 400, new HttpHeaders(), BinaryData.empty());
+            }
+        }).build();
 
         try (Response<?> response = sendRequest(pipeline)) {
             assertEquals(200, response.getStatusCode());
@@ -69,22 +64,17 @@ public class RetryPolicyTests {
 
     @ParameterizedTest
     @ValueSource(ints = { 400, 401, 402, 403, 404, 409, 412, 501, 505 })
-    public void defaultRetryPolicyDoesntRetryOnErrorCodes(int returnCode) throws IOException {
+    public void defaultRetryPolicyDoesntRetryOnErrorCodes(int returnCode) {
         AtomicInteger attemptCount = new AtomicInteger();
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> {
+            int count = attemptCount.getAndIncrement();
 
-                @Override
-                public Response<?> send(HttpRequest request) {
-                    int count = attemptCount.getAndIncrement();
-
-                    if (count == 0) {
-                        return new MockHttpResponse(request, returnCode);
-                    } else {
-                        return new MockHttpResponse(request, 200);
-                    }
-                }
-            }).build();
+            if (count == 0) {
+                return new Response<>(request, returnCode, new HttpHeaders(), BinaryData.empty());
+            } else {
+                return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+            }
+        }).build();
 
         try (Response<?> response = sendRequest(pipeline)) {
             assertEquals(returnCode, response.getStatusCode());
@@ -92,44 +82,48 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void defaultRetryPolicyRetriesIOException() throws IOException {
+    public void defaultRetryPolicyRetriesIOException() {
         AtomicInteger attemptCount = new AtomicInteger();
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
-                @Override
-                public Response<?> send(HttpRequest request) {
-                    int count = attemptCount.getAndIncrement();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> {
+            int count = attemptCount.getAndIncrement();
 
-                    if (count == 0) {
-                        try {
-                            throw new IOException();
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else {
-                        return new MockHttpResponse(request, 200);
-                    }
-                }
-            }).build();
+            if (count == 0) {
+                throw CoreException.from(new IOException());
+            } else {
+                return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+            }
+        }).build();
 
         try (Response<?> response = sendRequest(pipeline)) {
             assertEquals(200, response.getStatusCode());
         }
     }
 
+    @Test
+    public void defaultRetryPolicyDoesNotRetryUnretryable() {
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> {
+            int count = attemptCount.getAndIncrement();
+
+            if (count == 0) {
+                throw CoreException.from(new IOException(), false);
+            } else {
+                return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+            }
+        }).build();
+
+        assertThrows(CoreException.class, () -> sendRequest(pipeline));
+    }
+
     @ParameterizedTest
     @MethodSource("customRetryPolicyCanDetermineRetryStatusCodesSupplier")
     public void customRetryPolicyCanDetermineRetryStatusCodes(HttpRetryOptions retryOptions, int[] statusCodes,
-        int expectedStatusCode) throws IOException {
+        int expectedStatusCode) {
         AtomicInteger attempt = new AtomicInteger();
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(retryOptions)).httpClient(new NoOpHttpClient() {
-
-                @Override
-                public Response<?> send(HttpRequest request) {
-                    return new MockHttpResponse(request, statusCodes[attempt.getAndIncrement()]);
-                }
-            }).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(retryOptions))
+            .httpClient(request -> new Response<>(request, statusCodes[attempt.getAndIncrement()], new HttpHeaders(),
+                BinaryData.empty()))
+            .build();
 
         try (Response<?> response = sendRequest(pipeline)) {
             assertEquals(expectedStatusCode, response.getStatusCode());
@@ -137,17 +131,17 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void retryMax() throws IOException {
+    public void retryMax() {
         final int maxRetries = 5;
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new HttpClient() {
             int count = -1;
 
             @Override
-            public Response<?> send(HttpRequest request) {
+            public Response<BinaryData> send(HttpRequest request) {
                 Assertions.assertTrue(count++ < maxRetries);
-                return new MockHttpResponse(request, 500);
+                return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
             }
-        }).policies(new HttpRetryPolicy(new HttpRetryOptions(5, Duration.ofMillis(1)))).build();
+        }).addPolicy(new HttpRetryPolicy(new HttpRetryOptions(5, Duration.ofMillis(1)))).build();
 
         try (Response<?> response = sendRequest(pipeline)) {
             assertEquals(500, response.getStatusCode());
@@ -155,10 +149,10 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void fixedDelayRetry() throws IOException {
+    public void fixedDelayRetry() {
         final int maxRetries = 5;
         final long delayMillis = 500;
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new HttpClient() {
             int count = -1;
             long previousAttemptMadeAt = -1;
 
@@ -173,11 +167,11 @@ public class RetryPolicyTests {
             }
 
             @Override
-            public Response<?> send(HttpRequest request) {
+            public Response<BinaryData> send(HttpRequest request) {
                 beforeSendingRequest();
-                return new MockHttpResponse(request, 500);
+                return new Response<>(request, 500, new HttpHeaders(), BinaryData.empty());
             }
-        }).policies(new HttpRetryPolicy(new HttpRetryOptions(5, Duration.ofMillis(delayMillis)))).build();
+        }).addPolicy(new HttpRetryPolicy(new HttpRetryOptions(5, Duration.ofMillis(delayMillis)))).build();
 
         try (Response<?> response = sendRequest(pipeline)) {
             assertEquals(500, response.getStatusCode());
@@ -185,13 +179,13 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void exponentialDelayRetry() throws IOException {
+    public void exponentialDelayRetry() {
         final int maxRetries = 5;
         final long baseDelayMillis = 100;
         final long maxDelayMillis = 1000;
         HttpRetryOptions exponentialBackoff
             = new HttpRetryOptions(5, Duration.ofMillis(baseDelayMillis), Duration.ofMillis(maxDelayMillis));
-        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new HttpClient() {
             int count = -1;
             long previousAttemptMadeAt = -1;
 
@@ -209,12 +203,12 @@ public class RetryPolicyTests {
             }
 
             @Override
-            public Response<?> send(HttpRequest request) {
+            public Response<BinaryData> send(HttpRequest request) {
                 beforeSendingRequest();
 
-                return new MockHttpResponse(request, 503);
+                return new Response<>(request, 503, new HttpHeaders(), BinaryData.empty());
             }
-        }).policies(new HttpRetryPolicy(exponentialBackoff)).build();
+        }).addPolicy(new HttpRetryPolicy(exponentialBackoff)).build();
 
         try (Response<?> response = sendRequest(pipeline)) {
             assertEquals(503, response.getStatusCode());
@@ -222,20 +216,21 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void retryConsumesBody() throws IOException {
+    public void retryConsumesBody() {
         AtomicInteger closeCalls = new AtomicInteger();
-        Response<?> closeTrackingHttpResponse = new MockHttpResponse(null, 503, new HttpHeaders()) {
-            @Override
-            public void close() throws IOException {
-                closeCalls.incrementAndGet();
-                super.close();
-            }
-        };
+        Response<BinaryData> closeTrackingHttpResponse
+            = new Response<BinaryData>(null, 503, new HttpHeaders(), BinaryData.empty()) {
+                @Override
+                public void close() {
+                    closeCalls.incrementAndGet();
+                    super.close();
+                }
+            };
 
         HttpClient httpClient = request -> closeTrackingHttpResponse;
 
         final HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(new HttpRetryOptions(2, Duration.ofMillis(1))))
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(new HttpRetryOptions(2, Duration.ofMillis(1))))
                 .httpClient(httpClient)
                 .build();
 
@@ -249,11 +244,11 @@ public class RetryPolicyTests {
         AtomicInteger count = new AtomicInteger();
 
         HttpClient httpClient = request -> {
-            throw new IOException("Attempt " + count.incrementAndGet());
+            throw CoreException.from(new IOException("Attempt " + count.incrementAndGet()));
         };
 
         final HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(new HttpRetryOptions(2, Duration.ofMillis(1))))
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(new HttpRetryOptions(2, Duration.ofMillis(1))))
                 .httpClient(httpClient)
                 .build();
 
@@ -279,44 +274,46 @@ public class RetryPolicyTests {
 
     @ParameterizedTest
     @MethodSource("getWellKnownRetryDelaySupplier")
-    public void retryWellKnownRetryHeaders(HttpHeaders responseHeaders) throws IOException {
+    public void retryWellKnownRetryHeaders(HttpHeaders responseHeaders) {
         HttpRetryOptions retryOptions = new HttpRetryOptions(1, Duration.ofMillis(1));
 
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(retryOptions)).httpClient(request -> {
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(retryOptions)).httpClient(request -> {
                 int count = attemptCount.getAndIncrement();
                 if (count == 0) {
-                    return new MockHttpResponse(request, 503, responseHeaders);
+                    return new Response<>(request, 503, responseHeaders, BinaryData.empty());
                 } else {
-                    return new MockHttpResponse(request, 200);
+                    return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 }
             }).build();
 
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
     }
 
     @Test
-    public void retryOptionsCanConfigureHttpResponseRetryLogic() throws IOException {
+    public void retryOptionsCanConfigureHttpResponseRetryLogic() {
         // Fixed delay retry options which only retries on 429 responses
         HttpRetryOptions retryOptions = new HttpRetryOptions(1, Duration.ofMillis(1)).setShouldRetryCondition(
             retryInfo -> retryInfo.getResponse() != null && retryInfo.getResponse().getStatusCode() == 429);
 
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(retryOptions)).httpClient(request -> {
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(retryOptions)).httpClient(request -> {
                 int count = attemptCount.getAndIncrement();
                 if (count == 0) {
-                    return new MockHttpResponse(request, 503);
+                    return new Response<>(request, 503, new HttpHeaders(), BinaryData.empty());
                 } else {
-                    return new MockHttpResponse(request, 200);
+                    return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 }
             }).build();
 
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
             assertEquals(503, response.getStatusCode());
             assertEquals(1, attemptCount.get());
         }
@@ -330,39 +327,41 @@ public class RetryPolicyTests {
 
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(retryOptions)).httpClient(request -> {
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(retryOptions)).httpClient(request -> {
                 int count = attemptCount.getAndIncrement();
                 if (count == 0) {
                     throw new UncheckedIOException(new IOException());
                 } else {
-                    return new MockHttpResponse(request, 200);
+                    return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 }
             }).build();
 
         assertThrows(UncheckedIOException.class,
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close());
+            () -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close());
     }
 
     @Test
-    public void retryOptionsCanConfigureRetryHeaders() throws IOException {
-        HttpRetryOptions retryOptions = new HttpRetryOptions(1, Duration.ofMillis(1)).setDelayFromHeaders(headers -> {
-            String retryAfter = headers.getValue(HttpHeaderName.RETRY_AFTER);
-            return retryAfter == null ? null : Duration.ofSeconds(10);
-        });
+    public void retryOptionsCanConfigureRetryHeaders() {
+        HttpRetryOptions retryOptions
+            = new HttpRetryOptions(1, Duration.ofMillis(1)).setDelayFromRetryCondition(retryCondition -> {
+                String retryAfter = retryCondition.getResponse().getHeaders().getValue(HttpHeaderName.RETRY_AFTER);
+                return retryAfter == null ? null : Duration.ofSeconds(10);
+            });
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "10");
 
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(retryOptions)).httpClient(request -> {
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(retryOptions)).httpClient(request -> {
                 int count = attemptCount.getAndIncrement();
                 if (count == 0) {
-                    return new MockHttpResponse(request, 503, headers);
+                    return new Response<>(request, 503, headers, BinaryData.empty());
                 } else {
-                    return new MockHttpResponse(request, 200);
+                    return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                 }
             }).build();
 
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
@@ -386,7 +385,7 @@ public class RetryPolicyTests {
     }
 
     static Response<?> sendRequest(HttpPipeline pipeline) {
-        return pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"));
+        return pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"));
     }
 
     static HttpRetryOptions createStatusCodeRetryStrategy(int... retriableErrorCodes) {

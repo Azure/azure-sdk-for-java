@@ -22,8 +22,11 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.fluent.CognitiveServicesManagementClient;
+import com.azure.resourcemanager.cognitiveservices.implementation.AccountCapabilityHostsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.AccountConnectionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.AccountsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.CognitiveServicesManagementClientBuilder;
 import com.azure.resourcemanager.cognitiveservices.implementation.CommitmentPlansImpl;
@@ -39,13 +42,20 @@ import com.azure.resourcemanager.cognitiveservices.implementation.NetworkSecurit
 import com.azure.resourcemanager.cognitiveservices.implementation.OperationsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.PrivateLinkResourcesImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ProjectCapabilityHostsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ProjectConnectionsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.ProjectsImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.QuotaTiersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBlocklistItemsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiBlocklistsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiContentFiltersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.RaiPoliciesImpl;
+import com.azure.resourcemanager.cognitiveservices.implementation.RaiTopicsImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.ResourceSkusImpl;
 import com.azure.resourcemanager.cognitiveservices.implementation.UsagesImpl;
+import com.azure.resourcemanager.cognitiveservices.models.AccountCapabilityHosts;
+import com.azure.resourcemanager.cognitiveservices.models.AccountConnections;
 import com.azure.resourcemanager.cognitiveservices.models.Accounts;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlans;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTiers;
@@ -60,10 +70,15 @@ import com.azure.resourcemanager.cognitiveservices.models.NetworkSecurityPerimet
 import com.azure.resourcemanager.cognitiveservices.models.Operations;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResources;
+import com.azure.resourcemanager.cognitiveservices.models.ProjectCapabilityHosts;
+import com.azure.resourcemanager.cognitiveservices.models.ProjectConnections;
+import com.azure.resourcemanager.cognitiveservices.models.Projects;
+import com.azure.resourcemanager.cognitiveservices.models.QuotaTiers;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistItems;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklists;
 import com.azure.resourcemanager.cognitiveservices.models.RaiContentFilters;
 import com.azure.resourcemanager.cognitiveservices.models.RaiPolicies;
+import com.azure.resourcemanager.cognitiveservices.models.RaiTopics;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceProviders;
 import com.azure.resourcemanager.cognitiveservices.models.ResourceSkus;
 import com.azure.resourcemanager.cognitiveservices.models.Usages;
@@ -71,6 +86,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -115,11 +131,25 @@ public final class CognitiveServicesManager {
 
     private RaiBlocklistItems raiBlocklistItems;
 
+    private RaiTopics raiTopics;
+
     private RaiContentFilters raiContentFilters;
 
     private NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations;
 
     private DefenderForAISettings defenderForAISettings;
+
+    private Projects projects;
+
+    private AccountConnections accountConnections;
+
+    private ProjectConnections projectConnections;
+
+    private AccountCapabilityHosts accountCapabilityHosts;
+
+    private ProjectCapabilityHosts projectCapabilityHosts;
+
+    private QuotaTiers quotaTiers;
 
     private final CognitiveServicesManagementClient clientObject;
 
@@ -173,6 +203,9 @@ public final class CognitiveServicesManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-cognitiveservices.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -280,12 +313,14 @@ public final class CognitiveServicesManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.cognitiveservices")
                 .append("/")
-                .append("1.1.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -550,6 +585,18 @@ public final class CognitiveServicesManager {
     }
 
     /**
+     * Gets the resource collection API of RaiTopics. It manages RaiTopic.
+     * 
+     * @return Resource collection API of RaiTopics.
+     */
+    public RaiTopics raiTopics() {
+        if (this.raiTopics == null) {
+            this.raiTopics = new RaiTopicsImpl(clientObject.getRaiTopics(), this);
+        }
+        return raiTopics;
+    }
+
+    /**
      * Gets the resource collection API of RaiContentFilters.
      * 
      * @return Resource collection API of RaiContentFilters.
@@ -584,6 +631,80 @@ public final class CognitiveServicesManager {
             this.defenderForAISettings = new DefenderForAISettingsImpl(clientObject.getDefenderForAISettings(), this);
         }
         return defenderForAISettings;
+    }
+
+    /**
+     * Gets the resource collection API of Projects. It manages Project.
+     * 
+     * @return Resource collection API of Projects.
+     */
+    public Projects projects() {
+        if (this.projects == null) {
+            this.projects = new ProjectsImpl(clientObject.getProjects(), this);
+        }
+        return projects;
+    }
+
+    /**
+     * Gets the resource collection API of AccountConnections. It manages ConnectionPropertiesV2BasicResource.
+     * 
+     * @return Resource collection API of AccountConnections.
+     */
+    public AccountConnections accountConnections() {
+        if (this.accountConnections == null) {
+            this.accountConnections = new AccountConnectionsImpl(clientObject.getAccountConnections(), this);
+        }
+        return accountConnections;
+    }
+
+    /**
+     * Gets the resource collection API of ProjectConnections.
+     * 
+     * @return Resource collection API of ProjectConnections.
+     */
+    public ProjectConnections projectConnections() {
+        if (this.projectConnections == null) {
+            this.projectConnections = new ProjectConnectionsImpl(clientObject.getProjectConnections(), this);
+        }
+        return projectConnections;
+    }
+
+    /**
+     * Gets the resource collection API of AccountCapabilityHosts. It manages CapabilityHost.
+     * 
+     * @return Resource collection API of AccountCapabilityHosts.
+     */
+    public AccountCapabilityHosts accountCapabilityHosts() {
+        if (this.accountCapabilityHosts == null) {
+            this.accountCapabilityHosts
+                = new AccountCapabilityHostsImpl(clientObject.getAccountCapabilityHosts(), this);
+        }
+        return accountCapabilityHosts;
+    }
+
+    /**
+     * Gets the resource collection API of ProjectCapabilityHosts.
+     * 
+     * @return Resource collection API of ProjectCapabilityHosts.
+     */
+    public ProjectCapabilityHosts projectCapabilityHosts() {
+        if (this.projectCapabilityHosts == null) {
+            this.projectCapabilityHosts
+                = new ProjectCapabilityHostsImpl(clientObject.getProjectCapabilityHosts(), this);
+        }
+        return projectCapabilityHosts;
+    }
+
+    /**
+     * Gets the resource collection API of QuotaTiers. It manages QuotaTier.
+     * 
+     * @return Resource collection API of QuotaTiers.
+     */
+    public QuotaTiers quotaTiers() {
+        if (this.quotaTiers == null) {
+            this.quotaTiers = new QuotaTiersImpl(clientObject.getQuotaTiers(), this);
+        }
+        return quotaTiers;
     }
 
     /**

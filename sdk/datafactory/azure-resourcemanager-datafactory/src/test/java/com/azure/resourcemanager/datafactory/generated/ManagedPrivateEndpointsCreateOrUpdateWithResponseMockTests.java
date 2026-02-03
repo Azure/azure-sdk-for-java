@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ConnectionStateProperties;
@@ -26,30 +26,31 @@ public final class ManagedPrivateEndpointsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"fiwaocf\",\"description\":\"fjxdccwuzqwv\",\"status\":\"ewl\"},\"fqdns\":[\"eupsubawza\",\"zdzhhgbxcel\",\"awwjobtkyjvzzb\",\"ylimnm\"],\"groupId\":\"sjuacdqvr\",\"isReserved\":true,\"privateLinkResourceId\":\"qotzpepmlckz\",\"provisioningState\":\"ietfx\",\"\":{\"ehvmrao\":\"datazlivkaxwfkanuqf\",\"jti\":\"dataniibcily\",\"igy\":\"datahzjhqfuqomwh\",\"jjhn\":\"datagqewcv\"}},\"name\":\"rsgrt\",\"type\":\"depaun\",\"etag\":\"knucsrqfmcrye\",\"id\":\"lx\"}";
+            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"jyfiabhepxqtkynl\",\"description\":\"norhwdo\",\"status\":\"ythsl\"},\"fqdns\":[\"lvwbgbmpit\"],\"groupId\":\"xhiuhgvgnolusqfd\",\"isReserved\":true,\"privateLinkResourceId\":\"pwvieymkguvrd\",\"provisioningState\":\"proytd\",\"vmvpp\":\"datalq\",\"is\":\"datatsolxnhlrpsign\"},\"name\":\"obpxfgp\",\"type\":\"zdzswvfwiunjwqx\",\"etag\":\"tfzgdq\",\"id\":\"vbiryxsa\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedPrivateEndpointResource response = manager.managedPrivateEndpoints()
-            .define("ukc")
-            .withExistingManagedVirtualNetwork("krejuuii", "rbtfarb", "arxyh")
+            .define("zbg")
+            .withExistingManagedVirtualNetwork("cwacchixdafrx", "rhqzjz", "onttfvjfwl")
             .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                .withFqdns(Arrays.asList("czlyludrziaxige", "smuhkhnzsr"))
-                .withGroupId("wvzepgljtu")
-                .withPrivateLinkResourceId("prnfrl")
-                .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "cnbrwhsqtzgmf")))
-            .withIfMatch("itoibgv")
+                .withFqdns(Arrays.asList("sayiivoixefncqf", "wqnz", "ctnmkitsvkuop", "vqsabopou"))
+                .withGroupId("gxnzpqegga")
+                .withPrivateLinkResourceId("zudysndiexb")
+                .withAdditionalProperties(mapOf("orengkunydgw", "datarggqaohaxqvbzze", "jcdcduwuintii",
+                    "datauoharvjfzz", "unsydjcemu", "datad", "isReserved", false, "provisioningState", "wjmqn")))
+            .withIfMatch("nfwijlvkrnsodohp")
             .create();
 
-        Assertions.assertEquals("lx", response.id());
-        Assertions.assertEquals("eupsubawza", response.properties().fqdns().get(0));
-        Assertions.assertEquals("sjuacdqvr", response.properties().groupId());
-        Assertions.assertEquals("qotzpepmlckz", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("vbiryxsa", response.id());
+        Assertions.assertEquals("lvwbgbmpit", response.properties().fqdns().get(0));
+        Assertions.assertEquals("xhiuhgvgnolusqfd", response.properties().groupId());
+        Assertions.assertEquals("pwvieymkguvrd", response.properties().privateLinkResourceId());
     }
 
     // Use "Map.of" if available

@@ -50,13 +50,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * The SampleFindingInferenceAsync class processes a sample radiology document
  * with the Radiology Insights service. It will initialize an asynchronous
  * RadiologyInsightsAsyncClient, build a Radiology Insights request with the sample document, poll the
- * results and display the Critical Results extracted by the Radiology Insights service.
+ * results and display the Finding Inferences extracted by the Radiology Insights service.
  *
  */
 public class SampleFindingInferenceAsync {
@@ -112,7 +113,6 @@ public class SampleFindingInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayFindings(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -120,6 +120,22 @@ public class SampleFindingInferenceAsync {
             });
 
         latch.await();
+        mono.subscribe(radiologyInsightsResult -> {
+            // Process the result asynchronously
+            displayFindings(radiologyInsightsResult);
+        }, error -> {
+            // Handle any errors
+            System.err.println("Error occurred: " + error.getMessage());
+            error.printStackTrace();
+        });
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;

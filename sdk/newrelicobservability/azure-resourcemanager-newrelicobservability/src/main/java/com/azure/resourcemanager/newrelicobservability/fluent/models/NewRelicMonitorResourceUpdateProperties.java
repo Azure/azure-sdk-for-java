@@ -13,6 +13,7 @@ import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSou
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicAccountProperties;
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
+import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
 import com.azure.resourcemanager.newrelicobservability.models.UserInfo;
 import java.io.IOException;
 
@@ -36,6 +37,11 @@ public final class NewRelicMonitorResourceUpdateProperties
      * Plan details
      */
     private PlanData planData;
+
+    /*
+     * SaaS details
+     */
+    private SaaSData saaSData;
 
     /*
      * Source of org creation
@@ -115,6 +121,26 @@ public final class NewRelicMonitorResourceUpdateProperties
     }
 
     /**
+     * Get the saaSData property: SaaS details.
+     * 
+     * @return the saaSData value.
+     */
+    public SaaSData saaSData() {
+        return this.saaSData;
+    }
+
+    /**
+     * Set the saaSData property: SaaS details.
+     * 
+     * @param saaSData the saaSData value to set.
+     * @return the NewRelicMonitorResourceUpdateProperties object itself.
+     */
+    public NewRelicMonitorResourceUpdateProperties withSaaSData(SaaSData saaSData) {
+        this.saaSData = saaSData;
+        return this;
+    }
+
+    /**
      * Get the orgCreationSource property: Source of org creation.
      * 
      * @return the orgCreationSource value.
@@ -170,6 +196,9 @@ public final class NewRelicMonitorResourceUpdateProperties
         if (planData() != null) {
             planData().validate();
         }
+        if (saaSData() != null) {
+            saaSData().validate();
+        }
     }
 
     /**
@@ -181,6 +210,7 @@ public final class NewRelicMonitorResourceUpdateProperties
         jsonWriter.writeJsonField("newRelicAccountProperties", this.newRelicAccountProperties);
         jsonWriter.writeJsonField("userInfo", this.userInfo);
         jsonWriter.writeJsonField("planData", this.planData);
+        jsonWriter.writeJsonField("saaSData", this.saaSData);
         jsonWriter.writeStringField("orgCreationSource",
             this.orgCreationSource == null ? null : this.orgCreationSource.toString());
         jsonWriter.writeStringField("accountCreationSource",
@@ -211,6 +241,8 @@ public final class NewRelicMonitorResourceUpdateProperties
                     deserializedNewRelicMonitorResourceUpdateProperties.userInfo = UserInfo.fromJson(reader);
                 } else if ("planData".equals(fieldName)) {
                     deserializedNewRelicMonitorResourceUpdateProperties.planData = PlanData.fromJson(reader);
+                } else if ("saaSData".equals(fieldName)) {
+                    deserializedNewRelicMonitorResourceUpdateProperties.saaSData = SaaSData.fromJson(reader);
                 } else if ("orgCreationSource".equals(fieldName)) {
                     deserializedNewRelicMonitorResourceUpdateProperties.orgCreationSource
                         = OrgCreationSource.fromString(reader.getString());

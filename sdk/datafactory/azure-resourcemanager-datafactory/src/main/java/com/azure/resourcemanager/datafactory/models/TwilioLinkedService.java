@@ -51,7 +51,7 @@ public final class TwilioLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private TwilioLinkedServiceTypeProperties innerTypeProperties() {
+    TwilioLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

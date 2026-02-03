@@ -51,7 +51,7 @@ public final class SalesforceLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SalesforceLinkedServiceTypeProperties innerTypeProperties() {
+    SalesforceLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

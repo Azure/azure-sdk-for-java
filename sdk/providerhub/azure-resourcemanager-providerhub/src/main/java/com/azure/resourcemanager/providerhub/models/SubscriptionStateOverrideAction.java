@@ -18,12 +18,12 @@ import java.io.IOException;
 @Fluent
 public final class SubscriptionStateOverrideAction implements JsonSerializable<SubscriptionStateOverrideAction> {
     /*
-     * The state property.
+     * The state.
      */
     private SubscriptionTransitioningState state;
 
     /*
-     * The action property.
+     * The action.
      */
     private SubscriptionNotificationOperation action;
 
@@ -34,7 +34,7 @@ public final class SubscriptionStateOverrideAction implements JsonSerializable<S
     }
 
     /**
-     * Get the state property: The state property.
+     * Get the state property: The state.
      * 
      * @return the state value.
      */
@@ -43,7 +43,7 @@ public final class SubscriptionStateOverrideAction implements JsonSerializable<S
     }
 
     /**
-     * Set the state property: The state property.
+     * Set the state property: The state.
      * 
      * @param state the state value to set.
      * @return the SubscriptionStateOverrideAction object itself.
@@ -54,7 +54,7 @@ public final class SubscriptionStateOverrideAction implements JsonSerializable<S
     }
 
     /**
-     * Get the action property: The action property.
+     * Get the action property: The action.
      * 
      * @return the action value.
      */
@@ -63,7 +63,7 @@ public final class SubscriptionStateOverrideAction implements JsonSerializable<S
     }
 
     /**
-     * Set the action property: The action property.
+     * Set the action property: The action.
      * 
      * @param action the action value to set.
      * @return the SubscriptionStateOverrideAction object itself.

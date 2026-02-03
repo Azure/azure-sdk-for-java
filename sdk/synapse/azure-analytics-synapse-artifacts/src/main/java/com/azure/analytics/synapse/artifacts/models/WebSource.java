@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,17 +21,20 @@ public final class WebSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "WebSource";
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of WebSource class.
      */
+    @Generated
     public WebSource() {
     }
 
@@ -39,6 +43,7 @@ public final class WebSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public final class WebSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -61,6 +67,7 @@ public final class WebSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the WebSource object itself.
      */
+    @Generated
     public WebSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -69,6 +76,7 @@ public final class WebSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -78,6 +86,7 @@ public final class WebSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -87,6 +96,7 @@ public final class WebSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -96,14 +106,23 @@ public final class WebSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -120,6 +139,7 @@ public final class WebSource extends CopySource {
      * to JSON null.
      * @throws IOException If an error occurs while reading the WebSource.
      */
+    @Generated
     public static WebSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebSource deserializedWebSource = new WebSource();

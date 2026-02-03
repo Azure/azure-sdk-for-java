@@ -39,20 +39,6 @@ public final class EmbeddingsResult implements JsonSerializable<EmbeddingsResult
     private final String model;
 
     /**
-     * Creates an instance of EmbeddingsResult class.
-     *
-     * @param data the data value to set.
-     * @param usage the usage value to set.
-     * @param model the model value to set.
-     */
-    @Generated
-    private EmbeddingsResult(List<EmbeddingItem> data, EmbeddingsUsage usage, String model) {
-        this.data = data;
-        this.usage = usage;
-        this.model = model;
-    }
-
-    /**
      * Get the data property: Embedding values for the prompts submitted in the request.
      *
      * @return the data value.
@@ -89,6 +75,7 @@ public final class EmbeddingsResult implements JsonSerializable<EmbeddingsResult
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeStringField("model", this.model);
@@ -107,13 +94,16 @@ public final class EmbeddingsResult implements JsonSerializable<EmbeddingsResult
     @Generated
     public static EmbeddingsResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            String id = null;
             List<EmbeddingItem> data = null;
             EmbeddingsUsage usage = null;
             String model = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("data".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("data".equals(fieldName)) {
                     data = reader.readArray(reader1 -> EmbeddingItem.fromJson(reader1));
                 } else if ("usage".equals(fieldName)) {
                     usage = EmbeddingsUsage.fromJson(reader);
@@ -123,7 +113,39 @@ public final class EmbeddingsResult implements JsonSerializable<EmbeddingsResult
                     reader.skipChildren();
                 }
             }
-            return new EmbeddingsResult(data, usage, model);
+            return new EmbeddingsResult(id, data, usage, model);
         });
+    }
+
+    /*
+     * Unique identifier for the embeddings result.
+     */
+    @Generated
+    private final String id;
+
+    /**
+     * Creates an instance of EmbeddingsResult class.
+     *
+     * @param id the id value to set.
+     * @param data the data value to set.
+     * @param usage the usage value to set.
+     * @param model the model value to set.
+     */
+    @Generated
+    private EmbeddingsResult(String id, List<EmbeddingItem> data, EmbeddingsUsage usage, String model) {
+        this.id = id;
+        this.data = data;
+        this.usage = usage;
+        this.model = model;
+    }
+
+    /**
+     * Get the id property: Unique identifier for the embeddings result.
+     *
+     * @return the id value.
+     */
+    @Generated
+    public String getId() {
+        return this.id;
     }
 }

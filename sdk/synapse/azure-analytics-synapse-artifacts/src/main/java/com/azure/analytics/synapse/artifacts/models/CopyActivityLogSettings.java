@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class CopyActivityLogSettings implements JsonSerializable<CopyActiv
     /*
      * Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object logLevel;
 
     /*
      * Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enableReliableLogging;
 
     /**
      * Creates an instance of CopyActivityLogSettings class.
      */
+    @Generated
     public CopyActivityLogSettings() {
     }
 
@@ -38,6 +42,7 @@ public final class CopyActivityLogSettings implements JsonSerializable<CopyActiv
      * 
      * @return the logLevel value.
      */
+    @Generated
     public Object getLogLevel() {
         return this.logLevel;
     }
@@ -49,6 +54,7 @@ public final class CopyActivityLogSettings implements JsonSerializable<CopyActiv
      * @param logLevel the logLevel value to set.
      * @return the CopyActivityLogSettings object itself.
      */
+    @Generated
     public CopyActivityLogSettings setLogLevel(Object logLevel) {
         this.logLevel = logLevel;
         return this;
@@ -60,6 +66,7 @@ public final class CopyActivityLogSettings implements JsonSerializable<CopyActiv
      * 
      * @return the enableReliableLogging value.
      */
+    @Generated
     public Object getEnableReliableLogging() {
         return this.enableReliableLogging;
     }
@@ -71,6 +78,7 @@ public final class CopyActivityLogSettings implements JsonSerializable<CopyActiv
      * @param enableReliableLogging the enableReliableLogging value to set.
      * @return the CopyActivityLogSettings object itself.
      */
+    @Generated
     public CopyActivityLogSettings setEnableReliableLogging(Object enableReliableLogging) {
         this.enableReliableLogging = enableReliableLogging;
         return this;
@@ -79,11 +87,16 @@ public final class CopyActivityLogSettings implements JsonSerializable<CopyActiv
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("logLevel", this.logLevel);
-        jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        if (this.logLevel != null) {
+            jsonWriter.writeUntypedField("logLevel", this.logLevel);
+        }
+        if (this.enableReliableLogging != null) {
+            jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -95,6 +108,7 @@ public final class CopyActivityLogSettings implements JsonSerializable<CopyActiv
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CopyActivityLogSettings.
      */
+    @Generated
     public static CopyActivityLogSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CopyActivityLogSettings deserializedCopyActivityLogSettings = new CopyActivityLogSettings();

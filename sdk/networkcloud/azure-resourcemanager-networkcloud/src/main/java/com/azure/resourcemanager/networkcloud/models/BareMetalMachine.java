@@ -51,6 +51,13 @@ public interface BareMetalMachine {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the extendedLocation property: The extended location of the cluster associated with the resource.
      * 
      * @return the extendedLocation value.
@@ -63,6 +70,14 @@ public interface BareMetalMachine {
      * @return the systemData value.
      */
     SystemData systemData();
+
+    /**
+     * Gets the actionStates property: The current state of any in progress or completed actions. The most recent known
+     * instance of each action type is shown.
+     * 
+     * @return the actionStates value.
+     */
+    List<ActionState> actionStates();
 
     /**
      * Gets the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
@@ -101,6 +116,15 @@ public interface BareMetalMachine {
      * @return the bootMacAddress value.
      */
     String bootMacAddress();
+
+    /**
+     * Gets the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
+     * interfaces for the bare metal machine. Callers add this certificate to the trusted CA store on the Kubernetes
+     * control plane nodes to allow secure communication with the bare metal machine.
+     * 
+     * @return the caCertificate value.
+     */
+    CertificateInfo caCertificate();
 
     /**
      * Gets the clusterId property: The resource ID of the cluster this bare metal machine is associated with.
@@ -536,7 +560,8 @@ public interface BareMetalMachine {
          * The stage of the BareMetalMachine definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithMachineClusterVersion {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithMachineClusterVersion,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -580,6 +605,37 @@ public interface BareMetalMachine {
              */
             WithCreate withMachineClusterVersion(String machineClusterVersion);
         }
+
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the BareMetalMachine definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
+        }
     }
 
     /**
@@ -592,7 +648,8 @@ public interface BareMetalMachine {
     /**
      * The template for BareMetalMachine update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithMachineDetails {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithMachineDetails, UpdateStages.WithIfMatch,
+        UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -632,14 +689,44 @@ public interface BareMetalMachine {
         interface WithMachineDetails {
             /**
              * Specifies the machineDetails property: The details provided by the customer during the creation of rack
-             * manifests
-             * that allows for custom data to be associated with this machine..
+             * manifests that allows for custom data to be associated with this machine..
              * 
-             * @param machineDetails The details provided by the customer during the creation of rack manifests
-             * that allows for custom data to be associated with this machine.
+             * @param machineDetails The details provided by the customer during the creation of rack manifests that
+             * allows for custom data to be associated with this machine.
              * @return the next definition stage.
              */
             Update withMachineDetails(String machineDetails);
+        }
+
+        /**
+         * The stage of the BareMetalMachine update allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the BareMetalMachine update allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
 
@@ -842,6 +929,39 @@ public interface BareMetalMachine {
      */
     OperationStatusResult runDataExtracts(
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult runDataExtractsRestricted(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters);
+
+    /**
+     * Run restricted data extraction for a bare metal machine.
+     * 
+     * Run one or more restricted data extractions on the provided bare metal machine. The URL to storage account with
+     * the command execution results and the command exit code can be retrieved from the operation status API once
+     * available.
+     * 
+     * @param bareMetalMachineRunDataExtractsRestrictedParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult runDataExtractsRestricted(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.

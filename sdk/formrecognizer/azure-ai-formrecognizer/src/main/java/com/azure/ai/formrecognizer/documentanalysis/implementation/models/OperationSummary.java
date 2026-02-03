@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -25,46 +26,55 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
     /*
      * Operation ID
      */
+    @Generated
     private final String operationId;
 
     /*
      * Operation status.
      */
+    @Generated
     private final OperationStatus status;
 
     /*
      * Operation progress (0-100).
      */
+    @Generated
     private Integer percentCompleted;
 
     /*
      * Date and time (UTC) when the operation was created.
      */
+    @Generated
     private final OffsetDateTime createdDateTime;
 
     /*
      * Date and time (UTC) when the status was last updated.
      */
+    @Generated
     private final OffsetDateTime lastUpdatedDateTime;
 
     /*
      * Type of operation.
      */
+    @Generated
     private final OperationKind kind;
 
     /*
      * URL of the resource targeted by this operation.
      */
+    @Generated
     private final String resourceLocation;
 
     /*
      * API version used to create this operation.
      */
+    @Generated
     private String apiVersion;
 
     /*
      * List of key-value tag attributes associated with the document model.
      */
+    @Generated
     private Map<String, String> tags;
 
     /**
@@ -77,6 +87,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * @param kind the kind value to set.
      * @param resourceLocation the resourceLocation value to set.
      */
+    @Generated
     public OperationSummary(String operationId, OperationStatus status, OffsetDateTime createdDateTime,
         OffsetDateTime lastUpdatedDateTime, OperationKind kind, String resourceLocation) {
         this.operationId = operationId;
@@ -92,6 +103,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the operationId value.
      */
+    @Generated
     public String getOperationId() {
         return this.operationId;
     }
@@ -101,6 +113,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the status value.
      */
+    @Generated
     public OperationStatus getStatus() {
         return this.status;
     }
@@ -110,6 +123,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the percentCompleted value.
      */
+    @Generated
     public Integer getPercentCompleted() {
         return this.percentCompleted;
     }
@@ -120,6 +134,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * @param percentCompleted the percentCompleted value to set.
      * @return the OperationSummary object itself.
      */
+    @Generated
     public OperationSummary setPercentCompleted(Integer percentCompleted) {
         this.percentCompleted = percentCompleted;
         return this;
@@ -130,6 +145,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the createdDateTime value.
      */
+    @Generated
     public OffsetDateTime getCreatedDateTime() {
         return this.createdDateTime;
     }
@@ -139,6 +155,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the lastUpdatedDateTime value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedDateTime() {
         return this.lastUpdatedDateTime;
     }
@@ -148,6 +165,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the kind value.
      */
+    @Generated
     public OperationKind getKind() {
         return this.kind;
     }
@@ -157,6 +175,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the resourceLocation value.
      */
+    @Generated
     public String getResourceLocation() {
         return this.resourceLocation;
     }
@@ -166,6 +185,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the apiVersion value.
      */
+    @Generated
     public String getApiVersion() {
         return this.apiVersion;
     }
@@ -176,6 +196,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * @param apiVersion the apiVersion value to set.
      * @return the OperationSummary object itself.
      */
+    @Generated
     public OperationSummary setApiVersion(String apiVersion) {
         this.apiVersion = apiVersion;
         return this;
@@ -186,6 +207,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * 
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getTags() {
         return this.tags;
     }
@@ -196,6 +218,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * @param tags the tags value to set.
      * @return the OperationSummary object itself.
      */
+    @Generated
     public OperationSummary setTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -204,6 +227,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -232,6 +256,7 @@ public final class OperationSummary implements JsonSerializable<OperationSummary
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OperationSummary.
      */
+    @Generated
     public static OperationSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean operationIdFound = false;

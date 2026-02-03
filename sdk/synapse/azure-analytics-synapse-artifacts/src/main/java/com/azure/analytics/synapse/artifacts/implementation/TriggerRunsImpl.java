@@ -55,7 +55,7 @@ public final class TriggerRunsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientTrigg")
+    @ServiceInterface(name = "ArtifactsClientTriggerRuns")
     public interface TriggerRunsService {
         @Post("/triggers/{triggerName}/triggerRuns/{runId}/rerun")
         @ExpectedResponses({ 200 })

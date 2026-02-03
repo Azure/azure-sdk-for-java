@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMBackupReque
 public final class BackupsTriggerSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * Common/TriggerBackup_Post.json
      */
     /**

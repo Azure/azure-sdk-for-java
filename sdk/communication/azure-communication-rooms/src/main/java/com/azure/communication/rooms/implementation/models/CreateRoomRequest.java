@@ -5,6 +5,8 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +22,36 @@ import java.util.Map;
 @Fluent
 public final class CreateRoomRequest implements JsonSerializable<CreateRoomRequest> {
     /*
-     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
-     * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time.
+     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The default value is the current date time.
      */
+    @Generated
     private OffsetDateTime validFrom;
 
     /*
      * The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`. The default value is the current date time plus 180 days.
      */
+    @Generated
     private OffsetDateTime validUntil;
 
     /*
      * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
      * default, this flag is set to false.
      */
+    @Generated
     private Boolean pstnDialOutEnabled;
 
     /*
      * (Optional) Participants to be invited to the room.
      */
+    @Generated
     private Map<String, ParticipantProperties> participants;
 
     /**
      * Creates an instance of CreateRoomRequest class.
      */
+    @Generated
     public CreateRoomRequest() {
     }
 
@@ -54,6 +61,7 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
      * 
      * @return the validFrom value.
      */
+    @Generated
     public OffsetDateTime getValidFrom() {
         return this.validFrom;
     }
@@ -65,6 +73,7 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
      * @param validFrom the validFrom value to set.
      * @return the CreateRoomRequest object itself.
      */
+    @Generated
     public CreateRoomRequest setValidFrom(OffsetDateTime validFrom) {
         this.validFrom = validFrom;
         return this;
@@ -76,6 +85,7 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
      * 
      * @return the validUntil value.
      */
+    @Generated
     public OffsetDateTime getValidUntil() {
         return this.validUntil;
     }
@@ -87,28 +97,31 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
      * @param validUntil the validUntil value to set.
      * @return the CreateRoomRequest object itself.
      */
+    @Generated
     public CreateRoomRequest setValidUntil(OffsetDateTime validUntil) {
         this.validUntil = validUntil;
         return this;
     }
 
     /**
-     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
-     * number is enabled in a particular room. By default, this flag is set to false.
+     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
      * 
      * @return the pstnDialOutEnabled value.
      */
+    @Generated
     public Boolean isPstnDialOutEnabled() {
         return this.pstnDialOutEnabled;
     }
 
     /**
-     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
-     * number is enabled in a particular room. By default, this flag is set to false.
+     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN number
+     * is enabled in a particular room. By default, this flag is set to false.
      * 
      * @param pstnDialOutEnabled the pstnDialOutEnabled value to set.
      * @return the CreateRoomRequest object itself.
      */
+    @Generated
     public CreateRoomRequest setPstnDialOutEnabled(Boolean pstnDialOutEnabled) {
         this.pstnDialOutEnabled = pstnDialOutEnabled;
         return this;
@@ -119,6 +132,7 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
      * 
      * @return the participants value.
      */
+    @Generated
     public Map<String, ParticipantProperties> getParticipants() {
         return this.participants;
     }
@@ -129,11 +143,16 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
      * @param participants the participants value to set.
      * @return the CreateRoomRequest object itself.
      */
+    @Generated
     public CreateRoomRequest setParticipants(Map<String, ParticipantProperties> participants) {
         this.participants = participants;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -154,6 +173,7 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the CreateRoomRequest.
      */
+    @Generated
     public static CreateRoomRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CreateRoomRequest deserializedCreateRoomRequest = new CreateRoomRequest();
@@ -162,11 +182,11 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
                 reader.nextToken();
 
                 if ("validFrom".equals(fieldName)) {
-                    deserializedCreateRoomRequest.validFrom
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedCreateRoomRequest.validFrom = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("validUntil".equals(fieldName)) {
-                    deserializedCreateRoomRequest.validUntil
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedCreateRoomRequest.validUntil = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("pstnDialOutEnabled".equals(fieldName)) {
                     deserializedCreateRoomRequest.pstnDialOutEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("participants".equals(fieldName)) {

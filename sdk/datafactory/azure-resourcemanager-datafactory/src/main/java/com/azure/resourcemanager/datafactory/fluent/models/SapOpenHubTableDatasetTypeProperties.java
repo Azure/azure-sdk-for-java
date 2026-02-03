@@ -132,8 +132,12 @@ public final class SapOpenHubTableDatasetTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("openHubDestinationName", this.openHubDestinationName);
-        jsonWriter.writeUntypedField("excludeLastRequest", this.excludeLastRequest);
-        jsonWriter.writeUntypedField("baseRequestId", this.baseRequestId);
+        if (this.excludeLastRequest != null) {
+            jsonWriter.writeUntypedField("excludeLastRequest", this.excludeLastRequest);
+        }
+        if (this.baseRequestId != null) {
+            jsonWriter.writeUntypedField("baseRequestId", this.baseRequestId);
+        }
         return jsonWriter.writeEndObject();
     }
 

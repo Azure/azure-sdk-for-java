@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,47 +23,56 @@ public class Activity implements JsonSerializable<Activity> {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Activity";
 
     /*
      * Activity name.
      */
+    @Generated
     private String name;
 
     /*
      * Activity description.
      */
+    @Generated
     private String description;
 
     /*
      * Activity state. This is an optional property and if not provided, the state will be Active by default.
      */
+    @Generated
     private ActivityState state;
 
     /*
      * Status result of the activity when the state is set to Inactive. This is an optional property and if not provided
      * when the activity is inactive, the status will be Succeeded by default.
      */
+    @Generated
     private ActivityOnInactiveMarkAs onInactiveMarkAs;
 
     /*
      * Activity depends on condition.
      */
+    @Generated
     private List<ActivityDependency> dependsOn;
 
     /*
      * Activity user properties.
      */
+    @Generated
     private List<UserProperty> userProperties;
 
     /*
      * A pipeline activity.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of Activity class.
      */
+    @Generated
     public Activity() {
     }
 
@@ -71,6 +81,7 @@ public class Activity implements JsonSerializable<Activity> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -80,6 +91,7 @@ public class Activity implements JsonSerializable<Activity> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -90,6 +102,7 @@ public class Activity implements JsonSerializable<Activity> {
      * @param name the name value to set.
      * @return the Activity object itself.
      */
+    @Generated
     public Activity setName(String name) {
         this.name = name;
         return this;
@@ -100,6 +113,7 @@ public class Activity implements JsonSerializable<Activity> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -110,6 +124,7 @@ public class Activity implements JsonSerializable<Activity> {
      * @param description the description value to set.
      * @return the Activity object itself.
      */
+    @Generated
     public Activity setDescription(String description) {
         this.description = description;
         return this;
@@ -121,6 +136,7 @@ public class Activity implements JsonSerializable<Activity> {
      * 
      * @return the state value.
      */
+    @Generated
     public ActivityState getState() {
         return this.state;
     }
@@ -132,6 +148,7 @@ public class Activity implements JsonSerializable<Activity> {
      * @param state the state value to set.
      * @return the Activity object itself.
      */
+    @Generated
     public Activity setState(ActivityState state) {
         this.state = state;
         return this;
@@ -143,6 +160,7 @@ public class Activity implements JsonSerializable<Activity> {
      * 
      * @return the onInactiveMarkAs value.
      */
+    @Generated
     public ActivityOnInactiveMarkAs getOnInactiveMarkAs() {
         return this.onInactiveMarkAs;
     }
@@ -154,6 +172,7 @@ public class Activity implements JsonSerializable<Activity> {
      * @param onInactiveMarkAs the onInactiveMarkAs value to set.
      * @return the Activity object itself.
      */
+    @Generated
     public Activity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         this.onInactiveMarkAs = onInactiveMarkAs;
         return this;
@@ -164,6 +183,7 @@ public class Activity implements JsonSerializable<Activity> {
      * 
      * @return the dependsOn value.
      */
+    @Generated
     public List<ActivityDependency> getDependsOn() {
         return this.dependsOn;
     }
@@ -174,6 +194,7 @@ public class Activity implements JsonSerializable<Activity> {
      * @param dependsOn the dependsOn value to set.
      * @return the Activity object itself.
      */
+    @Generated
     public Activity setDependsOn(List<ActivityDependency> dependsOn) {
         this.dependsOn = dependsOn;
         return this;
@@ -184,6 +205,7 @@ public class Activity implements JsonSerializable<Activity> {
      * 
      * @return the userProperties value.
      */
+    @Generated
     public List<UserProperty> getUserProperties() {
         return this.userProperties;
     }
@@ -194,6 +216,7 @@ public class Activity implements JsonSerializable<Activity> {
      * @param userProperties the userProperties value to set.
      * @return the Activity object itself.
      */
+    @Generated
     public Activity setUserProperties(List<UserProperty> userProperties) {
         this.userProperties = userProperties;
         return this;
@@ -204,6 +227,7 @@ public class Activity implements JsonSerializable<Activity> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -214,6 +238,7 @@ public class Activity implements JsonSerializable<Activity> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the Activity object itself.
      */
+    @Generated
     public Activity setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -222,6 +247,7 @@ public class Activity implements JsonSerializable<Activity> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -251,6 +277,7 @@ public class Activity implements JsonSerializable<Activity> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the Activity.
      */
+    @Generated
     public static Activity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -356,6 +383,7 @@ public class Activity implements JsonSerializable<Activity> {
         });
     }
 
+    @Generated
     static Activity fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Activity deserializedActivity = new Activity();

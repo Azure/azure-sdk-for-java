@@ -154,11 +154,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -176,19 +176,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -200,15 +200,8 @@ public final class SearchesImpl {
         String query, String addressLine, String countryRegion, List<Double> bbox, String view,
         List<Double> coordinates, String adminDistrict, String adminDistrict2, String adminDistrict3, String locality,
         String postalCode) {
-        final String accept = "application/geo+json, application/json";
-        String bboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(bbox, CollectionFormat.CSV);
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getGeocoding(this.client.getHost(), this.client.getApiVersion(),
-            this.client.getAcceptLanguage(), top, query, addressLine, countryRegion, bboxConverted, view,
-            coordinatesConverted, adminDistrict, adminDistrict2, adminDistrict3, locality, postalCode,
-            this.client.getClientId(), accept, context));
+        return FluxUtil.withContext(context -> getGeocodingWithResponseAsync(top, query, addressLine, countryRegion,
+            bbox, view, coordinates, adminDistrict, adminDistrict2, adminDistrict3, locality, postalCode, context));
     }
 
     /**
@@ -233,11 +226,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -255,19 +248,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -312,11 +305,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -334,19 +327,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -383,11 +376,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -405,19 +398,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -455,11 +448,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -477,19 +470,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -527,11 +520,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -549,19 +542,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -597,11 +590,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -619,19 +612,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -642,15 +635,9 @@ public final class SearchesImpl {
     public Mono<Response<GeocodingResponse>> getGeocodingNoCustomHeadersWithResponseAsync(Integer top, String query,
         String addressLine, String countryRegion, List<Double> bbox, String view, List<Double> coordinates,
         String adminDistrict, String adminDistrict2, String adminDistrict3, String locality, String postalCode) {
-        final String accept = "application/geo+json, application/json";
-        String bboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(bbox, CollectionFormat.CSV);
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getGeocodingNoCustomHeaders(this.client.getHost(),
-            this.client.getApiVersion(), this.client.getAcceptLanguage(), top, query, addressLine, countryRegion,
-            bboxConverted, view, coordinatesConverted, adminDistrict, adminDistrict2, adminDistrict3, locality,
-            postalCode, this.client.getClientId(), accept, context));
+        return FluxUtil
+            .withContext(context -> getGeocodingNoCustomHeadersWithResponseAsync(top, query, addressLine, countryRegion,
+                bbox, view, coordinates, adminDistrict, adminDistrict2, adminDistrict3, locality, postalCode, context));
     }
 
     /**
@@ -675,11 +662,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -697,19 +684,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -755,11 +742,11 @@ public final class SearchesImpl {
      * @param addressLine The official street line of an address relative to the area, as specified by the locality, or
      * postalCode, properties. Typical use of this element would be to provide a street address or any official address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param countryRegion Signal for the geocoding result to an [ISO 3166-1 Alpha-2 region/country
      * code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) that is specified e.g. FR./
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param bbox A rectangular area on the earth defined as a bounding box object. The sides of the rectangles are
      * defined by longitude and latitude values. When you specify this parameter, the geographical area is taken into
      * account when computing the results of a location query.
@@ -777,19 +764,19 @@ public final class SearchesImpl {
      * &amp;coordinates=lon,lat.
      * @param adminDistrict The country subdivision portion of an address, such as WA.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict2 The county for the structured address, such as King.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param adminDistrict3 The named area for the structured address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param locality The locality portion of an address, such as Seattle.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param postalCode The postal code portion of an address.
      * 
-     * **If query is given, should not use this parameter.**.
+     * This parameter should not be used when the `query` parameter is included in the request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -874,10 +861,7 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeocodingBatchResponse>>
         getGeocodingBatchWithResponseAsync(GeocodingBatchRequestBody geocodingBatchRequestBody) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getGeocodingBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), this.client.getAcceptLanguage(),
-            geocodingBatchRequestBody, accept, context));
+        return FluxUtil.withContext(context -> getGeocodingBatchWithResponseAsync(geocodingBatchRequestBody, context));
     }
 
     /**
@@ -1272,12 +1256,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boundary>> getPolygonWithResponseAsync(List<Double> coordinates, String view,
         BoundaryResultTypeEnum resultType, ResolutionEnum resolution) {
-        final String accept = "application/geo+json, application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(
-            context -> service.getPolygon(this.client.getHost(), this.client.getClientId(), this.client.getApiVersion(),
-                this.client.getAcceptLanguage(), coordinatesConverted, view, resultType, resolution, accept, context));
+        return FluxUtil
+            .withContext(context -> getPolygonWithResponseAsync(coordinates, view, resultType, resolution, context));
     }
 
     /**
@@ -1494,17 +1474,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeocodingResponse>> getReverseGeocodingWithResponseAsync(List<Double> coordinates,
         List<ReverseGeocodingResultTypeEnum> resultTypes, String view) {
-        final String accept = "application/geo+json, application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        String resultTypesConverted = (resultTypes == null)
-            ? null
-            : resultTypes.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.getReverseGeocoding(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), this.client.getAcceptLanguage(),
-            coordinatesConverted, resultTypesConverted, view, accept, context));
+        return FluxUtil
+            .withContext(context -> getReverseGeocodingWithResponseAsync(coordinates, resultTypes, view, context));
     }
 
     /**
@@ -1830,10 +1801,8 @@ public final class SearchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GeocodingBatchResponse>>
         getReverseGeocodingBatchWithResponseAsync(ReverseGeocodingBatchRequestBody reverseGeocodingBatchRequestBody) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getReverseGeocodingBatch(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), this.client.getAcceptLanguage(),
-            reverseGeocodingBatchRequestBody, accept, context));
+        return FluxUtil.withContext(
+            context -> getReverseGeocodingBatchWithResponseAsync(reverseGeocodingBatchRequestBody, context));
     }
 
     /**

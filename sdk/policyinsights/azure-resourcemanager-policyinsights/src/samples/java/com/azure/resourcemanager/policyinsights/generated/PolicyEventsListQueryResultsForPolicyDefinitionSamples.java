@@ -12,7 +12,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 public final class PolicyEventsListQueryResultsForPolicyDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScope.json
      */
     /**
@@ -30,7 +30,7 @@ public final class PolicyEventsListQueryResultsForPolicyDefinitionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScopeNextLink.json
      */
     /**

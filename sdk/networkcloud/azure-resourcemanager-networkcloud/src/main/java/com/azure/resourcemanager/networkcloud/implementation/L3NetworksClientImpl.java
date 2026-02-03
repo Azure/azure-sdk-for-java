@@ -28,8 +28,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.L3NetworksClient;
@@ -71,7 +73,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkCloudL3Networ")
+    @ServiceInterface(name = "NetworkCloudL3Networks")
     public interface L3NetworksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/l3Networks")
@@ -79,6 +81,16 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<L3NetworkList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/l3Networks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<L3NetworkList> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -87,8 +99,17 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<L3NetworkList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<L3NetworkList> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}")
@@ -100,12 +121,33 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<L3NetworkInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("l3NetworkName") String l3NetworkName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("l3NetworkName") String l3NetworkName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") L3NetworkInner l3NetworkParameters, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("l3NetworkName") String l3NetworkName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @BodyParam("application/json") L3NetworkInner l3NetworkParameters, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -116,6 +158,17 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("l3NetworkName") String l3NetworkName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("l3NetworkName") String l3NetworkName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -125,6 +178,18 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         Mono<Response<L3NetworkInner>> update(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("l3NetworkName") String l3NetworkName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") L3NetworkPatchParameters l3NetworkUpdateParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<L3NetworkInner> updateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("l3NetworkName") String l3NetworkName,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @BodyParam("application/json") L3NetworkPatchParameters l3NetworkUpdateParameters,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -140,7 +205,23 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<L3NetworkList> listBySubscriptionNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<L3NetworkList>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<L3NetworkList> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -150,13 +231,17 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L3NetworkInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<L3NetworkInner>> listSinglePageAsync(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -168,7 +253,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context))
+                this.client.getSubscriptionId(), top, skipToken, accept, context))
             .<PagedResponse<L3NetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -179,30 +264,19 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
-     * @param context The context to associate with this operation.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of layer 3 (L3) networks in the provided subscription as paginated response with
+     * {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L3NetworkInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<L3NetworkInner> listAsync(Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -217,7 +291,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L3NetworkInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
@@ -226,17 +302,64 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<L3NetworkInner> listSinglePage(Integer top, String skipToken) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<L3NetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List layer 3 (L3) networks in the subscription.
+     * 
+     * Get a list of layer 3 (L3) networks in the provided subscription.
+     * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 3 (L3) networks in the provided subscription as paginated response with
-     * {@link PagedFlux}.
+     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<L3NetworkInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<L3NetworkInner> listSinglePage(Integer top, String skipToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<L3NetworkList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), top, skipToken, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -251,7 +374,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3NetworkInner> list() {
-        return new PagedIterable<>(listAsync());
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -259,6 +385,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * Get a list of layer 3 (L3) networks in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -267,8 +396,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<L3NetworkInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+    public PagedIterable<L3NetworkInner> list(Integer top, String skipToken, Context context) {
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -277,6 +407,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -284,7 +417,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L3NetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<PagedResponse<L3NetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -300,7 +434,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context))
             .<PagedResponse<L3NetworkInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -312,35 +446,20 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of layer 3 (L3) networks in the provided resource group as paginated response with
+     * {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L3NetworkInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<L3NetworkInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        String skipToken) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -357,7 +476,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<L3NetworkInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -367,17 +488,77 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<L3NetworkInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<L3NetworkList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List layer 3 (L3) networks in the resource group.
+     * 
+     * Get a list of layer 3 (L3) networks in the provided resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 3 (L3) networks in the provided resource group as paginated response with
-     * {@link PagedFlux}.
+     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<L3NetworkInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<L3NetworkInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<L3NetworkList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -394,7 +575,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<L3NetworkInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -403,6 +587,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * Get a list of layer 3 (L3) networks in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -411,8 +598,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<L3NetworkInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    public PagedIterable<L3NetworkInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -460,44 +649,6 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided layer 3 (L3) network along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<L3NetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String l3NetworkName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (l3NetworkName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, accept, context);
-    }
-
-    /**
-     * Retrieve the layer 3 (L3) network.
-     * 
-     * Get properties of the provided layer 3 (L3) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3NetworkName The name of the L3 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -525,7 +676,27 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<L3NetworkInner> getByResourceGroupWithResponse(String resourceGroupName, String l3NetworkName,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, l3NetworkName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (l3NetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, accept, context);
     }
 
     /**
@@ -553,6 +724,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
      * @param l3NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -561,7 +736,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String l3NetworkName, L3NetworkInner l3NetworkParameters) {
+        String l3NetworkName, L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -586,8 +761,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, l3NetworkParameters, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch,
+                l3NetworkParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -599,41 +774,47 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
      * @param l3NetworkParameters The request body.
-     * @param context The context to associate with this operation.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return l3Network represents a network that utilizes a single isolation domain set up for layer-3 resources along
-     * with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String l3NetworkName, L3NetworkInner l3NetworkParameters, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String l3NetworkName,
+        L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (l3NetworkName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
         }
         if (l3NetworkParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter l3NetworkParameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter l3NetworkParameters is required and cannot be null."));
         } else {
             l3NetworkParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, l3NetworkParameters, accept, context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch,
+            l3NetworkParameters, accept, Context.NONE);
     }
 
     /**
@@ -644,6 +825,62 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
      * @param l3NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return l3Network represents a network that utilizes a single isolation domain set up for layer-3 resources along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String l3NetworkName,
+        L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (l3NetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
+        }
+        if (l3NetworkParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter l3NetworkParameters is required and cannot be null."));
+        } else {
+            l3NetworkParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch,
+            l3NetworkParameters, accept, context);
+    }
+
+    /**
+     * Create or update the layer 3 (L3) network.
+     * 
+     * Create a new layer 3 (L3) network or update the properties of the existing network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3NetworkName The name of the L3 network.
+     * @param l3NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -652,9 +889,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String l3NetworkName, L3NetworkInner l3NetworkParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, l3NetworkName, l3NetworkParameters);
+        String l3NetworkName, L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, l3NetworkName,
+            l3NetworkParameters, ifMatch, ifNoneMatch);
         return this.client.<L3NetworkInner, L3NetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
             L3NetworkInner.class, L3NetworkInner.class, this.client.getContext());
     }
@@ -667,7 +904,6 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
      * @param l3NetworkParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -676,12 +912,40 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String l3NetworkName, L3NetworkInner l3NetworkParameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, l3NetworkName, l3NetworkParameters, context);
+        String l3NetworkName, L3NetworkInner l3NetworkParameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, l3NetworkName,
+            l3NetworkParameters, ifMatch, ifNoneMatch);
         return this.client.<L3NetworkInner, L3NetworkInner>getLroResult(mono, this.client.getHttpPipeline(),
-            L3NetworkInner.class, L3NetworkInner.class, context);
+            L3NetworkInner.class, L3NetworkInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create or update the layer 3 (L3) network.
+     * 
+     * Create a new layer 3 (L3) network or update the properties of the existing network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3NetworkName The name of the L3 network.
+     * @param l3NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of l3Network represents a network that utilizes a single isolation
+     * domain set up for layer-3 resources.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String l3NetworkName, L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch) {
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, l3NetworkName, l3NetworkParameters, ifMatch, ifNoneMatch);
+        return this.client.<L3NetworkInner, L3NetworkInner>getLroResult(response, L3NetworkInner.class,
+            L3NetworkInner.class, Context.NONE);
     }
 
     /**
@@ -701,7 +965,12 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(String resourceGroupName,
         String l3NetworkName, L3NetworkInner l3NetworkParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, l3NetworkName, l3NetworkParameters).getSyncPoller();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, l3NetworkName, l3NetworkParameters, ifMatch, ifNoneMatch);
+        return this.client.<L3NetworkInner, L3NetworkInner>getLroResult(response, L3NetworkInner.class,
+            L3NetworkInner.class, Context.NONE);
     }
 
     /**
@@ -712,6 +981,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
      * @param l3NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -721,9 +994,37 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(String resourceGroupName,
-        String l3NetworkName, L3NetworkInner l3NetworkParameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, l3NetworkName, l3NetworkParameters, context)
-            .getSyncPoller();
+        String l3NetworkName, L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch, Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, l3NetworkName,
+            l3NetworkParameters, ifMatch, ifNoneMatch, context);
+        return this.client.<L3NetworkInner, L3NetworkInner>getLroResult(response, L3NetworkInner.class,
+            L3NetworkInner.class, context);
+    }
+
+    /**
+     * Create or update the layer 3 (L3) network.
+     * 
+     * Create a new layer 3 (L3) network or update the properties of the existing network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3NetworkName The name of the L3 network.
+     * @param l3NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return l3Network represents a network that utilizes a single isolation domain set up for layer-3 resources on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<L3NetworkInner> createOrUpdateAsync(String resourceGroupName, String l3NetworkName,
+        L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, l3NetworkName, l3NetworkParameters, ifMatch, ifNoneMatch)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -743,29 +1044,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L3NetworkInner> createOrUpdateAsync(String resourceGroupName, String l3NetworkName,
         L3NetworkInner l3NetworkParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, l3NetworkName, l3NetworkParameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update the layer 3 (L3) network.
-     * 
-     * Create a new layer 3 (L3) network or update the properties of the existing network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3NetworkName The name of the L3 network.
-     * @param l3NetworkParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3Network represents a network that utilizes a single isolation domain set up for layer-3 resources on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<L3NetworkInner> createOrUpdateAsync(String resourceGroupName, String l3NetworkName,
-        L3NetworkInner l3NetworkParameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, l3NetworkName, l3NetworkParameters, context).last()
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, l3NetworkName, l3NetworkParameters, ifMatch, ifNoneMatch)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -785,7 +1067,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3NetworkInner createOrUpdate(String resourceGroupName, String l3NetworkName,
         L3NetworkInner l3NetworkParameters) {
-        return createOrUpdateAsync(resourceGroupName, l3NetworkName, l3NetworkParameters).block();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginCreateOrUpdate(resourceGroupName, l3NetworkName, l3NetworkParameters, ifMatch, ifNoneMatch)
+            .getFinalResult();
     }
 
     /**
@@ -796,6 +1081,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
      * @param l3NetworkParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -804,8 +1093,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3NetworkInner createOrUpdate(String resourceGroupName, String l3NetworkName,
-        L3NetworkInner l3NetworkParameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, l3NetworkName, l3NetworkParameters, context).block();
+        L3NetworkInner l3NetworkParameters, String ifMatch, String ifNoneMatch, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, l3NetworkName, l3NetworkParameters, ifMatch, ifNoneMatch, context)
+            .getFinalResult();
     }
 
     /**
@@ -815,6 +1105,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -822,7 +1116,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String l3NetworkName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String l3NetworkName,
+        String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -839,9 +1134,8 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
             return Mono.error(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -852,35 +1146,109 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String l3NetworkName, String ifMatch,
+        String ifNoneMatch) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (l3NetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Delete the layer 3 (L3) network.
+     * 
+     * Delete the provided layer 3 (L3) network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String l3NetworkName,
-        Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String l3NetworkName, String ifMatch,
+        String ifNoneMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (l3NetworkName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, l3NetworkName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, accept, context);
+    }
+
+    /**
+     * Delete the layer 3 (L3) network.
+     * 
+     * Delete the provided layer 3 (L3) network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String l3NetworkName, String ifMatch, String ifNoneMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -898,7 +1266,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDeleteAsync(String resourceGroupName, String l3NetworkName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, l3NetworkName);
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
@@ -911,19 +1282,21 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
-     * @param context The context to associate with this operation.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginDeleteAsync(String resourceGroupName, String l3NetworkName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, l3NetworkName, context);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
-            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String l3NetworkName, String ifMatch, String ifNoneMatch) {
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
@@ -941,7 +1314,11 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDelete(String resourceGroupName, String l3NetworkName) {
-        return this.beginDeleteAsync(resourceGroupName, l3NetworkName).getSyncPoller();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
@@ -951,6 +1328,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -958,9 +1339,35 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginDelete(String resourceGroupName, String l3NetworkName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, l3NetworkName, context).getSyncPoller();
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
+        String resourceGroupName, String l3NetworkName, String ifMatch, String ifNoneMatch, Context context) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Delete the layer 3 (L3) network.
+     * 
+     * Delete the provided layer 3 (L3) network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String l3NetworkName, String ifMatch,
+        String ifNoneMatch) {
+        return beginDeleteAsync(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -977,26 +1384,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String l3NetworkName) {
-        return beginDeleteAsync(resourceGroupName, l3NetworkName).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete the layer 3 (L3) network.
-     * 
-     * Delete the provided layer 3 (L3) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3NetworkName The name of the L3 network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String l3NetworkName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, l3NetworkName, context).last()
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginDeleteAsync(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1014,7 +1404,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner delete(String resourceGroupName, String l3NetworkName) {
-        return deleteAsync(resourceGroupName, l3NetworkName).block();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginDelete(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch).getFinalResult();
     }
 
     /**
@@ -1024,6 +1416,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1031,8 +1427,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner delete(String resourceGroupName, String l3NetworkName, Context context) {
-        return deleteAsync(resourceGroupName, l3NetworkName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String l3NetworkName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        return beginDelete(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, context).getFinalResult();
     }
 
     /**
@@ -1042,6 +1439,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param l3NetworkUpdateParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1051,7 +1452,7 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<L3NetworkInner>> updateWithResponseAsync(String resourceGroupName, String l3NetworkName,
-        L3NetworkPatchParameters l3NetworkUpdateParameters) {
+        String ifMatch, String ifNoneMatch, L3NetworkPatchParameters l3NetworkUpdateParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1073,51 +1474,9 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, l3NetworkUpdateParameters, accept,
-                context))
+                this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch,
+                l3NetworkUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Patch the layer 3 (L3) network.
-     * 
-     * Update tags associated with the provided layer 3 (L3) network.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param l3NetworkName The name of the L3 network.
-     * @param l3NetworkUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3Network represents a network that utilizes a single isolation domain set up for layer-3 resources along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<L3NetworkInner>> updateWithResponseAsync(String resourceGroupName, String l3NetworkName,
-        L3NetworkPatchParameters l3NetworkUpdateParameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (l3NetworkName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
-        }
-        if (l3NetworkUpdateParameters != null) {
-            l3NetworkUpdateParameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, l3NetworkName, l3NetworkUpdateParameters, accept, context);
     }
 
     /**
@@ -1135,9 +1494,11 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<L3NetworkInner> updateAsync(String resourceGroupName, String l3NetworkName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final L3NetworkPatchParameters l3NetworkUpdateParameters = null;
-        return updateWithResponseAsync(resourceGroupName, l3NetworkName, l3NetworkUpdateParameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return updateWithResponseAsync(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch,
+            l3NetworkUpdateParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1147,6 +1508,10 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3NetworkName The name of the L3 network.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param l3NetworkUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1156,9 +1521,33 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<L3NetworkInner> updateWithResponse(String resourceGroupName, String l3NetworkName,
-        L3NetworkPatchParameters l3NetworkUpdateParameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, l3NetworkName, l3NetworkUpdateParameters, context).block();
+    public Response<L3NetworkInner> updateWithResponse(String resourceGroupName, String l3NetworkName, String ifMatch,
+        String ifNoneMatch, L3NetworkPatchParameters l3NetworkUpdateParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (l3NetworkName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter l3NetworkName is required and cannot be null."));
+        }
+        if (l3NetworkUpdateParameters != null) {
+            l3NetworkUpdateParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch,
+            l3NetworkUpdateParameters, accept, context);
     }
 
     /**
@@ -1175,19 +1564,24 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public L3NetworkInner update(String resourceGroupName, String l3NetworkName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final L3NetworkPatchParameters l3NetworkUpdateParameters = null;
-        return updateWithResponse(resourceGroupName, l3NetworkName, l3NetworkUpdateParameters, Context.NONE).getValue();
+        return updateWithResponse(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, l3NetworkUpdateParameters,
+            Context.NONE).getValue();
     }
 
     /**
+     * List layer 3 (L3) networks in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3NetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1208,6 +1602,37 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     }
 
     /**
+     * List layer 3 (L3) networks in the subscription.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<L3NetworkInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<L3NetworkList> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List layer 3 (L3) networks in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1215,35 +1640,37 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of layer 3 (L3) networks in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L3NetworkInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<L3NetworkInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<L3NetworkList> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * List layer 3 (L3) networks in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<L3NetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1264,6 +1691,37 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
     }
 
     /**
+     * List layer 3 (L3) networks in the resource group.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<L3NetworkInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<L3NetworkList> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List layer 3 (L3) networks in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1271,23 +1729,25 @@ public final class L3NetworksClientImpl implements L3NetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return l3NetworkList represents a list of L3 networks along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return a list of layer 3 (L3) networks in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<L3NetworkInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<L3NetworkInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<L3NetworkList> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(L3NetworksClientImpl.class);
 }

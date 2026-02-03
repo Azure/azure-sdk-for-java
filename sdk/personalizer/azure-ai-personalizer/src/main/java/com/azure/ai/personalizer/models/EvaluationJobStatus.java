@@ -4,6 +4,7 @@
 
 package com.azure.ai.personalizer.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class EvaluationJobStatus extends ExpandableStringEnum<EvaluationJo
     /**
      * Static value completed for EvaluationJobStatus.
      */
+    @Generated
     public static final EvaluationJobStatus COMPLETED = fromString("completed");
 
     /**
      * Static value pending for EvaluationJobStatus.
      */
+    @Generated
     public static final EvaluationJobStatus PENDING = fromString("pending");
 
     /**
      * Static value failed for EvaluationJobStatus.
      */
+    @Generated
     public static final EvaluationJobStatus FAILED = fromString("failed");
 
     /**
      * Static value notSubmitted for EvaluationJobStatus.
      */
+    @Generated
     public static final EvaluationJobStatus NOT_SUBMITTED = fromString("notSubmitted");
 
     /**
      * Static value timeout for EvaluationJobStatus.
      */
+    @Generated
     public static final EvaluationJobStatus TIMEOUT = fromString("timeout");
 
     /**
      * Static value optimalPolicyApplied for EvaluationJobStatus.
      */
+    @Generated
     public static final EvaluationJobStatus OPTIMAL_POLICY_APPLIED = fromString("optimalPolicyApplied");
 
     /**
      * Static value onlinePolicyRetained for EvaluationJobStatus.
      */
+    @Generated
     public static final EvaluationJobStatus ONLINE_POLICY_RETAINED = fromString("onlinePolicyRetained");
 
     /**
@@ -51,6 +59,7 @@ public final class EvaluationJobStatus extends ExpandableStringEnum<EvaluationJo
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public EvaluationJobStatus() {
     }
@@ -61,6 +70,7 @@ public final class EvaluationJobStatus extends ExpandableStringEnum<EvaluationJo
      * @param name a name to look for.
      * @return the corresponding EvaluationJobStatus.
      */
+    @Generated
     public static EvaluationJobStatus fromString(String name) {
         return fromString(name, EvaluationJobStatus.class);
     }
@@ -70,6 +80,7 @@ public final class EvaluationJobStatus extends ExpandableStringEnum<EvaluationJo
      * 
      * @return known EvaluationJobStatus values.
      */
+    @Generated
     public static Collection<EvaluationJobStatus> values() {
         return values(EvaluationJobStatus.class);
     }

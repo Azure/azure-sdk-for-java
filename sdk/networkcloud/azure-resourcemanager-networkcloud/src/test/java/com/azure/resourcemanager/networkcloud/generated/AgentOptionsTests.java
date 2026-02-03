@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentOptions model = BinaryData.fromString("{\"hugepagesCount\":7011411072062298960,\"hugepagesSize\":\"1G\"}")
+        AgentOptions model = BinaryData.fromString("{\"hugepagesCount\":6178652880729547644,\"hugepagesSize\":\"1G\"}")
             .toObject(AgentOptions.class);
-        Assertions.assertEquals(7011411072062298960L, model.hugepagesCount());
+        Assertions.assertEquals(6178652880729547644L, model.hugepagesCount());
         Assertions.assertEquals(HugepagesSize.ONEG, model.hugepagesSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AgentOptions model
-            = new AgentOptions().withHugepagesCount(7011411072062298960L).withHugepagesSize(HugepagesSize.ONEG);
+            = new AgentOptions().withHugepagesCount(6178652880729547644L).withHugepagesSize(HugepagesSize.ONEG);
         model = BinaryData.fromObject(model).toObject(AgentOptions.class);
-        Assertions.assertEquals(7011411072062298960L, model.hugepagesCount());
+        Assertions.assertEquals(6178652880729547644L, model.hugepagesCount());
         Assertions.assertEquals(HugepagesSize.ONEG, model.hugepagesSize());
     }
 }

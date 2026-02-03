@@ -6,6 +6,7 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.providerhub.models.OptInHeaderType;
+import com.azure.resourcemanager.providerhub.models.OptOutHeaderType;
 import com.azure.resourcemanager.providerhub.models.ResourceTypeRegistrationPropertiesRequestHeaderOptions;
 import org.junit.jupiter.api.Assertions;
 
@@ -13,17 +14,20 @@ public final class ResourceTypeRegistrationPropertiesRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesRequestHeaderOptions model
-            = BinaryData.fromString("{\"optInHeaders\":\"NotSpecified\"}")
+            = BinaryData.fromString("{\"optInHeaders\":\"ResourceGroupLocation\",\"optOutHeaders\":\"NotSpecified\"}")
                 .toObject(ResourceTypeRegistrationPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.NOT_SPECIFIED, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.RESOURCE_GROUP_LOCATION, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesRequestHeaderOptions model
             = new ResourceTypeRegistrationPropertiesRequestHeaderOptions()
-                .withOptInHeaders(OptInHeaderType.NOT_SPECIFIED);
+                .withOptInHeaders(OptInHeaderType.RESOURCE_GROUP_LOCATION)
+                .withOptOutHeaders(OptOutHeaderType.NOT_SPECIFIED);
         model = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.NOT_SPECIFIED, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.RESOURCE_GROUP_LOCATION, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.NOT_SPECIFIED, model.optOutHeaders());
     }
 }

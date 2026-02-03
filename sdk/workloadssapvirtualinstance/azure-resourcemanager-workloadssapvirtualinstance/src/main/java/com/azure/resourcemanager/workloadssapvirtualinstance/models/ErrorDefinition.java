@@ -66,17 +66,6 @@ public final class ErrorDefinition implements JsonSerializable<ErrorDefinition> 
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (details() != null) {
-            details().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -172,46 +171,6 @@ public final class SapDiskConfigurationsRequest implements JsonSerializable<SapD
         this.dbVmSku = dbVmSku;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (appLocation() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property appLocation in model SapDiskConfigurationsRequest"));
-        }
-        if (environment() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property environment in model SapDiskConfigurationsRequest"));
-        }
-        if (sapProduct() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sapProduct in model SapDiskConfigurationsRequest"));
-        }
-        if (databaseType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property databaseType in model SapDiskConfigurationsRequest"));
-        }
-        if (deploymentType() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property deploymentType in model SapDiskConfigurationsRequest"));
-        }
-        if (dbVmSku() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property dbVmSku in model SapDiskConfigurationsRequest"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SapDiskConfigurationsRequest.class);
 
     /**
      * {@inheritDoc}

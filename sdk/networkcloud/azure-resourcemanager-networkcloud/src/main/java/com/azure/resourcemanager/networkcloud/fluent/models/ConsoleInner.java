@@ -26,6 +26,11 @@ import java.util.Map;
 @Fluent
 public final class ConsoleInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The extended location of the cluster manager associated with the cluster this virtual machine is created on.
      */
     private ExtendedLocation extendedLocation;
@@ -59,6 +64,15 @@ public final class ConsoleInner extends Resource {
      * Creates an instance of ConsoleInner class.
      */
     public ConsoleInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -333,6 +347,8 @@ public final class ConsoleInner extends Resource {
                     deserializedConsoleInner.extendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedConsoleInner.innerProperties = ConsoleProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedConsoleInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedConsoleInner.systemData = SystemData.fromJson(reader);
                 } else {

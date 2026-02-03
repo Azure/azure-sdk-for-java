@@ -20,7 +20,7 @@ public class AzureProfileTests {
         AzureProfile azureChinaCloud = new AzureProfile(AzureCloud.AZURE_CHINA_CLOUD);
         Assertions.assertEquals(AzureEnvironment.AZURE_CHINA, azureChinaCloud.getEnvironment());
 
-        AzureProfile azureUSGovernment = new AzureProfile(AzureCloud.AZURE_US_GOVERNMENT);
+        AzureProfile azureUSGovernment = new AzureProfile(AzureCloud.AZURE_US_GOVERNMENT_CLOUD);
         Assertions.assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT, azureUSGovernment.getEnvironment());
 
         // exception case

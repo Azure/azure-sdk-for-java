@@ -372,6 +372,6 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

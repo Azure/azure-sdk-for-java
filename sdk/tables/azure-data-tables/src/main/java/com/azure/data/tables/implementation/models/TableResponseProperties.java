@@ -5,6 +5,7 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
     /*
      * The name of the table.
      */
+    @Generated
     private String tableName;
 
     /*
      * The odata type of the table.
      */
+    @Generated
     private String odataType;
 
     /*
      * The id of the table.
      */
+    @Generated
     private String odataId;
 
     /*
      * The edit link of the table.
      */
+    @Generated
     private String odataEditLink;
 
     /**
      * Creates an instance of TableResponseProperties class.
      */
+    @Generated
     public TableResponseProperties() {
     }
 
@@ -47,6 +53,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * 
      * @return the tableName value.
      */
+    @Generated
     public String getTableName() {
         return this.tableName;
     }
@@ -57,6 +64,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * @param tableName the tableName value to set.
      * @return the TableResponseProperties object itself.
      */
+    @Generated
     public TableResponseProperties setTableName(String tableName) {
         this.tableName = tableName;
         return this;
@@ -67,6 +75,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * 
      * @return the odataType value.
      */
+    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -77,6 +86,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * @param odataType the odataType value to set.
      * @return the TableResponseProperties object itself.
      */
+    @Generated
     public TableResponseProperties setOdataType(String odataType) {
         this.odataType = odataType;
         return this;
@@ -87,6 +97,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * 
      * @return the odataId value.
      */
+    @Generated
     public String getOdataId() {
         return this.odataId;
     }
@@ -97,6 +108,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * @param odataId the odataId value to set.
      * @return the TableResponseProperties object itself.
      */
+    @Generated
     public TableResponseProperties setOdataId(String odataId) {
         this.odataId = odataId;
         return this;
@@ -107,6 +119,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * 
      * @return the odataEditLink value.
      */
+    @Generated
     public String getOdataEditLink() {
         return this.odataEditLink;
     }
@@ -117,6 +130,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * @param odataEditLink the odataEditLink value to set.
      * @return the TableResponseProperties object itself.
      */
+    @Generated
     public TableResponseProperties setOdataEditLink(String odataEditLink) {
         this.odataEditLink = odataEditLink;
         return this;
@@ -125,6 +139,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public class TableResponseProperties implements JsonSerializable<TableResponsePr
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the TableResponseProperties.
      */
+    @Generated
     public static TableResponseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TableResponseProperties deserializedTableResponseProperties = new TableResponseProperties();

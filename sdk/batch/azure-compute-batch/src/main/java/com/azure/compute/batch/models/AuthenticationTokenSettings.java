@@ -25,7 +25,7 @@ public final class AuthenticationTokenSettings implements JsonSerializable<Authe
      * access to all operations related to the Job which contains the Task.
      */
     @Generated
-    private List<AccessScope> access;
+    private List<BatchAccessScope> access;
 
     /**
      * Creates an instance of AuthenticationTokenSettings class.
@@ -42,7 +42,7 @@ public final class AuthenticationTokenSettings implements JsonSerializable<Authe
      * @return the access value.
      */
     @Generated
-    public List<AccessScope> getAccess() {
+    public List<BatchAccessScope> getAccess() {
         return this.access;
     }
 
@@ -55,7 +55,7 @@ public final class AuthenticationTokenSettings implements JsonSerializable<Authe
      * @return the AuthenticationTokenSettings object itself.
      */
     @Generated
-    public AuthenticationTokenSettings setAccess(List<AccessScope> access) {
+    public AuthenticationTokenSettings setAccess(List<BatchAccessScope> access) {
         this.access = access;
         return this;
     }
@@ -88,7 +88,8 @@ public final class AuthenticationTokenSettings implements JsonSerializable<Authe
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("access".equals(fieldName)) {
-                    List<AccessScope> access = reader.readArray(reader1 -> AccessScope.fromString(reader1.getString()));
+                    List<BatchAccessScope> access
+                        = reader.readArray(reader1 -> BatchAccessScope.fromString(reader1.getString()));
                     deserializedAuthenticationTokenSettings.access = access;
                 } else {
                     reader.skipChildren();

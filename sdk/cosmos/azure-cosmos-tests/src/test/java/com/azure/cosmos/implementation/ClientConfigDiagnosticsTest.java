@@ -11,7 +11,7 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosRegionSwitchHint;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.SessionRetryOptionsBuilder;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -167,7 +167,7 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [null])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, readConsistencyStrategy: null,  mm: false, prgns: [null])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
@@ -200,9 +200,11 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [null])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, readConsistencyStrategy: null,  mm: false, prgns: [null])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("(cto:PT5S, nrto:PT5S, icto:PT0S, ieto:PT1H, mcpe:130, mrpc:30, cer:true)");
-        assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:1000, nrto:PT1M, icto:PT1M, cto:PT45S, p:false)");
+
+        String http2Enabled = Configs.isHttp2Enabled() ? "true" : "false";
+        assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:1000, nrto:PT1M, icto:PT1M, cto:PT45S, p:false, http2:(enabled:"+ http2Enabled + ", maxc:1000, minc:" + Math.max(8, Runtime.getRuntime().availableProcessors()) + ", maxs:30))");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
     }
 
@@ -235,9 +237,11 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [null])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, readConsistencyStrategy: null,  mm: false, prgns: [null])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
-        assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, cto:PT45S, p:false)");
+
+        String http2Enabled = Configs.isHttp2Enabled() ? "true" : "false";
+        assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, cto:PT45S, p:false, http2:(enabled:" + http2Enabled + ", maxc:1000, minc:" + Math.max(8, Runtime.getRuntime().availableProcessors()) + ", maxs:30))");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");
     }
 
@@ -307,9 +311,11 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [westus1,westus2])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, readConsistencyStrategy: null,  mm: false, prgns: [westus1,westus2])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
-        assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, cto:PT45S, p:false)");
+
+        String http2Enabled = Configs.isHttp2Enabled() ? "true" : "false";
+        assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("(cps:500, nrto:PT18S, icto:PT17S, cto:PT45S, p:false, http2:(enabled:" + http2Enabled + ", maxc:1000, minc:" + Math.max(8, Runtime.getRuntime().availableProcessors()) + ", maxs:30))");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: true, cs: true, rv: false)");
         assertThat(objectNode.get("excrgns").asText()).isEqualTo("[westus2]");
 
@@ -358,7 +364,7 @@ public class ClientConfigDiagnosticsTest {
         assertThat(objectNode.get("id").asInt()).isEqualTo(1);
         assertThat(objectNode.get("machineId").asText()).isEqualTo(machineId);
         assertThat(objectNode.get("numberOfClients").asInt()).isEqualTo(2);
-        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, mm: false, prgns: [null])");
+        assertThat(objectNode.get("consistencyCfg").asText()).isEqualTo("(consistency: null, readConsistencyStrategy: null,  mm: false, prgns: [null])");
         assertThat(objectNode.get("connCfg").get("rntbd").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("gw").asText()).isEqualTo("null");
         assertThat(objectNode.get("connCfg").get("other").asText()).isEqualTo("(ed: false, cs: false, rv: true)");

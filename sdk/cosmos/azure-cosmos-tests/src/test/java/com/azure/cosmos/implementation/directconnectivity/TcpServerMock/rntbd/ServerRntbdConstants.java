@@ -14,8 +14,6 @@ import io.netty.handler.codec.DecoderException;
 import java.util.EnumSet;
 import java.util.stream.Collector;
 
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
-
 /**
  * Methods included in this class are copied from {@link RntbdConstants}.
  */
@@ -180,7 +178,7 @@ public class ServerRntbdConstants {
                 case 0x0025:
                     return ServerRntbdConstants.RntbdOperationType.Batch;
                 default:
-                    throw new DecoderException(lenientFormat("expected byte value matching %s value, not %s",
+                    throw new DecoderException(String.format("expected byte value matching %s value, not %s",
                         RntbdConstants.RntbdOperationType.class.getSimpleName(),
                         id));
             }
@@ -257,7 +255,7 @@ public class ServerRntbdConstants {
                 case Batch:
                     return RntbdConstants.RntbdOperationType.Batch;
                 default:
-                    throw new IllegalArgumentException(lenientFormat("unrecognized operation type: %s", type));
+                    throw new IllegalArgumentException(String.format("unrecognized operation type: %s", type));
             }
         }
 
@@ -550,7 +548,7 @@ public class ServerRntbdConstants {
                 case 0x001D:
                     return ServerRntbdConstants.RntbdResourceType.UserDefinedType;
                 default:
-                    throw new DecoderException(lenientFormat("expected byte value matching %s value, not %s",
+                    throw new DecoderException(String.format("expected byte value matching %s value, not %s",
                         RntbdConstants.RntbdResourceType.class.getSimpleName(),
                         id));
             }
@@ -616,7 +614,7 @@ public class ServerRntbdConstants {
                 case UserDefinedType:
                     return RntbdConstants.RntbdResourceType.UserDefinedType;
                 default:
-                    throw new IllegalArgumentException(lenientFormat("unrecognized resource type: %s", type));
+                    throw new IllegalArgumentException(String.format("unrecognized resource type: %s", type));
             }
         }
 

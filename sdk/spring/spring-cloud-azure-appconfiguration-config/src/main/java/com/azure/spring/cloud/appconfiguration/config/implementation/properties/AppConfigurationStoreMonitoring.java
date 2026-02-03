@@ -37,7 +37,7 @@ public final class AppConfigurationStoreMonitoring {
     private List<AppConfigurationStoreTrigger> triggers = new ArrayList<>();
 
     /**
-     * Validation tokens for push notificaiton requests.
+     * Validation tokens for push notification requests.
      */
     private PushNotification pushNotification = new PushNotification();
 
@@ -118,9 +118,9 @@ public final class AppConfigurationStoreMonitoring {
      * Validates refreshIntervals are at least 1 second, and if enabled triggers are valid.
      */
     @PostConstruct
-    public void validateAndInit() {
+    void validateAndInit() {
         if (enabled) {
-            Assert.notEmpty(triggers, "Triggers need to be set if refresh is enabled.");
+            // Triggers are not required defaults to use collection monitoring if not set
             for (AppConfigurationStoreTrigger trigger : triggers) {
                 trigger.validateAndInit();
             }

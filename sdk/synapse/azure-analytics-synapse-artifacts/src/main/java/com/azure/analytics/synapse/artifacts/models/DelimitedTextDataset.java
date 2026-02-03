@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class DelimitedTextDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "DelimitedText";
 
     /*
      * The location of the delimited text storage.
      */
+    @Generated
     private DatasetLocation location;
 
     /*
      * The column delimiter. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object columnDelimiter;
 
     /*
      * The row delimiter. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object rowDelimiter;
 
     /*
@@ -44,42 +49,50 @@ public class DelimitedTextDataset extends Dataset {
      * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with resultType
      * string).
      */
+    @Generated
     private Object encodingName;
 
     /*
      * The data compressionCodec. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object compressionCodec;
 
     /*
      * The data compression method used for DelimitedText.
      */
+    @Generated
     private Object compressionLevel;
 
     /*
      * The quote character. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object quoteChar;
 
     /*
      * The escape character. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object escapeChar;
 
     /*
      * When used as input, treat the first row of data as headers. When used as output,write the headers into the output
      * as the first row of data. The default value is false. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object firstRowAsHeader;
 
     /*
      * The null value string. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object nullValue;
 
     /**
      * Creates an instance of DelimitedTextDataset class.
      */
+    @Generated
     public DelimitedTextDataset() {
     }
 
@@ -88,6 +101,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -98,6 +112,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -108,6 +123,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param location the location value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -118,6 +134,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the columnDelimiter value.
      */
+    @Generated
     public Object getColumnDelimiter() {
         return this.columnDelimiter;
     }
@@ -128,6 +145,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param columnDelimiter the columnDelimiter value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setColumnDelimiter(Object columnDelimiter) {
         this.columnDelimiter = columnDelimiter;
         return this;
@@ -138,6 +156,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the rowDelimiter value.
      */
+    @Generated
     public Object getRowDelimiter() {
         return this.rowDelimiter;
     }
@@ -148,6 +167,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param rowDelimiter the rowDelimiter value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setRowDelimiter(Object rowDelimiter) {
         this.rowDelimiter = rowDelimiter;
         return this;
@@ -161,6 +181,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the encodingName value.
      */
+    @Generated
     public Object getEncodingName() {
         return this.encodingName;
     }
@@ -174,6 +195,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param encodingName the encodingName value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setEncodingName(Object encodingName) {
         this.encodingName = encodingName;
         return this;
@@ -185,6 +207,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the compressionCodec value.
      */
+    @Generated
     public Object getCompressionCodec() {
         return this.compressionCodec;
     }
@@ -196,6 +219,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param compressionCodec the compressionCodec value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setCompressionCodec(Object compressionCodec) {
         this.compressionCodec = compressionCodec;
         return this;
@@ -206,6 +230,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the compressionLevel value.
      */
+    @Generated
     public Object getCompressionLevel() {
         return this.compressionLevel;
     }
@@ -216,6 +241,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param compressionLevel the compressionLevel value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setCompressionLevel(Object compressionLevel) {
         this.compressionLevel = compressionLevel;
         return this;
@@ -226,6 +252,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the quoteChar value.
      */
+    @Generated
     public Object getQuoteChar() {
         return this.quoteChar;
     }
@@ -236,6 +263,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param quoteChar the quoteChar value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setQuoteChar(Object quoteChar) {
         this.quoteChar = quoteChar;
         return this;
@@ -246,6 +274,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the escapeChar value.
      */
+    @Generated
     public Object getEscapeChar() {
         return this.escapeChar;
     }
@@ -256,6 +285,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param escapeChar the escapeChar value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setEscapeChar(Object escapeChar) {
         this.escapeChar = escapeChar;
         return this;
@@ -268,6 +298,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the firstRowAsHeader value.
      */
+    @Generated
     public Object getFirstRowAsHeader() {
         return this.firstRowAsHeader;
     }
@@ -280,6 +311,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param firstRowAsHeader the firstRowAsHeader value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setFirstRowAsHeader(Object firstRowAsHeader) {
         this.firstRowAsHeader = firstRowAsHeader;
         return this;
@@ -290,6 +322,7 @@ public class DelimitedTextDataset extends Dataset {
      * 
      * @return the nullValue value.
      */
+    @Generated
     public Object getNullValue() {
         return this.nullValue;
     }
@@ -300,6 +333,7 @@ public class DelimitedTextDataset extends Dataset {
      * @param nullValue the nullValue value to set.
      * @return the DelimitedTextDataset object itself.
      */
+    @Generated
     public DelimitedTextDataset setNullValue(Object nullValue) {
         this.nullValue = nullValue;
         return this;
@@ -308,6 +342,7 @@ public class DelimitedTextDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DelimitedTextDataset setDescription(String description) {
         super.setDescription(description);
@@ -317,6 +352,7 @@ public class DelimitedTextDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DelimitedTextDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -326,6 +362,7 @@ public class DelimitedTextDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DelimitedTextDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -335,6 +372,7 @@ public class DelimitedTextDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DelimitedTextDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -344,6 +382,7 @@ public class DelimitedTextDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DelimitedTextDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -353,6 +392,7 @@ public class DelimitedTextDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DelimitedTextDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -362,6 +402,7 @@ public class DelimitedTextDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DelimitedTextDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -371,13 +412,18 @@ public class DelimitedTextDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -394,15 +440,33 @@ public class DelimitedTextDataset extends Dataset {
             || nullValue != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("location", this.location);
-            jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
-            jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
-            jsonWriter.writeUntypedField("encodingName", this.encodingName);
-            jsonWriter.writeUntypedField("compressionCodec", this.compressionCodec);
-            jsonWriter.writeUntypedField("compressionLevel", this.compressionLevel);
-            jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
-            jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
-            jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
-            jsonWriter.writeUntypedField("nullValue", this.nullValue);
+            if (this.columnDelimiter != null) {
+                jsonWriter.writeUntypedField("columnDelimiter", this.columnDelimiter);
+            }
+            if (this.rowDelimiter != null) {
+                jsonWriter.writeUntypedField("rowDelimiter", this.rowDelimiter);
+            }
+            if (this.encodingName != null) {
+                jsonWriter.writeUntypedField("encodingName", this.encodingName);
+            }
+            if (this.compressionCodec != null) {
+                jsonWriter.writeUntypedField("compressionCodec", this.compressionCodec);
+            }
+            if (this.compressionLevel != null) {
+                jsonWriter.writeUntypedField("compressionLevel", this.compressionLevel);
+            }
+            if (this.quoteChar != null) {
+                jsonWriter.writeUntypedField("quoteChar", this.quoteChar);
+            }
+            if (this.escapeChar != null) {
+                jsonWriter.writeUntypedField("escapeChar", this.escapeChar);
+            }
+            if (this.firstRowAsHeader != null) {
+                jsonWriter.writeUntypedField("firstRowAsHeader", this.firstRowAsHeader);
+            }
+            if (this.nullValue != null) {
+                jsonWriter.writeUntypedField("nullValue", this.nullValue);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -422,6 +486,7 @@ public class DelimitedTextDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DelimitedTextDataset.
      */
+    @Generated
     public static DelimitedTextDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DelimitedTextDataset deserializedDelimitedTextDataset = new DelimitedTextDataset();

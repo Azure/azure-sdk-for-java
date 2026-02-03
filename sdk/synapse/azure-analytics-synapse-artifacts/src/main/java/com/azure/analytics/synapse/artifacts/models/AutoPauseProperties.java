@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class AutoPauseProperties implements JsonSerializable<AutoPauseProp
     /*
      * Number of minutes of idle time before the Big Data pool is automatically paused.
      */
+    @Generated
     private Integer delayInMinutes;
 
     /*
      * Whether auto-pausing is enabled for the Big Data pool.
      */
+    @Generated
     private Boolean enabled;
 
     /**
      * Creates an instance of AutoPauseProperties class.
      */
+    @Generated
     public AutoPauseProperties() {
     }
 
@@ -39,6 +43,7 @@ public final class AutoPauseProperties implements JsonSerializable<AutoPauseProp
      * 
      * @return the delayInMinutes value.
      */
+    @Generated
     public Integer getDelayInMinutes() {
         return this.delayInMinutes;
     }
@@ -49,6 +54,7 @@ public final class AutoPauseProperties implements JsonSerializable<AutoPauseProp
      * @param delayInMinutes the delayInMinutes value to set.
      * @return the AutoPauseProperties object itself.
      */
+    @Generated
     public AutoPauseProperties setDelayInMinutes(Integer delayInMinutes) {
         this.delayInMinutes = delayInMinutes;
         return this;
@@ -59,6 +65,7 @@ public final class AutoPauseProperties implements JsonSerializable<AutoPauseProp
      * 
      * @return the enabled value.
      */
+    @Generated
     public Boolean isEnabled() {
         return this.enabled;
     }
@@ -69,6 +76,7 @@ public final class AutoPauseProperties implements JsonSerializable<AutoPauseProp
      * @param enabled the enabled value to set.
      * @return the AutoPauseProperties object itself.
      */
+    @Generated
     public AutoPauseProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -77,6 +85,7 @@ public final class AutoPauseProperties implements JsonSerializable<AutoPauseProp
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class AutoPauseProperties implements JsonSerializable<AutoPauseProp
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AutoPauseProperties.
      */
+    @Generated
     public static AutoPauseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AutoPauseProperties deserializedAutoPauseProperties = new AutoPauseProperties();

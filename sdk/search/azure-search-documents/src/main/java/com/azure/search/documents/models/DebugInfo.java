@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public final class DebugInfo implements JsonSerializable<DebugInfo> {
     /*
      * Contains debugging information specific to query rewrites.
      */
+    @Generated
     private QueryRewritesDebugInfo queryRewrites;
 
     /**
      * Creates an instance of DebugInfo class.
      */
+    @Generated
     public DebugInfo() {
     }
 
@@ -34,6 +37,7 @@ public final class DebugInfo implements JsonSerializable<DebugInfo> {
      * 
      * @return the queryRewrites value.
      */
+    @Generated
     public QueryRewritesDebugInfo getQueryRewrites() {
         return this.queryRewrites;
     }
@@ -41,6 +45,7 @@ public final class DebugInfo implements JsonSerializable<DebugInfo> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -55,6 +60,7 @@ public final class DebugInfo implements JsonSerializable<DebugInfo> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the DebugInfo.
      */
+    @Generated
     public static DebugInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DebugInfo deserializedDebugInfo = new DebugInfo();

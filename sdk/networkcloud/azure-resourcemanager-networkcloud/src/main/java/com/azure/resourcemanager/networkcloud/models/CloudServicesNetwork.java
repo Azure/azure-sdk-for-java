@@ -51,6 +51,13 @@ public interface CloudServicesNetwork {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the extendedLocation property: The extended location of the cluster associated with the resource.
      * 
      * @return the extendedLocation value.
@@ -140,6 +147,20 @@ public interface CloudServicesNetwork {
      * @return the provisioningState value.
      */
     CloudServicesNetworkProvisioningState provisioningState();
+
+    /**
+     * Gets the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @return the storageOptions value.
+     */
+    CloudServicesNetworkStorageOptions storageOptions();
+
+    /**
+     * Gets the storageStatus property: The storage status for the cloud services network.
+     * 
+     * @return the storageStatus value.
+     */
+    CloudServicesNetworkStorageStatus storageStatus();
 
     /**
      * Gets the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
@@ -248,7 +269,8 @@ public interface CloudServicesNetwork {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAdditionalEgressEndpoints,
-            DefinitionStages.WithEnableDefaultEgressEndpoints {
+            DefinitionStages.WithEnableDefaultEgressEndpoints, DefinitionStages.WithStorageOptions,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -308,6 +330,50 @@ public interface CloudServicesNetwork {
             WithCreate withEnableDefaultEgressEndpoints(
                 CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints);
         }
+
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify storageOptions.
+         */
+        interface WithStorageOptions {
+            /**
+             * Specifies the storageOptions property: The storage options for the cloud services network..
+             * 
+             * @param storageOptions The storage options for the cloud services network.
+             * @return the next definition stage.
+             */
+            WithCreate withStorageOptions(CloudServicesNetworkStorageOptions storageOptions);
+        }
+
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the CloudServicesNetwork definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
+        }
     }
 
     /**
@@ -321,7 +387,8 @@ public interface CloudServicesNetwork {
      * The template for CloudServicesNetwork update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithAdditionalEgressEndpoints,
-        UpdateStages.WithEnableDefaultEgressEndpoints {
+        UpdateStages.WithEnableDefaultEgressEndpoints, UpdateStages.WithStorageOptions, UpdateStages.WithIfMatch,
+        UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -384,6 +451,50 @@ public interface CloudServicesNetwork {
              */
             Update withEnableDefaultEgressEndpoints(
                 CloudServicesNetworkEnableDefaultEgressEndpoints enableDefaultEgressEndpoints);
+        }
+
+        /**
+         * The stage of the CloudServicesNetwork update allowing to specify storageOptions.
+         */
+        interface WithStorageOptions {
+            /**
+             * Specifies the storageOptions property: The storage options for the cloud services network..
+             * 
+             * @param storageOptions The storage options for the cloud services network.
+             * @return the next definition stage.
+             */
+            Update withStorageOptions(CloudServicesNetworkStorageOptionsPatch storageOptions);
+        }
+
+        /**
+         * The stage of the CloudServicesNetwork update allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the CloudServicesNetwork update allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
 

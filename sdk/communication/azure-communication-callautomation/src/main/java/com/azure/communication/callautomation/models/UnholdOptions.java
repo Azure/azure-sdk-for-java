@@ -10,8 +10,9 @@ import com.azure.communication.common.CommunicationIdentifier;
  */
 public final class UnholdOptions {
 
-    /**
-     * Participant to put on unhold.
+    /*
+     * Participants to be hold from the call.
+     * Only ACS Users are supported.
      */
     private final CommunicationIdentifier targetParticipant;
 
@@ -19,6 +20,12 @@ public final class UnholdOptions {
      * Operation context.
      */
     private String operationContext;
+
+    /*
+     * Set a callback URL that overrides the default callback URL set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URL set by CreateCall/AnswerCall will be used.
+     */
+    private String operationCallbackUrl;
 
     /**
      * Create a new UnholdOptions object.
@@ -51,6 +58,30 @@ public final class UnholdOptions {
      */
     public UnholdOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+    * Get the operationCallbackUrl property: Set a callback URI that overrides the default callback URL set by
+    * CreateCall/AnswerCall for this operation.
+    * This setup is per-action. If this is not set, the default callback URL set by CreateCall/AnswerCall will be used.
+    * 
+    * @return the operationCallbackUrl value.
+    */
+    public String getOperationCallbackUrl() {
+        return this.operationCallbackUrl;
+    }
+
+    /**
+     * Set the operationCallbackUrl property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @param operationCallbackUrl the operationCallbackUrl value to set.
+     * @return the UnholdRequest object itself.
+     */
+    public UnholdOptions setOperationCallbackUrl(String operationCallbackUrl) {
+        this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
 }

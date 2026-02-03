@@ -22,10 +22,11 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.healthdataaiservices.fluent.HealthDataAIServicesClient;
+import com.azure.resourcemanager.healthdataaiservices.fluent.HealthDataAIServicesManagementClient;
 import com.azure.resourcemanager.healthdataaiservices.implementation.DeidServicesImpl;
-import com.azure.resourcemanager.healthdataaiservices.implementation.HealthDataAIServicesClientBuilder;
+import com.azure.resourcemanager.healthdataaiservices.implementation.HealthDataAIServicesManagementClientBuilder;
 import com.azure.resourcemanager.healthdataaiservices.implementation.OperationsImpl;
 import com.azure.resourcemanager.healthdataaiservices.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.healthdataaiservices.implementation.PrivateLinksImpl;
@@ -37,6 +38,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -52,12 +54,12 @@ public final class HealthDataAIServicesManager {
 
     private PrivateLinks privateLinks;
 
-    private final HealthDataAIServicesClient clientObject;
+    private final HealthDataAIServicesManagementClient clientObject;
 
     private HealthDataAIServicesManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new HealthDataAIServicesClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new HealthDataAIServicesManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -104,6 +106,9 @@ public final class HealthDataAIServicesManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-healthdataaiservices.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -211,12 +216,14 @@ public final class HealthDataAIServicesManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.healthdataaiservices")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -312,12 +319,12 @@ public final class HealthDataAIServicesManager {
     }
 
     /**
-     * Gets wrapped service client HealthDataAIServicesClient providing direct access to the underlying auto-generated
-     * API implementation, based on Azure REST API.
+     * Gets wrapped service client HealthDataAIServicesManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client HealthDataAIServicesClient.
+     * @return Wrapped service client HealthDataAIServicesManagementClient.
      */
-    public HealthDataAIServicesClient serviceClient() {
+    public HealthDataAIServicesManagementClient serviceClient() {
         return this.clientObject;
     }
 }

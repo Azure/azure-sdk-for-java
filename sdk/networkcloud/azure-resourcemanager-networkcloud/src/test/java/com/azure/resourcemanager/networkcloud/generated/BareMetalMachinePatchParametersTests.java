@@ -14,20 +14,20 @@ public final class BareMetalMachinePatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BareMetalMachinePatchParameters model = BinaryData.fromString(
-            "{\"properties\":{\"machineDetails\":\"cil\"},\"tags\":{\"t\":\"aykggnoxu\",\"cpfnznthjtwkja\":\"ksxwpnd\",\"tcqiosmg\":\"srxuzvoam\"}}")
+            "{\"properties\":{\"machineDetails\":\"jgl\"},\"tags\":{\"hmem\":\"uyzlw\",\"memczjkmmyk\":\"ooclutnp\",\"rye\":\"ujxsglhsr\",\"rfih\":\"ylmbkzudni\"}}")
             .toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("aykggnoxu", model.tags().get("t"));
-        Assertions.assertEquals("cil", model.machineDetails());
+        Assertions.assertEquals("uyzlw", model.tags().get("hmem"));
+        Assertions.assertEquals("jgl", model.machineDetails());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BareMetalMachinePatchParameters model = new BareMetalMachinePatchParameters()
-            .withTags(mapOf("t", "aykggnoxu", "cpfnznthjtwkja", "ksxwpnd", "tcqiosmg", "srxuzvoam"))
-            .withMachineDetails("cil");
+            .withTags(mapOf("hmem", "uyzlw", "memczjkmmyk", "ooclutnp", "rye", "ujxsglhsr", "rfih", "ylmbkzudni"))
+            .withMachineDetails("jgl");
         model = BinaryData.fromObject(model).toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("aykggnoxu", model.tags().get("t"));
-        Assertions.assertEquals("cil", model.machineDetails());
+        Assertions.assertEquals("uyzlw", model.tags().get("hmem"));
+        Assertions.assertEquals("jgl", model.machineDetails());
     }
 
     // Use "Map.of" if available

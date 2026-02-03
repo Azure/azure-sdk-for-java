@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.TasksClient;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectTaskInner;
+import com.azure.resourcemanager.datamigration.models.CommandProperties;
 import com.azure.resourcemanager.datamigration.models.ProjectTask;
 import com.azure.resourcemanager.datamigration.models.Tasks;
 
@@ -86,6 +88,29 @@ public final class TasksImpl implements Tasks {
         ProjectTaskInner inner = this.serviceClient().cancel(groupName, serviceName, projectName, taskName);
         if (inner != null) {
             return new ProjectTaskImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CommandProperties> commandWithResponse(String groupName, String serviceName, String projectName,
+        String taskName, CommandPropertiesInner parameters, Context context) {
+        Response<CommandPropertiesInner> inner = this.serviceClient()
+            .commandWithResponse(groupName, serviceName, projectName, taskName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CommandPropertiesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CommandProperties command(String groupName, String serviceName, String projectName, String taskName,
+        CommandPropertiesInner parameters) {
+        CommandPropertiesInner inner
+            = this.serviceClient().command(groupName, serviceName, projectName, taskName, parameters);
+        if (inner != null) {
+            return new CommandPropertiesImpl(inner, this.manager());
         } else {
             return null;
         }

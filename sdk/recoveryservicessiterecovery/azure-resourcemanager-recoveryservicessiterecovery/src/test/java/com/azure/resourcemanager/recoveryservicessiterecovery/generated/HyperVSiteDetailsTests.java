@@ -13,14 +13,13 @@ public final class HyperVSiteDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVSiteDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVSite\",\"hyperVHosts\":[{\"id\":\"yldqpzfzxsox\",\"name\":\"unjlzkdrocq\",\"marsAgentVersion\":\"ytqqtcmi\"},{\"id\":\"w\",\"name\":\"vn\",\"marsAgentVersion\":\"ylajam\"},{\"id\":\"jyh\",\"name\":\"p\",\"marsAgentVersion\":\"rryklleynqan\"}]}")
+            "{\"instanceType\":\"HyperVSite\",\"hyperVHosts\":[{\"id\":\"iyoo\",\"name\":\"fozkbnz\",\"marsAgentVersion\":\"ypfqpgaixw\"}]}")
             .toObject(HyperVSiteDetails.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVSiteDetails model = new HyperVSiteDetails()
-            .withHyperVHosts(Arrays.asList(new HyperVHostDetails(), new HyperVHostDetails(), new HyperVHostDetails()));
+        HyperVSiteDetails model = new HyperVSiteDetails().withHyperVHosts(Arrays.asList(new HyperVHostDetails()));
         model = BinaryData.fromObject(model).toObject(HyperVSiteDetails.class);
     }
 }

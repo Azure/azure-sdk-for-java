@@ -16,11 +16,11 @@ public final class ListLedgerEntriesTests extends ConfidentialLedgerClientTestBa
     @Disabled
     public void testListLedgerEntriesTests() {
         RequestOptions requestOptions
-            = new RequestOptions().addQueryParam("fromTransactionId", "3.14").addQueryParam("toTransactionId", "3.42");
+            = new RequestOptions().addQueryParam("fromTransactionId", "2.15").addQueryParam("toTransactionId", "2.20");
         PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(BinaryData.fromString(
-            "{\"collectionId\":\"DEFAULT_SUBLEDGER\",\"contents\":\"Ledger entry contents at transaction id 3.14.\",\"transactionId\":\"3.14\"}")
+            "{\"collectionId\":\"subledger:0\",\"contents\":\"Ledger entry contents at transaction id 2.15.\",\"transactionId\":\"2.15\"}")
             .toObject(Object.class), response.iterator().next().toObject(Object.class));
     }
 }

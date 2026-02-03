@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
@@ -22,25 +22,25 @@ public final class L2NetworksGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"yqgxhlus\",\"type\":\"vxisimjcea\"},\"properties\":{\"associatedResourceIds\":[\"qvlsumywzas\",\"xgo\",\"oyjfqipu\"],\"clusterId\":\"znclkfkeebgv\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"tuoqujlyegqavni\",\"hybridAksClustersAssociatedIds\":[\"qqbtny\",\"pylx\",\"bf\",\"abmvmsxbaevwjc\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"tlwuhvaj\",\"l2IsolationDomainId\":\"ailfemjjzak\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"ullqxbdmvrscm\",\"erndbrnyeofltfnn\",\"rkadjfynnfmuiiir\",\"pfoh\"]},\"location\":\"fkx\",\"tags\":{\"ewoi\":\"brwjiutgnjizb\",\"juyrsrziuctixg\":\"mrvz\",\"uifr\":\"d\",\"pezkis\":\"vka\"},\"id\":\"qjm\",\"name\":\"g\",\"type\":\"syparybjufp\"}";
+            = "{\"etag\":\"egftcvb\",\"extendedLocation\":{\"name\":\"iftksdwgdnk\",\"type\":\"fgmwd\"},\"properties\":{\"associatedResourceIds\":[\"buvczldbglzoutb\"],\"clusterId\":\"qgz\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"clyzgs\",\"hybridAksClustersAssociatedIds\":[\"bjgmnzj\",\"t\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"khlobvvjbhvhdi\",\"l2IsolationDomainId\":\"ayfluiyuosnu\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"vhyibdrqrsw\",\"buubpyrowt\",\"oxztfwfqch\",\"czevjnn\"]},\"location\":\"agfyvrtpqpe\",\"tags\":{\"wqwemvxqabckmze\":\"cgkrepdqhqy\"},\"id\":\"xin\",\"name\":\"greohtwhlpuzjp\",\"type\":\"eezn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         L2Network response = manager.l2Networks()
-            .getByResourceGroupWithResponse("qmje", "jcx", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rkjd", "vrg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("fkx", response.location());
-        Assertions.assertEquals("brwjiutgnjizb", response.tags().get("ewoi"));
-        Assertions.assertEquals("yqgxhlus", response.extendedLocation().name());
-        Assertions.assertEquals("vxisimjcea", response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksPluginType.DPDK, response.hybridAksPluginType());
-        Assertions.assertEquals("tlwuhvaj", response.interfaceName());
-        Assertions.assertEquals("ailfemjjzak", response.l2IsolationDomainId());
+        Assertions.assertEquals("agfyvrtpqpe", response.location());
+        Assertions.assertEquals("cgkrepdqhqy", response.tags().get("wqwemvxqabckmze"));
+        Assertions.assertEquals("iftksdwgdnk", response.extendedLocation().name());
+        Assertions.assertEquals("fgmwd", response.extendedLocation().type());
+        Assertions.assertEquals(HybridAksPluginType.SRIOV, response.hybridAksPluginType());
+        Assertions.assertEquals("khlobvvjbhvhdi", response.interfaceName());
+        Assertions.assertEquals("ayfluiyuosnu", response.l2IsolationDomainId());
     }
 }

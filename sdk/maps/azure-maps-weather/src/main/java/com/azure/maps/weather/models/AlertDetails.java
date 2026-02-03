@@ -4,6 +4,8 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,41 +25,58 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
     /*
      * The name of an area which is affected by the alert. The location that was requested falls under the alert area.
      */
+    @Generated
     private String name;
 
     /*
      * Text summarizing the alert in the returned area.
      */
+    @Generated
     private String description;
 
     /*
-     * The start date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert crosses multiple time zones the returned time in the response is the local time to the requested coordinate location.
+     * The start date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert
+     * crosses multiple time zones the returned time in the response is the local time to the requested coordinate
+     * location.
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
-     * The end date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert crosses multiple time zones the returned time in the response is the local time to the requested coordinate location.
+     * The end date and time of the alert in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00. If the alert
+     * crosses multiple time zones the returned time in the response is the local time to the requested coordinate
+     * location.
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The latest status of the alert in the current area.
      */
+    @Generated
     private LatestStatus latestStatus;
 
     /*
-     * Full details associated with the alert. Returned if `details`=True. This field is always returned in the language(s) of choice by the issuing provider and Azure Maps only returns what is created by the provider. Please note, some countries/regions may offer their native language and English. Language parameter won’t apply to this field.
+     * Full details associated with the alert. Returned if `details`=True. This field is always returned in the
+     * language(s) of choice by the issuing provider and Azure Maps only returns what is created by the provider. Please
+     * note, some countries/regions may offer their native language and English. Language parameter won’t apply to this
+     * field.
      */
+    @Generated
     private String details;
 
     /*
-     * Language of the `alertDetails`. This field  helps to point out that the language of the `alertDetails` may differ from the requested language parameter. Returned if `details`=True. Language code has been derived from the ISO 639-1 Alpha-2 codes.
+     * Language of the `alertDetails`. This field helps to point out that the language of the `alertDetails` may differ
+     * from the requested language parameter. Returned if `details`=True. Language code has been derived from the ISO
+     * 639-1 Alpha-2 codes.
      */
+    @Generated
     private String language;
 
     /**
      * Set default AlertDetails constructor to private
      */
+    @Generated
     private AlertDetails() {
     }
 
@@ -67,6 +86,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -76,6 +96,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
      *
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -87,6 +108,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
      *
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -98,6 +120,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
      *
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -107,6 +130,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
      *
      * @return the latestStatus value.
      */
+    @Generated
     public LatestStatus getLatestStatus() {
         return this.latestStatus;
     }
@@ -119,6 +143,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
      *
      * @return the details value.
      */
+    @Generated
     public String getDetails() {
         return this.details;
     }
@@ -130,6 +155,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
      *
      * @return the language value.
      */
+    @Generated
     public String getLanguage() {
         return this.language;
     }
@@ -137,6 +163,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -160,6 +187,7 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AlertDetails.
      */
+    @Generated
     public static AlertDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AlertDetails deserializedAlertDetails = new AlertDetails();
@@ -171,11 +199,11 @@ public final class AlertDetails implements JsonSerializable<AlertDetails> {
                 } else if ("summary".equals(fieldName)) {
                     deserializedAlertDetails.description = reader.getString();
                 } else if ("startTime".equals(fieldName)) {
-                    deserializedAlertDetails.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAlertDetails.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedAlertDetails.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAlertDetails.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("latestStatus".equals(fieldName)) {
                     deserializedAlertDetails.latestStatus = LatestStatus.fromJson(reader);
                 } else if ("alertDetails".equals(fieldName)) {

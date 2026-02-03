@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 
 /**
  * Parameter group.
@@ -14,21 +15,25 @@ public final class DigitalTwinsAddRelationshipOptions {
     /*
      * Identifies the request in a distributed tracing system.
      */
+    @Generated
     private String traceparent;
 
     /*
      * Provides vendor-specific trace identification information and is a companion to traceparent.
      */
+    @Generated
     private String tracestate;
 
     /*
      * Only perform the operation if the entity does not already exist.
      */
+    @Generated
     private String ifNoneMatch;
 
     /**
      * Creates an instance of DigitalTwinsAddRelationshipOptions class.
      */
+    @Generated
     public DigitalTwinsAddRelationshipOptions() {
     }
 
@@ -37,6 +42,7 @@ public final class DigitalTwinsAddRelationshipOptions {
      * 
      * @return the traceparent value.
      */
+    @Generated
     public String getTraceparent() {
         return this.traceparent;
     }
@@ -47,6 +53,7 @@ public final class DigitalTwinsAddRelationshipOptions {
      * @param traceparent the traceparent value to set.
      * @return the DigitalTwinsAddRelationshipOptions object itself.
      */
+    @Generated
     public DigitalTwinsAddRelationshipOptions setTraceparent(String traceparent) {
         this.traceparent = traceparent;
         return this;
@@ -58,6 +65,7 @@ public final class DigitalTwinsAddRelationshipOptions {
      * 
      * @return the tracestate value.
      */
+    @Generated
     public String getTracestate() {
         return this.tracestate;
     }
@@ -69,6 +77,7 @@ public final class DigitalTwinsAddRelationshipOptions {
      * @param tracestate the tracestate value to set.
      * @return the DigitalTwinsAddRelationshipOptions object itself.
      */
+    @Generated
     public DigitalTwinsAddRelationshipOptions setTracestate(String tracestate) {
         this.tracestate = tracestate;
         return this;
@@ -79,6 +88,7 @@ public final class DigitalTwinsAddRelationshipOptions {
      * 
      * @return the ifNoneMatch value.
      */
+    @Generated
     public String getIfNoneMatch() {
         return this.ifNoneMatch;
     }
@@ -89,6 +99,7 @@ public final class DigitalTwinsAddRelationshipOptions {
      * @param ifNoneMatch the ifNoneMatch value to set.
      * @return the DigitalTwinsAddRelationshipOptions object itself.
      */
+    @Generated
     public DigitalTwinsAddRelationshipOptions setIfNoneMatch(String ifNoneMatch) {
         this.ifNoneMatch = ifNoneMatch;
         return this;

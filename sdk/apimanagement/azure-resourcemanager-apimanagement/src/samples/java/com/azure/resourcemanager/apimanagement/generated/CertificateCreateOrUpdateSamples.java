@@ -12,7 +12,7 @@ import com.azure.resourcemanager.apimanagement.models.KeyVaultContractCreateProp
 public final class CertificateCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateCertificate.json
      */
     /**
@@ -32,7 +32,7 @@ public final class CertificateCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateCertificateWithKeyVault.json
      */
     /**

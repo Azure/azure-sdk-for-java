@@ -70,29 +70,29 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationProtectionIntentCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @QueryParam("skipToken") String skipToken,
-            @QueryParam("takeToken") String takeToken, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("skipToken") String skipToken, @QueryParam("takeToken") String takeToken,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionIntents/{intentObjectName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationProtectionIntentInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("intentObjectName") String intentObjectName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("intentObjectName") String intentObjectName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionIntents/{intentObjectName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicationProtectionIntentInner>> create(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("intentObjectName") String intentObjectName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("intentObjectName") String intentObjectName,
             @BodyParam("application/json") CreateProtectionIntentInput input, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -110,8 +110,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,18 +121,18 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationProtectionIntentInner>> listSinglePageAsync(String resourceName,
-        String resourceGroupName, String skipToken, String takeToken) {
+    private Mono<PagedResponse<ReplicationProtectionIntentInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, String skipToken, String takeToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -140,8 +140,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), skipToken, takeToken, accept, context))
+            .withContext(
+                context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                    resourceName, this.client.getSubscriptionId(), skipToken, takeToken, accept, context))
             .<PagedResponse<ReplicationProtectionIntentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -152,8 +153,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param context The context to associate with this operation.
@@ -164,18 +165,18 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationProtectionIntentInner>> listSinglePageAsync(String resourceName,
-        String resourceGroupName, String skipToken, String takeToken, Context context) {
+    private Mono<PagedResponse<ReplicationProtectionIntentInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, String skipToken, String takeToken, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -184,7 +185,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), skipToken, takeToken, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -195,8 +196,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,9 +207,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationProtectionIntentInner> listAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<ReplicationProtectionIntentInner> listAsync(String resourceGroupName, String resourceName,
         String skipToken, String takeToken) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, skipToken, takeToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, skipToken, takeToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -217,8 +218,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -226,10 +227,10 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationProtectionIntentInner> listAsync(String resourceName, String resourceGroupName) {
+    private PagedFlux<ReplicationProtectionIntentInner> listAsync(String resourceGroupName, String resourceName) {
         final String skipToken = null;
         final String takeToken = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, skipToken, takeToken),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, skipToken, takeToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -238,8 +239,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param context The context to associate with this operation.
@@ -250,10 +251,10 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicationProtectionIntentInner> listAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<ReplicationProtectionIntentInner> listAsync(String resourceGroupName, String resourceName,
         String skipToken, String takeToken, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName, skipToken, takeToken, context),
+            () -> listSinglePageAsync(resourceGroupName, resourceName, skipToken, takeToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -262,8 +263,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -271,10 +272,10 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicationProtectionIntentInner> list(String resourceName, String resourceGroupName) {
+    public PagedIterable<ReplicationProtectionIntentInner> list(String resourceGroupName, String resourceName) {
         final String skipToken = null;
         final String takeToken = null;
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, skipToken, takeToken));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, skipToken, takeToken));
     }
 
     /**
@@ -282,8 +283,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the list of ASR replication protection intent objects in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param skipToken The pagination token.
      * @param takeToken The page size.
      * @param context The context to associate with this operation.
@@ -294,9 +295,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicationProtectionIntentInner> list(String resourceName, String resourceGroupName,
+    public PagedIterable<ReplicationProtectionIntentInner> list(String resourceGroupName, String resourceName,
         String skipToken, String takeToken, Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, skipToken, takeToken, context));
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, skipToken, takeToken, context));
     }
 
     /**
@@ -304,8 +305,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the details of an ASR replication protection intent.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName Replication protection intent name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -314,18 +315,18 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationProtectionIntentInner>> getWithResponseAsync(String resourceName,
-        String resourceGroupName, String intentObjectName) {
+    private Mono<Response<ReplicationProtectionIntentInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String intentObjectName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -337,8 +338,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), intentObjectName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), intentObjectName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -347,8 +348,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the details of an ASR replication protection intent.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName Replication protection intent name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,18 +359,18 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationProtectionIntentInner>> getWithResponseAsync(String resourceName,
-        String resourceGroupName, String intentObjectName, Context context) {
+    private Mono<Response<ReplicationProtectionIntentInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String intentObjectName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -381,7 +382,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), intentObjectName, accept, context);
     }
 
@@ -390,8 +391,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the details of an ASR replication protection intent.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName Replication protection intent name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -399,9 +400,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * @return the details of an ASR replication protection intent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicationProtectionIntentInner> getAsync(String resourceName, String resourceGroupName,
+    private Mono<ReplicationProtectionIntentInner> getAsync(String resourceGroupName, String resourceName,
         String intentObjectName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, intentObjectName)
+        return getWithResponseAsync(resourceGroupName, resourceName, intentObjectName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -410,8 +411,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the details of an ASR replication protection intent.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName Replication protection intent name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -420,9 +421,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * @return the details of an ASR replication protection intent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReplicationProtectionIntentInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<ReplicationProtectionIntentInner> getWithResponse(String resourceGroupName, String resourceName,
         String intentObjectName, Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, intentObjectName, context).block();
+        return getWithResponseAsync(resourceGroupName, resourceName, intentObjectName, context).block();
     }
 
     /**
@@ -430,8 +431,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * Gets the details of an ASR replication protection intent.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName Replication protection intent name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -439,9 +440,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * @return the details of an ASR replication protection intent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationProtectionIntentInner get(String resourceName, String resourceGroupName,
+    public ReplicationProtectionIntentInner get(String resourceGroupName, String resourceName,
         String intentObjectName) {
-        return getWithResponse(resourceName, resourceGroupName, intentObjectName, Context.NONE).getValue();
+        return getWithResponse(resourceGroupName, resourceName, intentObjectName, Context.NONE).getValue();
     }
 
     /**
@@ -449,8 +450,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * The operation to create an ASR replication protection intent item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName A name for the replication protection item.
      * @param input Create Protection Intent Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,18 +460,18 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * @return replication protection intent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationProtectionIntentInner>> createWithResponseAsync(String resourceName,
-        String resourceGroupName, String intentObjectName, CreateProtectionIntentInput input) {
+    private Mono<Response<ReplicationProtectionIntentInner>> createWithResponseAsync(String resourceGroupName,
+        String resourceName, String intentObjectName, CreateProtectionIntentInput input) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -487,8 +488,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), intentObjectName, input, accept, context))
+            .withContext(
+                context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                    resourceName, this.client.getSubscriptionId(), intentObjectName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -497,8 +499,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * The operation to create an ASR replication protection intent item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName A name for the replication protection item.
      * @param input Create Protection Intent Input.
      * @param context The context to associate with this operation.
@@ -508,18 +510,18 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * @return replication protection intent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicationProtectionIntentInner>> createWithResponseAsync(String resourceName,
-        String resourceGroupName, String intentObjectName, CreateProtectionIntentInput input, Context context) {
+    private Mono<Response<ReplicationProtectionIntentInner>> createWithResponseAsync(String resourceGroupName,
+        String resourceName, String intentObjectName, CreateProtectionIntentInput input, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -536,7 +538,7 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), intentObjectName, input, accept, context);
     }
 
@@ -545,8 +547,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * The operation to create an ASR replication protection intent item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName A name for the replication protection item.
      * @param input Create Protection Intent Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -555,9 +557,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * @return replication protection intent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicationProtectionIntentInner> createAsync(String resourceName, String resourceGroupName,
+    private Mono<ReplicationProtectionIntentInner> createAsync(String resourceGroupName, String resourceName,
         String intentObjectName, CreateProtectionIntentInput input) {
-        return createWithResponseAsync(resourceName, resourceGroupName, intentObjectName, input)
+        return createWithResponseAsync(resourceGroupName, resourceName, intentObjectName, input)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -566,8 +568,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * The operation to create an ASR replication protection intent item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName A name for the replication protection item.
      * @param input Create Protection Intent Input.
      * @param context The context to associate with this operation.
@@ -577,9 +579,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * @return replication protection intent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReplicationProtectionIntentInner> createWithResponse(String resourceName, String resourceGroupName,
+    public Response<ReplicationProtectionIntentInner> createWithResponse(String resourceGroupName, String resourceName,
         String intentObjectName, CreateProtectionIntentInput input, Context context) {
-        return createWithResponseAsync(resourceName, resourceGroupName, intentObjectName, input, context).block();
+        return createWithResponseAsync(resourceGroupName, resourceName, intentObjectName, input, context).block();
     }
 
     /**
@@ -587,8 +589,8 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * 
      * The operation to create an ASR replication protection intent item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param intentObjectName A name for the replication protection item.
      * @param input Create Protection Intent Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,9 +599,9 @@ public final class ReplicationProtectionIntentsClientImpl implements Replication
      * @return replication protection intent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicationProtectionIntentInner create(String resourceName, String resourceGroupName,
+    public ReplicationProtectionIntentInner create(String resourceGroupName, String resourceName,
         String intentObjectName, CreateProtectionIntentInput input) {
-        return createWithResponse(resourceName, resourceGroupName, intentObjectName, input, Context.NONE).getValue();
+        return createWithResponse(resourceGroupName, resourceName, intentObjectName, input, Context.NONE).getValue();
     }
 
     /**

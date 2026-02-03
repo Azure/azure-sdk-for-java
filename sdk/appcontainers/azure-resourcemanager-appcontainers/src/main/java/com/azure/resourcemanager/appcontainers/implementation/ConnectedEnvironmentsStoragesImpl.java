@@ -73,14 +73,12 @@ public final class ConnectedEnvironmentsStoragesImpl implements ConnectedEnviron
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        String storageName, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context);
-    }
-
     public void delete(String resourceGroupName, String connectedEnvironmentName, String storageName) {
         this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, storageName);
+    }
+
+    public void delete(String resourceGroupName, String connectedEnvironmentName, String storageName, Context context) {
+        this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, storageName, context);
     }
 
     public ConnectedEnvironmentStorage getById(String id) {
@@ -137,10 +135,10 @@ public final class ConnectedEnvironmentsStoragesImpl implements ConnectedEnviron
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE);
+        this.delete(resourceGroupName, connectedEnvironmentName, storageName, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+    public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -156,7 +154,7 @@ public final class ConnectedEnvironmentsStoragesImpl implements ConnectedEnviron
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storages'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, connectedEnvironmentName, storageName, context);
+        this.delete(resourceGroupName, connectedEnvironmentName, storageName, context);
     }
 
     private ConnectedEnvironmentsStoragesClient serviceClient() {

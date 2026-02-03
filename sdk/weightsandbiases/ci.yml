@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/weightsandbiases/ci.yml
+      - sdk/weightsandbiases/azure-resourcemanager-weightsandbiases/
+    exclude:
+      - sdk/weightsandbiases/pom.xml
+      - sdk/weightsandbiases/azure-resourcemanager-weightsandbiases/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/weightsandbiases/ci.yml
+      - sdk/weightsandbiases/azure-resourcemanager-weightsandbiases/
+    exclude:
+      - sdk/weightsandbiases/pom.xml
+      - sdk/weightsandbiases/azure-resourcemanager-weightsandbiases/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerweightsandbiases
+    displayName: azure-resourcemanager-weightsandbiases
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: weightsandbiases
+    Artifacts:
+      - name: azure-resourcemanager-weightsandbiases
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerweightsandbiases
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerweightsandbiases }}

@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class FsLayer implements JsonSerializable<FsLayer> {
     /*
      * SHA of an image layer
      */
+    @Generated
     private String blobSum;
 
     /**
      * Creates an instance of FsLayer class.
      */
+    @Generated
     public FsLayer() {
     }
 
@@ -32,6 +35,7 @@ public final class FsLayer implements JsonSerializable<FsLayer> {
      * 
      * @return the blobSum value.
      */
+    @Generated
     public String getBlobSum() {
         return this.blobSum;
     }
@@ -42,6 +46,7 @@ public final class FsLayer implements JsonSerializable<FsLayer> {
      * @param blobSum the blobSum value to set.
      * @return the FsLayer object itself.
      */
+    @Generated
     public FsLayer setBlobSum(String blobSum) {
         this.blobSum = blobSum;
         return this;
@@ -50,6 +55,7 @@ public final class FsLayer implements JsonSerializable<FsLayer> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class FsLayer implements JsonSerializable<FsLayer> {
      * JSON null.
      * @throws IOException If an error occurs while reading the FsLayer.
      */
+    @Generated
     public static FsLayer fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FsLayer deserializedFsLayer = new FsLayer();

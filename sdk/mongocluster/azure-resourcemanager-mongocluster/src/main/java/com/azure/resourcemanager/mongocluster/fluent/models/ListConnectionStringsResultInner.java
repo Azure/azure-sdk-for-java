@@ -39,17 +39,6 @@ public final class ListConnectionStringsResultInner implements JsonSerializable<
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (connectionStrings() != null) {
-            connectionStrings().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

@@ -52,7 +52,7 @@ public final class EventsImpl {
      * perform REST calls.
      */
     @Host("{Endpoint}/personalizer/{ApiVersion}")
-    @ServiceInterface(name = "PersonalizerClientV1")
+    @ServiceInterface(name = "PersonalizerClientV1Preview3Events")
     public interface EventsService {
         @Post("/events/{eventId}/reward")
         @ExpectedResponses({ 204 })

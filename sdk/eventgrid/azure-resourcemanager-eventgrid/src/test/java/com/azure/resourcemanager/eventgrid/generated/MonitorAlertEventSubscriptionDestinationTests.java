@@ -14,22 +14,22 @@ public final class MonitorAlertEventSubscriptionDestinationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitorAlertEventSubscriptionDestination model = BinaryData.fromString(
-            "{\"endpointType\":\"MonitorAlert\",\"properties\":{\"severity\":\"Sev2\",\"description\":\"mjswenawwamecle\",\"actionGroups\":[\"ulndhzyoeo\",\"ht\",\"llhsvidmyt\",\"l\"]}}")
+            "{\"endpointType\":\"MonitorAlert\",\"properties\":{\"severity\":\"Sev4\",\"description\":\"dasmxu\",\"actionGroups\":[\"bngfcocefhpri\",\"lfmpztr\",\"ud\"]}}")
             .toObject(MonitorAlertEventSubscriptionDestination.class);
-        Assertions.assertEquals(MonitorAlertSeverity.SEV2, model.severity());
-        Assertions.assertEquals("mjswenawwamecle", model.description());
-        Assertions.assertEquals("ulndhzyoeo", model.actionGroups().get(0));
+        Assertions.assertEquals(MonitorAlertSeverity.SEV4, model.severity());
+        Assertions.assertEquals("dasmxu", model.description());
+        Assertions.assertEquals("bngfcocefhpri", model.actionGroups().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitorAlertEventSubscriptionDestination model
-            = new MonitorAlertEventSubscriptionDestination().withSeverity(MonitorAlertSeverity.SEV2)
-                .withDescription("mjswenawwamecle")
-                .withActionGroups(Arrays.asList("ulndhzyoeo", "ht", "llhsvidmyt", "l"));
+            = new MonitorAlertEventSubscriptionDestination().withSeverity(MonitorAlertSeverity.SEV4)
+                .withDescription("dasmxu")
+                .withActionGroups(Arrays.asList("bngfcocefhpri", "lfmpztr", "ud"));
         model = BinaryData.fromObject(model).toObject(MonitorAlertEventSubscriptionDestination.class);
-        Assertions.assertEquals(MonitorAlertSeverity.SEV2, model.severity());
-        Assertions.assertEquals("mjswenawwamecle", model.description());
-        Assertions.assertEquals("ulndhzyoeo", model.actionGroups().get(0));
+        Assertions.assertEquals(MonitorAlertSeverity.SEV4, model.severity());
+        Assertions.assertEquals("dasmxu", model.description());
+        Assertions.assertEquals("bngfcocefhpri", model.actionGroups().get(0));
     }
 }

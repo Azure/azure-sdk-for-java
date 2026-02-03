@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -76,9 +77,10 @@ public class RntbdOpenConnectionsHandler implements IOpenConnectionsHandler {
     private RxDocumentServiceRequest getOpenConnectionRequest(String collectionRid, URI serviceEndpoint) {
         RxDocumentServiceRequest openConnectionRequest =
             RxDocumentServiceRequest.create(null, OperationType.Create, ResourceType.Connection);
-        openConnectionRequest.requestContext.locationEndpointToRoute = serviceEndpoint;
+
+        openConnectionRequest.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(serviceEndpoint);
         openConnectionRequest.requestContext.resolvedCollectionRid = collectionRid;
-        openConnectionRequest.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoint);
+        openConnectionRequest.faultInjectionRequestContext.setRegionalRoutingContextToRoute(openConnectionRequest.requestContext.regionalRoutingContextToRoute);
 
         return openConnectionRequest;
     }

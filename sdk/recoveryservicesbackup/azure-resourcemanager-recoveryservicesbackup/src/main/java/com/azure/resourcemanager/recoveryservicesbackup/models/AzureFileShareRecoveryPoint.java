@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * Azure File Share workload specific backup copy.
@@ -48,6 +49,11 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
      * Properties of Recovery Point
      */
     private RecoveryPointProperties recoveryPointProperties;
+
+    /*
+     * Recovery point tier information.
+     */
+    private List<RecoveryPointTierInformation> recoveryPointTierDetails;
 
     /**
      * Creates an instance of AzureFileShareRecoveryPoint class.
@@ -169,6 +175,27 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     }
 
     /**
+     * Get the recoveryPointTierDetails property: Recovery point tier information.
+     * 
+     * @return the recoveryPointTierDetails value.
+     */
+    public List<RecoveryPointTierInformation> recoveryPointTierDetails() {
+        return this.recoveryPointTierDetails;
+    }
+
+    /**
+     * Set the recoveryPointTierDetails property: Recovery point tier information.
+     * 
+     * @param recoveryPointTierDetails the recoveryPointTierDetails value to set.
+     * @return the AzureFileShareRecoveryPoint object itself.
+     */
+    public AzureFileShareRecoveryPoint
+        withRecoveryPointTierDetails(List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        this.recoveryPointTierDetails = recoveryPointTierDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -177,6 +204,9 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
     public void validate() {
         if (recoveryPointProperties() != null) {
             recoveryPointProperties().validate();
+        }
+        if (recoveryPointTierDetails() != null) {
+            recoveryPointTierDetails().forEach(e -> e.validate());
         }
     }
 
@@ -195,6 +225,8 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
         jsonWriter.writeStringField("fileShareSnapshotUri", this.fileShareSnapshotUri);
         jsonWriter.writeNumberField("recoveryPointSizeInGB", this.recoveryPointSizeInGB);
         jsonWriter.writeJsonField("recoveryPointProperties", this.recoveryPointProperties);
+        jsonWriter.writeArrayField("recoveryPointTierDetails", this.recoveryPointTierDetails,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -228,6 +260,10 @@ public final class AzureFileShareRecoveryPoint extends RecoveryPoint {
                 } else if ("recoveryPointProperties".equals(fieldName)) {
                     deserializedAzureFileShareRecoveryPoint.recoveryPointProperties
                         = RecoveryPointProperties.fromJson(reader);
+                } else if ("recoveryPointTierDetails".equals(fieldName)) {
+                    List<RecoveryPointTierInformation> recoveryPointTierDetails
+                        = reader.readArray(reader1 -> RecoveryPointTierInformation.fromJson(reader1));
+                    deserializedAzureFileShareRecoveryPoint.recoveryPointTierDetails = recoveryPointTierDetails;
                 } else {
                     reader.skipChildren();
                 }

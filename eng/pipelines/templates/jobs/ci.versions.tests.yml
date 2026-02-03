@@ -86,10 +86,6 @@ jobs:
         parameters:
           runProxy: true
 
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
-
       - ${{ parameters.PreBuildSteps }}
 
       - ${{ parameters.PreTestSteps }}

@@ -74,7 +74,7 @@ public final class SystemScanRulesetsImpl {
      * service to perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "PurviewScanningClien")
+    @ServiceInterface(name = "PurviewScanningClientSystemScanRulesets")
     public interface SystemScanRulesetsService {
         @Get("/systemScanRulesets")
         @ExpectedResponses({ 200 })

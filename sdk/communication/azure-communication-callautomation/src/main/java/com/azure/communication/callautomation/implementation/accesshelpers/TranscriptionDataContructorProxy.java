@@ -5,11 +5,13 @@ package com.azure.communication.callautomation.implementation.accesshelpers;
 
 import com.azure.communication.callautomation.implementation.converters.TranscriptionDataConverter;
 import com.azure.communication.callautomation.models.TranscriptionData;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * Helper class to access private values of {@link TranscriptionData} across package boundaries.
  */
 public final class TranscriptionDataContructorProxy {
+    private static final ClientLogger LOGGER = new ClientLogger(TranscriptionDataContructorProxy.class);
     private static TranscriptionDataContructorProxyAccessor accessor;
 
     private TranscriptionDataContructorProxy() {
@@ -51,7 +53,12 @@ public final class TranscriptionDataContructorProxy {
         // application accesses AudioData which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new TranscriptionData();
+            try {
+                Class.forName(TranscriptionData.class.getName(), true,
+                    TranscriptionDataContructorProxyAccessor.class.getClassLoader());
+            } catch (ClassNotFoundException e) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            }
         }
 
         assert accessor != null;

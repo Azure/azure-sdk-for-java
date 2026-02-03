@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.ExtensionTopic;
@@ -21,19 +21,19 @@ public final class ExtensionTopicsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"lehhkplobzg\",\"systemTopic\":\"taksadzighmmt\"},\"id\":\"dvucfvvra\",\"name\":\"beurdeewl\",\"type\":\"uxpcbwkdwj\"}";
+            = "{\"properties\":{\"description\":\"pakbqyhlsor\",\"systemTopic\":\"b\"},\"id\":\"qagkncjmybn\",\"name\":\"evztnjawrhul\",\"type\":\"mmqmbwppx\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ExtensionTopic response
-            = manager.extensionTopics().getWithResponse("mhnmizhvprhqqw", com.azure.core.util.Context.NONE).getValue();
+            = manager.extensionTopics().getWithResponse("oswgfqvj", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("lehhkplobzg", response.description());
-        Assertions.assertEquals("taksadzighmmt", response.systemTopic());
+        Assertions.assertEquals("pakbqyhlsor", response.description());
+        Assertions.assertEquals("b", response.systemTopic());
     }
 }

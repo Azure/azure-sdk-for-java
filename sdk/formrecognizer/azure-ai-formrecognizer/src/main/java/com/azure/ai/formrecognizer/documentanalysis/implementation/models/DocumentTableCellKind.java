@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTa
     /**
      * Contains the main content/data.
      */
+    @Generated
     public static final DocumentTableCellKind CONTENT = fromString("content");
 
     /**
      * Describes the content of the row.
      */
+    @Generated
     public static final DocumentTableCellKind ROW_HEADER = fromString("rowHeader");
 
     /**
      * Describes the content of the column.
      */
+    @Generated
     public static final DocumentTableCellKind COLUMN_HEADER = fromString("columnHeader");
 
     /**
      * Describes the row headers, usually located at the top left corner of a table.
      */
+    @Generated
     public static final DocumentTableCellKind STUB_HEAD = fromString("stubHead");
 
     /**
      * Describes the content in (parts of) the table.
      */
+    @Generated
     public static final DocumentTableCellKind DESCRIPTION = fromString("description");
 
     /**
@@ -41,6 +47,7 @@ public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTa
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentTableCellKind() {
     }
@@ -51,6 +58,7 @@ public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTa
      * @param name a name to look for.
      * @return the corresponding DocumentTableCellKind.
      */
+    @Generated
     public static DocumentTableCellKind fromString(String name) {
         return fromString(name, DocumentTableCellKind.class);
     }
@@ -60,6 +68,7 @@ public final class DocumentTableCellKind extends ExpandableStringEnum<DocumentTa
      * 
      * @return known DocumentTableCellKind values.
      */
+    @Generated
     public static Collection<DocumentTableCellKind> values() {
         return values(DocumentTableCellKind.class);
     }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.Client;
@@ -24,25 +24,24 @@ public final class ClientsListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"nazku\",\"authenticationName\":\"drey\",\"clientCertificateAuthentication\":{\"validationScheme\":\"SubjectMatchesAuthenticationName\",\"allowedThumbprints\":[\"twwjwzzq\"]},\"state\":\"Enabled\",\"attributes\":{\"qqzzdc\":\"dataukykcyqh\",\"ewfopazdazg\":\"datakeys\",\"mdpv\":\"datasqgpewqcfu\"},\"provisioningState\":\"Failed\"},\"id\":\"qjbknl\",\"name\":\"clctzey\",\"type\":\"wmn\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"iraabmdlqjbedpf\",\"authenticationName\":\"lhupmomihzbdnpxp\",\"clientCertificateAuthentication\":{\"validationScheme\":\"DnsMatchesAuthenticationName\",\"allowedThumbprints\":[\"yxelyicghflr\",\"fss\"]},\"state\":\"Disabled\",\"attributes\":{\"hammgmqfmefgv\":\"datafxrk\",\"landkdcdjhunhgh\":\"datacpdwjgquxwey\",\"sotirei\":\"datagawnrrnquo\"},\"provisioningState\":\"Deleted\"},\"id\":\"bfsx\",\"name\":\"tcyilbvz\",\"type\":\"mxcjzlquzexokjx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Client> response = manager.clients()
-            .listByNamespace("ygnxcgjtfrnqukt", "fnslnlrxsmy", "trwntfmtbgw", 571744103,
-                com.azure.core.util.Context.NONE);
+            .listByNamespace("dknkobe", "tmbozomtzamicbig", "cdgzseznux", 1600985200, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nazku", response.iterator().next().description());
-        Assertions.assertEquals("drey", response.iterator().next().authenticationName());
-        Assertions.assertEquals(ClientCertificateValidationScheme.SUBJECT_MATCHES_AUTHENTICATION_NAME,
+        Assertions.assertEquals("iraabmdlqjbedpf", response.iterator().next().description());
+        Assertions.assertEquals("lhupmomihzbdnpxp", response.iterator().next().authenticationName());
+        Assertions.assertEquals(ClientCertificateValidationScheme.DNS_MATCHES_AUTHENTICATION_NAME,
             response.iterator().next().clientCertificateAuthentication().validationScheme());
-        Assertions.assertEquals("twwjwzzq",
+        Assertions.assertEquals("yxelyicghflr",
             response.iterator().next().clientCertificateAuthentication().allowedThumbprints().get(0));
-        Assertions.assertEquals(ClientState.ENABLED, response.iterator().next().state());
+        Assertions.assertEquals(ClientState.DISABLED, response.iterator().next().state());
     }
 }

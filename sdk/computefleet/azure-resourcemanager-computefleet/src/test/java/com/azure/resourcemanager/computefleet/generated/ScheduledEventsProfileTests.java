@@ -17,9 +17,9 @@ public final class ScheduledEventsProfileTests {
             "{\"terminateNotificationProfile\":{\"notBeforeTimeout\":\"qwgxhniskx\",\"enable\":true},\"osImageNotificationProfile\":{\"notBeforeTimeout\":\"cg\",\"enable\":false}}")
             .toObject(ScheduledEventsProfile.class);
         Assertions.assertEquals("qwgxhniskx", model.terminateNotificationProfile().notBeforeTimeout());
-        Assertions.assertEquals(true, model.terminateNotificationProfile().enable());
+        Assertions.assertTrue(model.terminateNotificationProfile().enable());
         Assertions.assertEquals("cg", model.osImageNotificationProfile().notBeforeTimeout());
-        Assertions.assertEquals(false, model.osImageNotificationProfile().enable());
+        Assertions.assertFalse(model.osImageNotificationProfile().enable());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,8 +31,8 @@ public final class ScheduledEventsProfileTests {
                 new OSImageNotificationProfile().withNotBeforeTimeout("cg").withEnable(false));
         model = BinaryData.fromObject(model).toObject(ScheduledEventsProfile.class);
         Assertions.assertEquals("qwgxhniskx", model.terminateNotificationProfile().notBeforeTimeout());
-        Assertions.assertEquals(true, model.terminateNotificationProfile().enable());
+        Assertions.assertTrue(model.terminateNotificationProfile().enable());
         Assertions.assertEquals("cg", model.osImageNotificationProfile().notBeforeTimeout());
-        Assertions.assertEquals(false, model.osImageNotificationProfile().enable());
+        Assertions.assertFalse(model.osImageNotificationProfile().enable());
     }
 }

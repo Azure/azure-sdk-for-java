@@ -66,22 +66,22 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
 
         jsonSerializable.set(
             BatchRequestResponseConstants.FIELD_OPERATION_TYPE,
-            ModelBridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType()),
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            ModelBridgeInternal.getOperationValueForCosmosItemOperationType(this.getOperationType())
+        );
 
         if (StringUtils.isNotEmpty(this.getId())) {
             jsonSerializable.set(
                 BatchRequestResponseConstants.FIELD_ID,
-                this.getId(),
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.getId()
+            );
         }
 
         if (this.getItemInternal() != null) {
             if (this.getOperationType() == CosmosItemOperationType.PATCH) {
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
-                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations) this.getItemInternal(), this.getRequestOptions()),
-                    CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    PatchUtil.serializableBatchPatchOperation((CosmosPatchOperations) this.getItemInternal(), this.getRequestOptions())
+                );
             } else {
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
@@ -97,15 +97,15 @@ public final class ItemBatchOperation<TInternal> extends CosmosItemOperationBase
             if (StringUtils.isNotEmpty(requestOptions.getIfMatchETag())) {
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_IF_MATCH,
-                    requestOptions.getIfMatchETag(),
-                    CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    requestOptions.getIfMatchETag()
+                );
             }
 
             if (StringUtils.isNotEmpty(requestOptions.getIfNoneMatchETag())) {
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_IF_NONE_MATCH,
-                    requestOptions.getIfNoneMatchETag(),
-                    CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    requestOptions.getIfNoneMatchETag()
+                );
             }
         }
 

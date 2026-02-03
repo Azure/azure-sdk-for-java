@@ -113,10 +113,6 @@ jobs:
         parameters:
           OS: ${{ parameters.OSName }}
 
-      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-        parameters:
-          JdkVersion: $(JavaTestVersion)
-
       - template: /eng/pipelines/templates/steps/install-graalvm-jdk.yml
         parameters:
           GraalVMJdkVersion: '22.3.0'

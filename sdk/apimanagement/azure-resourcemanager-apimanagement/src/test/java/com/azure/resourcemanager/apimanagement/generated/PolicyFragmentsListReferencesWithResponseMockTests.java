@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ResourceCollection;
@@ -21,21 +21,21 @@ public final class PolicyFragmentsListReferencesWithResponseMockTests {
     @Test
     public void testListReferencesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"bjimzwynsmmp\",\"name\":\"vkyezwsey\",\"type\":\"oyjmjwqdslqreo\"},{\"id\":\"zrkrztpyay\",\"name\":\"hxl\",\"type\":\"mwaxsymnrtv\"}],\"count\":5765664688829305016,\"nextLink\":\"vyotpcvpahhpk\"}";
+            = "{\"value\":[{\"id\":\"pxnaaii\",\"name\":\"nkruywrxnksmaebd\",\"type\":\"xjsmrseauxeovbgr\"},{\"id\":\"wfuxnt\",\"name\":\"egyllek\",\"type\":\"tkviptqhatfgkhhb\"},{\"id\":\"gfhgkdmsfl\",\"name\":\"hbupqovuwhvqihm\",\"type\":\"hqjdcbgcemjti\"}],\"count\":7044699307598747575,\"nextLink\":\"calyqz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResourceCollection response = manager.policyFragments()
-            .listReferencesWithResponse("qjzri", "ebmuiongmndwohoe", "s", 1537409526, 972857720,
+            .listReferencesWithResponse("dxz", "egumydogrtfwzecg", "xrcsevqjdxiiqwqb", 102685303, 972006752,
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(5765664688829305016L, response.count());
-        Assertions.assertEquals("vyotpcvpahhpk", response.nextLink());
+        Assertions.assertEquals(7044699307598747575L, response.count());
+        Assertions.assertEquals("calyqz", response.nextLink());
     }
 }

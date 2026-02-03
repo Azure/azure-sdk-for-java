@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.fluent.models.WorkflowEnvelopeInner;
 
 /**
@@ -11,39 +12,32 @@ import com.azure.resourcemanager.appcontainers.fluent.models.WorkflowEnvelopeInn
  */
 public interface WorkflowEnvelope {
     /**
-     * Gets the id property: The resource id.
+     * Gets the id property: Fully qualified resource Id for the resource.
      * 
      * @return the id value.
      */
     String id();
 
     /**
-     * Gets the name property: Gets the resource name.
+     * Gets the name property: The name of the resource.
      * 
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the type property: Gets the resource type.
+     * Gets the type property: The type of the resource.
      * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the kind property: The resource kind.
+     * Gets the kind property: Gets the logic app hybrid workflow kind.
      * 
      * @return the kind value.
      */
-    String kind();
-
-    /**
-     * Gets the location property: The resource location.
-     * 
-     * @return the location value.
-     */
-    String location();
+    WorkflowKind kind();
 
     /**
      * Gets the properties property: Additional workflow properties.
@@ -51,6 +45,13 @@ public interface WorkflowEnvelope {
      * @return the properties value.
      */
     WorkflowEnvelopeProperties properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.appcontainers.fluent.models.WorkflowEnvelopeInner object.

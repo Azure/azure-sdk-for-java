@@ -4,9 +4,9 @@
 
 package com.azure.resourcemanager.apimanagement.implementation;
 
-import com.azure.core.management.exception.ManagementError;
 import com.azure.resourcemanager.apimanagement.fluent.models.OperationResultContractInner;
 import com.azure.resourcemanager.apimanagement.models.AsyncOperationStatus;
+import com.azure.resourcemanager.apimanagement.models.ErrorResponseBody;
 import com.azure.resourcemanager.apimanagement.models.OperationResultContract;
 import com.azure.resourcemanager.apimanagement.models.OperationResultLogItemContract;
 import java.time.OffsetDateTime;
@@ -56,7 +56,7 @@ public final class OperationResultContractImpl implements OperationResultContrac
         return this.innerModel().resultInfo();
     }
 
-    public ManagementError error() {
+    public ErrorResponseBody error() {
         return this.innerModel().error();
     }
 

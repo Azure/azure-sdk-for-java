@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestination;
@@ -24,28 +24,28 @@ public final class PartnerDestinationsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"daeef811-e7b4-4e32-82df-a385461a3393\",\"endpointServiceContext\":\"c\",\"expirationTimeIfNotActivatedUtc\":\"2021-06-25T10:53:07Z\",\"provisioningState\":\"IdleDueToMirroredChannelResourceDeletion\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"vjxitzovnkrt\",\"messageForActivation\":\"lsmnihqlcoqksyi\"},\"location\":\"hyxwbgbud\",\"tags\":{\"rbccqcdht\":\"d\"},\"id\":\"ojvlirknucosaw\",\"name\":\"dtnagzlgpyaix\",\"type\":\"hzqjjtsmuydqfttk\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"bd39b863-2f75-4162-863d-41cd237cf0fd\",\"endpointServiceContext\":\"mcfjxokyelsy\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-18T05:49:12Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"ygjje\",\"messageForActivation\":\"knfdr\"},\"location\":\"jqy\",\"tags\":{\"otcsu\":\"txkrdtulcrcjdk\"},\"id\":\"mzoonsvobchkxfpw\",\"name\":\"dyslbklglmnn\",\"type\":\"kwayqshwy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PartnerDestination> response = manager.partnerDestinations()
-            .listByResourceGroup("rtwletyves", "rtlhpdhwyn", 953677041, com.azure.core.util.Context.NONE);
+            .listByResourceGroup("mczfedyuepsvplt", "dajjvywe", 452970965, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hyxwbgbud", response.iterator().next().location());
-        Assertions.assertEquals("d", response.iterator().next().tags().get("rbccqcdht"));
-        Assertions.assertEquals(UUID.fromString("daeef811-e7b4-4e32-82df-a385461a3393"),
+        Assertions.assertEquals("jqy", response.iterator().next().location());
+        Assertions.assertEquals("txkrdtulcrcjdk", response.iterator().next().tags().get("otcsu"));
+        Assertions.assertEquals(UUID.fromString("bd39b863-2f75-4162-863d-41cd237cf0fd"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("c", response.iterator().next().endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-25T10:53:07Z"),
+        Assertions.assertEquals("mcfjxokyelsy", response.iterator().next().endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-18T05:49:12Z"),
             response.iterator().next().expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.NEVER_ACTIVATED,
             response.iterator().next().activationState());
-        Assertions.assertEquals("vjxitzovnkrt", response.iterator().next().endpointBaseUrl());
-        Assertions.assertEquals("lsmnihqlcoqksyi", response.iterator().next().messageForActivation());
+        Assertions.assertEquals("ygjje", response.iterator().next().endpointBaseUrl());
+        Assertions.assertEquals("knfdr", response.iterator().next().messageForActivation());
     }
 }

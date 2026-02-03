@@ -16,6 +16,7 @@ import com.azure.resourcemanager.eventgrid.models.FiltersConfiguration;
 import com.azure.resourcemanager.eventgrid.models.SubscriptionProvisioningState;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Event Subscription.
@@ -28,7 +29,7 @@ public final class SubscriptionInner extends ProxyResource {
     private SubscriptionProperties innerProperties;
 
     /*
-     * The system metadata relating to Event Subscription resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -63,7 +64,7 @@ public final class SubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Event Subscription resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
@@ -199,6 +200,29 @@ public final class SubscriptionInner extends ProxyResource {
             this.innerProperties = new SubscriptionProperties();
         }
         this.innerProperties().withExpirationTimeUtc(expirationTimeUtc);
+        return this;
+    }
+
+    /**
+     * Get the tags property: Tags relating to Event Subscription resource.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.innerProperties() == null ? null : this.innerProperties().tags();
+    }
+
+    /**
+     * Set the tags property: Tags relating to Event Subscription resource.
+     * 
+     * @param tags the tags value to set.
+     * @return the SubscriptionInner object itself.
+     */
+    public SubscriptionInner withTags(Map<String, String> tags) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SubscriptionProperties();
+        }
+        this.innerProperties().withTags(tags);
         return this;
     }
 

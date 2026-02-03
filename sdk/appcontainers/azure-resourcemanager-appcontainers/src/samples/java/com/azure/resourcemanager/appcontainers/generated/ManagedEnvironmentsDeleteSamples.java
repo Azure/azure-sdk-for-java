@@ -9,9 +9,8 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ManagedEnvironmentsDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/ManagedEnvironments_Delete.
-     * json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
+     * ManagedEnvironments_Delete.json
      */
     /**
      * Sample code: Delete environment by name.

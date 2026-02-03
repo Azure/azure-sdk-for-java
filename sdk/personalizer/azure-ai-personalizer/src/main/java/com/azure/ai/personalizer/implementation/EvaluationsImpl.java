@@ -60,7 +60,7 @@ public final class EvaluationsImpl {
      * service to perform REST calls.
      */
     @Host("{Endpoint}/personalizer/{ApiVersion}")
-    @ServiceInterface(name = "PersonalizerClientV1")
+    @ServiceInterface(name = "PersonalizerClientV1Preview3Evaluations")
     public interface EvaluationsService {
         @Get("/evaluations/{evaluationId}")
         @ExpectedResponses({ 200 })

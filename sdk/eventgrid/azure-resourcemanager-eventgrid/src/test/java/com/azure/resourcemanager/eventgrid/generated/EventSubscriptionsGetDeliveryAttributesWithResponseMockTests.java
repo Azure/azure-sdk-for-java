@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeListResult;
@@ -21,19 +21,19 @@ public final class EventSubscriptionsGetDeliveryAttributesWithResponseMockTests 
     @Test
     public void testGetDeliveryAttributesWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"b\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"jhfv\"}]}";
+            = "{\"value\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"skw\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"sdetjygowifcqpol\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"gysdgzyyb\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"xlvocptvdx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DeliveryAttributeListResult response = manager.eventSubscriptions()
-            .getDeliveryAttributesWithResponse("hujbfwxiplk", "solsyjprxslwhdm", com.azure.core.util.Context.NONE)
+            .getDeliveryAttributesWithResponse("yrqsdbpokszanm", "wgpterdiuw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("b", response.value().get(0).name());
+        Assertions.assertEquals("skw", response.value().get(0).name());
     }
 }

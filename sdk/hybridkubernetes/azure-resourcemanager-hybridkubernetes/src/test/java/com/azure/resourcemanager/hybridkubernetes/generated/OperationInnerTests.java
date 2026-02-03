@@ -11,7 +11,7 @@ public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationInner model = BinaryData.fromString(
-            "{\"name\":\"uxzdxtay\",\"display\":{\"provider\":\"m\",\"resource\":\"fp\",\"operation\":\"qobmtukk\",\"description\":\"yrtih\"}}")
+            "{\"name\":\"qulngsntnbybkzgc\",\"display\":{\"provider\":\"clxxwrljdo\",\"resource\":\"kcqvkocrc\",\"operation\":\"kwt\",\"description\":\"xbnjbiksq\"}}")
             .toObject(OperationInner.class);
     }
 

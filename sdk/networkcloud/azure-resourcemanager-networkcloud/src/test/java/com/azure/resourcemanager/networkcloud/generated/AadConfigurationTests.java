@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AadConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AadConfiguration model = BinaryData.fromString("{\"adminGroupObjectIds\":[\"nayrhyrnxxmueedn\"]}")
+        AadConfiguration model = BinaryData.fromString("{\"adminGroupObjectIds\":[\"aivwitqscywu\",\"gwol\"]}")
             .toObject(AadConfiguration.class);
-        Assertions.assertEquals("nayrhyrnxxmueedn", model.adminGroupObjectIds().get(0));
+        Assertions.assertEquals("aivwitqscywu", model.adminGroupObjectIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AadConfiguration model = new AadConfiguration().withAdminGroupObjectIds(Arrays.asList("nayrhyrnxxmueedn"));
+        AadConfiguration model = new AadConfiguration().withAdminGroupObjectIds(Arrays.asList("aivwitqscywu", "gwol"));
         model = BinaryData.fromObject(model).toObject(AadConfiguration.class);
-        Assertions.assertEquals("nayrhyrnxxmueedn", model.adminGroupObjectIds().get(0));
+        Assertions.assertEquals("aivwitqscywu", model.adminGroupObjectIds().get(0));
     }
 }

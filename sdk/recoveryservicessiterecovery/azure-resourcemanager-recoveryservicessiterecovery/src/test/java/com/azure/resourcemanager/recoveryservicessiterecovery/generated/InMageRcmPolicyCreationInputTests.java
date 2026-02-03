@@ -12,25 +12,25 @@ public final class InMageRcmPolicyCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmPolicyCreationInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcm\",\"recoveryPointHistoryInMinutes\":1480236782,\"crashConsistentFrequencyInMinutes\":1722632251,\"appConsistentFrequencyInMinutes\":2131568654,\"enableMultiVmSync\":\"yxedznmx\"}")
+            "{\"instanceType\":\"InMageRcm\",\"recoveryPointHistoryInMinutes\":1737206784,\"crashConsistentFrequencyInMinutes\":956361539,\"appConsistentFrequencyInMinutes\":478715630,\"enableMultiVmSync\":\"yotygnb\"}")
             .toObject(InMageRcmPolicyCreationInput.class);
-        Assertions.assertEquals(1480236782, model.recoveryPointHistoryInMinutes());
-        Assertions.assertEquals(1722632251, model.crashConsistentFrequencyInMinutes());
-        Assertions.assertEquals(2131568654, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals("yxedznmx", model.enableMultiVmSync());
+        Assertions.assertEquals(1737206784, model.recoveryPointHistoryInMinutes());
+        Assertions.assertEquals(956361539, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(478715630, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("yotygnb", model.enableMultiVmSync());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageRcmPolicyCreationInput model
-            = new InMageRcmPolicyCreationInput().withRecoveryPointHistoryInMinutes(1480236782)
-                .withCrashConsistentFrequencyInMinutes(1722632251)
-                .withAppConsistentFrequencyInMinutes(2131568654)
-                .withEnableMultiVmSync("yxedznmx");
+            = new InMageRcmPolicyCreationInput().withRecoveryPointHistoryInMinutes(1737206784)
+                .withCrashConsistentFrequencyInMinutes(956361539)
+                .withAppConsistentFrequencyInMinutes(478715630)
+                .withEnableMultiVmSync("yotygnb");
         model = BinaryData.fromObject(model).toObject(InMageRcmPolicyCreationInput.class);
-        Assertions.assertEquals(1480236782, model.recoveryPointHistoryInMinutes());
-        Assertions.assertEquals(1722632251, model.crashConsistentFrequencyInMinutes());
-        Assertions.assertEquals(2131568654, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals("yxedznmx", model.enableMultiVmSync());
+        Assertions.assertEquals(1737206784, model.recoveryPointHistoryInMinutes());
+        Assertions.assertEquals(956361539, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(478715630, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("yotygnb", model.enableMultiVmSync());
     }
 }

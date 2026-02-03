@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
     /*
      * hook type
      */
+    @Generated
     private HookType hookType = HookType.fromString("HookInfoPatch");
 
     /*
      * hook unique name
      */
+    @Generated
     private String hookName;
 
     /*
      * hook description
      */
+    @Generated
     private String description;
 
     /*
      * hook external link
      */
+    @Generated
     private String externalLink;
 
     /*
      * hook administrators
      */
+    @Generated
     private List<String> admins;
 
     /**
      * Creates an instance of HookInfoPatch class.
      */
+    @Generated
     public HookInfoPatch() {
     }
 
@@ -53,6 +60,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * 
      * @return the hookType value.
      */
+    @Generated
     public HookType getHookType() {
         return this.hookType;
     }
@@ -62,6 +70,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * 
      * @return the hookName value.
      */
+    @Generated
     public String getHookName() {
         return this.hookName;
     }
@@ -72,6 +81,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * @param hookName the hookName value to set.
      * @return the HookInfoPatch object itself.
      */
+    @Generated
     public HookInfoPatch setHookName(String hookName) {
         this.hookName = hookName;
         return this;
@@ -82,6 +92,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -92,6 +103,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * @param description the description value to set.
      * @return the HookInfoPatch object itself.
      */
+    @Generated
     public HookInfoPatch setDescription(String description) {
         this.description = description;
         return this;
@@ -102,6 +114,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * 
      * @return the externalLink value.
      */
+    @Generated
     public String getExternalLink() {
         return this.externalLink;
     }
@@ -112,6 +125,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * @param externalLink the externalLink value to set.
      * @return the HookInfoPatch object itself.
      */
+    @Generated
     public HookInfoPatch setExternalLink(String externalLink) {
         this.externalLink = externalLink;
         return this;
@@ -122,6 +136,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * 
      * @return the admins value.
      */
+    @Generated
     public List<String> getAdmins() {
         return this.admins;
     }
@@ -132,6 +147,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * @param admins the admins value to set.
      * @return the HookInfoPatch object itself.
      */
+    @Generated
     public HookInfoPatch setAdmins(List<String> admins) {
         this.admins = admins;
         return this;
@@ -140,6 +156,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -159,6 +176,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HookInfoPatch.
      */
+    @Generated
     public static HookInfoPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -186,6 +204,7 @@ public class HookInfoPatch implements JsonSerializable<HookInfoPatch> {
         });
     }
 
+    @Generated
     static HookInfoPatch fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HookInfoPatch deserializedHookInfoPatch = new HookInfoPatch();

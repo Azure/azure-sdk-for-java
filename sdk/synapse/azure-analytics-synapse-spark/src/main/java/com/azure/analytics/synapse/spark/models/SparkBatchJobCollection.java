@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,21 +21,25 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
     /*
      * The start index of fetched sessions.
      */
+    @Generated
     private int from;
 
     /*
      * Number of sessions fetched.
      */
+    @Generated
     private int total;
 
     /*
      * Batch list
      */
+    @Generated
     private List<SparkBatchJob> sessions;
 
     /**
      * Creates an instance of SparkBatchJobCollection class.
      */
+    @Generated
     public SparkBatchJobCollection() {
     }
 
@@ -43,6 +48,7 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
      * 
      * @return the from value.
      */
+    @Generated
     public int getFrom() {
         return this.from;
     }
@@ -53,6 +59,7 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
      * @param from the from value to set.
      * @return the SparkBatchJobCollection object itself.
      */
+    @Generated
     public SparkBatchJobCollection setFrom(int from) {
         this.from = from;
         return this;
@@ -63,6 +70,7 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
      * 
      * @return the total value.
      */
+    @Generated
     public int getTotal() {
         return this.total;
     }
@@ -73,6 +81,7 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
      * @param total the total value to set.
      * @return the SparkBatchJobCollection object itself.
      */
+    @Generated
     public SparkBatchJobCollection setTotal(int total) {
         this.total = total;
         return this;
@@ -83,6 +92,7 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
      * 
      * @return the sessions value.
      */
+    @Generated
     public List<SparkBatchJob> getSessions() {
         return this.sessions;
     }
@@ -93,6 +103,7 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
      * @param sessions the sessions value to set.
      * @return the SparkBatchJobCollection object itself.
      */
+    @Generated
     public SparkBatchJobCollection setSessions(List<SparkBatchJob> sessions) {
         this.sessions = sessions;
         return this;
@@ -101,6 +112,7 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -119,6 +131,7 @@ public final class SparkBatchJobCollection implements JsonSerializable<SparkBatc
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkBatchJobCollection.
      */
+    @Generated
     public static SparkBatchJobCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkBatchJobCollection deserializedSparkBatchJobCollection = new SparkBatchJobCollection();

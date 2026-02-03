@@ -167,7 +167,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         // Act & Assert
         try (EventHubConsumerAsyncClient consumer = builder.buildAsyncConsumerClient()) {
             final AtomicReference<LastEnqueuedEventProperties> lastViewed
-                = new AtomicReference<>(new LastEnqueuedEventProperties(null, null, null, null));
+                = new AtomicReference<>(new LastEnqueuedEventProperties(null, (String) null, null, null));
 
             StepVerifier.create(consumer.receiveFromPartition(partitionId, EventPosition.latest(), options).take(10))
                 .assertNext(event -> verifyLastRetrieved(lastViewed, event.getLastEnqueuedEventProperties(), true))
@@ -339,7 +339,7 @@ public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestB
         final EventHubConsumerAsyncClient consumer = toClose(builder.prefetchCount(1).buildAsyncConsumerClient());
 
         final AtomicReference<LastEnqueuedEventProperties> lastViewed
-            = new AtomicReference<>(new LastEnqueuedEventProperties(null, null, null, null));
+            = new AtomicReference<>(new LastEnqueuedEventProperties(null, (String) null, null, null));
 
         // Act & Assert
         try {

@@ -71,8 +71,8 @@ public interface BrokerResource {
     /**
      * The entirety of the BrokerResource definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
-        DefinitionStages.WithExtendedLocation, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /**
@@ -96,27 +96,14 @@ public interface BrokerResource {
              * @param instanceName Name of instance.
              * @return the next definition stage.
              */
-            WithExtendedLocation withExistingInstance(String resourceGroupName, String instanceName);
-        }
-
-        /**
-         * The stage of the BrokerResource definition allowing to specify extendedLocation.
-         */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: Edge location of the resource..
-             * 
-             * @param extendedLocation Edge location of the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
+            WithCreate withExistingInstance(String resourceGroupName, String instanceName);
         }
 
         /**
          * The stage of the BrokerResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithExtendedLocation {
             /**
              * Executes the create request.
              * 
@@ -144,6 +131,19 @@ public interface BrokerResource {
              * @return the next definition stage.
              */
             WithCreate withProperties(BrokerProperties properties);
+        }
+
+        /**
+         * The stage of the BrokerResource definition allowing to specify extendedLocation.
+         */
+        interface WithExtendedLocation {
+            /**
+             * Specifies the extendedLocation property: Edge location of the resource..
+             * 
+             * @param extendedLocation Edge location of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
     }
 

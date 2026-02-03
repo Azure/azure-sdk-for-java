@@ -22,7 +22,7 @@ public class DetectUnivariateLastPoint {
             .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("API_KEY")))
             .endpoint("{Endpoint}")
             .buildUnivariateClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.univariatedetectunivariatelastpoint.detectunivariatelastpoint
+        // BEGIN:com.azure.ai.anomalydetector.generated.univariate-detect-univariate-last-point.detect-univariate-last-point
         UnivariateLastDetectionResult response
             = univariateClient.detectUnivariateLastPoint(new UnivariateDetectionOptions(
                 Arrays.asList(new TimeSeriesPoint(826.0).setTimestamp(OffsetDateTime.parse("1972-01-01T00:00:00Z")),
@@ -78,6 +78,6 @@ public class DetectUnivariateLastPoint {
                         .setSensitivity(95)
                         .setImputeMode(ImputeMode.FIXED)
                         .setImputeFixedValue(800.0D));
-        // END:com.azure.ai.anomalydetector.generated.univariatedetectunivariatelastpoint.detectunivariatelastpoint
+        // END:com.azure.ai.anomalydetector.generated.univariate-detect-univariate-last-point.detect-univariate-last-point
     }
 }

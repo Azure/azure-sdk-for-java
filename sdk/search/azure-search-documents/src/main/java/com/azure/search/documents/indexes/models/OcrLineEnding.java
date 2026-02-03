@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,21 +18,25 @@ public final class OcrLineEnding extends ExpandableStringEnum<OcrLineEnding> {
     /**
      * Lines are separated by a single space character.
      */
+    @Generated
     public static final OcrLineEnding SPACE = fromString("space");
 
     /**
      * Lines are separated by a carriage return ('\r') character.
      */
+    @Generated
     public static final OcrLineEnding CARRIAGE_RETURN = fromString("carriageReturn");
 
     /**
      * Lines are separated by a single line feed ('\n') character.
      */
+    @Generated
     public static final OcrLineEnding LINE_FEED = fromString("lineFeed");
 
     /**
      * Lines are separated by a carriage return and a line feed ('\r\n') character.
      */
+    @Generated
     public static final OcrLineEnding CARRIAGE_RETURN_LINE_FEED = fromString("carriageReturnLineFeed");
 
     /**
@@ -39,6 +44,7 @@ public final class OcrLineEnding extends ExpandableStringEnum<OcrLineEnding> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OcrLineEnding() {
     }
@@ -49,6 +55,7 @@ public final class OcrLineEnding extends ExpandableStringEnum<OcrLineEnding> {
      * @param name a name to look for.
      * @return the corresponding OcrLineEnding.
      */
+    @Generated
     public static OcrLineEnding fromString(String name) {
         return fromString(name, OcrLineEnding.class);
     }
@@ -58,6 +65,7 @@ public final class OcrLineEnding extends ExpandableStringEnum<OcrLineEnding> {
      * 
      * @return known OcrLineEnding values.
      */
+    @Generated
     public static Collection<OcrLineEnding> values() {
         return values(OcrLineEnding.class);
     }

@@ -1,0 +1,23 @@
+parameters:
+  # This is the flattened
+  FlattenedDirectory: not-specified
+  ShouldPublish: true
+
+steps:
+  - ${{if eq(parameters.ShouldPublish, 'true')}}:
+    - task: EsrpRelease@9
+      displayName: 'Publish to ESRP'
+      inputs:
+        ConnectedServiceName: Azure SDK PME Managed Identity
+        Usemanagedidentity: true
+        DomainTenantId: 975f013f-7f24-47e8-a7d3-abc4752bf346
+        ClientId: 5f81938c-2544-4f1f-9251-dd9de5b8a81b
+        KeyVaultName: kv-azuresdk-codesign
+        SignCertName: azure-sdk-esrp-release-certificate
+        Intent: 'PackageDistribution'
+        ContentType: 'Maven'
+        FolderLocation: ${{ parameters.FlattenedDirectory }}
+        Owners: ${{ coalesce(variables['Build.RequestedForEmail'], 'azuresdk@microsoft.com') }}
+        Approvers: ${{ coalesce(variables['Build.RequestedForEmail'], 'azuresdk@microsoft.com') }}
+        ServiceEndpointUrl: 'https://api.esrp.microsoft.com'
+        MainPublisher: 'ESRPRELPACMANTEST'

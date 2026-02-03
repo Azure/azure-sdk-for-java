@@ -9,14 +9,9 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class TranscriptionOptions {
     /*
-     * Transport URL for live transcription
-     */
-    private final String transportUrl;
-
-    /*
      * The type of transport to be used for live transcription, eg. Websocket
      */
-    private final TranscriptionTransport transportType;
+    private final StreamingTransport transportType;
 
     /*
      * Defines the locale for the data e.g en-CA, en-AU
@@ -26,7 +21,7 @@ public final class TranscriptionOptions {
     /*
      * Determines if the transcription should be started immediately after call is answered or not.
      */
-    private final boolean startTranscription;
+    private boolean startTranscription;
 
     /*
      * Endpoint where the custom model was deployed.
@@ -38,19 +33,28 @@ public final class TranscriptionOptions {
      */
     private Boolean enableIntermediateResults;
 
-    /**
-     * Creates a new instance of MediaStreamingConfiguration
-     * @param transportUrl - The Transport URL
-     * @param transportType - Transport type
-     * @param locale - Locale
-     * @param startTranscription - Start Transcription
+    /*
+     * Transport URL for live transcription
      */
-    public TranscriptionOptions(String transportUrl, TranscriptionTransport transportType, String locale,
-        boolean startTranscription) {
-        this.transportUrl = transportUrl;
+    private String transportUrl;
+
+    /**
+     * Creates a new instance of TranscriptionOptions
+     * @param locale - Locale
+     * @param transportType - The type of transport to be used for live transcription
+     */
+    public TranscriptionOptions(String locale, StreamingTransport transportType) {
         this.transportType = transportType;
         this.locale = locale;
-        this.startTranscription = startTranscription;
+        this.startTranscription = false;
+    }
+
+    /**
+     * Creates a new instance of TranscriptionOptions with default transportType as WEBSOCKET.
+     * @param locale - Locale
+     */
+    public TranscriptionOptions(String locale) {
+        this(locale, StreamingTransport.WEBSOCKET);
     }
 
     /**
@@ -63,11 +67,22 @@ public final class TranscriptionOptions {
     }
 
     /**
+     * Set the transportUrl property: Transport URL for live transcription.
+     *
+     * @param transportUrl the transportUrl value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setTransportUrl(String transportUrl) {
+        this.transportUrl = transportUrl;
+        return this;
+    }
+
+    /**
      * Get the transportType property: The type of transport to be used for live transcription, eg. Websocket.
      *
      * @return the transportType value.
      */
-    public TranscriptionTransport getTransportType() {
+    public StreamingTransport getTransportType() {
         return this.transportType;
     }
 
@@ -81,17 +96,30 @@ public final class TranscriptionOptions {
     }
 
     /**
-     * Get the startTranscription property: Which determines if the transcription should be started immediately after call is answered or not.
+     * Get the startTranscription property: Indicates whether the transcription should start immediately after the call
+     * is answered.
      *
      * @return the startTranscription value.
      */
-    public boolean getStartTranscription() {
+    public Boolean isStartTranscription() {
         return this.startTranscription;
     }
 
     /**
+     * Set the startTranscription property: Indicates whether the transcription should start immediately after the call
+     * is answered.
+     *
+     * @param startTranscription the startTranscription value to set.
+     * @return the TranscriptionOptions object itself.
+     */
+    public TranscriptionOptions setStartTranscription(Boolean startTranscription) {
+        this.startTranscription = startTranscription;
+        return this;
+    }
+
+    /**
      * Get the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
-     * 
+     *
      * @return the speechRecognitionModelEndpointId value.
      */
     public String getSpeechRecognitionModelEndpointId() {
@@ -100,7 +128,7 @@ public final class TranscriptionOptions {
 
     /**
      * Set the speechRecognitionModelEndpointId property: Endpoint where the custom model was deployed.
-     * 
+     *
      * @param speechRecognitionModelEndpointId the speechRecognitionModelEndpointId value to set.
      * @return the TranscriptionOptions object itself.
      */
@@ -111,7 +139,7 @@ public final class TranscriptionOptions {
 
     /**
      * Get the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
-     * 
+     *
      * @return the enableIntermediateResults value.
      */
     public Boolean isIntermediateResultsEnabled() {
@@ -120,7 +148,7 @@ public final class TranscriptionOptions {
 
     /**
      * Set the enableIntermediateResults property: Enables intermediate results for the transcribed speech.
-     * 
+     *
      * @param enableIntermediateResults the enableIntermediateResults value to set.
      * @return the TranscriptionOptions object itself.
      */

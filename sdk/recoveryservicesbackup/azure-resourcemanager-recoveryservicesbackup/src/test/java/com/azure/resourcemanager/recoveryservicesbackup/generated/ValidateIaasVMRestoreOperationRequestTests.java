@@ -14,16 +14,16 @@ public final class ValidateIaasVMRestoreOperationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidateIaasVMRestoreOperationRequest model = BinaryData.fromString(
-            "{\"objectType\":\"ValidateIaasVMRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"memhooclutnpq\"]}}")
+            "{\"objectType\":\"ValidateIaasVMRestoreOperationRequest\",\"restoreRequest\":{\"objectType\":\"RestoreRequest\",\"resourceGuardOperationRequests\":[\"a\"]}}")
             .toObject(ValidateIaasVMRestoreOperationRequest.class);
-        Assertions.assertEquals("memhooclutnpq", model.restoreRequest().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("a", model.restoreRequest().resourceGuardOperationRequests().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidateIaasVMRestoreOperationRequest model = new ValidateIaasVMRestoreOperationRequest().withRestoreRequest(
-            new RestoreRequest().withResourceGuardOperationRequests(Arrays.asList("memhooclutnpq")));
+        ValidateIaasVMRestoreOperationRequest model = new ValidateIaasVMRestoreOperationRequest()
+            .withRestoreRequest(new RestoreRequest().withResourceGuardOperationRequests(Arrays.asList("a")));
         model = BinaryData.fromObject(model).toObject(ValidateIaasVMRestoreOperationRequest.class);
-        Assertions.assertEquals("memhooclutnpq", model.restoreRequest().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("a", model.restoreRequest().resourceGuardOperationRequests().get(0));
     }
 }

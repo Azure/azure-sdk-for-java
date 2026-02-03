@@ -52,6 +52,10 @@ public final class PortalRevisionContractImpl
         return this.innerModel().updatedDateTime();
     }
 
+    public String provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
     public String resourceGroupName() {
         return resourceGroupName;
     }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,17 +21,20 @@ public final class MongoDbAtlasSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "MongoDbAtlasSource";
 
     /*
      * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or
      * pass an empty document ({}). Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object filter;
 
     /*
      * Cursor methods for Mongodb query
      */
+    @Generated
     private MongoDbCursorMethodsProperties cursorMethods;
 
     /*
@@ -38,23 +42,27 @@ public final class MongoDbAtlasSource extends CopySource {
      * cases, modifying the batch size will not affect the user or the application. This property's main purpose is to
      * avoid hit the limitation of response size. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object batchSize;
 
     /*
      * Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object queryTimeout;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of MongoDbAtlasSource class.
      */
+    @Generated
     public MongoDbAtlasSource() {
     }
 
@@ -63,6 +71,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -75,6 +84,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * 
      * @return the filter value.
      */
+    @Generated
     public Object getFilter() {
         return this.filter;
     }
@@ -87,6 +97,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * @param filter the filter value to set.
      * @return the MongoDbAtlasSource object itself.
      */
+    @Generated
     public MongoDbAtlasSource setFilter(Object filter) {
         this.filter = filter;
         return this;
@@ -97,6 +108,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * 
      * @return the cursorMethods value.
      */
+    @Generated
     public MongoDbCursorMethodsProperties getCursorMethods() {
         return this.cursorMethods;
     }
@@ -107,6 +119,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * @param cursorMethods the cursorMethods value to set.
      * @return the MongoDbAtlasSource object itself.
      */
+    @Generated
     public MongoDbAtlasSource setCursorMethods(MongoDbCursorMethodsProperties cursorMethods) {
         this.cursorMethods = cursorMethods;
         return this;
@@ -120,6 +133,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * 
      * @return the batchSize value.
      */
+    @Generated
     public Object getBatchSize() {
         return this.batchSize;
     }
@@ -133,6 +147,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * @param batchSize the batchSize value to set.
      * @return the MongoDbAtlasSource object itself.
      */
+    @Generated
     public MongoDbAtlasSource setBatchSize(Object batchSize) {
         this.batchSize = batchSize;
         return this;
@@ -144,6 +159,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * 
      * @return the queryTimeout value.
      */
+    @Generated
     public Object getQueryTimeout() {
         return this.queryTimeout;
     }
@@ -155,6 +171,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * @param queryTimeout the queryTimeout value to set.
      * @return the MongoDbAtlasSource object itself.
      */
+    @Generated
     public MongoDbAtlasSource setQueryTimeout(Object queryTimeout) {
         this.queryTimeout = queryTimeout;
         return this;
@@ -166,6 +183,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -177,6 +195,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the MongoDbAtlasSource object itself.
      */
+    @Generated
     public MongoDbAtlasSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -185,6 +204,7 @@ public final class MongoDbAtlasSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -194,6 +214,7 @@ public final class MongoDbAtlasSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -203,6 +224,7 @@ public final class MongoDbAtlasSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MongoDbAtlasSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -212,18 +234,33 @@ public final class MongoDbAtlasSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("filter", this.filter);
+        if (this.filter != null) {
+            jsonWriter.writeUntypedField("filter", this.filter);
+        }
         jsonWriter.writeJsonField("cursorMethods", this.cursorMethods);
-        jsonWriter.writeUntypedField("batchSize", this.batchSize);
-        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.batchSize != null) {
+            jsonWriter.writeUntypedField("batchSize", this.batchSize);
+        }
+        if (this.queryTimeout != null) {
+            jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        }
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -240,6 +277,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MongoDbAtlasSource.
      */
+    @Generated
     public static MongoDbAtlasSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MongoDbAtlasSource deserializedMongoDbAtlasSource = new MongoDbAtlasSource();

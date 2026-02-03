@@ -13,17 +13,19 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageStats;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.LiveMetricsSpanProcessor;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.LogDataMapper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.SpanDataMapper;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalStorageStats;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.StatsbeatConnectionString;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.HeartbeatExporter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.pipeline.TelemetryItemExporter;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulse;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Feature;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorHelper;
@@ -31,10 +33,12 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Proper
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.VersionGenerator;
+import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.SpanProcessor;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 
 import java.io.File;
@@ -52,8 +56,6 @@ class AzureMonitorExporterBuilder {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
 
-    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
-
     private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME
         = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME";
     private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME
@@ -70,38 +72,61 @@ class AzureMonitorExporterBuilder {
 
     private ConfigProperties configProperties;
 
+    private HttpPipeline httpPipeline;
+
+    private QuickPulse quickPulse;
+
+    private SpanDataMapper spanDataMapper;
+
     private boolean initialized;
 
-    void initializeIfNot(AzureMonitorAutoConfigureOptions exporterOptions, ConfigProperties configProperties) {
+    void initializeIfNot(AzureMonitorAutoConfigureOptions exporterOptions, ConfigProperties configProperties,
+        Resource resource) {
         if (initialized) {
             return;
         }
-        initialized = true;
+        this.initialized = true;
         this.exporterOptions = exporterOptions;
         this.configProperties = configProperties;
-        HttpPipeline httpPipeline = createHttpPipeline();
-        statsbeatModule = initStatsbeatModule(configProperties);
+        this.httpPipeline = createHttpPipeline();
+        this.statsbeatModule = initStatsbeatModule(configProperties);
+        this.spanDataMapper = createSpanDataMapper();
         File tempDir = TempDirs.getApplicationInsightsTempDir(LOGGER,
             "Telemetry will not be stored to disk and retried on sporadic network failures");
         // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
-        builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
+        this.builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
             tempDir, LocalStorageStats.noop());
+        if (LiveMetrics.isEnabled(configProperties)) {
+            this.quickPulse = createQuickPulse(resource);
+        }
         startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
     }
 
+    private QuickPulse createQuickPulse(Resource resource) {
+        String roleName = resource.getAttribute(AttributeKey.stringKey("service.name"));
+        String roleInstance = resource.getAttribute(AttributeKey.stringKey("service.instance.id"));
+        ConnectionString connectionString = getConnectionString();
+        return QuickPulse.create(httpPipeline, () -> connectionString.getLiveEndpoint(),
+            () -> connectionString.getInstrumentationKey(), roleName, roleInstance, VersionGenerator.getSdkVersion());
+    }
+
     SpanExporter buildSpanExporter() {
-        return new AzureMonitorTraceExporter(createSpanDataMapper(), builtTelemetryItemExporter, statsbeatModule);
+        return new AzureMonitorTraceExporter(spanDataMapper, builtTelemetryItemExporter, statsbeatModule);
     }
 
     LogRecordExporter buildLogRecordExporter() {
         return new AzureMonitorLogRecordExporter(new LogDataMapper(true, false, createDefaultsPopulator()),
-            builtTelemetryItemExporter);
+            builtTelemetryItemExporter, quickPulse);
     }
 
     MetricExporter buildMetricExporter() {
         HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(), builtTelemetryItemExporter::send);
         return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(), true),
             builtTelemetryItemExporter);
+    }
+
+    public SpanProcessor buildLiveMetricsSpanProcesor() {
+        return new LiveMetricsSpanProcessor(quickPulse, spanDataMapper);
     }
 
     private Set<Feature> initStatsbeatFeatures() {
@@ -183,7 +208,7 @@ class AzureMonitorExporterBuilder {
         policies.add(new CookiePolicy());
         if (exporterOptions.credential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(exporterOptions.credential,
-                APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
+                getConnectionString().getAadAudienceWithScope()));
         }
 
         if (exporterOptions.retryOptions != null) {

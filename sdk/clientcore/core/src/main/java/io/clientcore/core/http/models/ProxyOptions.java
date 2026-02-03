@@ -3,13 +3,13 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.auth.BasicChallengeHandler;
-import io.clientcore.core.util.auth.ChallengeHandler;
-import io.clientcore.core.util.auth.DigestChallengeHandler;
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationProperty;
-import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
+import io.clientcore.core.utils.BasicChallengeHandler;
+import io.clientcore.core.utils.ChallengeHandler;
+import io.clientcore.core.utils.DigestChallengeHandler;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -23,12 +23,13 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This represents proxy configuration to be used in http clients.
  */
-public class ProxyOptions {
+@Metadata(properties = MetadataProperties.FLUENT)
+public final class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private static final String INVALID_PROXY_URI = "URI is invalid and is being ignored.";
 
@@ -65,29 +66,6 @@ public class ProxyOptions {
 
     private static final Pattern UNESCAPED_PERIOD = Pattern.compile("(?<!\\\\)\\.");
     private static final Pattern ANY = Pattern.compile("\\*");
-
-    private static final ConfigurationProperty<String> NON_PROXY_PROPERTY
-        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS)
-            .shared(true)
-            .logValue(true)
-            .build();
-    private static final ConfigurationProperty<String> HOST_PROPERTY
-        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_HOST)
-            .shared(true)
-            .logValue(true)
-            .build();
-    private static final ConfigurationProperty<Integer> PORT_PROPERTY
-        = ConfigurationPropertyBuilder.ofInteger(ConfigurationProperties.HTTP_PROXY_PORT)
-            .shared(true)
-            .defaultValue(DEFAULT_HTTPS_PORT)
-            .build();
-    private static final ConfigurationProperty<String> USER_PROPERTY
-        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_USER)
-            .shared(true)
-            .logValue(true)
-            .build();
-    private static final ConfigurationProperty<String> PASSWORD_PROPERTY
-        = ConfigurationPropertyBuilder.ofString(ConfigurationProperties.HTTP_PROXY_PASSWORD).shared(true).build();
 
     private final InetSocketAddress address;
     private final Type type;
@@ -260,14 +238,13 @@ public class ProxyOptions {
         // System proxy configuration is only possible through system properties.
         // Only use system proxies when the prerequisite property is 'true'.
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
-            proxyOptions
-                = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
+            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.HTTPS_PROXY);
             if (proxyOptions != null) {
                 LOGGER.atVerbose().log("Using proxy created from HTTPS_PROXY environment variable.");
                 return proxyOptions;
             }
 
-            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTP_PROXY);
+            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.HTTP_PROXY);
             if (proxyOptions != null) {
                 LOGGER.atVerbose().log("Using proxy created from HTTP_PROXY environment variable.");
                 return proxyOptions;
@@ -320,7 +297,7 @@ public class ProxyOptions {
 
             ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
-            String nonProxyHostsString = configuration.get(Configuration.PROPERTY_NO_PROXY);
+            String nonProxyHostsString = configuration.get(Configuration.NO_PROXY);
             if (!isNullOrEmpty(nonProxyHostsString)) {
                 proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
 
@@ -343,7 +320,7 @@ public class ProxyOptions {
 
             return proxyOptions;
         } catch (URISyntaxException ex) {
-            LOGGER.atWarning().addKeyValue(URL_FULL_KEY, proxyProperty).log(INVALID_PROXY_URI, ex);
+            LOGGER.atWarning().addKeyValue(URL_FULL_KEY, proxyProperty).setThrowable(ex).log(INVALID_PROXY_URI);
             return null;
         }
     }
@@ -379,17 +356,18 @@ public class ProxyOptions {
     }
 
     private static ProxyOptions attemptToLoadSdkProxy(Configuration configuration, boolean createUnresolved) {
-        String host = configuration.get(HOST_PROPERTY);
+        String host = configuration.get(ConfigurationProperties.HTTP_PROXY_HOST);
 
         // No proxy configuration setup.
         if (isNullOrEmpty(host)) {
             return null;
         }
 
-        int port = configuration.get(PORT_PROPERTY);
-        String nonProxyHostsString = configuration.get(NON_PROXY_PROPERTY);
-        String username = configuration.get(USER_PROPERTY);
-        String password = configuration.get(PASSWORD_PROPERTY);
+        String portConfig = configuration.get(ConfigurationProperties.HTTP_PROXY_PORT);
+        int port = (portConfig == null) ? DEFAULT_HTTPS_PORT : Integer.parseInt(portConfig);
+        String nonProxyHostsString = configuration.get(ConfigurationProperties.HTTP_PROXY_NON_PROXY_HOSTS);
+        String username = configuration.get(ConfigurationProperties.HTTP_PROXY_USER);
+        String password = configuration.get(ConfigurationProperties.HTTP_PROXY_PASSWORD);
 
         return createOptions(host, port, nonProxyHostsString, username, password, createUnresolved);
     }

@@ -130,8 +130,12 @@ public class DatasetLocation implements JsonSerializable<DatasetLocation> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("folderPath", this.folderPath);
-        jsonWriter.writeUntypedField("fileName", this.fileName);
+        if (this.folderPath != null) {
+            jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        }
+        if (this.fileName != null) {
+            jsonWriter.writeUntypedField("fileName", this.fileName);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

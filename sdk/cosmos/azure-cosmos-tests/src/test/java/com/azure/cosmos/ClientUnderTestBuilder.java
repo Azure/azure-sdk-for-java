@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 
 import java.net.URI;
@@ -37,7 +37,6 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         this.endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled());
         this.multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled());
         this.readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
-        this.clientTelemetryEnabled(builder.isClientTelemetryEnabled());
         ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor accessor =
             ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
         accessor.setCosmosClientApiType(this, builder.apiType());
@@ -57,10 +56,14 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.getCredential(),
                 this.isContentResponseOnWriteEnabled(),
                 this.apiType(),
-                this.getClientTelemetryConfig()
-                    .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+                this.getClientTelemetryConfig());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
+        }
+
+        AsyncDocumentClient realAsyncClient = ReflectionUtils.getAsyncDocumentClient(cosmosAsyncClient);
+        if (realAsyncClient != null) {
+            realAsyncClient.close();
         }
         ReflectionUtils.setAsyncDocumentClient(cosmosAsyncClient, rxClient);
         return cosmosAsyncClient;

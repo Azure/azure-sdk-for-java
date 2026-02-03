@@ -14,24 +14,24 @@ public final class BgpAdvertisementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BgpAdvertisement model = BinaryData.fromString(
-            "{\"advertiseToFabric\":\"True\",\"communities\":[\"riolxorjalt\",\"lmncw\"],\"ipAddressPools\":[\"bqwcsdbnwdcf\",\"ucqdpfuvglsb\",\"jcanvxbvtvudut\",\"cormr\"],\"peers\":[\"tvcof\",\"dflvkg\",\"u\",\"gdknnqv\"]}")
+            "{\"advertiseToFabric\":\"True\",\"communities\":[\"irryuzhlh\",\"joqrvqqaatj\",\"nrvgoupmfiibfgg\"],\"ipAddressPools\":[\"ool\",\"rwxkvtkkgl\",\"qwjygvja\",\"vblm\"],\"peers\":[\"zuhbxvvyhgsopb\"]}")
             .toObject(BgpAdvertisement.class);
         Assertions.assertEquals(AdvertiseToFabric.TRUE, model.advertiseToFabric());
-        Assertions.assertEquals("riolxorjalt", model.communities().get(0));
-        Assertions.assertEquals("bqwcsdbnwdcf", model.ipAddressPools().get(0));
-        Assertions.assertEquals("tvcof", model.peers().get(0));
+        Assertions.assertEquals("irryuzhlh", model.communities().get(0));
+        Assertions.assertEquals("ool", model.ipAddressPools().get(0));
+        Assertions.assertEquals("zuhbxvvyhgsopb", model.peers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BgpAdvertisement model = new BgpAdvertisement().withAdvertiseToFabric(AdvertiseToFabric.TRUE)
-            .withCommunities(Arrays.asList("riolxorjalt", "lmncw"))
-            .withIpAddressPools(Arrays.asList("bqwcsdbnwdcf", "ucqdpfuvglsb", "jcanvxbvtvudut", "cormr"))
-            .withPeers(Arrays.asList("tvcof", "dflvkg", "u", "gdknnqv"));
+            .withCommunities(Arrays.asList("irryuzhlh", "joqrvqqaatj", "nrvgoupmfiibfgg"))
+            .withIpAddressPools(Arrays.asList("ool", "rwxkvtkkgl", "qwjygvja", "vblm"))
+            .withPeers(Arrays.asList("zuhbxvvyhgsopb"));
         model = BinaryData.fromObject(model).toObject(BgpAdvertisement.class);
         Assertions.assertEquals(AdvertiseToFabric.TRUE, model.advertiseToFabric());
-        Assertions.assertEquals("riolxorjalt", model.communities().get(0));
-        Assertions.assertEquals("bqwcsdbnwdcf", model.ipAddressPools().get(0));
-        Assertions.assertEquals("tvcof", model.peers().get(0));
+        Assertions.assertEquals("irryuzhlh", model.communities().get(0));
+        Assertions.assertEquals("ool", model.ipAddressPools().get(0));
+        Assertions.assertEquals("zuhbxvvyhgsopb", model.peers().get(0));
     }
 }

@@ -15,20 +15,20 @@ public final class DefenderForAISettingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingInner model = BinaryData.fromString(
-            "{\"etag\":\"rtixokff\",\"tags\":{\"shiy\":\"nljqepqwhixmons\",\"du\":\"gvelfc\",\"rds\":\"cb\",\"b\":\"uwc\"},\"properties\":{\"state\":\"Enabled\"},\"id\":\"tmninw\",\"name\":\"izcil\",\"type\":\"ghgshejjtbxqmu\"}")
+            "{\"etag\":\"henlusfnr\",\"tags\":{\"gepuslvyjtc\":\"xtxrdcqtjvidt\",\"esfuught\":\"uwkasiz\"},\"properties\":{\"state\":\"Disabled\"},\"id\":\"jxeygtuhxu\",\"name\":\"cbuewmrswnjlxuz\",\"type\":\"hwpusxj\"}")
             .toObject(DefenderForAISettingInner.class);
-        Assertions.assertEquals("nljqepqwhixmons", model.tags().get("shiy"));
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.state());
+        Assertions.assertEquals("xtxrdcqtjvidt", model.tags().get("gepuslvyjtc"));
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForAISettingInner model = new DefenderForAISettingInner()
-            .withTags(mapOf("shiy", "nljqepqwhixmons", "du", "gvelfc", "rds", "cb", "b", "uwc"))
-            .withState(DefenderForAISettingState.ENABLED);
+        DefenderForAISettingInner model
+            = new DefenderForAISettingInner().withTags(mapOf("gepuslvyjtc", "xtxrdcqtjvidt", "esfuught", "uwkasiz"))
+                .withState(DefenderForAISettingState.DISABLED);
         model = BinaryData.fromObject(model).toObject(DefenderForAISettingInner.class);
-        Assertions.assertEquals("nljqepqwhixmons", model.tags().get("shiy"));
-        Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.state());
+        Assertions.assertEquals("xtxrdcqtjvidt", model.tags().get("gepuslvyjtc"));
+        Assertions.assertEquals(DefenderForAISettingState.DISABLED, model.state());
     }
 
     // Use "Map.of" if available

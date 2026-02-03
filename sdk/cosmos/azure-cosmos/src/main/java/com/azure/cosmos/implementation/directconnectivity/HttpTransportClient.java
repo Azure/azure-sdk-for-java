@@ -253,7 +253,7 @@ public class HttpTransportClient extends TransportClient {
     }
 
     @Override
-    protected GlobalEndpointManager getGlobalEndpointManager() {
+    public GlobalEndpointManager getGlobalEndpointManager() {
         return this.globalEndpointManager;
     }
 
@@ -750,7 +750,7 @@ public class HttpTransportClient extends TransportClient {
         // If the status code is < 300 or 304 NotModified (we treat not modified as success) then it means that it's a success code and shouldn't throw.
         if (response.statusCode() < HttpConstants.StatusCodes.MINIMUM_STATUSCODE_AS_ERROR_GATEWAY ||
                 response.statusCode() == HttpConstants.StatusCodes.NOT_MODIFIED) {
-            return ResponseUtils.toStoreResponse(response);
+            return ResponseUtils.toStoreResponse(response, resourceAddress);
         }
         else {
             return this.createErrorResponseFromHttpResponse(resourceAddress, activityId, httpRequest, response);

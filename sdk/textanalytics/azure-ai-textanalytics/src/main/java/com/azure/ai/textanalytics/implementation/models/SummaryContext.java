@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class SummaryContext implements JsonSerializable<SummaryContext> {
     /*
      * Start position for the context. Use of different 'stringIndexType' values can affect the offset returned.
      */
+    @Generated
     private int offset;
 
     /*
      * The length of the context. Use of different 'stringIndexType' values can affect the length returned.
      */
+    @Generated
     private int length;
 
     /**
      * Creates an instance of SummaryContext class.
      */
+    @Generated
     public SummaryContext() {
     }
 
@@ -38,6 +42,7 @@ public final class SummaryContext implements JsonSerializable<SummaryContext> {
      * 
      * @return the offset value.
      */
+    @Generated
     public int getOffset() {
         return this.offset;
     }
@@ -49,6 +54,7 @@ public final class SummaryContext implements JsonSerializable<SummaryContext> {
      * @param offset the offset value to set.
      * @return the SummaryContext object itself.
      */
+    @Generated
     public SummaryContext setOffset(int offset) {
         this.offset = offset;
         return this;
@@ -60,6 +66,7 @@ public final class SummaryContext implements JsonSerializable<SummaryContext> {
      * 
      * @return the length value.
      */
+    @Generated
     public int getLength() {
         return this.length;
     }
@@ -71,6 +78,7 @@ public final class SummaryContext implements JsonSerializable<SummaryContext> {
      * @param length the length value to set.
      * @return the SummaryContext object itself.
      */
+    @Generated
     public SummaryContext setLength(int length) {
         this.length = length;
         return this;
@@ -79,6 +87,7 @@ public final class SummaryContext implements JsonSerializable<SummaryContext> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class SummaryContext implements JsonSerializable<SummaryContext> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SummaryContext.
      */
+    @Generated
     public static SummaryContext fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SummaryContext deserializedSummaryContext = new SummaryContext();

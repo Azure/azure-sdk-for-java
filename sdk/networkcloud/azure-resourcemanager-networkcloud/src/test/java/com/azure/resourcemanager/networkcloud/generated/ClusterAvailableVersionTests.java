@@ -11,7 +11,7 @@ public final class ClusterAvailableVersionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterAvailableVersion model
-            = BinaryData.fromString("{\"supportExpiryDate\":\"tbobz\",\"targetClusterVersion\":\"pcjwv\"}")
+            = BinaryData.fromString("{\"supportExpiryDate\":\"ywsuwsy\",\"targetClusterVersion\":\"ndsytgadg\"}")
                 .toObject(ClusterAvailableVersion.class);
     }
 

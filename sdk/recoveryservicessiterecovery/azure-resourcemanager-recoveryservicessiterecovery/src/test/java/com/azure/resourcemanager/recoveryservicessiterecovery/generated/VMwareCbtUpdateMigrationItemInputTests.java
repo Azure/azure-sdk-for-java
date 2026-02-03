@@ -6,6 +6,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.LicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.LinuxLicenseType;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SqlServerLicenseType;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtNicInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtUpdateDiskInput;
@@ -19,113 +20,98 @@ public final class VMwareCbtUpdateMigrationItemInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMwareCbtUpdateMigrationItemInput model = BinaryData.fromString(
-            "{\"instanceType\":\"VMwareCbt\",\"targetVmName\":\"igcfddofxnf\",\"targetVmSize\":\"jyyrqaedw\",\"targetResourceGroupId\":\"ocytjgoeayokrw\",\"targetAvailabilitySetId\":\"ihwpadhedbfobd\",\"targetAvailabilityZone\":\"vothmkhjaoz\",\"targetProximityPlacementGroupId\":\"wfcn\",\"targetBootDiagnosticsStorageAccountId\":\"bpoelhscmyhrhjv\",\"targetNetworkId\":\"fqbokndwp\",\"testNetworkId\":\"qwojoev\",\"vmNics\":[{\"nicId\":\"fytdxmly\",\"isPrimaryNic\":\"zlyvapbkrbuog\",\"targetSubnetName\":\"dltlcu\",\"targetStaticIPAddress\":\"izij\",\"isSelectedForMigration\":\"ylzeohlpsftq\",\"targetNicName\":\"vmhvbvvcpwtqs\",\"testSubnetName\":\"pnhmzy\",\"testStaticIPAddress\":\"fetev\"},{\"nicId\":\"ntfknwacycsyo\",\"isPrimaryNic\":\"ctkhfh\",\"targetSubnetName\":\"atvcsxr\",\"targetStaticIPAddress\":\"nmizhv\",\"isSelectedForMigration\":\"hqqwcubl\",\"targetNicName\":\"hk\",\"testSubnetName\":\"obzgott\",\"testStaticIPAddress\":\"sadzighmmtb\"},{\"nicId\":\"dvucfvvra\",\"isPrimaryNic\":\"beurdeewl\",\"targetSubnetName\":\"xpcbwkdwjyjizn\",\"targetStaticIPAddress\":\"roo\",\"isSelectedForMigration\":\"ftaspmcr\",\"targetNicName\":\"huf\",\"testSubnetName\":\"n\",\"testStaticIPAddress\":\"hminuwqxungrobgw\"}],\"vmDisks\":[{\"diskId\":\"xjwdylwxmvzjow\",\"targetDiskName\":\"geerclbl\",\"isOSDisk\":\"hpwachyeu\"},{\"diskId\":\"jwmvwryvdi\",\"targetDiskName\":\"ii\",\"isOSDisk\":\"pruccwme\"}],\"licenseType\":\"NotSpecified\",\"sqlServerLicenseType\":\"NotSpecified\",\"performAutoResync\":\"trtexegwm\",\"targetVmTags\":{\"loqkajwjuri\":\"ywiwhvycfjncind\",\"anhz\":\"rsbcl\",\"zkz\":\"knjxizbaxdy\"},\"targetDiskTags\":{\"wacyyjmlxppdndzk\":\"e\",\"cizeqqfopvnopm\":\"evuiiuiibfkcjytq\"},\"targetNicTags\":{\"zyfbkmvldzmxojz\":\"sfhoxqlyo\"}}")
+            "{\"instanceType\":\"VMwareCbt\",\"targetVmName\":\"nnepkwzzzku\",\"targetVmSize\":\"uwcjomip\",\"targetResourceGroupId\":\"kaujttwykoxv\",\"targetAvailabilitySetId\":\"ofxxdplrelfk\",\"targetAvailabilityZone\":\"ahcbtuxlbp\",\"targetProximityPlacementGroupId\":\"hrfjenrazwefiktl\",\"targetBootDiagnosticsStorageAccountId\":\"ashtostjixyzseci\",\"targetNetworkId\":\"zdwjtacfvvtdpcbp\",\"testNetworkId\":\"omcsaugbrhfiwltk\",\"vmNics\":[{\"nicId\":\"untethklxwh\",\"isPrimaryNic\":\"vasyyhgqok\",\"targetSubnetName\":\"msrkixyxxhwrlq\",\"targetStaticIPAddress\":\"aqsy\",\"isSelectedForMigration\":\"pzzbrwn\",\"targetNicName\":\"ozsxagyso\",\"testSubnetName\":\"iiksybvrrbnhyl\",\"testStaticIPAddress\":\"hujc\"}],\"vmDisks\":[{\"diskId\":\"llmxvpstiz\",\"targetDiskName\":\"qag\",\"isOSDisk\":\"lcbrvaidylky\"}],\"licenseType\":\"NotSpecified\",\"sqlServerLicenseType\":\"PAYG\",\"linuxLicenseType\":\"NotSpecified\",\"userSelectedOSName\":\"ybptmjjrnogykug\",\"performAutoResync\":\"avsavgthkslgeuuf\",\"targetVmTags\":{\"lajybdnb\":\"bfbxj\"},\"targetDiskTags\":{\"zdjmofsvpzxgny\":\"btois\",\"fj\":\"xuym\",\"qregfurdpagknx\":\"mgwtmszcfyzqp\"},\"targetNicTags\":{\"zffewvqkyc\":\"vrgihl\",\"tydsmm\":\"cgeipqxxsdyaf\"}}")
             .toObject(VMwareCbtUpdateMigrationItemInput.class);
-        Assertions.assertEquals("igcfddofxnf", model.targetVmName());
-        Assertions.assertEquals("jyyrqaedw", model.targetVmSize());
-        Assertions.assertEquals("ocytjgoeayokrw", model.targetResourceGroupId());
-        Assertions.assertEquals("ihwpadhedbfobd", model.targetAvailabilitySetId());
-        Assertions.assertEquals("vothmkhjaoz", model.targetAvailabilityZone());
-        Assertions.assertEquals("wfcn", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("bpoelhscmyhrhjv", model.targetBootDiagnosticsStorageAccountId());
-        Assertions.assertEquals("fqbokndwp", model.targetNetworkId());
-        Assertions.assertEquals("qwojoev", model.testNetworkId());
-        Assertions.assertEquals("fytdxmly", model.vmNics().get(0).nicId());
-        Assertions.assertEquals("zlyvapbkrbuog", model.vmNics().get(0).isPrimaryNic());
-        Assertions.assertEquals("dltlcu", model.vmNics().get(0).targetSubnetName());
-        Assertions.assertEquals("izij", model.vmNics().get(0).targetStaticIpAddress());
-        Assertions.assertEquals("ylzeohlpsftq", model.vmNics().get(0).isSelectedForMigration());
-        Assertions.assertEquals("vmhvbvvcpwtqs", model.vmNics().get(0).targetNicName());
-        Assertions.assertEquals("pnhmzy", model.vmNics().get(0).testSubnetName());
-        Assertions.assertEquals("fetev", model.vmNics().get(0).testStaticIpAddress());
-        Assertions.assertEquals("xjwdylwxmvzjow", model.vmDisks().get(0).diskId());
-        Assertions.assertEquals("geerclbl", model.vmDisks().get(0).targetDiskName());
-        Assertions.assertEquals("hpwachyeu", model.vmDisks().get(0).isOSDisk());
+        Assertions.assertEquals("nnepkwzzzku", model.targetVmName());
+        Assertions.assertEquals("uwcjomip", model.targetVmSize());
+        Assertions.assertEquals("kaujttwykoxv", model.targetResourceGroupId());
+        Assertions.assertEquals("ofxxdplrelfk", model.targetAvailabilitySetId());
+        Assertions.assertEquals("ahcbtuxlbp", model.targetAvailabilityZone());
+        Assertions.assertEquals("hrfjenrazwefiktl", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("ashtostjixyzseci", model.targetBootDiagnosticsStorageAccountId());
+        Assertions.assertEquals("zdwjtacfvvtdpcbp", model.targetNetworkId());
+        Assertions.assertEquals("omcsaugbrhfiwltk", model.testNetworkId());
+        Assertions.assertEquals("untethklxwh", model.vmNics().get(0).nicId());
+        Assertions.assertEquals("vasyyhgqok", model.vmNics().get(0).isPrimaryNic());
+        Assertions.assertEquals("msrkixyxxhwrlq", model.vmNics().get(0).targetSubnetName());
+        Assertions.assertEquals("aqsy", model.vmNics().get(0).targetStaticIpAddress());
+        Assertions.assertEquals("pzzbrwn", model.vmNics().get(0).isSelectedForMigration());
+        Assertions.assertEquals("ozsxagyso", model.vmNics().get(0).targetNicName());
+        Assertions.assertEquals("iiksybvrrbnhyl", model.vmNics().get(0).testSubnetName());
+        Assertions.assertEquals("hujc", model.vmNics().get(0).testStaticIpAddress());
+        Assertions.assertEquals("llmxvpstiz", model.vmDisks().get(0).diskId());
+        Assertions.assertEquals("qag", model.vmDisks().get(0).targetDiskName());
+        Assertions.assertEquals("lcbrvaidylky", model.vmDisks().get(0).isOSDisk());
         Assertions.assertEquals(LicenseType.NOT_SPECIFIED, model.licenseType());
-        Assertions.assertEquals(SqlServerLicenseType.NOT_SPECIFIED, model.sqlServerLicenseType());
-        Assertions.assertEquals("trtexegwm", model.performAutoResync());
-        Assertions.assertEquals("ywiwhvycfjncind", model.targetVmTags().get("loqkajwjuri"));
-        Assertions.assertEquals("e", model.targetDiskTags().get("wacyyjmlxppdndzk"));
-        Assertions.assertEquals("sfhoxqlyo", model.targetNicTags().get("zyfbkmvldzmxojz"));
+        Assertions.assertEquals(SqlServerLicenseType.PAYG, model.sqlServerLicenseType());
+        Assertions.assertEquals(LinuxLicenseType.NOT_SPECIFIED, model.linuxLicenseType());
+        Assertions.assertEquals("ybptmjjrnogykug", model.userSelectedOSName());
+        Assertions.assertEquals("avsavgthkslgeuuf", model.performAutoResync());
+        Assertions.assertEquals("bfbxj", model.targetVmTags().get("lajybdnb"));
+        Assertions.assertEquals("btois", model.targetDiskTags().get("zdjmofsvpzxgny"));
+        Assertions.assertEquals("vrgihl", model.targetNicTags().get("zffewvqkyc"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VMwareCbtUpdateMigrationItemInput model
-            = new VMwareCbtUpdateMigrationItemInput().withTargetVmName("igcfddofxnf")
-                .withTargetVmSize("jyyrqaedw")
-                .withTargetResourceGroupId("ocytjgoeayokrw")
-                .withTargetAvailabilitySetId("ihwpadhedbfobd")
-                .withTargetAvailabilityZone("vothmkhjaoz")
-                .withTargetProximityPlacementGroupId("wfcn")
-                .withTargetBootDiagnosticsStorageAccountId("bpoelhscmyhrhjv")
-                .withTargetNetworkId("fqbokndwp")
-                .withTestNetworkId("qwojoev")
-                .withVmNics(Arrays.asList(
-                    new VMwareCbtNicInput().withNicId("fytdxmly")
-                        .withIsPrimaryNic("zlyvapbkrbuog")
-                        .withTargetSubnetName("dltlcu")
-                        .withTargetStaticIpAddress("izij")
-                        .withIsSelectedForMigration("ylzeohlpsftq")
-                        .withTargetNicName("vmhvbvvcpwtqs")
-                        .withTestSubnetName("pnhmzy")
-                        .withTestStaticIpAddress("fetev"),
-                    new VMwareCbtNicInput().withNicId("ntfknwacycsyo")
-                        .withIsPrimaryNic("ctkhfh")
-                        .withTargetSubnetName("atvcsxr")
-                        .withTargetStaticIpAddress("nmizhv")
-                        .withIsSelectedForMigration("hqqwcubl")
-                        .withTargetNicName("hk")
-                        .withTestSubnetName("obzgott")
-                        .withTestStaticIpAddress("sadzighmmtb"),
-                    new VMwareCbtNicInput().withNicId("dvucfvvra")
-                        .withIsPrimaryNic("beurdeewl")
-                        .withTargetSubnetName("xpcbwkdwjyjizn")
-                        .withTargetStaticIpAddress("roo")
-                        .withIsSelectedForMigration("ftaspmcr")
-                        .withTargetNicName("huf")
-                        .withTestSubnetName("n")
-                        .withTestStaticIpAddress("hminuwqxungrobgw")))
-                .withVmDisks(Arrays.asList(
-                    new VMwareCbtUpdateDiskInput().withDiskId("xjwdylwxmvzjow")
-                        .withTargetDiskName("geerclbl")
-                        .withIsOSDisk("hpwachyeu"),
-                    new VMwareCbtUpdateDiskInput().withDiskId("jwmvwryvdi")
-                        .withTargetDiskName("ii")
-                        .withIsOSDisk("pruccwme")))
+            = new VMwareCbtUpdateMigrationItemInput().withTargetVmName("nnepkwzzzku")
+                .withTargetVmSize("uwcjomip")
+                .withTargetResourceGroupId("kaujttwykoxv")
+                .withTargetAvailabilitySetId("ofxxdplrelfk")
+                .withTargetAvailabilityZone("ahcbtuxlbp")
+                .withTargetProximityPlacementGroupId("hrfjenrazwefiktl")
+                .withTargetBootDiagnosticsStorageAccountId("ashtostjixyzseci")
+                .withTargetNetworkId("zdwjtacfvvtdpcbp")
+                .withTestNetworkId("omcsaugbrhfiwltk")
+                .withVmNics(Arrays.asList(new VMwareCbtNicInput().withNicId("untethklxwh")
+                    .withIsPrimaryNic("vasyyhgqok")
+                    .withTargetSubnetName("msrkixyxxhwrlq")
+                    .withTargetStaticIpAddress("aqsy")
+                    .withIsSelectedForMigration("pzzbrwn")
+                    .withTargetNicName("ozsxagyso")
+                    .withTestSubnetName("iiksybvrrbnhyl")
+                    .withTestStaticIpAddress("hujc")))
+                .withVmDisks(Arrays.asList(new VMwareCbtUpdateDiskInput().withDiskId("llmxvpstiz")
+                    .withTargetDiskName("qag")
+                    .withIsOSDisk("lcbrvaidylky")))
                 .withLicenseType(LicenseType.NOT_SPECIFIED)
-                .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED)
-                .withPerformAutoResync("trtexegwm")
-                .withTargetVmTags(mapOf("loqkajwjuri", "ywiwhvycfjncind", "anhz", "rsbcl", "zkz", "knjxizbaxdy"))
-                .withTargetDiskTags(mapOf("wacyyjmlxppdndzk", "e", "cizeqqfopvnopm", "evuiiuiibfkcjytq"))
-                .withTargetNicTags(mapOf("zyfbkmvldzmxojz", "sfhoxqlyo"));
+                .withSqlServerLicenseType(SqlServerLicenseType.PAYG)
+                .withLinuxLicenseType(LinuxLicenseType.NOT_SPECIFIED)
+                .withUserSelectedOSName("ybptmjjrnogykug")
+                .withPerformAutoResync("avsavgthkslgeuuf")
+                .withTargetVmTags(mapOf("lajybdnb", "bfbxj"))
+                .withTargetDiskTags(mapOf("zdjmofsvpzxgny", "btois", "fj", "xuym", "qregfurdpagknx", "mgwtmszcfyzqp"))
+                .withTargetNicTags(mapOf("zffewvqkyc", "vrgihl", "tydsmm", "cgeipqxxsdyaf"));
         model = BinaryData.fromObject(model).toObject(VMwareCbtUpdateMigrationItemInput.class);
-        Assertions.assertEquals("igcfddofxnf", model.targetVmName());
-        Assertions.assertEquals("jyyrqaedw", model.targetVmSize());
-        Assertions.assertEquals("ocytjgoeayokrw", model.targetResourceGroupId());
-        Assertions.assertEquals("ihwpadhedbfobd", model.targetAvailabilitySetId());
-        Assertions.assertEquals("vothmkhjaoz", model.targetAvailabilityZone());
-        Assertions.assertEquals("wfcn", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("bpoelhscmyhrhjv", model.targetBootDiagnosticsStorageAccountId());
-        Assertions.assertEquals("fqbokndwp", model.targetNetworkId());
-        Assertions.assertEquals("qwojoev", model.testNetworkId());
-        Assertions.assertEquals("fytdxmly", model.vmNics().get(0).nicId());
-        Assertions.assertEquals("zlyvapbkrbuog", model.vmNics().get(0).isPrimaryNic());
-        Assertions.assertEquals("dltlcu", model.vmNics().get(0).targetSubnetName());
-        Assertions.assertEquals("izij", model.vmNics().get(0).targetStaticIpAddress());
-        Assertions.assertEquals("ylzeohlpsftq", model.vmNics().get(0).isSelectedForMigration());
-        Assertions.assertEquals("vmhvbvvcpwtqs", model.vmNics().get(0).targetNicName());
-        Assertions.assertEquals("pnhmzy", model.vmNics().get(0).testSubnetName());
-        Assertions.assertEquals("fetev", model.vmNics().get(0).testStaticIpAddress());
-        Assertions.assertEquals("xjwdylwxmvzjow", model.vmDisks().get(0).diskId());
-        Assertions.assertEquals("geerclbl", model.vmDisks().get(0).targetDiskName());
-        Assertions.assertEquals("hpwachyeu", model.vmDisks().get(0).isOSDisk());
+        Assertions.assertEquals("nnepkwzzzku", model.targetVmName());
+        Assertions.assertEquals("uwcjomip", model.targetVmSize());
+        Assertions.assertEquals("kaujttwykoxv", model.targetResourceGroupId());
+        Assertions.assertEquals("ofxxdplrelfk", model.targetAvailabilitySetId());
+        Assertions.assertEquals("ahcbtuxlbp", model.targetAvailabilityZone());
+        Assertions.assertEquals("hrfjenrazwefiktl", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("ashtostjixyzseci", model.targetBootDiagnosticsStorageAccountId());
+        Assertions.assertEquals("zdwjtacfvvtdpcbp", model.targetNetworkId());
+        Assertions.assertEquals("omcsaugbrhfiwltk", model.testNetworkId());
+        Assertions.assertEquals("untethklxwh", model.vmNics().get(0).nicId());
+        Assertions.assertEquals("vasyyhgqok", model.vmNics().get(0).isPrimaryNic());
+        Assertions.assertEquals("msrkixyxxhwrlq", model.vmNics().get(0).targetSubnetName());
+        Assertions.assertEquals("aqsy", model.vmNics().get(0).targetStaticIpAddress());
+        Assertions.assertEquals("pzzbrwn", model.vmNics().get(0).isSelectedForMigration());
+        Assertions.assertEquals("ozsxagyso", model.vmNics().get(0).targetNicName());
+        Assertions.assertEquals("iiksybvrrbnhyl", model.vmNics().get(0).testSubnetName());
+        Assertions.assertEquals("hujc", model.vmNics().get(0).testStaticIpAddress());
+        Assertions.assertEquals("llmxvpstiz", model.vmDisks().get(0).diskId());
+        Assertions.assertEquals("qag", model.vmDisks().get(0).targetDiskName());
+        Assertions.assertEquals("lcbrvaidylky", model.vmDisks().get(0).isOSDisk());
         Assertions.assertEquals(LicenseType.NOT_SPECIFIED, model.licenseType());
-        Assertions.assertEquals(SqlServerLicenseType.NOT_SPECIFIED, model.sqlServerLicenseType());
-        Assertions.assertEquals("trtexegwm", model.performAutoResync());
-        Assertions.assertEquals("ywiwhvycfjncind", model.targetVmTags().get("loqkajwjuri"));
-        Assertions.assertEquals("e", model.targetDiskTags().get("wacyyjmlxppdndzk"));
-        Assertions.assertEquals("sfhoxqlyo", model.targetNicTags().get("zyfbkmvldzmxojz"));
+        Assertions.assertEquals(SqlServerLicenseType.PAYG, model.sqlServerLicenseType());
+        Assertions.assertEquals(LinuxLicenseType.NOT_SPECIFIED, model.linuxLicenseType());
+        Assertions.assertEquals("ybptmjjrnogykug", model.userSelectedOSName());
+        Assertions.assertEquals("avsavgthkslgeuuf", model.performAutoResync());
+        Assertions.assertEquals("bfbxj", model.targetVmTags().get("lajybdnb"));
+        Assertions.assertEquals("btois", model.targetDiskTags().get("zdjmofsvpzxgny"));
+        Assertions.assertEquals("vrgihl", model.targetNicTags().get("zffewvqkyc"));
     }
 
     // Use "Map.of" if available

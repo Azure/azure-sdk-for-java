@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -198,7 +196,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
 
         String propName = "newProp";
         String propValue = "hello";
-        document.set(propName, propValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(propName, propValue);
 
         ResourceResponseValidator<Document> validator = ResourceResponseValidator.<Document>builder()
             .withProperty(propName, propValue)
@@ -231,20 +229,27 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(-1);
         ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
-        Flux<FeedResponse<Document>> results = client.queryDocuments(
-            getCollectionLink(),
-            "SELECT * FROM r",
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
-            Document.class);
+        QueryFeedOperationState dummyState =
+            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
+        try {
+            Flux<FeedResponse<Document>> results = client.queryDocuments(
+                getCollectionLink(),
+                "SELECT * FROM r",
+                dummyState,
+                Document.class);
 
-        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+            FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(documentList.size())
                 .exactlyContainsInAnyOrder(documentList.stream().map(Document::getResourceId).collect(Collectors.toList())).build();
 
-        validateQuerySuccess(results, validator, QUERY_TIMEOUT);
-        validateNoDocumentQueryOperationThroughGateway();
-        // validates only the first query for fetching query plan goes to gateway.
-        assertThat(client.getCapturedRequests().stream().filter(r -> r.getResourceType() == ResourceType.Document)).hasSize(1);
+            validateQuerySuccess(results, validator, QUERY_TIMEOUT);
+            validateNoDocumentQueryOperationThroughGateway();
+
+            // validates only the first query for fetching query plan goes to gateway.
+            assertThat(client.getCapturedRequests().stream().filter(r -> r.getResourceType() == ResourceType.Document)).hasSize(1);
+        } finally {
+            safeClose(dummyState);
+        }
     }
 
     private void validateNoStoredProcExecutionOperationThroughGateway() {
@@ -329,8 +334,8 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     private Document getDocumentDefinition() {
         Document doc = new Document();
         doc.setId(UUID.randomUUID().toString());
-        doc.set(PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
-        doc.set("name", "Hafez", CosmosItemSerializer.DEFAULT_SERIALIZER);
+        doc.set(PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString());
+        doc.set("name", "Hafez");
         return doc;
     }
 

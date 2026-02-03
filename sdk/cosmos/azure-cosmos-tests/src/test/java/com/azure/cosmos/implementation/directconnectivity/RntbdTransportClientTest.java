@@ -61,6 +61,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndp
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUUID;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.micrometer.core.instrument.Tag;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -70,7 +71,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
@@ -78,6 +78,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.test.StepVerifier;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
@@ -90,13 +91,11 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.testng.Assert.assertEquals;
@@ -839,7 +838,9 @@ public final class RntbdTransportClientTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
-        request.requestContext.locationEndpointToRoute = locationToRoute;
+
+        request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationToRoute);
+
         RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
         RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
         RntbdRequestRecord rntbdRequestRecord = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
@@ -905,17 +906,8 @@ public final class RntbdTransportClientTest {
     }
 
     private static void validateFailure(
-        final Mono<? extends StoreResponse> mono, final FailureValidator validator, final long timeout
-    ) {
-
-        final TestSubscriber<StoreResponse> subscriber = new TestSubscriber<>();
-        mono.subscribe(subscriber);
-
-        subscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
-        assertThat(subscriber.errorCount()).isEqualTo(1);
-        subscriber.assertSubscribed();
-        subscriber.assertNoValues();
-        validator.validate(subscriber.errors().get(0));
+        final Mono<? extends StoreResponse> mono, final FailureValidator validator, final long timeout) {
+        StepVerifier.create(mono).expectErrorSatisfies(validator::validate).verify(Duration.ofMillis(timeout));
     }
 
     // region Types
@@ -1004,7 +996,7 @@ public final class RntbdTransportClientTest {
                 this.durableEndpointMetrics.setEndpoint(this);
             } catch (URISyntaxException error) {
                 throw new IllegalArgumentException(
-                    lenientFormat("addressUri %s cannot be parsed as a server-based authority", addressUri),
+                    String.format("addressUri %s cannot be parsed as a server-based authority", addressUri),
                     error);
             }
 
@@ -1136,6 +1128,11 @@ public final class RntbdTransportClientTest {
         }
 
         @Override
+        public URI serverKeyUsedAsActualRemoteAddress() {
+            return this.remoteURI;
+        }
+
+        @Override
         public void injectConnectionErrors(String ruleId, double threshold, Class<?> eventType) {
             throw new NotImplementedException("injectConnectionErrors is not supported in FakeEndpoint");
         }
@@ -1190,7 +1187,7 @@ public final class RntbdTransportClientTest {
 
             Provider(RntbdTransportClient.Options options, SslContext sslContext, RntbdResponse expected, IAddressResolver addressResolver) {
                 this.config = new Config(options, sslContext, LogLevel.WARN);
-                this.clientTelemetry = new ClientTelemetry(mockDiagnosticsClientContext(), false, null, null, null, null, null, null, null, null, null, null);
+                this.clientTelemetry = new ClientTelemetry(mockDiagnosticsClientContext(), false, null, null, null, null, null, null, null, null, null);
                 this.timer = new RntbdRequestTimer(
                     config.tcpNetworkRequestTimeoutInNanos(),
                     config.requestTimerResolutionInNanos());

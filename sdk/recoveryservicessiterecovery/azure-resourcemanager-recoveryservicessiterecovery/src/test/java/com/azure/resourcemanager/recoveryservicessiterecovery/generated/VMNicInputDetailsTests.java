@@ -18,8 +18,8 @@ public final class VMNicInputDetailsTests {
             .toObject(VMNicInputDetails.class);
         Assertions.assertEquals("uq", model.nicId());
         Assertions.assertEquals("gzlvdnkfxu", model.ipConfigs().get(0).ipConfigName());
-        Assertions.assertEquals(true, model.ipConfigs().get(0).isPrimary());
-        Assertions.assertEquals(false, model.ipConfigs().get(0).isSeletedForFailover());
+        Assertions.assertTrue(model.ipConfigs().get(0).isPrimary());
+        Assertions.assertFalse(model.ipConfigs().get(0).isSeletedForFailover());
         Assertions.assertEquals("rmuhapfcq", model.ipConfigs().get(0).recoverySubnetName());
         Assertions.assertEquals("sqxqvp", model.ipConfigs().get(0).recoveryStaticIpAddress());
         Assertions.assertEquals("uoymgccelvezry", model.ipConfigs().get(0).recoveryPublicIpAddressId());
@@ -30,15 +30,15 @@ public final class VMNicInputDetailsTests {
         Assertions.assertEquals("vcdwxlpqekftn", model.ipConfigs().get(0).tfoLBBackendAddressPoolIds().get(0));
         Assertions.assertEquals("qtnqtt", model.selectionType());
         Assertions.assertEquals("lwfffi", model.recoveryNetworkSecurityGroupId());
-        Assertions.assertEquals(true, model.enableAcceleratedNetworkingOnRecovery());
+        Assertions.assertTrue(model.enableAcceleratedNetworkingOnRecovery());
         Assertions.assertEquals("pqqmted", model.tfoNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.enableAcceleratedNetworkingOnTfo());
+        Assertions.assertFalse(model.enableAcceleratedNetworkingOnTfo());
         Assertions.assertEquals("jihy", model.recoveryNicName());
         Assertions.assertEquals("zphv", model.recoveryNicResourceGroupName());
-        Assertions.assertEquals(true, model.reuseExistingNic());
+        Assertions.assertTrue(model.reuseExistingNic());
         Assertions.assertEquals("qncygupkvi", model.tfoNicName());
         Assertions.assertEquals("dscwxqupevzhf", model.tfoNicResourceGroupName());
-        Assertions.assertEquals(true, model.tfoReuseExistingNic());
+        Assertions.assertTrue(model.tfoReuseExistingNic());
         Assertions.assertEquals("xhojuj", model.targetNicName());
     }
 
@@ -106,8 +106,8 @@ public final class VMNicInputDetailsTests {
         model = BinaryData.fromObject(model).toObject(VMNicInputDetails.class);
         Assertions.assertEquals("uq", model.nicId());
         Assertions.assertEquals("gzlvdnkfxu", model.ipConfigs().get(0).ipConfigName());
-        Assertions.assertEquals(true, model.ipConfigs().get(0).isPrimary());
-        Assertions.assertEquals(false, model.ipConfigs().get(0).isSeletedForFailover());
+        Assertions.assertTrue(model.ipConfigs().get(0).isPrimary());
+        Assertions.assertFalse(model.ipConfigs().get(0).isSeletedForFailover());
         Assertions.assertEquals("rmuhapfcq", model.ipConfigs().get(0).recoverySubnetName());
         Assertions.assertEquals("sqxqvp", model.ipConfigs().get(0).recoveryStaticIpAddress());
         Assertions.assertEquals("uoymgccelvezry", model.ipConfigs().get(0).recoveryPublicIpAddressId());
@@ -118,15 +118,15 @@ public final class VMNicInputDetailsTests {
         Assertions.assertEquals("vcdwxlpqekftn", model.ipConfigs().get(0).tfoLBBackendAddressPoolIds().get(0));
         Assertions.assertEquals("qtnqtt", model.selectionType());
         Assertions.assertEquals("lwfffi", model.recoveryNetworkSecurityGroupId());
-        Assertions.assertEquals(true, model.enableAcceleratedNetworkingOnRecovery());
+        Assertions.assertTrue(model.enableAcceleratedNetworkingOnRecovery());
         Assertions.assertEquals("pqqmted", model.tfoNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.enableAcceleratedNetworkingOnTfo());
+        Assertions.assertFalse(model.enableAcceleratedNetworkingOnTfo());
         Assertions.assertEquals("jihy", model.recoveryNicName());
         Assertions.assertEquals("zphv", model.recoveryNicResourceGroupName());
-        Assertions.assertEquals(true, model.reuseExistingNic());
+        Assertions.assertTrue(model.reuseExistingNic());
         Assertions.assertEquals("qncygupkvi", model.tfoNicName());
         Assertions.assertEquals("dscwxqupevzhf", model.tfoNicResourceGroupName());
-        Assertions.assertEquals(true, model.tfoReuseExistingNic());
+        Assertions.assertTrue(model.tfoReuseExistingNic());
         Assertions.assertEquals("xhojuj", model.targetNicName());
     }
 }

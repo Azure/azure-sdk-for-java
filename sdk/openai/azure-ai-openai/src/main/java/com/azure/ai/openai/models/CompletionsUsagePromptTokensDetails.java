@@ -19,7 +19,7 @@ public final class CompletionsUsagePromptTokensDetails
     implements JsonSerializable<CompletionsUsagePromptTokensDetails> {
 
     /*
-     * The number of cached prompt tokens.
+     * Cached tokens present in the prompt.
      */
     @Generated
     private Integer cachedTokens;
@@ -32,7 +32,7 @@ public final class CompletionsUsagePromptTokensDetails
     }
 
     /**
-     * Get the cachedTokens property: The number of cached prompt tokens.
+     * Get the cachedTokens property: Cached tokens present in the prompt.
      *
      * @return the cachedTokens value.
      */
@@ -48,6 +48,7 @@ public final class CompletionsUsagePromptTokensDetails
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("audio_tokens", this.audioTokens);
         jsonWriter.writeNumberField("cached_tokens", this.cachedTokens);
         return jsonWriter.writeEndObject();
     }
@@ -68,7 +69,10 @@ public final class CompletionsUsagePromptTokensDetails
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("cached_tokens".equals(fieldName)) {
+                if ("audio_tokens".equals(fieldName)) {
+                    deserializedCompletionsUsagePromptTokensDetails.audioTokens
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("cached_tokens".equals(fieldName)) {
                     deserializedCompletionsUsagePromptTokensDetails.cachedTokens
                         = reader.getNullable(JsonReader::getInt);
                 } else {
@@ -77,5 +81,21 @@ public final class CompletionsUsagePromptTokensDetails
             }
             return deserializedCompletionsUsagePromptTokensDetails;
         });
+    }
+
+    /*
+     * Audio input tokens present in the prompt.
+     */
+    @Generated
+    private Integer audioTokens;
+
+    /**
+     * Get the audioTokens property: Audio input tokens present in the prompt.
+     *
+     * @return the audioTokens value.
+     */
+    @Generated
+    public Integer getAudioTokens() {
+        return this.audioTokens;
     }
 }

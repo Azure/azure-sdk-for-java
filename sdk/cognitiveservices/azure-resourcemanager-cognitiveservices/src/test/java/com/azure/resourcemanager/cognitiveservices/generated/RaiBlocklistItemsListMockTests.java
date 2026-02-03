@@ -7,8 +7,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklistItem;
@@ -22,20 +22,20 @@ public final class RaiBlocklistItemsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"jqf\",\"tags\":{\"hwu\":\"eexpgeumi\",\"dbzsx\":\"trdexyionofnin\",\"bzbcyksiv\":\"wqqrsmpcbbprtuga\",\"rftsjcwjjxs\":\"fogdrtbfcm\"},\"properties\":{\"pattern\":\"awvifdxke\",\"isRegex\":false},\"id\":\"hocjxwkloozrv\",\"name\":\"xvcmufunlcp\",\"type\":\"xvi\"}]}";
+            = "{\"value\":[{\"etag\":\"ftedzuubjtvgjsx\",\"tags\":{\"btdphti\":\"jjvavdpww\"},\"properties\":{\"pattern\":\"fofwan\",\"isRegex\":false},\"id\":\"cauwazcgwdfriwg\",\"name\":\"bjpozokscvgllixd\",\"type\":\"byfg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RaiBlocklistItem> response
-            = manager.raiBlocklistItems().list("wtthaokgksk", "i", "bs", com.azure.core.util.Context.NONE);
+            = manager.raiBlocklistItems().list("yzlwhbwzjnufzrf", "m", "qgnnbz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("eexpgeumi", response.iterator().next().tags().get("hwu"));
-        Assertions.assertEquals("awvifdxke", response.iterator().next().properties().pattern());
-        Assertions.assertEquals(false, response.iterator().next().properties().isRegex());
+        Assertions.assertEquals("jjvavdpww", response.iterator().next().tags().get("btdphti"));
+        Assertions.assertEquals("fofwan", response.iterator().next().properties().pattern());
+        Assertions.assertFalse(response.iterator().next().properties().isRegex());
     }
 }

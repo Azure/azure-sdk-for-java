@@ -167,6 +167,14 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
         return this;
     }
 
+    public void cancel() {
+        serviceManager.fleets().cancel(resourceGroupName, fleetName);
+    }
+
+    public void cancel(Context context) {
+        serviceManager.fleets().cancel(resourceGroupName, fleetName, context);
+    }
+
     public FleetImpl withRegion(Region location) {
         this.innerModel().withLocation(location.toString());
         return this;
@@ -223,6 +231,6 @@ public final class FleetImpl implements Fleet, Fleet.Definition, Fleet.Update {
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

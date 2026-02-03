@@ -19,6 +19,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceApplyN
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBackupRestoreParameters;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceCheckNameAvailabilityParameters;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract;
 
 /**
  * An instance of this class provides access to all the operations defined in ApiManagementServicesClient.
@@ -391,6 +392,7 @@ public interface ApiManagementServicesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -398,8 +400,8 @@ public interface ApiManagementServicesClient {
      * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginMigrateToStv2(String resourceGroupName, String serviceName, Context context);
+    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginMigrateToStv2(
+        String resourceGroupName, String serviceName, MigrateToStv2Contract parameters, Context context);
 
     /**
      * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
@@ -421,6 +423,7 @@ public interface ApiManagementServicesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -428,7 +431,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner migrateToStv2(String resourceGroupName, String serviceName, Context context);
+    ApiManagementServiceResourceInner migrateToStv2(String resourceGroupName, String serviceName,
+        MigrateToStv2Contract parameters, Context context);
 
     /**
      * List all API Management services within a resource group.

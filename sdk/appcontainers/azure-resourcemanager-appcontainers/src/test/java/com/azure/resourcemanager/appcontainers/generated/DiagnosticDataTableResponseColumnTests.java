@@ -11,22 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DiagnosticDataTableResponseColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiagnosticDataTableResponseColumn model
-            = BinaryData.fromString("{\"columnName\":\"bvopwndyqle\",\"dataType\":\"lklmtkhlo\",\"columnType\":\"x\"}")
-                .toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("bvopwndyqle", model.columnName());
-        Assertions.assertEquals("lklmtkhlo", model.dataType());
-        Assertions.assertEquals("x", model.columnType());
+        DiagnosticDataTableResponseColumn model = BinaryData
+            .fromString("{\"columnName\":\"mdy\",\"dataType\":\"dwdigumb\",\"columnType\":\"aauzzptjazysd\"}")
+            .toObject(DiagnosticDataTableResponseColumn.class);
+        Assertions.assertEquals("mdy", model.columnName());
+        Assertions.assertEquals("dwdigumb", model.dataType());
+        Assertions.assertEquals("aauzzptjazysd", model.columnType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticDataTableResponseColumn model = new DiagnosticDataTableResponseColumn().withColumnName("bvopwndyqle")
-            .withDataType("lklmtkhlo")
-            .withColumnType("x");
+        DiagnosticDataTableResponseColumn model = new DiagnosticDataTableResponseColumn().withColumnName("mdy")
+            .withDataType("dwdigumb")
+            .withColumnType("aauzzptjazysd");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("bvopwndyqle", model.columnName());
-        Assertions.assertEquals("lklmtkhlo", model.dataType());
-        Assertions.assertEquals("x", model.columnType());
+        Assertions.assertEquals("mdy", model.columnName());
+        Assertions.assertEquals("dwdigumb", model.dataType());
+        Assertions.assertEquals("aauzzptjazysd", model.columnType());
     }
 }

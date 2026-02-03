@@ -173,6 +173,13 @@ public interface CognitiveServicesManagementClient {
     RaiBlocklistItemsClient getRaiBlocklistItems();
 
     /**
+     * Gets the RaiTopicsClient object to access its operations.
+     * 
+     * @return the RaiTopicsClient object.
+     */
+    RaiTopicsClient getRaiTopics();
+
+    /**
      * Gets the RaiContentFiltersClient object to access its operations.
      * 
      * @return the RaiContentFiltersClient object.
@@ -192,4 +199,46 @@ public interface CognitiveServicesManagementClient {
      * @return the DefenderForAISettingsClient object.
      */
     DefenderForAISettingsClient getDefenderForAISettings();
+
+    /**
+     * Gets the ProjectsClient object to access its operations.
+     * 
+     * @return the ProjectsClient object.
+     */
+    ProjectsClient getProjects();
+
+    /**
+     * Gets the AccountConnectionsClient object to access its operations.
+     * 
+     * @return the AccountConnectionsClient object.
+     */
+    AccountConnectionsClient getAccountConnections();
+
+    /**
+     * Gets the ProjectConnectionsClient object to access its operations.
+     * 
+     * @return the ProjectConnectionsClient object.
+     */
+    ProjectConnectionsClient getProjectConnections();
+
+    /**
+     * Gets the AccountCapabilityHostsClient object to access its operations.
+     * 
+     * @return the AccountCapabilityHostsClient object.
+     */
+    AccountCapabilityHostsClient getAccountCapabilityHosts();
+
+    /**
+     * Gets the ProjectCapabilityHostsClient object to access its operations.
+     * 
+     * @return the ProjectCapabilityHostsClient object.
+     */
+    ProjectCapabilityHostsClient getProjectCapabilityHosts();
+
+    /**
+     * Gets the QuotaTiersClient object to access its operations.
+     * 
+     * @return the QuotaTiersClient object.
+     */
+    QuotaTiersClient getQuotaTiers();
 }

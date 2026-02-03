@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.JavaComponent;
@@ -26,34 +26,35 @@ public final class JavaComponentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"urkep\",\"value\":\"ehqqylm\"},{\"propertyName\":\"twjwdsdlzm\",\"value\":\"erxxxoteehkhowgo\"},{\"propertyName\":\"vhxowpcbapnpxra\",\"value\":\"wbmpspfeylqloc\"},{\"propertyName\":\"ujexayglxrk\",\"value\":\"nmzpas\"}],\"scale\":{\"minReplicas\":890793558,\"maxReplicas\":402195294},\"serviceBinds\":[{\"name\":\"fpieidzlvs\",\"serviceId\":\"ywjopac\"}]},\"id\":\"hydv\",\"name\":\"kmfngpmillxgjs\",\"type\":\"izwgsoriobijeiyd\"}";
+            = "{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"tfxptpqayamkncfg\",\"value\":\"mxsnxocuul\"},{\"propertyName\":\"j\",\"value\":\"oy\"}],\"scale\":{\"minReplicas\":1378586528,\"maxReplicas\":117635238},\"serviceBinds\":[{\"name\":\"bdl\",\"serviceId\":\"gdyrcvuqbsgzl\"},{\"name\":\"hbj\",\"serviceId\":\"ogdxwbsfpyxxtjlf\"},{\"name\":\"cominxojjluxx\",\"serviceId\":\"ilz\"},{\"name\":\"zzqjmu\",\"serviceId\":\"ay\"}]},\"id\":\"ribqlotokh\",\"name\":\"vwta\",\"type\":\"nkcqwwxwjyofgw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         JavaComponent response = manager.javaComponents()
-            .define("mcxqqxmyzklao")
-            .withExistingManagedEnvironment("xlu", "kft")
+            .define("hoadhrsxqvzv")
+            .withExistingManagedEnvironment("wwnbafoctohz", "aquvwsxbgnvkervq")
             .withProperties(new JavaComponentProperties()
-                .withConfigurations(Arrays
-                    .asList(new JavaComponentConfigurationProperty().withPropertyName("mzrqraz").withValue("ivznllas"),
-                        new JavaComponentConfigurationProperty().withPropertyName("skhj").withValue("pvbaih")))
-                .withScale(new JavaComponentPropertiesScale().withMinReplicas(1962293618).withMaxReplicas(2110088551))
-                .withServiceBinds(Arrays.asList(
-                    new JavaComponentServiceBind().withName("ywbqgroigbsfsgs").withServiceId("nwldfmhljq"),
-                    new JavaComponentServiceBind().withName("spmrjct").withServiceId("ldsxebuhsxrz"),
-                    new JavaComponentServiceBind().withName("gsdaluyckh").withServiceId("rbhseuerbgpxebjl"))))
+                .withConfigurations(
+                    Arrays.asList(new JavaComponentConfigurationProperty().withPropertyName("gfajglzrsubklr")
+                        .withValue("jnltcetjdvqydi")))
+                .withScale(new JavaComponentPropertiesScale().withMinReplicas(408396280).withMaxReplicas(1461869156))
+                .withServiceBinds(
+                    Arrays.asList(new JavaComponentServiceBind().withName("dxvqzxoe").withServiceId("gjxb"),
+                        new JavaComponentServiceBind().withName("an").withServiceId("upwtz"),
+                        new JavaComponentServiceBind().withName("aklozk").withServiceId("zrpejpl"),
+                        new JavaComponentServiceBind().withName("anbtttkgsu").withServiceId("nrswgkpjhboyik"))))
             .create();
 
-        Assertions.assertEquals("urkep", response.properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("ehqqylm", response.properties().configurations().get(0).value());
-        Assertions.assertEquals(890793558, response.properties().scale().minReplicas());
-        Assertions.assertEquals(402195294, response.properties().scale().maxReplicas());
-        Assertions.assertEquals("fpieidzlvs", response.properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("ywjopac", response.properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("tfxptpqayamkncfg", response.properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("mxsnxocuul", response.properties().configurations().get(0).value());
+        Assertions.assertEquals(1378586528, response.properties().scale().minReplicas());
+        Assertions.assertEquals(117635238, response.properties().scale().maxReplicas());
+        Assertions.assertEquals("bdl", response.properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("gdyrcvuqbsgzl", response.properties().serviceBinds().get(0).serviceId());
     }
 }

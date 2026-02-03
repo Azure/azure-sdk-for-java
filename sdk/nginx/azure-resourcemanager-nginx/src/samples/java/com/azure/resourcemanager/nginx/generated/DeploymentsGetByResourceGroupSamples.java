@@ -10,7 +10,7 @@ package com.azure.resourcemanager.nginx.generated;
 public final class DeploymentsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get.json
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Get.json
      */
     /**
      * Sample code: Deployments_Get.
@@ -23,7 +23,7 @@ public final class DeploymentsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
      * Deployments_Get_AutoScale.json
      */
     /**

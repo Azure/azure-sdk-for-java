@@ -1,0 +1,230 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.models
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.core.models
+displayName: Migrate from azure.core.models to next generation stack
+description: This recipe migrates azure.core.models package to the next generation stack.
+recipeList:
+    # --------------------------------------------------------------------
+    # AzureCloud
+    # --------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.models.AzureCloud
+        newFullyQualifiedTypeName: com.azure.v2.core.models.AzureCloud
+
+        # TODO: Migrate Methods and Fields
+
+    # --------------------------------------------------------------------
+    # CloudEvent
+    # --------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.models.CloudEvent
+        newFullyQualifiedTypeName: io.clientcore.core.models.CloudEvent
+
+        # TODO: Migrate Methods and Fields
+
+    # --------------------------------------------------------------------
+    # CloudEventDataFormat
+    # --------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.models.CloudEventDataFormat
+        newFullyQualifiedTypeName: io.clientcore.core.models.CloudEventDataFormat
+
+        # TODO: Migrate Methods and Fields
+
+    # --------------------------------------------------------------------
+    # GeoArray
+    # --------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.models.GeoArray
+        newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoArray
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoBoundingBox
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.models.GeoBoundingBox
+        newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoBoundingBox
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoCollection
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.models.GeoCollection
+        newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoCollection
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoLineString
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoLineString
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoLineString
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoLineStringCollection
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoLineStringCollection
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoLineStringCollection
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoLinearRing
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoLinearRing
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoLinearRing
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoObject
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoObject
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoObject
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoObjectType
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoObjectType
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoObjectType
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoPoint
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoPoint
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoPoint
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoPointCollection
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoPointCollection
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoPointCollection
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoPolygon
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoPolygon
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoPolygon
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoPolygonCollection
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoPolygonCollection
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoPolygonCollection
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # GeoPosition
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.GeoPosition
+            newFullyQualifiedTypeName: io.clientcore.core.models.geo.GeoPosition
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # JsonPatchDocument
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.JsonPatchDocument
+            newFullyQualifiedTypeName: io.clientcore.core.serialization.json.models.JsonPatchDocument
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # JsonPatchDocumentSerializer
+    # -------------------------------------------------------------------
+
+    # TODO: API Removed. Triage replacement
+
+    # -------------------------------------------------------------------
+    # JsonPatchOperation
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.JsonPatchOperation
+            newFullyQualifiedTypeName: io.clientcore.core.serialization.json.models.JsonPatchOperation
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # JsonPatchOperationKind
+    # -------------------------------------------------------------------
+
+    - org.openrewrite.java.ChangeType:
+            oldFullyQualifiedTypeName: com.azure.core.models.JsonPatchOperationKind
+            newFullyQualifiedTypeName: io.clientcore.core.serialization.json.models.JsonPatchOperationKind
+
+        # TODO: Migrate Methods and Fields
+
+    # -------------------------------------------------------------------
+    # JsonPatchOperationSerializer
+    # -------------------------------------------------------------------
+
+    # TODO: API Removed. Triage replacement
+
+    # -------------------------------------------------------------------
+    # MessageContent
+    # -------------------------------------------------------------------
+
+    # TODO: API Removed. Triage replacement
+
+    # -------------------------------------------------------------------
+    # ResponseError
+    # -------------------------------------------------------------------
+
+    # TODO: API Removed. Triage replacement
+
+    # -------------------------------------------------------------------
+    # ResponseInnerError
+    # -------------------------------------------------------------------
+
+    # TODO: API Removed. Triage replacement
+

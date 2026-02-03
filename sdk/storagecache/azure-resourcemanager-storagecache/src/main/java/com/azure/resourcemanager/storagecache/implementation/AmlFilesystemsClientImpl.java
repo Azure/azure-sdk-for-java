@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.storagecache.fluent.AmlFilesystemsClient;
@@ -72,13 +74,21 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "StorageCacheManageme")
+    @ServiceInterface(name = "StorageCacheManagementClientAmlFilesystems")
     public interface AmlFilesystemsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/amlFilesystems")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AmlFilesystemsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/amlFilesystems")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AmlFilesystemsListResult> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -91,10 +101,27 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AmlFilesystemsListResult> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("amlFilesystemName") String amlFilesystemName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("amlFilesystemName") String amlFilesystemName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
@@ -109,10 +136,30 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AmlFilesystemInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("amlFilesystemName") String amlFilesystemName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("amlFilesystemName") String amlFilesystemName,
+            @BodyParam("application/json") AmlFilesystemInner amlFilesystem, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("amlFilesystemName") String amlFilesystemName,
@@ -131,10 +178,32 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("amlFilesystemName") String amlFilesystemName,
+            @BodyParam("application/json") AmlFilesystemUpdate amlFilesystem, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/archive")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> archive(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("amlFilesystemName") String amlFilesystemName,
+            @BodyParam("application/json") AmlFilesystemArchiveInfo archiveInfo, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/archive")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> archiveSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("amlFilesystemName") String amlFilesystemName,
@@ -152,6 +221,16 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/cancelArchive")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> cancelArchiveSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("amlFilesystemName") String amlFilesystemName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -163,7 +242,22 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AmlFilesystemsListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AmlFilesystemsListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AmlFilesystemsListResult> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -198,35 +292,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     /**
      * Returns all AML file systems the user has access to under a subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlFilesystemInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns all AML file systems the user has access to under a subscription.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list AML file systems as paginated response with {@link PagedFlux}.
@@ -239,16 +304,55 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     /**
      * Returns all AML file systems the user has access to under a subscription.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list AML file systems along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AmlFilesystemInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AmlFilesystemsListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns all AML file systems the user has access to under a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems as paginated response with {@link PagedFlux}.
+     * @return result of the request to list AML file systems along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AmlFilesystemInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AmlFilesystemInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AmlFilesystemsListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -260,7 +364,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlFilesystemInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -274,7 +378,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlFilesystemInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -314,41 +418,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * Returns all AML file systems the user has access to under a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlFilesystemInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns all AML file systems the user has access to under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -364,16 +433,65 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * Returns all AML file systems the user has access to under a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list AML file systems along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AmlFilesystemInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AmlFilesystemsListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns all AML file systems the user has access to under a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems as paginated response with {@link PagedFlux}.
+     * @return result of the request to list AML file systems along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AmlFilesystemInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AmlFilesystemInner> listByResourceGroupSinglePage(String resourceGroupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AmlFilesystemsListResult> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            resourceGroupName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -387,7 +505,8 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlFilesystemInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -402,7 +521,8 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AmlFilesystemInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -448,34 +568,71 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
      * end with alphanumeric.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String amlFilesystemName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+    }
+
+    /**
+     * Schedules an AML file system for deletion.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
+     * end with alphanumeric.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String amlFilesystemName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String amlFilesystemName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
             this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
@@ -503,27 +660,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
      * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String amlFilesystemName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, amlFilesystemName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Schedules an AML file system for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -531,7 +667,8 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName) {
-        return this.beginDeleteAsync(resourceGroupName, amlFilesystemName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, amlFilesystemName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -549,7 +686,8 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String amlFilesystemName,
         Context context) {
-        return this.beginDeleteAsync(resourceGroupName, amlFilesystemName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, amlFilesystemName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -575,31 +713,13 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
      * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String amlFilesystemName, Context context) {
-        return beginDeleteAsync(resourceGroupName, amlFilesystemName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Schedules an AML file system for deletion.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName) {
-        deleteAsync(resourceGroupName, amlFilesystemName).block();
+        beginDelete(resourceGroupName, amlFilesystemName).getFinalResult();
     }
 
     /**
@@ -615,7 +735,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String amlFilesystemName, Context context) {
-        deleteAsync(resourceGroupName, amlFilesystemName, context).block();
+        beginDelete(resourceGroupName, amlFilesystemName, context).getFinalResult();
     }
 
     /**
@@ -661,43 +781,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
      * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AmlFilesystemInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String amlFilesystemName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
-    }
-
-    /**
-     * Returns an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -724,7 +807,27 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AmlFilesystemInner> getByResourceGroupWithResponse(String resourceGroupName,
         String amlFilesystemName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, amlFilesystemName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), resourceGroupName, amlFilesystemName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -796,39 +899,86 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * end with alphanumeric.
      * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
      * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance along with {@link Response} on successful completion of {@link Mono}.
+     * @return an AML file system instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String amlFilesystemName, AmlFilesystemInner amlFilesystem, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String amlFilesystemName,
+        AmlFilesystemInner amlFilesystem) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
         }
         if (amlFilesystem == null) {
-            return Mono.error(new IllegalArgumentException("Parameter amlFilesystem is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystem is required and cannot be null."));
         } else {
             amlFilesystem.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), amlFilesystemName, amlFilesystem, accept, Context.NONE);
+    }
+
+    /**
+     * Create or update an AML file system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
+     * end with alphanumeric.
+     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
+     * properties are included, they must match the existing values of those properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an AML file system instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String amlFilesystemName,
+        AmlFilesystemInner amlFilesystem, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (amlFilesystem == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystem is required and cannot be null."));
+        } else {
+            amlFilesystem.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), amlFilesystemName, amlFilesystem, accept, context);
     }
 
@@ -862,30 +1012,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * end with alphanumeric.
      * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
      * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an AML file system instance.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String amlFilesystemName, AmlFilesystemInner amlFilesystem, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, amlFilesystemName, amlFilesystem, context);
-        return this.client.<AmlFilesystemInner, AmlFilesystemInner>getLroResult(mono, this.client.getHttpPipeline(),
-            AmlFilesystemInner.class, AmlFilesystemInner.class, context);
-    }
-
-    /**
-     * Create or update an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -894,7 +1020,9 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, AmlFilesystemInner amlFilesystem) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, amlFilesystemName, amlFilesystem).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, amlFilesystem);
+        return this.client.<AmlFilesystemInner, AmlFilesystemInner>getLroResult(response, AmlFilesystemInner.class,
+            AmlFilesystemInner.class, Context.NONE);
     }
 
     /**
@@ -914,8 +1042,10 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginCreateOrUpdate(String resourceGroupName,
         String amlFilesystemName, AmlFilesystemInner amlFilesystem, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, amlFilesystemName, amlFilesystem, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, amlFilesystemName, amlFilesystem, context);
+        return this.client.<AmlFilesystemInner, AmlFilesystemInner>getLroResult(response, AmlFilesystemInner.class,
+            AmlFilesystemInner.class, context);
     }
 
     /**
@@ -946,27 +1076,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * end with alphanumeric.
      * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
      * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AmlFilesystemInner> createOrUpdateAsync(String resourceGroupName, String amlFilesystemName,
-        AmlFilesystemInner amlFilesystem, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, amlFilesystemName, amlFilesystem, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update an AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -975,7 +1084,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner createOrUpdate(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemInner amlFilesystem) {
-        return createOrUpdateAsync(resourceGroupName, amlFilesystemName, amlFilesystem).block();
+        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, amlFilesystem).getFinalResult();
     }
 
     /**
@@ -995,7 +1104,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner createOrUpdate(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemInner amlFilesystem, Context context) {
-        return createOrUpdateAsync(resourceGroupName, amlFilesystemName, amlFilesystem, context).block();
+        return beginCreateOrUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, context).getFinalResult();
     }
 
     /**
@@ -1051,39 +1160,86 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * end with alphanumeric.
      * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
      * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance along with {@link Response} on successful completion of {@link Mono}.
+     * @return an AML file system instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String amlFilesystemName,
-        AmlFilesystemUpdate amlFilesystem, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String amlFilesystemName,
+        AmlFilesystemUpdate amlFilesystem) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
         }
         if (amlFilesystem == null) {
-            return Mono.error(new IllegalArgumentException("Parameter amlFilesystem is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystem is required and cannot be null."));
         } else {
             amlFilesystem.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+        return service.updateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), amlFilesystemName, amlFilesystem, accept, Context.NONE);
+    }
+
+    /**
+     * Update an AML file system instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
+     * end with alphanumeric.
+     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
+     * properties are included, they must match the existing values of those properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an AML file system instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String amlFilesystemName,
+        AmlFilesystemUpdate amlFilesystem, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (amlFilesystem == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystem is required and cannot be null."));
+        } else {
+            amlFilesystem.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
             this.client.getSubscriptionId(), amlFilesystemName, amlFilesystem, accept, context);
     }
 
@@ -1117,30 +1273,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * end with alphanumeric.
      * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
      * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of an AML file system instance.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginUpdateAsync(String resourceGroupName,
-        String amlFilesystemName, AmlFilesystemUpdate amlFilesystem, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, amlFilesystemName, amlFilesystem, context);
-        return this.client.<AmlFilesystemInner, AmlFilesystemInner>getLroResult(mono, this.client.getHttpPipeline(),
-            AmlFilesystemInner.class, AmlFilesystemInner.class, context);
-    }
-
-    /**
-     * Update an AML file system instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1149,7 +1281,9 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, AmlFilesystemUpdate amlFilesystem) {
-        return this.beginUpdateAsync(resourceGroupName, amlFilesystemName, amlFilesystem).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, amlFilesystemName, amlFilesystem);
+        return this.client.<AmlFilesystemInner, AmlFilesystemInner>getLroResult(response, AmlFilesystemInner.class,
+            AmlFilesystemInner.class, Context.NONE);
     }
 
     /**
@@ -1169,7 +1303,10 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AmlFilesystemInner>, AmlFilesystemInner> beginUpdate(String resourceGroupName,
         String amlFilesystemName, AmlFilesystemUpdate amlFilesystem, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, amlFilesystemName, amlFilesystem, context).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, amlFilesystemName, amlFilesystem, context);
+        return this.client.<AmlFilesystemInner, AmlFilesystemInner>getLroResult(response, AmlFilesystemInner.class,
+            AmlFilesystemInner.class, context);
     }
 
     /**
@@ -1200,27 +1337,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * end with alphanumeric.
      * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
      * properties are included, they must match the existing values of those properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an AML file system instance on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AmlFilesystemInner> updateAsync(String resourceGroupName, String amlFilesystemName,
-        AmlFilesystemUpdate amlFilesystem, Context context) {
-        return beginUpdateAsync(resourceGroupName, amlFilesystemName, amlFilesystem, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update an AML file system instance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
-     * @param amlFilesystem Object containing the user-selectable properties of the AML file system. If read-only
-     * properties are included, they must match the existing values of those properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1229,7 +1345,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner update(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemUpdate amlFilesystem) {
-        return updateAsync(resourceGroupName, amlFilesystemName, amlFilesystem).block();
+        return beginUpdate(resourceGroupName, amlFilesystemName, amlFilesystem).getFinalResult();
     }
 
     /**
@@ -1249,7 +1365,7 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AmlFilesystemInner update(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemUpdate amlFilesystem, Context context) {
-        return updateAsync(resourceGroupName, amlFilesystemName, amlFilesystem, context).block();
+        return beginUpdate(resourceGroupName, amlFilesystemName, amlFilesystem, context).getFinalResult();
     }
 
     /**
@@ -1300,47 +1416,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
      * end with alphanumeric.
-     * @param archiveInfo Information about the archive operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> archiveWithResponseAsync(String resourceGroupName, String amlFilesystemName,
-        AmlFilesystemArchiveInfo archiveInfo, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
-        }
-        if (archiveInfo != null) {
-            archiveInfo.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.archive(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), amlFilesystemName, archiveInfo, accept, context);
-    }
-
-    /**
-     * Archive data from the AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1369,7 +1444,30 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> archiveWithResponse(String resourceGroupName, String amlFilesystemName,
         AmlFilesystemArchiveInfo archiveInfo, Context context) {
-        return archiveWithResponseAsync(resourceGroupName, amlFilesystemName, archiveInfo, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        if (archiveInfo != null) {
+            archiveInfo.validate();
+        }
+        final String accept = "application/json";
+        return service.archiveSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), amlFilesystemName, archiveInfo, accept, context);
     }
 
     /**
@@ -1430,43 +1528,6 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
      * end with alphanumeric.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelArchiveWithResponseAsync(String resourceGroupName, String amlFilesystemName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (amlFilesystemName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.cancelArchive(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
-            this.client.getSubscriptionId(), amlFilesystemName, accept, context);
-    }
-
-    /**
-     * Cancel archiving data from the AML file system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
-     * end with alphanumeric.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1492,7 +1553,27 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelArchiveWithResponse(String resourceGroupName, String amlFilesystemName,
         Context context) {
-        return cancelArchiveWithResponseAsync(resourceGroupName, amlFilesystemName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (amlFilesystemName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter amlFilesystemName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.cancelArchiveSync(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), amlFilesystemName, accept, context);
     }
 
     /**
@@ -1540,27 +1621,55 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list AML file systems along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AmlFilesystemInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AmlFilesystemsListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return result of the request to list AML file systems along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlFilesystemInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<AmlFilesystemInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AmlFilesystemsListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1595,27 +1704,56 @@ public final class AmlFilesystemsClientImpl implements AmlFilesystemsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list AML file systems along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AmlFilesystemInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AmlFilesystemsListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list AML file systems along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return result of the request to list AML file systems along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AmlFilesystemInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<AmlFilesystemInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AmlFilesystemsListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmlFilesystemsClientImpl.class);
 }

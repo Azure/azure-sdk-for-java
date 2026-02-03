@@ -113,39 +113,6 @@ public interface ConnectedEnvironments {
     void delete(String resourceGroupName, String connectedEnvironmentName, Context context);
 
     /**
-     * Update connected Environment's properties.
-     * 
-     * Patches a Managed Environment. Only patching of tags is supported currently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service along with
-     * {@link Response}.
-     */
-    Response<ConnectedEnvironment> updateWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        Context context);
-
-    /**
-     * Update connected Environment's properties.
-     * 
-     * Patches a Managed Environment. Only patching of tags is supported currently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param connectedEnvironmentName Name of the connectedEnvironment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     * is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment for Kubernetes cluster specialized for web workloads by Azure App Service.
-     */
-    ConnectedEnvironment update(String resourceGroupName, String connectedEnvironmentName);
-
-    /**
      * Checks the resource connectedEnvironmentName availability.
      * 
      * Checks if resource connectedEnvironmentName is available.

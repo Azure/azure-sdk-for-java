@@ -57,7 +57,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     }
 
     public Producer buildProducerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Producer properties = new Producer();
 
@@ -81,7 +81,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     }
 
     public Consumer buildConsumerProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Consumer properties = new Consumer();
 
@@ -113,7 +113,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     }
 
     public Processor buildProcessorProperties() {
-        PropertyMapper propertyMapper = PropertyMapper.get().alwaysApplyingWhenNonNull();
+        PropertyMapper propertyMapper = PropertyMapper.get();
 
         Processor properties = new Processor();
 
@@ -268,6 +268,11 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
          */
         private boolean autoStartup = true;
 
+        /**
+         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
+         */
+        private Duration sessionIdleTimeout;
+
         public Integer getMaxConcurrentCalls() {
             return maxConcurrentCalls;
         }
@@ -290,6 +295,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
         public void setAutoStartup(boolean autoStartup) {
             this.autoStartup = autoStartup;
+        }
+
+        public Duration getSessionIdleTimeout() {
+            return sessionIdleTimeout;
+        }
+
+        public void setSessionIdleTimeout(Duration sessionIdleTimeout) {
+            this.sessionIdleTimeout = sessionIdleTimeout;
         }
     }
 

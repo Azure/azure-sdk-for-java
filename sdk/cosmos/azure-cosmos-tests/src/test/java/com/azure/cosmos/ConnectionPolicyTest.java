@@ -48,11 +48,13 @@ public class ConnectionPolicyTest {
     public void connectionPolicyDirectConnectionToString() {
         ConnectionPolicy policy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         assertThat(policy.toString()).isNotEmpty();
+        assertThat(policy.toString()).isNotEqualTo("null");
     }
 
     @Test(groups = { "unit" })
     public void connectionPolicyGatewayConnectionToString() {
         ConnectionPolicy policy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         assertThat(policy.toString()).isNotEmpty();
+        assertThat(policy.toString()).isNotEqualTo("null");
     }
 }

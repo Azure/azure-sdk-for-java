@@ -50,7 +50,7 @@ public interface JsonSerializable<T extends JsonSerializable<T>> {
      * @throws IOException If the object fails to be written to the {@code outputStream}.
      */
     default void toJson(OutputStream outputStream) throws IOException {
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+        try (JsonWriter jsonWriter = JsonWriter.toStream(outputStream)) {
             toJson(jsonWriter).flush();
         }
     }
@@ -62,7 +62,7 @@ public interface JsonSerializable<T extends JsonSerializable<T>> {
      * @throws IOException If the object fails to be written to the {@code writer}.
      */
     default void toJson(Writer writer) throws IOException {
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+        try (JsonWriter jsonWriter = JsonWriter.toWriter(writer)) {
             toJson(jsonWriter).flush();
         }
     }
@@ -75,7 +75,7 @@ public interface JsonSerializable<T extends JsonSerializable<T>> {
      */
     default String toJsonString() throws IOException {
         StringBuilderWriter writer = new StringBuilderWriter();
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(writer)) {
+        try (JsonWriter jsonWriter = JsonWriter.toWriter(writer)) {
             toJson(jsonWriter).flush();
             return writer.toString();
         }
@@ -89,7 +89,7 @@ public interface JsonSerializable<T extends JsonSerializable<T>> {
      */
     default byte[] toJsonBytes() throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+        try (JsonWriter jsonWriter = JsonWriter.toStream(outputStream)) {
             toJson(jsonWriter).flush();
             return outputStream.toByteArray();
         }

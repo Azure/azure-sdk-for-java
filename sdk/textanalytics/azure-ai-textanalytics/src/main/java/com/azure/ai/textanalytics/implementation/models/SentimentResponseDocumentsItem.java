@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,12 +20,14 @@ public final class SentimentResponseDocumentsItem extends SentimentDocumentResul
     /**
      * Creates an instance of SentimentResponseDocumentsItem class.
      */
+    @Generated
     public SentimentResponseDocumentsItem() {
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponseDocumentsItem setSentiment(DocumentSentimentValue sentiment) {
         super.setSentiment(sentiment);
@@ -34,6 +37,7 @@ public final class SentimentResponseDocumentsItem extends SentimentDocumentResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponseDocumentsItem setConfidenceScores(SentimentConfidenceScorePerLabel confidenceScores) {
         super.setConfidenceScores(confidenceScores);
@@ -43,6 +47,7 @@ public final class SentimentResponseDocumentsItem extends SentimentDocumentResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponseDocumentsItem setSentences(List<SentenceSentiment> sentences) {
         super.setSentences(sentences);
@@ -52,6 +57,7 @@ public final class SentimentResponseDocumentsItem extends SentimentDocumentResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponseDocumentsItem setId(String id) {
         super.setId(id);
@@ -61,6 +67,7 @@ public final class SentimentResponseDocumentsItem extends SentimentDocumentResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponseDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -70,6 +77,7 @@ public final class SentimentResponseDocumentsItem extends SentimentDocumentResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentResponseDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -79,6 +87,7 @@ public final class SentimentResponseDocumentsItem extends SentimentDocumentResul
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,6 +109,7 @@ public final class SentimentResponseDocumentsItem extends SentimentDocumentResul
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SentimentResponseDocumentsItem.
      */
+    @Generated
     public static SentimentResponseDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentimentResponseDocumentsItem deserializedSentimentResponseDocumentsItem

@@ -13,5 +13,6 @@
     <module>azure-ai-openai</module>
     <module>azure-ai-openai-assistants</module>
     <module>azure-ai-openai-realtime</module>
+    <module>azure-ai-openai-stainless</module>
   </modules>
 </project>

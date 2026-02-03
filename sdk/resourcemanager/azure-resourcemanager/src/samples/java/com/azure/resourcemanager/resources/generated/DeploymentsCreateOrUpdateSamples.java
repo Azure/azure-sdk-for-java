@@ -4,12 +4,18 @@
 
 package com.azure.resourcemanager.resources.generated;
 
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
+import com.azure.resourcemanager.resources.models.DeploymentExternalInput;
+import com.azure.resourcemanager.resources.models.DeploymentExternalInputDefinition;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
+import com.azure.resourcemanager.resources.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
 import com.azure.resourcemanager.resources.models.OnErrorDeployment;
 import com.azure.resourcemanager.resources.models.OnErrorDeploymentType;
 import com.azure.resourcemanager.resources.models.TemplateLink;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +24,39 @@ import java.util.Map;
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
+     * PutDeploymentWithExternalInputs.json
+     */
+    /**
+     * Sample code: Create deployment using external inputs.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void createDeploymentUsingExternalInputs(com.azure.resourcemanager.AzureResourceManager azure)
+        throws IOException {
+        azure.genericResources()
+            .manager()
+            .deploymentClient()
+            .getDeployments()
+            .createOrUpdate("my-resource-group", "my-deployment",
+                new DeploymentInner().withProperties(new DeploymentProperties().withTemplate(SerializerFactory
+                    .createDefaultManagementSerializerAdapter()
+                    .deserialize(
+                        "{\"$schema\":\"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#\",\"contentVersion\":\"1.0.0.0\",\"outputs\":{\"inputObj\":{\"type\":\"object\",\"value\":\"[parameters('inputObj')]\"}},\"parameters\":{\"inputObj\":{\"type\":\"object\"}},\"resources\":[]}",
+                        Object.class, SerializerEncoding.JSON))
+                    .withParameters(mapOf("inputObj",
+                        new DeploymentParameter().withExpression("[createObject('foo', externalInputs('fooValue'))]")))
+                    .withExternalInputs(mapOf("fooValue", new DeploymentExternalInput().withValue("baz")))
+                    .withExternalInputDefinitions(mapOf("fooValue",
+                        new DeploymentExternalInputDefinition().withKind("sys.envVar").withConfig("FOO_VALUE")))
+                    .withMode(DeploymentMode.INCREMENTAL)),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentResourceGroup.json
      */
     /**
@@ -30,7 +68,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment",
                 new DeploymentInner().withProperties(new DeploymentProperties().withTemplateLink(new TemplateLink()
@@ -43,7 +81,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentResourceGroupTemplateSpecsWithId.json
      */
     /**
@@ -55,7 +94,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment", new DeploymentInner()
                 .withProperties(new DeploymentProperties().withTemplateLink(new TemplateLink().withId(
@@ -66,7 +105,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentWithOnErrorDeploymentSpecificDeployment.json
      */
     /**
@@ -78,7 +118,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment",
                 new DeploymentInner().withProperties(new DeploymentProperties()
@@ -91,7 +131,8 @@ public final class DeploymentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PutDeploymentWithOnErrorDeploymentLastSuccessful.json
      */
     /**
@@ -103,7 +144,7 @@ public final class DeploymentsCreateOrUpdateSamples {
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .createOrUpdate("my-resource-group", "my-deployment",
                 new DeploymentInner().withProperties(new DeploymentProperties()

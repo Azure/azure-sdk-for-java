@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
     /*
      * The ID of data flow debug session.
      */
+    @Generated
     private String sessionId;
 
     /*
      * The data flow which contains the debug session.
      */
+    @Generated
     private String dataFlowName;
 
     /*
      * The output stream name.
      */
+    @Generated
     private String streamName;
 
     /*
      * List of column names.
      */
+    @Generated
     private List<String> columns;
 
     /**
      * Creates an instance of DataFlowDebugStatisticsRequest class.
      */
+    @Generated
     public DataFlowDebugStatisticsRequest() {
     }
 
@@ -48,6 +54,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -58,6 +65,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugStatisticsRequest object itself.
      */
+    @Generated
     public DataFlowDebugStatisticsRequest setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -68,6 +76,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * 
      * @return the dataFlowName value.
      */
+    @Generated
     public String getDataFlowName() {
         return this.dataFlowName;
     }
@@ -78,6 +87,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * @param dataFlowName the dataFlowName value to set.
      * @return the DataFlowDebugStatisticsRequest object itself.
      */
+    @Generated
     public DataFlowDebugStatisticsRequest setDataFlowName(String dataFlowName) {
         this.dataFlowName = dataFlowName;
         return this;
@@ -88,6 +98,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * 
      * @return the streamName value.
      */
+    @Generated
     public String getStreamName() {
         return this.streamName;
     }
@@ -98,6 +109,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * @param streamName the streamName value to set.
      * @return the DataFlowDebugStatisticsRequest object itself.
      */
+    @Generated
     public DataFlowDebugStatisticsRequest setStreamName(String streamName) {
         this.streamName = streamName;
         return this;
@@ -108,6 +120,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * 
      * @return the columns value.
      */
+    @Generated
     public List<String> getColumns() {
         return this.columns;
     }
@@ -118,6 +131,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * @param columns the columns value to set.
      * @return the DataFlowDebugStatisticsRequest object itself.
      */
+    @Generated
     public DataFlowDebugStatisticsRequest setColumns(List<String> columns) {
         this.columns = columns;
         return this;
@@ -126,6 +140,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class DataFlowDebugStatisticsRequest implements JsonSerializable<Da
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowDebugStatisticsRequest.
      */
+    @Generated
     public static DataFlowDebugStatisticsRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugStatisticsRequest deserializedDataFlowDebugStatisticsRequest

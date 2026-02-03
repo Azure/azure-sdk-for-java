@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResourceListResult;
@@ -21,19 +21,19 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"eaqnrmvvfkoxm\",\"requiredMembers\":[\"ktuidvrm\",\"zlpdwwex\",\"mzvlazipbh\"],\"requiredZoneNames\":[\"qsg\"],\"displayName\":\"yuuzivens\"},\"id\":\"pmeyyvpkpatlbijp\",\"name\":\"gsksrfhf\",\"type\":\"olmk\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"wjiutgnjiz\",\"requiredMembers\":[\"woiymrvz\"],\"requiredZoneNames\":[\"yrsrziuctixgb\",\"suif\",\"evkaa\"],\"displayName\":\"zkiswqjmdghsy\"},\"id\":\"ry\",\"name\":\"jufptbjczjnciuiy\",\"type\":\"vldaswv\"},{\"properties\":{\"groupId\":\"sqqzlgcndhz\",\"requiredMembers\":[\"fcfsrhkhgsnx\"],\"requiredZoneNames\":[\"kpphefsbzx\",\"bzxomeik\",\"clwzacnmwpfsu\"],\"displayName\":\"aazyqbxyxoyfpuqq\"},\"id\":\"ezxlhdjzqdca\",\"name\":\"wvpsoz\",\"type\":\"iihjriybmrzo\"},{\"properties\":{\"groupId\":\"xwdvwnj\",\"requiredMembers\":[\"fnmxa\"],\"requiredZoneNames\":[\"q\",\"tibtyi\",\"uyvpirf\",\"jpnqnoowsbeden\"],\"displayName\":\"xkxbhxvu\"},\"id\":\"ulgm\",\"name\":\"hjevd\",\"type\":\"znfaj\"},{\"properties\":{\"groupId\":\"skmqozzkivyhj\",\"requiredMembers\":[\"izjixlq\",\"hefkwabsolronqq\",\"mgnlqxsjxtel\",\"xhvuqbozool\"],\"requiredZoneNames\":[\"carkuzlb\",\"nndtsnxa\",\"qytl\",\"hd\"],\"displayName\":\"myck\"},\"id\":\"xnx\",\"name\":\"kck\",\"type\":\"wymxgaabjk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateLinkResourceListResult response = manager.privateLinkResources()
-            .listWithResponse("y", "srucvcrrpcjtt", com.azure.core.util.Context.NONE)
+            .listWithResponse("ynnfmuiii", "ipfohykfkx", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qsg", response.value().get(0).properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("yrsrziuctixgb", response.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

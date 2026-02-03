@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class SparkServerType extends ExpandableStringEnum<SparkServerType>
     /**
      * Static value SharkServer for SparkServerType.
      */
+    @Generated
     public static final SparkServerType SHARK_SERVER = fromString("SharkServer");
 
     /**
      * Static value SharkServer2 for SparkServerType.
      */
+    @Generated
     public static final SparkServerType SHARK_SERVER2 = fromString("SharkServer2");
 
     /**
      * Static value SparkThriftServer for SparkServerType.
      */
+    @Generated
     public static final SparkServerType SPARK_THRIFT_SERVER = fromString("SparkThriftServer");
 
     /**
@@ -31,6 +35,7 @@ public final class SparkServerType extends ExpandableStringEnum<SparkServerType>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkServerType() {
     }
@@ -41,6 +46,7 @@ public final class SparkServerType extends ExpandableStringEnum<SparkServerType>
      * @param name a name to look for.
      * @return the corresponding SparkServerType.
      */
+    @Generated
     public static SparkServerType fromString(String name) {
         return fromString(name, SparkServerType.class);
     }
@@ -50,6 +56,7 @@ public final class SparkServerType extends ExpandableStringEnum<SparkServerType>
      * 
      * @return known SparkServerType values.
      */
+    @Generated
     public static Collection<SparkServerType> values() {
         return values(SparkServerType.class);
     }

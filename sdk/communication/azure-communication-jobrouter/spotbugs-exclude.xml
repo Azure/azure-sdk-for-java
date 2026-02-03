@@ -3,61 +3,6 @@
 <FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <Match>
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Or>
-      <Class name="com.azure.communication.jobrouter.models.ClassificationPolicy" />
-      <Class name="com.azure.communication.jobrouter.models.ConditionalQueueSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.ConditionalWorkerSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateJobOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateQueueOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateWorkerOptions" />
-      <Class name="com.azure.communication.jobrouter.models.ExceptionPolicy" />
-      <Class name="com.azure.communication.jobrouter.models.ExceptionRule" />
-      <Class name="com.azure.communication.jobrouter.models.ManualReclassifyExceptionAction" />
-      <Class name="com.azure.communication.jobrouter.models.QueueWeightedAllocation" />
-      <Class name="com.azure.communication.jobrouter.models.ReclassifyExceptionAction" />
-      <Class name="com.azure.communication.jobrouter.models.RouterJob" />
-      <Class name="com.azure.communication.jobrouter.models.RouterQueue" />
-      <Class name="com.azure.communication.jobrouter.models.RouterQueueStatistics" />
-      <Class name="com.azure.communication.jobrouter.models.RouterWorker" />
-      <Class name="com.azure.communication.jobrouter.models.ScoringRuleOptions" />
-      <Class name="com.azure.communication.jobrouter.models.WeightedAllocationQueueSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.WeightedAllocationWorkerSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.WorkerWeightedAllocation" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="EI_EXPOSE_REP2" />
-    <Or>
-      <Class name="com.azure.communication.jobrouter.JobRouterAdministrationClientBuilder" />
-      <Class name="com.azure.communication.jobrouter.JobRouterClientBuilder" />
-      <Class name="com.azure.communication.jobrouter.models.ClassificationPolicy" />
-      <Class name="com.azure.communication.jobrouter.models.ConditionalQueueSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.ConditionalWorkerSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateJobOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateJobWithClassificationPolicyOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateQueueOptions" />
-      <Class name="com.azure.communication.jobrouter.models.CreateWorkerOptions" />
-      <Class name="com.azure.communication.jobrouter.models.ExceptionPolicy" />
-      <Class name="com.azure.communication.jobrouter.models.ExceptionRule" />
-      <Class name="com.azure.communication.jobrouter.models.ManualReclassifyExceptionAction" />
-      <Class name="com.azure.communication.jobrouter.models.QueueWeightedAllocation" />
-      <Class name="com.azure.communication.jobrouter.models.ReclassifyExceptionAction" />
-      <Class name="com.azure.communication.jobrouter.models.RouterJob" />
-      <Class name="com.azure.communication.jobrouter.models.RouterQueue" />
-      <Class name="com.azure.communication.jobrouter.models.RouterWorker" />
-      <Class name="com.azure.communication.jobrouter.models.ScoringRuleOptions" />
-      <Class name="com.azure.communication.jobrouter.models.WeightedAllocationQueueSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.WeightedAllocationWorkerSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.WorkerWeightedAllocation" />
-    </Or>
-  </Match>
-  <Match>
     <Bug pattern="EI_EXPOSE_STATIC_REP2" />
     <Class name="com.azure.communication.jobrouter.implementation.JsonMergePatchHelper" />
   </Match>
@@ -70,19 +15,6 @@
     <Or>
       <Class name="com.azure.communication.jobrouter.models.RouterJobNote" />
       <Class name="com.azure.communication.jobrouter.models.ScheduleAndSuspendMode" />
-    </Or>
-  </Match>
-  <Match>
-    <Bug pattern="URF_UNREAD_FIELD" />
-    <Or>
-      <Class name="com.azure.communication.jobrouter.models.DirectMapRouterRule" />
-      <Class name="com.azure.communication.jobrouter.models.ExceptionTrigger" />
-      <Class name="com.azure.communication.jobrouter.models.JobMatchingMode" />
-      <Class name="com.azure.communication.jobrouter.models.QueueAndMatchMode" />
-      <Class name="com.azure.communication.jobrouter.models.QueueSelectorAttachment" />
-      <Class name="com.azure.communication.jobrouter.models.RouterRule" />
-      <Class name="com.azure.communication.jobrouter.models.SuspendMode" />
-      <Class name="com.azure.communication.jobrouter.models.WorkerSelectorAttachment" />
     </Or>
   </Match>
 </FindBugsFilter>

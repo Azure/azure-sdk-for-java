@@ -11,8 +11,11 @@ import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.ApimIdentityType;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfigurationStoreName;
+import com.azure.resourcemanager.apimanagement.models.ConfigurationApi;
+import com.azure.resourcemanager.apimanagement.models.DeveloperPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
 import com.azure.resourcemanager.apimanagement.models.HostnameType;
+import com.azure.resourcemanager.apimanagement.models.LegacyApiState;
 import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.SkuType;
 import com.azure.resourcemanager.apimanagement.models.UserIdentityProperties;
@@ -28,21 +31,21 @@ import java.util.Map;
 public final class ApiManagementServiceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
-     * ApiManagementCreateServiceHavingMsi.json
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceSkuv2Service.json
      */
     /**
-     * Sample code: ApiManagementCreateServiceHavingMsi.
+     * Sample code: ApiManagementCreateServiceSkuv2Service.
      * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void
-        apiManagementCreateServiceHavingMsi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        apiManagementCreateServiceSkuv2Service(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.apiManagementServices()
             .define("apimService1")
             .withRegion("West US")
             .withExistingResourceGroup("rg1")
-            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.CONSUMPTION).withCapacity(0))
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.STANDARD_V2).withCapacity(1))
             .withPublisherEmail("apim@autorestsdk.com")
             .withPublisherName("autorestsdk")
             .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
@@ -52,34 +55,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
-     * ApiManagementCreateServiceWithSystemCertificates.json
-     */
-    /**
-     * Sample code: ApiManagementCreateServiceWithSystemCertificates.
-     * 
-     * @param manager Entry point to ApiManagementManager.
-     */
-    public static void apiManagementCreateServiceWithSystemCertificates(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices()
-            .define("apimService1")
-            .withRegion("Central US")
-            .withExistingResourceGroup("rg1")
-            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.BASIC).withCapacity(1))
-            .withPublisherEmail("apim@autorestsdk.com")
-            .withPublisherName("autorestsdk")
-            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
-            .withCertificates(
-                Arrays.asList(new CertificateConfiguration().withEncodedCertificate("fakeTokenPlaceholder")
-                    .withCertificatePassword("fakeTokenPlaceholder")
-                    .withStoreName(CertificateConfigurationStoreName.CERTIFICATE_AUTHORITY)))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateMultiRegionServiceWithCustomHostname.json
      */
     /**
@@ -110,6 +86,10 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
                 new HostnameConfiguration().withType(HostnameType.PORTAL)
                     .withHostname("portal1.msitesting.net")
                     .withEncodedCertificate("fakeTokenPlaceholder")
+                    .withCertificatePassword("fakeTokenPlaceholder"),
+                new HostnameConfiguration().withType(HostnameType.CONFIGURATION_API)
+                    .withHostname("configuration-api.msitesting.net")
+                    .withEncodedCertificate("fakeTokenPlaceholder")
                     .withCertificatePassword("fakeTokenPlaceholder")))
             .withAdditionalLocations(Arrays.asList(new AdditionalLocation().withLocation("East US")
                 .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(1))
@@ -121,7 +101,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateServiceWithNatGatewayEnabled.json
      */
     /**
@@ -145,7 +125,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUndelete.json
      */
     /**
@@ -167,7 +147,153 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceWithDeveloperPortal.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceWithDeveloperPortal.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateServiceWithDeveloperPortal(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.DEVELOPER).withCapacity(1))
+            .withPublisherEmail("foo@contoso.com")
+            .withPublisherName("foo")
+            .withTags(mapOf("Name", "Contoso", "Test", "User"))
+            .withDeveloperPortalStatus(DeveloperPortalStatus.ENABLED)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceWithCustomHostnameKeyVault.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceWithCustomHostnameKeyVault.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateServiceWithCustomHostnameKeyVault(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("North Europe")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(1))
+            .withPublisherEmail("apim@autorestsdk.com")
+            .withPublisherName("autorestsdk")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+            .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                    new UserIdentityProperties())))
+            .withHostnameConfigurations(Arrays.asList(
+                new HostnameConfiguration().withType(HostnameType.PROXY)
+                    .withHostname("gateway1.msitesting.net")
+                    .withKeyVaultId("fakeTokenPlaceholder")
+                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468")
+                    .withDefaultSslBinding(true),
+                new HostnameConfiguration().withType(HostnameType.MANAGEMENT)
+                    .withHostname("mgmt.msitesting.net")
+                    .withKeyVaultId("fakeTokenPlaceholder")
+                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468"),
+                new HostnameConfiguration().withType(HostnameType.PORTAL)
+                    .withHostname("portal1.msitesting.net")
+                    .withKeyVaultId("fakeTokenPlaceholder")
+                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468"),
+                new HostnameConfiguration().withType(HostnameType.CONFIGURATION_API)
+                    .withHostname("configuration-api.msitesting.net")
+                    .withEncodedCertificate("fakeTokenPlaceholder")
+                    .withCertificatePassword("fakeTokenPlaceholder")))
+            .withVirtualNetworkType(VirtualNetworkType.NONE)
+            .withApiVersionConstraint(new ApiVersionConstraint().withMinApiVersion("2019-01-01"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceHavingMsi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceHavingMsi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateServiceHavingMsi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("West US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.CONSUMPTION).withCapacity(0))
+            .withPublisherEmail("apim@autorestsdk.com")
+            .withPublisherName("autorestsdk")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+            .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.SYSTEM_ASSIGNED))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceWithSystemCertificates.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceWithSystemCertificates.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateServiceWithSystemCertificates(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("Central US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.BASIC).withCapacity(1))
+            .withPublisherEmail("apim@autorestsdk.com")
+            .withPublisherName("autorestsdk")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+            .withCertificates(
+                Arrays.asList(new CertificateConfiguration().withEncodedCertificate("fakeTokenPlaceholder")
+                    .withCertificatePassword("fakeTokenPlaceholder")
+                    .withStoreName(CertificateConfigurationStoreName.CERTIFICATE_AUTHORITY)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceWithoutLegacyConfigurationApi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceWithoutLegacyConfigurationApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateServiceWithoutLegacyConfigurationApi(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("Central US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.BASIC).withCapacity(1))
+            .withPublisherEmail("apim@autorestsdk.com")
+            .withPublisherName("autorestsdk")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+            .withConfigurationApi(new ConfigurationApi().withLegacyApi(LegacyApiState.DISABLED))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateServiceWithUserAssignedIdentity.json
      */
     /**
@@ -187,14 +313,14 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
             .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
             .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/apimService1",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/apimService1",
                     new UserIdentityProperties())))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateServiceInZones.json
      */
     /**
@@ -218,7 +344,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateServiceInVnetWithPublicIP.json
      */
     /**
@@ -238,59 +364,16 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
             .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
             .withZones(Arrays.asList("1", "2"))
             .withPublicIpAddressId(
-                "/subscriptions/subid/resourceGroups/rgName/providers/Microsoft.Network/publicIPAddresses/apimazvnet")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgName/providers/Microsoft.Network/publicIPAddresses/apimazvnet")
             .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId(
-                "/subscriptions/subid/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/apimcus/subnets/tenant"))
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/apimcus/subnets/tenant"))
             .withVirtualNetworkType(VirtualNetworkType.EXTERNAL)
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
-     * ApiManagementCreateServiceWithCustomHostnameKeyVault.json
-     */
-    /**
-     * Sample code: ApiManagementCreateServiceWithCustomHostnameKeyVault.
-     * 
-     * @param manager Entry point to ApiManagementManager.
-     */
-    public static void apiManagementCreateServiceWithCustomHostnameKeyVault(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices()
-            .define("apimService1")
-            .withRegion("North Europe")
-            .withExistingResourceGroup("rg1")
-            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(1))
-            .withPublisherEmail("apim@autorestsdk.com")
-            .withPublisherName("autorestsdk")
-            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
-            .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
-                    new UserIdentityProperties())))
-            .withHostnameConfigurations(Arrays.asList(
-                new HostnameConfiguration().withType(HostnameType.PROXY)
-                    .withHostname("gateway1.msitesting.net")
-                    .withKeyVaultId("fakeTokenPlaceholder")
-                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468")
-                    .withDefaultSslBinding(true),
-                new HostnameConfiguration().withType(HostnameType.MANAGEMENT)
-                    .withHostname("mgmt.msitesting.net")
-                    .withKeyVaultId("fakeTokenPlaceholder")
-                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468"),
-                new HostnameConfiguration().withType(HostnameType.PORTAL)
-                    .withHostname("portal1.msitesting.net")
-                    .withKeyVaultId("fakeTokenPlaceholder")
-                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468")))
-            .withVirtualNetworkType(VirtualNetworkType.NONE)
-            .withApiVersionConstraint(new ApiVersionConstraint().withMinApiVersion("2019-01-01"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateService.json
      */
     /**

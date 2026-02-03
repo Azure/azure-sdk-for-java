@@ -12,15 +12,15 @@ public final class CommitmentTierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ugicjooxdjebw\",\"value\":[{\"kind\":\"wfvovbv\",\"skuName\":\"uecivyhz\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"jgjrwjueiotwm\",\"tier\":\"ytdxwit\",\"maxCount\":1070997174,\"quota\":{\"quantity\":8610191053119914796,\"unit\":\"wgxhn\"},\"cost\":{\"commitmentMeterId\":\"x\",\"overageMeterId\":\"kpycgklwndnhjd\"}},{\"kind\":\"whvylw\",\"skuName\":\"tdhxujznbmpowuwp\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"veual\",\"tier\":\"j\",\"maxCount\":1318602789,\"quota\":{\"quantity\":4407430111323762488,\"unit\":\"cswsrtjri\"},\"cost\":{\"commitmentMeterId\":\"bpbewtghfgb\",\"overageMeterId\":\"gw\"}},{\"kind\":\"vlvqhjkbegi\",\"skuName\":\"nmxiebwwaloayqc\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"zjuzgwyz\",\"tier\":\"txon\",\"maxCount\":351214213,\"quota\":{\"quantity\":5974631066556953199,\"unit\":\"bp\"},\"cost\":{\"commitmentMeterId\":\"p\",\"overageMeterId\":\"knftguvriuh\"}}]}")
+            "{\"nextLink\":\"xpvgo\",\"value\":[{\"kind\":\"misgwbnb\",\"skuName\":\"ldawkzbaliourqha\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"ashsfwxos\",\"tier\":\"z\",\"maxCount\":1177990560,\"quota\":{\"quantity\":8073809250590062964,\"unit\":\"oxdjebwpuc\"},\"cost\":{\"commitmentMeterId\":\"vo\",\"overageMeterId\":\"vmeueci\"}}]}")
             .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("ugicjooxdjebw", model.nextLink());
+        Assertions.assertEquals("xpvgo", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("ugicjooxdjebw");
+        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("xpvgo");
         model = BinaryData.fromObject(model).toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("ugicjooxdjebw", model.nextLink());
+        Assertions.assertEquals("xpvgo", model.nextLink());
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorTyp
     /**
      * Static value PreserveHierarchy for CopyBehaviorType.
      */
+    @Generated
     public static final CopyBehaviorType PRESERVE_HIERARCHY = fromString("PreserveHierarchy");
 
     /**
      * Static value FlattenHierarchy for CopyBehaviorType.
      */
+    @Generated
     public static final CopyBehaviorType FLATTEN_HIERARCHY = fromString("FlattenHierarchy");
 
     /**
      * Static value MergeFiles for CopyBehaviorType.
      */
+    @Generated
     public static final CopyBehaviorType MERGE_FILES = fromString("MergeFiles");
 
     /**
@@ -31,6 +35,7 @@ public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorTyp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CopyBehaviorType() {
     }
@@ -41,6 +46,7 @@ public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorTyp
      * @param name a name to look for.
      * @return the corresponding CopyBehaviorType.
      */
+    @Generated
     public static CopyBehaviorType fromString(String name) {
         return fromString(name, CopyBehaviorType.class);
     }
@@ -50,6 +56,7 @@ public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorTyp
      * 
      * @return known CopyBehaviorType values.
      */
+    @Generated
     public static Collection<CopyBehaviorType> values() {
         return values(CopyBehaviorType.class);
     }

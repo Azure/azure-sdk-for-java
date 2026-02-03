@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PartnerEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerEventSubscriptionDestinationProperties model = BinaryData.fromString("{\"resourceId\":\"ed\"}")
+        PartnerEventSubscriptionDestinationProperties model = BinaryData.fromString("{\"resourceId\":\"zqauxzan\"}")
             .toObject(PartnerEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("ed", model.resourceId());
+        Assertions.assertEquals("zqauxzan", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerEventSubscriptionDestinationProperties model
-            = new PartnerEventSubscriptionDestinationProperties().withResourceId("ed");
+            = new PartnerEventSubscriptionDestinationProperties().withResourceId("zqauxzan");
         model = BinaryData.fromObject(model).toObject(PartnerEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("ed", model.resourceId());
+        Assertions.assertEquals("zqauxzan", model.resourceId());
     }
 }

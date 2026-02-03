@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -14,94 +15,122 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Presto server linked service.
+ * Presto server linked service. This linked service has supported version property. The Version 1.0 is scheduled for
+ * deprecation while your pipeline will continue to run after EOL but without any bug fix or new features.
  */
 @Fluent
 public class PrestoLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Presto";
 
     /*
      * The IP address or host name of the Presto server. (i.e. 192.168.222.160)
      */
+    @Generated
     private Object host;
 
     /*
-     * The version of the Presto server. (i.e. 0.148-t)
+     * The version of the Presto server. (i.e. 0.148-t) Only used for Version 1.0.
      */
+    @Generated
     private Object serverVersion;
 
     /*
      * The catalog context for all request against the server.
      */
+    @Generated
     private Object catalog;
 
     /*
-     * The TCP port that the Presto server uses to listen for client connections. The default value is 8080.
+     * The TCP port that the Presto server uses to listen for client connections. The default value is 8080 when disable
+     * SSL, default value is 443 when enable SSL.
      */
+    @Generated
     private Object port;
 
     /*
      * The authentication mechanism used to connect to the Presto server.
      */
+    @Generated
     private PrestoAuthenticationType authenticationType;
 
     /*
      * The user name used to connect to the Presto server.
      */
+    @Generated
     private Object username;
 
     /*
      * The password corresponding to the user name.
      */
+    @Generated
     private SecretBase password;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
+     * Specifies whether the connections to the server are encrypted using SSL. The default value for legacy version is
+     * False. The default value for version 2.0 is True.
      */
+    @Generated
     private Object enableSsl;
+
+    /*
+     * Specifies whether the connections to the server will validate server certificate, the default value is True. Only
+     * used for Version 2.0
+     */
+    @Generated
+    private Object enableServerCertificateValidation;
 
     /*
      * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
-     * installed with the IR.
+     * installed with the IR. Only used for Version 1.0.
      */
+    @Generated
     private Object trustedCertPath;
 
     /*
      * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
-     * value is false.
+     * value is false. Only used for Version 1.0.
      */
+    @Generated
     private Object useSystemTrustStore;
 
     /*
      * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
-     * connecting over SSL. The default value is false.
+     * connecting over SSL. The default value is false. Only used for Version 1.0.
      */
+    @Generated
     private Object allowHostNameCNMismatch;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The default value is false.
+     * Specifies whether to allow self-signed certificates from the server. The default value is false. Only used for
+     * Version 1.0.
      */
+    @Generated
     private Object allowSelfSignedServerCert;
 
     /*
      * The local time zone used by the connection. Valid values for this option are specified in the IANA Time Zone
-     * Database. The default value is the system time zone.
+     * Database. The default value for Version 1.0 is the client system time zone. The default value for Version 2.0 is
+     * server system timeZone
      */
+    @Generated
     private Object timeZoneID;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of PrestoLinkedService class.
      */
+    @Generated
     public PrestoLinkedService() {
     }
 
@@ -110,6 +139,7 @@ public class PrestoLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -120,6 +150,7 @@ public class PrestoLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -130,26 +161,29 @@ public class PrestoLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setHost(Object host) {
         this.host = host;
         return this;
     }
 
     /**
-     * Get the serverVersion property: The version of the Presto server. (i.e. 0.148-t).
+     * Get the serverVersion property: The version of the Presto server. (i.e. 0.148-t) Only used for Version 1.0.
      * 
      * @return the serverVersion value.
      */
+    @Generated
     public Object getServerVersion() {
         return this.serverVersion;
     }
 
     /**
-     * Set the serverVersion property: The version of the Presto server. (i.e. 0.148-t).
+     * Set the serverVersion property: The version of the Presto server. (i.e. 0.148-t) Only used for Version 1.0.
      * 
      * @param serverVersion the serverVersion value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setServerVersion(Object serverVersion) {
         this.serverVersion = serverVersion;
         return this;
@@ -160,6 +194,7 @@ public class PrestoLinkedService extends LinkedService {
      * 
      * @return the catalog value.
      */
+    @Generated
     public Object getCatalog() {
         return this.catalog;
     }
@@ -170,6 +205,7 @@ public class PrestoLinkedService extends LinkedService {
      * @param catalog the catalog value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setCatalog(Object catalog) {
         this.catalog = catalog;
         return this;
@@ -177,21 +213,23 @@ public class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the port property: The TCP port that the Presto server uses to listen for client connections. The default
-     * value is 8080.
+     * value is 8080 when disable SSL, default value is 443 when enable SSL.
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
 
     /**
      * Set the port property: The TCP port that the Presto server uses to listen for client connections. The default
-     * value is 8080.
+     * value is 8080 when disable SSL, default value is 443 when enable SSL.
      * 
      * @param port the port value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -202,6 +240,7 @@ public class PrestoLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public PrestoAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -212,6 +251,7 @@ public class PrestoLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setAuthenticationType(PrestoAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -222,6 +262,7 @@ public class PrestoLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -232,6 +273,7 @@ public class PrestoLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -242,6 +284,7 @@ public class PrestoLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -252,6 +295,7 @@ public class PrestoLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -259,33 +303,60 @@ public class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
-     * value is false.
+     * value for legacy version is False. The default value for version 2.0 is True.
      * 
      * @return the enableSsl value.
      */
+    @Generated
     public Object getEnableSsl() {
         return this.enableSsl;
     }
 
     /**
      * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
-     * value is false.
+     * value for legacy version is False. The default value for version 2.0 is True.
      * 
      * @param enableSsl the enableSsl value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setEnableSsl(Object enableSsl) {
         this.enableSsl = enableSsl;
         return this;
     }
 
     /**
+     * Get the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    @Generated
+    public Object getEnableServerCertificateValidation() {
+        return this.enableServerCertificateValidation;
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the PrestoLinkedService object itself.
+     */
+    @Generated
+    public PrestoLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        this.enableServerCertificateValidation = enableServerCertificateValidation;
+        return this;
+    }
+
+    /**
      * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
+     * value is the cacerts.pem file installed with the IR. Only used for Version 1.0.
      * 
      * @return the trustedCertPath value.
      */
+    @Generated
     public Object getTrustedCertPath() {
         return this.trustedCertPath;
     }
@@ -293,11 +364,12 @@ public class PrestoLinkedService extends LinkedService {
     /**
      * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
-     * value is the cacerts.pem file installed with the IR.
+     * value is the cacerts.pem file installed with the IR. Only used for Version 1.0.
      * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setTrustedCertPath(Object trustedCertPath) {
         this.trustedCertPath = trustedCertPath;
         return this;
@@ -305,21 +377,23 @@ public class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * from a specified PEM file. The default value is false. Only used for Version 1.0.
      * 
      * @return the useSystemTrustStore value.
      */
+    @Generated
     public Object getUseSystemTrustStore() {
         return this.useSystemTrustStore;
     }
 
     /**
      * Set the useSystemTrustStore property: Specifies whether to use a CA certificate from the system trust store or
-     * from a specified PEM file. The default value is false.
+     * from a specified PEM file. The default value is false. Only used for Version 1.0.
      * 
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setUseSystemTrustStore(Object useSystemTrustStore) {
         this.useSystemTrustStore = useSystemTrustStore;
         return this;
@@ -327,21 +401,23 @@ public class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the allowHostNameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value is false.
+     * the host name of the server when connecting over SSL. The default value is false. Only used for Version 1.0.
      * 
      * @return the allowHostNameCNMismatch value.
      */
+    @Generated
     public Object getAllowHostNameCNMismatch() {
         return this.allowHostNameCNMismatch;
     }
 
     /**
      * Set the allowHostNameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value is false.
+     * the host name of the server when connecting over SSL. The default value is false. Only used for Version 1.0.
      * 
      * @param allowHostNameCNMismatch the allowHostNameCNMismatch value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setAllowHostNameCNMismatch(Object allowHostNameCNMismatch) {
         this.allowHostNameCNMismatch = allowHostNameCNMismatch;
         return this;
@@ -349,21 +425,23 @@ public class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
-     * The default value is false.
+     * The default value is false. Only used for Version 1.0.
      * 
      * @return the allowSelfSignedServerCert value.
      */
+    @Generated
     public Object getAllowSelfSignedServerCert() {
         return this.allowSelfSignedServerCert;
     }
 
     /**
      * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
-     * The default value is false.
+     * The default value is false. Only used for Version 1.0.
      * 
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setAllowSelfSignedServerCert(Object allowSelfSignedServerCert) {
         this.allowSelfSignedServerCert = allowSelfSignedServerCert;
         return this;
@@ -371,21 +449,25 @@ public class PrestoLinkedService extends LinkedService {
 
     /**
      * Get the timeZoneID property: The local time zone used by the connection. Valid values for this option are
-     * specified in the IANA Time Zone Database. The default value is the system time zone.
+     * specified in the IANA Time Zone Database. The default value for Version 1.0 is the client system time zone. The
+     * default value for Version 2.0 is server system timeZone.
      * 
      * @return the timeZoneID value.
      */
+    @Generated
     public Object getTimeZoneID() {
         return this.timeZoneID;
     }
 
     /**
      * Set the timeZoneID property: The local time zone used by the connection. Valid values for this option are
-     * specified in the IANA Time Zone Database. The default value is the system time zone.
+     * specified in the IANA Time Zone Database. The default value for Version 1.0 is the client system time zone. The
+     * default value for Version 2.0 is server system timeZone.
      * 
      * @param timeZoneID the timeZoneID value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setTimeZoneID(Object timeZoneID) {
         this.timeZoneID = timeZoneID;
         return this;
@@ -397,6 +479,7 @@ public class PrestoLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -408,6 +491,7 @@ public class PrestoLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PrestoLinkedService object itself.
      */
+    @Generated
     public PrestoLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -416,6 +500,17 @@ public class PrestoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public PrestoLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public PrestoLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -425,6 +520,7 @@ public class PrestoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PrestoLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -434,6 +530,7 @@ public class PrestoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PrestoLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -443,6 +540,7 @@ public class PrestoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public PrestoLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -452,9 +550,11 @@ public class PrestoLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -468,6 +568,7 @@ public class PrestoLinkedService extends LinkedService {
             || username != null
             || password != null
             || enableSsl != null
+            || enableServerCertificateValidation != null
             || trustedCertPath != null
             || useSystemTrustStore != null
             || allowHostNameCNMismatch != null
@@ -476,20 +577,44 @@ public class PrestoLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("host", this.host);
-            jsonWriter.writeUntypedField("serverVersion", this.serverVersion);
+            if (this.serverVersion != null) {
+                jsonWriter.writeUntypedField("serverVersion", this.serverVersion);
+            }
             jsonWriter.writeUntypedField("catalog", this.catalog);
-            jsonWriter.writeUntypedField("port", this.port);
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
-            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
-            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
-            jsonWriter.writeUntypedField("timeZoneID", this.timeZoneID);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.enableSsl != null) {
+                jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.enableServerCertificateValidation != null) {
+                jsonWriter.writeUntypedField("enableServerCertificateValidation",
+                    this.enableServerCertificateValidation);
+            }
+            if (this.trustedCertPath != null) {
+                jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+            }
+            if (this.useSystemTrustStore != null) {
+                jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+            }
+            if (this.allowHostNameCNMismatch != null) {
+                jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
+            }
+            if (this.allowSelfSignedServerCert != null) {
+                jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+            }
+            if (this.timeZoneID != null) {
+                jsonWriter.writeUntypedField("timeZoneID", this.timeZoneID);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -509,6 +634,7 @@ public class PrestoLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PrestoLinkedService.
      */
+    @Generated
     public static PrestoLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrestoLinkedService deserializedPrestoLinkedService = new PrestoLinkedService();
@@ -517,7 +643,9 @@ public class PrestoLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedPrestoLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedPrestoLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedPrestoLinkedService.setDescription(reader.getString());
@@ -552,6 +680,8 @@ public class PrestoLinkedService extends LinkedService {
                             deserializedPrestoLinkedService.password = SecretBase.fromJson(reader);
                         } else if ("enableSsl".equals(fieldName)) {
                             deserializedPrestoLinkedService.enableSsl = reader.readUntyped();
+                        } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                            deserializedPrestoLinkedService.enableServerCertificateValidation = reader.readUntyped();
                         } else if ("trustedCertPath".equals(fieldName)) {
                             deserializedPrestoLinkedService.trustedCertPath = reader.readUntyped();
                         } else if ("useSystemTrustStore".equals(fieldName)) {

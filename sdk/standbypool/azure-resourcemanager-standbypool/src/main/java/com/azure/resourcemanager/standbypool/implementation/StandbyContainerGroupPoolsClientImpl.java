@@ -28,6 +28,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -52,25 +53,25 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     /**
      * The service client containing this operation class.
      */
-    private final StandbyPoolClientImpl client;
+    private final StandbyPoolManagementClientImpl client;
 
     /**
      * Initializes an instance of StandbyContainerGroupPoolsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    StandbyContainerGroupPoolsClientImpl(StandbyPoolClientImpl client) {
+    StandbyContainerGroupPoolsClientImpl(StandbyPoolManagementClientImpl client) {
         this.service = RestProxy.create(StandbyContainerGroupPoolsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StandbyPoolClientStandbyContainerGroupPools to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for StandbyPoolManagementClientStandbyContainerGroupPools to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolClientSta")
+    @ServiceInterface(name = "StandbyPoolManagementClientStandbyContainerGroupPools")
     public interface StandbyContainerGroupPoolsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
@@ -79,6 +80,16 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         Mono<Response<StandbyContainerGroupPoolResourceInner>> getByResourceGroup(
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolResourceInner> getByResourceGroupSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
             @HeaderParam("Accept") String accept, Context context);
@@ -93,20 +104,48 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") StandbyContainerGroupPoolResourceInner resource, Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") StandbyContainerGroupPoolResourceInner resource, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
-            @HeaderParam("Accept") String accept, Context context);
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName, Context context);
 
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolResourceInner>> update(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") StandbyContainerGroupPoolResourceUpdate properties, Context context);
+
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolResourceInner> updateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
@@ -124,10 +163,28 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolResourceListResult> listByResourceGroupSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StandbyPool/standbyContainerGroupPools")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolResourceListResult>> list(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.StandbyPool/standbyContainerGroupPools")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolResourceListResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -143,7 +200,23 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolResourceListResult> listByResourceGroupNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolResourceListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolResourceListResult> listBySubscriptionNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -161,63 +234,11 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StandbyContainerGroupPoolResourceInner>>
         getByResourceGroupWithResponseAsync(String resourceGroupName, String standbyContainerGroupPoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StandbyContainerGroupPoolResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String standbyContainerGroupPoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, context);
     }
 
     /**
@@ -251,7 +272,9 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyContainerGroupPoolResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String standbyContainerGroupPoolName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, standbyContainerGroupPoolName, context).block();
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, context);
     }
 
     /**
@@ -285,27 +308,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -321,40 +323,39 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyContainerGroupPoolName Name of the standby container group pool.
      * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a StandbyContainerGroupPoolResource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
+        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, contentType, accept,
+            resource, Context.NONE);
+    }
+
+    /**
+     * Create a StandbyContainerGroupPoolResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param standbyContainerGroupPoolName Name of the standby container group pool.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource along with {@link Response} on successful completion of {@link Mono}.
+     * @return a StandbyContainerGroupPoolResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, contentType, accept,
             resource, context);
     }
@@ -387,30 +388,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyContainerGroupPoolName Name of the standby container group pool.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a StandbyContainerGroupPoolResource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StandbyContainerGroupPoolResourceInner>, StandbyContainerGroupPoolResourceInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String standbyContainerGroupPoolName,
-            StandbyContainerGroupPoolResourceInner resource, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, standbyContainerGroupPoolName, resource, context);
-        return this.client.<StandbyContainerGroupPoolResourceInner, StandbyContainerGroupPoolResourceInner>getLroResult(
-            mono, this.client.getHttpPipeline(), StandbyContainerGroupPoolResourceInner.class,
-            StandbyContainerGroupPoolResourceInner.class, context);
-    }
-
-    /**
-     * Create a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -420,8 +397,11 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     public SyncPoller<PollResult<StandbyContainerGroupPoolResourceInner>, StandbyContainerGroupPoolResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String standbyContainerGroupPoolName,
             StandbyContainerGroupPoolResourceInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, standbyContainerGroupPoolName, resource)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, standbyContainerGroupPoolName, resource);
+        return this.client.<StandbyContainerGroupPoolResourceInner, StandbyContainerGroupPoolResourceInner>getLroResult(
+            response, StandbyContainerGroupPoolResourceInner.class, StandbyContainerGroupPoolResourceInner.class,
+            Context.NONE);
     }
 
     /**
@@ -440,8 +420,11 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     public SyncPoller<PollResult<StandbyContainerGroupPoolResourceInner>, StandbyContainerGroupPoolResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String standbyContainerGroupPoolName,
             StandbyContainerGroupPoolResourceInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, standbyContainerGroupPoolName, resource, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, standbyContainerGroupPoolName, resource, context);
+        return this.client.<StandbyContainerGroupPoolResourceInner, StandbyContainerGroupPoolResourceInner>getLroResult(
+            response, StandbyContainerGroupPoolResourceInner.class, StandbyContainerGroupPoolResourceInner.class,
+            context);
     }
 
     /**
@@ -468,25 +451,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyContainerGroupPoolName Name of the standby container group pool.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StandbyContainerGroupPoolResourceInner> createOrUpdateAsync(String resourceGroupName,
-        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, standbyContainerGroupPoolName, resource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -495,7 +459,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyContainerGroupPoolResourceInner createOrUpdate(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource) {
-        return createOrUpdateAsync(resourceGroupName, standbyContainerGroupPoolName, resource).block();
+        return beginCreateOrUpdate(resourceGroupName, standbyContainerGroupPoolName, resource).getFinalResult();
     }
 
     /**
@@ -513,7 +477,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StandbyContainerGroupPoolResourceInner createOrUpdate(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceInner resource, Context context) {
-        return createOrUpdateAsync(resourceGroupName, standbyContainerGroupPoolName, resource, context).block();
+        return beginCreateOrUpdate(resourceGroupName, standbyContainerGroupPoolName, resource, context)
+            .getFinalResult();
     }
 
     /**
@@ -529,27 +494,26 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
         String standbyContainerGroupPoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete a StandbyContainerGroupPoolResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param standbyContainerGroupPoolName Name of the standby container group pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String standbyContainerGroupPoolName) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, Context.NONE);
     }
 
     /**
@@ -561,31 +525,13 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String standbyContainerGroupPoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, standbyContainerGroupPoolName, accept, context);
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String standbyContainerGroupPoolName,
+        Context context) {
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, context);
     }
 
     /**
@@ -612,27 +558,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
-        String standbyContainerGroupPoolName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, standbyContainerGroupPoolName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -641,7 +566,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String standbyContainerGroupPoolName) {
-        return this.beginDeleteAsync(resourceGroupName, standbyContainerGroupPoolName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, standbyContainerGroupPoolName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -658,7 +584,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
         String standbyContainerGroupPoolName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, standbyContainerGroupPoolName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, standbyContainerGroupPoolName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -682,30 +609,13 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String standbyContainerGroupPoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, standbyContainerGroupPoolName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String standbyContainerGroupPoolName) {
-        deleteAsync(resourceGroupName, standbyContainerGroupPoolName).block();
+        beginDelete(resourceGroupName, standbyContainerGroupPoolName).getFinalResult();
     }
 
     /**
@@ -720,7 +630,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String standbyContainerGroupPoolName, Context context) {
-        deleteAsync(resourceGroupName, standbyContainerGroupPoolName, context).block();
+        beginDelete(resourceGroupName, standbyContainerGroupPoolName, context).getFinalResult();
     }
 
     /**
@@ -737,27 +647,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StandbyContainerGroupPoolResourceInner>> updateWithResponseAsync(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -765,49 +654,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
                 this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, contentType, accept,
                 properties, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Update a StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param properties The resource properties to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolResource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StandbyContainerGroupPoolResourceInner>> updateWithResponseAsync(String resourceGroupName,
-        String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
-        } else {
-            properties.validate();
-        }
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, standbyContainerGroupPoolName, contentType, accept, properties, context);
     }
 
     /**
@@ -843,7 +689,11 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyContainerGroupPoolResourceInner> updateWithResponse(String resourceGroupName,
         String standbyContainerGroupPoolName, StandbyContainerGroupPoolResourceUpdate properties, Context context) {
-        return updateWithResponseAsync(resourceGroupName, standbyContainerGroupPoolName, properties, context).block();
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, contentType, accept,
+            properties, context);
     }
 
     /**
@@ -877,18 +727,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyContainerGroupPoolResourceInner>>
         listByResourceGroupSinglePageAsync(String resourceGroupName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -896,41 +734,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             .<PagedResponse<StandbyContainerGroupPoolResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List StandbyContainerGroupPoolResource resources by resource group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyContainerGroupPoolResourceInner>>
-        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -953,18 +756,41 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * List StandbyContainerGroupPoolResource resources by resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolResourceInner>
+        listByResourceGroupSinglePage(String resourceGroupName) {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolResourceListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List StandbyContainerGroupPoolResource resources by resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation as paginated response with
-     * {@link PagedFlux}.
+     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StandbyContainerGroupPoolResourceInner> listByResourceGroupAsync(String resourceGroupName,
-        Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolResourceInner>
+        listByResourceGroupSinglePage(String resourceGroupName, Context context) {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolResourceListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -979,7 +805,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -996,7 +823,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolResourceInner> listByResourceGroup(String resourceGroupName,
         Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1009,14 +837,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyContainerGroupPoolResourceInner>> listSinglePageAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1024,35 +844,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
             .<PagedResponse<StandbyContainerGroupPoolResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List StandbyContainerGroupPoolResource resources by subscription ID.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyContainerGroupPoolResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1072,17 +863,35 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     /**
      * List StandbyContainerGroupPoolResource resources by subscription ID.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolResourceInner> listSinglePage() {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolResourceListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List StandbyContainerGroupPoolResource resources by subscription ID.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation as paginated response with
-     * {@link PagedFlux}.
+     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StandbyContainerGroupPoolResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolResourceInner> listSinglePage(Context context) {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolResourceListResult> res = service.listSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1095,7 +904,7 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolResourceInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1110,7 +919,8 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1126,13 +936,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyContainerGroupPoolResourceInner>>
         listByResourceGroupNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1146,28 +949,38 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolResourceInner> listByResourceGroupNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyContainerGroupPoolResourceInner>>
-        listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<StandbyContainerGroupPoolResourceInner> listByResourceGroupNextSinglePage(String nextLink,
+        Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StandbyContainerGroupPoolResourceListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1183,13 +996,6 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyContainerGroupPoolResourceInner>>
         listBySubscriptionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1203,27 +1009,37 @@ public final class StandbyContainerGroupPoolsClientImpl implements StandbyContai
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolResourceInner> listBySubscriptionNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolResourceListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return the response of a StandbyContainerGroupPoolResource list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyContainerGroupPoolResourceInner>>
-        listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<StandbyContainerGroupPoolResourceInner> listBySubscriptionNextSinglePage(String nextLink,
+        Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StandbyContainerGroupPoolResourceListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

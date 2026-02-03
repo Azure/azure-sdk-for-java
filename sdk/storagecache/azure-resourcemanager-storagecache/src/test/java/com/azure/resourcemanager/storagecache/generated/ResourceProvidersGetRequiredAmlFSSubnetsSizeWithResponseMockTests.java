@@ -6,8 +6,8 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.RequiredAmlFilesystemSubnetsSize;
@@ -22,22 +22,22 @@ import reactor.core.publisher.Mono;
 public final class ResourceProvidersGetRequiredAmlFSSubnetsSizeWithResponseMockTests {
     @Test
     public void testGetRequiredAmlFSSubnetsSizeWithResponse() throws Exception {
-        String responseStr = "{\"filesystemSubnetSize\":1746749164}";
+        String responseStr = "{\"filesystemSubnetSize\":2006830876}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageCacheManager manager = StorageCacheManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RequiredAmlFilesystemSubnetsSize response = manager.resourceProviders()
             .getRequiredAmlFSSubnetsSizeWithResponse(
-                new RequiredAmlFilesystemSubnetsSizeInfo().withStorageCapacityTiB(27.807796F)
-                    .withSku(new SkuName().withName("pgpqchiszepnnb")),
+                new RequiredAmlFilesystemSubnetsSizeInfo().withStorageCapacityTiB(1.8508375F)
+                    .withSku(new SkuName().withName("zb")),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(1746749164, response.filesystemSubnetSize());
+        Assertions.assertEquals(2006830876, response.filesystemSubnetSize());
     }
 }

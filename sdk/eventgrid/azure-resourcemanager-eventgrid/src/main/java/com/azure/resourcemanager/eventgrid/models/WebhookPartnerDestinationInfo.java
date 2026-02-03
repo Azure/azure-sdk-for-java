@@ -48,7 +48,7 @@ public final class WebhookPartnerDestinationInfo extends PartnerDestinationInfo 
      * 
      * @return the innerProperties value.
      */
-    private WebhookPartnerDestinationProperties innerProperties() {
+    WebhookPartnerDestinationProperties innerProperties() {
         return this.innerProperties;
     }
 

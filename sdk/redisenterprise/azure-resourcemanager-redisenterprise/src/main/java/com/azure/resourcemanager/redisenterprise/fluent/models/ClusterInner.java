@@ -12,8 +12,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
+import com.azure.resourcemanager.redisenterprise.models.Kind;
 import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
+import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
@@ -27,6 +29,11 @@ import java.util.Map;
  */
 @Fluent
 public final class ClusterInner extends Resource {
+    /*
+     * Distinguishes the kind of cluster. Read-only.
+     */
+    private Kind kind;
+
     /*
      * The SKU to create, which affects price, performance, and features.
      */
@@ -66,6 +73,15 @@ public final class ClusterInner extends Resource {
      * Creates an instance of ClusterInner class.
      */
     public ClusterInner() {
+    }
+
+    /**
+     * Get the kind property: Distinguishes the kind of cluster. Read-only.
+     * 
+     * @return the kind value.
+     */
+    public Kind kind() {
+        return this.kind;
     }
 
     /**
@@ -182,6 +198,33 @@ public final class ClusterInner extends Resource {
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
+     * 
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
+     * 
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
@@ -382,6 +425,8 @@ public final class ClusterInner extends Resource {
                     deserializedClusterInner.withTags(tags);
                 } else if ("sku".equals(fieldName)) {
                     deserializedClusterInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedClusterInner.kind = Kind.fromString(reader.getString());
                 } else if ("zones".equals(fieldName)) {
                     List<String> zones = reader.readArray(reader1 -> reader1.getString());
                     deserializedClusterInner.zones = zones;

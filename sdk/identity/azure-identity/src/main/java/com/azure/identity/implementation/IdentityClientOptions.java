@@ -15,6 +15,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.AzureIdentityEnvVars;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
@@ -60,8 +61,6 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean multiTenantAuthDisabled;
     private Configuration configuration;
     private IdentityLogOptionsImpl identityLogOptionsImpl;
-    private boolean accountIdentifierLogging;
-    private ManagedIdentityType managedIdentityType;
     private ManagedIdentityParameters managedIdentityParameters;
     private Set<String> additionallyAllowedTenants;
     private ClientOptions clientOptions;
@@ -71,6 +70,7 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perCallPolicies;
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
+    private String dacEnvConfiguredCredential;
 
     private Duration credentialProcessTimeout = Duration.ofSeconds(10);
 
@@ -81,6 +81,8 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean enableMsaPassthrough;
     private boolean useDefaultBrokerAccount;
     private boolean useImdsRetryStrategy;
+
+    private String subscription;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
@@ -446,24 +448,6 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Set the Managed Identity Type
-     * @param managedIdentityType the Managed Identity Type
-     * @return the updated identity client options
-     */
-    public IdentityClientOptions setManagedIdentityType(ManagedIdentityType managedIdentityType) {
-        this.managedIdentityType = managedIdentityType;
-        return this;
-    }
-
-    /**
-     * Get the Managed Identity Type
-     * @return the Managed Identity Type
-     */
-    public ManagedIdentityType getManagedIdentityType() {
-        return managedIdentityType;
-    }
-
-    /**
      * Get the Managed Identity parameters
      * @return the Managed Identity Parameters
      */
@@ -709,6 +693,7 @@ public final class IdentityClientOptions implements Cloneable {
             = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
         imdsAuthorityHost
             = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST, IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        dacEnvConfiguredCredential = configuration.get(AzureIdentityEnvVars.AZURE_TOKEN_CREDENTIALS.toString());
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
         multiTenantAuthDisabled = configuration.get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
     }
@@ -825,6 +810,29 @@ public final class IdentityClientOptions implements Cloneable {
         return this.useDefaultBrokerAccount;
     }
 
+    /**
+     * Specifies the name or ID of a subscription. This is used to acquire tokens for a specific
+     * Azure subscription when using Azure CLI authentication.
+     *
+     * @param subscription The subscription name or ID.
+     * @return An updated instance of this builder with the subscription configured.
+     */
+    public IdentityClientOptions subscription(String subscription) {
+        this.subscription = subscription;
+        return this;
+    }
+
+    public String getSubscription() {
+        return this.subscription;
+    }
+
+    /**
+     * @return the DAC Environment credential that was configured
+     */
+    public String getDACEnvConfiguredCredential() {
+        return dacEnvConfiguredCredential;
+    }
+
     public IdentityClientOptions clone() {
         IdentityClientOptions clone
             = new IdentityClientOptions().setAdditionallyAllowedTenants(this.additionallyAllowedTenants)
@@ -854,7 +862,8 @@ public final class IdentityClientOptions implements Cloneable {
                 .setPerCallPolicies(this.perCallPolicies)
                 .setPerRetryPolicies(this.perRetryPolicies)
                 .setBrowserCustomizationOptions(this.browserCustomizationOptions)
-                .setChained(this.isChained);
+                .setChained(this.isChained)
+                .subscription(this.subscription);
 
         if (isBrokerEnabled()) {
             clone.setBrokerWindowHandle(this.brokerWindowHandle);

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheSku model = BinaryData.fromString("{\"name\":\"lusiy\"}").toObject(CacheSku.class);
-        Assertions.assertEquals("lusiy", model.name());
+        CacheSku model = BinaryData.fromString("{\"name\":\"invkjjxdxrbuu\"}").toObject(CacheSku.class);
+        Assertions.assertEquals("invkjjxdxrbuu", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheSku model = new CacheSku().withName("lusiy");
+        CacheSku model = new CacheSku().withName("invkjjxdxrbuu");
         model = BinaryData.fromObject(model).toObject(CacheSku.class);
-        Assertions.assertEquals("lusiy", model.name());
+        Assertions.assertEquals("invkjjxdxrbuu", model.name());
     }
 }

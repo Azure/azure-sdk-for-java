@@ -12,14 +12,14 @@ public final class DatabaseInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseInfo model
-            = BinaryData.fromString("{\"sourceDatabaseName\":\"umkdosvqwhbmd\"}").toObject(DatabaseInfo.class);
-        Assertions.assertEquals("umkdosvqwhbmd", model.sourceDatabaseName());
+            = BinaryData.fromString("{\"sourceDatabaseName\":\"gplcrpwjxeznoigb\"}").toObject(DatabaseInfo.class);
+        Assertions.assertEquals("gplcrpwjxeznoigb", model.sourceDatabaseName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseInfo model = new DatabaseInfo().withSourceDatabaseName("umkdosvqwhbmd");
+        DatabaseInfo model = new DatabaseInfo().withSourceDatabaseName("gplcrpwjxeznoigb");
         model = BinaryData.fromObject(model).toObject(DatabaseInfo.class);
-        Assertions.assertEquals("umkdosvqwhbmd", model.sourceDatabaseName());
+        Assertions.assertEquals("gplcrpwjxeznoigb", model.sourceDatabaseName());
     }
 }

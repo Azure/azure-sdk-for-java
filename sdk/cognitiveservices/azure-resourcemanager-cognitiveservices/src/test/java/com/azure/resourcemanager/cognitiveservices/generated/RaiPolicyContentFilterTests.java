@@ -14,27 +14,27 @@ public final class RaiPolicyContentFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyContentFilter model = BinaryData.fromString(
-            "{\"name\":\"yyysfgdotcubi\",\"enabled\":true,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Completion\"}")
+            "{\"name\":\"er\",\"enabled\":true,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Prompt\"}")
             .toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("yyysfgdotcubi", model.name());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("er", model.name());
+        Assertions.assertTrue(model.enabled());
         Assertions.assertEquals(ContentLevel.MEDIUM, model.severityThreshold());
-        Assertions.assertEquals(false, model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
+        Assertions.assertFalse(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("yyysfgdotcubi")
+        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("er")
             .withEnabled(true)
             .withSeverityThreshold(ContentLevel.MEDIUM)
             .withBlocking(false)
-            .withSource(RaiPolicyContentSource.COMPLETION);
+            .withSource(RaiPolicyContentSource.PROMPT);
         model = BinaryData.fromObject(model).toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("yyysfgdotcubi", model.name());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("er", model.name());
+        Assertions.assertTrue(model.enabled());
         Assertions.assertEquals(ContentLevel.MEDIUM, model.severityThreshold());
-        Assertions.assertEquals(false, model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
+        Assertions.assertFalse(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
     }
 }

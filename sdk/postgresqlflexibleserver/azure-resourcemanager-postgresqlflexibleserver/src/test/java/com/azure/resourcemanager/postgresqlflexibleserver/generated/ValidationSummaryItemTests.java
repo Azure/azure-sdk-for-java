@@ -15,26 +15,26 @@ public final class ValidationSummaryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationSummaryItem model = BinaryData.fromString(
-            "{\"type\":\"gsexne\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Warning\",\"message\":\"ewzsyyceuzsoib\"},{\"state\":\"Failed\",\"message\":\"frxtrthzvaytdwk\"}]}")
+            "{\"type\":\"kzevdlhewpusds\",\"state\":\"Warning\",\"messages\":[{\"state\":\"Warning\",\"message\":\"bejdcn\"},{\"state\":\"Failed\",\"message\":\"oakufgm\"},{\"state\":\"Failed\",\"message\":\"rdgrtw\"}]}")
             .toObject(ValidationSummaryItem.class);
-        Assertions.assertEquals("gsexne", model.type());
+        Assertions.assertEquals("kzevdlhewpusds", model.type());
         Assertions.assertEquals(ValidationState.WARNING, model.state());
         Assertions.assertEquals(ValidationState.WARNING, model.messages().get(0).state());
-        Assertions.assertEquals("ewzsyyceuzsoib", model.messages().get(0).message());
+        Assertions.assertEquals("bejdcn", model.messages().get(0).message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationSummaryItem model
-            = new ValidationSummaryItem().withType("gsexne")
-                .withState(ValidationState.WARNING)
-                .withMessages(Arrays.asList(
-                    new ValidationMessage().withState(ValidationState.WARNING).withMessage("ewzsyyceuzsoib"),
-                    new ValidationMessage().withState(ValidationState.FAILED).withMessage("frxtrthzvaytdwk")));
+        ValidationSummaryItem model = new ValidationSummaryItem().withType("kzevdlhewpusds")
+            .withState(ValidationState.WARNING)
+            .withMessages(
+                Arrays.asList(new ValidationMessage().withState(ValidationState.WARNING).withMessage("bejdcn"),
+                    new ValidationMessage().withState(ValidationState.FAILED).withMessage("oakufgm"),
+                    new ValidationMessage().withState(ValidationState.FAILED).withMessage("rdgrtw")));
         model = BinaryData.fromObject(model).toObject(ValidationSummaryItem.class);
-        Assertions.assertEquals("gsexne", model.type());
+        Assertions.assertEquals("kzevdlhewpusds", model.type());
         Assertions.assertEquals(ValidationState.WARNING, model.state());
         Assertions.assertEquals(ValidationState.WARNING, model.messages().get(0).state());
-        Assertions.assertEquals("ewzsyyceuzsoib", model.messages().get(0).message());
+        Assertions.assertEquals("bejdcn", model.messages().get(0).message());
     }
 }

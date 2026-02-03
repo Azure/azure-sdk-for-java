@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,6 +23,7 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
     /*
      * The kind of threshold used to filter vector queries
      */
+    @Generated
     private VectorThresholdKind kind = VectorThresholdKind.VECTOR_SIMILARITY;
 
     /*
@@ -29,6 +31,7 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
      * similarity metric, not the 'distance' version. The threshold direction (larger or smaller) will be chosen
      * automatically according to the metric used by the field.
      */
+    @Generated
     private final double value;
 
     /**
@@ -36,6 +39,7 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
      * 
      * @param value the value value to set.
      */
+    @Generated
     public VectorSimilarityThreshold(double value) {
         this.value = value;
     }
@@ -45,6 +49,7 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
      * 
      * @return the kind value.
      */
+    @Generated
     @Override
     public VectorThresholdKind getKind() {
         return this.kind;
@@ -57,6 +62,7 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
      * 
      * @return the value value.
      */
+    @Generated
     public double getValue() {
         return this.value;
     }
@@ -64,6 +70,7 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +88,7 @@ public final class VectorSimilarityThreshold extends VectorThreshold {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorSimilarityThreshold.
      */
+    @Generated
     public static VectorSimilarityThreshold fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

@@ -33,7 +33,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.messaging.support.NativeMessageHeaderAccessor.NATIVE_HEADERS;
 
-@SuppressWarnings("unchecked")
+
+// conniey: Remove warning suppression when azure-messaging-eventhubs is updated to 5.21.0.
+// https://github.com/Azure/azure-sdk-for-java/issues/46359
+@SuppressWarnings({"unchecked", "deprecation"})
 public class EventHubsBatchMessageConverterTests {
 
     private final String headerProperties = "headerProperties";

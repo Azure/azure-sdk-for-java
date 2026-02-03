@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PrivateEndpointConnection;
@@ -22,22 +22,22 @@ public final class PrivateEndpointConnectionsGetByNameWithResponseMockTests {
     @Test
     public void testGetByNameWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"kretsnyr\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"byzz\",\"actionsRequired\":\"sygaoymyckdp\"},\"provisioningState\":\"Failed\"},\"id\":\"xbmljrjyfjleuxix\",\"name\":\"psjldgnimqoac\",\"type\":\"qzxjziqcsotwqtk\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"xuypcuriwllxtclv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"tzshwlwjxr\",\"actionsRequired\":\"iysgh\"},\"provisioningState\":\"Succeeded\"},\"id\":\"qdl\",\"name\":\"kw\",\"type\":\"dekbvdulmkaadnxb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getByNameWithResponse("v", "f", "xm", com.azure.core.util.Context.NONE)
+            .getByNameWithResponse("bjbelnqalbso", "xajsiueai", "qjb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("byzz", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("sygaoymyckdp", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("tzshwlwjxr", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("iysgh", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -152,7 +152,7 @@ public class ReactorConnection implements AmqpConnection {
                     .next()
                     .timeout(operationTimeout, Mono.error(() -> {
                         AmqpException exception = new AmqpException(true, TIMEOUT_ERROR,
-                            String.format("Connection '%s' not active within the timout: %s.", connectionId,
+                            String.format("Connection '%s' not active within the timeout: %s.", connectionId,
                                 operationTimeout),
                             handler.getErrorContext());
                         if (!isV2) {
@@ -215,6 +215,13 @@ public class ReactorConnection implements AmqpConnection {
         }).thenReturn(this);
     }
 
+    public void transferState(ReactorConnection fromConnection) {
+        if (fromConnection == null) {
+            return;
+        }
+        this.handler.transferState(fromConnection.handler);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -231,7 +238,7 @@ public class ReactorConnection implements AmqpConnection {
      */
     @Override
     public Flux<AmqpShutdownSignal> getShutdownSignals() {
-        return shutdownSignalSink.asMono().cache().flux();
+        return shutdownSignalSink.asMono().flux();
     }
 
     @Override

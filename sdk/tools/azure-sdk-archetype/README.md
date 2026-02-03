@@ -32,7 +32,7 @@ generate the right output for you.
 | package        | (Optional) Specifies the package name to put the generated code into. If not specified, it is inferred from the groupId. |
 | azureLibraries | (Optional) A comma-separated list of Azure SDK for Java libraries, using their Maven artifact IDs. A list of such artifact IDs can be found [here](https://azure.github.io/azure-sdk/releases/latest/java.html). |
 | enableGraalVM  | (Optional) By default GraalVM support will be enabled, but if `enableGraalVM` is set to false, the generated Maven POM file will not include support for compiling your application to a native image using GraalVM. |
-| javaVersion    | (Optional) Specifies the minimum version of the JDK to target when building the generated project. By default it is the latest LTS release (currently Java 17), with valid ranges from Java 8 up. The value should just be the required Java version, for example, '8', '11', '17', etc. |
+| javaVersion    | (Optional) Specifies the minimum version of the JDK to target when building the generated project. By default it is the latest LTS release (currently Java 21), with valid ranges from Java 8 up. The value should just be the required Java version, for example, '8', '11', '17', etc. |
 | junitVersion   | (Optional) The version of JUnit to include as a dependency. By default JUnit 5 will be used, but valid values are '4' and '5'. |
 
 If you would rather provide these values at the time of calling the archetype command above (for example, for 

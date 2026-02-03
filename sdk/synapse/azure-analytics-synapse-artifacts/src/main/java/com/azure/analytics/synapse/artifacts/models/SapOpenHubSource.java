@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,35 +21,41 @@ public final class SapOpenHubSource extends TabularSource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SapOpenHubSource";
 
     /*
      * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object excludeLastRequest;
 
     /*
      * The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this
      * property will be retrieved. The default value is 0. Type: integer (or Expression with resultType integer ).
      */
+    @Generated
     private Object baseRequestId;
 
     /*
      * Specifies the custom RFC function module that will be used to read data from SAP Table. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object customRfcReadTableFunctionModule;
 
     /*
      * The single character that will be used as delimiter passed to SAP RFC as well as splitting the output data
      * retrieved. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object sapDataColumnDelimiter;
 
     /**
      * Creates an instance of SapOpenHubSource class.
      */
+    @Generated
     public SapOpenHubSource() {
     }
 
@@ -57,6 +64,7 @@ public final class SapOpenHubSource extends TabularSource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -68,6 +76,7 @@ public final class SapOpenHubSource extends TabularSource {
      * 
      * @return the excludeLastRequest value.
      */
+    @Generated
     public Object getExcludeLastRequest() {
         return this.excludeLastRequest;
     }
@@ -79,6 +88,7 @@ public final class SapOpenHubSource extends TabularSource {
      * @param excludeLastRequest the excludeLastRequest value to set.
      * @return the SapOpenHubSource object itself.
      */
+    @Generated
     public SapOpenHubSource setExcludeLastRequest(Object excludeLastRequest) {
         this.excludeLastRequest = excludeLastRequest;
         return this;
@@ -91,6 +101,7 @@ public final class SapOpenHubSource extends TabularSource {
      * 
      * @return the baseRequestId value.
      */
+    @Generated
     public Object getBaseRequestId() {
         return this.baseRequestId;
     }
@@ -103,6 +114,7 @@ public final class SapOpenHubSource extends TabularSource {
      * @param baseRequestId the baseRequestId value to set.
      * @return the SapOpenHubSource object itself.
      */
+    @Generated
     public SapOpenHubSource setBaseRequestId(Object baseRequestId) {
         this.baseRequestId = baseRequestId;
         return this;
@@ -114,6 +126,7 @@ public final class SapOpenHubSource extends TabularSource {
      * 
      * @return the customRfcReadTableFunctionModule value.
      */
+    @Generated
     public Object getCustomRfcReadTableFunctionModule() {
         return this.customRfcReadTableFunctionModule;
     }
@@ -125,6 +138,7 @@ public final class SapOpenHubSource extends TabularSource {
      * @param customRfcReadTableFunctionModule the customRfcReadTableFunctionModule value to set.
      * @return the SapOpenHubSource object itself.
      */
+    @Generated
     public SapOpenHubSource setCustomRfcReadTableFunctionModule(Object customRfcReadTableFunctionModule) {
         this.customRfcReadTableFunctionModule = customRfcReadTableFunctionModule;
         return this;
@@ -136,6 +150,7 @@ public final class SapOpenHubSource extends TabularSource {
      * 
      * @return the sapDataColumnDelimiter value.
      */
+    @Generated
     public Object getSapDataColumnDelimiter() {
         return this.sapDataColumnDelimiter;
     }
@@ -147,6 +162,7 @@ public final class SapOpenHubSource extends TabularSource {
      * @param sapDataColumnDelimiter the sapDataColumnDelimiter value to set.
      * @return the SapOpenHubSource object itself.
      */
+    @Generated
     public SapOpenHubSource setSapDataColumnDelimiter(Object sapDataColumnDelimiter) {
         this.sapDataColumnDelimiter = sapDataColumnDelimiter;
         return this;
@@ -155,6 +171,7 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
@@ -164,6 +181,7 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
@@ -173,6 +191,7 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -182,6 +201,7 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -191,6 +211,7 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOpenHubSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -200,19 +221,38 @@ public final class SapOpenHubSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getQueryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        }
+        if (getAdditionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("excludeLastRequest", this.excludeLastRequest);
-        jsonWriter.writeUntypedField("baseRequestId", this.baseRequestId);
-        jsonWriter.writeUntypedField("customRfcReadTableFunctionModule", this.customRfcReadTableFunctionModule);
-        jsonWriter.writeUntypedField("sapDataColumnDelimiter", this.sapDataColumnDelimiter);
+        if (this.excludeLastRequest != null) {
+            jsonWriter.writeUntypedField("excludeLastRequest", this.excludeLastRequest);
+        }
+        if (this.baseRequestId != null) {
+            jsonWriter.writeUntypedField("baseRequestId", this.baseRequestId);
+        }
+        if (this.customRfcReadTableFunctionModule != null) {
+            jsonWriter.writeUntypedField("customRfcReadTableFunctionModule", this.customRfcReadTableFunctionModule);
+        }
+        if (this.sapDataColumnDelimiter != null) {
+            jsonWriter.writeUntypedField("sapDataColumnDelimiter", this.sapDataColumnDelimiter);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -229,6 +269,7 @@ public final class SapOpenHubSource extends TabularSource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SapOpenHubSource.
      */
+    @Generated
     public static SapOpenHubSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapOpenHubSource deserializedSapOpenHubSource = new SapOpenHubSource();

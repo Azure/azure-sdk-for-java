@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class XeroLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Xero";
 
     /*
      * Properties used to connect to Xero. It is mutually exclusive with any other properties in the linked service.
      * Type: object.
      */
+    @Generated
     private Object connectionProperties;
 
     /*
      * The endpoint of the Xero server. (i.e. api.xero.com)
      */
+    @Generated
     private Object host;
 
     /*
      * The consumer key associated with the Xero application.
      */
+    @Generated
     private SecretBase consumerKey;
 
     /*
@@ -44,33 +49,39 @@ public class XeroLinkedService extends LinkedService {
      * text from the .pem file, including the Unix line endings(
      * ).
      */
+    @Generated
     private SecretBase privateKey;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
+    @Generated
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
+    @Generated
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
+    @Generated
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of XeroLinkedService class.
      */
+    @Generated
     public XeroLinkedService() {
     }
 
@@ -79,6 +90,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -90,6 +102,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the connectionProperties value.
      */
+    @Generated
     public Object getConnectionProperties() {
         return this.connectionProperties;
     }
@@ -101,6 +114,7 @@ public class XeroLinkedService extends LinkedService {
      * @param connectionProperties the connectionProperties value to set.
      * @return the XeroLinkedService object itself.
      */
+    @Generated
     public XeroLinkedService setConnectionProperties(Object connectionProperties) {
         this.connectionProperties = connectionProperties;
         return this;
@@ -111,6 +125,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -121,6 +136,7 @@ public class XeroLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the XeroLinkedService object itself.
      */
+    @Generated
     public XeroLinkedService setHost(Object host) {
         this.host = host;
         return this;
@@ -131,6 +147,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the consumerKey value.
      */
+    @Generated
     public SecretBase getConsumerKey() {
         return this.consumerKey;
     }
@@ -141,6 +158,7 @@ public class XeroLinkedService extends LinkedService {
      * @param consumerKey the consumerKey value to set.
      * @return the XeroLinkedService object itself.
      */
+    @Generated
     public XeroLinkedService setConsumerKey(SecretBase consumerKey) {
         this.consumerKey = consumerKey;
         return this;
@@ -153,6 +171,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the privateKey value.
      */
+    @Generated
     public SecretBase getPrivateKey() {
         return this.privateKey;
     }
@@ -165,6 +184,7 @@ public class XeroLinkedService extends LinkedService {
      * @param privateKey the privateKey value to set.
      * @return the XeroLinkedService object itself.
      */
+    @Generated
     public XeroLinkedService setPrivateKey(SecretBase privateKey) {
         this.privateKey = privateKey;
         return this;
@@ -176,6 +196,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the useEncryptedEndpoints value.
      */
+    @Generated
     public Object getUseEncryptedEndpoints() {
         return this.useEncryptedEndpoints;
     }
@@ -187,6 +208,7 @@ public class XeroLinkedService extends LinkedService {
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the XeroLinkedService object itself.
      */
+    @Generated
     public XeroLinkedService setUseEncryptedEndpoints(Object useEncryptedEndpoints) {
         this.useEncryptedEndpoints = useEncryptedEndpoints;
         return this;
@@ -198,6 +220,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the useHostVerification value.
      */
+    @Generated
     public Object getUseHostVerification() {
         return this.useHostVerification;
     }
@@ -209,6 +232,7 @@ public class XeroLinkedService extends LinkedService {
      * @param useHostVerification the useHostVerification value to set.
      * @return the XeroLinkedService object itself.
      */
+    @Generated
     public XeroLinkedService setUseHostVerification(Object useHostVerification) {
         this.useHostVerification = useHostVerification;
         return this;
@@ -220,6 +244,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the usePeerVerification value.
      */
+    @Generated
     public Object getUsePeerVerification() {
         return this.usePeerVerification;
     }
@@ -231,6 +256,7 @@ public class XeroLinkedService extends LinkedService {
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the XeroLinkedService object itself.
      */
+    @Generated
     public XeroLinkedService setUsePeerVerification(Object usePeerVerification) {
         this.usePeerVerification = usePeerVerification;
         return this;
@@ -242,6 +268,7 @@ public class XeroLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -253,6 +280,7 @@ public class XeroLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the XeroLinkedService object itself.
      */
+    @Generated
     public XeroLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -261,6 +289,17 @@ public class XeroLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public XeroLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public XeroLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -270,6 +309,7 @@ public class XeroLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XeroLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -279,6 +319,7 @@ public class XeroLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XeroLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -288,6 +329,7 @@ public class XeroLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public XeroLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -297,9 +339,11 @@ public class XeroLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -314,14 +358,24 @@ public class XeroLinkedService extends LinkedService {
             || usePeerVerification != null
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+            if (this.connectionProperties != null) {
+                jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+            }
             jsonWriter.writeUntypedField("host", this.host);
             jsonWriter.writeJsonField("consumerKey", this.consumerKey);
             jsonWriter.writeJsonField("privateKey", this.privateKey);
-            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.useEncryptedEndpoints != null) {
+                jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+            }
+            if (this.useHostVerification != null) {
+                jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+            }
+            if (this.usePeerVerification != null) {
+                jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -341,6 +395,7 @@ public class XeroLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the XeroLinkedService.
      */
+    @Generated
     public static XeroLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             XeroLinkedService deserializedXeroLinkedService = new XeroLinkedService();
@@ -349,7 +404,9 @@ public class XeroLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedXeroLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedXeroLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedXeroLinkedService.setDescription(reader.getString());

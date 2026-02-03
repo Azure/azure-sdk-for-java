@@ -25,8 +25,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.NetworkSecurityPerimeterConfigurationsClient;
@@ -69,13 +71,25 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "EventGridManagementC")
+    @ServiceInterface(name = "EventGridManagementClientNetworkSecurityPerimeterConfigurations")
     public interface NetworkSecurityPerimeterConfigurationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{resourceType}/{resourceName}/networkSecurityPerimeterConfigurations/{perimeterGuid}.{associationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkSecurityPerimeterConfigurationInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceType") NetworkSecurityPerimeterResourceType resourceType,
+            @PathParam("resourceName") String resourceName, @PathParam("perimeterGuid") String perimeterGuid,
+            @PathParam("associationName") String associationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{resourceType}/{resourceName}/networkSecurityPerimeterConfigurations/{perimeterGuid}.{associationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NetworkSecurityPerimeterConfigurationInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceType") NetworkSecurityPerimeterResourceType resourceType,
@@ -96,10 +110,33 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{resourceType}/{resourceName}/networkSecurityPerimeterConfigurations/{perimeterGuid}.{associationName}/reconcile")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> reconcileSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceType") NetworkSecurityPerimeterResourceType resourceType,
+            @PathParam("resourceName") String resourceName, @PathParam("perimeterGuid") String perimeterGuid,
+            @PathParam("associationName") String associationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{resourceType}/{resourceName}/networkSecurityPerimeterConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkSecurityPerimeterConfigurationList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceType") NetworkSecurityPerimeterResourceType resourceType,
+            @PathParam("resourceName") String resourceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{resourceType}/{resourceName}/networkSecurityPerimeterConfigurations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<NetworkSecurityPerimeterConfigurationList> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("resourceType") NetworkSecurityPerimeterResourceType resourceType,
@@ -170,58 +207,6 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @param resourceName The name of the resource (namely, either, the topic name or domain name).
      * @param perimeterGuid Unique identifier for perimeter.
      * @param associationName Association name to association network security perimeter resource to profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific network security perimeter configuration with a topic or domain along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkSecurityPerimeterConfigurationInner>> getWithResponseAsync(String resourceGroupName,
-        NetworkSecurityPerimeterResourceType resourceType, String resourceName, String perimeterGuid,
-        String associationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        if (perimeterGuid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter perimeterGuid is required and cannot be null."));
-        }
-        if (associationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceType,
-            resourceName, perimeterGuid, associationName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a specific network security perimeter configuration.
-     * 
-     * Get a specific network security perimeter configuration with a topic or domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param resourceType The type of the resource. This can be either \'topics\', or \'domains\'.
-     * @param resourceName The name of the resource (namely, either, the topic name or domain name).
-     * @param perimeterGuid Unique identifier for perimeter.
-     * @param associationName Association name to association network security perimeter resource to profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -256,8 +241,39 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     public Response<NetworkSecurityPerimeterConfigurationInner> getWithResponse(String resourceGroupName,
         NetworkSecurityPerimeterResourceType resourceType, String resourceName, String perimeterGuid,
         String associationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (perimeterGuid == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter perimeterGuid is required and cannot be null."));
+        }
+        if (associationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceType, resourceName, perimeterGuid, associationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -348,45 +364,104 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @param resourceName The name of the resource (namely, either, the topic name or domain name).
      * @param perimeterGuid Unique identifier for perimeter.
      * @param associationName Association name to association network security perimeter resource to profile.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network security perimeter configuration along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> reconcileWithResponse(String resourceGroupName,
+        NetworkSecurityPerimeterResourceType resourceType, String resourceName, String perimeterGuid,
+        String associationName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (perimeterGuid == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter perimeterGuid is required and cannot be null."));
+        }
+        if (associationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.reconcileSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceType, resourceName, perimeterGuid, associationName, this.client.getApiVersion(), accept,
+            Context.NONE);
+    }
+
+    /**
+     * Reconcile a specific network security perimeter configuration for a given network security perimeter association.
+     * 
+     * Reconcile a specific network security perimeter configuration for a given network security perimeter association
+     * with a topic or domain.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceType The type of the resource. This can be either \'topics\' or \'domains\'.
+     * @param resourceName The name of the resource (namely, either, the topic name or domain name).
+     * @param perimeterGuid Unique identifier for perimeter.
+     * @param associationName Association name to association network security perimeter resource to profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network security perimeter configuration along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return network security perimeter configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reconcileWithResponseAsync(String resourceGroupName,
+    private Response<BinaryData> reconcileWithResponse(String resourceGroupName,
         NetworkSecurityPerimeterResourceType resourceType, String resourceName, String perimeterGuid,
         String associationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (perimeterGuid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter perimeterGuid is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter perimeterGuid is required and cannot be null."));
         }
         if (associationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter associationName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.reconcile(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.reconcileSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             resourceType, resourceName, perimeterGuid, associationName, this.client.getApiVersion(), accept, context);
     }
 
@@ -430,37 +505,6 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @param resourceName The name of the resource (namely, either, the topic name or domain name).
      * @param perimeterGuid Unique identifier for perimeter.
      * @param associationName Association name to association network security perimeter resource to profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of network security perimeter configuration.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private
-        PollerFlux<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
-        beginReconcileAsync(String resourceGroupName, NetworkSecurityPerimeterResourceType resourceType,
-            String resourceName, String perimeterGuid, String associationName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = reconcileWithResponseAsync(resourceGroupName, resourceType,
-            resourceName, perimeterGuid, associationName, context);
-        return this.client
-            .<NetworkSecurityPerimeterConfigurationInner, NetworkSecurityPerimeterConfigurationInner>getLroResult(mono,
-                this.client.getHttpPipeline(), NetworkSecurityPerimeterConfigurationInner.class,
-                NetworkSecurityPerimeterConfigurationInner.class, context);
-    }
-
-    /**
-     * Reconcile a specific network security perimeter configuration for a given network security perimeter association.
-     * 
-     * Reconcile a specific network security perimeter configuration for a given network security perimeter association
-     * with a topic or domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param resourceType The type of the resource. This can be either \'topics\' or \'domains\'.
-     * @param resourceName The name of the resource (namely, either, the topic name or domain name).
-     * @param perimeterGuid Unique identifier for perimeter.
-     * @param associationName Association name to association network security perimeter resource to profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -471,8 +515,12 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
         SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
         beginReconcile(String resourceGroupName, NetworkSecurityPerimeterResourceType resourceType, String resourceName,
             String perimeterGuid, String associationName) {
-        return this.beginReconcileAsync(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = reconcileWithResponse(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName);
+        return this.client
+            .<NetworkSecurityPerimeterConfigurationInner, NetworkSecurityPerimeterConfigurationInner>getLroResult(
+                response, NetworkSecurityPerimeterConfigurationInner.class,
+                NetworkSecurityPerimeterConfigurationInner.class, Context.NONE);
     }
 
     /**
@@ -497,9 +545,12 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
         SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationInner>, NetworkSecurityPerimeterConfigurationInner>
         beginReconcile(String resourceGroupName, NetworkSecurityPerimeterResourceType resourceType, String resourceName,
             String perimeterGuid, String associationName, Context context) {
-        return this
-            .beginReconcileAsync(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName, context)
-            .getSyncPoller();
+        Response<BinaryData> response = reconcileWithResponse(resourceGroupName, resourceType, resourceName,
+            perimeterGuid, associationName, context);
+        return this.client
+            .<NetworkSecurityPerimeterConfigurationInner, NetworkSecurityPerimeterConfigurationInner>getLroResult(
+                response, NetworkSecurityPerimeterConfigurationInner.class,
+                NetworkSecurityPerimeterConfigurationInner.class, context);
     }
 
     /**
@@ -537,31 +588,6 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @param resourceName The name of the resource (namely, either, the topic name or domain name).
      * @param perimeterGuid Unique identifier for perimeter.
      * @param associationName Association name to association network security perimeter resource to profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network security perimeter configuration on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkSecurityPerimeterConfigurationInner> reconcileAsync(String resourceGroupName,
-        NetworkSecurityPerimeterResourceType resourceType, String resourceName, String perimeterGuid,
-        String associationName, Context context) {
-        return beginReconcileAsync(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Reconcile a specific network security perimeter configuration for a given network security perimeter association.
-     * 
-     * Reconcile a specific network security perimeter configuration for a given network security perimeter association
-     * with a topic or domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param resourceType The type of the resource. This can be either \'topics\' or \'domains\'.
-     * @param resourceName The name of the resource (namely, either, the topic name or domain name).
-     * @param perimeterGuid Unique identifier for perimeter.
-     * @param associationName Association name to association network security perimeter resource to profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -571,7 +597,8 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     public NetworkSecurityPerimeterConfigurationInner reconcile(String resourceGroupName,
         NetworkSecurityPerimeterResourceType resourceType, String resourceName, String perimeterGuid,
         String associationName) {
-        return reconcileAsync(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName).block();
+        return beginReconcile(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName)
+            .getFinalResult();
     }
 
     /**
@@ -595,8 +622,8 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     public NetworkSecurityPerimeterConfigurationInner reconcile(String resourceGroupName,
         NetworkSecurityPerimeterResourceType resourceType, String resourceName, String perimeterGuid,
         String associationName, Context context) {
-        return reconcileAsync(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName, context)
-            .block();
+        return beginReconcile(resourceGroupName, resourceType, resourceName, perimeterGuid, associationName, context)
+            .getFinalResult();
     }
 
     /**
@@ -651,52 +678,6 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param resourceType The type of the resource. This can be either \'topics\' or \'domains\'.
      * @param resourceName The name of the resource (namely, either, the topic name or domain name).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security perimeter configurations associated with a topic or domain along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkSecurityPerimeterConfigurationInner>> listSinglePageAsync(
-        String resourceGroupName, NetworkSecurityPerimeterResourceType resourceType, String resourceName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, resourceType,
-                resourceName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * Get all network security perimeter configurations for resource.
-     * 
-     * Get all network security perimeter configurations associated with a topic or domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param resourceType The type of the resource. This can be either \'topics\' or \'domains\'.
-     * @param resourceName The name of the resource (namely, either, the topic name or domain name).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -717,17 +698,91 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param resourceType The type of the resource. This can be either \'topics\' or \'domains\'.
      * @param resourceName The name of the resource (namely, either, the topic name or domain name).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network security perimeter configurations associated with a topic or domain along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listSinglePage(String resourceGroupName,
+        NetworkSecurityPerimeterResourceType resourceType, String resourceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NetworkSecurityPerimeterConfigurationList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                resourceType, resourceName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
+    }
+
+    /**
+     * Get all network security perimeter configurations for resource.
+     * 
+     * Get all network security perimeter configurations associated with a topic or domain.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceType The type of the resource. This can be either \'topics\' or \'domains\'.
+     * @param resourceName The name of the resource (namely, either, the topic name or domain name).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all network security perimeter configurations associated with a topic or domain as paginated response
-     * with {@link PagedFlux}.
+     * @return all network security perimeter configurations associated with a topic or domain along with
+     * {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkSecurityPerimeterConfigurationInner> listAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<NetworkSecurityPerimeterConfigurationInner> listSinglePage(String resourceGroupName,
         NetworkSecurityPerimeterResourceType resourceType, String resourceName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceType, resourceName, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<NetworkSecurityPerimeterConfigurationList> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                resourceType, resourceName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -747,7 +802,7 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> list(String resourceGroupName,
         NetworkSecurityPerimeterResourceType resourceType, String resourceName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, resourceType, resourceName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceType, resourceName));
     }
 
     /**
@@ -768,6 +823,8 @@ public final class NetworkSecurityPerimeterConfigurationsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkSecurityPerimeterConfigurationInner> list(String resourceGroupName,
         NetworkSecurityPerimeterResourceType resourceType, String resourceName, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, resourceType, resourceName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, resourceType, resourceName, context));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkSecurityPerimeterConfigurationsClientImpl.class);
 }

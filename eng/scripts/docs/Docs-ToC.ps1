@@ -338,63 +338,6 @@ function Get-java-UpdatedDocsMsToc($toc) {
             })
     }
     $sortableServices += [PSCustomObject]@{
-        name  = "Bing AutoSuggest"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                href = "~/docs-ref-services/{moniker}/cognitiveservices/bing-autosuggest-readme.md"
-                children = @("com.microsoft.azure.cognitiveservices.search.autosuggest*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
-        name  = "Content Moderator"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                children = @("com.microsoft.azure.cognitiveservices.vision.contentmoderator*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
-        name  = "Custom Vision"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                children = @("com.microsoft.azure.cognitiveservices.vision.customvision*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
-        name  = "Face API"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                children = @("com.microsoft.azure.cognitiveservices.vision.faceapi*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
-        name  = "Language Understanding"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                children = @(
-                    "com.microsoft.azure.cognitiveservices.language.luis*",
-                    "com.microsoft.azure.cognitiveservices.language.luis.authoring*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
-        name  = "Text Analytics"
-        landingPageType = "Service"
-        items = @(
-            [PSCustomObject]@{
-                name  = "Management"
-                children = @("com.microsoft.azure.cognitiveservices.language.text*")
-            })
-    }
-    $sortableServices += [PSCustomObject]@{
         name  = "Cognitive Services"
         landingPageType = "Service"
         items = @(

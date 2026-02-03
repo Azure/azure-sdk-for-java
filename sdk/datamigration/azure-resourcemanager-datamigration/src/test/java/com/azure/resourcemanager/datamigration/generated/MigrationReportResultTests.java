@@ -6,17 +6,22 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datamigration.models.MigrationReportResult;
+import org.junit.jupiter.api.Assertions;
 
 public final class MigrationReportResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationReportResult model = BinaryData.fromString("{\"id\":\"ywjhhgdnhx\",\"reportUrl\":\"ivfomiloxgg\"}")
+        MigrationReportResult model = BinaryData.fromString("{\"id\":\"bfihw\",\"reportUrl\":\"vctafsrb\"}")
             .toObject(MigrationReportResult.class);
+        Assertions.assertEquals("bfihw", model.id());
+        Assertions.assertEquals("vctafsrb", model.reportUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrationReportResult model = new MigrationReportResult();
+        MigrationReportResult model = new MigrationReportResult().withId("bfihw").withReportUrl("vctafsrb");
         model = BinaryData.fromObject(model).toObject(MigrationReportResult.class);
+        Assertions.assertEquals("bfihw", model.id());
+        Assertions.assertEquals("vctafsrb", model.reportUrl());
     }
 }

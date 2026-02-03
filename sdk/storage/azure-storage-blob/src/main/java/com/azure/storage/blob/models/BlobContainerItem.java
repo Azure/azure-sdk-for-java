@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,31 +23,37 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
     /*
      * The Name property.
      */
+    @Generated
     private String name;
 
     /*
      * The Deleted property.
      */
+    @Generated
     private Boolean deleted;
 
     /*
      * The Version property.
      */
+    @Generated
     private String version;
 
     /*
      * Properties of a container
      */
+    @Generated
     private BlobContainerItemProperties properties;
 
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> metadata;
 
     /**
      * Creates an instance of BlobContainerItem class.
      */
+    @Generated
     public BlobContainerItem() {
     }
 
@@ -56,6 +62,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -66,6 +73,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * @param name the name value to set.
      * @return the BlobContainerItem object itself.
      */
+    @Generated
     public BlobContainerItem setName(String name) {
         this.name = name;
         return this;
@@ -76,6 +84,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * 
      * @return the deleted value.
      */
+    @Generated
     public Boolean isDeleted() {
         return this.deleted;
     }
@@ -86,6 +95,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * @param deleted the deleted value to set.
      * @return the BlobContainerItem object itself.
      */
+    @Generated
     public BlobContainerItem setDeleted(Boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -96,6 +106,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -106,6 +117,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * @param version the version value to set.
      * @return the BlobContainerItem object itself.
      */
+    @Generated
     public BlobContainerItem setVersion(String version) {
         this.version = version;
         return this;
@@ -116,6 +128,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * 
      * @return the properties value.
      */
+    @Generated
     public BlobContainerItemProperties getProperties() {
         return this.properties;
     }
@@ -126,6 +139,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * @param properties the properties value to set.
      * @return the BlobContainerItem object itself.
      */
+    @Generated
     public BlobContainerItem setProperties(BlobContainerItemProperties properties) {
         this.properties = properties;
         return this;
@@ -136,6 +150,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * 
      * @return the metadata value.
      */
+    @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
     }
@@ -146,19 +161,22 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * @param metadata the metadata value to set.
      * @return the BlobContainerItem object itself.
      */
+    @Generated
     public BlobContainerItem setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Container" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Container" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Name", this.name);
         xmlWriter.writeBooleanElement("Deleted", this.deleted);
@@ -182,6 +200,7 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobContainerItem.
      */
+    @Generated
     public static BlobContainerItem fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -196,8 +215,10 @@ public final class BlobContainerItem implements XmlSerializable<BlobContainerIte
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlobContainerItem.
      */
+    @Generated
     public static BlobContainerItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Container" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "Container" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlobContainerItem deserializedBlobContainerItem = new BlobContainerItem();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

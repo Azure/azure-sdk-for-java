@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPack
     /**
      * Static value SSISDB for SsisPackageLocationType.
      */
+    @Generated
     public static final SsisPackageLocationType SSISDB = fromString("SSISDB");
 
     /**
      * Static value File for SsisPackageLocationType.
      */
+    @Generated
     public static final SsisPackageLocationType FILE = fromString("File");
 
     /**
      * Static value InlinePackage for SsisPackageLocationType.
      */
+    @Generated
     public static final SsisPackageLocationType INLINE_PACKAGE = fromString("InlinePackage");
 
     /**
      * Static value PackageStore for SsisPackageLocationType.
      */
+    @Generated
     public static final SsisPackageLocationType PACKAGE_STORE = fromString("PackageStore");
 
     /**
@@ -36,6 +41,7 @@ public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPack
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SsisPackageLocationType() {
     }
@@ -46,6 +52,7 @@ public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPack
      * @param name a name to look for.
      * @return the corresponding SsisPackageLocationType.
      */
+    @Generated
     public static SsisPackageLocationType fromString(String name) {
         return fromString(name, SsisPackageLocationType.class);
     }
@@ -55,6 +62,7 @@ public final class SsisPackageLocationType extends ExpandableStringEnum<SsisPack
      * 
      * @return known SsisPackageLocationType values.
      */
+    @Generated
     public static Collection<SsisPackageLocationType> values() {
         return values(SsisPackageLocationType.class);
     }

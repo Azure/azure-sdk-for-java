@@ -13,24 +13,24 @@ public final class A2APolicyCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2APolicyCreationInput model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"recoveryPointHistory\":723936709,\"crashConsistentFrequencyInMinutes\":1450165650,\"appConsistentFrequencyInMinutes\":1593194036,\"multiVmSyncStatus\":\"Disable\"}")
+            "{\"instanceType\":\"A2A\",\"recoveryPointHistory\":571618011,\"crashConsistentFrequencyInMinutes\":796376874,\"appConsistentFrequencyInMinutes\":792794865,\"multiVmSyncStatus\":\"Enable\"}")
             .toObject(A2APolicyCreationInput.class);
-        Assertions.assertEquals(723936709, model.recoveryPointHistory());
-        Assertions.assertEquals(1450165650, model.crashConsistentFrequencyInMinutes());
-        Assertions.assertEquals(1593194036, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals(SetMultiVmSyncStatus.DISABLE, model.multiVmSyncStatus());
+        Assertions.assertEquals(571618011, model.recoveryPointHistory());
+        Assertions.assertEquals(796376874, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(792794865, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals(SetMultiVmSyncStatus.ENABLE, model.multiVmSyncStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2APolicyCreationInput model = new A2APolicyCreationInput().withRecoveryPointHistory(723936709)
-            .withCrashConsistentFrequencyInMinutes(1450165650)
-            .withAppConsistentFrequencyInMinutes(1593194036)
-            .withMultiVmSyncStatus(SetMultiVmSyncStatus.DISABLE);
+        A2APolicyCreationInput model = new A2APolicyCreationInput().withRecoveryPointHistory(571618011)
+            .withCrashConsistentFrequencyInMinutes(796376874)
+            .withAppConsistentFrequencyInMinutes(792794865)
+            .withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
         model = BinaryData.fromObject(model).toObject(A2APolicyCreationInput.class);
-        Assertions.assertEquals(723936709, model.recoveryPointHistory());
-        Assertions.assertEquals(1450165650, model.crashConsistentFrequencyInMinutes());
-        Assertions.assertEquals(1593194036, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals(SetMultiVmSyncStatus.DISABLE, model.multiVmSyncStatus());
+        Assertions.assertEquals(571618011, model.recoveryPointHistory());
+        Assertions.assertEquals(796376874, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(792794865, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals(SetMultiVmSyncStatus.ENABLE, model.multiVmSyncStatus());
     }
 }

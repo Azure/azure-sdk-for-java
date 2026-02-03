@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class GuidanceInstructionType extends ExpandableStringEnum<Guidance
     /**
      * Turn.
      */
+    @Generated
     public static final GuidanceInstructionType TURN = fromString("TURN");
 
     /**
      * Road Change.
      */
+    @Generated
     public static final GuidanceInstructionType ROAD_CHANGE = fromString("ROAD_CHANGE");
 
     /**
      * Departure location.
      */
+    @Generated
     public static final GuidanceInstructionType LOCATION_DEPARTURE = fromString("LOCATION_DEPARTURE");
 
     /**
      * Arrival location.
      */
+    @Generated
     public static final GuidanceInstructionType LOCATION_ARRIVAL = fromString("LOCATION_ARRIVAL");
 
     /**
      * Direction information.
      */
+    @Generated
     public static final GuidanceInstructionType DIRECTION_INFO = fromString("DIRECTION_INFO");
 
     /**
      * Way point location.
      */
+    @Generated
     public static final GuidanceInstructionType LOCATION_WAYPOINT = fromString("LOCATION_WAYPOINT");
 
     /**
@@ -46,6 +53,7 @@ public final class GuidanceInstructionType extends ExpandableStringEnum<Guidance
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public GuidanceInstructionType() {
     }
@@ -56,6 +64,7 @@ public final class GuidanceInstructionType extends ExpandableStringEnum<Guidance
      * @param name a name to look for.
      * @return the corresponding GuidanceInstructionType.
      */
+    @Generated
     public static GuidanceInstructionType fromString(String name) {
         return fromString(name, GuidanceInstructionType.class);
     }
@@ -65,6 +74,7 @@ public final class GuidanceInstructionType extends ExpandableStringEnum<Guidance
      * 
      * @return known GuidanceInstructionType values.
      */
+    @Generated
     public static Collection<GuidanceInstructionType> values() {
         return values(GuidanceInstructionType.class);
     }

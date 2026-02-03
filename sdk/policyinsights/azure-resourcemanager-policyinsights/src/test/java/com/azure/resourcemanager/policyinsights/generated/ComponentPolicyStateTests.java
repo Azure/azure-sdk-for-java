@@ -17,33 +17,33 @@ public final class ComponentPolicyStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ComponentPolicyState model = BinaryData.fromString(
-            "{\"@odata.id\":\"qi\",\"@odata.context\":\"xtkcudfbsfar\",\"timestamp\":\"2021-06-06T17:38:54Z\",\"componentId\":\"wlkjxn\",\"componentType\":\"vwgf\",\"componentName\":\"mhqykizmdksa\",\"resourceId\":\"fcluqvo\",\"policyAssignmentId\":\"ycjimryvwgcwwpbm\",\"policyDefinitionId\":\"w\",\"subscriptionId\":\"ydsx\",\"resourceType\":\"fo\",\"resourceLocation\":\"cbvopwndyqleallk\",\"resourceGroup\":\"tkhlowkxxpvbr\",\"policyAssignmentName\":\"jmzsyzfh\",\"policyAssignmentOwner\":\"lhikcyychunsj\",\"policyAssignmentParameters\":\"jrtwsz\",\"policyAssignmentScope\":\"vuicp\",\"policyDefinitionName\":\"trrmhwrb\",\"policyDefinitionAction\":\"pyf\",\"policyDefinitionCategory\":\"bhvjglr\",\"policySetDefinitionId\":\"uyzlw\",\"policySetDefinitionName\":\"memhooclutnpq\",\"policySetDefinitionOwner\":\"mczjkm\",\"policySetDefinitionCategory\":\"kyujxsglhsrrr\",\"policySetDefinitionParameters\":\"jylmbkzudnigr\",\"policyDefinitionReferenceId\":\"hotj\",\"complianceState\":\"lpxuzzjgnrefq\",\"policyEvaluationDetails\":{\"evaluatedExpressions\":[{\"result\":\"oihiqak\",\"expression\":\"iwfbrkwpzdqtvhcs\",\"expressionKind\":\"daqaxsi\",\"path\":\"etgbebjfulb\",\"expressionValue\":\"dataichdlpn\",\"targetValue\":\"dataubntnbatzviqsow\",\"operator\":\"aelcat\"},{\"result\":\"ju\",\"expression\":\"lrvkmjc\",\"expressionKind\":\"jvlgfggcvkyyliz\",\"path\":\"bjpsfxsfuztlvtm\",\"expressionValue\":\"datagbwidqlvh\",\"targetValue\":\"dataoveofizrvjfnmj\",\"operator\":\"lwyzgib\"}],\"reason\":\"ujr\"},\"policyDefinitionGroupNames\":[\"ojuidjpuuyjucej\",\"kzoeovvtzejetj\",\"ln\"],\"policyDefinitionVersion\":\"k\",\"policySetDefinitionVersion\":\"uzk\",\"policyAssignmentVersion\":\"qzolxrzvhqjw\",\"\":{\"rrkolawjmjs\":\"datatgvgzp\"}}")
+            "{\"@odata.id\":\"anurnnqb\",\"@odata.context\":\"bpizxqltgr\",\"timestamp\":\"2021-08-08T02:29:28Z\",\"componentId\":\"xrxvbfi\",\"componentType\":\"u\",\"componentName\":\"ctafsrbxrblm\",\"resourceId\":\"owxih\",\"policyAssignmentId\":\"nxw\",\"policyDefinitionId\":\"gnepz\",\"subscriptionId\":\"klsbsbqqqagw\",\"resourceType\":\"xaomzisglrrc\",\"resourceLocation\":\"zkhhltnjadhqo\",\"resourceGroup\":\"jqoyueayfbpcm\",\"policyAssignmentName\":\"lbyrru\",\"policyAssignmentOwner\":\"thwmgnmbsc\",\"policyAssignmentParameters\":\"xigdhxiidlope\",\"policyAssignmentScope\":\"wdpyq\",\"policyDefinitionName\":\"bxubmdna\",\"policyDefinitionAction\":\"bqwremjela\",\"policyDefinitionCategory\":\"cigeleohdbvqvw\",\"policySetDefinitionId\":\"jopwbeonrlkwz\",\"policySetDefinitionName\":\"ybxc\",\"policySetDefinitionOwner\":\"kxcpt\",\"policySetDefinitionCategory\":\"qfyiaseqchkr\",\"policySetDefinitionParameters\":\"zrazisgyk\",\"policyDefinitionReferenceId\":\"emv\",\"complianceState\":\"bwzohmnrxxbs\",\"policyEvaluationDetails\":{\"evaluatedExpressions\":[{\"result\":\"nhmdptysprqs\",\"expression\":\"zxojpslsv\",\"expressionKind\":\"pli\",\"path\":\"iqwoyxqvapcoh\",\"expressionValue\":\"dataucqpqojxcxzrz\",\"targetValue\":\"datagdzbenr\",\"operator\":\"cawetzqddt\"},{\"result\":\"fljhznamtua\",\"expression\":\"zwcjjncqtj\",\"expressionKind\":\"izvg\",\"path\":\"atzuuv\",\"expressionValue\":\"datangrebwg\",\"targetValue\":\"datahttzlswvajqfutlx\",\"operator\":\"qzasunwqrjzfrgqh\"},{\"result\":\"hcmbuocnjrohmbp\",\"expression\":\"yx\",\"expressionKind\":\"eblydyv\",\"path\":\"kmrocxne\",\"expressionValue\":\"datasm\",\"targetValue\":\"datadlfp\",\"operator\":\"pucygvoavyunss\"},{\"result\":\"ghiee\",\"expression\":\"lgvvpaseksgbu\",\"expressionKind\":\"ntuygdhgaqipir\",\"path\":\"wrq\",\"expressionValue\":\"dataulopmjnlexwhcb\",\"targetValue\":\"dataibkeph\",\"operator\":\"uerct\"}],\"reason\":\"oyin\"},\"policyDefinitionGroupNames\":[\"brlc\",\"rduczkgofxyfs\",\"uc\",\"crrpcjttbstvje\"],\"policyDefinitionVersion\":\"nrmvvfkoxmlghk\",\"policySetDefinitionVersion\":\"idvrmaz\",\"policyAssignmentVersion\":\"dwwexymz\",\"sgnyyuuzivensrp\":\"datazipbhpwv\",\"ijp\":\"dataeyyvpkpatl\",\"olmk\":\"datagsksrfhf\"}")
             .toObject(ComponentPolicyState.class);
-        Assertions.assertEquals("ujr", model.policyEvaluationDetails().reason());
+        Assertions.assertEquals("oyin", model.policyEvaluationDetails().reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ComponentPolicyState model = new ComponentPolicyState()
-            .withPolicyEvaluationDetails(new ComponentPolicyEvaluationDetails().withReason("ujr"))
-            .withAdditionalProperties(mapOf("resourceGroup", "tkhlowkxxpvbr", "resourceId", "fcluqvo", "componentId",
-                "wlkjxn", "policyDefinitionGroupNames",
+            .withPolicyEvaluationDetails(new ComponentPolicyEvaluationDetails().withReason("oyin"))
+            .withAdditionalProperties(mapOf("resourceGroup", "jqoyueayfbpcm", "resourceId", "owxih", "componentId",
+                "xrxvbfi", "policyDefinitionGroupNames",
                 JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize("[\"ojuidjpuuyjucej\",\"kzoeovvtzejetj\",\"ln\"]", Object.class,
+                    .deserialize("[\"brlc\",\"rduczkgofxyfs\",\"uc\",\"crrpcjttbstvje\"]", Object.class,
                         SerializerEncoding.JSON),
-                "policyDefinitionAction", "pyf", "policyDefinitionCategory", "bhvjglr", "complianceState",
-                "lpxuzzjgnrefq", "policySetDefinitionParameters", "jylmbkzudnigr", "@odata.id", "qi",
-                "policyAssignmentScope", "vuicp", "policyAssignmentVersion", "qzolxrzvhqjw", "componentName",
-                "mhqykizmdksa", "timestamp", "2021-06-06T17:38:54Z", "componentType", "vwgf",
-                "policySetDefinitionOwner", "mczjkm", "policyAssignmentOwner", "lhikcyychunsj", "@odata.context",
-                "xtkcudfbsfar", "resourceLocation", "cbvopwndyqleallk", "policySetDefinitionId", "uyzlw",
-                "policySetDefinitionName", "memhooclutnpq", "policyDefinitionVersion", "k", "policyDefinitionId", "w",
-                "policySetDefinitionCategory", "kyujxsglhsrrr", "policyDefinitionName", "trrmhwrb",
-                "policyDefinitionReferenceId", "hotj", "policyAssignmentName", "jmzsyzfh", "subscriptionId", "ydsx",
-                "policySetDefinitionVersion", "uzk", "policyAssignmentParameters", "jrtwsz", "policyAssignmentId",
-                "ycjimryvwgcwwpbm", "resourceType", "fo"));
+                "policyDefinitionAction", "bqwremjela", "policyDefinitionCategory", "cigeleohdbvqvw", "complianceState",
+                "bwzohmnrxxbs", "olmk", "datagsksrfhf", "policySetDefinitionParameters", "zrazisgyk", "@odata.id",
+                "anurnnqb", "policyAssignmentScope", "wdpyq", "policyAssignmentVersion", "dwwexymz", "componentName",
+                "ctafsrbxrblm", "timestamp", "2021-08-08T02:29:28Z", "componentType", "u", "policySetDefinitionOwner",
+                "kxcpt", "sgnyyuuzivensrp", "datazipbhpwv", "policyAssignmentOwner", "thwmgnmbsc", "@odata.context",
+                "bpizxqltgr", "resourceLocation", "zkhhltnjadhqo", "policySetDefinitionId", "jopwbeonrlkwz", "ijp",
+                "dataeyyvpkpatl", "policySetDefinitionName", "ybxc", "policyDefinitionVersion", "nrmvvfkoxmlghk",
+                "policyDefinitionId", "gnepz", "policySetDefinitionCategory", "qfyiaseqchkr", "policyDefinitionName",
+                "bxubmdna", "policyDefinitionReferenceId", "emv", "policyAssignmentName", "lbyrru", "subscriptionId",
+                "klsbsbqqqagw", "policySetDefinitionVersion", "idvrmaz", "policyAssignmentParameters", "xigdhxiidlope",
+                "policyAssignmentId", "nxw", "resourceType", "xaomzisglrrc"));
         model = BinaryData.fromObject(model).toObject(ComponentPolicyState.class);
-        Assertions.assertEquals("ujr", model.policyEvaluationDetails().reason());
+        Assertions.assertEquals("oyin", model.policyEvaluationDetails().reason());
     }
 
     // Use "Map.of" if available

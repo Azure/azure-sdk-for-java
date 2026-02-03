@@ -6,6 +6,7 @@ package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.containers.containerregistry.models.OciDescriptor;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class V2Manifest extends Manifest {
     /*
      * Media type for this Manifest
      */
+    @Generated
     private String mediaType;
 
     /*
      * V2 image config descriptor
      */
+    @Generated
     private OciDescriptor config;
 
     /*
      * List of V2 image layer information
      */
+    @Generated
     private List<OciDescriptor> layers;
 
     /**
      * Creates an instance of V2Manifest class.
      */
+    @Generated
     public V2Manifest() {
     }
 
@@ -43,6 +48,7 @@ public final class V2Manifest extends Manifest {
      * 
      * @return the mediaType value.
      */
+    @Generated
     public String getMediaType() {
         return this.mediaType;
     }
@@ -53,6 +59,7 @@ public final class V2Manifest extends Manifest {
      * @param mediaType the mediaType value to set.
      * @return the V2Manifest object itself.
      */
+    @Generated
     public V2Manifest setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
@@ -63,6 +70,7 @@ public final class V2Manifest extends Manifest {
      * 
      * @return the config value.
      */
+    @Generated
     public OciDescriptor getConfig() {
         return this.config;
     }
@@ -73,6 +81,7 @@ public final class V2Manifest extends Manifest {
      * @param config the config value to set.
      * @return the V2Manifest object itself.
      */
+    @Generated
     public V2Manifest setConfig(OciDescriptor config) {
         this.config = config;
         return this;
@@ -83,6 +92,7 @@ public final class V2Manifest extends Manifest {
      * 
      * @return the layers value.
      */
+    @Generated
     public List<OciDescriptor> getLayers() {
         return this.layers;
     }
@@ -93,6 +103,7 @@ public final class V2Manifest extends Manifest {
      * @param layers the layers value to set.
      * @return the V2Manifest object itself.
      */
+    @Generated
     public V2Manifest setLayers(List<OciDescriptor> layers) {
         this.layers = layers;
         return this;
@@ -101,6 +112,7 @@ public final class V2Manifest extends Manifest {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public V2Manifest setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
@@ -110,6 +122,7 @@ public final class V2Manifest extends Manifest {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -128,6 +141,7 @@ public final class V2Manifest extends Manifest {
      * to JSON null.
      * @throws IOException If an error occurs while reading the V2Manifest.
      */
+    @Generated
     public static V2Manifest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             V2Manifest deserializedV2Manifest = new V2Manifest();

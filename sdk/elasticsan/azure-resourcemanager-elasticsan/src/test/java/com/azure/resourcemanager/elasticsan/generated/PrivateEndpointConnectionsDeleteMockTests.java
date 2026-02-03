@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import java.nio.charset.StandardCharsets;
@@ -25,10 +25,9 @@ public final class PrivateEndpointConnectionsDeleteMockTests {
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.privateEndpointConnections()
-            .delete("pjorwkqnyhg", "ij", "jivfxzsjabib", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections().delete("phoszqz", "dphqamv", "kfwynw", com.azure.core.util.Context.NONE);
 
     }
 }

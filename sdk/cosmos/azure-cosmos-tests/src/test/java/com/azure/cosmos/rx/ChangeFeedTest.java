@@ -5,7 +5,6 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Database;
@@ -118,7 +117,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption.setMaxItemCount(3);
 
         List<FeedResponse<Document>> changeFeedResultList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList().block();
 
         int count = 0;
@@ -153,7 +152,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
         changeFeedOption.setMaxItemCount(3);
         List<FeedResponse<Document>> changeFeedResultList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList().block();
 
         int count = 0;
@@ -190,7 +189,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
 
         List<FeedResponse<Document>> changeFeedResultsList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList()
             .block();
 
@@ -213,7 +212,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 CosmosChangeFeedRequestOptions.createForProcessingFromNow(feedRange);
 
         List<FeedResponse<Document>> changeFeedResultsList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList()
             .block();
 
@@ -244,7 +243,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
 
         List<FeedResponse<Document>> changeFeedResultsList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList()
             .block();
 
@@ -269,7 +268,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromContinuation(continuationToken);
 
         List<FeedResponse<Document>> changeFeedResultsListAfterDeletes = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOptionForContinuationAfterDeletes, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOptionForContinuationAfterDeletes, Document.class, null)
             .collectList()
             .block();
 
@@ -296,7 +295,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromContinuation(continuationToken);
 
         List<FeedResponse<Document>> changeFeedResultsListAfterUpdates = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOptionForContinuationAfterUpdates, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOptionForContinuationAfterUpdates, Document.class, null)
             .collectList()
             .block();
 
@@ -364,8 +363,15 @@ public class ChangeFeedTest extends TestSuiteBase {
                 true)
             .block();
 
-        List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(createdCollection,
-                changeFeedOption, Document.class).collectList().block();
+        List<FeedResponse<Document>> changeFeedResultList =
+            client
+                .queryDocumentChangeFeed(
+                    createdCollection,
+                    changeFeedOption,
+                    Document.class,
+                    null)
+                .collectList()
+                .block();
 
         int count = 0;
         for(int i = 0; i < changeFeedResultList.size(); i++) {
@@ -388,7 +394,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption.setMaxItemCount(3);
 
         List<FeedResponse<Document>> changeFeedResultsList = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .collectList()
             .block();
 
@@ -421,7 +427,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         changeFeedOption = CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(changeFeedContinuation);
 
         FeedResponse<Document> changeFeedResults2 = client
-            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+            .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
             .blockFirst();
 
         assertThat(changeFeedResults2.getResults())
@@ -459,7 +465,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);
 
             List<FeedResponse<Document>> changeFeedResultListForEPK = client
-                .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class)
+                .queryDocumentChangeFeed(createdCollection, changeFeedOption, Document.class, null)
                 .collectList()
                 .block();
 
@@ -493,7 +499,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     public Document updateDocument(AsyncDocumentClient client, Document originalDocument) {
         String uuid = UUID.randomUUID().toString();
-        originalDocument.set("prop", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        originalDocument.set("prop", uuid);
 
         return client
             .replaceDocument(originalDocument.getSelfLink(), originalDocument, null)
@@ -581,8 +587,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document();
         doc.setId(uuid);
-        doc.set("mypk", partitionKey, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        doc.set("prop", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        doc.set("mypk", partitionKey);
+        doc.set("prop", uuid);
         return doc;
     }
 

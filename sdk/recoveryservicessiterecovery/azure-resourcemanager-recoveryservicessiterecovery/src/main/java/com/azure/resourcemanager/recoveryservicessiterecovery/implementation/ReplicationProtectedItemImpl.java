@@ -73,9 +73,9 @@ public final class ReplicationProtectedItemImpl
         return this.serviceManager;
     }
 
-    private String resourceName;
-
     private String resourceGroupName;
+
+    private String resourceName;
 
     private String fabricName;
 
@@ -87,10 +87,10 @@ public final class ReplicationProtectedItemImpl
 
     private UpdateReplicationProtectedItemInput updateUpdateProtectionInput;
 
-    public ReplicationProtectedItemImpl withExistingReplicationProtectionContainer(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName) {
-        this.resourceName = resourceName;
+    public ReplicationProtectedItemImpl withExistingReplicationProtectionContainer(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName) {
         this.resourceGroupName = resourceGroupName;
+        this.resourceName = resourceName;
         this.fabricName = fabricName;
         this.protectionContainerName = protectionContainerName;
         return this;
@@ -99,7 +99,7 @@ public final class ReplicationProtectedItemImpl
     public ReplicationProtectedItem create() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectedItems()
-            .create(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 createInput, Context.NONE);
         return this;
     }
@@ -107,7 +107,7 @@ public final class ReplicationProtectedItemImpl
     public ReplicationProtectedItem create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectedItems()
-            .create(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 createInput, context);
         return this;
     }
@@ -128,7 +128,7 @@ public final class ReplicationProtectedItemImpl
     public ReplicationProtectedItem apply() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectedItems()
-            .update(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 updateUpdateProtectionInput, Context.NONE);
         return this;
     }
@@ -136,7 +136,7 @@ public final class ReplicationProtectedItemImpl
     public ReplicationProtectedItem apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectedItems()
-            .update(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 updateUpdateProtectionInput, context);
         return this;
     }
@@ -145,8 +145,8 @@ public final class ReplicationProtectedItemImpl
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationFabrics");
         this.protectionContainerName
             = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationProtectionContainers");
@@ -157,7 +157,7 @@ public final class ReplicationProtectedItemImpl
     public ReplicationProtectedItem refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectedItems()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, Context.NONE)
             .getValue();
         return this;
@@ -166,7 +166,7 @@ public final class ReplicationProtectedItemImpl
     public ReplicationProtectedItem refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationProtectedItems()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context)
             .getValue();
         return this;
@@ -174,197 +174,197 @@ public final class ReplicationProtectedItemImpl
 
     public ReplicationProtectedItem addDisks(AddDisksInput addDisksInput) {
         return serviceManager.replicationProtectedItems()
-            .addDisks(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .addDisks(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 addDisksInput);
     }
 
     public ReplicationProtectedItem addDisks(AddDisksInput addDisksInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .addDisks(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .addDisks(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 addDisksInput, context);
     }
 
     public ReplicationProtectedItem applyRecoveryPoint(ApplyRecoveryPointInput applyRecoveryPointInput) {
         return serviceManager.replicationProtectedItems()
-            .applyRecoveryPoint(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, applyRecoveryPointInput);
     }
 
     public ReplicationProtectedItem applyRecoveryPoint(ApplyRecoveryPointInput applyRecoveryPointInput,
         Context context) {
         return serviceManager.replicationProtectedItems()
-            .applyRecoveryPoint(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, applyRecoveryPointInput, context);
     }
 
     public ReplicationProtectedItem failoverCancel() {
         return serviceManager.replicationProtectedItems()
-            .failoverCancel(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .failoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName);
     }
 
     public ReplicationProtectedItem failoverCancel(Context context) {
         return serviceManager.replicationProtectedItems()
-            .failoverCancel(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .failoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
     }
 
     public ReplicationProtectedItem failoverCommit() {
         return serviceManager.replicationProtectedItems()
-            .failoverCommit(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName);
     }
 
     public ReplicationProtectedItem failoverCommit(Context context) {
         return serviceManager.replicationProtectedItems()
-            .failoverCommit(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
     }
 
     public ReplicationProtectedItem plannedFailover(PlannedFailoverInput failoverInput) {
         return serviceManager.replicationProtectedItems()
-            .plannedFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .plannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, failoverInput);
     }
 
     public ReplicationProtectedItem plannedFailover(PlannedFailoverInput failoverInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .plannedFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .plannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, failoverInput, context);
     }
 
     public void delete(DisableProtectionInput disableProtectionInput) {
         serviceManager.replicationProtectedItems()
-            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .delete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 disableProtectionInput);
     }
 
     public void delete(DisableProtectionInput disableProtectionInput, Context context) {
         serviceManager.replicationProtectedItems()
-            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .delete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 disableProtectionInput, context);
     }
 
     public ReplicationProtectedItem removeDisks(RemoveDisksInput removeDisksInput) {
         return serviceManager.replicationProtectedItems()
-            .removeDisks(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .removeDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, removeDisksInput);
     }
 
     public ReplicationProtectedItem removeDisks(RemoveDisksInput removeDisksInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .removeDisks(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .removeDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, removeDisksInput, context);
     }
 
     public ReplicationProtectedItem repairReplication() {
         return serviceManager.replicationProtectedItems()
-            .repairReplication(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName);
     }
 
     public ReplicationProtectedItem repairReplication(Context context) {
         return serviceManager.replicationProtectedItems()
-            .repairReplication(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
     }
 
     public ReplicationProtectedItem reprotect(ReverseReplicationInput reprotectInput) {
         return serviceManager.replicationProtectedItems()
-            .reprotect(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .reprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, reprotectInput);
     }
 
     public ReplicationProtectedItem reprotect(ReverseReplicationInput reprotectInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .reprotect(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .reprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, reprotectInput, context);
     }
 
     public ReplicationProtectedItem resolveHealthErrors(ResolveHealthInput resolveHealthInput) {
         return serviceManager.replicationProtectedItems()
-            .resolveHealthErrors(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .resolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, resolveHealthInput);
     }
 
     public ReplicationProtectedItem resolveHealthErrors(ResolveHealthInput resolveHealthInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .resolveHealthErrors(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .resolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, resolveHealthInput, context);
     }
 
     public ReplicationProtectedItem switchProvider(SwitchProviderInput switchProviderInput) {
         return serviceManager.replicationProtectedItems()
-            .switchProvider(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .switchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, switchProviderInput);
     }
 
     public ReplicationProtectedItem switchProvider(SwitchProviderInput switchProviderInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .switchProvider(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .switchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, switchProviderInput, context);
     }
 
     public ReplicationProtectedItem testFailover(TestFailoverInput testfailoverInput) {
         return serviceManager.replicationProtectedItems()
-            .testFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, testfailoverInput);
     }
 
     public ReplicationProtectedItem testFailover(TestFailoverInput testfailoverInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .testFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, testfailoverInput, context);
     }
 
     public ReplicationProtectedItem testFailoverCleanup(TestFailoverCleanupInput cleanupInput) {
         return serviceManager.replicationProtectedItems()
-            .testFailoverCleanup(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, cleanupInput);
     }
 
     public ReplicationProtectedItem testFailoverCleanup(TestFailoverCleanupInput cleanupInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .testFailoverCleanup(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, cleanupInput, context);
     }
 
     public ReplicationProtectedItem unplannedFailover(UnplannedFailoverInput failoverInput) {
         return serviceManager.replicationProtectedItems()
-            .unplannedFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, failoverInput);
     }
 
     public ReplicationProtectedItem unplannedFailover(UnplannedFailoverInput failoverInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .unplannedFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, failoverInput, context);
     }
 
     public ReplicationProtectedItem
         updateAppliance(UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput) {
         return serviceManager.replicationProtectedItems()
-            .updateAppliance(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .updateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, applianceUpdateInput);
     }
 
     public ReplicationProtectedItem
         updateAppliance(UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput, Context context) {
         return serviceManager.replicationProtectedItems()
-            .updateAppliance(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .updateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, applianceUpdateInput, context);
     }
 
     public ReplicationProtectedItem updateMobilityService(UpdateMobilityServiceRequest updateMobilityServiceRequest) {
         return serviceManager.replicationProtectedItems()
-            .updateMobilityService(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .updateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, updateMobilityServiceRequest);
     }
 
     public ReplicationProtectedItem updateMobilityService(UpdateMobilityServiceRequest updateMobilityServiceRequest,
         Context context) {
         return serviceManager.replicationProtectedItems()
-            .updateMobilityService(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .updateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, updateMobilityServiceRequest, context);
     }
 

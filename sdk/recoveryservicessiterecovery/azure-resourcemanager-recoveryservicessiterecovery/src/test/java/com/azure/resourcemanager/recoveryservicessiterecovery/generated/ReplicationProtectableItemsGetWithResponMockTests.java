@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectableItem;
@@ -21,25 +21,25 @@ public final class ReplicationProtectableItemsGetWithResponMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"friendlyName\":\"dahyclxrsidoeb\",\"protectionStatus\":\"poiaffjkrtn\",\"replicationProtectedItemId\":\"evimxmaxcj\",\"recoveryServicesProviderId\":\"itygvdwds\",\"protectionReadinessErrors\":[\"bf\"],\"supportedReplicationProviders\":[\"ozbzchnqekwan\"],\"customDetails\":{\"instanceType\":\"ConfigurationSettings\"}},\"location\":\"urlcydjhtkjs\",\"id\":\"rwiyndurdonkgobx\",\"name\":\"lr\",\"type\":\"olenrswknpdr\"}";
+            = "{\"properties\":{\"friendlyName\":\"qrypy\",\"protectionStatus\":\"vshhovtuercpzhb\",\"replicationProtectedItemId\":\"xybtdzycxhao\",\"recoveryServicesProviderId\":\"jzg\",\"protectionReadinessErrors\":[\"bnwc\",\"srazcbybicq\"],\"supportedReplicationProviders\":[\"jpuapasizzfmu\"],\"customDetails\":{\"instanceType\":\"ConfigurationSettings\"}},\"location\":\"wuycuo\",\"id\":\"enndzgthdzit\",\"name\":\"zffpherwj\",\"type\":\"vswtwonadezm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ProtectableItem response = manager.replicationProtectableItems()
-            .getWithResponse("wdalisd", "qngca", "dz", "nloou", "p", com.azure.core.util.Context.NONE)
+            .getWithResponse("dkqlvzkf", "kdesb", "jqtl", "b", "jjpduibsrrrq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dahyclxrsidoeb", response.properties().friendlyName());
-        Assertions.assertEquals("poiaffjkrtn", response.properties().protectionStatus());
-        Assertions.assertEquals("evimxmaxcj", response.properties().replicationProtectedItemId());
-        Assertions.assertEquals("itygvdwds", response.properties().recoveryServicesProviderId());
-        Assertions.assertEquals("bf", response.properties().protectionReadinessErrors().get(0));
-        Assertions.assertEquals("ozbzchnqekwan", response.properties().supportedReplicationProviders().get(0));
-        Assertions.assertEquals("urlcydjhtkjs", response.location());
+        Assertions.assertEquals("qrypy", response.properties().friendlyName());
+        Assertions.assertEquals("vshhovtuercpzhb", response.properties().protectionStatus());
+        Assertions.assertEquals("xybtdzycxhao", response.properties().replicationProtectedItemId());
+        Assertions.assertEquals("jzg", response.properties().recoveryServicesProviderId());
+        Assertions.assertEquals("bnwc", response.properties().protectionReadinessErrors().get(0));
+        Assertions.assertEquals("jpuapasizzfmu", response.properties().supportedReplicationProviders().get(0));
+        Assertions.assertEquals("wuycuo", response.location());
     }
 }

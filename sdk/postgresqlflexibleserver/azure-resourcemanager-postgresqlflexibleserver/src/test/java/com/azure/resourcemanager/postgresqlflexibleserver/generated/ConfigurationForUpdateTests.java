@@ -12,17 +12,17 @@ public final class ConfigurationForUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationForUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"value\":\"yoxgvcltbgsnc\",\"description\":\"kjeszz\",\"defaultValue\":\"ijhtxf\",\"dataType\":\"Boolean\",\"allowedValues\":\"fsm\",\"source\":\"eh\",\"isDynamicConfig\":true,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"debfqkkrbmpukgri\",\"documentationLink\":\"lzlfbxzpuz\"}}")
+            "{\"properties\":{\"value\":\"bkdmo\",\"description\":\"postmgrcfbunrm\",\"defaultValue\":\"jhhkxbp\",\"dataType\":\"Numeric\",\"allowedValues\":\"jhxxjyn\",\"source\":\"divkrt\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":true,\"unit\":\"zjf\",\"documentationLink\":\"vjfdx\"}}")
             .toObject(ConfigurationForUpdate.class);
-        Assertions.assertEquals("yoxgvcltbgsnc", model.value());
-        Assertions.assertEquals("eh", model.source());
+        Assertions.assertEquals("bkdmo", model.value());
+        Assertions.assertEquals("divkrt", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationForUpdate model = new ConfigurationForUpdate().withValue("yoxgvcltbgsnc").withSource("eh");
+        ConfigurationForUpdate model = new ConfigurationForUpdate().withValue("bkdmo").withSource("divkrt");
         model = BinaryData.fromObject(model).toObject(ConfigurationForUpdate.class);
-        Assertions.assertEquals("yoxgvcltbgsnc", model.value());
-        Assertions.assertEquals("eh", model.source());
+        Assertions.assertEquals("bkdmo", model.value());
+        Assertions.assertEquals("divkrt", model.source());
     }
 }

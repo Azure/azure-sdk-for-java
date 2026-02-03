@@ -22,7 +22,7 @@ public class HttpPipelineBuilderJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(HttpClient.getNewInstance())
-            .policies(new HttpRetryPolicy())
+            .addPolicy(new HttpRetryPolicy())
             .build();
         // END: io.clientcore.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy
     }

@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     /*
      * The group call id
      */
+    @Generated
     private String groupCallId;
 
     /*
      * The server call id.
      */
+    @Generated
     private String serverCallId;
 
     /*
-     * The Acs room id
+     * The Acs room id. (Not supported for Start Recording)
      */
+    @Generated
     private String roomId;
 
     /*
      * The call locator kind.
      */
+    @Generated
     private CallLocatorKindInternal kind;
 
     /**
      * Creates an instance of CallLocatorInternal class.
      */
+    @Generated
     public CallLocatorInternal() {
     }
 
@@ -47,6 +53,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
      * 
      * @return the groupCallId value.
      */
+    @Generated
     public String getGroupCallId() {
         return this.groupCallId;
     }
@@ -57,6 +64,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
      * @param groupCallId the groupCallId value to set.
      * @return the CallLocatorInternal object itself.
      */
+    @Generated
     public CallLocatorInternal setGroupCallId(String groupCallId) {
         this.groupCallId = groupCallId;
         return this;
@@ -67,6 +75,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
      * 
      * @return the serverCallId value.
      */
+    @Generated
     public String getServerCallId() {
         return this.serverCallId;
     }
@@ -77,26 +86,29 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
      * @param serverCallId the serverCallId value to set.
      * @return the CallLocatorInternal object itself.
      */
+    @Generated
     public CallLocatorInternal setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
     }
 
     /**
-     * Get the roomId property: The Acs room id.
+     * Get the roomId property: The Acs room id. (Not supported for Start Recording).
      * 
      * @return the roomId value.
      */
+    @Generated
     public String getRoomId() {
         return this.roomId;
     }
 
     /**
-     * Set the roomId property: The Acs room id.
+     * Set the roomId property: The Acs room id. (Not supported for Start Recording).
      * 
      * @param roomId the roomId value to set.
      * @return the CallLocatorInternal object itself.
      */
+    @Generated
     public CallLocatorInternal setRoomId(String roomId) {
         this.roomId = roomId;
         return this;
@@ -107,6 +119,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
      * 
      * @return the kind value.
      */
+    @Generated
     public CallLocatorKindInternal getKind() {
         return this.kind;
     }
@@ -117,6 +130,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
      * @param kind the kind value to set.
      * @return the CallLocatorInternal object itself.
      */
+    @Generated
     public CallLocatorInternal setKind(CallLocatorKindInternal kind) {
         this.kind = kind;
         return this;
@@ -125,6 +139,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public final class CallLocatorInternal implements JsonSerializable<CallLocatorIn
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the CallLocatorInternal.
      */
+    @Generated
     public static CallLocatorInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CallLocatorInternal deserializedCallLocatorInternal = new CallLocatorInternal();

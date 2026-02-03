@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
      * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
      */
+    @Generated
     private String operationCallbackUri;
 
     /*
      * The value to identify context of the operation.
      */
+    @Generated
     private String operationContext;
 
     /**
      * Creates an instance of StopMediaStreamingRequest class.
      */
+    @Generated
     public StopMediaStreamingRequest() {
     }
 
@@ -40,6 +44,7 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
      * 
      * @return the operationCallbackUri value.
      */
+    @Generated
     public String getOperationCallbackUri() {
         return this.operationCallbackUri;
     }
@@ -52,6 +57,7 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the StopMediaStreamingRequest object itself.
      */
+    @Generated
     public StopMediaStreamingRequest setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
         return this;
@@ -62,6 +68,7 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -72,6 +79,7 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
      * @param operationContext the operationContext value to set.
      * @return the StopMediaStreamingRequest object itself.
      */
+    @Generated
     public StopMediaStreamingRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -80,6 +88,7 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class StopMediaStreamingRequest implements JsonSerializable<StopMed
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StopMediaStreamingRequest.
      */
+    @Generated
     public static StopMediaStreamingRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StopMediaStreamingRequest deserializedStopMediaStreamingRequest = new StopMediaStreamingRequest();

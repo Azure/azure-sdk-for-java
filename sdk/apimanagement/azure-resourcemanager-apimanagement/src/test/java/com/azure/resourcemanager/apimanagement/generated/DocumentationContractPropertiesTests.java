@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DocumentationContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DocumentationContractProperties model = BinaryData.fromString("{\"title\":\"opylbl\",\"content\":\"prrw\"}")
+        DocumentationContractProperties model = BinaryData.fromString("{\"title\":\"p\",\"content\":\"pewpyj\"}")
             .toObject(DocumentationContractProperties.class);
-        Assertions.assertEquals("opylbl", model.title());
-        Assertions.assertEquals("prrw", model.content());
+        Assertions.assertEquals("p", model.title());
+        Assertions.assertEquals("pewpyj", model.content());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DocumentationContractProperties model
-            = new DocumentationContractProperties().withTitle("opylbl").withContent("prrw");
+            = new DocumentationContractProperties().withTitle("p").withContent("pewpyj");
         model = BinaryData.fromObject(model).toObject(DocumentationContractProperties.class);
-        Assertions.assertEquals("opylbl", model.title());
-        Assertions.assertEquals("prrw", model.content());
+        Assertions.assertEquals("p", model.title());
+        Assertions.assertEquals("pewpyj", model.content());
     }
 }

@@ -14,37 +14,29 @@ public final class EventTypesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventTypesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"blkwqpatvbqs\",\"description\":\"cjbctviv\",\"schemaUrl\":\"qymtuowogtgits\",\"isInDefaultSet\":true},\"id\":\"vbrzcdb\",\"name\":\"nfzndscxmxeat\",\"type\":\"db\"},{\"properties\":{\"displayName\":\"rdjyibqb\",\"description\":\"omhjrmkuhm\",\"schemaUrl\":\"ljalfihcjmobc\",\"isInDefaultSet\":false},\"id\":\"de\",\"name\":\"xqcwgax\",\"type\":\"gvaknokzwjjzrl\"},{\"properties\":{\"displayName\":\"l\",\"description\":\"yyfytpqsixymm\",\"schemaUrl\":\"jivyqlkjuv\",\"isInDefaultSet\":true},\"id\":\"msl\",\"name\":\"oyovwz\",\"type\":\"bpqvybefg\"},{\"properties\":{\"displayName\":\"nokcv\",\"description\":\"ubseskvcuartr\",\"schemaUrl\":\"nlp\",\"isInDefaultSet\":true},\"id\":\"kycndzfqivjreuy\",\"name\":\"bbmnwagltb\",\"type\":\"oeeonqlnfwm\"}]}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"xyqvg\",\"description\":\"aodetv\",\"schemaUrl\":\"kxdxuwsaifmcwn\",\"isInDefaultSet\":false},\"id\":\"zlehgcvkbcknjolg\",\"name\":\"y\",\"type\":\"xpvelszerqzevxo\"},{\"properties\":{\"displayName\":\"ntxwaljglzob\",\"description\":\"waafrqulh\",\"schemaUrl\":\"yqbhd\",\"isInDefaultSet\":true},\"id\":\"jrqpjiyrqjcrga\",\"name\":\"wmzwdfkbnrzorpdl\",\"type\":\"bqc\"}]}")
             .toObject(EventTypesListResult.class);
-        Assertions.assertEquals("blkwqpatvbqs", model.value().get(0).displayName());
-        Assertions.assertEquals("cjbctviv", model.value().get(0).description());
-        Assertions.assertEquals("qymtuowogtgits", model.value().get(0).schemaUrl());
-        Assertions.assertEquals(true, model.value().get(0).isInDefaultSet());
+        Assertions.assertEquals("xyqvg", model.value().get(0).displayName());
+        Assertions.assertEquals("aodetv", model.value().get(0).description());
+        Assertions.assertEquals("kxdxuwsaifmcwn", model.value().get(0).schemaUrl());
+        Assertions.assertFalse(model.value().get(0).isInDefaultSet());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventTypesListResult model = new EventTypesListResult().withValue(Arrays.asList(
-            new EventTypeInner().withDisplayName("blkwqpatvbqs")
-                .withDescription("cjbctviv")
-                .withSchemaUrl("qymtuowogtgits")
-                .withIsInDefaultSet(true),
-            new EventTypeInner().withDisplayName("rdjyibqb")
-                .withDescription("omhjrmkuhm")
-                .withSchemaUrl("ljalfihcjmobc")
+            new EventTypeInner().withDisplayName("xyqvg")
+                .withDescription("aodetv")
+                .withSchemaUrl("kxdxuwsaifmcwn")
                 .withIsInDefaultSet(false),
-            new EventTypeInner().withDisplayName("l")
-                .withDescription("yyfytpqsixymm")
-                .withSchemaUrl("jivyqlkjuv")
-                .withIsInDefaultSet(true),
-            new EventTypeInner().withDisplayName("nokcv")
-                .withDescription("ubseskvcuartr")
-                .withSchemaUrl("nlp")
+            new EventTypeInner().withDisplayName("ntxwaljglzob")
+                .withDescription("waafrqulh")
+                .withSchemaUrl("yqbhd")
                 .withIsInDefaultSet(true)));
         model = BinaryData.fromObject(model).toObject(EventTypesListResult.class);
-        Assertions.assertEquals("blkwqpatvbqs", model.value().get(0).displayName());
-        Assertions.assertEquals("cjbctviv", model.value().get(0).description());
-        Assertions.assertEquals("qymtuowogtgits", model.value().get(0).schemaUrl());
-        Assertions.assertEquals(true, model.value().get(0).isInDefaultSet());
+        Assertions.assertEquals("xyqvg", model.value().get(0).displayName());
+        Assertions.assertEquals("aodetv", model.value().get(0).description());
+        Assertions.assertEquals("kxdxuwsaifmcwn", model.value().get(0).schemaUrl());
+        Assertions.assertFalse(model.value().get(0).isInDefaultSet());
     }
 }

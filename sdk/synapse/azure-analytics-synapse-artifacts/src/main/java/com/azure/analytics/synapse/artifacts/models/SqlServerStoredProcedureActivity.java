@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "SqlServerStoredProcedure";
 
     /*
      * Stored procedure name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object storedProcedureName;
 
     /*
      * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
+    @Generated
     private Object storedProcedureParameters;
 
     /**
      * Creates an instance of SqlServerStoredProcedureActivity class.
      */
+    @Generated
     public SqlServerStoredProcedureActivity() {
     }
 
@@ -44,6 +49,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * 
      * @return the storedProcedureName value.
      */
+    @Generated
     public Object getStoredProcedureName() {
         return this.storedProcedureName;
     }
@@ -64,6 +71,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
      */
+    @Generated
     public SqlServerStoredProcedureActivity setStoredProcedureName(Object storedProcedureName) {
         this.storedProcedureName = storedProcedureName;
         return this;
@@ -75,6 +83,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * 
      * @return the storedProcedureParameters value.
      */
+    @Generated
     public Object getStoredProcedureParameters() {
         return this.storedProcedureParameters;
     }
@@ -86,6 +95,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
      */
+    @Generated
     public SqlServerStoredProcedureActivity setStoredProcedureParameters(Object storedProcedureParameters) {
         this.storedProcedureParameters = storedProcedureParameters;
         return this;
@@ -94,6 +104,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerStoredProcedureActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -103,6 +114,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerStoredProcedureActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -112,6 +124,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerStoredProcedureActivity setName(String name) {
         super.setName(name);
@@ -121,6 +134,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerStoredProcedureActivity setDescription(String description) {
         super.setDescription(description);
@@ -130,6 +144,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerStoredProcedureActivity setState(ActivityState state) {
         super.setState(state);
@@ -139,6 +154,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerStoredProcedureActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -148,6 +164,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerStoredProcedureActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -157,6 +174,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SqlServerStoredProcedureActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -166,6 +184,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -183,7 +202,9 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
         if (storedProcedureName != null || storedProcedureParameters != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("storedProcedureName", this.storedProcedureName);
-            jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+            if (this.storedProcedureParameters != null) {
+                jsonWriter.writeUntypedField("storedProcedureParameters", this.storedProcedureParameters);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -203,6 +224,7 @@ public class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SqlServerStoredProcedureActivity.
      */
+    @Generated
     public static SqlServerStoredProcedureActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlServerStoredProcedureActivity deserializedSqlServerStoredProcedureActivity

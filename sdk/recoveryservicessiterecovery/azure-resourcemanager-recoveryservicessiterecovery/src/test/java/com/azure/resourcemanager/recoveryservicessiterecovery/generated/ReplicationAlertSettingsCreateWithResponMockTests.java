@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Alert;
@@ -23,26 +23,26 @@ public final class ReplicationAlertSettingsCreateWithResponMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"sendToOwners\":\"xbvkvwzdmvdd\",\"customEmailAddresses\":[\"rugyozzzawnjdv\"],\"locale\":\"rho\"},\"location\":\"kkvxu\",\"id\":\"dqzbvbpsuvqhx\",\"name\":\"ozf\",\"type\":\"dkwbkurklpiig\"}";
+            = "{\"properties\":{\"sendToOwners\":\"yjucamnsb\",\"customEmailAddresses\":[\"twhmucjiuhcxyveh\",\"klely\",\"dvpqfbxgy\"],\"locale\":\"d\"},\"location\":\"dmtxqlefnoheyw\",\"id\":\"fopkyll\",\"name\":\"ey\",\"type\":\"nj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Alert response = manager.replicationAlertSettings()
-            .define("derjennmk")
-            .withExistingVault("ustihtgrafjajvky", "mmjczvog")
-            .withProperties(new ConfigureAlertRequestProperties().withSendToOwners("uwqdwxhhlbmyphf")
-                .withCustomEmailAddresses(Arrays.asList("pdhewokyqs", "kx", "sy"))
-                .withLocale("ihqbtod"))
+            .define("vsl")
+            .withExistingVault("p", "mfxzspf")
+            .withProperties(new ConfigureAlertRequestProperties().withSendToOwners("pplxgtdumjtyc")
+                .withCustomEmailAddresses(Arrays.asList("rznlaxo", "qthkwxfugfz", "zy", "duyjnqzbr"))
+                .withLocale("akmfc"))
             .create();
 
-        Assertions.assertEquals("xbvkvwzdmvdd", response.properties().sendToOwners());
-        Assertions.assertEquals("rugyozzzawnjdv", response.properties().customEmailAddresses().get(0));
-        Assertions.assertEquals("rho", response.properties().locale());
-        Assertions.assertEquals("kkvxu", response.location());
+        Assertions.assertEquals("yjucamnsb", response.properties().sendToOwners());
+        Assertions.assertEquals("twhmucjiuhcxyveh", response.properties().customEmailAddresses().get(0));
+        Assertions.assertEquals("d", response.properties().locale());
+        Assertions.assertEquals("dmtxqlefnoheyw", response.location());
     }
 }

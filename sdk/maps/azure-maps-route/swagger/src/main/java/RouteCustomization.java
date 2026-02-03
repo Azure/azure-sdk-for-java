@@ -46,18 +46,6 @@ public class RouteCustomization extends Customization {
         // customize route directions batch item response
         customizeRouteDirectionsBatchItemResponse(models);
 
-        // customize response section type
-        customizeResponseSectionType(models);
-
-        // customize response travel mode
-        customizeResponseTravelMode(models);
-
-        // customize route
-        customizeRoute(models);
-
-        // customize simple category
-        customizeSimpleCategory(models);
-
         // customize route summary
         customizeRouteSummary(models);
 
@@ -68,7 +56,7 @@ public class RouteCustomization extends Customization {
     // Customizes the RouteMatrix class by flattening the Response property.
     private void customizeRouteMatrix(PackageCustomization models) {
         models.getClass("RouteMatrix").customizeAst(ast -> ast.getClassByName("RouteMatrix").ifPresent(clazz -> {
-            clazz.getMethodsByName("getResponse").get(0).remove();
+            clazz.getMethodsByName("getResponse").forEach(Node::remove);
             clazz.addMethod("getSummary", Modifier.Keyword.PUBLIC)
                 .setType("RouteLegSummary")
                 .setBody(StaticJavaParser.parseBlock("{ return this.response.getSummary(); }"))
@@ -84,11 +72,11 @@ public class RouteCustomization extends Customization {
             ast.addImport("java.util.stream.Collectors");
             ast.addImport("com.azure.core.models.GeoPosition");
 
-            ast.getClassByName("RouteLeg").ifPresent(clazz -> clazz.getMethodsByName("getPoints").get(0)
-                .setType("List<GeoPosition>")
+            ast.getClassByName("RouteLeg").ifPresent(clazz -> clazz.getMethodsByName("getPoints")
+                .forEach(method -> method.setType("List<GeoPosition>")
                 .setBody(StaticJavaParser.parseBlock("{ return this.points.stream().map(item -> new GeoPosition(item.getLongitude(), item.getLatitude())).collect(Collectors.toList()); }"))
                 .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns a list of {@link GeoPosition} coordinates."))
-                    .addBlockTag("return", "a list of {@code GeoPosition} coordinates.")));
+                    .addBlockTag("return", "a list of {@code GeoPosition} coordinates."))));
         });
     }
 
@@ -98,11 +86,11 @@ public class RouteCustomization extends Customization {
             ast.addImport("com.azure.core.models.GeoPosition");
 
             ast.getClassByName("RouteInstruction").ifPresent(clazz -> {
-                clazz.getMethodsByName("setPoint").get(0).remove();
-                clazz.getMethodsByName("getPoint").get(0).setType("GeoPosition")
+                clazz.getMethodsByName("setPoint").forEach(Node::remove);
+                clazz.getMethodsByName("getPoint").forEach(method -> method.setType("GeoPosition")
                     .setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this.point.getLongitude(), this.point.getLatitude()); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns the {@link GeoPosition} coordinates of this instruction."))
-                        .addBlockTag("return", "a {@code GeoPosition} with the coordinates of this instruction."));
+                        .addBlockTag("return", "a {@code GeoPosition} with the coordinates of this instruction.")));
             });
         });
     }
@@ -117,16 +105,14 @@ public class RouteCustomization extends Customization {
             ast.getClassByName("RouteRange").ifPresent(clazz -> {
                 clazz.getMethodsByName("setCenter").forEach(Node::remove);
 
-                clazz.getMethodsByName("getBoundary").get(0)
-                    .setType("List<GeoPosition>")
+                clazz.getMethodsByName("getBoundary").forEach(method -> method.setType("List<GeoPosition>")
                     .setBody(StaticJavaParser.parseBlock("{ return this.boundary.stream().map(item -> new GeoPosition(item.getLongitude(), item.getLatitude())).collect(Collectors.toList()); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns a list of {@link GeoPosition} coordinates."))
-                        .addBlockTag("return", "a list of {@code GeoPosition} representing the boundary."));
-                clazz.getMethodsByName("getCenter").get(0)
-                    .setType("GeoPosition")
+                        .addBlockTag("return", "a list of {@code GeoPosition} representing the boundary.")));
+                clazz.getMethodsByName("getCenter").forEach(method -> method.setType("GeoPosition")
                     .setBody(StaticJavaParser.parseBlock("{ return new GeoPosition(this.center.getLongitude(), this.center.getLatitude()); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Returns the {@link GeoPosition} coordinates of the center of the range."))
-                        .addBlockTag("return", "a {@code GeoPosition} with the coordinates of the center."));
+                        .addBlockTag("return", "a {@code GeoPosition} with the coordinates of the center.")));
             });
         });
     }
@@ -137,7 +123,7 @@ public class RouteCustomization extends Customization {
             ast.addImport("com.azure.core.models.ResponseError");
 
             ast.getClassByName("RouteDirectionsBatchItem").ifPresent(clazz -> {
-                clazz.getMethodsByName("getResponse").get(0).remove();
+                clazz.getMethodsByName("getResponse").forEach(Node::remove);
 
                 clazz.addMethod("getError", Modifier.Keyword.PUBLIC)
                     .setType("ResponseError")
@@ -190,41 +176,19 @@ public class RouteCustomization extends Customization {
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Constructor with error."))
                         .addBlockTag("param", "error the error object"));
 
-                clazz.getMethodsByName("getError").get(0)
-                    .setType("ResponseError")
+                clazz.getMethodsByName("getError").forEach(method -> method.setType("ResponseError")
                     .setBody(StaticJavaParser.parseBlock("{ return new ResponseError(this.error.getCode(), this.error.getMessage()); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the error property: The error object."))
-                        .addBlockTag("return", "the error value."));
+                        .addBlockTag("return", "the error value.")));
 
-                clazz.getMethodsByName("setError").get(0)
-                    .setType("RouteDirectionsBatchItemResponse")
+                clazz.getMethodsByName("setError").forEach(method -> method.setType("RouteDirectionsBatchItemResponse")
                     .setParameters(new NodeList<>(new Parameter().setType("ResponseError").setName("error")))
                     .setBody(StaticJavaParser.parseBlock("{ this.error = new ErrorDetail().setCode(error.getCode()).setMessage(error.getMessage()); return this; }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText("Set the error property: The error object."))
                         .addBlockTag("param", "error the error value to set.")
-                        .addBlockTag("return", "the RouteDirectionsBatchItemResponse object itself."));
+                        .addBlockTag("return", "the RouteDirectionsBatchItemResponse object itself.")));
             });
         });
-    }
-
-    // Customizes the ResponseSectionType class by changing the class name
-    private void customizeResponseSectionType(PackageCustomization models) {
-        models.getClass("ResponseSectionType").rename("RouteSectionType");
-    }
-
-    // Customizes the ResponseTravelMode class by changing the class name
-    private void customizeResponseTravelMode(PackageCustomization models) {
-        models.getClass("ResponseTravelMode").rename("RouteTravelMode");
-    }
-
-    // Customizes the Route class by changing the class name
-    private void customizeRoute(PackageCustomization models) {
-        models.getClass("Route").rename("MapsSearchRoute");
-    }
-
-    // Customizes the SimpleCategory class by changing the class name
-    private void customizeSimpleCategory(PackageCustomization models) {
-        models.getClass("SimpleCategory").rename("RouteDelayReason");
     }
 
     // Customizes the RouteReport class
@@ -233,18 +197,11 @@ public class RouteCustomization extends Customization {
             ast.addImport("java.util.Map");
             ast.addImport("java.util.HashMap");
 
-            ast.getClassByName("RouteReport").ifPresent(clazz -> {
-                clazz.getMethodsByName("getEffectiveSettings").get(0)
-                    .setType("Map<String, String>")
-                    .setBody(StaticJavaParser.parseBlock(String.join("\n",
-                        "{",
-                        "    Map<String, String> map = new HashMap<>();",
-                        "    for (EffectiveSetting effectiveSetting : this.effectiveSettings) {",
-                        "        map.put(effectiveSetting.getKey(), effectiveSetting.getValue());",
-                        "    }",
-                        "    return map;",
-                        "}")));
-            });
+            ast.getClassByName("RouteReport").ifPresent(clazz -> clazz.getMethodsByName("getEffectiveSettings")
+                .forEach(method -> method.setType("Map<String, String>")
+                    .setBody(StaticJavaParser.parseBlock("{ Map<String, String> map = new HashMap<>();"
+                        + "for (EffectiveSetting effectiveSetting : this.effectiveSettings) {"
+                        + "map.put(effectiveSetting.getKey(), effectiveSetting.getValue()); } return map; }"))));
         });
     }
 
@@ -254,24 +211,22 @@ public class RouteCustomization extends Customization {
             ast.addImport("java.time.Duration");
 
             ast.getClassByName("RouteSummary").ifPresent(clazz -> {
-                clazz.getMethodsByName("getTravelTimeInSeconds").get(0)
-                    .setType("Duration")
+                clazz.getMethodsByName("getTravelTimeInSeconds").forEach(method -> method.setType("Duration")
                     .setBody(StaticJavaParser.parseBlock("{ return Duration.ofSeconds(this.travelTimeInSeconds); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Get the travelTimeInSeconds property: Estimated travel time in seconds property that includes the delay due to\n"
-                            + "real-time traffic. Note that even when traffic=false travelTimeInSeconds still includes the delay due to traffic.\n"
+                        "Get the travelTimeInSeconds property: Estimated travel time in seconds property that includes the delay due to "
+                            + "real-time traffic. Note that even when traffic=false travelTimeInSeconds still includes the delay due to traffic. "
                             + "If DepartAt is in the future, travel time is calculated using time-dependent historic traffic data."))
-                        .addBlockTag("return", "the travelTimeInSeconds value."));
+                        .addBlockTag("return", "the travelTimeInSeconds value.")));
 
-                clazz.getMethodsByName("getTrafficDelayInSeconds").get(0)
-                    .setType("Duration")
+                clazz.getMethodsByName("getTrafficDelayInSeconds").forEach(method -> method.setType("Duration")
                     .setBody(StaticJavaParser.parseBlock("{ return Duration.ofSeconds(this.trafficDelayInSeconds); }"))
                     .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Get the trafficDelayInSeconds property: Estimated delay in seconds caused by the real-time incident(s) according\n"
-                            + "to traffic information. For routes planned with departure time in the future, delays is always 0. To return\n"
-                            + "additional travel times using different types of traffic information, parameter computeTravelTimeFor=all needs to\n"
+                        "Get the trafficDelayInSeconds property: Estimated delay in seconds caused by the real-time incident(s) according "
+                            + "to traffic information. For routes planned with departure time in the future, delays is always 0. To return "
+                            + "additional travel times using different types of traffic information, parameter computeTravelTimeFor=all needs to "
                             + "be added."))
-                        .addBlockTag("return", "the trafficDelayInSeconds value."));
+                        .addBlockTag("return", "the trafficDelayInSeconds value.")));
             });
         });
     }

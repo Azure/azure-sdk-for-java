@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DegreeDaySummary implements JsonSerializable<DegreeDaySummary
     /*
      * Number of degrees that the mean temperature is below 65 degrees F/ 18 degree C.
      */
+    @Generated
     private WeatherUnitDetails heating;
 
     /*
      * Number of degrees that the mean temperature is above 65 degrees F/ 18 degree C.
      */
+    @Generated
     private WeatherUnitDetails cooling;
 
     /**
      * Set default DegreeDaySummary constructor to private
      */
+    @Generated
     private DegreeDaySummary() {
     }
 
@@ -37,6 +41,7 @@ public final class DegreeDaySummary implements JsonSerializable<DegreeDaySummary
      *
      * @return the heating value.
      */
+    @Generated
     public WeatherUnitDetails getHeating() {
         return this.heating;
     }
@@ -46,6 +51,7 @@ public final class DegreeDaySummary implements JsonSerializable<DegreeDaySummary
      *
      * @return the cooling value.
      */
+    @Generated
     public WeatherUnitDetails getCooling() {
         return this.cooling;
     }
@@ -53,6 +59,7 @@ public final class DegreeDaySummary implements JsonSerializable<DegreeDaySummary
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public final class DegreeDaySummary implements JsonSerializable<DegreeDaySummary
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DegreeDaySummary.
      */
+    @Generated
     public static DegreeDaySummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DegreeDaySummary deserializedDegreeDaySummary = new DegreeDaySummary();

@@ -13,19 +13,19 @@ public final class InMageUnplannedFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageUnplannedFailoverInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMage\",\"recoveryPointType\":\"LatestTag\",\"recoveryPointId\":\"aadcndazabundt\"}")
+            "{\"instanceType\":\"InMage\",\"recoveryPointType\":\"LatestTag\",\"recoveryPointId\":\"qxfcssanybzzgh\"}")
             .toObject(InMageUnplannedFailoverInput.class);
         Assertions.assertEquals(RecoveryPointType.LATEST_TAG, model.recoveryPointType());
-        Assertions.assertEquals("aadcndazabundt", model.recoveryPointId());
+        Assertions.assertEquals("qxfcssanybzzgh", model.recoveryPointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageUnplannedFailoverInput model
             = new InMageUnplannedFailoverInput().withRecoveryPointType(RecoveryPointType.LATEST_TAG)
-                .withRecoveryPointId("aadcndazabundt");
+                .withRecoveryPointId("qxfcssanybzzgh");
         model = BinaryData.fromObject(model).toObject(InMageUnplannedFailoverInput.class);
         Assertions.assertEquals(RecoveryPointType.LATEST_TAG, model.recoveryPointType());
-        Assertions.assertEquals("aadcndazabundt", model.recoveryPointId());
+        Assertions.assertEquals("qxfcssanybzzgh", model.recoveryPointId());
     }
 }

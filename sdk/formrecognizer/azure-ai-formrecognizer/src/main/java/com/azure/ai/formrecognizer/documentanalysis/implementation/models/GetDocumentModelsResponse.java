@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class GetDocumentModelsResponse implements JsonSerializable<GetDocu
     /*
      * List of document models.
      */
+    @Generated
     private final List<DocumentModelSummary> value;
 
     /*
      * Link to the next page of document models.
      */
+    @Generated
     private String nextLink;
 
     /**
@@ -32,6 +35,7 @@ public final class GetDocumentModelsResponse implements JsonSerializable<GetDocu
      * 
      * @param value the value value to set.
      */
+    @Generated
     public GetDocumentModelsResponse(List<DocumentModelSummary> value) {
         this.value = value;
     }
@@ -41,6 +45,7 @@ public final class GetDocumentModelsResponse implements JsonSerializable<GetDocu
      * 
      * @return the value value.
      */
+    @Generated
     public List<DocumentModelSummary> getValue() {
         return this.value;
     }
@@ -50,6 +55,7 @@ public final class GetDocumentModelsResponse implements JsonSerializable<GetDocu
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -60,6 +66,7 @@ public final class GetDocumentModelsResponse implements JsonSerializable<GetDocu
      * @param nextLink the nextLink value to set.
      * @return the GetDocumentModelsResponse object itself.
      */
+    @Generated
     public GetDocumentModelsResponse setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -68,6 +75,7 @@ public final class GetDocumentModelsResponse implements JsonSerializable<GetDocu
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -85,6 +93,7 @@ public final class GetDocumentModelsResponse implements JsonSerializable<GetDocu
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GetDocumentModelsResponse.
      */
+    @Generated
     public static GetDocumentModelsResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean valueFound = false;

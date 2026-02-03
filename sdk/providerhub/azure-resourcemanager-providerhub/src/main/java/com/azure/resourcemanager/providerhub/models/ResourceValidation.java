@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ResourceValidation.
+ * The resource validation.
  */
 public final class ResourceValidation extends ExpandableStringEnum<ResourceValidation> {
     /**

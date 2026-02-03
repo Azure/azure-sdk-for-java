@@ -16,58 +16,63 @@ public final class ParameterContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterContract model = BinaryData.fromString(
-            "{\"name\":\"rqttbajlkatnw\",\"description\":\"iopid\",\"type\":\"qqfkuv\",\"defaultValue\":\"xkdmligo\",\"required\":false,\"values\":[\"kpmloa\"],\"schemaId\":\"ruocbgo\",\"typeName\":\"bteoybf\",\"examples\":{\"xccybvpa\":{\"summary\":\"kvvjgslordilmyww\",\"description\":\"gkxnyedabg\",\"value\":\"dataudtjuewbc\",\"externalValue\":\"xuuwhcj\"},\"ogsjkmnwqjno\":{\"summary\":\"kkudzp\",\"description\":\"wjplma\",\"value\":\"datatcyohpfkyrk\",\"externalValue\":\"dg\"},\"evwrdnhfuk\":{\"summary\":\"iyhddvi\",\"description\":\"egfnmntfpmvmemfn\",\"value\":\"datadwvvba\",\"externalValue\":\"lllchpodb\"}}}")
+            "{\"name\":\"ld\",\"description\":\"obfirclnpk\",\"type\":\"iayz\",\"defaultValue\":\"ykhyawfvjlboxqvk\",\"required\":false,\"values\":[\"omdynhdwdigum\"],\"schemaId\":\"raauzzpt\",\"typeName\":\"zysdzh\",\"examples\":{\"ekrsgs\":{\"summary\":\"vaiqyuvvf\",\"description\":\"kphhq\",\"value\":\"datakvylauyavl\",\"externalValue\":\"mncsttijfybvp\"},\"dxzxhi\":{\"summary\":\"dhuzqgnjdgk\",\"description\":\"scliq\",\"value\":\"datavhxnk\",\"externalValue\":\"tkubotppn\"},\"m\":{\"summary\":\"rbbcevq\",\"description\":\"tltdhlfkqojpy\",\"value\":\"datagtrd\",\"externalValue\":\"ifmzzsd\"},\"ud\":{\"summary\":\"nysuxmprafwgckh\",\"description\":\"xvd\",\"value\":\"datafwafqrouda\",\"externalValue\":\"avehhrvkbunzo\"}}}")
             .toObject(ParameterContract.class);
-        Assertions.assertEquals("rqttbajlkatnw", model.name());
-        Assertions.assertEquals("iopid", model.description());
-        Assertions.assertEquals("qqfkuv", model.type());
-        Assertions.assertEquals("xkdmligo", model.defaultValue());
-        Assertions.assertEquals(false, model.required());
-        Assertions.assertEquals("kpmloa", model.values().get(0));
-        Assertions.assertEquals("ruocbgo", model.schemaId());
-        Assertions.assertEquals("bteoybf", model.typeName());
-        Assertions.assertEquals("kvvjgslordilmyww", model.examples().get("xccybvpa").summary());
-        Assertions.assertEquals("gkxnyedabg", model.examples().get("xccybvpa").description());
-        Assertions.assertEquals("xuuwhcj", model.examples().get("xccybvpa").externalValue());
+        Assertions.assertEquals("ld", model.name());
+        Assertions.assertEquals("obfirclnpk", model.description());
+        Assertions.assertEquals("iayz", model.type());
+        Assertions.assertEquals("ykhyawfvjlboxqvk", model.defaultValue());
+        Assertions.assertFalse(model.required());
+        Assertions.assertEquals("omdynhdwdigum", model.values().get(0));
+        Assertions.assertEquals("raauzzpt", model.schemaId());
+        Assertions.assertEquals("zysdzh", model.typeName());
+        Assertions.assertEquals("vaiqyuvvf", model.examples().get("ekrsgs").summary());
+        Assertions.assertEquals("kphhq", model.examples().get("ekrsgs").description());
+        Assertions.assertEquals("mncsttijfybvp", model.examples().get("ekrsgs").externalValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterContract model = new ParameterContract().withName("rqttbajlkatnw")
-            .withDescription("iopid")
-            .withType("qqfkuv")
-            .withDefaultValue("xkdmligo")
+        ParameterContract model = new ParameterContract().withName("ld")
+            .withDescription("obfirclnpk")
+            .withType("iayz")
+            .withDefaultValue("ykhyawfvjlboxqvk")
             .withRequired(false)
-            .withValues(Arrays.asList("kpmloa"))
-            .withSchemaId("ruocbgo")
-            .withTypeName("bteoybf")
-            .withExamples(mapOf("xccybvpa",
-                new ParameterExampleContract().withSummary("kvvjgslordilmyww")
-                    .withDescription("gkxnyedabg")
-                    .withValue("dataudtjuewbc")
-                    .withExternalValue("xuuwhcj"),
-                "ogsjkmnwqjno",
-                new ParameterExampleContract().withSummary("kkudzp")
-                    .withDescription("wjplma")
-                    .withValue("datatcyohpfkyrk")
-                    .withExternalValue("dg"),
-                "evwrdnhfuk",
-                new ParameterExampleContract().withSummary("iyhddvi")
-                    .withDescription("egfnmntfpmvmemfn")
-                    .withValue("datadwvvba")
-                    .withExternalValue("lllchpodb")));
+            .withValues(Arrays.asList("omdynhdwdigum"))
+            .withSchemaId("raauzzpt")
+            .withTypeName("zysdzh")
+            .withExamples(mapOf("ekrsgs",
+                new ParameterExampleContract().withSummary("vaiqyuvvf")
+                    .withDescription("kphhq")
+                    .withValue("datakvylauyavl")
+                    .withExternalValue("mncsttijfybvp"),
+                "dxzxhi",
+                new ParameterExampleContract().withSummary("dhuzqgnjdgk")
+                    .withDescription("scliq")
+                    .withValue("datavhxnk")
+                    .withExternalValue("tkubotppn"),
+                "m",
+                new ParameterExampleContract().withSummary("rbbcevq")
+                    .withDescription("tltdhlfkqojpy")
+                    .withValue("datagtrd")
+                    .withExternalValue("ifmzzsd"),
+                "ud",
+                new ParameterExampleContract().withSummary("nysuxmprafwgckh")
+                    .withDescription("xvd")
+                    .withValue("datafwafqrouda")
+                    .withExternalValue("avehhrvkbunzo")));
         model = BinaryData.fromObject(model).toObject(ParameterContract.class);
-        Assertions.assertEquals("rqttbajlkatnw", model.name());
-        Assertions.assertEquals("iopid", model.description());
-        Assertions.assertEquals("qqfkuv", model.type());
-        Assertions.assertEquals("xkdmligo", model.defaultValue());
-        Assertions.assertEquals(false, model.required());
-        Assertions.assertEquals("kpmloa", model.values().get(0));
-        Assertions.assertEquals("ruocbgo", model.schemaId());
-        Assertions.assertEquals("bteoybf", model.typeName());
-        Assertions.assertEquals("kvvjgslordilmyww", model.examples().get("xccybvpa").summary());
-        Assertions.assertEquals("gkxnyedabg", model.examples().get("xccybvpa").description());
-        Assertions.assertEquals("xuuwhcj", model.examples().get("xccybvpa").externalValue());
+        Assertions.assertEquals("ld", model.name());
+        Assertions.assertEquals("obfirclnpk", model.description());
+        Assertions.assertEquals("iayz", model.type());
+        Assertions.assertEquals("ykhyawfvjlboxqvk", model.defaultValue());
+        Assertions.assertFalse(model.required());
+        Assertions.assertEquals("omdynhdwdigum", model.values().get(0));
+        Assertions.assertEquals("raauzzpt", model.schemaId());
+        Assertions.assertEquals("zysdzh", model.typeName());
+        Assertions.assertEquals("vaiqyuvvf", model.examples().get("ekrsgs").summary());
+        Assertions.assertEquals("kphhq", model.examples().get("ekrsgs").description());
+        Assertions.assertEquals("mncsttijfybvp", model.examples().get("ekrsgs").externalValue());
     }
 
     // Use "Map.of" if available

@@ -51,7 +51,7 @@ public final class WaitActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private WaitActivityTypeProperties innerTypeProperties() {
+    WaitActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

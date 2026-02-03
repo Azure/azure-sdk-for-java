@@ -63,18 +63,6 @@ public final class SingleServerFullResourceNames extends SingleServerCustomResou
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (virtualMachine() != null) {
-            virtualMachine().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

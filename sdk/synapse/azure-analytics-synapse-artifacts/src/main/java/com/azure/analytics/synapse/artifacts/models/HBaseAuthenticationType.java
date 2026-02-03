@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class HBaseAuthenticationType extends ExpandableStringEnum<HBaseAut
     /**
      * Static value Anonymous for HBaseAuthenticationType.
      */
+    @Generated
     public static final HBaseAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
      * Static value Basic for HBaseAuthenticationType.
      */
+    @Generated
     public static final HBaseAuthenticationType BASIC = fromString("Basic");
 
     /**
@@ -26,6 +29,7 @@ public final class HBaseAuthenticationType extends ExpandableStringEnum<HBaseAut
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public HBaseAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class HBaseAuthenticationType extends ExpandableStringEnum<HBaseAut
      * @param name a name to look for.
      * @return the corresponding HBaseAuthenticationType.
      */
+    @Generated
     public static HBaseAuthenticationType fromString(String name) {
         return fromString(name, HBaseAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class HBaseAuthenticationType extends ExpandableStringEnum<HBaseAut
      * 
      * @return known HBaseAuthenticationType values.
      */
+    @Generated
     public static Collection<HBaseAuthenticationType> values() {
         return values(HBaseAuthenticationType.class);
     }

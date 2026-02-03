@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateSapCentralInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateSapCentralInstanceRequest model
-            = BinaryData.fromString("{\"tags\":{\"an\":\"bfatklddxbjhwu\",\"youlp\":\"zjosp\"}}")
-                .toObject(UpdateSapCentralInstanceRequest.class);
-        Assertions.assertEquals("bfatklddxbjhwu", model.tags().get("an"));
+        UpdateSapCentralInstanceRequest model = BinaryData.fromString(
+            "{\"tags\":{\"ynkedyatrwyhqmib\":\"i\",\"mnzgmwznmabi\":\"yhwitsmypyynpcdp\",\"wwrlkdmtncv\":\"nsorgjhxbldt\",\"xdy\":\"kotl\"}}")
+            .toObject(UpdateSapCentralInstanceRequest.class);
+        Assertions.assertEquals("i", model.tags().get("ynkedyatrwyhqmib"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateSapCentralInstanceRequest model
-            = new UpdateSapCentralInstanceRequest().withTags(mapOf("an", "bfatklddxbjhwu", "youlp", "zjosp"));
+        UpdateSapCentralInstanceRequest model = new UpdateSapCentralInstanceRequest().withTags(mapOf("ynkedyatrwyhqmib",
+            "i", "mnzgmwznmabi", "yhwitsmypyynpcdp", "wwrlkdmtncv", "nsorgjhxbldt", "xdy", "kotl"));
         model = BinaryData.fromObject(model).toObject(UpdateSapCentralInstanceRequest.class);
-        Assertions.assertEquals("bfatklddxbjhwu", model.tags().get("an"));
+        Assertions.assertEquals("i", model.tags().get("ynkedyatrwyhqmib"));
     }
 
     // Use "Map.of" if available

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class EncryptionDetails implements JsonSerializable<EncryptionDetai
     /*
      * Double Encryption enabled
      */
+    @Generated
     private Boolean doubleEncryptionEnabled;
 
     /*
      * Customer Managed Key Details
      */
+    @Generated
     private CustomerManagedKeyDetails cmk;
 
     /**
      * Creates an instance of EncryptionDetails class.
      */
+    @Generated
     public EncryptionDetails() {
     }
 
@@ -37,6 +41,7 @@ public final class EncryptionDetails implements JsonSerializable<EncryptionDetai
      * 
      * @return the doubleEncryptionEnabled value.
      */
+    @Generated
     public Boolean isDoubleEncryptionEnabled() {
         return this.doubleEncryptionEnabled;
     }
@@ -46,6 +51,7 @@ public final class EncryptionDetails implements JsonSerializable<EncryptionDetai
      * 
      * @return the cmk value.
      */
+    @Generated
     public CustomerManagedKeyDetails getCmk() {
         return this.cmk;
     }
@@ -56,6 +62,7 @@ public final class EncryptionDetails implements JsonSerializable<EncryptionDetai
      * @param cmk the cmk value to set.
      * @return the EncryptionDetails object itself.
      */
+    @Generated
     public EncryptionDetails setCmk(CustomerManagedKeyDetails cmk) {
         this.cmk = cmk;
         return this;
@@ -64,6 +71,7 @@ public final class EncryptionDetails implements JsonSerializable<EncryptionDetai
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -79,6 +87,7 @@ public final class EncryptionDetails implements JsonSerializable<EncryptionDetai
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the EncryptionDetails.
      */
+    @Generated
     public static EncryptionDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EncryptionDetails deserializedEncryptionDetails = new EncryptionDetails();

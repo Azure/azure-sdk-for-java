@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
  */
 public interface CreateAndAssociateIpFilters {
     /**
-     * Create and Associate IP traffic filter for the given deployment.
+     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -22,7 +22,7 @@ public interface CreateAndAssociateIpFilters {
     void create(String resourceGroupName, String monitorName);
 
     /**
-     * Create and Associate IP traffic filter for the given deployment.
+     * Create and associate an IP filter with your Elastic monitor resource to control and manage network traffic.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

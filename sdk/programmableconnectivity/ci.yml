@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/programmableconnectivity/ci.yml
+      - sdk/programmableconnectivity/azure-resourcemanager-programmableconnectivity/
+    exclude:
+      - sdk/programmableconnectivity/pom.xml
+      - sdk/programmableconnectivity/azure-resourcemanager-programmableconnectivity/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/programmableconnectivity/ci.yml
+      - sdk/programmableconnectivity/azure-resourcemanager-programmableconnectivity/
+    exclude:
+      - sdk/programmableconnectivity/pom.xml
+      - sdk/programmableconnectivity/azure-resourcemanager-programmableconnectivity/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerprogrammableconnectivity
+    displayName: azure-resourcemanager-programmableconnectivity
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: programmableconnectivity
+    Artifacts:
+      - name: azure-resourcemanager-programmableconnectivity
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerprogrammableconnectivity
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerprogrammableconnectivity }}

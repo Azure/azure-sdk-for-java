@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Diagnostics;
@@ -22,35 +22,37 @@ public final class JobsListDetectorsMockTests {
     @Test
     public void testListDetectors() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"olmugpyvao\",\"name\":\"kluwz\",\"description\":\"ygz\",\"author\":\"yevjhubnobguq\",\"category\":\"qsq\",\"supportTopicList\":[{\"id\":\"ioyj\",\"pesId\":\"mlviqcpszpmcvqdv\"},{\"id\":\"mvxyrxdh\",\"pesId\":\"qojbxao\"},{\"id\":\"gbzxmbtplefoioy\",\"pesId\":\"oxznvgvd\"}],\"analysisTypes\":[\"uvda\",\"sxmrszbknimxlp\"],\"type\":\"rxrzutylcur\",\"score\":4.548967},\"dataset\":[{\"table\":{\"tableName\":\"qaeht\",\"columns\":[{},{}],\"rows\":[\"datanvynfaooeactedc\",\"datalsk\",\"datak\"]},\"renderingProperties\":{\"type\":247319273,\"title\":\"hzllrqmtlpbyxro\",\"description\":\"uyqyp\",\"isVisible\":true}},{\"table\":{\"tableName\":\"iicsudyhbrjjt\",\"columns\":[{},{},{},{}],\"rows\":[\"datasjrholuqwgus\",\"dataxhdod\",\"datajwyblvtbdmvsb\",\"dataidaelqpvekmkwjfb\"]},\"renderingProperties\":{\"type\":912529746,\"title\":\"gdusxurs\",\"description\":\"v\",\"isVisible\":true}}],\"status\":{\"message\":\"coqwczsyiqri\",\"statusId\":916243678},\"dataProviderMetadata\":{\"providerName\":\"vaangqtnhjrfdmf\",\"propertyBag\":[{\"name\":\"aexxjfwtgdfkka\",\"value\":\"gvmuafmczf\"},{\"name\":\"yuepsvpltidajjvy\",\"value\":\"ocfkumcfjxoky\"}]}},\"id\":\"syasvfnkwmygjjek\",\"name\":\"knfdr\",\"type\":\"gjqyckgtxkrdtulc\"}]}";
+            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"cmufunlcpxxv\",\"name\":\"yeyng\",\"description\":\"vrquv\",\"author\":\"gglpmcrdcuelj\",\"category\":\"ahxm\",\"supportTopicList\":[{\"id\":\"arvsx\",\"pesId\":\"bglcjkayspthzodu\"},{\"id\":\"lmjtg\",\"pesId\":\"ioskkfmkmfdjxyxg\"},{\"id\":\"kqvjcteoedlr\",\"pesId\":\"skkzpxvjnzdpvo\"}],\"analysisTypes\":[\"hpcnabxzfsn\",\"gyte\"],\"type\":\"zilmhivzkww\",\"score\":40.958393},\"dataset\":[{\"table\":{\"tableName\":\"dajlskzpt\",\"columns\":[{},{},{}],\"rows\":[\"dataeucyrth\",\"dataqlehmcgcjeinu\"]},\"renderingProperties\":{\"type\":1413570369,\"title\":\"mvfejvqnttmbqd\",\"description\":\"zfivfokpysthhzag\",\"isVisible\":false}},{\"table\":{\"tableName\":\"rlhgenuze\",\"columns\":[{},{},{}],\"rows\":[\"dataeba\"]},\"renderingProperties\":{\"type\":1830979931,\"title\":\"rzl\",\"description\":\"mdqgmihzpimcqr\",\"isVisible\":true}},{\"table\":{\"tableName\":\"inklogxs\",\"columns\":[{},{},{},{}],\"rows\":[\"datahzvqnsqktcmbjwz\",\"dataoslpky\"]},\"renderingProperties\":{\"type\":1502522516,\"title\":\"kzpgaj\",\"description\":\"jcemqbmfuvqar\",\"isVisible\":false}},{\"table\":{\"tableName\":\"rebluimmbwxsf\",\"columns\":[{},{},{}],\"rows\":[\"datavxekraokqkbud\"]},\"renderingProperties\":{\"type\":2107378541,\"title\":\"kbavlyt\",\"description\":\"aknwfrkebsmh\",\"isVisible\":false}}],\"status\":{\"message\":\"igatolekscbctna\",\"statusId\":1168856320},\"dataProviderMetadata\":{\"providerName\":\"bzxpdcld\",\"propertyBag\":[{\"name\":\"n\",\"value\":\"laimouxwk\"},{\"name\":\"mud\",\"value\":\"coibicziuswswjrk\"},{\"name\":\"sjhbtq\",\"value\":\"yfscyrfwbivqvo\"}]}},\"id\":\"uyzwvbhlimbyqecr\",\"name\":\"odlikcdrdaasax\",\"type\":\"obsmf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Diagnostics> response
-            = manager.jobs().listDetectors("hmmlc", "yarnggcjfwblqhxk", com.azure.core.util.Context.NONE);
+            = manager.jobs().listDetectors("xkecifhocj", "wkloozr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("uvda", response.iterator().next().properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("qaeht", response.iterator().next().properties().dataset().get(0).table().tableName());
-        Assertions.assertEquals(247319273,
+        Assertions.assertEquals("hpcnabxzfsn",
+            response.iterator().next().properties().metadata().analysisTypes().get(0));
+        Assertions.assertEquals("dajlskzpt",
+            response.iterator().next().properties().dataset().get(0).table().tableName());
+        Assertions.assertEquals(1413570369,
             response.iterator().next().properties().dataset().get(0).renderingProperties().type());
-        Assertions.assertEquals("hzllrqmtlpbyxro",
+        Assertions.assertEquals("mvfejvqnttmbqd",
             response.iterator().next().properties().dataset().get(0).renderingProperties().title());
-        Assertions.assertEquals("uyqyp",
+        Assertions.assertEquals("zfivfokpysthhzag",
             response.iterator().next().properties().dataset().get(0).renderingProperties().description());
-        Assertions.assertEquals(true,
-            response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
-        Assertions.assertEquals("coqwczsyiqri", response.iterator().next().properties().status().message());
-        Assertions.assertEquals(916243678, response.iterator().next().properties().status().statusId());
-        Assertions.assertEquals("vaangqtnhjrfdmf",
+        Assertions
+            .assertFalse(response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
+        Assertions.assertEquals("igatolekscbctna", response.iterator().next().properties().status().message());
+        Assertions.assertEquals(1168856320, response.iterator().next().properties().status().statusId());
+        Assertions.assertEquals("bzxpdcld",
             response.iterator().next().properties().dataProviderMetadata().providerName());
-        Assertions.assertEquals("aexxjfwtgdfkka",
+        Assertions.assertEquals("n",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).name());
-        Assertions.assertEquals("gvmuafmczf",
+        Assertions.assertEquals("laimouxwk",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).value());
     }
 }

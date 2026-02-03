@@ -27,6 +27,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
@@ -68,13 +69,23 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ContainerOrchestrato")
+    @ServiceInterface(name = "ContainerOrchestratorRuntimeMgmtClientLoadBalancers")
     public interface LoadBalancersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LoadBalancerInner>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("loadBalancerName") String loadBalancerName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LoadBalancerInner> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
             @PathParam("loadBalancerName") String loadBalancerName, @HeaderParam("Accept") String accept,
@@ -90,15 +101,32 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             @HeaderParam("Accept") String accept, @BodyParam("application/json") LoadBalancerInner resource,
             Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Put("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("loadBalancerName") String loadBalancerName, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") LoadBalancerInner resource,
+            Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @PathParam("loadBalancerName") String loadBalancerName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("loadBalancerName") String loadBalancerName, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers/{loadBalancerName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("loadBalancerName") String loadBalancerName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers")
@@ -110,10 +138,26 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.KubernetesRuntime/loadBalancers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LoadBalancerListResult> listSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LoadBalancerListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<LoadBalancerListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -129,53 +173,11 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LoadBalancerInner>> getWithResponseAsync(String resourceUri, String loadBalancerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
                 loadBalancerName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadBalancer along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LoadBalancerInner>> getWithResponseAsync(String resourceUri, String loadBalancerName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, loadBalancerName,
-            accept, context);
     }
 
     /**
@@ -206,7 +208,9 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LoadBalancerInner> getWithResponse(String resourceUri, String loadBalancerName, Context context) {
-        return getWithResponseAsync(resourceUri, loadBalancerName, context).block();
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, loadBalancerName,
+            accept, context);
     }
 
     /**
@@ -239,22 +243,6 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceUri,
         String loadBalancerName, LoadBalancerInner resource) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
@@ -269,36 +257,40 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param loadBalancerName The name of the LoadBalancer.
      * @param resource Resource create parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters) along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String loadBalancerName,
+        LoadBalancerInner resource) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+            loadBalancerName, contentType, accept, resource, Context.NONE);
+    }
+
+    /**
+     * Create a LoadBalancer.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @param loadBalancerName The name of the LoadBalancer.
+     * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters) along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceUri,
-        String loadBalancerName, LoadBalancerInner resource, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        if (resource == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
-        } else {
-            resource.validate();
-        }
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceUri, String loadBalancerName,
+        LoadBalancerInner resource, Context context) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
             loadBalancerName, contentType, accept, resource, context);
     }
 
@@ -329,29 +321,6 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param loadBalancerName The name of the LoadBalancer.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of a LoadBalancer resource for an Arc connected cluster
-     * (Microsoft.Kubernetes/connectedClusters).
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdateAsync(String resourceUri,
-        String loadBalancerName, LoadBalancerInner resource, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceUri, loadBalancerName, resource, context);
-        return this.client.<LoadBalancerInner, LoadBalancerInner>getLroResult(mono, this.client.getHttpPipeline(),
-            LoadBalancerInner.class, LoadBalancerInner.class, context);
-    }
-
-    /**
-     * Create a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -361,7 +330,9 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceUri,
         String loadBalancerName, LoadBalancerInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceUri, loadBalancerName, resource).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, loadBalancerName, resource);
+        return this.client.<LoadBalancerInner, LoadBalancerInner>getLroResult(response, LoadBalancerInner.class,
+            LoadBalancerInner.class, Context.NONE);
     }
 
     /**
@@ -380,7 +351,9 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceUri,
         String loadBalancerName, LoadBalancerInner resource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceUri, loadBalancerName, resource, context).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceUri, loadBalancerName, resource, context);
+        return this.client.<LoadBalancerInner, LoadBalancerInner>getLroResult(response, LoadBalancerInner.class,
+            LoadBalancerInner.class, context);
     }
 
     /**
@@ -408,26 +381,6 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param loadBalancerName The name of the LoadBalancer.
      * @param resource Resource create parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a LoadBalancer resource for an Arc connected cluster (Microsoft.Kubernetes/connectedClusters) on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoadBalancerInner> createOrUpdateAsync(String resourceUri, String loadBalancerName,
-        LoadBalancerInner resource, Context context) {
-        return beginCreateOrUpdateAsync(resourceUri, loadBalancerName, resource, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -435,7 +388,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner createOrUpdate(String resourceUri, String loadBalancerName, LoadBalancerInner resource) {
-        return createOrUpdateAsync(resourceUri, loadBalancerName, resource).block();
+        return beginCreateOrUpdate(resourceUri, loadBalancerName, resource).getFinalResult();
     }
 
     /**
@@ -453,7 +406,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LoadBalancerInner createOrUpdate(String resourceUri, String loadBalancerName, LoadBalancerInner resource,
         Context context) {
-        return createOrUpdateAsync(resourceUri, loadBalancerName, resource, context).block();
+        return beginCreateOrUpdate(resourceUri, loadBalancerName, resource, context).getFinalResult();
     }
 
     /**
@@ -468,52 +421,10 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String loadBalancerName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
-                loadBalancerName, accept, context))
+                loadBalancerName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Delete a LoadBalancer.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param loadBalancerName The name of the LoadBalancer.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String loadBalancerName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        if (loadBalancerName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter loadBalancerName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, loadBalancerName,
-            accept, context);
     }
 
     /**
@@ -544,7 +455,8 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceUri, String loadBalancerName, Context context) {
-        return deleteWithResponseAsync(resourceUri, loadBalancerName, context).block();
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, loadBalancerName,
+            context);
     }
 
     /**
@@ -573,13 +485,6 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancerInner>> listSinglePageAsync(String resourceUri) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri,
@@ -587,33 +492,6 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
             .<PagedResponse<LoadBalancerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List LoadBalancer resources by parent.
-     * 
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LoadBalancerInner>> listSinglePageAsync(String resourceUri, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceUri == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -634,16 +512,37 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      * List LoadBalancer resources by parent.
      * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a LoadBalancer list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LoadBalancerInner> listSinglePage(String resourceUri) {
+        final String accept = "application/json";
+        Response<LoadBalancerListResult> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            resourceUri, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List LoadBalancer resources by parent.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a LoadBalancer list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LoadBalancerInner> listAsync(String resourceUri, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LoadBalancerInner> listSinglePage(String resourceUri, Context context) {
+        final String accept = "application/json";
+        Response<LoadBalancerListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), resourceUri, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -657,7 +556,7 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> list(String resourceUri) {
-        return new PagedIterable<>(listAsync(resourceUri));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -672,7 +571,8 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoadBalancerInner> list(String resourceUri, Context context) {
-        return new PagedIterable<>(listAsync(resourceUri, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceUri, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -687,13 +587,6 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoadBalancerInner>> listNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<LoadBalancerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
@@ -705,26 +598,36 @@ public final class LoadBalancersClientImpl implements LoadBalancersClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a LoadBalancer list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<LoadBalancerInner> listNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<LoadBalancerListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a LoadBalancer list operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return the response of a LoadBalancer list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LoadBalancerInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<LoadBalancerInner> listNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<LoadBalancerListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

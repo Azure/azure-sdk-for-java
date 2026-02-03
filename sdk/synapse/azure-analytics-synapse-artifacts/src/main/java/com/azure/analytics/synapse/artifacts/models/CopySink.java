@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,44 +22,52 @@ public class CopySink implements JsonSerializable<CopySink> {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "CopySink";
 
     /*
      * Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object writeBatchSize;
 
     /*
      * Write batch timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object writeBatchTimeout;
 
     /*
      * Sink retry count. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object sinkRetryCount;
 
     /*
      * Sink retry wait. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
+    @Generated
     private Object sinkRetryWait;
 
     /*
      * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType
      * integer).
      */
+    @Generated
     private Object maxConcurrentConnections;
 
     /*
      * A copy activity sink.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of CopySink class.
      */
+    @Generated
     public CopySink() {
     }
 
@@ -67,6 +76,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -77,6 +87,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * 
      * @return the writeBatchSize value.
      */
+    @Generated
     public Object getWriteBatchSize() {
         return this.writeBatchSize;
     }
@@ -88,6 +99,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * @param writeBatchSize the writeBatchSize value to set.
      * @return the CopySink object itself.
      */
+    @Generated
     public CopySink setWriteBatchSize(Object writeBatchSize) {
         this.writeBatchSize = writeBatchSize;
         return this;
@@ -99,6 +111,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * 
      * @return the writeBatchTimeout value.
      */
+    @Generated
     public Object getWriteBatchTimeout() {
         return this.writeBatchTimeout;
     }
@@ -110,6 +123,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * @param writeBatchTimeout the writeBatchTimeout value to set.
      * @return the CopySink object itself.
      */
+    @Generated
     public CopySink setWriteBatchTimeout(Object writeBatchTimeout) {
         this.writeBatchTimeout = writeBatchTimeout;
         return this;
@@ -120,6 +134,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * 
      * @return the sinkRetryCount value.
      */
+    @Generated
     public Object getSinkRetryCount() {
         return this.sinkRetryCount;
     }
@@ -130,6 +145,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * @param sinkRetryCount the sinkRetryCount value to set.
      * @return the CopySink object itself.
      */
+    @Generated
     public CopySink setSinkRetryCount(Object sinkRetryCount) {
         this.sinkRetryCount = sinkRetryCount;
         return this;
@@ -141,6 +157,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * 
      * @return the sinkRetryWait value.
      */
+    @Generated
     public Object getSinkRetryWait() {
         return this.sinkRetryWait;
     }
@@ -152,6 +169,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * @param sinkRetryWait the sinkRetryWait value to set.
      * @return the CopySink object itself.
      */
+    @Generated
     public CopySink setSinkRetryWait(Object sinkRetryWait) {
         this.sinkRetryWait = sinkRetryWait;
         return this;
@@ -163,6 +181,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * 
      * @return the maxConcurrentConnections value.
      */
+    @Generated
     public Object getMaxConcurrentConnections() {
         return this.maxConcurrentConnections;
     }
@@ -174,6 +193,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the CopySink object itself.
      */
+    @Generated
     public CopySink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         this.maxConcurrentConnections = maxConcurrentConnections;
         return this;
@@ -184,6 +204,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -194,6 +215,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the CopySink object itself.
      */
+    @Generated
     public CopySink setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -202,15 +224,26 @@ public class CopySink implements JsonSerializable<CopySink> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("writeBatchSize", this.writeBatchSize);
-        jsonWriter.writeUntypedField("writeBatchTimeout", this.writeBatchTimeout);
-        jsonWriter.writeUntypedField("sinkRetryCount", this.sinkRetryCount);
-        jsonWriter.writeUntypedField("sinkRetryWait", this.sinkRetryWait);
-        jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        if (this.writeBatchSize != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", this.writeBatchSize);
+        }
+        if (this.writeBatchTimeout != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", this.writeBatchTimeout);
+        }
+        if (this.sinkRetryCount != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", this.sinkRetryCount);
+        }
+        if (this.sinkRetryWait != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", this.sinkRetryWait);
+        }
+        if (this.maxConcurrentConnections != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", this.maxConcurrentConnections);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -227,6 +260,7 @@ public class CopySink implements JsonSerializable<CopySink> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the CopySink.
      */
+    @Generated
     public static CopySink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -251,6 +285,8 @@ public class CopySink implements JsonSerializable<CopySink> {
                     return OrcSink.fromJson(readerToUse.reset());
                 } else if ("RestSink".equals(discriminatorValue)) {
                     return RestSink.fromJson(readerToUse.reset());
+                } else if ("TeradataSink".equals(discriminatorValue)) {
+                    return TeradataSink.fromJson(readerToUse.reset());
                 } else if ("AzurePostgreSqlSink".equals(discriminatorValue)) {
                     return AzurePostgreSqlSink.fromJson(readerToUse.reset());
                 } else if ("AzureMySqlSink".equals(discriminatorValue)) {
@@ -271,6 +307,8 @@ public class CopySink implements JsonSerializable<CopySink> {
                     return ParquetSink.fromJson(readerToUse.reset());
                 } else if ("BinarySink".equals(discriminatorValue)) {
                     return BinarySink.fromJson(readerToUse.reset());
+                } else if ("IcebergSink".equals(discriminatorValue)) {
+                    return IcebergSink.fromJson(readerToUse.reset());
                 } else if ("BlobSink".equals(discriminatorValue)) {
                     return BlobSink.fromJson(readerToUse.reset());
                 } else if ("FileSystemSink".equals(discriminatorValue)) {
@@ -334,6 +372,7 @@ public class CopySink implements JsonSerializable<CopySink> {
         });
     }
 
+    @Generated
     static CopySink fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CopySink deserializedCopySink = new CopySink();

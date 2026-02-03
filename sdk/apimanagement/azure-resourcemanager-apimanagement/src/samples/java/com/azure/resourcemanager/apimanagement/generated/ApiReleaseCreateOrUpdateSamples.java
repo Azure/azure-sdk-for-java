@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class ApiReleaseCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiRelease.json
      */
     /**
@@ -24,7 +24,7 @@ public final class ApiReleaseCreateOrUpdateSamples {
             .define("testrev")
             .withExistingApi("rg1", "apimService1", "a1")
             .withApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1")
             .withNotes("yahooagain")
             .create();
     }

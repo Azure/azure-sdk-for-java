@@ -386,7 +386,9 @@ public final class HDInsightStreamingActivityTypeProperties
         jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("getDebugInfo", this.getDebugInfo == null ? null : this.getDebugInfo.toString());
         jsonWriter.writeJsonField("fileLinkedService", this.fileLinkedService);
-        jsonWriter.writeUntypedField("combiner", this.combiner);
+        if (this.combiner != null) {
+            jsonWriter.writeUntypedField("combiner", this.combiner);
+        }
         jsonWriter.writeArrayField("commandEnvironment", this.commandEnvironment,
             (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));

@@ -51,7 +51,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonMwsLinkedServiceTypeProperties innerTypeProperties() {
+    AmazonMwsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

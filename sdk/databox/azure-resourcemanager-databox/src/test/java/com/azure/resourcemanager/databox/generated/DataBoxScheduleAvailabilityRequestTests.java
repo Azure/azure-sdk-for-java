@@ -6,24 +6,29 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.databox.models.DataBoxScheduleAvailabilityRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import org.junit.jupiter.api.Assertions;
 
 public final class DataBoxScheduleAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataBoxScheduleAvailabilityRequest model
-            = BinaryData.fromString("{\"skuName\":\"DataBox\",\"storageLocation\":\"m\",\"country\":\"rwr\"}")
-                .toObject(DataBoxScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("m", model.storageLocation());
-        Assertions.assertEquals("rwr", model.country());
+        DataBoxScheduleAvailabilityRequest model = BinaryData.fromString(
+            "{\"skuName\":\"DataBox\",\"storageLocation\":\"pagmhrskdsnf\",\"country\":\"doakgtdlmkkzevdl\",\"model\":\"DataBox\"}")
+            .toObject(DataBoxScheduleAvailabilityRequest.class);
+        Assertions.assertEquals("pagmhrskdsnf", model.storageLocation());
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.country());
+        Assertions.assertEquals(ModelName.DATA_BOX, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataBoxScheduleAvailabilityRequest model
-            = new DataBoxScheduleAvailabilityRequest().withStorageLocation("m").withCountry("rwr");
+            = new DataBoxScheduleAvailabilityRequest().withStorageLocation("pagmhrskdsnf")
+                .withCountry("doakgtdlmkkzevdl")
+                .withModel(ModelName.DATA_BOX);
         model = BinaryData.fromObject(model).toObject(DataBoxScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("m", model.storageLocation());
-        Assertions.assertEquals("rwr", model.country());
+        Assertions.assertEquals("pagmhrskdsnf", model.storageLocation());
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.country());
+        Assertions.assertEquals(ModelName.DATA_BOX, model.model());
     }
 }

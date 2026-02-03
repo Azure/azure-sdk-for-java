@@ -4,6 +4,8 @@
 package com.azure.maps.route.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -11,7 +13,6 @@ import com.azure.json.JsonWriter;
 import com.azure.maps.route.implementation.models.LatLongPair;
 import java.io.IOException;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
 
 /**
  * A set of attributes describing a maneuver, e.g. 'Turn right', 'Keep left', 'Take the ferry', 'Take the motorway',
@@ -23,123 +24,153 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
     /*
      * Distance from the start of the route to the point of the instruction.
      */
+    @Generated
     private Integer routeOffsetInMeters;
 
     /*
      * Estimated travel time up to the point corresponding to routeOffsetInMeters.
      */
+    @Generated
     private Integer travelTimeInSeconds;
 
     /*
      * A location represented as a latitude and longitude.
      */
+    @Generated
     private LatLongPair point;
 
     /*
      * The index of the point in the list of polyline "points" corresponding to the point of the instruction.
      */
+    @Generated
     private Integer pointIndex;
 
     /*
      * Type of the instruction, e.g., turn or change of road form.
      */
+    @Generated
     private GuidanceInstructionType instructionType;
 
     /*
-     * The road number(s) of the next significant road segment(s) after the maneuver, or of the road(s) to be followed. Example: ["E34", "N205"]
+     * The road number(s) of the next significant road segment(s) after the maneuver, or of the road(s) to be followed.
+     * Example: ["E34", "N205"]
      */
+    @Generated
     private List<String> roadNumbers;
 
     /*
-     * The number(s) of a highway exit taken by the current maneuver. If an exit has multiple exit numbers, they will be separated by "," and possibly aggregated by "-", e.g., "10, 13-15".
+     * The number(s) of a highway exit taken by the current maneuver. If an exit has multiple exit numbers, they will be
+     * separated by "," and possibly aggregated by "-", e.g., "10, 13-15".
      */
+    @Generated
     private String exitNumber;
 
     /*
      * Street name of the next significant road segment after the maneuver, or of the street that should be followed.
      */
+    @Generated
     private String street;
 
     /*
      * The text on a signpost which is most relevant to the maneuver, or to the direction that should be followed.
      */
+    @Generated
     private String signpostText;
 
     /*
      * 3-character [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) alpha-3 country code. E.g. USA.
      */
+    @Generated
     private String countryCode;
 
     /*
-     * A subdivision (e.g., state) of the country, represented by the second part of an [ISO 3166-2](https://www.iso.org/standard/63546.html) code. This is only available for some countries/regions like the US, Canada, and Mexico.
+     * A subdivision (e.g., state) of the country, represented by the second part of an [ISO
+     * 3166-2](https://www.iso.org/standard/63546.html) code. This is only available for some countries/regions like the
+     * US, Canada, and Mexico.
      */
+    @Generated
     private String stateCode;
 
     /*
-     * The type of the junction where the maneuver takes place. For larger roundabouts, two separate instructions are generated for entering and leaving the roundabout.
+     * The type of the junction where the maneuver takes place. For larger roundabouts, two separate instructions are
+     * generated for entering and leaving the roundabout.
      */
+    @Generated
     private JunctionType junctionType;
 
     /*
      * Indicates the direction of an instruction. If junctionType indicates a turn instruction:
      * 
-     *   * 180 = U-turn
-     *   * [-179, -1] = Left turn
-     *   * 0 = Straight on (a '0 degree' turn)
-     *   * [1, 179] = Right turn
+     * * 180 = U-turn
+     * * [-179, -1] = Left turn
+     * * 0 = Straight on (a '0 degree' turn)
+     * * [1, 179] = Right turn
      * 
      * If junctionType indicates a bifurcation instruction:
      * 
-     *   * <0 - keep left
-     *   * \>0 - keep right
+     * * <0 - keep left
+     * * \>0 - keep right
      */
+    @Generated
     private Integer turnAngleInDegrees;
 
     /*
      * This indicates which exit to take at a roundabout.
      */
+    @Generated
     private Long roundaboutExitNumber;
 
     /*
-     * It is possible to optionally combine the instruction with the next one. This can be used to build messages like "Turn left and then turn right".
+     * It is possible to optionally combine the instruction with the next one. This can be used to build messages like
+     * "Turn left and then turn right".
      */
+    @Generated
     private Boolean possibleCombineWithNext;
 
     /*
      * Indicates left-hand vs. right-hand side driving at the point of the maneuver.
      */
+    @Generated
     private DrivingSide drivingSide;
 
     /*
      * A code identifying the maneuver.
      */
+    @Generated
     private GuidanceManeuver maneuver;
 
     /*
      * A human-readable message for the maneuver.
      */
+    @Generated
     private String message;
 
     /*
-     * A human-readable message for the maneuver combined with the message from the next instruction. Sometimes it is possible to combine two successive instructions into a single instruction making it easier to follow. When this is the case the possibleCombineWithNext flag will be true. For example:
+     * A human-readable message for the maneuver combined with the message from the next instruction. Sometimes it is
+     * possible to combine two successive instructions into a single instruction making it easier to follow. When this
+     * is the case the possibleCombineWithNext flag will be true. For example:
      * 
      * ```
      * 10. Turn left onto Einsteinweg/A10/E22 towards Ring Amsterdam
      * 11. Follow Einsteinweg/A10/E22 towards Ring Amsterdam
      * ```
      * 
-     * The possibleCombineWithNext flag on instruction 10 is true. This indicates to the clients of coded guidance that it can be combined with instruction 11. The instructions will be combined automatically for clients requesting human-readable guidance. The combinedMessage field contains the combined message:
+     * The possibleCombineWithNext flag on instruction 10 is true. This indicates to the clients of coded guidance that
+     * it can be combined with instruction 11. The instructions will be combined automatically for clients requesting
+     * human-readable guidance. The combinedMessage field contains the combined message:
      * 
      * ```
      * Turn left onto Einsteinweg/A10/E22 towards Ring Amsterdam
      * then follow Einsteinweg/A10/E22 towards Ring Amsterdam.
      * ```
      */
+    @Generated
     private String combinedMessage;
 
     /**
      * Creates an instance of RouteInstruction class.
      */
+    @Generated
     public RouteInstruction() {
     }
 
@@ -148,6 +179,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the routeOffsetInMeters value.
      */
+    @Generated
     public Integer getRouteOffsetInMeters() {
         return this.routeOffsetInMeters;
     }
@@ -157,6 +189,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the travelTimeInSeconds value.
      */
+    @Generated
     public Integer getTravelTimeInSeconds() {
         return this.travelTimeInSeconds;
     }
@@ -166,6 +199,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return a {@code GeoPosition} with the coordinates of this instruction.
      */
+    @Generated
     public GeoPosition getPoint() {
         return new GeoPosition(this.point.getLongitude(), this.point.getLatitude());
     }
@@ -176,6 +210,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the pointIndex value.
      */
+    @Generated
     public Integer getPointIndex() {
         return this.pointIndex;
     }
@@ -185,6 +220,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the instructionType value.
      */
+    @Generated
     public GuidanceInstructionType getInstructionType() {
         return this.instructionType;
     }
@@ -195,6 +231,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      * @param instructionType the instructionType value to set.
      * @return the RouteInstruction object itself.
      */
+    @Generated
     public RouteInstruction setInstructionType(GuidanceInstructionType instructionType) {
         this.instructionType = instructionType;
         return this;
@@ -206,6 +243,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the roadNumbers value.
      */
+    @Generated
     public List<String> getRoadNumbers() {
         return this.roadNumbers;
     }
@@ -216,6 +254,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the exitNumber value.
      */
+    @Generated
     public String getExitNumber() {
         return this.exitNumber;
     }
@@ -226,6 +265,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the street value.
      */
+    @Generated
     public String getStreet() {
         return this.street;
     }
@@ -236,6 +276,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the signpostText value.
      */
+    @Generated
     public String getSignpostText() {
         return this.signpostText;
     }
@@ -246,6 +287,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the countryCode value.
      */
+    @Generated
     public String getCountryCode() {
         return this.countryCode;
     }
@@ -257,6 +299,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the stateCode value.
      */
+    @Generated
     public String getStateCode() {
         return this.stateCode;
     }
@@ -267,6 +310,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the junctionType value.
      */
+    @Generated
     public JunctionType getJunctionType() {
         return this.junctionType;
     }
@@ -287,6 +331,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the turnAngleInDegrees value.
      */
+    @Generated
     public Integer getTurnAngleInDegrees() {
         return this.turnAngleInDegrees;
     }
@@ -296,6 +341,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the roundaboutExitNumber value.
      */
+    @Generated
     public Long getRoundaboutExitNumber() {
         return this.roundaboutExitNumber;
     }
@@ -306,6 +352,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the possibleCombineWithNext value.
      */
+    @Generated
     public Boolean isPossibleCombineWithNext() {
         return this.possibleCombineWithNext;
     }
@@ -315,6 +362,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the drivingSide value.
      */
+    @Generated
     public DrivingSide getDrivingSide() {
         return this.drivingSide;
     }
@@ -324,6 +372,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the maneuver value.
      */
+    @Generated
     public GuidanceManeuver getManeuver() {
         return this.maneuver;
     }
@@ -333,6 +382,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -358,6 +408,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      *
      * @return the combinedMessage value.
      */
+    @Generated
     public String getCombinedMessage() {
         return this.combinedMessage;
     }
@@ -365,6 +416,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -382,6 +434,7 @@ public final class RouteInstruction implements JsonSerializable<RouteInstruction
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteInstruction.
      */
+    @Generated
     public static RouteInstruction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteInstruction deserializedRouteInstruction = new RouteInstruction();

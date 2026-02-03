@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationAlertSettingsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationAlertSettings_List.json
      */
     /**
@@ -20,6 +20,6 @@ public final class ReplicationAlertSettingsListSamples {
      */
     public static void getsTheListOfConfiguredEmailNotificationAlertConfigurations(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationAlertSettings().list("vault1", "resourceGroupPS1", com.azure.core.util.Context.NONE);
+        manager.replicationAlertSettings().list("resourceGroupPS1", "vault1", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
@@ -18,31 +19,37 @@ public final class SharesCreateSnapshotHeaders {
     /*
      * The x-ms-snapshot property.
      */
+    @Generated
     private String xMsSnapshot;
 
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_SNAPSHOT = HttpHeaderName.fromString("x-ms-snapshot");
@@ -62,11 +69,15 @@ public final class SharesCreateSnapshotHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
     }
 
@@ -75,6 +86,7 @@ public final class SharesCreateSnapshotHeaders {
      * 
      * @return the xMsSnapshot value.
      */
+    @Generated
     public String getXMsSnapshot() {
         return this.xMsSnapshot;
     }
@@ -85,6 +97,7 @@ public final class SharesCreateSnapshotHeaders {
      * @param xMsSnapshot the xMsSnapshot value to set.
      * @return the SharesCreateSnapshotHeaders object itself.
      */
+    @Generated
     public SharesCreateSnapshotHeaders setXMsSnapshot(String xMsSnapshot) {
         this.xMsSnapshot = xMsSnapshot;
         return this;
@@ -95,6 +108,7 @@ public final class SharesCreateSnapshotHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -105,6 +119,7 @@ public final class SharesCreateSnapshotHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the SharesCreateSnapshotHeaders object itself.
      */
+    @Generated
     public SharesCreateSnapshotHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -115,6 +130,7 @@ public final class SharesCreateSnapshotHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -125,6 +141,7 @@ public final class SharesCreateSnapshotHeaders {
      * @param eTag the eTag value to set.
      * @return the SharesCreateSnapshotHeaders object itself.
      */
+    @Generated
     public SharesCreateSnapshotHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -135,6 +152,7 @@ public final class SharesCreateSnapshotHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -148,6 +166,7 @@ public final class SharesCreateSnapshotHeaders {
      * @param lastModified the lastModified value to set.
      * @return the SharesCreateSnapshotHeaders object itself.
      */
+    @Generated
     public SharesCreateSnapshotHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -162,6 +181,7 @@ public final class SharesCreateSnapshotHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -172,6 +192,7 @@ public final class SharesCreateSnapshotHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the SharesCreateSnapshotHeaders object itself.
      */
+    @Generated
     public SharesCreateSnapshotHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -182,6 +203,7 @@ public final class SharesCreateSnapshotHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -195,6 +217,7 @@ public final class SharesCreateSnapshotHeaders {
      * @param date the date value to set.
      * @return the SharesCreateSnapshotHeaders object itself.
      */
+    @Generated
     public SharesCreateSnapshotHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;

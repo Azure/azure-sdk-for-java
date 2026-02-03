@@ -28,11 +28,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.providerhub.fluent.OperationsClient;
-import com.azure.resourcemanager.providerhub.fluent.models.OperationsContentInner;
 import com.azure.resourcemanager.providerhub.fluent.models.OperationsDefinitionInner;
+import com.azure.resourcemanager.providerhub.fluent.models.OperationsPutContentInner;
 import com.azure.resourcemanager.providerhub.models.OperationsDefinitionArrayResponseWithContinuation;
-import com.azure.resourcemanager.providerhub.models.OperationsPutContent;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -66,13 +66,20 @@ public final class OperationsClientImpl implements OperationsClient {
      * calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ProviderHubOperation")
+    @ServiceInterface(name = "ProviderHubOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ProviderHub/operations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationsDefinitionArrayResponseWithContinuation>> list(@HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.ProviderHub/operations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OperationsDefinitionArrayResponseWithContinuation> listSync(@HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -85,13 +92,32 @@ public final class OperationsClientImpl implements OperationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<List<OperationsDefinitionInner>> listByProviderRegistrationSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationsContentInner>> createOrUpdate(@HostParam("$host") String endpoint,
+        Mono<Response<OperationsPutContentInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") OperationsPutContent operationsPutContent,
+            @BodyParam("application/json") OperationsPutContentInner operationsPutContent,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OperationsPutContentInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") OperationsPutContentInner operationsPutContent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -104,10 +130,27 @@ public final class OperationsClientImpl implements OperationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/operations/default")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationsDefinitionArrayResponseWithContinuation>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OperationsDefinitionArrayResponseWithContinuation> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -135,28 +178,6 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationsDefinitionInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists all the operations supported by Microsoft.ProviderHub.
-     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedFlux}.
@@ -169,16 +190,45 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * Lists all the operations supported by Microsoft.ProviderHub.
      * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<OperationsDefinitionInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<OperationsDefinitionArrayResponseWithContinuation> res
+            = service.listSync(this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists all the operations supported by Microsoft.ProviderHub.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response body along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OperationsDefinitionInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<OperationsDefinitionInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<OperationsDefinitionArrayResponseWithContinuation> res
+            = service.listSync(this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -190,7 +240,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationsDefinitionInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -204,7 +254,7 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationsDefinitionInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -243,38 +293,6 @@ public final class OperationsClientImpl implements OperationsClient {
      * Gets the operations supported by the given provider.
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operations supported by the given provider along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<OperationsDefinitionInner>>>
-        listByProviderRegistrationWithResponseAsync(String providerNamespace, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByProviderRegistration(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            providerNamespace, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the operations supported by the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -299,7 +317,23 @@ public final class OperationsClientImpl implements OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<OperationsDefinitionInner>> listByProviderRegistrationWithResponse(String providerNamespace,
         Context context) {
-        return listByProviderRegistrationWithResponseAsync(providerNamespace, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listByProviderRegistrationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            providerNamespace, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -327,8 +361,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationsContentInner>> createOrUpdateWithResponseAsync(String providerNamespace,
-        OperationsPutContent operationsPutContent) {
+    private Mono<Response<OperationsPutContentInner>> createOrUpdateWithResponseAsync(String providerNamespace,
+        OperationsPutContentInner operationsPutContent) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -359,52 +393,14 @@ public final class OperationsClientImpl implements OperationsClient {
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationsContentInner>> createOrUpdateWithResponseAsync(String providerNamespace,
-        OperationsPutContent operationsPutContent, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (operationsPutContent == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter operationsPutContent is required and cannot be null."));
-        } else {
-            operationsPutContent.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
-            this.client.getApiVersion(), operationsPutContent, accept, context);
-    }
-
-    /**
-     * Creates or updates the operation supported by the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param operationsPutContent The operations content properties supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationsContentInner> createOrUpdateAsync(String providerNamespace,
-        OperationsPutContent operationsPutContent) {
+    private Mono<OperationsPutContentInner> createOrUpdateAsync(String providerNamespace,
+        OperationsPutContentInner operationsPutContent) {
         return createOrUpdateWithResponseAsync(providerNamespace, operationsPutContent)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -421,9 +417,31 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationsContentInner> createOrUpdateWithResponse(String providerNamespace,
-        OperationsPutContent operationsPutContent, Context context) {
-        return createOrUpdateWithResponseAsync(providerNamespace, operationsPutContent, context).block();
+    public Response<OperationsPutContentInner> createOrUpdateWithResponse(String providerNamespace,
+        OperationsPutContentInner operationsPutContent, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (operationsPutContent == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter operationsPutContent is required and cannot be null."));
+        } else {
+            operationsPutContent.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            this.client.getApiVersion(), operationsPutContent, accept, context);
     }
 
     /**
@@ -437,7 +455,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationsContentInner createOrUpdate(String providerNamespace, OperationsPutContent operationsPutContent) {
+    public OperationsPutContentInner createOrUpdate(String providerNamespace,
+        OperationsPutContentInner operationsPutContent) {
         return createOrUpdateWithResponse(providerNamespace, operationsPutContent, Context.NONE).getValue();
     }
 
@@ -475,36 +494,6 @@ public final class OperationsClientImpl implements OperationsClient {
      * Deletes an operation.
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes an operation.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -527,7 +516,23 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String providerNamespace, Context context) {
-        return deleteWithResponseAsync(providerNamespace, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -572,25 +577,56 @@ public final class OperationsClientImpl implements OperationsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<OperationsDefinitionInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<OperationsDefinitionArrayResponseWithContinuation> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationsDefinitionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<OperationsDefinitionInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<OperationsDefinitionArrayResponseWithContinuation> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsClientImpl.class);
 }

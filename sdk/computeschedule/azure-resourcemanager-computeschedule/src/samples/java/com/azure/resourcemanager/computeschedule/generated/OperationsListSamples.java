@@ -9,14 +9,28 @@ package com.azure.resourcemanager.computeschedule.generated;
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-10-01/Operations_List.json
+     * x-ms-original-file: 2025-04-15-preview/Operations_List_MinimumSet_Gen.json
      */
     /**
-     * Sample code: Operations_List.
+     * Sample code: Operations_List_MinimumSet.
      * 
      * @param manager Entry point to ComputeScheduleManager.
      */
-    public static void operationsList(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
+    public static void
+        operationsListMinimumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-04-15-preview/Operations_List_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: Operations_List_MaximumSet.
+     * 
+     * @param manager Entry point to ComputeScheduleManager.
+     */
+    public static void
+        operationsListMaximumSet(com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

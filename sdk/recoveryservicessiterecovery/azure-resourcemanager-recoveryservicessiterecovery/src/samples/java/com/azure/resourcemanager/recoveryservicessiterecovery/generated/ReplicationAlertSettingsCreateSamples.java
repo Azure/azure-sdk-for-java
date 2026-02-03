@@ -13,7 +13,7 @@ import java.util.Arrays;
 public final class ReplicationAlertSettingsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationAlertSettings_Create.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationAlertSettingsCreateSamples {
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationAlertSettings()
             .define("defaultAlertSetting")
-            .withExistingVault("vault1", "resourceGroupPS1")
+            .withExistingVault("resourceGroupPS1", "vault1")
             .withProperties(new ConfigureAlertRequestProperties().withSendToOwners("false")
                 .withCustomEmailAddresses(Arrays.asList("ronehr@microsoft.com"))
                 .withLocale(""))

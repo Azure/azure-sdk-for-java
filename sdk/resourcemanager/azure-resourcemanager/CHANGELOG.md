@@ -1,6 +1,6 @@
 # Release History
 
-## 2.48.0-beta.1 (Unreleased)
+## 2.60.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,228 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.59.0 (2026-01-30)
+
+### azure-resourcemanager-redis
+
+#### Features Added
+
+- Supported enabling/disabling authentication through access keys for `RedisCache`.
+
+### Other Changes
+
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Updated `GalleryRP api-version` to `2025-03-03`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.58.0 (2025-12-22)
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.57.0 (2025-11-25)
+
+### azure-resourcemanager-containerregistry
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-11-01`.
+
+### azure-resourcemanager-appservice
+
+#### Dependency Updates
+
+- Updated `api-version` of AppService to `2025-03-01`.
+
+### azure-resourcemanager-network
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-03-01`.
+
+#### Features Added
+
+- Added `STANDARD_V2` to `PublicIPSkuType`.
+
+#### Bugs Fixed
+
+- Fixed the bug that `list()` in `LocalNetworkGateways`, `VirtualNetworkGateways`, `VirtualNetworkGatewayConnections` only return resources from 1 resource group.
+- Improved `VirtualNetworkGateway` to create Public IP Address with Standard SKU (unless the gateway is Basic SKU).
+- Improved `PublicIpAddress` to set the public IP allocation method to Static (unless the Public IP Address is Basic SKU).
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-09-01`.
+
+### azure-resourcemanager-cosmos
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-15`
+
+### azure-resourcemanager-resources
+
+#### Other Changes
+
+- Optimized `AzureServiceClient` to load library versions during class initialization.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.56.0 (2025-10-31)
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-08-01`.
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed a bug that `ApplicationGateway.availabilityZones()` throws exception.
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-10-01`.
+
+### azure-resourcemanager-keyvault
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.55.0 (2025-09-30)
+
+### azure-resourcemanager-network
+
+#### Bugs Fixed
+
+- Fixed a bug that `NetworkSecurityGroup.listAssociatedSubnets` returns a list of `null`.
+
+### azure-resourcemanager-storage
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-01-01`.
+
+### azure-resourcemanager-compute
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### azure-resourcemanager-containerservice
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-07-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.54.0 (2025-08-27)
+
+### azure-resourcemanager-search
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-05-01`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.53.1 (2025-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.53.0 (2025-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.52.0 (2025-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.51.0 (2025-05-26)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.50.0 (2025-04-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.49.0 (2025-03-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.48.0 (2025-02-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.47.0 (2025-01-24)
 

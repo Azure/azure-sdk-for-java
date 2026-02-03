@@ -12,18 +12,17 @@ public final class RaiMonitorConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiMonitorConfig model
-            = BinaryData.fromString("{\"adxStorageResourceId\":\"xgjvtbv\",\"identityClientId\":\"sszdnru\"}")
+            = BinaryData.fromString("{\"adxStorageResourceId\":\"wtmutduq\",\"identityClientId\":\"ap\"}")
                 .toObject(RaiMonitorConfig.class);
-        Assertions.assertEquals("xgjvtbv", model.adxStorageResourceId());
-        Assertions.assertEquals("sszdnru", model.identityClientId());
+        Assertions.assertEquals("wtmutduq", model.adxStorageResourceId());
+        Assertions.assertEquals("ap", model.identityClientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiMonitorConfig model
-            = new RaiMonitorConfig().withAdxStorageResourceId("xgjvtbv").withIdentityClientId("sszdnru");
+        RaiMonitorConfig model = new RaiMonitorConfig().withAdxStorageResourceId("wtmutduq").withIdentityClientId("ap");
         model = BinaryData.fromObject(model).toObject(RaiMonitorConfig.class);
-        Assertions.assertEquals("xgjvtbv", model.adxStorageResourceId());
-        Assertions.assertEquals("sszdnru", model.identityClientId());
+        Assertions.assertEquals("wtmutduq", model.adxStorageResourceId());
+        Assertions.assertEquals("ap", model.identityClientId());
     }
 }

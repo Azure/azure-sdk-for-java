@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
     /*
      * Router Communication Error Code
      */
+    @Generated
     private String code;
 
     /*
      * Router Communication Error Message
      */
+    @Generated
     private String message;
 
     /*
      * Router Communication Error Target
      */
+    @Generated
     private String target;
 
     /*
      * Router Communication Inner Error
      */
+    @Generated
     private AcsRouterCommunicationError innererror;
 
     /*
      * List of Router Communication Errors
      */
+    @Generated
     private List<AcsRouterCommunicationError> details;
 
     /**
      * Creates an instance of AcsRouterCommunicationError class.
      */
+    @Generated
     public AcsRouterCommunicationError() {
     }
 
@@ -53,6 +60,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * 
      * @return the code value.
      */
+    @Generated
     public String getCode() {
         return this.code;
     }
@@ -63,6 +71,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * @param code the code value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
+    @Generated
     public AcsRouterCommunicationError setCode(String code) {
         this.code = code;
         return this;
@@ -73,6 +82,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -83,6 +93,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * @param message the message value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
+    @Generated
     public AcsRouterCommunicationError setMessage(String message) {
         this.message = message;
         return this;
@@ -93,6 +104,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * 
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -103,6 +115,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * @param target the target value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
+    @Generated
     public AcsRouterCommunicationError setTarget(String target) {
         this.target = target;
         return this;
@@ -113,6 +126,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * 
      * @return the innererror value.
      */
+    @Generated
     public AcsRouterCommunicationError getInnererror() {
         return this.innererror;
     }
@@ -123,6 +137,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * @param innererror the innererror value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
+    @Generated
     public AcsRouterCommunicationError setInnererror(AcsRouterCommunicationError innererror) {
         this.innererror = innererror;
         return this;
@@ -133,6 +148,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * 
      * @return the details value.
      */
+    @Generated
     public List<AcsRouterCommunicationError> getDetails() {
         return this.details;
     }
@@ -143,6 +159,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * @param details the details value to set.
      * @return the AcsRouterCommunicationError object itself.
      */
+    @Generated
     public AcsRouterCommunicationError setDetails(List<AcsRouterCommunicationError> details) {
         this.details = details;
         return this;
@@ -151,6 +168,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcsRouterCommunicationError.
      */
+    @Generated
     public static AcsRouterCommunicationError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRouterCommunicationError deserializedAcsRouterCommunicationError = new AcsRouterCommunicationError();

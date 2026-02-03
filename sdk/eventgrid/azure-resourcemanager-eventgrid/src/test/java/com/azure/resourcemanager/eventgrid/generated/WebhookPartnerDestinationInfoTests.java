@@ -16,50 +16,52 @@ public final class WebhookPartnerDestinationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebhookPartnerDestinationInfo model = BinaryData.fromString(
-            "{\"endpointType\":\"WebHook\",\"properties\":{\"endpointUrl\":\"mvrscmqerndbrny\",\"endpointBaseUrl\":\"fltfnnxr\",\"clientAuthentication\":{\"clientAuthenticationType\":\"PartnerClientAuthentication\"}},\"azureSubscriptionId\":\"jfynnfmuiiirip\",\"resourceGroupName\":\"hykfkxbb\",\"name\":\"r\",\"endpointServiceContext\":\"iutgnjizbeewoiy\",\"resourceMoveChangeHistory\":[{\"azureSubscriptionId\":\"bjuyrsrziuctixg\",\"resourceGroupName\":\"suif\",\"changedTimeUtc\":\"2021-11-02T13:42:42Z\"},{\"azureSubscriptionId\":\"aapezkiswqjmdghs\",\"resourceGroupName\":\"arybjufptbjc\",\"changedTimeUtc\":\"2021-10-20T14:38:43Z\"},{\"azureSubscriptionId\":\"iuiyqvldas\",\"resourceGroupName\":\"ppisqqzlgcndhzx\",\"changedTimeUtc\":\"2021-04-21T20:08:45Z\"}]}")
+            "{\"endpointType\":\"WebHook\",\"properties\":{\"endpointUrl\":\"lin\",\"endpointBaseUrl\":\"yqxzxaqzibmqim\",\"clientAuthentication\":{\"clientAuthenticationType\":\"PartnerClientAuthentication\"}},\"azureSubscriptionId\":\"qruqguh\",\"resourceGroupName\":\"petasvvoqsb\",\"name\":\"flanfkgxsyao\",\"endpointServiceContext\":\"zowpuohdkcprgukx\",\"resourceMoveChangeHistory\":[{\"azureSubscriptionId\":\"ochlu\",\"resourceGroupName\":\"xmqrudjizc\",\"changedTimeUtc\":\"2021-09-21T06:40:09Z\"},{\"azureSubscriptionId\":\"crunfhi\",\"resourceGroupName\":\"nmfbc\",\"changedTimeUtc\":\"2021-08-27T10:11:42Z\"},{\"azureSubscriptionId\":\"tk\",\"resourceGroupName\":\"mzuedkyzbfvxovq\",\"changedTimeUtc\":\"2021-09-14T20:49:29Z\"},{\"azureSubscriptionId\":\"xqggvqr\",\"resourceGroupName\":\"yhlwcjsqg\",\"changedTimeUtc\":\"2021-09-27T19:32:09Z\"}]}")
             .toObject(WebhookPartnerDestinationInfo.class);
-        Assertions.assertEquals("jfynnfmuiiirip", model.azureSubscriptionId());
-        Assertions.assertEquals("hykfkxbb", model.resourceGroupName());
-        Assertions.assertEquals("r", model.name());
-        Assertions.assertEquals("iutgnjizbeewoiy", model.endpointServiceContext());
-        Assertions.assertEquals("bjuyrsrziuctixg", model.resourceMoveChangeHistory().get(0).azureSubscriptionId());
-        Assertions.assertEquals("suif", model.resourceMoveChangeHistory().get(0).resourceGroupName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-02T13:42:42Z"),
+        Assertions.assertEquals("qruqguh", model.azureSubscriptionId());
+        Assertions.assertEquals("petasvvoqsb", model.resourceGroupName());
+        Assertions.assertEquals("flanfkgxsyao", model.name());
+        Assertions.assertEquals("zowpuohdkcprgukx", model.endpointServiceContext());
+        Assertions.assertEquals("ochlu", model.resourceMoveChangeHistory().get(0).azureSubscriptionId());
+        Assertions.assertEquals("xmqrudjizc", model.resourceMoveChangeHistory().get(0).resourceGroupName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T06:40:09Z"),
             model.resourceMoveChangeHistory().get(0).changedTimeUtc());
-        Assertions.assertEquals("mvrscmqerndbrny", model.endpointUrl());
-        Assertions.assertEquals("fltfnnxr", model.endpointBaseUrl());
+        Assertions.assertEquals("lin", model.endpointUrl());
+        Assertions.assertEquals("yqxzxaqzibmqim", model.endpointBaseUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebhookPartnerDestinationInfo model
-            = new WebhookPartnerDestinationInfo().withAzureSubscriptionId("jfynnfmuiiirip")
-                .withResourceGroupName("hykfkxbb")
-                .withName("r")
-                .withEndpointServiceContext("iutgnjizbeewoiy")
-                .withResourceMoveChangeHistory(Arrays.asList(
-                    new ResourceMoveChangeHistory().withAzureSubscriptionId("bjuyrsrziuctixg")
-                        .withResourceGroupName("suif")
-                        .withChangedTimeUtc(OffsetDateTime.parse("2021-11-02T13:42:42Z")),
-                    new ResourceMoveChangeHistory().withAzureSubscriptionId("aapezkiswqjmdghs")
-                        .withResourceGroupName("arybjufptbjc")
-                        .withChangedTimeUtc(OffsetDateTime.parse("2021-10-20T14:38:43Z")),
-                    new ResourceMoveChangeHistory().withAzureSubscriptionId("iuiyqvldas")
-                        .withResourceGroupName("ppisqqzlgcndhzx")
-                        .withChangedTimeUtc(OffsetDateTime.parse("2021-04-21T20:08:45Z"))))
-                .withEndpointUrl("mvrscmqerndbrny")
-                .withEndpointBaseUrl("fltfnnxr")
-                .withClientAuthentication(new PartnerClientAuthentication());
+        WebhookPartnerDestinationInfo model = new WebhookPartnerDestinationInfo().withAzureSubscriptionId("qruqguh")
+            .withResourceGroupName("petasvvoqsb")
+            .withName("flanfkgxsyao")
+            .withEndpointServiceContext("zowpuohdkcprgukx")
+            .withResourceMoveChangeHistory(Arrays.asList(
+                new ResourceMoveChangeHistory().withAzureSubscriptionId("ochlu")
+                    .withResourceGroupName("xmqrudjizc")
+                    .withChangedTimeUtc(OffsetDateTime.parse("2021-09-21T06:40:09Z")),
+                new ResourceMoveChangeHistory().withAzureSubscriptionId("crunfhi")
+                    .withResourceGroupName("nmfbc")
+                    .withChangedTimeUtc(OffsetDateTime.parse("2021-08-27T10:11:42Z")),
+                new ResourceMoveChangeHistory().withAzureSubscriptionId("tk")
+                    .withResourceGroupName("mzuedkyzbfvxovq")
+                    .withChangedTimeUtc(OffsetDateTime.parse("2021-09-14T20:49:29Z")),
+                new ResourceMoveChangeHistory().withAzureSubscriptionId("xqggvqr")
+                    .withResourceGroupName("yhlwcjsqg")
+                    .withChangedTimeUtc(OffsetDateTime.parse("2021-09-27T19:32:09Z"))))
+            .withEndpointUrl("lin")
+            .withEndpointBaseUrl("yqxzxaqzibmqim")
+            .withClientAuthentication(new PartnerClientAuthentication());
         model = BinaryData.fromObject(model).toObject(WebhookPartnerDestinationInfo.class);
-        Assertions.assertEquals("jfynnfmuiiirip", model.azureSubscriptionId());
-        Assertions.assertEquals("hykfkxbb", model.resourceGroupName());
-        Assertions.assertEquals("r", model.name());
-        Assertions.assertEquals("iutgnjizbeewoiy", model.endpointServiceContext());
-        Assertions.assertEquals("bjuyrsrziuctixg", model.resourceMoveChangeHistory().get(0).azureSubscriptionId());
-        Assertions.assertEquals("suif", model.resourceMoveChangeHistory().get(0).resourceGroupName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-02T13:42:42Z"),
+        Assertions.assertEquals("qruqguh", model.azureSubscriptionId());
+        Assertions.assertEquals("petasvvoqsb", model.resourceGroupName());
+        Assertions.assertEquals("flanfkgxsyao", model.name());
+        Assertions.assertEquals("zowpuohdkcprgukx", model.endpointServiceContext());
+        Assertions.assertEquals("ochlu", model.resourceMoveChangeHistory().get(0).azureSubscriptionId());
+        Assertions.assertEquals("xmqrudjizc", model.resourceMoveChangeHistory().get(0).resourceGroupName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T06:40:09Z"),
             model.resourceMoveChangeHistory().get(0).changedTimeUtc());
-        Assertions.assertEquals("mvrscmqerndbrny", model.endpointUrl());
-        Assertions.assertEquals("fltfnnxr", model.endpointBaseUrl());
+        Assertions.assertEquals("lin", model.endpointUrl());
+        Assertions.assertEquals("yqxzxaqzibmqim", model.endpointBaseUrl());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.eventgrid.generated;
 public final class EventSubscriptionsGetFullUrlSamples {
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * EventSubscriptions_GetFullUrlForResource.json
      */
     /**
@@ -28,7 +28,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
 
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * EventSubscriptions_GetFullUrlForResourceGroup.json
      */
     /**
@@ -45,7 +45,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
 
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * EventSubscriptions_GetFullUrlForSubscription.json
      */
     /**
@@ -62,7 +62,7 @@ public final class EventSubscriptionsGetFullUrlSamples {
 
     /*
      * x-ms-original-file:
-     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2025-04-01-preview/examples/
      * EventSubscriptions_GetFullUrlForCustomTopic.json
      */
     /**

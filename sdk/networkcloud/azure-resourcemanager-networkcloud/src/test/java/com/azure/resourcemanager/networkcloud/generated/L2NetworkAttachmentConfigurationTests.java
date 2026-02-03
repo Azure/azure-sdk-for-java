@@ -13,18 +13,18 @@ public final class L2NetworkAttachmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L2NetworkAttachmentConfiguration model
-            = BinaryData.fromString("{\"networkId\":\"qumiek\",\"pluginType\":\"MACVLAN\"}")
+            = BinaryData.fromString("{\"networkId\":\"vpdbodaciz\",\"pluginType\":\"DPDK\"}")
                 .toObject(L2NetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("qumiek", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.MACVLAN, model.pluginType());
+        Assertions.assertEquals("vpdbodaciz", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.DPDK, model.pluginType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2NetworkAttachmentConfiguration model = new L2NetworkAttachmentConfiguration().withNetworkId("qumiek")
-            .withPluginType(KubernetesPluginType.MACVLAN);
+        L2NetworkAttachmentConfiguration model = new L2NetworkAttachmentConfiguration().withNetworkId("vpdbodaciz")
+            .withPluginType(KubernetesPluginType.DPDK);
         model = BinaryData.fromObject(model).toObject(L2NetworkAttachmentConfiguration.class);
-        Assertions.assertEquals("qumiek", model.networkId());
-        Assertions.assertEquals(KubernetesPluginType.MACVLAN, model.pluginType());
+        Assertions.assertEquals("vpdbodaciz", model.networkId());
+        Assertions.assertEquals(KubernetesPluginType.DPDK, model.pluginType());
     }
 }

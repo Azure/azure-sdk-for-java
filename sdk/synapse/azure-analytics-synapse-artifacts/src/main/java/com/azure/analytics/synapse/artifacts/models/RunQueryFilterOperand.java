@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,61 +17,73 @@ public final class RunQueryFilterOperand extends ExpandableStringEnum<RunQueryFi
     /**
      * Static value PipelineName for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand PIPELINE_NAME = fromString("PipelineName");
 
     /**
      * Static value Status for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand STATUS = fromString("Status");
 
     /**
      * Static value RunStart for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand RUN_START = fromString("RunStart");
 
     /**
      * Static value RunEnd for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand RUN_END = fromString("RunEnd");
 
     /**
      * Static value ActivityName for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand ACTIVITY_NAME = fromString("ActivityName");
 
     /**
      * Static value ActivityRunStart for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand ACTIVITY_RUN_START = fromString("ActivityRunStart");
 
     /**
      * Static value ActivityRunEnd for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand ACTIVITY_RUN_END = fromString("ActivityRunEnd");
 
     /**
      * Static value ActivityType for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand ACTIVITY_TYPE = fromString("ActivityType");
 
     /**
      * Static value TriggerName for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand TRIGGER_NAME = fromString("TriggerName");
 
     /**
      * Static value TriggerRunTimestamp for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand TRIGGER_RUN_TIMESTAMP = fromString("TriggerRunTimestamp");
 
     /**
      * Static value RunGroupId for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand RUN_GROUP_ID = fromString("RunGroupId");
 
     /**
      * Static value LatestOnly for RunQueryFilterOperand.
      */
+    @Generated
     public static final RunQueryFilterOperand LATEST_ONLY = fromString("LatestOnly");
 
     /**
@@ -78,6 +91,7 @@ public final class RunQueryFilterOperand extends ExpandableStringEnum<RunQueryFi
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public RunQueryFilterOperand() {
     }
@@ -88,6 +102,7 @@ public final class RunQueryFilterOperand extends ExpandableStringEnum<RunQueryFi
      * @param name a name to look for.
      * @return the corresponding RunQueryFilterOperand.
      */
+    @Generated
     public static RunQueryFilterOperand fromString(String name) {
         return fromString(name, RunQueryFilterOperand.class);
     }
@@ -97,6 +112,7 @@ public final class RunQueryFilterOperand extends ExpandableStringEnum<RunQueryFi
      * 
      * @return known RunQueryFilterOperand values.
      */
+    @Generated
     public static Collection<RunQueryFilterOperand> values() {
         return values(RunQueryFilterOperand.class);
     }

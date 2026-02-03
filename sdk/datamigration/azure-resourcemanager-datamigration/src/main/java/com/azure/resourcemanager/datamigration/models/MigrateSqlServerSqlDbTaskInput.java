@@ -33,6 +33,16 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
      */
     private MigrationValidationOptions validationOptions;
 
+    /*
+     * Date and time relative to UTC when the migration was started on
+     */
+    private String startedOn;
+
+    /*
+     * encrypted key for secure fields
+     */
+    private String encryptedKeyForSecureFields;
+
     /**
      * Creates an instance of MigrateSqlServerSqlDbTaskInput class.
      */
@@ -89,6 +99,46 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
      */
     public MigrateSqlServerSqlDbTaskInput withValidationOptions(MigrationValidationOptions validationOptions) {
         this.validationOptions = validationOptions;
+        return this;
+    }
+
+    /**
+     * Get the startedOn property: Date and time relative to UTC when the migration was started on.
+     * 
+     * @return the startedOn value.
+     */
+    public String startedOn() {
+        return this.startedOn;
+    }
+
+    /**
+     * Set the startedOn property: Date and time relative to UTC when the migration was started on.
+     * 
+     * @param startedOn the startedOn value to set.
+     * @return the MigrateSqlServerSqlDbTaskInput object itself.
+     */
+    public MigrateSqlServerSqlDbTaskInput withStartedOn(String startedOn) {
+        this.startedOn = startedOn;
+        return this;
+    }
+
+    /**
+     * Get the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @return the encryptedKeyForSecureFields value.
+     */
+    public String encryptedKeyForSecureFields() {
+        return this.encryptedKeyForSecureFields;
+    }
+
+    /**
+     * Set the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @param encryptedKeyForSecureFields the encryptedKeyForSecureFields value to set.
+     * @return the MigrateSqlServerSqlDbTaskInput object itself.
+     */
+    public MigrateSqlServerSqlDbTaskInput withEncryptedKeyForSecureFields(String encryptedKeyForSecureFields) {
+        this.encryptedKeyForSecureFields = encryptedKeyForSecureFields;
         return this;
     }
 
@@ -156,6 +206,8 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
         jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("validationOptions", this.validationOptions);
+        jsonWriter.writeStringField("startedOn", this.startedOn);
+        jsonWriter.writeStringField("encryptedKeyForSecureFields", this.encryptedKeyForSecureFields);
         return jsonWriter.writeEndObject();
     }
 
@@ -189,6 +241,10 @@ public final class MigrateSqlServerSqlDbTaskInput extends SqlMigrationTaskInput 
                 } else if ("validationOptions".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbTaskInput.validationOptions
                         = MigrationValidationOptions.fromJson(reader);
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskInput.startedOn = reader.getString();
+                } else if ("encryptedKeyForSecureFields".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbTaskInput.encryptedKeyForSecureFields = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

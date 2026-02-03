@@ -11,7 +11,7 @@ public final class FastProvisioningEditionCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FastProvisioningEditionCapability model = BinaryData.fromString(
-            "{\"supportedTier\":\"ezrkgqhcjrefo\",\"supportedSku\":\"mkqsleyyv\",\"supportedStorageGb\":1769493620,\"supportedServerVersions\":\"pkc\",\"serverCount\":1721979703,\"status\":\"Visible\",\"reason\":\"jcrcczsqpjhvmda\"}")
+            "{\"supportedTier\":\"eemaofmxagkvtme\",\"supportedSku\":\"qkrhahvljua\",\"supportedStorageGb\":836090349,\"supportedServerVersions\":\"hcdhmdual\",\"serverCount\":115440556,\"status\":\"Default\",\"reason\":\"fadmws\"}")
             .toObject(FastProvisioningEditionCapability.class);
     }
 

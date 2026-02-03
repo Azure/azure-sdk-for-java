@@ -8,8 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Supported SSL modes for migration. VerifyFull is the recommended SSL mode for Single server migration. Prefer,
- * Require are recommended SSL modes for other source types.
+ * SSL mode used by a migration. Default SSL mode for 'PostgreSQLSingleServer' is 'VerifyFull'. Default SSL mode for
+ * other source types is 'Prefer'.
  */
 public final class SslMode extends ExpandableStringEnum<SslMode> {
     /**

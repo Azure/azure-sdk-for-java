@@ -5,7 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,16 +21,19 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
     /*
      * The service error code.
      */
+    @Generated
     private Integer code;
 
     /*
      * The service error message.
      */
+    @Generated
     private String detail;
 
     /**
      * Creates an instance of ServiceBusManagementError class.
      */
+    @Generated
     public ServiceBusManagementError() {
     }
 
@@ -39,6 +42,7 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
      * 
      * @return the code value.
      */
+    @Generated
     public Integer getCode() {
         return this.code;
     }
@@ -49,6 +53,7 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
      * @param code the code value to set.
      * @return the ServiceBusManagementError object itself.
      */
+    @Generated
     public ServiceBusManagementError setCode(Integer code) {
         this.code = code;
         return this;
@@ -59,6 +64,7 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
      * 
      * @return the detail value.
      */
+    @Generated
     public String getDetail() {
         return this.detail;
     }
@@ -69,19 +75,22 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
      * @param detail the detail value to set.
      * @return the ServiceBusManagementError object itself.
      */
+    @Generated
     public ServiceBusManagementError setDetail(String detail) {
         this.detail = detail;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Error" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Error" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNumberElement("Code", this.code);
         xmlWriter.writeStringElement("Detail", this.detail);
@@ -96,6 +105,7 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ServiceBusManagementError.
      */
+    @Generated
     public static ServiceBusManagementError fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -110,9 +120,10 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
      * it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ServiceBusManagementError.
      */
+    @Generated
     public static ServiceBusManagementError fromXml(XmlReader xmlReader, String rootElementName)
         throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Error" : rootElementName;
+        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Error" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ServiceBusManagementError deserializedServiceBusManagementError = new ServiceBusManagementError();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

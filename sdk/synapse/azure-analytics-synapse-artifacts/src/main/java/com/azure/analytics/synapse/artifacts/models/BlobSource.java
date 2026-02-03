@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,27 +21,32 @@ public final class BlobSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "BlobSource";
 
     /*
      * Treat empty as null. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object treatEmptyAsNull;
 
     /*
      * Number of header lines to skip from each blob. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object skipHeaderLineCount;
 
     /*
      * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object recursive;
 
     /**
      * Creates an instance of BlobSource class.
      */
+    @Generated
     public BlobSource() {
     }
 
@@ -49,6 +55,7 @@ public final class BlobSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -59,6 +66,7 @@ public final class BlobSource extends CopySource {
      * 
      * @return the treatEmptyAsNull value.
      */
+    @Generated
     public Object getTreatEmptyAsNull() {
         return this.treatEmptyAsNull;
     }
@@ -69,6 +77,7 @@ public final class BlobSource extends CopySource {
      * @param treatEmptyAsNull the treatEmptyAsNull value to set.
      * @return the BlobSource object itself.
      */
+    @Generated
     public BlobSource setTreatEmptyAsNull(Object treatEmptyAsNull) {
         this.treatEmptyAsNull = treatEmptyAsNull;
         return this;
@@ -80,6 +89,7 @@ public final class BlobSource extends CopySource {
      * 
      * @return the skipHeaderLineCount value.
      */
+    @Generated
     public Object getSkipHeaderLineCount() {
         return this.skipHeaderLineCount;
     }
@@ -91,6 +101,7 @@ public final class BlobSource extends CopySource {
      * @param skipHeaderLineCount the skipHeaderLineCount value to set.
      * @return the BlobSource object itself.
      */
+    @Generated
     public BlobSource setSkipHeaderLineCount(Object skipHeaderLineCount) {
         this.skipHeaderLineCount = skipHeaderLineCount;
         return this;
@@ -102,6 +113,7 @@ public final class BlobSource extends CopySource {
      * 
      * @return the recursive value.
      */
+    @Generated
     public Object getRecursive() {
         return this.recursive;
     }
@@ -113,6 +125,7 @@ public final class BlobSource extends CopySource {
      * @param recursive the recursive value to set.
      * @return the BlobSource object itself.
      */
+    @Generated
     public BlobSource setRecursive(Object recursive) {
         this.recursive = recursive;
         return this;
@@ -121,6 +134,7 @@ public final class BlobSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -130,6 +144,7 @@ public final class BlobSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -139,6 +154,7 @@ public final class BlobSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public BlobSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -148,16 +164,29 @@ public final class BlobSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
-        jsonWriter.writeUntypedField("skipHeaderLineCount", this.skipHeaderLineCount);
-        jsonWriter.writeUntypedField("recursive", this.recursive);
+        if (this.treatEmptyAsNull != null) {
+            jsonWriter.writeUntypedField("treatEmptyAsNull", this.treatEmptyAsNull);
+        }
+        if (this.skipHeaderLineCount != null) {
+            jsonWriter.writeUntypedField("skipHeaderLineCount", this.skipHeaderLineCount);
+        }
+        if (this.recursive != null) {
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -174,6 +203,7 @@ public final class BlobSource extends CopySource {
      * to JSON null.
      * @throws IOException If an error occurs while reading the BlobSource.
      */
+    @Generated
     public static BlobSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BlobSource deserializedBlobSource = new BlobSource();

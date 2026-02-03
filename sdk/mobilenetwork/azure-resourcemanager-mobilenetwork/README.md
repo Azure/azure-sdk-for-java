@@ -1,5 +1,7 @@
 # Azure Resource Manager MobileNetwork client library for Java
 
+Please note, this package has been deprecated and will no longer be maintained after 09-30-2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager MobileNetwork client library for Java.
 
 This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2024-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
@@ -32,7 +34,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-mobilenetwork</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -101,4 +103,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmobilenetwork%2Fazure-resourcemanager-mobilenetwork%2FREADME.png)
+

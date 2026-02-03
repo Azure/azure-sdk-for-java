@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /*
      * data source type
      */
+    @Generated
     private DataSourceType dataSourceType = DataSourceType.AZURE_APPLICATION_INSIGHTS;
 
     /*
      * The dataSourceParameter property.
      */
+    @Generated
     private AzureApplicationInsightsParameterPatch dataSourceParameter;
 
     /**
      * Creates an instance of AzureApplicationInsightsDataFeedPatch class.
      */
+    @Generated
     public AzureApplicationInsightsDataFeedPatch() {
     }
 
@@ -40,6 +44,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
      * 
      * @return the dataSourceType value.
      */
+    @Generated
     @Override
     public DataSourceType getDataSourceType() {
         return this.dataSourceType;
@@ -50,6 +55,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
      * 
      * @return the dataSourceParameter value.
      */
+    @Generated
     public AzureApplicationInsightsParameterPatch getDataSourceParameter() {
         return this.dataSourceParameter;
     }
@@ -60,6 +66,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureApplicationInsightsDataFeedPatch object itself.
      */
+    @Generated
     public AzureApplicationInsightsDataFeedPatch
         setDataSourceParameter(AzureApplicationInsightsParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
@@ -69,6 +76,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setDataFeedName(String dataFeedName) {
         super.setDataFeedName(dataFeedName);
@@ -78,6 +86,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
         super.setDataFeedDescription(dataFeedDescription);
@@ -87,6 +96,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setTimestampColumn(String timestampColumn) {
         super.setTimestampColumn(timestampColumn);
@@ -96,6 +106,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
         super.setDataStartFrom(dataStartFrom);
@@ -105,6 +116,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
         super.setStartOffsetInSeconds(startOffsetInSeconds);
@@ -114,6 +126,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
         super.setMaxConcurrency(maxConcurrency);
@@ -123,6 +136,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
         super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
@@ -132,6 +146,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
         super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
@@ -141,6 +156,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
         super.setNeedRollup(needRollup);
@@ -150,6 +166,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
         super.setRollUpMethod(rollUpMethod);
@@ -159,6 +176,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
         super.setRollUpColumns(rollUpColumns);
@@ -168,6 +186,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setAllUpIdentification(String allUpIdentification) {
         super.setAllUpIdentification(allUpIdentification);
@@ -177,6 +196,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
         super.setFillMissingPointType(fillMissingPointType);
@@ -186,6 +206,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
         super.setFillMissingPointValue(fillMissingPointValue);
@@ -195,6 +216,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setViewMode(ViewMode viewMode) {
         super.setViewMode(viewMode);
@@ -204,6 +226,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setAdmins(List<String> admins) {
         super.setAdmins(admins);
@@ -213,6 +236,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setViewers(List<String> viewers) {
         super.setViewers(viewers);
@@ -222,6 +246,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setStatus(EntityStatus status) {
         super.setStatus(status);
@@ -231,6 +256,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
         super.setActionLinkTemplate(actionLinkTemplate);
@@ -240,6 +266,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
         super.setAuthenticationType(authenticationType);
@@ -249,6 +276,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureApplicationInsightsDataFeedPatch setCredentialId(String credentialId) {
         super.setCredentialId(credentialId);
@@ -258,6 +286,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -300,6 +329,7 @@ public final class AzureApplicationInsightsDataFeedPatch extends DataFeedDetailP
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureApplicationInsightsDataFeedPatch.
      */
+    @Generated
     public static AzureApplicationInsightsDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureApplicationInsightsDataFeedPatch deserializedAzureApplicationInsightsDataFeedPatch

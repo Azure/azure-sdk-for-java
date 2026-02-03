@@ -20,50 +20,67 @@ public final class PartnerTopicPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerTopicProperties model = BinaryData.fromString(
-            "{\"partnerRegistrationImmutableId\":\"5fb42706-96e5-4f73-81f8-92fa2760bc6e\",\"source\":\"edm\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"uqn\":{\"description\":\"xbcuiiznkt\",\"displayName\":\"ansnvp\",\"documentationUrl\":\"bmikost\",\"dataSchemaUrl\":\"bkiw\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-11-18T18:14:42Z\",\"provisioningState\":\"Failed\",\"activationState\":\"NeverActivated\",\"partnerTopicFriendlyDescription\":\"sgcrpfbcunezzce\",\"messageForActivation\":\"lfwyfwlwxjwetn\"}")
+            "{\"partnerRegistrationImmutableId\":\"262e3c0c-1c5a-4271-bea9-06b822fc1cef\",\"source\":\"dfbzdixzmq\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"wyyu\":{\"description\":\"pqhe\",\"displayName\":\"ptmcgsbostzelnd\",\"documentationUrl\":\"tutmzl\",\"dataSchemaUrl\":\"ojlvfhrbbpneqvc\"},\"cpilj\":{\"description\":\"ochpprpr\",\"displayName\":\"mo\",\"documentationUrl\":\"yzejnhlbk\",\"dataSchemaUrl\":\"z\"},\"apjwogqqnobpudcd\":{\"description\":\"hzvechndbnwieho\",\"displayName\":\"wjwiuub\",\"documentationUrl\":\"fqsfa\",\"dataSchemaUrl\":\"qtferrqwexjkmf\"},\"jjum\":{\"description\":\"tqwpwya\",\"displayName\":\"zasqbucljgkyexao\",\"documentationUrl\":\"yaipidsda\",\"dataSchemaUrl\":\"tx\"}}},\"expirationTimeIfNotActivatedUtc\":\"2021-10-13T05:25:34Z\",\"provisioningState\":\"Deleting\",\"activationState\":\"Deactivated\",\"partnerTopicFriendlyDescription\":\"nm\",\"messageForActivation\":\"ngz\"}")
             .toObject(PartnerTopicProperties.class);
-        Assertions.assertEquals(UUID.fromString("5fb42706-96e5-4f73-81f8-92fa2760bc6e"),
+        Assertions.assertEquals(UUID.fromString("262e3c0c-1c5a-4271-bea9-06b822fc1cef"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("edm", model.source());
+        Assertions.assertEquals("dfbzdixzmq", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("xbcuiiznkt", model.eventTypeInfo().inlineEventTypes().get("uqn").description());
-        Assertions.assertEquals("ansnvp", model.eventTypeInfo().inlineEventTypes().get("uqn").displayName());
-        Assertions.assertEquals("bmikost", model.eventTypeInfo().inlineEventTypes().get("uqn").documentationUrl());
-        Assertions.assertEquals("bkiw", model.eventTypeInfo().inlineEventTypes().get("uqn").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T18:14:42Z"), model.expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED, model.activationState());
-        Assertions.assertEquals("sgcrpfbcunezzce", model.partnerTopicFriendlyDescription());
-        Assertions.assertEquals("lfwyfwlwxjwetn", model.messageForActivation());
+        Assertions.assertEquals("pqhe", model.eventTypeInfo().inlineEventTypes().get("wyyu").description());
+        Assertions.assertEquals("ptmcgsbostzelnd", model.eventTypeInfo().inlineEventTypes().get("wyyu").displayName());
+        Assertions.assertEquals("tutmzl", model.eventTypeInfo().inlineEventTypes().get("wyyu").documentationUrl());
+        Assertions.assertEquals("ojlvfhrbbpneqvc",
+            model.eventTypeInfo().inlineEventTypes().get("wyyu").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T05:25:34Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals(PartnerTopicActivationState.DEACTIVATED, model.activationState());
+        Assertions.assertEquals("nm", model.partnerTopicFriendlyDescription());
+        Assertions.assertEquals("ngz", model.messageForActivation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerTopicProperties model = new PartnerTopicProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("5fb42706-96e5-4f73-81f8-92fa2760bc6e"))
-            .withSource("edm")
+            .withPartnerRegistrationImmutableId(UUID.fromString("262e3c0c-1c5a-4271-bea9-06b822fc1cef"))
+            .withSource("dfbzdixzmq")
             .withEventTypeInfo(new EventTypeInfo().withKind(EventDefinitionKind.INLINE)
-                .withInlineEventTypes(mapOf("uqn",
-                    new InlineEventProperties().withDescription("xbcuiiznkt")
-                        .withDisplayName("ansnvp")
-                        .withDocumentationUrl("bmikost")
-                        .withDataSchemaUrl("bkiw"))))
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-11-18T18:14:42Z"))
-            .withActivationState(PartnerTopicActivationState.NEVER_ACTIVATED)
-            .withPartnerTopicFriendlyDescription("sgcrpfbcunezzce")
-            .withMessageForActivation("lfwyfwlwxjwetn");
+                .withInlineEventTypes(mapOf("wyyu",
+                    new InlineEventProperties().withDescription("pqhe")
+                        .withDisplayName("ptmcgsbostzelnd")
+                        .withDocumentationUrl("tutmzl")
+                        .withDataSchemaUrl("ojlvfhrbbpneqvc"),
+                    "cpilj",
+                    new InlineEventProperties().withDescription("ochpprpr")
+                        .withDisplayName("mo")
+                        .withDocumentationUrl("yzejnhlbk")
+                        .withDataSchemaUrl("z"),
+                    "apjwogqqnobpudcd",
+                    new InlineEventProperties().withDescription("hzvechndbnwieho")
+                        .withDisplayName("wjwiuub")
+                        .withDocumentationUrl("fqsfa")
+                        .withDataSchemaUrl("qtferrqwexjkmf"),
+                    "jjum",
+                    new InlineEventProperties().withDescription("tqwpwya")
+                        .withDisplayName("zasqbucljgkyexao")
+                        .withDocumentationUrl("yaipidsda")
+                        .withDataSchemaUrl("tx"))))
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-10-13T05:25:34Z"))
+            .withActivationState(PartnerTopicActivationState.DEACTIVATED)
+            .withPartnerTopicFriendlyDescription("nm")
+            .withMessageForActivation("ngz");
         model = BinaryData.fromObject(model).toObject(PartnerTopicProperties.class);
-        Assertions.assertEquals(UUID.fromString("5fb42706-96e5-4f73-81f8-92fa2760bc6e"),
+        Assertions.assertEquals(UUID.fromString("262e3c0c-1c5a-4271-bea9-06b822fc1cef"),
             model.partnerRegistrationImmutableId());
-        Assertions.assertEquals("edm", model.source());
+        Assertions.assertEquals("dfbzdixzmq", model.source());
         Assertions.assertEquals(EventDefinitionKind.INLINE, model.eventTypeInfo().kind());
-        Assertions.assertEquals("xbcuiiznkt", model.eventTypeInfo().inlineEventTypes().get("uqn").description());
-        Assertions.assertEquals("ansnvp", model.eventTypeInfo().inlineEventTypes().get("uqn").displayName());
-        Assertions.assertEquals("bmikost", model.eventTypeInfo().inlineEventTypes().get("uqn").documentationUrl());
-        Assertions.assertEquals("bkiw", model.eventTypeInfo().inlineEventTypes().get("uqn").dataSchemaUrl());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-18T18:14:42Z"), model.expirationTimeIfNotActivatedUtc());
-        Assertions.assertEquals(PartnerTopicActivationState.NEVER_ACTIVATED, model.activationState());
-        Assertions.assertEquals("sgcrpfbcunezzce", model.partnerTopicFriendlyDescription());
-        Assertions.assertEquals("lfwyfwlwxjwetn", model.messageForActivation());
+        Assertions.assertEquals("pqhe", model.eventTypeInfo().inlineEventTypes().get("wyyu").description());
+        Assertions.assertEquals("ptmcgsbostzelnd", model.eventTypeInfo().inlineEventTypes().get("wyyu").displayName());
+        Assertions.assertEquals("tutmzl", model.eventTypeInfo().inlineEventTypes().get("wyyu").documentationUrl());
+        Assertions.assertEquals("ojlvfhrbbpneqvc",
+            model.eventTypeInfo().inlineEventTypes().get("wyyu").dataSchemaUrl());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T05:25:34Z"), model.expirationTimeIfNotActivatedUtc());
+        Assertions.assertEquals(PartnerTopicActivationState.DEACTIVATED, model.activationState());
+        Assertions.assertEquals("nm", model.partnerTopicFriendlyDescription());
+        Assertions.assertEquals("ngz", model.messageForActivation());
     }
 
     // Use "Map.of" if available

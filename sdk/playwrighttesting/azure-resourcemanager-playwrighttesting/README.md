@@ -1,5 +1,9 @@
 # Azure Resource Manager Playwright Testing client library for Java
 
+**Deprecation Notice**
+
+Please note, this package has been deprecated and will no longer be maintained after 03/08/2026. We encourage you to upgrade to the replacement package, azure-resourcemanager-playwright, to continue receiving updates. Refer to the migration guide https://aka.ms/mpt/migration-guidance for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
 Azure Resource Manager Playwright Testing client library for Java.
 
 This package contains Microsoft Azure SDK for Playwright Testing Management SDK. Microsoft.AzurePlaywrightService Resource Provider Management API. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
@@ -32,7 +36,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-playwrighttesting</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -101,4 +105,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fplaywrighttesting%2Fazure-resourcemanager-playwrighttesting%2FREADME.png)
+

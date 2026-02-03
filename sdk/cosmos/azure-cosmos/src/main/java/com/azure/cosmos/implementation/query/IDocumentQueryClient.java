@@ -3,10 +3,10 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
-import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
@@ -70,6 +70,12 @@ public interface IDocumentQueryClient {
 
     <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions);
 
+    ReadConsistencyStrategy getReadConsistencyStrategy();
+
+    ConsistencyLevel getConsistencyLevel();
+
+    void validateAndLogNonDefaultReadConsistencyStrategy(String readConsistencyStrategyName);
+
     /// <summary>
     /// A client query compatibility mode when making query request.
     /// Can be used to force a specific query request format.
@@ -103,5 +109,5 @@ public interface IDocumentQueryClient {
 
     GlobalEndpointManager getGlobalEndpointManager();
 
-    GlobalPartitionEndpointManagerForCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
+    GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker getGlobalPartitionEndpointManagerForCircuitBreaker();
 }

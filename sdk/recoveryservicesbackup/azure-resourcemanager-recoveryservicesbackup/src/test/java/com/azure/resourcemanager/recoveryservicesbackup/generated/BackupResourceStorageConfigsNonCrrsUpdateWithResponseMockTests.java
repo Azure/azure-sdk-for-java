@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
@@ -29,38 +29,38 @@ public final class BackupResourceStorageConfigsNonCrrsUpdateWithResponseMockTest
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Unlocked\",\"crossRegionRestoreFlag\":true,\"dedupState\":\"Enabled\",\"xcoolState\":\"Enabled\"},\"eTag\":\"qdurelyujlfyoum\",\"location\":\"ckyeclcdigpta\",\"tags\":{\"oclxiut\":\"zmqxucyci\"},\"id\":\"jc\",\"name\":\"z\",\"type\":\"zjd\"}";
+            = "{\"properties\":{\"storageModelType\":\"LocallyRedundant\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Invalid\",\"crossRegionRestoreFlag\":true,\"dedupState\":\"Enabled\",\"xcoolState\":\"Invalid\"},\"eTag\":\"vpndp\",\"location\":\"i\",\"tags\":{\"l\":\"nwynudq\"},\"id\":\"sauzpjlx\",\"name\":\"ehuxiqhzlraym\",\"type\":\"zxlskihmxr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupResourceConfigResource response = manager.backupResourceStorageConfigsNonCrrs()
-            .updateWithResponse("byubhiqdxyurnpn", "hza",
-                new BackupResourceConfigResourceInner().withLocation("rkdlb")
-                    .withTags(mapOf("hzlwxaea", "xvhcs", "ndsbdw", "vurex", "t", "aderzmw", "tmvmmagoaqylkjz", "pag"))
-                    .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.GEO_REDUNDANT)
-                        .withStorageType(StorageType.LOCALLY_REDUNDANT)
-                        .withStorageTypeState(StorageTypeState.INVALID)
+            .updateWithResponse("pkcvmwf", "uxx",
+                new BackupResourceConfigResourceInner().withLocation("yqwixvcpwnkwywzw")
+                    .withTags(mapOf("tamtyv", "lickduoi", "rwzawnvs", "kn", "imwrzregzgyufu", "cfhzagxnvhycv"))
+                    .withProperties(new BackupResourceConfig().withStorageModelType(StorageType.ZONE_REDUNDANT)
+                        .withStorageType(StorageType.INVALID)
+                        .withStorageTypeState(StorageTypeState.LOCKED)
                         .withCrossRegionRestoreFlag(false)
-                        .withDedupState(DedupState.ENABLED)
+                        .withDedupState(DedupState.INVALID)
                         .withXcoolState(XcoolState.DISABLED))
-                    .withEtag("gvxvatv"),
+                    .withEtag("ijqpkzfbojxjmcs"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ckyeclcdigpta", response.location());
-        Assertions.assertEquals("zmqxucyci", response.tags().get("oclxiut"));
-        Assertions.assertEquals(StorageType.INVALID, response.properties().storageModelType());
+        Assertions.assertEquals("i", response.location());
+        Assertions.assertEquals("nwynudq", response.tags().get("l"));
+        Assertions.assertEquals(StorageType.LOCALLY_REDUNDANT, response.properties().storageModelType());
         Assertions.assertEquals(StorageType.INVALID, response.properties().storageType());
-        Assertions.assertEquals(StorageTypeState.UNLOCKED, response.properties().storageTypeState());
+        Assertions.assertEquals(StorageTypeState.INVALID, response.properties().storageTypeState());
         Assertions.assertEquals(true, response.properties().crossRegionRestoreFlag());
         Assertions.assertEquals(DedupState.ENABLED, response.properties().dedupState());
-        Assertions.assertEquals(XcoolState.ENABLED, response.properties().xcoolState());
-        Assertions.assertEquals("qdurelyujlfyoum", response.etag());
+        Assertions.assertEquals(XcoolState.INVALID, response.properties().xcoolState());
+        Assertions.assertEquals("vpndp", response.etag());
     }
 
     // Use "Map.of" if available

@@ -3,6 +3,8 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.Context;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -11,6 +13,8 @@ import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
+import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.models.AccessControlType;
@@ -41,6 +45,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -117,6 +122,63 @@ public class SasTests extends DataLakeTestBase {
         assertEquals(DATA.getDefaultText(), os.toString());
     }
 
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void fileDatalakeSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            DataLakeFileClient client = instrument(new DataLakePathClientBuilder().endpoint(sasClient.getFileUrl())
+                .sasToken(sas)
+                .credential(tokenCredential)).buildFileClient();
+
+            assertDoesNotThrow(() -> client.getPropertiesWithResponse(null, null, Context.NONE));
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void fileDatalakeSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            DataLakeFileClient client
+                = instrument(new DataLakePathClientBuilder().endpoint(sasClient.getFileUrl()).sasToken(sas))
+                    .buildFileClient();
+
+            DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+                () -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            assertEquals(403, e.getStatusCode());
+            assertEquals("AuthenticationFailed", e.getErrorCode());
+        });
+    }
+
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void directorySasPermission() {
@@ -157,6 +219,68 @@ public class SasTests extends DataLakeTestBase {
 
         assertThrows(DataLakeStorageException.class,
             () -> getDirectoryClient(sas, getFileSystemUrl(), pathName).getProperties());
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void directorySasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            DataLakeDirectoryClient directoryClient
+                = getDirectoryClient(getDataLakeCredential(), getFileSystemUrl(), pathName);
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = directoryClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            DataLakeDirectoryClient client
+                = instrument(new DataLakePathClientBuilder().endpoint(directoryClient.getDirectoryUrl())
+                    .sasToken(sas)
+                    .credential(tokenCredential)).buildDirectoryClient();
+
+            assertDoesNotThrow(() -> client.getPropertiesWithResponse(null, null, Context.NONE));
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void directorySasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            DataLakeDirectoryClient directoryClient
+                = getDirectoryClient(getDataLakeCredential(), getFileSystemUrl(), pathName);
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = directoryClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            DataLakeDirectoryClient client
+                = instrument(new DataLakePathClientBuilder().endpoint(directoryClient.getDirectoryUrl()).sasToken(sas))
+                    .buildDirectoryClient();
+
+            DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
+                () -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            assertEquals(403, e.getStatusCode());
+            assertEquals("AuthenticationFailed", e.getErrorCode());
+        });
     }
 
     @Test
@@ -453,6 +577,64 @@ public class SasTests extends DataLakeTestBase {
         assertTrue(sasWithPermissions.contains("scid=" + cid));
     }
 
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void fileSystemSasUserDelegationDelegatedObjectId() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential.
+            DataLakeFileSystemClient client
+                = instrument(new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                    .sasToken(sas)
+                    .credential(tokenCredential)).buildClient();
+
+            assertDoesNotThrow(() -> client.listPaths().iterator().hasNext());
+        });
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void fileSystemSasUserDelegationDelegatedObjectIdFail() {
+        liveTestScenarioWithRetry(() -> {
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+            // We need to get the object ID from the token credential used to authenticate the request
+            String oid = getOidFromToken(tokenCredential);
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
+            String sas = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
+
+            // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
+            // token credential. Token credential is not provided here, so the request should fail.
+            DataLakeFileSystemClient client
+                = instrument(new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                    .sasToken(sas)).buildClient();
+
+            DataLakeStorageException e
+                = assertThrows(DataLakeStorageException.class, () -> client.listPaths().iterator().hasNext());
+            assertEquals(403, e.getStatusCode());
+            assertEquals("AuthenticationFailed", e.getErrorCode());
+        });
+    }
+
     @SuppressWarnings("deprecation")
     @Test
     public void accountSasFileRead() {
@@ -704,7 +886,7 @@ public class SasTests extends DataLakeTestBase {
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), null, null, null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
@@ -715,7 +897,7 @@ public class SasTests extends DataLakeTestBase {
                     + "\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, "11111111-1111-1111-1111-111111111111", null, null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
@@ -723,7 +905,7 @@ public class SasTests extends DataLakeTestBase {
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n\n\n\n"
+                    + "\n/blob/%s/fileSystemName/pathName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, "22222222-2222-2222-2222-222222222222", null, null, null, null,
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
@@ -731,7 +913,7 @@ public class SasTests extends DataLakeTestBase {
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n\n\n\n"
+                    + "\n/blob/%s/fileSystemName/pathName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC), null,
                 null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null,
@@ -739,7 +921,7 @@ public class SasTests extends DataLakeTestBase {
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n"
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC),
                 null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null,
@@ -747,14 +929,14 @@ public class SasTests extends DataLakeTestBase {
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n"
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, "b", null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\nb\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\nb\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, "2018-06-17",
                 "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null, null, null, null, null, null, null, null, null,
@@ -762,78 +944,78 @@ public class SasTests extends DataLakeTestBase {
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n2018-06-17\n\n\n\n\n\n"
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n2018-06-17\n\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=",
                 new SasIpRange(), null, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\nip\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\nip\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 SasProtocol.HTTPS_ONLY, null, null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n"
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, "control", null, null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\ncontrol\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, "disposition", null, null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\ndisposition\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, "encoding", null, null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\nencoding\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, "language", null, null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\nlanguage\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, "type", null, null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nb\n\n\n\n\n\n\ntype"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, "saoid", null, null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\nsaoid\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n"),
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\nsaoid\n\n\n\n\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, "suoid", null,
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\nsuoid\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n"),
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\nsuoid\n\n\n\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"),
             Arguments.of(null, null, null, null, null, null, null, "3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=", null,
                 null, null, null, null, null, null, null, null, "cid",
                 "r\n\n"
                     + Constants.ISO_8601_UTC_DATE_FORMATTER
                         .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\ncid\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n"));
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\n\ncid\n\n\n\n\n"
+                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n"));
     }
 
     @Test

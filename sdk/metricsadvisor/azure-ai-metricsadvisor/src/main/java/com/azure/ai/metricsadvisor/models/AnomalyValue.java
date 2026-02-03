@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class AnomalyValue extends ExpandableStringEnum<AnomalyValue> {
     /**
      * Static value AutoDetect for AnomalyValue.
      */
+    @Generated
     public static final AnomalyValue AUTO_DETECT = fromString("AutoDetect");
 
     /**
      * Static value Anomaly for AnomalyValue.
      */
+    @Generated
     public static final AnomalyValue ANOMALY = fromString("Anomaly");
 
     /**
      * Static value NotAnomaly for AnomalyValue.
      */
+    @Generated
     public static final AnomalyValue NOT_ANOMALY = fromString("NotAnomaly");
 
     /**
@@ -31,6 +35,7 @@ public final class AnomalyValue extends ExpandableStringEnum<AnomalyValue> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AnomalyValue() {
     }
@@ -41,6 +46,7 @@ public final class AnomalyValue extends ExpandableStringEnum<AnomalyValue> {
      * @param name a name to look for.
      * @return the corresponding AnomalyValue.
      */
+    @Generated
     public static AnomalyValue fromString(String name) {
         return fromString(name, AnomalyValue.class);
     }
@@ -50,6 +56,7 @@ public final class AnomalyValue extends ExpandableStringEnum<AnomalyValue> {
      * 
      * @return known AnomalyValue values.
      */
+    @Generated
     public static Collection<AnomalyValue> values() {
         return values(AnomalyValue.class);
     }

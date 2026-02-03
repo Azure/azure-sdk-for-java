@@ -20,14 +20,18 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.apimanagement.fluent.PortalConfigsClient;
-import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigContractInner;
+import com.azure.resourcemanager.apimanagement.models.PortalConfigCollection;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetResponse;
 import reactor.core.publisher.Mono;
@@ -68,7 +72,7 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalconfigs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PortalConfigCollectionInner>> listByService(@HostParam("$host") String endpoint,
+        Mono<Response<PortalConfigCollection>> listByService(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @HeaderParam("Accept") String accept, Context context);
@@ -116,6 +120,14 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PortalConfigContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PortalConfigCollection>> listByServiceNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -126,11 +138,11 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations along with {@link Response} on successful
+     * @return the collection of the developer portal configurations along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PortalConfigCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+    private Mono<PagedResponse<PortalConfigContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
         String serviceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -151,6 +163,8 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
         return FluxUtil
             .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
                 this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<PortalConfigContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -163,11 +177,11 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations along with {@link Response} on successful
+     * @return the collection of the developer portal configurations along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PortalConfigCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+    private Mono<PagedResponse<PortalConfigContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
         String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -186,8 +200,11 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
-            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+        return service
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -198,12 +215,12 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations on successful completion of {@link Mono}.
+     * @return the collection of the developer portal configurations as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalConfigCollectionInner> listByServiceAsync(String resourceGroupName, String serviceName) {
-        return listByServiceWithResponseAsync(resourceGroupName, serviceName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PortalConfigContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName),
+            nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -215,12 +232,13 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations along with {@link Response}.
+     * @return the collection of the developer portal configurations as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PortalConfigCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PortalConfigContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
         Context context) {
-        return listByServiceWithResponseAsync(resourceGroupName, serviceName, context).block();
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, context),
+            nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -231,11 +249,28 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations.
+     * @return the collection of the developer portal configurations as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalConfigCollectionInner listByService(String resourceGroupName, String serviceName) {
-        return listByServiceWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PortalConfigContractInner> listByService(String resourceGroupName, String serviceName) {
+        return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName));
+    }
+
+    /**
+     * Lists the developer portal configurations.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of the developer portal configurations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PortalConfigContractInner> listByService(String resourceGroupName, String serviceName,
+        Context context) {
+        return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, context));
     }
 
     /**
@@ -833,5 +868,60 @@ public final class PortalConfigsClientImpl implements PortalConfigsClient {
         String ifMatch, PortalConfigContractInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, serviceName, portalConfigId, ifMatch, parameters,
             Context.NONE).getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of the developer portal configurations along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PortalConfigContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PortalConfigContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the collection of the developer portal configurations along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PortalConfigContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

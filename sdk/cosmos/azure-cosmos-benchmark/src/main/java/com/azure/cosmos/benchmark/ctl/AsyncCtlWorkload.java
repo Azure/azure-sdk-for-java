@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark.ctl;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -24,6 +25,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
@@ -90,14 +92,22 @@ public class AsyncCtlWorkload {
     private int queryPct;
     private int readManyPct;
 
+    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
+            .managedIdentityClientId(Configuration.getAadManagedIdentityId())
+            .authorityHost(Configuration.getAadLoginUri())
+            .tenantId(Configuration.getAadTenantId())
+            .build();
+
     public AsyncCtlWorkload(Configuration cfg) {
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .endpoint(cfg.getServiceEndpoint())
-            .key(cfg.getMasterKey())
-            .preferredRegions(cfg.getPreferredRegionsList())
-            .consistencyLevel(cfg.getConsistencyLevel())
-            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
-            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+        CosmosClientBuilder cosmosClientBuilder = cfg.isManagedIdentityRequired() ?
+                new CosmosClientBuilder().credential(CREDENTIAL) :
+                new CosmosClientBuilder().key(cfg.getMasterKey());
+
+        cosmosClientBuilder
+                .preferredRegions(cfg.getPreferredRegionsList())
+                .endpoint(cfg.getServiceEndpoint())
+                .consistencyLevel(cfg.getConsistencyLevel())
+                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());

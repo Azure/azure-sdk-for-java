@@ -5,7 +5,9 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.util.Beta;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -36,6 +38,7 @@ public final class CosmosRequestOptions {
     private Integer maxPrefetchPageCount;
     private String queryName;
     private Set<String> keywordIdentifiers;
+    private ReadConsistencyStrategy readConsistencyStrategy;
     private static final Set<String> EMPTY_KEYWORD_IDENTIFIERS = Collections.unmodifiableSet(new HashSet<>());
 
     /**
@@ -57,6 +60,18 @@ public final class CosmosRequestOptions {
      */
     public CosmosRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
+        return this;
+    }
+
+    /**
+     * Sets the read consistency strategy.
+     *
+     * @param readConsistencyStrategy the read consistency strategy.
+     * @return current CosmosRequestOptions.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosRequestOptions setReadConsistencyStrategy(ReadConsistencyStrategy readConsistencyStrategy) {
+        this.readConsistencyStrategy = readConsistencyStrategy;
         return this;
     }
 
@@ -94,7 +109,9 @@ public final class CosmosRequestOptions {
     }
 
     /**
-     * Sets the exclude regions.
+     * Sets the exclude regions. If all the regions are excluded, the request will be sent to the primary region
+     * for the account. The primary region is the write region in a single master account and the hub region
+     * in a multi-master account.
      *
      * @param excludeRegions the ExcludeRegions.
      * @return current CosmosRequestOptions.
@@ -385,6 +402,16 @@ public final class CosmosRequestOptions {
      */
     public ConsistencyLevel getConsistencyLevel() {
         return this.consistencyLevel;
+    }
+
+    /**
+     * Gets the read consistency strategy.
+     *
+     * @return the read consistency strategy.
+     */
+    @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ReadConsistencyStrategy getReadConsistencyStrategy() {
+        return this.readConsistencyStrategy;
     }
 
     /**

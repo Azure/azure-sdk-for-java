@@ -17,9 +17,9 @@ public class ScansDelete {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildScansClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.scansdelete.scansdelete
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scans-delete.scans-delete
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = scansClient.deleteWithResponse("myDataSource", "myScanName", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.scansdelete.scansdelete
+        // END:com.azure.analytics.purview.scanning.generated.scans-delete.scans-delete
     }
 }

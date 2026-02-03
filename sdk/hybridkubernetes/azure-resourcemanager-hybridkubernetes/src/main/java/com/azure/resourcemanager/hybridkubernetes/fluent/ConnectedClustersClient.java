@@ -23,7 +23,8 @@ public interface ConnectedClustersClient {
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -34,13 +35,14 @@ public interface ConnectedClustersClient {
      * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(String resourceGroupName,
+    SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateOrReplace(String resourceGroupName,
         String clusterName, ConnectedClusterInner connectedCluster);
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -52,13 +54,14 @@ public interface ConnectedClustersClient {
      * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(String resourceGroupName,
+    SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreateOrReplace(String resourceGroupName,
         String clusterName, ConnectedClusterInner connectedCluster, Context context);
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -69,12 +72,14 @@ public interface ConnectedClustersClient {
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectedClusterInner create(String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster);
+    ConnectedClusterInner createOrReplace(String resourceGroupName, String clusterName,
+        ConnectedClusterInner connectedCluster);
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
      * 
-     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * API to register a new Kubernetes cluster and create or replace a connected cluster tracked resource in Azure
+     * Resource Manager (ARM).
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
@@ -86,8 +91,8 @@ public interface ConnectedClustersClient {
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectedClusterInner create(String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster,
-        Context context);
+    ConnectedClusterInner createOrReplace(String resourceGroupName, String clusterName,
+        ConnectedClusterInner connectedCluster, Context context);
 
     /**
      * Updates a connected cluster.
@@ -255,7 +260,7 @@ public interface ConnectedClustersClient {
         ListClusterUserCredentialProperties properties);
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -269,7 +274,7 @@ public interface ConnectedClustersClient {
     PagedIterable<ConnectedClusterInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given ResourceGroup
      * 
      * API to enumerate registered connected K8s clusters under a Resource Group.
      * 
@@ -284,7 +289,7 @@ public interface ConnectedClustersClient {
     PagedIterable<ConnectedClusterInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 
@@ -296,7 +301,7 @@ public interface ConnectedClustersClient {
     PagedIterable<ConnectedClusterInner> list();
 
     /**
-     * Lists all connected clusters
+     * Lists all connected clusters in the given Subscription
      * 
      * API to enumerate registered connected K8s clusters under a Subscription.
      * 

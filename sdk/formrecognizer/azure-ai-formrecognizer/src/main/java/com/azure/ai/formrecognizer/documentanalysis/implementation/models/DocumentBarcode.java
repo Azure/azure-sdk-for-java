@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentBarcodeKind;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,26 +23,31 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
     /*
      * Barcode kind.
      */
+    @Generated
     private final DocumentBarcodeKind kind;
 
     /*
      * Barcode value
      */
+    @Generated
     private final String value;
 
     /*
      * Bounding polygon of the barcode.
      */
+    @Generated
     private List<Float> polygon;
 
     /*
      * Location of the barcode in the reading order concatenated content.
      */
+    @Generated
     private final DocumentSpan span;
 
     /*
      * Confidence of correctly extracting the barcode.
      */
+    @Generated
     private final float confidence;
 
     /**
@@ -52,6 +58,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
      * @param span the span value to set.
      * @param confidence the confidence value to set.
      */
+    @Generated
     public DocumentBarcode(DocumentBarcodeKind kind, String value, DocumentSpan span, float confidence) {
         this.kind = kind;
         this.value = value;
@@ -64,6 +71,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
      * 
      * @return the kind value.
      */
+    @Generated
     public DocumentBarcodeKind getKind() {
         return this.kind;
     }
@@ -73,6 +81,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
      * 
      * @return the value value.
      */
+    @Generated
     public String getValue() {
         return this.value;
     }
@@ -82,6 +91,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
      * 
      * @return the polygon value.
      */
+    @Generated
     public List<Float> getPolygon() {
         return this.polygon;
     }
@@ -92,6 +102,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
      * @param polygon the polygon value to set.
      * @return the DocumentBarcode object itself.
      */
+    @Generated
     public DocumentBarcode setPolygon(List<Float> polygon) {
         this.polygon = polygon;
         return this;
@@ -102,6 +113,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
      * 
      * @return the span value.
      */
+    @Generated
     public DocumentSpan getSpan() {
         return this.span;
     }
@@ -111,6 +123,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
      * 
      * @return the confidence value.
      */
+    @Generated
     public float getConfidence() {
         return this.confidence;
     }
@@ -118,6 +131,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -138,6 +152,7 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentBarcode.
      */
+    @Generated
     public static DocumentBarcode fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean kindFound = false;

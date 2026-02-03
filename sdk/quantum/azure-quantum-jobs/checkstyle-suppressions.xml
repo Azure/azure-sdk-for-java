@@ -38,7 +38,7 @@
   <suppress files="com.azure.quantum.jobs.models.package-info.java" checks="HeaderCheck" />
   <suppress files="com.azure.quantum.jobs.package-info.java" checks="HeaderCheck" />
   <suppress files="com.azure.quantum.jobs.QuantumClientTestBase.java" checks="MemberNameCheck" />
-  <suppress files="com.azure.quantum.jobs.JobsAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.quantum.jobs.ProvidersAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
-  <suppress files="com.azure.quantum.jobs.QuotasAsyncClient.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.quantum.jobs.JobsAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.quantum.jobs.ProvidersAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
+  <suppress files="com.azure.quantum.jobs.QuotasAsyncClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
 </suppressions>

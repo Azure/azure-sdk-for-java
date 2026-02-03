@@ -6,8 +6,8 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.BlobNfsTarget;
@@ -31,65 +31,66 @@ public final class StorageTargetsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"junctions\":[{\"namespacePath\":\"fzzhmkdasv\",\"targetPath\":\"yhbxcudchxgs\",\"nfsExport\":\"oldforobw\",\"nfsAccessPolicy\":\"vizbfhfo\"},{\"namespacePath\":\"acqpbtuodxesza\",\"targetPath\":\"elawumu\",\"nfsExport\":\"lzkwrrwoy\",\"nfsAccessPolicy\":\"ucwyhahno\"}],\"targetType\":\"unknown\",\"provisioningState\":\"Succeeded\",\"state\":\"Suspended\",\"nfs3\":{\"target\":\"psvfuurutlwexxwl\",\"usageModel\":\"niexzsrzpgepq\",\"verificationTimer\":417783908,\"writeBackTimer\":2090759507},\"clfs\":{\"target\":\"gdakchz\"},\"unknown\":{\"attributes\":{\"ibn\":\"xqnrkcxk\",\"swqrntvlwijp\":\"mysu\",\"uncuw\":\"ttexoqqpwcyyufmh\",\"unqndyfpchrqb\":\"qspkcdqzhlctd\"}},\"blobNfs\":{\"target\":\"rcgegydcwboxjum\",\"usageModel\":\"qoli\",\"verificationTimer\":960198730,\"writeBackTimer\":153099260},\"allocationPercentage\":1564106365},\"location\":\"ubrjtl\",\"id\":\"xfuojrn\",\"name\":\"iflrzpasccbiu\",\"type\":\"mzdlyjdfqwmkyo\"}";
+            = "{\"properties\":{\"junctions\":[{\"namespacePath\":\"gv\",\"targetPath\":\"r\",\"nfsExport\":\"hriypoqeyhlqhy\",\"nfsAccessPolicy\":\"rlpyznuciqdsmexi\"},{\"namespacePath\":\"dfuxtya\",\"targetPath\":\"ibmi\",\"nfsExport\":\"nnust\",\"nfsAccessPolicy\":\"ljhnmgixhcmav\"},{\"namespacePath\":\"foudor\",\"targetPath\":\"gyyprotwy\",\"nfsExport\":\"ndm\",\"nfsAccessPolicy\":\"hu\"},{\"namespacePath\":\"mjkavlgorbmft\",\"targetPath\":\"dtzfjltfvnzcy\",\"nfsExport\":\"otp\",\"nfsAccessPolicy\":\"pvpbdbzqgqqiheds\"}],\"targetType\":\"clfs\",\"provisioningState\":\"Succeeded\",\"state\":\"Ready\",\"nfs3\":{\"target\":\"ibcysihsgqc\",\"usageModel\":\"hohsd\",\"verificationTimer\":1273234897,\"writeBackTimer\":582075475},\"clfs\":{\"target\":\"fcohdxbzlmcmu\"},\"unknown\":{\"attributes\":{\"zinkfkbgbzbowxeq\":\"hdbevwqqxeyskon\",\"ygvkzqkjj\":\"clj\",\"zrxcczurt\":\"okbzef\"}},\"blobNfs\":{\"target\":\"pqxbkwvzgnzvdf\",\"usageModel\":\"d\",\"verificationTimer\":1966350278,\"writeBackTimer\":171999124},\"allocationPercentage\":1064666127},\"location\":\"d\",\"id\":\"opqhewjptmc\",\"name\":\"sbostzel\",\"type\":\"dlat\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageCacheManager manager = StorageCacheManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageTarget response = manager.storageTargets()
-            .define("mwmdxmebwjscjpa")
-            .withExistingCache("thwtzol", "a")
+            .define("wwpgdakchzyvlixq")
+            .withExistingCache("q", "yb")
             .withJunctions(Arrays.asList(
-                new NamespaceJunction().withNamespacePath("a")
-                    .withTargetPath("qxnmwmqt")
-                    .withNfsExport("xyi")
-                    .withNfsAccessPolicy("dt"),
-                new NamespaceJunction().withNamespacePath("cttadi")
-                    .withTargetPath("eukmr")
-                    .withNfsExport("eekpndz")
-                    .withNfsAccessPolicy("pmudqmeqwig"),
-                new NamespaceJunction().withNamespacePath("bu")
-                    .withTargetPath("wyxebeybpmzz")
-                    .withNfsExport("tffyaqit")
-                    .withNfsAccessPolicy("heioqa"),
-                new NamespaceJunction().withNamespacePath("v")
-                    .withTargetPath("ufuqyrx")
-                    .withNfsExport("lcgqlsismj")
-                    .withNfsAccessPolicy("rddga")))
+                new NamespaceJunction().withNamespacePath("kjibnxmysuxswqrn")
+                    .withTargetPath("lwi")
+                    .withNfsExport("sttex")
+                    .withNfsAccessPolicy("qpwcyyufmh"),
+                new NamespaceJunction().withNamespacePath("nc")
+                    .withTargetPath("mqspkcdqzhlctdd")
+                    .withNfsExport("qn")
+                    .withNfsAccessPolicy("fpch"),
+                new NamespaceJunction().withNamespacePath("bnjj")
+                    .withTargetPath("gegydcwboxjum")
+                    .withNfsExport("qoli")
+                    .withNfsAccessPolicy("raiouaubrjtl"),
+                new NamespaceJunction().withNamespacePath("xfuojrn")
+                    .withTargetPath("flrzpas")
+                    .withNfsExport("biuimzdlyjdfq")
+                    .withNfsAccessPolicy("kyoqufdv")))
             .withTargetType(StorageTargetType.BLOB_NFS)
-            .withState(OperationalStateType.READY)
-            .withNfs3(new Nfs3Target().withTarget("sjuivfcdisyir")
-                .withUsageModel("zhczexrxzbujrtrh")
-                .withVerificationTimer(1247179302)
-                .withWriteBackTimer(934568942))
-            .withClfs(new ClfsTarget().withTarget("h"))
-            .withUnknown(new UnknownTarget().withAttributes(mapOf("jtszcof", "zonzlrpiqywnc", "k", "zehtdhgb")))
-            .withBlobNfs(new BlobNfsTarget().withTarget("ljeamu")
-                .withUsageModel("zmlovuanash")
-                .withVerificationTimer(1712193542)
-                .withWriteBackTimer(1846794278))
+            .withState(OperationalStateType.SUSPENDED)
+            .withNfs3(new Nfs3Target().withTarget("hpc")
+                .withUsageModel("nmdxotngfd")
+                .withVerificationTimer(1282016388)
+                .withWriteBackTimer(1783330313))
+            .withClfs(new ClfsTarget().withTarget("hgrky"))
+            .withUnknown(
+                new UnknownTarget().withAttributes(mapOf("jee", "bsnmfpph", "omfgbeglqgleohib", "yhyhsgzfczb")))
+            .withBlobNfs(new BlobNfsTarget().withTarget("luan")
+                .withUsageModel("rfxeeebtij")
+                .withVerificationTimer(1847279460)
+                .withWriteBackTimer(1686206255))
             .create();
 
-        Assertions.assertEquals("fzzhmkdasv", response.junctions().get(0).namespacePath());
-        Assertions.assertEquals("yhbxcudchxgs", response.junctions().get(0).targetPath());
-        Assertions.assertEquals("oldforobw", response.junctions().get(0).nfsExport());
-        Assertions.assertEquals("vizbfhfo", response.junctions().get(0).nfsAccessPolicy());
-        Assertions.assertEquals(StorageTargetType.UNKNOWN, response.targetType());
-        Assertions.assertEquals(OperationalStateType.SUSPENDED, response.state());
-        Assertions.assertEquals("psvfuurutlwexxwl", response.nfs3().target());
-        Assertions.assertEquals("niexzsrzpgepq", response.nfs3().usageModel());
-        Assertions.assertEquals(417783908, response.nfs3().verificationTimer());
-        Assertions.assertEquals(2090759507, response.nfs3().writeBackTimer());
-        Assertions.assertEquals("gdakchz", response.clfs().target());
-        Assertions.assertEquals("xqnrkcxk", response.unknown().attributes().get("ibn"));
-        Assertions.assertEquals("rcgegydcwboxjum", response.blobNfs().target());
-        Assertions.assertEquals("qoli", response.blobNfs().usageModel());
-        Assertions.assertEquals(960198730, response.blobNfs().verificationTimer());
-        Assertions.assertEquals(153099260, response.blobNfs().writeBackTimer());
+        Assertions.assertEquals("gv", response.junctions().get(0).namespacePath());
+        Assertions.assertEquals("r", response.junctions().get(0).targetPath());
+        Assertions.assertEquals("hriypoqeyhlqhy", response.junctions().get(0).nfsExport());
+        Assertions.assertEquals("rlpyznuciqdsmexi", response.junctions().get(0).nfsAccessPolicy());
+        Assertions.assertEquals(StorageTargetType.CLFS, response.targetType());
+        Assertions.assertEquals(OperationalStateType.READY, response.state());
+        Assertions.assertEquals("ibcysihsgqc", response.nfs3().target());
+        Assertions.assertEquals("hohsd", response.nfs3().usageModel());
+        Assertions.assertEquals(1273234897, response.nfs3().verificationTimer());
+        Assertions.assertEquals(582075475, response.nfs3().writeBackTimer());
+        Assertions.assertEquals("fcohdxbzlmcmu", response.clfs().target());
+        Assertions.assertEquals("hdbevwqqxeyskon", response.unknown().attributes().get("zinkfkbgbzbowxeq"));
+        Assertions.assertEquals("pqxbkwvzgnzvdf", response.blobNfs().target());
+        Assertions.assertEquals("d", response.blobNfs().usageModel());
+        Assertions.assertEquals(1966350278, response.blobNfs().verificationTimer());
+        Assertions.assertEquals(171999124, response.blobNfs().writeBackTimer());
     }
 
     // Use "Map.of" if available

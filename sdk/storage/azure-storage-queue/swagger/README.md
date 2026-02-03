@@ -14,8 +14,8 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.42'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.QueueStorage/preview/2018-03-28/queue.json
+use: '@autorest/java@4.1.62'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.QueueStorage/stable/2026-02-06/queue.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.queue
@@ -24,7 +24,7 @@ license-header: MICROSOFT_MIT_SMALL
 enable-sync-stack: true
 default-http-exception-type: com.azure.storage.queue.implementation.models.QueueStorageExceptionInternal
 models-subpackage: implementation.models
-custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication
+custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType,GeoReplication,UserDelegationKey
 custom-types-subpackage: models
 customization-class: src/main/java/QueueStorageCustomization.java
 use-input-stream-for-binary: true
@@ -141,4 +141,14 @@ directive:
     $["x-ms-pageable"].itemName = "QueueItems";
 ```
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2Fswagger%2FREADME.png)
+### Rename UserDelegationKey SignedOid and SignedTid
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.UserDelegationKey
+  transform: >
+    $.properties.SignedOid["x-ms-client-name"] = "signedObjectId";
+    $.properties.SignedTid["x-ms-client-name"] = "signedTenantId";
+```
+
+

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "SapCloudForCustomer";
 
     /*
      * The URL of SAP Cloud for Customer OData API. For example,
      * '[https://[tenantname].crm.ondemand.com/sap/c4c/odata/v1]'. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object url;
 
     /*
      * The username for Basic authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object username;
 
     /*
      * The password for Basic authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
@@ -44,11 +49,13 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * credential manager. Either encryptedCredential or username/password must be provided. Type: string (or Expression
      * with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SapCloudForCustomerLinkedService class.
      */
+    @Generated
     public SapCloudForCustomerLinkedService() {
     }
 
@@ -57,6 +64,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -68,6 +76,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -79,6 +88,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
+    @Generated
     public SapCloudForCustomerLinkedService setUrl(Object url) {
         this.url = url;
         return this;
@@ -90,6 +100,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -101,6 +112,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
+    @Generated
     public SapCloudForCustomerLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -111,6 +123,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -121,6 +134,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
+    @Generated
     public SapCloudForCustomerLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -133,6 +147,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -145,6 +160,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapCloudForCustomerLinkedService object itself.
      */
+    @Generated
     public SapCloudForCustomerLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -153,6 +169,17 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SapCloudForCustomerLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SapCloudForCustomerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -162,6 +189,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -171,6 +199,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -180,6 +209,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -189,9 +219,11 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -200,9 +232,13 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
         if (url != null || username != null || password != null || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("url", this.url);
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -222,6 +258,7 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapCloudForCustomerLinkedService.
      */
+    @Generated
     public static SapCloudForCustomerLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapCloudForCustomerLinkedService deserializedSapCloudForCustomerLinkedService
@@ -231,7 +268,9 @@ public class SapCloudForCustomerLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSapCloudForCustomerLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSapCloudForCustomerLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {

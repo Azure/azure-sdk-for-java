@@ -170,4 +170,28 @@ public class ServiceBusSessionReactorReceiverTest {
             receiver.dispose();
         }
     }
+
+    @Test
+    public void completesOnNoMessagesIdleTimeout() {
+        // Arrange
+        final Duration idleTimeout = Duration.ofSeconds(3);
+        doNothing().when(sessionLink).dispose();
+        final ServiceBusSessionAcquirer.Session session = mock(ServiceBusSessionAcquirer.Session.class);
+        when(session.getId()).thenReturn(SESSION_ID);
+        when(session.getLink()).thenReturn(sessionLink);
+        when(session.beginLockRenew(any(ServiceBusTracer.class), any(Duration.class))).thenReturn(Disposables.single());
+        final ServiceBusSessionReactorReceiver receiver = new ServiceBusSessionReactorReceiver(LOGGER,
+            mock(ServiceBusTracer.class), session, idleTimeout, Duration.ofSeconds(1));
+
+        // Act and assert
+        try {
+            // Since there are no messages arrives at 'messages' Flux, the endpoint 'states' Flux should terminate after
+            // the idle timeout of 1 second.
+            final Flux<Message> messages = receiver.receive();
+            final Flux<AmqpEndpointState> states = receiver.getEndpointStates();
+            StepVerifier.create(messages.takeUntilOther(states.then())).expectComplete().verify(Duration.ofSeconds(15));
+        } finally {
+            receiver.dispose();
+        }
+    }
 }

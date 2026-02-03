@@ -3,17 +3,19 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure;
 
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorMetricExporterProvider;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.AzureMonitorSpanExporterProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizer;
 import io.opentelemetry.sdk.metrics.Aggregation;
 import io.opentelemetry.sdk.metrics.InstrumentSelector;
 import io.opentelemetry.sdk.metrics.View;
+import io.opentelemetry.sdk.resources.Resource;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Class to enable Azure Monitor for OpenTelemetry autoconfiguration.
@@ -47,10 +49,10 @@ public final class AzureMonitorAutoConfigure {
     /**
      * Customizes an {@link AutoConfigurationCustomizer} for Azure Monitor.
      * @param autoConfigurationCustomizer the {@link AutoConfigurationCustomizer} object.
-     * @param exporterOptions Advanced configuration to send the data to Azure Monitor.
+     * @param autoConfigureOptions Advanced configuration to send the data to Azure Monitor.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer,
-        AzureMonitorAutoConfigureOptions exporterOptions) {
+        AzureMonitorAutoConfigureOptions autoConfigureOptions) {
         autoConfigurationCustomizer.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
@@ -59,33 +61,40 @@ public final class AzureMonitorAutoConfigure {
             props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, "true");
             return props;
         });
+        final AtomicReference<Resource> otelResource = new AtomicReference<>();
+        autoConfigurationCustomizer.addResourceCustomizer((resource, configProperties) -> {
+            otelResource.set(resource);
+            return resource;
+        });
         AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
         autoConfigurationCustomizer.addSpanExporterCustomizer((spanExporter, configProperties) -> {
             if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties, otelResource.get());
                 spanExporter = azureMonitorExporterBuilder.buildSpanExporter();
             }
             return spanExporter;
         });
         autoConfigurationCustomizer.addMetricExporterCustomizer((metricExporter, configProperties) -> {
             if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties, otelResource.get());
                 metricExporter = azureMonitorExporterBuilder.buildMetricExporter();
             }
             return metricExporter;
         });
         autoConfigurationCustomizer.addLogRecordExporterCustomizer((logRecordExporter, configProperties) -> {
             if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties, otelResource.get());
                 logRecordExporter = azureMonitorExporterBuilder.buildLogRecordExporter();
             }
             return logRecordExporter;
         });
-        // TODO (trask)
-        //        sdkBuilder.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
-        //            QuickPulse quickPulse = QuickPulse.create(getHttpPipeline());
-        //            return sdkTracerProviderBuilder.addSpanProcessor(
-        //                ne
+        autoConfigurationCustomizer.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
+            azureMonitorExporterBuilder.initializeIfNot(autoConfigureOptions, configProperties, otelResource.get());
+            if (LiveMetrics.isEnabled(configProperties)) {
+                sdkTracerProviderBuilder.addSpanProcessor(azureMonitorExporterBuilder.buildLiveMetricsSpanProcesor());
+            }
+            return sdkTracerProviderBuilder;
+        });
         autoConfigurationCustomizer
             .addMeterProviderCustomizer((sdkMeterProviderBuilder, config) -> sdkMeterProviderBuilder
                 .registerView(InstrumentSelector.builder().setMeterName("io.opentelemetry.sdk.trace").build(),

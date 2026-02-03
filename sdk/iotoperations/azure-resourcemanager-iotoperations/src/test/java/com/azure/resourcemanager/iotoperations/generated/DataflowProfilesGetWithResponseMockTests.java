@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iotoperations.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iotoperations.IoTOperationsManager;
 import com.azure.resourcemanager.iotoperations.models.DataflowProfileResource;
@@ -22,23 +22,23 @@ public final class DataflowProfilesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"iylwdshfssnr\"},\"metrics\":{\"prometheusPort\":593893972}},\"instanceCount\":692564067,\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"name\":\"sgaojfmwncot\",\"type\":\"CustomLocation\"},\"id\":\"hirctymoxoftpipi\",\"name\":\"yczuhxacpq\",\"type\":\"lihhyuspskasdvlm\"}";
+            = "{\"properties\":{\"diagnostics\":{\"logs\":{\"level\":\"uvsj\"},\"metrics\":{\"prometheusPort\":1208732585}},\"instanceCount\":195968189,\"provisioningState\":\"Updating\",\"healthState\":\"Unknown\"},\"extendedLocation\":{\"name\":\"qypfcv\",\"type\":\"CustomLocation\"},\"id\":\"chpqbmfpjba\",\"name\":\"widf\",\"type\":\"xsspuunnoxyhk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IoTOperationsManager manager = IoTOperationsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataflowProfileResource response = manager.dataflowProfiles()
-            .getWithResponse("hwzdgirujbz", "omvzzbtd", "qvpn", com.azure.core.util.Context.NONE)
+            .getWithResponse("wvvb", "lxlllchpo", "bzevwrd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("iylwdshfssnr", response.properties().diagnostics().logs().level());
-        Assertions.assertEquals(593893972, response.properties().diagnostics().metrics().prometheusPort());
-        Assertions.assertEquals(692564067, response.properties().instanceCount());
-        Assertions.assertEquals("sgaojfmwncot", response.extendedLocation().name());
+        Assertions.assertEquals("uvsj", response.properties().diagnostics().logs().level());
+        Assertions.assertEquals(1208732585, response.properties().diagnostics().metrics().prometheusPort());
+        Assertions.assertEquals(195968189, response.properties().instanceCount());
+        Assertions.assertEquals("qypfcv", response.extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, response.extendedLocation().type());
     }
 }

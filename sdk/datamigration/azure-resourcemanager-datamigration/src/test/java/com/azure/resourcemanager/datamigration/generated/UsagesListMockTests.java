@@ -7,8 +7,8 @@ package com.azure.resourcemanager.datamigration.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datamigration.DataMigrationManager;
 import com.azure.resourcemanager.datamigration.models.Quota;
@@ -22,22 +22,22 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"currentValue\":74.08255016179143,\"id\":\"ljqobbpihehcecyb\",\"limit\":17.642722568267054,\"name\":{\"localizedValue\":\"bbmpxdlvykfre\",\"value\":\"rseqwjksghudgz\"},\"unit\":\"ogjggsvoujkxibda\"}]}";
+            = "{\"value\":[{\"currentValue\":25.01960666941131,\"id\":\"mfxlkdlgwgnamkuu\",\"limit\":73.97318574955662,\"name\":{\"localizedValue\":\"fi\",\"value\":\"xicwgpthdcfmfzc\"},\"unit\":\"sfodropalvng\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataMigrationManager manager = DataMigrationManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<Quota> response = manager.usages().list("rleaes", com.azure.core.util.Context.NONE);
+        PagedIterable<Quota> response = manager.usages().list("eailwdqmqf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(74.08255016179143D, response.iterator().next().currentValue());
-        Assertions.assertEquals("ljqobbpihehcecyb", response.iterator().next().id());
-        Assertions.assertEquals(17.642722568267054D, response.iterator().next().limit());
-        Assertions.assertEquals("bbmpxdlvykfre", response.iterator().next().name().localizedValue());
-        Assertions.assertEquals("rseqwjksghudgz", response.iterator().next().name().value());
-        Assertions.assertEquals("ogjggsvoujkxibda", response.iterator().next().unit());
+        Assertions.assertEquals(25.01960666941131D, response.iterator().next().currentValue());
+        Assertions.assertEquals("mfxlkdlgwgnamkuu", response.iterator().next().id());
+        Assertions.assertEquals(73.97318574955662D, response.iterator().next().limit());
+        Assertions.assertEquals("fi", response.iterator().next().name().localizedValue());
+        Assertions.assertEquals("xicwgpthdcfmfzc", response.iterator().next().name().value());
+        Assertions.assertEquals("sfodropalvng", response.iterator().next().unit());
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for SubscriptionReregistrationResult.
+ * The subscription reregistration result.
  */
 public final class SubscriptionReregistrationResult extends ExpandableStringEnum<SubscriptionReregistrationResult> {
     /**

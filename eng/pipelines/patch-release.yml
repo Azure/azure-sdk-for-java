@@ -1,19 +1,45 @@
 trigger: none
 pr: none
+
+parameters:
+- name: TestPipeline
+  displayName: Test Run Without Version Changes
+  type: boolean
+  default: false
+
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client-patch.yml
   parameters:
+    TestPipeline: ${{ parameters.TestPipeline }}
     artifacts:
     - name: azure-sdk-template
       groupId: com.azure
       safeName: azuresdktemplate
+      skipPublishDocMs: true
       ServiceDirectory: template
     - name: azure-sdk-template-two
       groupId: com.azure
       safeName: azuresdktemplatetwo
+      skipPublishDocMs: true
       ServiceDirectory: template
     - name: azure-sdk-template-three
       groupId: com.azure
       safeName: azuresdktemplatethree
+      skipPublishDocMs: true
       ServiceDirectory: template
+    - name: azure-sdk-template
+      groupId: com.azure.v2
+      safeName: azuresdktemplate
+      skipPublishDocMs: true
+      ServiceDirectory: template-v2
+    - name: azure-sdk-template-two
+      groupId: com.azure.v2
+      safeName: azuresdktemplatetwo
+      skipPublishDocMs: true
+      ServiceDirectory: template-v2
+    - name: azure-sdk-template-three
+      groupId: com.azure.v2
+      safeName: azuresdktemplatethree
+      skipPublishDocMs: true
+      ServiceDirectory: template-v2
 

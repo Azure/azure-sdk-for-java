@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,21 +19,25 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
     /*
      * Type of authentication used to connect to the web table source.
      */
+    @Generated
     private WebAuthenticationType authenticationType = WebAuthenticationType.BASIC;
 
     /*
      * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object username;
 
     /*
      * The password for Basic authentication.
      */
+    @Generated
     private SecretBase password;
 
     /**
      * Creates an instance of WebBasicAuthentication class.
      */
+    @Generated
     public WebBasicAuthentication() {
     }
 
@@ -41,6 +46,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      * 
      * @return the authenticationType value.
      */
+    @Generated
     @Override
     public WebAuthenticationType getAuthenticationType() {
         return this.authenticationType;
@@ -52,6 +58,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -63,6 +70,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      * @param username the username value to set.
      * @return the WebBasicAuthentication object itself.
      */
+    @Generated
     public WebBasicAuthentication setUsername(Object username) {
         this.username = username;
         return this;
@@ -73,6 +81,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -83,6 +92,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      * @param password the password value to set.
      * @return the WebBasicAuthentication object itself.
      */
+    @Generated
     public WebBasicAuthentication setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -91,6 +101,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebBasicAuthentication setUrl(Object url) {
         super.setUrl(url);
@@ -100,6 +111,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -120,6 +132,7 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebBasicAuthentication.
      */
+    @Generated
     public static WebBasicAuthentication fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebBasicAuthentication deserializedWebBasicAuthentication = new WebBasicAuthentication();

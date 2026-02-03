@@ -27,6 +27,11 @@ import java.util.Map;
 @Fluent
 public final class ClusterManagerInner extends Resource {
     /*
+     * Resource ETag.
+     */
+    private String etag;
+
+    /*
      * The identity of the cluster manager.
      */
     private ManagedServiceIdentity identity;
@@ -60,6 +65,15 @@ public final class ClusterManagerInner extends Resource {
      * Creates an instance of ClusterManagerInner class.
      */
     public ClusterManagerInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -174,9 +188,8 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
-     * Get the availabilityZones property: Field deprecated, this value will no longer influence the cluster manager
-     * allocation process and will be removed in a future version. The Azure availability zones within the region that
-     * will be used to support the cluster manager resource.
+     * Get the availabilityZones property: The Azure availability zones within the region that will be used to support
+     * the cluster manager resource.
      * 
      * @return the availabilityZones value.
      */
@@ -185,9 +198,8 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
-     * Set the availabilityZones property: Field deprecated, this value will no longer influence the cluster manager
-     * allocation process and will be removed in a future version. The Azure availability zones within the region that
-     * will be used to support the cluster manager resource.
+     * Set the availabilityZones property: The Azure availability zones within the region that will be used to support
+     * the cluster manager resource.
      * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the ClusterManagerInner object itself.
@@ -301,9 +313,7 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
-     * Get the vmSize property: Field deprecated, this value will no longer influence the cluster manager allocation
-     * process and will be removed in a future version. The size of the Azure virtual machines to use for hosting the
-     * cluster manager resource.
+     * Get the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @return the vmSize value.
      */
@@ -312,9 +322,7 @@ public final class ClusterManagerInner extends Resource {
     }
 
     /**
-     * Set the vmSize property: Field deprecated, this value will no longer influence the cluster manager allocation
-     * process and will be removed in a future version. The size of the Azure virtual machines to use for hosting the
-     * cluster manager resource.
+     * Set the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @param vmSize the vmSize value to set.
      * @return the ClusterManagerInner object itself.
@@ -389,6 +397,8 @@ public final class ClusterManagerInner extends Resource {
                     deserializedClusterManagerInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedClusterManagerInner.innerProperties = ClusterManagerProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedClusterManagerInner.etag = reader.getString();
                 } else if ("identity".equals(fieldName)) {
                     deserializedClusterManagerInner.identity = ManagedServiceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {

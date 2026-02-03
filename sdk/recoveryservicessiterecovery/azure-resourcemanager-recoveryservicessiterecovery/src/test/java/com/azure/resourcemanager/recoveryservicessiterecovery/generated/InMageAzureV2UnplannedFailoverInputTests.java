@@ -12,19 +12,18 @@ public final class InMageAzureV2UnplannedFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2UnplannedFailoverInput model = BinaryData
-            .fromString(
-                "{\"instanceType\":\"InMageAzureV2\",\"recoveryPointId\":\"lsk\",\"osUpgradeVersion\":\"ddida\"}")
+            .fromString("{\"instanceType\":\"InMageAzureV2\",\"recoveryPointId\":\"y\",\"osUpgradeVersion\":\"sxe\"}")
             .toObject(InMageAzureV2UnplannedFailoverInput.class);
-        Assertions.assertEquals("lsk", model.recoveryPointId());
-        Assertions.assertEquals("ddida", model.osUpgradeVersion());
+        Assertions.assertEquals("y", model.recoveryPointId());
+        Assertions.assertEquals("sxe", model.osUpgradeVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageAzureV2UnplannedFailoverInput model
-            = new InMageAzureV2UnplannedFailoverInput().withRecoveryPointId("lsk").withOsUpgradeVersion("ddida");
+            = new InMageAzureV2UnplannedFailoverInput().withRecoveryPointId("y").withOsUpgradeVersion("sxe");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2UnplannedFailoverInput.class);
-        Assertions.assertEquals("lsk", model.recoveryPointId());
-        Assertions.assertEquals("ddida", model.osUpgradeVersion());
+        Assertions.assertEquals("y", model.recoveryPointId());
+        Assertions.assertEquals("sxe", model.osUpgradeVersion());
     }
 }

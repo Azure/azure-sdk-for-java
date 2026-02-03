@@ -12,24 +12,24 @@ public final class ElasticOrganizationToAzureSubscriptionMappingResponseProperti
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticOrganizationToAzureSubscriptionMappingResponseProperties model = BinaryData.fromString(
-            "{\"billedAzureSubscriptionId\":\"xywpmueefjzwfqkq\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"suyonobglaocq\"},\"marketplaceName\":\"ccm\",\"marketplaceResourceId\":\"udxytlmoyrx\",\"marketplaceStatus\":\"fudwpznt\",\"billedAzureSubscriptionId\":\"dzhlrq\",\"subscribed\":true},\"elasticOrganizationId\":\"kfrlhrxsbky\",\"elasticOrganizationName\":\"ycanuzbpzkafku\"}")
+            "{\"billedAzureSubscriptionId\":\"iertgccymvaolp\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"lfmmdnbbglzpswi\",\"publisherId\":\"mcwyhzdxssadb\",\"offerId\":\"nvdfznuda\"},\"marketplaceName\":\"vxzbncb\",\"marketplaceResourceId\":\"lpstdbhhxsrzdz\",\"marketplaceStatus\":\"erscdntne\",\"billedAzureSubscriptionId\":\"iwjmygtdssls\",\"subscribed\":true},\"elasticOrganizationId\":\"eriofzpyqs\",\"elasticOrganizationName\":\"wab\"}")
             .toObject(ElasticOrganizationToAzureSubscriptionMappingResponseProperties.class);
-        Assertions.assertEquals("xywpmueefjzwfqkq", model.billedAzureSubscriptionId());
-        Assertions.assertEquals("kfrlhrxsbky", model.elasticOrganizationId());
-        Assertions.assertEquals("ycanuzbpzkafku", model.elasticOrganizationName());
+        Assertions.assertEquals("iertgccymvaolp", model.billedAzureSubscriptionId());
+        Assertions.assertEquals("eriofzpyqs", model.elasticOrganizationId());
+        Assertions.assertEquals("wab", model.elasticOrganizationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticOrganizationToAzureSubscriptionMappingResponseProperties model
             = new ElasticOrganizationToAzureSubscriptionMappingResponseProperties()
-                .withBilledAzureSubscriptionId("xywpmueefjzwfqkq")
-                .withElasticOrganizationId("kfrlhrxsbky")
-                .withElasticOrganizationName("ycanuzbpzkafku");
+                .withBilledAzureSubscriptionId("iertgccymvaolp")
+                .withElasticOrganizationId("eriofzpyqs")
+                .withElasticOrganizationName("wab");
         model = BinaryData.fromObject(model)
             .toObject(ElasticOrganizationToAzureSubscriptionMappingResponseProperties.class);
-        Assertions.assertEquals("xywpmueefjzwfqkq", model.billedAzureSubscriptionId());
-        Assertions.assertEquals("kfrlhrxsbky", model.elasticOrganizationId());
-        Assertions.assertEquals("ycanuzbpzkafku", model.elasticOrganizationName());
+        Assertions.assertEquals("iertgccymvaolp", model.billedAzureSubscriptionId());
+        Assertions.assertEquals("eriofzpyqs", model.elasticOrganizationId());
+        Assertions.assertEquals("wab", model.elasticOrganizationName());
     }
 }

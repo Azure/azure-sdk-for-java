@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,56 +23,67 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
     /*
      * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
+    @Generated
     private String registryLoginServer;
 
     /*
      * Image name
      */
+    @Generated
     private String repositoryName;
 
     /*
      * Tag name
      */
+    @Generated
     private String name;
 
     /*
      * Tag digest
      */
+    @Generated
     private String digest;
 
     /*
      * Tag created time
      */
+    @Generated
     private OffsetDateTime createdOn;
 
     /*
      * Tag last update time
      */
+    @Generated
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * Delete enabled
      */
+    @Generated
     private Boolean deleteEnabled;
 
     /*
      * Write enabled
      */
+    @Generated
     private Boolean writeEnabled;
 
     /*
      * List enabled
      */
+    @Generated
     private Boolean listEnabled;
 
     /*
      * Read enabled
      */
+    @Generated
     private Boolean readEnabled;
 
     /**
      * Creates an instance of ArtifactTagPropertiesInternal class.
      */
+    @Generated
     public ArtifactTagPropertiesInternal() {
     }
 
@@ -81,6 +93,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the registryLoginServer value.
      */
+    @Generated
     public String getRegistryLoginServer() {
         return this.registryLoginServer;
     }
@@ -92,6 +105,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param registryLoginServer the registryLoginServer value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setRegistryLoginServer(String registryLoginServer) {
         this.registryLoginServer = registryLoginServer;
         return this;
@@ -102,6 +116,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the repositoryName value.
      */
+    @Generated
     public String getRepositoryName() {
         return this.repositoryName;
     }
@@ -112,6 +127,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param repositoryName the repositoryName value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setRepositoryName(String repositoryName) {
         this.repositoryName = repositoryName;
         return this;
@@ -122,6 +138,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -132,6 +149,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param name the name value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setName(String name) {
         this.name = name;
         return this;
@@ -142,6 +160,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the digest value.
      */
+    @Generated
     public String getDigest() {
         return this.digest;
     }
@@ -152,6 +171,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param digest the digest value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setDigest(String digest) {
         this.digest = digest;
         return this;
@@ -162,6 +182,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the createdOn value.
      */
+    @Generated
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
     }
@@ -172,6 +193,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param createdOn the createdOn value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
         return this;
@@ -182,6 +204,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the lastUpdatedOn value.
      */
+    @Generated
     public OffsetDateTime getLastUpdatedOn() {
         return this.lastUpdatedOn;
     }
@@ -192,6 +215,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param lastUpdatedOn the lastUpdatedOn value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setLastUpdatedOn(OffsetDateTime lastUpdatedOn) {
         this.lastUpdatedOn = lastUpdatedOn;
         return this;
@@ -202,6 +226,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the deleteEnabled value.
      */
+    @Generated
     public Boolean isDeleteEnabled() {
         return this.deleteEnabled;
     }
@@ -212,6 +237,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param deleteEnabled the deleteEnabled value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setDeleteEnabled(Boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
         return this;
@@ -222,6 +248,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the writeEnabled value.
      */
+    @Generated
     public Boolean isWriteEnabled() {
         return this.writeEnabled;
     }
@@ -232,6 +259,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param writeEnabled the writeEnabled value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setWriteEnabled(Boolean writeEnabled) {
         this.writeEnabled = writeEnabled;
         return this;
@@ -242,6 +270,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the listEnabled value.
      */
+    @Generated
     public Boolean isListEnabled() {
         return this.listEnabled;
     }
@@ -252,6 +281,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param listEnabled the listEnabled value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setListEnabled(Boolean listEnabled) {
         this.listEnabled = listEnabled;
         return this;
@@ -262,6 +292,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * 
      * @return the readEnabled value.
      */
+    @Generated
     public Boolean isReadEnabled() {
         return this.readEnabled;
     }
@@ -272,6 +303,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @param readEnabled the readEnabled value to set.
      * @return the ArtifactTagPropertiesInternal object itself.
      */
+    @Generated
     public ArtifactTagPropertiesInternal setReadEnabled(Boolean readEnabled) {
         this.readEnabled = readEnabled;
         return this;
@@ -280,6 +312,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -322,6 +355,7 @@ public class ArtifactTagPropertiesInternal implements JsonSerializable<ArtifactT
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ArtifactTagPropertiesInternal.
      */
+    @Generated
     public static ArtifactTagPropertiesInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ArtifactTagPropertiesInternal deserializedArtifactTagPropertiesInternal

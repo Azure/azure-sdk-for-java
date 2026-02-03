@@ -10,11 +10,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
+import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
 import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
 import com.azure.resourcemanager.networkcloud.models.StorageProfile;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachine;
+import com.azure.resourcemanager.networkcloud.models.VirtualMachineAssignRelayParameters;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineBootMethod;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachineDeviceModelType;
@@ -59,8 +61,16 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
+    }
+
+    public ManagedServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public SystemData systemData() {
@@ -89,6 +99,10 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
 
     public String clusterId() {
         return this.innerModel().clusterId();
+    }
+
+    public ExtendedLocation consoleExtendedLocation() {
+        return this.innerModel().consoleExtendedLocation();
     }
 
     public long cpuCores() {
@@ -124,6 +138,10 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this.innerModel().networkData();
     }
 
+    public String networkDataContent() {
+        return this.innerModel().networkDataContent();
+    }
+
     public List<VirtualMachinePlacementHint> placementHints() {
         List<VirtualMachinePlacementHint> inner = this.innerModel().placementHints();
         if (inner != null) {
@@ -156,6 +174,10 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
 
     public String userData() {
         return this.innerModel().userData();
+    }
+
+    public String userDataContent() {
+        return this.innerModel().userDataContent();
     }
 
     public VirtualMachineVirtioInterfaceType virtioInterface() {
@@ -207,6 +229,14 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
 
     private String virtualMachineName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private VirtualMachinePatchParameters updateVirtualMachineUpdateParameters;
 
     public VirtualMachineImpl withExistingResourceGroup(String resourceGroupName) {
@@ -217,14 +247,16 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
     public VirtualMachine create() {
         this.innerObject = serviceManager.serviceClient()
             .getVirtualMachines()
-            .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                Context.NONE);
         return this;
     }
 
     public VirtualMachine create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getVirtualMachines()
-            .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, virtualMachineName, this.innerModel(), createIfMatch, createIfNoneMatch,
+                context);
         return this;
     }
 
@@ -232,9 +264,13 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         this.innerObject = new VirtualMachineInner();
         this.serviceManager = serviceManager;
         this.virtualMachineName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public VirtualMachineImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateVirtualMachineUpdateParameters = new VirtualMachinePatchParameters();
         return this;
     }
@@ -242,14 +278,16 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
     public VirtualMachine apply() {
         this.innerObject = serviceManager.serviceClient()
             .getVirtualMachines()
-            .update(resourceGroupName, virtualMachineName, updateVirtualMachineUpdateParameters, Context.NONE);
+            .update(resourceGroupName, virtualMachineName, updateIfMatch, updateIfNoneMatch,
+                updateVirtualMachineUpdateParameters, Context.NONE);
         return this;
     }
 
     public VirtualMachine apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getVirtualMachines()
-            .update(resourceGroupName, virtualMachineName, updateVirtualMachineUpdateParameters, context);
+            .update(resourceGroupName, virtualMachineName, updateIfMatch, updateIfNoneMatch,
+                updateVirtualMachineUpdateParameters, context);
         return this;
     }
 
@@ -275,6 +313,16 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
             .getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context)
             .getValue();
         return this;
+    }
+
+    public OperationStatusResult assignRelay() {
+        return serviceManager.virtualMachines().assignRelay(resourceGroupName, virtualMachineName);
+    }
+
+    public OperationStatusResult assignRelay(VirtualMachineAssignRelayParameters virtualMachineAssignRelayParameters,
+        Context context) {
+        return serviceManager.virtualMachines()
+            .assignRelay(resourceGroupName, virtualMachineName, virtualMachineAssignRelayParameters, context);
     }
 
     public OperationStatusResult powerOff() {
@@ -366,8 +414,23 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
+    public VirtualMachineImpl withIdentity(ManagedServiceIdentity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateVirtualMachineUpdateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public VirtualMachineImpl withBootMethod(VirtualMachineBootMethod bootMethod) {
         this.innerModel().withBootMethod(bootMethod);
+        return this;
+    }
+
+    public VirtualMachineImpl withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation) {
+        this.innerModel().withConsoleExtendedLocation(consoleExtendedLocation);
         return this;
     }
 
@@ -386,6 +449,11 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this;
     }
 
+    public VirtualMachineImpl withNetworkDataContent(String networkDataContent) {
+        this.innerModel().withNetworkDataContent(networkDataContent);
+        return this;
+    }
+
     public VirtualMachineImpl withPlacementHints(List<VirtualMachinePlacementHint> placementHints) {
         this.innerModel().withPlacementHints(placementHints);
         return this;
@@ -398,6 +466,11 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
 
     public VirtualMachineImpl withUserData(String userData) {
         this.innerModel().withUserData(userData);
+        return this;
+    }
+
+    public VirtualMachineImpl withUserDataContent(String userDataContent) {
+        this.innerModel().withUserDataContent(userDataContent);
         return this;
     }
 
@@ -422,7 +495,27 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         }
     }
 
+    public VirtualMachineImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public VirtualMachineImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

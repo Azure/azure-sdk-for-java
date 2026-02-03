@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentQuotaStatus;
@@ -19,17 +19,17 @@ import reactor.core.publisher.Mono;
 public final class ComponentQuotaStatusGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr = "{\"AppId\":\"hya\",\"ShouldBeThrottled\":true,\"ExpirationTime\":\"lboxqvkjl\"}";
+        String responseStr = "{\"AppId\":\"lfkqojpy\",\"ShouldBeThrottled\":false,\"ExpirationTime\":\"rdcnifmzzsdy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationInsightsComponentQuotaStatus response = manager.componentQuotaStatus()
-            .getWithResponse("rclnpkc", "ayzri", com.azure.core.util.Context.NONE)
+            .getWithResponse("ppnvdxz", "hihfrbbcevqagtlt", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

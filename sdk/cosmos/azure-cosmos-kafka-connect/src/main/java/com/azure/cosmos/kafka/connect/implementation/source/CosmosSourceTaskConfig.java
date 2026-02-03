@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 public class CosmosSourceTaskConfig extends CosmosSourceConfig {
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    public static final long LOG_INTERVAL_MS = 60 * 1000;
 
     public static final String SOURCE_METADATA_TASK_UNIT = "azure.cosmos.source.task.metadataTaskUnit";
     public static final String SOURCE_FEED_RANGE_TASK_UNITS = "azure.cosmos.source.task.feedRangeTaskUnits";

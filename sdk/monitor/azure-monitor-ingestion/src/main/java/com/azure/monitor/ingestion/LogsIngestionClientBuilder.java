@@ -10,20 +10,38 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClientBuilder;
-import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesServiceVersion;
+import com.azure.monitor.ingestion.implementation.LogsIngestionClientImpl;
 import com.azure.monitor.ingestion.models.LogsIngestionAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import com.azure.monitor.ingestion.implementation.Utils;
 
 /**
  * Fluent builder for creating instances of {@link LogsIngestionClient} and {@link LogsIngestionAsyncClient}. The
@@ -64,17 +82,28 @@ public final class LogsIngestionClientBuilder
     implements ConfigurationTrait<LogsIngestionClientBuilder>, HttpTrait<LogsIngestionClientBuilder>,
     EndpointTrait<LogsIngestionClientBuilder>, TokenCredentialTrait<LogsIngestionClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(LogsIngestionClientBuilder.class);
-    private final IngestionUsingDataCollectionRulesClientBuilder innerLogBuilder
-        = new IngestionUsingDataCollectionRulesClientBuilder();
-    private String endpoint;
-    private TokenCredential tokenCredential;
+
+    private static final String SDK_NAME = "name";
+
+    private static final String SDK_VERSION = "version";
+
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://monitor.azure.com/.default" };
+
+    private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-monitor-ingestion.properties");
+
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
      * Creates a new instance of {@link LogsIngestionClientBuilder}.
      */
     public LogsIngestionClientBuilder() {
-
+        this.pipelinePolicies = new ArrayList<>();
     }
+
+    /**
+     * The service endpoint.
+     */
+    private String endpoint;
 
     /**
      * Sets the <a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-endpoint-overview?tabs=portal#create-a-data-collection-endpoint">data collection endpoint</a>.
@@ -86,7 +115,6 @@ public final class LogsIngestionClientBuilder
     public LogsIngestionClientBuilder endpoint(String endpoint) {
         try {
             new URL(endpoint);
-            innerLogBuilder.endpoint(endpoint);
             this.endpoint = endpoint;
             return this;
         } catch (MalformedURLException exception) {
@@ -95,41 +123,66 @@ public final class LogsIngestionClientBuilder
         }
     }
 
+    /*
+     * The HTTP pipeline to send requests through.
+     */
+    private HttpPipeline pipeline;
+
     /**
      * {@inheritDoc}
      */
     @Override
     public LogsIngestionClientBuilder pipeline(HttpPipeline pipeline) {
-        innerLogBuilder.pipeline(pipeline);
+        this.pipeline = pipeline;
         return this;
     }
+
+    /*
+     * The HTTP client used to send the request.
+     */
+    private HttpClient httpClient;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public LogsIngestionClientBuilder httpClient(HttpClient httpClient) {
-        innerLogBuilder.httpClient(httpClient);
+        this.httpClient = httpClient;
         return this;
     }
+
+    /*
+     * The configuration store that is used during construction of the service client.
+     */
+    private Configuration configuration;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public LogsIngestionClientBuilder configuration(Configuration configuration) {
-        innerLogBuilder.configuration(configuration);
+        this.configuration = configuration;
         return this;
     }
+
+    /*
+     * The logging configuration for HTTP requests and responses.
+     */
+    private HttpLogOptions httpLogOptions;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public LogsIngestionClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        innerLogBuilder.httpLogOptions(httpLogOptions);
+        this.httpLogOptions = httpLogOptions;
         return this;
     }
+
+    /*
+     * The retry policy that will attempt to retry failed requests, if applicable.
+     */
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -138,7 +191,7 @@ public final class LogsIngestionClientBuilder
      * @return the updated {@link LogsIngestionClientBuilder}.
      */
     public LogsIngestionClientBuilder retryPolicy(RetryPolicy retryPolicy) {
-        innerLogBuilder.retryPolicy(retryPolicy);
+        this.retryPolicy = retryPolicy;
         return this;
     }
 
@@ -147,18 +200,28 @@ public final class LogsIngestionClientBuilder
      */
     @Override
     public LogsIngestionClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        innerLogBuilder.addPolicy(customPolicy);
+        this.pipelinePolicies.add(customPolicy);
         return this;
     }
+
+    /*
+     * The retry options to configure retry policy for failed requests.
+     */
+    private RetryOptions retryOptions;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public LogsIngestionClientBuilder retryOptions(RetryOptions retryOptions) {
-        innerLogBuilder.retryOptions(retryOptions);
+        this.retryOptions = retryOptions;
         return this;
     }
+
+    /*
+     * The TokenCredential used for authentication.
+     */
+    private TokenCredential tokenCredential;
 
     /**
      * Sets the AAD authentication credential that has the "Monitoring Metrics Publisher" role assigned to it.
@@ -170,10 +233,14 @@ public final class LogsIngestionClientBuilder
      */
     @Override
     public LogsIngestionClientBuilder credential(TokenCredential tokenCredential) {
-        innerLogBuilder.credential(tokenCredential);
         this.tokenCredential = tokenCredential;
         return this;
     }
+
+    /**
+     * The audience indicating the authorization scope of log ingestion clients.
+     */
+    private LogsIngestionAudience audience;
 
     /**
      * Sets the audience for the authorization scope of log ingestion clients. If this value is not set, the default
@@ -183,18 +250,28 @@ public final class LogsIngestionClientBuilder
      * @return the updated {@link LogsIngestionClientBuilder}.
      */
     public LogsIngestionClientBuilder audience(LogsIngestionAudience audience) {
-        innerLogBuilder.audience(audience);
+        this.audience = audience;
         return this;
     }
+
+    /*
+     * The client options such as application ID and custom headers to set on a request.
+     */
+    private ClientOptions clientOptions;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public LogsIngestionClientBuilder clientOptions(ClientOptions clientOptions) {
-        innerLogBuilder.clientOptions(clientOptions);
+        this.clientOptions = clientOptions;
         return this;
     }
+
+    /*
+     * Service version
+     */
+    private LogsIngestionServiceVersion serviceVersion;
 
     /**
      * The service version to use when creating the client. By default, the latest service version is used.
@@ -204,8 +281,7 @@ public final class LogsIngestionClientBuilder
      * @return the updated {@link LogsIngestionClientBuilder}.
      */
     public LogsIngestionClientBuilder serviceVersion(LogsIngestionServiceVersion serviceVersion) {
-        innerLogBuilder
-            .serviceVersion(IngestionUsingDataCollectionRulesServiceVersion.valueOf(serviceVersion.getVersion()));
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
@@ -221,7 +297,7 @@ public final class LogsIngestionClientBuilder
         if (tokenCredential == null) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("credential is required to build the client."));
         }
-        return new LogsIngestionClient(innerLogBuilder.buildClient());
+        return new LogsIngestionClient(buildInnerClient());
     }
 
     /**
@@ -236,7 +312,65 @@ public final class LogsIngestionClientBuilder
         if (tokenCredential == null) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("credential is required to build the client."));
         }
-        return new LogsIngestionAsyncClient(innerLogBuilder.buildAsyncClient());
+        return new LogsIngestionAsyncClient(buildInnerClient());
+    }
+
+    /**
+     * Builds an instance of LogsIngestionClientImpl with the provided parameters.
+     *
+     * @return an instance of LogsIngestionClientImpl.
+     */
+    private LogsIngestionClientImpl buildInnerClient() {
+        this.validateClient();
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        LogsIngestionServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : LogsIngestionServiceVersion.getLatest();
+        LogsIngestionClientImpl client = Utils.getLogsIngestionClientImpl(localPipeline, endpoint, localServiceVersion);
+        return client;
+    }
+
+    private void validateClient() {
+        // This method is invoked from 'buildInnerClient'/'buildClient' method.
+        // Developer can customize this method, to validate that the necessary conditions are met for the new client.
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
+    private HttpPipeline createHttpPipeline() {
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(localClientOptions);
+        if (headers != null) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
+                audience == null ? DEFAULT_SCOPES : new String[] { audience.toString() }));
+        }
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
+        return httpPipeline;
     }
 
 }

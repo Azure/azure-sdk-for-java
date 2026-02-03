@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
     /*
      * The tenant id of service principal that have access to this Log Analytics
      */
+    @Generated
     private String tenantId;
 
     /*
      * The client id of service principal that have access to this Log Analytics
      */
+    @Generated
     private String clientId;
 
     /*
      * The client secret of service principal that have access to this Log Analytics
      */
+    @Generated
     private String clientSecret;
 
     /*
      * The workspace id of this Log Analytics
      */
+    @Generated
     private String workspaceId;
 
     /*
      * The KQL (Kusto Query Language) query to fetch data from this Log Analytics
      */
+    @Generated
     private String query;
 
     /**
      * Creates an instance of AzureLogAnalyticsParameterPatch class.
      */
+    @Generated
     public AzureLogAnalyticsParameterPatch() {
     }
 
@@ -52,6 +59,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * 
      * @return the tenantId value.
      */
+    @Generated
     public String getTenantId() {
         return this.tenantId;
     }
@@ -62,6 +70,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * @param tenantId the tenantId value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
+    @Generated
     public AzureLogAnalyticsParameterPatch setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
@@ -72,6 +81,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * 
      * @return the clientId value.
      */
+    @Generated
     public String getClientId() {
         return this.clientId;
     }
@@ -82,6 +92,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * @param clientId the clientId value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
+    @Generated
     public AzureLogAnalyticsParameterPatch setClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -92,6 +103,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * 
      * @return the clientSecret value.
      */
+    @Generated
     public String getClientSecret() {
         return this.clientSecret;
     }
@@ -102,6 +114,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * @param clientSecret the clientSecret value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
+    @Generated
     public AzureLogAnalyticsParameterPatch setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;
@@ -112,6 +125,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * 
      * @return the workspaceId value.
      */
+    @Generated
     public String getWorkspaceId() {
         return this.workspaceId;
     }
@@ -122,6 +136,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * @param workspaceId the workspaceId value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
+    @Generated
     public AzureLogAnalyticsParameterPatch setWorkspaceId(String workspaceId) {
         this.workspaceId = workspaceId;
         return this;
@@ -132,6 +147,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * 
      * @return the query value.
      */
+    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -142,6 +158,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * @param query the query value to set.
      * @return the AzureLogAnalyticsParameterPatch object itself.
      */
+    @Generated
     public AzureLogAnalyticsParameterPatch setQuery(String query) {
         this.query = query;
         return this;
@@ -150,6 +167,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -169,6 +187,7 @@ public final class AzureLogAnalyticsParameterPatch implements JsonSerializable<A
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureLogAnalyticsParameterPatch.
      */
+    @Generated
     public static AzureLogAnalyticsParameterPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureLogAnalyticsParameterPatch deserializedAzureLogAnalyticsParameterPatch

@@ -23,6 +23,11 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     private List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases;
 
     /*
+     * Date and time relative to UTC when the migration was started on
+     */
+    private String startedOn;
+
+    /*
      * Logins to migrate.
      */
     private List<String> selectedLogins;
@@ -48,6 +53,17 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
      */
     private BackupMode backupMode;
 
+    /*
+     * Azure Active Directory domain name in the format of 'contoso.com' for federated Azure AD or
+     * 'contoso.onmicrosoft.com' for managed domain, required if and only if Windows logins are selected
+     */
+    private String aadDomainName;
+
+    /*
+     * encrypted key for secure fields
+     */
+    private String encryptedKeyForSecureFields;
+
     /**
      * Creates an instance of MigrateSqlServerSqlMITaskInput class.
      */
@@ -72,6 +88,26 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     public MigrateSqlServerSqlMITaskInput
         withSelectedDatabases(List<MigrateSqlServerSqlMIDatabaseInput> selectedDatabases) {
         this.selectedDatabases = selectedDatabases;
+        return this;
+    }
+
+    /**
+     * Get the startedOn property: Date and time relative to UTC when the migration was started on.
+     * 
+     * @return the startedOn value.
+     */
+    public String startedOn() {
+        return this.startedOn;
+    }
+
+    /**
+     * Set the startedOn property: Date and time relative to UTC when the migration was started on.
+     * 
+     * @param startedOn the startedOn value to set.
+     * @return the MigrateSqlServerSqlMITaskInput object itself.
+     */
+    public MigrateSqlServerSqlMITaskInput withStartedOn(String startedOn) {
+        this.startedOn = startedOn;
         return this;
     }
 
@@ -178,6 +214,48 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
     }
 
     /**
+     * Get the aadDomainName property: Azure Active Directory domain name in the format of 'contoso.com' for federated
+     * Azure AD or 'contoso.onmicrosoft.com' for managed domain, required if and only if Windows logins are selected.
+     * 
+     * @return the aadDomainName value.
+     */
+    public String aadDomainName() {
+        return this.aadDomainName;
+    }
+
+    /**
+     * Set the aadDomainName property: Azure Active Directory domain name in the format of 'contoso.com' for federated
+     * Azure AD or 'contoso.onmicrosoft.com' for managed domain, required if and only if Windows logins are selected.
+     * 
+     * @param aadDomainName the aadDomainName value to set.
+     * @return the MigrateSqlServerSqlMITaskInput object itself.
+     */
+    public MigrateSqlServerSqlMITaskInput withAadDomainName(String aadDomainName) {
+        this.aadDomainName = aadDomainName;
+        return this;
+    }
+
+    /**
+     * Get the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @return the encryptedKeyForSecureFields value.
+     */
+    public String encryptedKeyForSecureFields() {
+        return this.encryptedKeyForSecureFields;
+    }
+
+    /**
+     * Set the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @param encryptedKeyForSecureFields the encryptedKeyForSecureFields value to set.
+     * @return the MigrateSqlServerSqlMITaskInput object itself.
+     */
+    public MigrateSqlServerSqlMITaskInput withEncryptedKeyForSecureFields(String encryptedKeyForSecureFields) {
+        this.encryptedKeyForSecureFields = encryptedKeyForSecureFields;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -248,12 +326,15 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
         jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("backupBlobShare", this.backupBlobShare);
+        jsonWriter.writeStringField("startedOn", this.startedOn);
         jsonWriter.writeArrayField("selectedLogins", this.selectedLogins,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("selectedAgentJobs", this.selectedAgentJobs,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("backupFileShare", this.backupFileShare);
         jsonWriter.writeStringField("backupMode", this.backupMode == null ? null : this.backupMode.toString());
+        jsonWriter.writeStringField("aadDomainName", this.aadDomainName);
+        jsonWriter.writeStringField("encryptedKeyForSecureFields", this.encryptedKeyForSecureFields);
         return jsonWriter.writeEndObject();
     }
 
@@ -286,6 +367,8 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
                     deserializedMigrateSqlServerSqlMITaskInput.selectedDatabases = selectedDatabases;
                 } else if ("backupBlobShare".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMITaskInput.backupBlobShare = BlobShare.fromJson(reader);
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskInput.startedOn = reader.getString();
                 } else if ("selectedLogins".equals(fieldName)) {
                     List<String> selectedLogins = reader.readArray(reader1 -> reader1.getString());
                     deserializedMigrateSqlServerSqlMITaskInput.selectedLogins = selectedLogins;
@@ -296,6 +379,10 @@ public final class MigrateSqlServerSqlMITaskInput extends SqlMigrationTaskInput 
                     deserializedMigrateSqlServerSqlMITaskInput.backupFileShare = FileShare.fromJson(reader);
                 } else if ("backupMode".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlMITaskInput.backupMode = BackupMode.fromString(reader.getString());
+                } else if ("aadDomainName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskInput.aadDomainName = reader.getString();
+                } else if ("encryptedKeyForSecureFields".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskInput.encryptedKeyForSecureFields = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

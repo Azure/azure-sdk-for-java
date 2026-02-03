@@ -43,6 +43,11 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput
      */
     private Map<String, String> targetSetting;
 
+    /*
+     * Mapping of source to target tables
+     */
+    private Map<String, String> tableMap;
+
     /**
      * Creates an instance of MigrateMySqlAzureDbForMySqlSyncDatabaseInput class.
      */
@@ -152,6 +157,26 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput
     }
 
     /**
+     * Get the tableMap property: Mapping of source to target tables.
+     * 
+     * @return the tableMap value.
+     */
+    public Map<String, String> tableMap() {
+        return this.tableMap;
+    }
+
+    /**
+     * Set the tableMap property: Mapping of source to target tables.
+     * 
+     * @param tableMap the tableMap value to set.
+     * @return the MigrateMySqlAzureDbForMySqlSyncDatabaseInput object itself.
+     */
+    public MigrateMySqlAzureDbForMySqlSyncDatabaseInput withTableMap(Map<String, String> tableMap) {
+        this.tableMap = tableMap;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -171,6 +196,7 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("sourceSetting", this.sourceSetting, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("targetSetting", this.targetSetting, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tableMap", this.tableMap, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -203,6 +229,9 @@ public final class MigrateMySqlAzureDbForMySqlSyncDatabaseInput
                 } else if ("targetSetting".equals(fieldName)) {
                     Map<String, String> targetSetting = reader.readMap(reader1 -> reader1.getString());
                     deserializedMigrateMySqlAzureDbForMySqlSyncDatabaseInput.targetSetting = targetSetting;
+                } else if ("tableMap".equals(fieldName)) {
+                    Map<String, String> tableMap = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigrateMySqlAzureDbForMySqlSyncDatabaseInput.tableMap = tableMap;
                 } else {
                     reader.skipChildren();
                 }

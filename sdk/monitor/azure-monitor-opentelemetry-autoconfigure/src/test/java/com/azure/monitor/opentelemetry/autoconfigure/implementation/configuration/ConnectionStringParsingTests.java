@@ -74,6 +74,25 @@ class ConnectionStringParsingTests {
     }
 
     @Test
+    void canParseAadAudience() {
+        String ikey = "fake-ikey";
+        String aadAudience = "https://test-audience/";
+        String cs = "InstrumentationKey=" + ikey + ";AADAudience=" + aadAudience;
+        ConnectionString parsed = ConnectionString.parse(cs);
+        assertThat(parsed.getInstrumentationKey()).isEqualTo(ikey);
+        assertThat(parsed.getAadAudienceWithScope()).isEqualTo("https://test-audience//.default");
+    }
+
+    @Test
+    void defaultAadAudience() {
+        String ikey = "fake-ikey";
+        String cs = "InstrumentationKey=" + ikey;
+        ConnectionString parsed = ConnectionString.parse(cs);
+        assertThat(parsed.getInstrumentationKey()).isEqualTo(ikey);
+        assertThat(parsed.getAadAudienceWithScope()).isEqualTo("https://monitor.azure.com//.default");
+    }
+
+    @Test
     void ikeyWithExplicitEndpoints() throws Exception {
         String ikey = "fake-ikey";
         String expectedIngestionEndpoint = "https://ingestion.example.com/";

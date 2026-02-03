@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ResolverContract;
@@ -21,26 +21,26 @@ public final class GraphQLApiResolversCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"joafm\",\"path\":\"exulvoepknarseia\",\"description\":\"sqoacb\"},\"id\":\"qdgsapleqfgkxen\",\"name\":\"szglvyakesz\",\"type\":\"uuvu\"}";
+            = "{\"properties\":{\"displayName\":\"klqlii\",\"path\":\"anuwgjnofg\",\"description\":\"y\"},\"id\":\"gseb\",\"name\":\"uymtevaeb\",\"type\":\"mwywhrjkejva\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ResolverContract response = manager.graphQLApiResolvers()
-            .define("vyezjwjk")
-            .withExistingApi("pv", "lskxgxqaygaslkv", "vwpvlcj")
-            .withDisplayName("bwh")
-            .withPath("eyozvrcw")
-            .withDescription("ucwnbcgqefgzjv")
-            .withIfMatch("u")
+            .define("i")
+            .withExistingApi("efc", "ybpchrtczwjcujyz", "vyrjqdjlgk")
+            .withDisplayName("euwi")
+            .withPath("rcvnfg")
+            .withDescription("viwxohktxagfuj")
+            .withIfMatch("vta")
             .create();
 
-        Assertions.assertEquals("joafm", response.displayName());
-        Assertions.assertEquals("exulvoepknarseia", response.path());
-        Assertions.assertEquals("sqoacb", response.description());
+        Assertions.assertEquals("klqlii", response.displayName());
+        Assertions.assertEquals("anuwgjnofg", response.path());
+        Assertions.assertEquals("y", response.description());
     }
 }

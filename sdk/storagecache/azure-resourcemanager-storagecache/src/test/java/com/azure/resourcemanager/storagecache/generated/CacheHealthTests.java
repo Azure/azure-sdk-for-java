@@ -13,17 +13,17 @@ public final class CacheHealthTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CacheHealth model = BinaryData.fromString(
-            "{\"state\":\"UpgradeFailed\",\"statusDescription\":\"fdnw\",\"conditions\":[{\"timestamp\":\"2021-01-03T05:03:28Z\",\"message\":\"syyceuzsoibjud\"},{\"timestamp\":\"2021-08-08T12:59:01Z\",\"message\":\"trthzvaytdwkqbr\"}]}")
+            "{\"state\":\"Degraded\",\"statusDescription\":\"nd\",\"conditions\":[{\"timestamp\":\"2021-08-06T21:47:38Z\",\"message\":\"o\"},{\"timestamp\":\"2021-07-02T22:41:48Z\",\"message\":\"dyh\"},{\"timestamp\":\"2021-05-25T06:23:15Z\",\"message\":\"pwdreqnovvqf\"},{\"timestamp\":\"2021-11-23T10:35:07Z\",\"message\":\"xywsuws\"}]}")
             .toObject(CacheHealth.class);
-        Assertions.assertEquals(HealthStateType.UPGRADE_FAILED, model.state());
-        Assertions.assertEquals("fdnw", model.statusDescription());
+        Assertions.assertEquals(HealthStateType.DEGRADED, model.state());
+        Assertions.assertEquals("nd", model.statusDescription());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheHealth model = new CacheHealth().withState(HealthStateType.UPGRADE_FAILED).withStatusDescription("fdnw");
+        CacheHealth model = new CacheHealth().withState(HealthStateType.DEGRADED).withStatusDescription("nd");
         model = BinaryData.fromObject(model).toObject(CacheHealth.class);
-        Assertions.assertEquals(HealthStateType.UPGRADE_FAILED, model.state());
-        Assertions.assertEquals("fdnw", model.statusDescription());
+        Assertions.assertEquals(HealthStateType.DEGRADED, model.state());
+        Assertions.assertEquals("nd", model.statusDescription());
     }
 }

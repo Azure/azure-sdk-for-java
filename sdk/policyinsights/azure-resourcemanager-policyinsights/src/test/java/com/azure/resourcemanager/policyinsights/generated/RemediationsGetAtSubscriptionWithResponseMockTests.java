@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.Remediation;
@@ -22,24 +22,26 @@ public final class RemediationsGetAtSubscriptionWithResponseMockTests {
     @Test
     public void testGetAtSubscriptionWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"policyAssignmentId\":\"tb\",\"policyDefinitionReferenceId\":\"exreu\",\"resourceDiscoveryMode\":\"ExistingNonCompliant\",\"provisioningState\":\"tljvfwhreagkhyx\",\"createdOn\":\"2021-11-07T00:02:25Z\",\"lastUpdatedOn\":\"2021-03-22T08:14:33Z\",\"filters\":{\"locations\":[\"sulmd\",\"glmep\",\"pfseykgs\"]},\"deploymentStatus\":{\"totalDeployments\":1456340145,\"successfulDeployments\":1689930384,\"failedDeployments\":2078567583},\"statusMessage\":\"fpgylkve\",\"correlationId\":\"ujcngo\",\"resourceCount\":1940123699,\"parallelDeployments\":310049644,\"failureThreshold\":{\"percentage\":69.47298}},\"id\":\"jfoknubnoitpkp\",\"name\":\"trgdgxvc\",\"type\":\"qraswugyxpqitwei\"}";
+            = "{\"properties\":{\"policyAssignmentId\":\"rp\",\"policyDefinitionReferenceId\":\"r\",\"resourceDiscoveryMode\":\"ReEvaluateCompliance\",\"provisioningState\":\"atvlmbjwcolbm\",\"createdOn\":\"2021-02-27T16:02:15Z\",\"lastUpdatedOn\":\"2021-01-27T11:36:33Z\",\"filters\":{\"locations\":[\"pa\",\"pr\",\"rvxhmtfhocnxzcm\"],\"resourceIds\":[\"gxnoqrxtdis\",\"jevhdlmydidw\"]},\"deploymentStatus\":{\"totalDeployments\":362021718,\"successfulDeployments\":628758721,\"failedDeployments\":335691215},\"statusMessage\":\"doesxxhmwcdb\",\"correlationId\":\"yo\",\"resourceCount\":2072250749,\"parallelDeployments\":588101197,\"failureThreshold\":{\"percentage\":45.688854}},\"id\":\"knjz\",\"name\":\"bhtmeplvuk\",\"type\":\"obrl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        Remediation response
-            = manager.remediations().getAtSubscriptionWithResponse("g", com.azure.core.util.Context.NONE).getValue();
+        Remediation response = manager.remediations()
+            .getAtSubscriptionWithResponse("quwusq", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("tb", response.policyAssignmentId());
-        Assertions.assertEquals("exreu", response.policyDefinitionReferenceId());
-        Assertions.assertEquals(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT, response.resourceDiscoveryMode());
-        Assertions.assertEquals("sulmd", response.filters().locations().get(0));
-        Assertions.assertEquals(1940123699, response.resourceCount());
-        Assertions.assertEquals(310049644, response.parallelDeployments());
-        Assertions.assertEquals(69.47298F, response.failureThreshold().percentage());
+        Assertions.assertEquals("rp", response.policyAssignmentId());
+        Assertions.assertEquals("r", response.policyDefinitionReferenceId());
+        Assertions.assertEquals(ResourceDiscoveryMode.RE_EVALUATE_COMPLIANCE, response.resourceDiscoveryMode());
+        Assertions.assertEquals("pa", response.filters().locations().get(0));
+        Assertions.assertEquals("gxnoqrxtdis", response.filters().resourceIds().get(0));
+        Assertions.assertEquals(2072250749, response.resourceCount());
+        Assertions.assertEquals(588101197, response.parallelDeployments());
+        Assertions.assertEquals(45.688854F, response.failureThreshold().percentage());
     }
 }

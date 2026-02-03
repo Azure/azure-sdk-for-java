@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultRolloutSpecificationMediumTrafficTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultRolloutSpecificationMediumTraffic model = BinaryData
-            .fromString(
-                "{\"waitDuration\":\"PT184H39M53S\",\"regions\":[\"acewiipfpubjibw\",\"iftohqkvpu\",\"ksgplsa\"]}")
-            .toObject(DefaultRolloutSpecificationMediumTraffic.class);
-        Assertions.assertEquals("acewiipfpubjibw", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT184H39M53S"), model.waitDuration());
+        DefaultRolloutSpecificationMediumTraffic model
+            = BinaryData.fromString("{\"waitDuration\":\"PT72H52M16S\",\"regions\":[\"rey\",\"kzikfjawneaivxwc\"]}")
+                .toObject(DefaultRolloutSpecificationMediumTraffic.class);
+        Assertions.assertEquals("rey", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT72H52M16S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefaultRolloutSpecificationMediumTraffic model = new DefaultRolloutSpecificationMediumTraffic()
-            .withRegions(Arrays.asList("acewiipfpubjibw", "iftohqkvpu", "ksgplsa"))
-            .withWaitDuration(Duration.parse("PT184H39M53S"));
+        DefaultRolloutSpecificationMediumTraffic model
+            = new DefaultRolloutSpecificationMediumTraffic().withRegions(Arrays.asList("rey", "kzikfjawneaivxwc"))
+                .withWaitDuration(Duration.parse("PT72H52M16S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationMediumTraffic.class);
-        Assertions.assertEquals("acewiipfpubjibw", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT184H39M53S"), model.waitDuration());
+        Assertions.assertEquals("rey", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT72H52M16S"), model.waitDuration());
     }
 }

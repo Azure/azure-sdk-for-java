@@ -13,20 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePropertiesGeoReplicationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabasePropertiesGeoReplication model = BinaryData
-            .fromString(
-                "{\"groupNickname\":\"c\",\"linkedDatabases\":[{\"id\":\"cufufsrpymz\",\"state\":\"Unlinking\"}]}")
+        DatabasePropertiesGeoReplication model = BinaryData.fromString(
+            "{\"groupNickname\":\"ijcoejctb\",\"linkedDatabases\":[{\"id\":\"qsycbkbfkgu\",\"state\":\"UnlinkFailed\"},{\"id\":\"xxppofm\",\"state\":\"UnlinkFailed\"}]}")
             .toObject(DatabasePropertiesGeoReplication.class);
-        Assertions.assertEquals("c", model.groupNickname());
-        Assertions.assertEquals("cufufsrpymz", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("ijcoejctb", model.groupNickname());
+        Assertions.assertEquals("qsycbkbfkgu", model.linkedDatabases().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabasePropertiesGeoReplication model = new DatabasePropertiesGeoReplication().withGroupNickname("c")
-            .withLinkedDatabases(Arrays.asList(new LinkedDatabase().withId("cufufsrpymz")));
+        DatabasePropertiesGeoReplication model = new DatabasePropertiesGeoReplication().withGroupNickname("ijcoejctb")
+            .withLinkedDatabases(
+                Arrays.asList(new LinkedDatabase().withId("qsycbkbfkgu"), new LinkedDatabase().withId("xxppofm")));
         model = BinaryData.fromObject(model).toObject(DatabasePropertiesGeoReplication.class);
-        Assertions.assertEquals("c", model.groupNickname());
-        Assertions.assertEquals("cufufsrpymz", model.linkedDatabases().get(0).id());
+        Assertions.assertEquals("ijcoejctb", model.groupNickname());
+        Assertions.assertEquals("qsycbkbfkgu", model.linkedDatabases().get(0).id());
     }
 }

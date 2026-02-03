@@ -12,6 +12,7 @@ import com.azure.resourcemanager.databox.models.DataExportDetails;
 import com.azure.resourcemanager.databox.models.DataImportDetails;
 import com.azure.resourcemanager.databox.models.DoubleEncryption;
 import com.azure.resourcemanager.databox.models.EncryptionPreferences;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.Preferences;
 import com.azure.resourcemanager.databox.models.ResourceIdentity;
 import com.azure.resourcemanager.databox.models.ShippingAddress;
@@ -34,7 +35,7 @@ import java.util.Map;
 public final class JobsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDevicePassword.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateDevicePassword.json
      */
     /**
      * Sample code: JobsCreateDevicePassword.
@@ -46,7 +47,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(new DataBoxJobDetails()
                 .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
@@ -71,7 +72,7 @@ public final class JobsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreate.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreate.json
      */
     /**
      * Sample code: JobsCreate.
@@ -83,7 +84,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(new DataBoxJobDetails()
                 .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
@@ -106,7 +107,7 @@ public final class JobsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateDoubleEncryption.
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateDoubleEncryption.
      * json
      */
     /**
@@ -119,7 +120,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withDetails(new DataBoxJobDetails()
                 .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")
@@ -143,7 +144,7 @@ public final class JobsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/
      * JobsCreateWithUserAssignedIdentity.json
      */
     /**
@@ -156,7 +157,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.IMPORT_TO_AZURE)
             .withIdentity(new ResourceIdentity().withType("UserAssigned")
                 .withUserAssignedIdentities(mapOf(
@@ -183,7 +184,7 @@ public final class JobsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCreateExport.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobsCreateExport.json
      */
     /**
      * Sample code: JobsCreateExport.
@@ -195,7 +196,7 @@ public final class JobsCreateSamples {
             .define("TestJobName1")
             .withRegion("westus")
             .withExistingResourceGroup("YourResourceGroupName")
-            .withSku(new Sku().withName(SkuName.DATA_BOX))
+            .withSku(new Sku().withName(SkuName.DATA_BOX).withModel(ModelName.DATA_BOX))
             .withTransferType(TransferType.EXPORT_FROM_AZURE)
             .withDetails(new DataBoxJobDetails()
                 .withContactDetails(new ContactDetails().withContactName("XXXX XXXX")

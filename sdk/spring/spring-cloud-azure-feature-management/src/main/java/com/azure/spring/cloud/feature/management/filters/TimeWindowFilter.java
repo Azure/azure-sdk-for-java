@@ -2,6 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.filters;
 
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_RECURRENCE;
+import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
+
+import java.time.ZonedDateTime;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.azure.spring.cloud.feature.management.implementation.FeatureFilterUtils;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.TimeWindowFilterSettings;
 import com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence.RecurrenceConstants;
@@ -10,15 +20,6 @@ import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationC
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.time.ZonedDateTime;
-import java.util.Map;
-
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_END;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_RECURRENCE;
-import static com.azure.spring.cloud.feature.management.models.FilterParameters.TIME_WINDOW_FILTER_SETTING_START;
 
 /**
  * A feature filter that can be used at activate a feature based on a time window.

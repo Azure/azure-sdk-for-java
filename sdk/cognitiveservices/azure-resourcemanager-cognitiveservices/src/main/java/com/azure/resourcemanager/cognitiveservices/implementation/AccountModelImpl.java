@@ -12,6 +12,7 @@ import com.azure.resourcemanager.cognitiveservices.models.DeploymentModel;
 import com.azure.resourcemanager.cognitiveservices.models.ModelDeprecationInfo;
 import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
 import com.azure.resourcemanager.cognitiveservices.models.ModelSku;
+import com.azure.resourcemanager.cognitiveservices.models.ReplacementConfig;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,14 @@ public final class AccountModelImpl implements AccountModel {
 
     public ModelDeprecationInfo deprecation() {
         return this.innerModel().deprecation();
+    }
+
+    public ReplacementConfig replacementConfig() {
+        return this.innerModel().replacementConfig();
+    }
+
+    public String modelCatalogAssetId() {
+        return this.innerModel().modelCatalogAssetId();
     }
 
     public ModelLifecycleStatus lifecycleStatus() {

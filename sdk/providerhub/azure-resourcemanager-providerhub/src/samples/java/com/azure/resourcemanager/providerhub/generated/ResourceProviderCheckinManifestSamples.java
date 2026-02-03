@@ -12,7 +12,7 @@ import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
 public final class ResourceProviderCheckinManifestSamples {
     /*
      * x-ms-original-file:
-     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/CheckinManifest.json
+     * specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/CheckinManifest.json
      */
     /**
      * Sample code: CheckinManifest.

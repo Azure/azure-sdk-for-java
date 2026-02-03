@@ -21,8 +21,7 @@ public final class FileSmbPropertiesHelper {
      */
     public interface FileSmbPropertiesAccessor {
         /**
-         * Creates a new instance of {@link FileSmbProperties} backed by an internal instance of
-         * {@link FileSmbProperties}.
+         * Creates a new instance of {@link FileSmbProperties}.
          *
          * @param httpHeaders The internal headers.
          * @return A new instance of {@link FileSmbProperties}.
@@ -40,13 +39,15 @@ public final class FileSmbPropertiesHelper {
     }
 
     /**
-     * Creates a new instance of {@link FileSmbProperties} backed by an internal instance of
-     * {@link FileSmbProperties}.
+     * Creates a new instance of {@link FileSmbProperties}.
      *
      * @param httpHeaders The internal headers.
      * @return A new instance of {@link FileSmbProperties}.
      */
     public static FileSmbProperties create(HttpHeaders httpHeaders) {
+        // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
+        // application accesses FileSmbProperties which triggers the accessor to be configured. So, if the accessor
+        // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
             new FileSmbProperties();
         }

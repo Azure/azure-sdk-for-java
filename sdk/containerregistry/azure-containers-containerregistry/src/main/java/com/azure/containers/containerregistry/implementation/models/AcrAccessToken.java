@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
     /*
      * The access token for performing authenticated requests
      */
+    @Generated
     private String accessToken;
 
     /**
      * Creates an instance of AcrAccessToken class.
      */
+    @Generated
     public AcrAccessToken() {
     }
 
@@ -32,6 +35,7 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
      * 
      * @return the accessToken value.
      */
+    @Generated
     public String getAccessToken() {
         return this.accessToken;
     }
@@ -42,6 +46,7 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
      * @param accessToken the accessToken value to set.
      * @return the AcrAccessToken object itself.
      */
+    @Generated
     public AcrAccessToken setAccessToken(String accessToken) {
         this.accessToken = accessToken;
         return this;
@@ -50,6 +55,7 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class AcrAccessToken implements JsonSerializable<AcrAccessToken> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcrAccessToken.
      */
+    @Generated
     public static AcrAccessToken fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcrAccessToken deserializedAcrAccessToken = new AcrAccessToken();

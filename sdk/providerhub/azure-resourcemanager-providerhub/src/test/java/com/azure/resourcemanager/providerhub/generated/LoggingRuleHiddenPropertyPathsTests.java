@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class LoggingRuleHiddenPropertyPathsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoggingRuleHiddenPropertyPaths model = BinaryData.fromString(
-            "{\"hiddenPathsOnRequest\":[\"gxywpmue\",\"fjz\",\"fqkquj\"],\"hiddenPathsOnResponse\":[\"uyonobglaoc\",\"xtccmg\",\"udxytlmoyrx\",\"wfudwpzntxhdzhl\"]}")
-            .toObject(LoggingRuleHiddenPropertyPaths.class);
-        Assertions.assertEquals("gxywpmue", model.hiddenPathsOnRequest().get(0));
-        Assertions.assertEquals("uyonobglaoc", model.hiddenPathsOnResponse().get(0));
+        LoggingRuleHiddenPropertyPaths model
+            = BinaryData.fromString("{\"hiddenPathsOnRequest\":[\"hfmvfaxkffe\"],\"hiddenPathsOnResponse\":[\"hl\"]}")
+                .toObject(LoggingRuleHiddenPropertyPaths.class);
+        Assertions.assertEquals("hfmvfaxkffe", model.hiddenPathsOnRequest().get(0));
+        Assertions.assertEquals("hl", model.hiddenPathsOnResponse().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LoggingRuleHiddenPropertyPaths model
-            = new LoggingRuleHiddenPropertyPaths().withHiddenPathsOnRequest(Arrays.asList("gxywpmue", "fjz", "fqkquj"))
-                .withHiddenPathsOnResponse(Arrays.asList("uyonobglaoc", "xtccmg", "udxytlmoyrx", "wfudwpzntxhdzhl"));
+            = new LoggingRuleHiddenPropertyPaths().withHiddenPathsOnRequest(Arrays.asList("hfmvfaxkffe"))
+                .withHiddenPathsOnResponse(Arrays.asList("hl"));
         model = BinaryData.fromObject(model).toObject(LoggingRuleHiddenPropertyPaths.class);
-        Assertions.assertEquals("gxywpmue", model.hiddenPathsOnRequest().get(0));
-        Assertions.assertEquals("uyonobglaoc", model.hiddenPathsOnResponse().get(0));
+        Assertions.assertEquals("hfmvfaxkffe", model.hiddenPathsOnRequest().get(0));
+        Assertions.assertEquals("hl", model.hiddenPathsOnResponse().get(0));
     }
 }

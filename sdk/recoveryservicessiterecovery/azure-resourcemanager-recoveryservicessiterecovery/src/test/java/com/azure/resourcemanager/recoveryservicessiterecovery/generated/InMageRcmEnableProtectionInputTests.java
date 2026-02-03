@@ -10,6 +10,12 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmDi
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmDisksDefaultInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmEnableProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.LicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.LinuxLicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SecurityConfiguration;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SecurityProfileProperties;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SecurityType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SqlServerLicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.UserCreatedResourceTag;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -17,91 +23,161 @@ public final class InMageRcmEnableProtectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmEnableProtectionInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcm\",\"fabricDiscoveryMachineId\":\"llukkreh\",\"disksToInclude\":[{\"diskId\":\"mjodu\",\"logStorageAccountId\":\"fvulxfaryr\",\"diskType\":\"Standard_LRS\",\"diskEncryptionSetId\":\"gdezvjqwahoy\"},{\"diskId\":\"yaxqvjweiwtczkd\",\"logStorageAccountId\":\"nvovbooqbmdqrxy\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"et\"},{\"diskId\":\"cflwtjdtlr\",\"logStorageAccountId\":\"e\",\"diskType\":\"Premium_LRS\",\"diskEncryptionSetId\":\"y\"}],\"disksDefault\":{\"logStorageAccountId\":\"uxdtzcq\",\"diskType\":\"Standard_LRS\",\"diskEncryptionSetId\":\"dudgcozzomeh\"},\"targetResourceGroupId\":\"lantolamlb\",\"targetNetworkId\":\"uxkqllczipvwdt\",\"testNetworkId\":\"kzdqiqdlratrkwxo\",\"targetSubnetName\":\"wxsuy\",\"testSubnetName\":\"nhrfgslgl\",\"targetVmName\":\"ry\",\"targetVmSize\":\"zihuioaeo\",\"licenseType\":\"NoLicenseType\",\"targetAvailabilitySetId\":\"tfeyvk\",\"targetAvailabilityZone\":\"gdd\",\"targetProximityPlacementGroupId\":\"hdccxb\",\"targetBootDiagnosticsStorageAccountId\":\"uqutkzwtjww\",\"runAsAccountId\":\"zytijcx\",\"processServerId\":\"nondegjdyd\",\"multiVmGroupName\":\"kkkbjuckcatuqbh\"}")
+            "{\"instanceType\":\"InMageRcm\",\"fabricDiscoveryMachineId\":\"b\",\"disksToInclude\":[{\"diskId\":\"zl\",\"logStorageAccountId\":\"ynjpchamkaepl\",\"diskType\":\"PremiumV2_LRS\",\"diskEncryptionSetId\":\"ubowuywevtj\",\"sectorSizeInBytes\":1313885136},{\"diskId\":\"ikmwlaok\",\"logStorageAccountId\":\"fnisyxgu\",\"diskType\":\"PremiumV2_LRS\",\"diskEncryptionSetId\":\"tredscnnstjc\",\"sectorSizeInBytes\":849541809},{\"diskId\":\"vtzrxzhclecwwtz\",\"logStorageAccountId\":\"zclo\",\"diskType\":\"Standard_LRS\",\"diskEncryptionSetId\":\"u\",\"sectorSizeInBytes\":966265053},{\"diskId\":\"dhz\",\"logStorageAccountId\":\"yresgzsdtmwbyorj\",\"diskType\":\"Premium_LRS\",\"diskEncryptionSetId\":\"chy\",\"sectorSizeInBytes\":767116887}],\"disksDefault\":{\"logStorageAccountId\":\"vyrfbqvum\",\"diskType\":\"StandardSSD_ZRS\",\"diskEncryptionSetId\":\"jsiuepmax\",\"sectorSizeInBytes\":1699514494},\"targetResourceGroupId\":\"lpqmp\",\"targetNetworkId\":\"xef\",\"testNetworkId\":\"lblmrtuxyprhfcae\",\"targetSubnetName\":\"ifq\",\"testSubnetName\":\"wjflobh\",\"targetVmName\":\"qmomfe\",\"targetVmSize\":\"rkfrocgbmxldj\",\"licenseType\":\"NotSpecified\",\"targetAvailabilitySetId\":\"bjesylslur\",\"targetAvailabilityZone\":\"fygpnyhgd\",\"targetProximityPlacementGroupId\":\"qscag\",\"targetBootDiagnosticsStorageAccountId\":\"voupr\",\"runAsAccountId\":\"tqzsslhmgwfnivr\",\"processServerId\":\"pfduiol\",\"multiVmGroupName\":\"yqvpbfjpo\",\"sqlServerLicenseType\":\"PAYG\",\"linuxLicenseType\":\"LinuxServer\",\"targetVmTags\":[{\"tagName\":\"czdquurbo\",\"tagValue\":\"vhvzielbprnqu\"},{\"tagName\":\"wzcqygg\",\"tagValue\":\"wsvh\"},{\"tagName\":\"gqiwy\",\"tagValue\":\"tobdrrpnre\"}],\"seedManagedDiskTags\":[{\"tagName\":\"sbfjhh\",\"tagValue\":\"tpkvegeattbzkgtz\"},{\"tagName\":\"wqsttewuvcys\",\"tagValue\":\"ufjxflpditfno\"},{\"tagName\":\"iyuxlvrh\",\"tagValue\":\"rvbwonleq\"}],\"targetManagedDiskTags\":[{\"tagName\":\"l\",\"tagValue\":\"bs\"},{\"tagName\":\"huy\",\"tagValue\":\"n\"},{\"tagName\":\"ttlnrjdszdb\",\"tagValue\":\"iciqppo\"}],\"targetNicTags\":[{\"tagName\":\"newuhwfw\",\"tagValue\":\"oxuo\"},{\"tagName\":\"fnres\",\"tagValue\":\"epgckn\"},{\"tagName\":\"mgvsnvbtqdxfmj\",\"tagValue\":\"jnhj\"},{\"tagName\":\"qllbsupubdxc\",\"tagValue\":\"lhzwh\"}],\"userSelectedOSName\":\"kvbos\",\"targetVmSecurityProfile\":{\"targetVmSecurityType\":\"ConfidentialVM\",\"targetVmSecureBoot\":\"Enabled\",\"targetVmTpm\":\"Enabled\",\"targetVmMonitoring\":\"Disabled\",\"targetVmConfidentialEncryption\":\"Disabled\"}}")
             .toObject(InMageRcmEnableProtectionInput.class);
-        Assertions.assertEquals("llukkreh", model.fabricDiscoveryMachineId());
-        Assertions.assertEquals("mjodu", model.disksToInclude().get(0).diskId());
-        Assertions.assertEquals("fvulxfaryr", model.disksToInclude().get(0).logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.STANDARD_LRS, model.disksToInclude().get(0).diskType());
-        Assertions.assertEquals("gdezvjqwahoy", model.disksToInclude().get(0).diskEncryptionSetId());
-        Assertions.assertEquals("uxdtzcq", model.disksDefault().logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.STANDARD_LRS, model.disksDefault().diskType());
-        Assertions.assertEquals("dudgcozzomeh", model.disksDefault().diskEncryptionSetId());
-        Assertions.assertEquals("lantolamlb", model.targetResourceGroupId());
-        Assertions.assertEquals("uxkqllczipvwdt", model.targetNetworkId());
-        Assertions.assertEquals("kzdqiqdlratrkwxo", model.testNetworkId());
-        Assertions.assertEquals("wxsuy", model.targetSubnetName());
-        Assertions.assertEquals("nhrfgslgl", model.testSubnetName());
-        Assertions.assertEquals("ry", model.targetVmName());
-        Assertions.assertEquals("zihuioaeo", model.targetVmSize());
-        Assertions.assertEquals(LicenseType.NO_LICENSE_TYPE, model.licenseType());
-        Assertions.assertEquals("tfeyvk", model.targetAvailabilitySetId());
-        Assertions.assertEquals("gdd", model.targetAvailabilityZone());
-        Assertions.assertEquals("hdccxb", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("uqutkzwtjww", model.targetBootDiagnosticsStorageAccountId());
-        Assertions.assertEquals("zytijcx", model.runAsAccountId());
-        Assertions.assertEquals("nondegjdyd", model.processServerId());
-        Assertions.assertEquals("kkkbjuckcatuqbh", model.multiVmGroupName());
+        Assertions.assertEquals("b", model.fabricDiscoveryMachineId());
+        Assertions.assertEquals("zl", model.disksToInclude().get(0).diskId());
+        Assertions.assertEquals("ynjpchamkaepl", model.disksToInclude().get(0).logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.PREMIUM_V2_LRS, model.disksToInclude().get(0).diskType());
+        Assertions.assertEquals("ubowuywevtj", model.disksToInclude().get(0).diskEncryptionSetId());
+        Assertions.assertEquals(1313885136, model.disksToInclude().get(0).sectorSizeInBytes());
+        Assertions.assertEquals("vyrfbqvum", model.disksDefault().logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_ZRS, model.disksDefault().diskType());
+        Assertions.assertEquals("jsiuepmax", model.disksDefault().diskEncryptionSetId());
+        Assertions.assertEquals(1699514494, model.disksDefault().sectorSizeInBytes());
+        Assertions.assertEquals("lpqmp", model.targetResourceGroupId());
+        Assertions.assertEquals("xef", model.targetNetworkId());
+        Assertions.assertEquals("lblmrtuxyprhfcae", model.testNetworkId());
+        Assertions.assertEquals("ifq", model.targetSubnetName());
+        Assertions.assertEquals("wjflobh", model.testSubnetName());
+        Assertions.assertEquals("qmomfe", model.targetVmName());
+        Assertions.assertEquals("rkfrocgbmxldj", model.targetVmSize());
+        Assertions.assertEquals(LicenseType.NOT_SPECIFIED, model.licenseType());
+        Assertions.assertEquals("bjesylslur", model.targetAvailabilitySetId());
+        Assertions.assertEquals("fygpnyhgd", model.targetAvailabilityZone());
+        Assertions.assertEquals("qscag", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("voupr", model.targetBootDiagnosticsStorageAccountId());
+        Assertions.assertEquals("tqzsslhmgwfnivr", model.runAsAccountId());
+        Assertions.assertEquals("pfduiol", model.processServerId());
+        Assertions.assertEquals("yqvpbfjpo", model.multiVmGroupName());
+        Assertions.assertEquals(SqlServerLicenseType.PAYG, model.sqlServerLicenseType());
+        Assertions.assertEquals(LinuxLicenseType.LINUX_SERVER, model.linuxLicenseType());
+        Assertions.assertEquals("czdquurbo", model.targetVmTags().get(0).tagName());
+        Assertions.assertEquals("vhvzielbprnqu", model.targetVmTags().get(0).tagValue());
+        Assertions.assertEquals("sbfjhh", model.seedManagedDiskTags().get(0).tagName());
+        Assertions.assertEquals("tpkvegeattbzkgtz", model.seedManagedDiskTags().get(0).tagValue());
+        Assertions.assertEquals("l", model.targetManagedDiskTags().get(0).tagName());
+        Assertions.assertEquals("bs", model.targetManagedDiskTags().get(0).tagValue());
+        Assertions.assertEquals("newuhwfw", model.targetNicTags().get(0).tagName());
+        Assertions.assertEquals("oxuo", model.targetNicTags().get(0).tagValue());
+        Assertions.assertEquals("kvbos", model.userSelectedOSName());
+        Assertions.assertEquals(SecurityType.CONFIDENTIAL_VM, model.targetVmSecurityProfile().targetVmSecurityType());
+        Assertions.assertEquals(SecurityConfiguration.ENABLED, model.targetVmSecurityProfile().targetVmSecureBoot());
+        Assertions.assertEquals(SecurityConfiguration.ENABLED, model.targetVmSecurityProfile().targetVmTpm());
+        Assertions.assertEquals(SecurityConfiguration.DISABLED, model.targetVmSecurityProfile().targetVmMonitoring());
+        Assertions.assertEquals(SecurityConfiguration.DISABLED,
+            model.targetVmSecurityProfile().targetVmConfidentialEncryption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmEnableProtectionInput model
-            = new InMageRcmEnableProtectionInput().withFabricDiscoveryMachineId("llukkreh")
-                .withDisksToInclude(Arrays.asList(
-                    new InMageRcmDiskInput().withDiskId("mjodu")
-                        .withLogStorageAccountId("fvulxfaryr")
-                        .withDiskType(DiskAccountType.STANDARD_LRS)
-                        .withDiskEncryptionSetId("gdezvjqwahoy"),
-                    new InMageRcmDiskInput().withDiskId("yaxqvjweiwtczkd")
-                        .withLogStorageAccountId("nvovbooqbmdqrxy")
-                        .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-                        .withDiskEncryptionSetId("et"),
-                    new InMageRcmDiskInput().withDiskId("cflwtjdtlr")
-                        .withLogStorageAccountId("e")
-                        .withDiskType(DiskAccountType.PREMIUM_LRS)
-                        .withDiskEncryptionSetId("y")))
-                .withDisksDefault(new InMageRcmDisksDefaultInput().withLogStorageAccountId("uxdtzcq")
+        InMageRcmEnableProtectionInput model = new InMageRcmEnableProtectionInput().withFabricDiscoveryMachineId("b")
+            .withDisksToInclude(Arrays.asList(
+                new InMageRcmDiskInput().withDiskId("zl")
+                    .withLogStorageAccountId("ynjpchamkaepl")
+                    .withDiskType(DiskAccountType.PREMIUM_V2_LRS)
+                    .withDiskEncryptionSetId("ubowuywevtj")
+                    .withSectorSizeInBytes(1313885136),
+                new InMageRcmDiskInput().withDiskId("ikmwlaok")
+                    .withLogStorageAccountId("fnisyxgu")
+                    .withDiskType(DiskAccountType.PREMIUM_V2_LRS)
+                    .withDiskEncryptionSetId("tredscnnstjc")
+                    .withSectorSizeInBytes(849541809),
+                new InMageRcmDiskInput().withDiskId("vtzrxzhclecwwtz")
+                    .withLogStorageAccountId("zclo")
                     .withDiskType(DiskAccountType.STANDARD_LRS)
-                    .withDiskEncryptionSetId("dudgcozzomeh"))
-                .withTargetResourceGroupId("lantolamlb")
-                .withTargetNetworkId("uxkqllczipvwdt")
-                .withTestNetworkId("kzdqiqdlratrkwxo")
-                .withTargetSubnetName("wxsuy")
-                .withTestSubnetName("nhrfgslgl")
-                .withTargetVmName("ry")
-                .withTargetVmSize("zihuioaeo")
-                .withLicenseType(LicenseType.NO_LICENSE_TYPE)
-                .withTargetAvailabilitySetId("tfeyvk")
-                .withTargetAvailabilityZone("gdd")
-                .withTargetProximityPlacementGroupId("hdccxb")
-                .withTargetBootDiagnosticsStorageAccountId("uqutkzwtjww")
-                .withRunAsAccountId("zytijcx")
-                .withProcessServerId("nondegjdyd")
-                .withMultiVmGroupName("kkkbjuckcatuqbh");
+                    .withDiskEncryptionSetId("u")
+                    .withSectorSizeInBytes(966265053),
+                new InMageRcmDiskInput().withDiskId("dhz")
+                    .withLogStorageAccountId("yresgzsdtmwbyorj")
+                    .withDiskType(DiskAccountType.PREMIUM_LRS)
+                    .withDiskEncryptionSetId("chy")
+                    .withSectorSizeInBytes(767116887)))
+            .withDisksDefault(new InMageRcmDisksDefaultInput().withLogStorageAccountId("vyrfbqvum")
+                .withDiskType(DiskAccountType.STANDARD_SSD_ZRS)
+                .withDiskEncryptionSetId("jsiuepmax")
+                .withSectorSizeInBytes(1699514494))
+            .withTargetResourceGroupId("lpqmp")
+            .withTargetNetworkId("xef")
+            .withTestNetworkId("lblmrtuxyprhfcae")
+            .withTargetSubnetName("ifq")
+            .withTestSubnetName("wjflobh")
+            .withTargetVmName("qmomfe")
+            .withTargetVmSize("rkfrocgbmxldj")
+            .withLicenseType(LicenseType.NOT_SPECIFIED)
+            .withTargetAvailabilitySetId("bjesylslur")
+            .withTargetAvailabilityZone("fygpnyhgd")
+            .withTargetProximityPlacementGroupId("qscag")
+            .withTargetBootDiagnosticsStorageAccountId("voupr")
+            .withRunAsAccountId("tqzsslhmgwfnivr")
+            .withProcessServerId("pfduiol")
+            .withMultiVmGroupName("yqvpbfjpo")
+            .withSqlServerLicenseType(SqlServerLicenseType.PAYG)
+            .withLinuxLicenseType(LinuxLicenseType.LINUX_SERVER)
+            .withTargetVmTags(
+                Arrays.asList(new UserCreatedResourceTag().withTagName("czdquurbo").withTagValue("vhvzielbprnqu"),
+                    new UserCreatedResourceTag().withTagName("wzcqygg").withTagValue("wsvh"),
+                    new UserCreatedResourceTag().withTagName("gqiwy").withTagValue("tobdrrpnre")))
+            .withSeedManagedDiskTags(
+                Arrays.asList(new UserCreatedResourceTag().withTagName("sbfjhh").withTagValue("tpkvegeattbzkgtz"),
+                    new UserCreatedResourceTag().withTagName("wqsttewuvcys").withTagValue("ufjxflpditfno"),
+                    new UserCreatedResourceTag().withTagName("iyuxlvrh").withTagValue("rvbwonleq")))
+            .withTargetManagedDiskTags(Arrays.asList(new UserCreatedResourceTag().withTagName("l").withTagValue("bs"),
+                new UserCreatedResourceTag().withTagName("huy").withTagValue("n"),
+                new UserCreatedResourceTag().withTagName("ttlnrjdszdb").withTagValue("iciqppo")))
+            .withTargetNicTags(Arrays.asList(new UserCreatedResourceTag().withTagName("newuhwfw").withTagValue("oxuo"),
+                new UserCreatedResourceTag().withTagName("fnres").withTagValue("epgckn"),
+                new UserCreatedResourceTag().withTagName("mgvsnvbtqdxfmj").withTagValue("jnhj"),
+                new UserCreatedResourceTag().withTagName("qllbsupubdxc").withTagValue("lhzwh")))
+            .withUserSelectedOSName("kvbos")
+            .withTargetVmSecurityProfile(
+                new SecurityProfileProperties().withTargetVmSecurityType(SecurityType.CONFIDENTIAL_VM)
+                    .withTargetVmSecureBoot(SecurityConfiguration.ENABLED)
+                    .withTargetVmTpm(SecurityConfiguration.ENABLED)
+                    .withTargetVmMonitoring(SecurityConfiguration.DISABLED)
+                    .withTargetVmConfidentialEncryption(SecurityConfiguration.DISABLED));
         model = BinaryData.fromObject(model).toObject(InMageRcmEnableProtectionInput.class);
-        Assertions.assertEquals("llukkreh", model.fabricDiscoveryMachineId());
-        Assertions.assertEquals("mjodu", model.disksToInclude().get(0).diskId());
-        Assertions.assertEquals("fvulxfaryr", model.disksToInclude().get(0).logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.STANDARD_LRS, model.disksToInclude().get(0).diskType());
-        Assertions.assertEquals("gdezvjqwahoy", model.disksToInclude().get(0).diskEncryptionSetId());
-        Assertions.assertEquals("uxdtzcq", model.disksDefault().logStorageAccountId());
-        Assertions.assertEquals(DiskAccountType.STANDARD_LRS, model.disksDefault().diskType());
-        Assertions.assertEquals("dudgcozzomeh", model.disksDefault().diskEncryptionSetId());
-        Assertions.assertEquals("lantolamlb", model.targetResourceGroupId());
-        Assertions.assertEquals("uxkqllczipvwdt", model.targetNetworkId());
-        Assertions.assertEquals("kzdqiqdlratrkwxo", model.testNetworkId());
-        Assertions.assertEquals("wxsuy", model.targetSubnetName());
-        Assertions.assertEquals("nhrfgslgl", model.testSubnetName());
-        Assertions.assertEquals("ry", model.targetVmName());
-        Assertions.assertEquals("zihuioaeo", model.targetVmSize());
-        Assertions.assertEquals(LicenseType.NO_LICENSE_TYPE, model.licenseType());
-        Assertions.assertEquals("tfeyvk", model.targetAvailabilitySetId());
-        Assertions.assertEquals("gdd", model.targetAvailabilityZone());
-        Assertions.assertEquals("hdccxb", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("uqutkzwtjww", model.targetBootDiagnosticsStorageAccountId());
-        Assertions.assertEquals("zytijcx", model.runAsAccountId());
-        Assertions.assertEquals("nondegjdyd", model.processServerId());
-        Assertions.assertEquals("kkkbjuckcatuqbh", model.multiVmGroupName());
+        Assertions.assertEquals("b", model.fabricDiscoveryMachineId());
+        Assertions.assertEquals("zl", model.disksToInclude().get(0).diskId());
+        Assertions.assertEquals("ynjpchamkaepl", model.disksToInclude().get(0).logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.PREMIUM_V2_LRS, model.disksToInclude().get(0).diskType());
+        Assertions.assertEquals("ubowuywevtj", model.disksToInclude().get(0).diskEncryptionSetId());
+        Assertions.assertEquals(1313885136, model.disksToInclude().get(0).sectorSizeInBytes());
+        Assertions.assertEquals("vyrfbqvum", model.disksDefault().logStorageAccountId());
+        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_ZRS, model.disksDefault().diskType());
+        Assertions.assertEquals("jsiuepmax", model.disksDefault().diskEncryptionSetId());
+        Assertions.assertEquals(1699514494, model.disksDefault().sectorSizeInBytes());
+        Assertions.assertEquals("lpqmp", model.targetResourceGroupId());
+        Assertions.assertEquals("xef", model.targetNetworkId());
+        Assertions.assertEquals("lblmrtuxyprhfcae", model.testNetworkId());
+        Assertions.assertEquals("ifq", model.targetSubnetName());
+        Assertions.assertEquals("wjflobh", model.testSubnetName());
+        Assertions.assertEquals("qmomfe", model.targetVmName());
+        Assertions.assertEquals("rkfrocgbmxldj", model.targetVmSize());
+        Assertions.assertEquals(LicenseType.NOT_SPECIFIED, model.licenseType());
+        Assertions.assertEquals("bjesylslur", model.targetAvailabilitySetId());
+        Assertions.assertEquals("fygpnyhgd", model.targetAvailabilityZone());
+        Assertions.assertEquals("qscag", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("voupr", model.targetBootDiagnosticsStorageAccountId());
+        Assertions.assertEquals("tqzsslhmgwfnivr", model.runAsAccountId());
+        Assertions.assertEquals("pfduiol", model.processServerId());
+        Assertions.assertEquals("yqvpbfjpo", model.multiVmGroupName());
+        Assertions.assertEquals(SqlServerLicenseType.PAYG, model.sqlServerLicenseType());
+        Assertions.assertEquals(LinuxLicenseType.LINUX_SERVER, model.linuxLicenseType());
+        Assertions.assertEquals("czdquurbo", model.targetVmTags().get(0).tagName());
+        Assertions.assertEquals("vhvzielbprnqu", model.targetVmTags().get(0).tagValue());
+        Assertions.assertEquals("sbfjhh", model.seedManagedDiskTags().get(0).tagName());
+        Assertions.assertEquals("tpkvegeattbzkgtz", model.seedManagedDiskTags().get(0).tagValue());
+        Assertions.assertEquals("l", model.targetManagedDiskTags().get(0).tagName());
+        Assertions.assertEquals("bs", model.targetManagedDiskTags().get(0).tagValue());
+        Assertions.assertEquals("newuhwfw", model.targetNicTags().get(0).tagName());
+        Assertions.assertEquals("oxuo", model.targetNicTags().get(0).tagValue());
+        Assertions.assertEquals("kvbos", model.userSelectedOSName());
+        Assertions.assertEquals(SecurityType.CONFIDENTIAL_VM, model.targetVmSecurityProfile().targetVmSecurityType());
+        Assertions.assertEquals(SecurityConfiguration.ENABLED, model.targetVmSecurityProfile().targetVmSecureBoot());
+        Assertions.assertEquals(SecurityConfiguration.ENABLED, model.targetVmSecurityProfile().targetVmTpm());
+        Assertions.assertEquals(SecurityConfiguration.DISABLED, model.targetVmSecurityProfile().targetVmMonitoring());
+        Assertions.assertEquals(SecurityConfiguration.DISABLED,
+            model.targetVmSecurityProfile().targetVmConfidentialEncryption());
     }
 }

@@ -18,7 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class StorageApplianceConfigurationData implements JsonSerializable<StorageApplianceConfigurationData> {
     /*
-     * The credentials of the administrative interface on this storage appliance.
+     * The credentials of the administrative interface on this storage appliance. The password field is expected to be
+     * an Azure Key Vault key URL. Until the cluster is converted to utilize managed identity by setting the secret
+     * archive settings, the actual password value should be provided instead.
      */
     private AdministrativeCredentials adminCredentials;
 
@@ -44,7 +46,9 @@ public final class StorageApplianceConfigurationData implements JsonSerializable
     }
 
     /**
-     * Get the adminCredentials property: The credentials of the administrative interface on this storage appliance.
+     * Get the adminCredentials property: The credentials of the administrative interface on this storage appliance. The
+     * password field is expected to be an Azure Key Vault key URL. Until the cluster is converted to utilize managed
+     * identity by setting the secret archive settings, the actual password value should be provided instead.
      * 
      * @return the adminCredentials value.
      */
@@ -53,7 +57,9 @@ public final class StorageApplianceConfigurationData implements JsonSerializable
     }
 
     /**
-     * Set the adminCredentials property: The credentials of the administrative interface on this storage appliance.
+     * Set the adminCredentials property: The credentials of the administrative interface on this storage appliance. The
+     * password field is expected to be an Azure Key Vault key URL. Until the cluster is converted to utilize managed
+     * identity by setting the secret archive settings, the actual password value should be provided instead.
      * 
      * @param adminCredentials the adminCredentials value to set.
      * @return the StorageApplianceConfigurationData object itself.

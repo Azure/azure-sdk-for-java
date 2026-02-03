@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ProductContract;
@@ -23,25 +23,25 @@ public final class ApiProductsListByApisMockTests {
     @Test
     public void testListByApis() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"pqxxsd\",\"description\":\"fwtyd\",\"terms\":\"mabhgc\",\"subscriptionRequired\":true,\"approvalRequired\":false,\"subscriptionsLimit\":344041350,\"state\":\"published\"},\"id\":\"xpbadj\",\"name\":\"eullgfyog\",\"type\":\"qscjpvqerqxk\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"yniapypimr\",\"description\":\"rqw\",\"terms\":\"zesstuiny\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":914039376,\"state\":\"published\"},\"id\":\"cxxvzjoyxjgahx\",\"name\":\"errdakt\",\"type\":\"ytkbce\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProductContract> response = manager.apiProducts()
-            .listByApis("urd", "agknxmaovrg", "hlnzffew", "qkycj", 1995075580, 1184415845,
+            .listByApis("kdvvoydwedggwg", "lvbwatzadrjbjn", "oarsrdr", "i", 570226393, 1991904432,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pqxxsd", response.iterator().next().displayName());
-        Assertions.assertEquals("fwtyd", response.iterator().next().description());
-        Assertions.assertEquals("mabhgc", response.iterator().next().terms());
-        Assertions.assertEquals(true, response.iterator().next().subscriptionRequired());
-        Assertions.assertEquals(false, response.iterator().next().approvalRequired());
-        Assertions.assertEquals(344041350, response.iterator().next().subscriptionsLimit());
+        Assertions.assertEquals("yniapypimr", response.iterator().next().displayName());
+        Assertions.assertEquals("rqw", response.iterator().next().description());
+        Assertions.assertEquals("zesstuiny", response.iterator().next().terms());
+        Assertions.assertFalse(response.iterator().next().subscriptionRequired());
+        Assertions.assertTrue(response.iterator().next().approvalRequired());
+        Assertions.assertEquals(914039376, response.iterator().next().subscriptionsLimit());
         Assertions.assertEquals(ProductState.PUBLISHED, response.iterator().next().state());
     }
 }

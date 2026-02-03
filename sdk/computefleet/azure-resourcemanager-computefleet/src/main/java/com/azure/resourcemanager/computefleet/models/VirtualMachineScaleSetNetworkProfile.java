@@ -114,20 +114,6 @@ public final class VirtualMachineScaleSetNetworkProfile
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (healthProbe() != null) {
-            healthProbe().validate();
-        }
-        if (networkInterfaceConfigurations() != null) {
-            networkInterfaceConfigurations().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

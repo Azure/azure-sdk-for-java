@@ -25,9 +25,19 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
     private List<ContainerGroupInstanceCountSummary> instanceCountSummary;
 
     /*
+     * Display status of the standby pool
+     */
+    private PoolStatus status;
+
+    /*
      * Displays the provisioning state of the standby pool
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * Displays prediction information of the standby pool
+     */
+    private StandbyContainerGroupPoolPrediction prediction;
 
     /**
      * Creates an instance of StandbyContainerGroupPoolRuntimeViewResourceProperties class.
@@ -46,6 +56,15 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
     }
 
     /**
+     * Get the status property: Display status of the standby pool.
+     * 
+     * @return the status value.
+     */
+    public PoolStatus status() {
+        return this.status;
+    }
+
+    /**
      * Get the provisioningState property: Displays the provisioning state of the standby pool.
      * 
      * @return the provisioningState value.
@@ -55,14 +74,12 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
     }
 
     /**
-     * Validates the instance.
+     * Get the prediction property: Displays prediction information of the standby pool.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the prediction value.
      */
-    public void validate() {
-        if (instanceCountSummary() != null) {
-            instanceCountSummary().forEach(e -> e.validate());
-        }
+    public StandbyContainerGroupPoolPrediction prediction() {
+        return this.prediction;
     }
 
     /**
@@ -97,9 +114,15 @@ public final class StandbyContainerGroupPoolRuntimeViewResourceProperties
                         = reader.readArray(reader1 -> ContainerGroupInstanceCountSummary.fromJson(reader1));
                     deserializedStandbyContainerGroupPoolRuntimeViewResourceProperties.instanceCountSummary
                         = instanceCountSummary;
+                } else if ("status".equals(fieldName)) {
+                    deserializedStandbyContainerGroupPoolRuntimeViewResourceProperties.status
+                        = PoolStatus.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolRuntimeViewResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("prediction".equals(fieldName)) {
+                    deserializedStandbyContainerGroupPoolRuntimeViewResourceProperties.prediction
+                        = StandbyContainerGroupPoolPrediction.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

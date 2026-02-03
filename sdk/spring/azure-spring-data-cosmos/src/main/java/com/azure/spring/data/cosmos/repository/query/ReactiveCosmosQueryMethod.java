@@ -34,6 +34,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
      * @param metadata must not be {@literal null}.
      * @param factory must not be {@literal null}.
      */
+    @SuppressWarnings("deprecation")
     public ReactiveCosmosQueryMethod(Method method, RepositoryMetadata metadata, ProjectionFactory factory) {
         super(method, metadata, factory);
         this.method = method;
@@ -76,6 +77,7 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
      * Gets the annotated query or returns null
      * @return the annotated query String or null
      */
+    @SuppressWarnings("deprecation")
     @Nullable
     public String getQueryAnnotation() {
         return annotatedQueryValue;

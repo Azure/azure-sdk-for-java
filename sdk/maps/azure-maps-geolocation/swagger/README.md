@@ -39,11 +39,11 @@ directive:
       $["security"] = [];
         
 title: GeolocationClient
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Geolocation/preview/1.0/geolocation.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Geolocation/stable/1.0/geolocation.json
 namespace: com.azure.maps.geolocation
 license-header: MICROSOFT_MIT_SMALL
 java: true
-use: '@autorest/java@4.1.29'
+use: '@autorest/java@4.1.62'
 output-folder: ../
 payload-flattening-threshold: 0
 add-context-parameter: true

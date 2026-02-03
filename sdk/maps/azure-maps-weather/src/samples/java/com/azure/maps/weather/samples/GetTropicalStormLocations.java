@@ -18,25 +18,28 @@ public class GetTropicalStormLocations {
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
-        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET
+        // env variables
+        // DefaultAzureCredential tokenCredential = new
+        // DefaultAzureCredentialBuilder().build();
 
         WeatherClient client = new WeatherClientBuilder()
-            .credential(keyCredential)
-            .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
-            .buildClient();
+                .credential(keyCredential)
+                .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
+                .buildClient();
 
         // Get Tropical Storm Locations -
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-tropical-storm-locations
         // Get location of individual government-issued tropical storms.
-        // Information about the tropical storms includes, location coordinates, geometry, basin ID, date, wind details and wind radii.
+        // Information about the tropical storms includes, location coordinates,
+        // geometry, basin ID, date, wind details and wind radii.
         System.out.println("Get Tropical Storm Locations Sync Client");
         // BEGIN: com.azure.maps.weather.sync.get_tropical_storm_locations
         ActiveStormResult result = client.getTropicalStormActive();
         if (result.getActiveStorms().size() > 0) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(storm.getYear(),
-                storm.getBasinId(), storm.getGovId());
+                    storm.getBasinId(), storm.getGovernmentId());
             client.getTropicalStormLocations(locationOptions);
         }
         // END: com.azure.maps.weather.sync.get_tropical_storm_locations
@@ -46,25 +49,28 @@ public class GetTropicalStormLocations {
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
-        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        // DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET
+        // env variables
+        // DefaultAzureCredential asyncClientTokenCredential = new
+        // DefaultAzureCredentialBuilder().build();
 
         WeatherAsyncClient asyncClient = new WeatherClientBuilder()
-            .credential(asyncClientKeyCredential)
-            .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
-            .buildAsyncClient();
+                .credential(asyncClientKeyCredential)
+                .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
+                .buildAsyncClient();
 
         // Get Tropical Storm Locations -
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-tropical-storm-locations
         // Get location of individual government-issued tropical storms.
-        // Information about the tropical storms includes, location coordinates, geometry, basin ID, date, wind details and wind radii.
+        // Information about the tropical storms includes, location coordinates,
+        // geometry, basin ID, date, wind details and wind radii.
         System.out.println("Get Tropical Storm Locations Async Client");
         // BEGIN: com.azure.maps.weather.async.get_tropical_storm_locations
         ActiveStormResult activeStormResult = client.getTropicalStormActive();
         if (activeStormResult.getActiveStorms().size() > 0) {
             ActiveStorm storm = activeStormResult.getActiveStorms().get(0);
             TropicalStormLocationOptions locationOptions = new TropicalStormLocationOptions(storm.getYear(),
-                storm.getBasinId(), storm.getGovId());
+                    storm.getBasinId(), storm.getGovernmentId());
             asyncClient.getTropicalStormLocations(locationOptions);
         }
         // END: com.azure.maps.weather.async.get_tropical_storm_locations

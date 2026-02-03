@@ -20,27 +20,29 @@ import com.azure.resourcemanager.eventgrid.models.SubscriptionsListResult;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class SubscriptionsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"CreateFailed\",\"deliveryConfiguration\":{\"deliveryMode\":\"Queue\",\"queue\":{\"receiveLockDurationInSeconds\":1772726150,\"maxDeliveryCount\":1032415559,\"deadLetterDestinationWithResourceIdentity\":{},\"eventTimeToLive\":\"PT37H9M19S\"},\"push\":{\"maxDeliveryCount\":165046754,\"eventTimeToLive\":\"unyowxwl\",\"deadLetterDestinationWithResourceIdentity\":{},\"deliveryWithResourceIdentity\":{},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}}},\"eventDeliverySchema\":\"CloudEventSchemaV1_0\",\"filtersConfiguration\":{\"includedEventTypes\":[\"vfvpdbodaciz\",\"j\",\"lhkrribdeibqipqk\"],\"filters\":[{\"operatorType\":\"Filter\"},{\"operatorType\":\"Filter\"}]},\"expirationTimeUtc\":\"2021-11-17T03:58:19Z\"},\"id\":\"zwmk\",\"name\":\"efajpj\",\"type\":\"rwkq\"}],\"nextLink\":\"hgbijt\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"CreateFailed\",\"deliveryConfiguration\":{\"deliveryMode\":\"Push\",\"queue\":{\"receiveLockDurationInSeconds\":2078888236,\"maxDeliveryCount\":542586349,\"deadLetterDestinationWithResourceIdentity\":{},\"eventTimeToLive\":\"PT19H11M53S\"},\"push\":{\"maxDeliveryCount\":724568755,\"eventTimeToLive\":\"mrv\",\"deadLetterDestinationWithResourceIdentity\":{},\"deliveryWithResourceIdentity\":{},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}}},\"eventDeliverySchema\":\"CloudEventSchemaV1_0\",\"filtersConfiguration\":{\"includedEventTypes\":[\"sfraoyzko\",\"wtl\",\"nguxawqaldsy\"],\"filters\":[{\"operatorType\":\"Filter\"},{\"operatorType\":\"Filter\"},{\"operatorType\":\"Filter\"},{\"operatorType\":\"Filter\"}]},\"expirationTimeUtc\":\"2021-08-11T15:07:06Z\",\"tags\":{\"kby\":\"qfobwyz\"}},\"id\":\"t\",\"name\":\"pfhpagmhrskdsnfd\",\"type\":\"doakgtdlmkkzevdl\"},{\"properties\":{\"provisioningState\":\"Creating\",\"deliveryConfiguration\":{\"deliveryMode\":\"Queue\",\"queue\":{\"receiveLockDurationInSeconds\":82936219,\"maxDeliveryCount\":2145512273,\"deadLetterDestinationWithResourceIdentity\":{},\"eventTimeToLive\":\"PT15H11M8S\"},\"push\":{\"maxDeliveryCount\":1540296035,\"eventTimeToLive\":\"dcngqqmoakufgmj\",\"deadLetterDestinationWithResourceIdentity\":{},\"deliveryWithResourceIdentity\":{},\"destination\":{\"endpointType\":\"EventSubscriptionDestination\"}}},\"eventDeliverySchema\":\"CloudEventSchemaV1_0\",\"filtersConfiguration\":{\"includedEventTypes\":[\"aenuuz\"],\"filters\":[{\"operatorType\":\"Filter\"},{\"operatorType\":\"Filter\"}]},\"expirationTimeUtc\":\"2021-08-27T02:00:49Z\",\"tags\":{\"hziuiefozbhdms\":\"rfdwoyu\",\"zqhof\":\"l\"}},\"id\":\"maequiahxicslfa\",\"name\":\"qzpiyyl\",\"type\":\"alnswhccsphk\"}],\"nextLink\":\"vwitqscyw\"}")
             .toObject(SubscriptionsListResult.class);
-        Assertions.assertEquals(DeliveryMode.QUEUE, model.value().get(0).deliveryConfiguration().deliveryMode());
-        Assertions.assertEquals(1772726150,
+        Assertions.assertEquals(DeliveryMode.PUSH, model.value().get(0).deliveryConfiguration().deliveryMode());
+        Assertions.assertEquals(2078888236,
             model.value().get(0).deliveryConfiguration().queue().receiveLockDurationInSeconds());
-        Assertions.assertEquals(1032415559, model.value().get(0).deliveryConfiguration().queue().maxDeliveryCount());
-        Assertions.assertEquals(Duration.parse("PT37H9M19S"),
+        Assertions.assertEquals(542586349, model.value().get(0).deliveryConfiguration().queue().maxDeliveryCount());
+        Assertions.assertEquals(Duration.parse("PT19H11M53S"),
             model.value().get(0).deliveryConfiguration().queue().eventTimeToLive());
-        Assertions.assertEquals(165046754, model.value().get(0).deliveryConfiguration().push().maxDeliveryCount());
-        Assertions.assertEquals("unyowxwl", model.value().get(0).deliveryConfiguration().push().eventTimeToLive());
+        Assertions.assertEquals(724568755, model.value().get(0).deliveryConfiguration().push().maxDeliveryCount());
+        Assertions.assertEquals("mrv", model.value().get(0).deliveryConfiguration().push().eventTimeToLive());
         Assertions.assertEquals(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0, model.value().get(0).eventDeliverySchema());
-        Assertions.assertEquals("vfvpdbodaciz",
-            model.value().get(0).filtersConfiguration().includedEventTypes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-17T03:58:19Z"), model.value().get(0).expirationTimeUtc());
-        Assertions.assertEquals("hgbijt", model.nextLink());
+        Assertions.assertEquals("sfraoyzko", model.value().get(0).filtersConfiguration().includedEventTypes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-11T15:07:06Z"), model.value().get(0).expirationTimeUtc());
+        Assertions.assertEquals("qfobwyz", model.value().get(0).tags().get("kby"));
+        Assertions.assertEquals("vwitqscyw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -52,37 +54,72 @@ public final class SubscriptionsListResultTests {
                         .asList(
                             new SubscriptionInner()
                                 .withDeliveryConfiguration(
-                                    new DeliveryConfiguration().withDeliveryMode(DeliveryMode.QUEUE)
-                                        .withQueue(new QueueInfo().withReceiveLockDurationInSeconds(1772726150)
-                                            .withMaxDeliveryCount(1032415559)
+                                    new DeliveryConfiguration().withDeliveryMode(DeliveryMode.PUSH)
+                                        .withQueue(new QueueInfo().withReceiveLockDurationInSeconds(2078888236)
+                                            .withMaxDeliveryCount(542586349)
                                             .withDeadLetterDestinationWithResourceIdentity(
                                                 new DeadLetterWithResourceIdentity())
-                                            .withEventTimeToLive(Duration.parse("PT37H9M19S")))
-                                        .withPush(new PushInfo().withMaxDeliveryCount(165046754)
-                                            .withEventTimeToLive("unyowxwl")
+                                            .withEventTimeToLive(Duration.parse("PT19H11M53S")))
+                                        .withPush(new PushInfo().withMaxDeliveryCount(724568755)
+                                            .withEventTimeToLive("mrv")
                                             .withDeadLetterDestinationWithResourceIdentity(
                                                 new DeadLetterWithResourceIdentity())
                                             .withDeliveryWithResourceIdentity(new DeliveryWithResourceIdentity())
                                             .withDestination(new EventSubscriptionDestination())))
                                 .withEventDeliverySchema(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0)
-                                .withFiltersConfiguration(new FiltersConfiguration()
-                                    .withIncludedEventTypes(Arrays.asList("vfvpdbodaciz", "j", "lhkrribdeibqipqk"))
-                                    .withFilters(Arrays.asList(new Filter(), new Filter())))
-                                .withExpirationTimeUtc(OffsetDateTime.parse("2021-11-17T03:58:19Z"))))
-                .withNextLink("hgbijt");
+                                .withFiltersConfiguration(
+                                    new FiltersConfiguration()
+                                        .withIncludedEventTypes(Arrays.asList("sfraoyzko", "wtl", "nguxawqaldsy"))
+                                        .withFilters(
+                                            Arrays.asList(new Filter(), new Filter(), new Filter(), new Filter())))
+                                .withExpirationTimeUtc(OffsetDateTime.parse("2021-08-11T15:07:06Z"))
+                                .withTags(mapOf("kby", "qfobwyz")),
+                            new SubscriptionInner()
+                                .withDeliveryConfiguration(
+                                    new DeliveryConfiguration().withDeliveryMode(DeliveryMode.QUEUE)
+                                        .withQueue(new QueueInfo().withReceiveLockDurationInSeconds(82936219)
+                                            .withMaxDeliveryCount(2145512273)
+                                            .withDeadLetterDestinationWithResourceIdentity(
+                                                new DeadLetterWithResourceIdentity())
+                                            .withEventTimeToLive(Duration.parse("PT15H11M8S")))
+                                        .withPush(new PushInfo().withMaxDeliveryCount(1540296035)
+                                            .withEventTimeToLive("dcngqqmoakufgmj")
+                                            .withDeadLetterDestinationWithResourceIdentity(
+                                                new DeadLetterWithResourceIdentity())
+                                            .withDeliveryWithResourceIdentity(new DeliveryWithResourceIdentity())
+                                            .withDestination(new EventSubscriptionDestination())))
+                                .withEventDeliverySchema(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0)
+                                .withFiltersConfiguration(
+                                    new FiltersConfiguration().withIncludedEventTypes(Arrays.asList("aenuuz"))
+                                        .withFilters(Arrays.asList(new Filter(), new Filter())))
+                                .withExpirationTimeUtc(OffsetDateTime.parse("2021-08-27T02:00:49Z"))
+                                .withTags(mapOf("hziuiefozbhdms", "rfdwoyu", "zqhof", "l"))))
+                .withNextLink("vwitqscyw");
         model = BinaryData.fromObject(model).toObject(SubscriptionsListResult.class);
-        Assertions.assertEquals(DeliveryMode.QUEUE, model.value().get(0).deliveryConfiguration().deliveryMode());
-        Assertions.assertEquals(1772726150,
+        Assertions.assertEquals(DeliveryMode.PUSH, model.value().get(0).deliveryConfiguration().deliveryMode());
+        Assertions.assertEquals(2078888236,
             model.value().get(0).deliveryConfiguration().queue().receiveLockDurationInSeconds());
-        Assertions.assertEquals(1032415559, model.value().get(0).deliveryConfiguration().queue().maxDeliveryCount());
-        Assertions.assertEquals(Duration.parse("PT37H9M19S"),
+        Assertions.assertEquals(542586349, model.value().get(0).deliveryConfiguration().queue().maxDeliveryCount());
+        Assertions.assertEquals(Duration.parse("PT19H11M53S"),
             model.value().get(0).deliveryConfiguration().queue().eventTimeToLive());
-        Assertions.assertEquals(165046754, model.value().get(0).deliveryConfiguration().push().maxDeliveryCount());
-        Assertions.assertEquals("unyowxwl", model.value().get(0).deliveryConfiguration().push().eventTimeToLive());
+        Assertions.assertEquals(724568755, model.value().get(0).deliveryConfiguration().push().maxDeliveryCount());
+        Assertions.assertEquals("mrv", model.value().get(0).deliveryConfiguration().push().eventTimeToLive());
         Assertions.assertEquals(DeliverySchema.CLOUD_EVENT_SCHEMA_V1_0, model.value().get(0).eventDeliverySchema());
-        Assertions.assertEquals("vfvpdbodaciz",
-            model.value().get(0).filtersConfiguration().includedEventTypes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-17T03:58:19Z"), model.value().get(0).expirationTimeUtc());
-        Assertions.assertEquals("hgbijt", model.nextLink());
+        Assertions.assertEquals("sfraoyzko", model.value().get(0).filtersConfiguration().includedEventTypes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-11T15:07:06Z"), model.value().get(0).expirationTimeUtc());
+        Assertions.assertEquals("qfobwyz", model.value().get(0).tags().get("kby"));
+        Assertions.assertEquals("vwitqscyw", model.nextLink());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

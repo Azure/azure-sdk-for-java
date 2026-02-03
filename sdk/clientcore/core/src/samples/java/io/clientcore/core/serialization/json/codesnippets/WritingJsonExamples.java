@@ -3,7 +3,6 @@
 
 package io.clientcore.core.serialization.json.codesnippets;
 
-import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonWriter;
 
 import java.io.ByteArrayOutputStream;
@@ -32,7 +31,7 @@ public class WritingJsonExamples {
             .setAdditionalProperties(additionalVmProperties);
 
         ByteArrayOutputStream json = new ByteArrayOutputStream();
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
+        try (JsonWriter jsonWriter = JsonWriter.toStream(json)) {
             // JsonWriter automatically flushes on close.
             vmStatistics.toJson(jsonWriter);
         }
@@ -62,7 +61,7 @@ public class WritingJsonExamples {
             .setAdditionalProperties(additionalVmProperties);
 
         Writer json = new StringWriter();
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(json)) {
+        try (JsonWriter jsonWriter = JsonWriter.toWriter(json)) {
             // JsonWriter automatically flushes on close.
             vmStatistics.toJson(jsonWriter);
         }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class GitHubAccessTokenResponse implements JsonSerializable<GitHubA
     /*
      * The gitHubAccessToken property.
      */
+    @Generated
     private String gitHubAccessToken;
 
     /**
      * Creates an instance of GitHubAccessTokenResponse class.
      */
+    @Generated
     public GitHubAccessTokenResponse() {
     }
 
@@ -32,6 +35,7 @@ public final class GitHubAccessTokenResponse implements JsonSerializable<GitHubA
      * 
      * @return the gitHubAccessToken value.
      */
+    @Generated
     public String getGitHubAccessToken() {
         return this.gitHubAccessToken;
     }
@@ -42,6 +46,7 @@ public final class GitHubAccessTokenResponse implements JsonSerializable<GitHubA
      * @param gitHubAccessToken the gitHubAccessToken value to set.
      * @return the GitHubAccessTokenResponse object itself.
      */
+    @Generated
     public GitHubAccessTokenResponse setGitHubAccessToken(String gitHubAccessToken) {
         this.gitHubAccessToken = gitHubAccessToken;
         return this;
@@ -50,6 +55,7 @@ public final class GitHubAccessTokenResponse implements JsonSerializable<GitHubA
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class GitHubAccessTokenResponse implements JsonSerializable<GitHubA
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the GitHubAccessTokenResponse.
      */
+    @Generated
     public static GitHubAccessTokenResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GitHubAccessTokenResponse deserializedGitHubAccessTokenResponse = new GitHubAccessTokenResponse();

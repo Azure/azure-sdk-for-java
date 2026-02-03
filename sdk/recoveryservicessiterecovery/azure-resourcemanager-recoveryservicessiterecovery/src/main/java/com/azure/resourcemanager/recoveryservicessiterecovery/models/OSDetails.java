@@ -46,6 +46,11 @@ public final class OSDetails implements JsonSerializable<OSDetails> {
      */
     private String oSMinorVersion;
 
+    /*
+     * The OS name selected by user.
+     */
+    private String userSelectedOSName;
+
     /**
      * Creates an instance of OSDetails class.
      */
@@ -173,6 +178,26 @@ public final class OSDetails implements JsonSerializable<OSDetails> {
     }
 
     /**
+     * Get the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @return the userSelectedOSName value.
+     */
+    public String userSelectedOSName() {
+        return this.userSelectedOSName;
+    }
+
+    /**
+     * Set the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @param userSelectedOSName the userSelectedOSName value to set.
+     * @return the OSDetails object itself.
+     */
+    public OSDetails withUserSelectedOSName(String userSelectedOSName) {
+        this.userSelectedOSName = userSelectedOSName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -192,6 +217,7 @@ public final class OSDetails implements JsonSerializable<OSDetails> {
         jsonWriter.writeStringField("oSVersion", this.oSVersion);
         jsonWriter.writeStringField("oSMajorVersion", this.oSMajorVersion);
         jsonWriter.writeStringField("oSMinorVersion", this.oSMinorVersion);
+        jsonWriter.writeStringField("userSelectedOSName", this.userSelectedOSName);
         return jsonWriter.writeEndObject();
     }
 
@@ -222,6 +248,8 @@ public final class OSDetails implements JsonSerializable<OSDetails> {
                     deserializedOSDetails.oSMajorVersion = reader.getString();
                 } else if ("oSMinorVersion".equals(fieldName)) {
                     deserializedOSDetails.oSMinorVersion = reader.getString();
+                } else if ("userSelectedOSName".equals(fieldName)) {
+                    deserializedOSDetails.userSelectedOSName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

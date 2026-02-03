@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
     /*
      * A URI fragment specifying the type of data deletion detection policy.
      */
+    @Generated
     private String odataType = "DataDeletionDetectionPolicy";
 
     /**
      * Creates an instance of DataDeletionDetectionPolicy class.
      */
+    @Generated
     public DataDeletionDetectionPolicy() {
     }
 
@@ -34,6 +37,7 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
      * 
      * @return the odataType value.
      */
+    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -41,6 +45,7 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -56,6 +61,7 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataDeletionDetectionPolicy.
      */
+    @Generated
     public static DataDeletionDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -84,6 +90,7 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
         });
     }
 
+    @Generated
     static DataDeletionDetectionPolicy fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataDeletionDetectionPolicy deserializedDataDeletionDetectionPolicy = new DataDeletionDetectionPolicy();

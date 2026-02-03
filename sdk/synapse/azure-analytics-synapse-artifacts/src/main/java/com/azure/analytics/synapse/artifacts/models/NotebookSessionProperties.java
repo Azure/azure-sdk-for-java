@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,31 +20,37 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
     /*
      * Amount of memory to use for the driver process.
      */
+    @Generated
     private String driverMemory;
 
     /*
      * Number of cores to use for the driver.
      */
+    @Generated
     private int driverCores;
 
     /*
      * Amount of memory to use per executor process.
      */
+    @Generated
     private String executorMemory;
 
     /*
      * Number of cores to use for each executor.
      */
+    @Generated
     private int executorCores;
 
     /*
      * Number of executors to launch for this session.
      */
+    @Generated
     private int numExecutors;
 
     /**
      * Creates an instance of NotebookSessionProperties class.
      */
+    @Generated
     public NotebookSessionProperties() {
     }
 
@@ -52,6 +59,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * 
      * @return the driverMemory value.
      */
+    @Generated
     public String getDriverMemory() {
         return this.driverMemory;
     }
@@ -62,6 +70,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * @param driverMemory the driverMemory value to set.
      * @return the NotebookSessionProperties object itself.
      */
+    @Generated
     public NotebookSessionProperties setDriverMemory(String driverMemory) {
         this.driverMemory = driverMemory;
         return this;
@@ -72,6 +81,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * 
      * @return the driverCores value.
      */
+    @Generated
     public int getDriverCores() {
         return this.driverCores;
     }
@@ -82,6 +92,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * @param driverCores the driverCores value to set.
      * @return the NotebookSessionProperties object itself.
      */
+    @Generated
     public NotebookSessionProperties setDriverCores(int driverCores) {
         this.driverCores = driverCores;
         return this;
@@ -92,6 +103,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * 
      * @return the executorMemory value.
      */
+    @Generated
     public String getExecutorMemory() {
         return this.executorMemory;
     }
@@ -102,6 +114,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * @param executorMemory the executorMemory value to set.
      * @return the NotebookSessionProperties object itself.
      */
+    @Generated
     public NotebookSessionProperties setExecutorMemory(String executorMemory) {
         this.executorMemory = executorMemory;
         return this;
@@ -112,6 +125,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * 
      * @return the executorCores value.
      */
+    @Generated
     public int getExecutorCores() {
         return this.executorCores;
     }
@@ -122,6 +136,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * @param executorCores the executorCores value to set.
      * @return the NotebookSessionProperties object itself.
      */
+    @Generated
     public NotebookSessionProperties setExecutorCores(int executorCores) {
         this.executorCores = executorCores;
         return this;
@@ -132,6 +147,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * 
      * @return the numExecutors value.
      */
+    @Generated
     public int getNumExecutors() {
         return this.numExecutors;
     }
@@ -142,6 +158,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * @param numExecutors the numExecutors value to set.
      * @return the NotebookSessionProperties object itself.
      */
+    @Generated
     public NotebookSessionProperties setNumExecutors(int numExecutors) {
         this.numExecutors = numExecutors;
         return this;
@@ -150,6 +167,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -170,6 +188,7 @@ public final class NotebookSessionProperties implements JsonSerializable<Noteboo
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the NotebookSessionProperties.
      */
+    @Generated
     public static NotebookSessionProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             NotebookSessionProperties deserializedNotebookSessionProperties = new NotebookSessionProperties();

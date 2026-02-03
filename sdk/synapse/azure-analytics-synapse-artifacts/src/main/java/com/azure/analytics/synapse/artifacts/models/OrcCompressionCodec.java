@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressi
     /**
      * Static value none for OrcCompressionCodec.
      */
+    @Generated
     public static final OrcCompressionCodec NONE = fromString("none");
 
     /**
      * Static value zlib for OrcCompressionCodec.
      */
+    @Generated
     public static final OrcCompressionCodec ZLIB = fromString("zlib");
 
     /**
      * Static value snappy for OrcCompressionCodec.
      */
+    @Generated
     public static final OrcCompressionCodec SNAPPY = fromString("snappy");
 
     /**
      * Static value lzo for OrcCompressionCodec.
      */
+    @Generated
     public static final OrcCompressionCodec LZO = fromString("lzo");
 
     /**
@@ -36,6 +41,7 @@ public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressi
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public OrcCompressionCodec() {
     }
@@ -46,6 +52,7 @@ public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressi
      * @param name a name to look for.
      * @return the corresponding OrcCompressionCodec.
      */
+    @Generated
     public static OrcCompressionCodec fromString(String name) {
         return fromString(name, OrcCompressionCodec.class);
     }
@@ -55,6 +62,7 @@ public final class OrcCompressionCodec extends ExpandableStringEnum<OrcCompressi
      * 
      * @return known OrcCompressionCodec values.
      */
+    @Generated
     public static Collection<OrcCompressionCodec> values() {
         return values(OrcCompressionCodec.class);
     }

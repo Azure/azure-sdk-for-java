@@ -11,7 +11,7 @@ public final class MabErrorInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MabErrorInfo model
-            = BinaryData.fromString("{\"errorString\":\"narfdlpukhpyrn\",\"recommendations\":[\"jcpeogkhnmg\",\"ro\"]}")
+            = BinaryData.fromString("{\"errorString\":\"nbdxxewun\",\"recommendations\":[\"udbchaqdtv\"]}")
                 .toObject(MabErrorInfo.class);
     }
 

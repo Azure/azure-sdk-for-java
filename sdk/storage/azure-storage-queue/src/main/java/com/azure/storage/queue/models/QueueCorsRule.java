@@ -5,7 +5,7 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -27,32 +27,38 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * the origin that the user age sends to the service. You can also use the wildcard character '*' to allow all
      * origin domains to make requests via CORS.
      */
+    @Generated
     private String allowedOrigins;
 
     /*
      * The methods (HTTP request verbs) that the origin domain may use for a CORS request. (comma separated)
      */
+    @Generated
     private String allowedMethods;
 
     /*
      * the request headers that the origin domain may specify on the CORS request.
      */
+    @Generated
     private String allowedHeaders;
 
     /*
      * The response headers that may be sent in the response to the CORS request and exposed by the browser to the
      * request issuer
      */
+    @Generated
     private String exposedHeaders;
 
     /*
      * The maximum amount time that a browser should cache the preflight OPTIONS request.
      */
+    @Generated
     private int maxAgeInSeconds;
 
     /**
      * Creates an instance of QueueCorsRule class.
      */
+    @Generated
     public QueueCorsRule() {
     }
 
@@ -64,6 +70,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * 
      * @return the allowedOrigins value.
      */
+    @Generated
     public String getAllowedOrigins() {
         return this.allowedOrigins;
     }
@@ -77,6 +84,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the QueueCorsRule object itself.
      */
+    @Generated
     public QueueCorsRule setAllowedOrigins(String allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
         return this;
@@ -88,6 +96,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * 
      * @return the allowedMethods value.
      */
+    @Generated
     public String getAllowedMethods() {
         return this.allowedMethods;
     }
@@ -99,6 +108,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * @param allowedMethods the allowedMethods value to set.
      * @return the QueueCorsRule object itself.
      */
+    @Generated
     public QueueCorsRule setAllowedMethods(String allowedMethods) {
         this.allowedMethods = allowedMethods;
         return this;
@@ -109,6 +119,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * 
      * @return the allowedHeaders value.
      */
+    @Generated
     public String getAllowedHeaders() {
         return this.allowedHeaders;
     }
@@ -119,6 +130,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the QueueCorsRule object itself.
      */
+    @Generated
     public QueueCorsRule setAllowedHeaders(String allowedHeaders) {
         this.allowedHeaders = allowedHeaders;
         return this;
@@ -130,6 +142,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * 
      * @return the exposedHeaders value.
      */
+    @Generated
     public String getExposedHeaders() {
         return this.exposedHeaders;
     }
@@ -141,6 +154,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the QueueCorsRule object itself.
      */
+    @Generated
     public QueueCorsRule setExposedHeaders(String exposedHeaders) {
         this.exposedHeaders = exposedHeaders;
         return this;
@@ -152,6 +166,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * 
      * @return the maxAgeInSeconds value.
      */
+    @Generated
     public int getMaxAgeInSeconds() {
         return this.maxAgeInSeconds;
     }
@@ -163,19 +178,22 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the QueueCorsRule object itself.
      */
+    @Generated
     public QueueCorsRule setMaxAgeInSeconds(int maxAgeInSeconds) {
         this.maxAgeInSeconds = maxAgeInSeconds;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CorsRule" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "CorsRule" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("AllowedOrigins", this.allowedOrigins);
         xmlWriter.writeStringElement("AllowedMethods", this.allowedMethods);
@@ -193,6 +211,7 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueCorsRule.
      */
+    @Generated
     public static QueueCorsRule fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -207,8 +226,10 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the QueueCorsRule.
      */
+    @Generated
     public static QueueCorsRule fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CorsRule" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "CorsRule" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             QueueCorsRule deserializedQueueCorsRule = new QueueCorsRule();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,16 +15,19 @@ public final class ConfigurationType extends ExpandableStringEnum<ConfigurationT
     /**
      * Static value Default for ConfigurationType.
      */
+    @Generated
     public static final ConfigurationType DEFAULT = fromString("Default");
 
     /**
      * Static value Customized for ConfigurationType.
      */
+    @Generated
     public static final ConfigurationType CUSTOMIZED = fromString("Customized");
 
     /**
      * Static value Artifact for ConfigurationType.
      */
+    @Generated
     public static final ConfigurationType ARTIFACT = fromString("Artifact");
 
     /**
@@ -31,6 +35,7 @@ public final class ConfigurationType extends ExpandableStringEnum<ConfigurationT
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ConfigurationType() {
     }
@@ -41,6 +46,7 @@ public final class ConfigurationType extends ExpandableStringEnum<ConfigurationT
      * @param name a name to look for.
      * @return the corresponding ConfigurationType.
      */
+    @Generated
     public static ConfigurationType fromString(String name) {
         return fromString(name, ConfigurationType.class);
     }
@@ -50,6 +56,7 @@ public final class ConfigurationType extends ExpandableStringEnum<ConfigurationT
      * 
      * @return known ConfigurationType values.
      */
+    @Generated
     public static Collection<ConfigurationType> values() {
         return values(ConfigurationType.class);
     }

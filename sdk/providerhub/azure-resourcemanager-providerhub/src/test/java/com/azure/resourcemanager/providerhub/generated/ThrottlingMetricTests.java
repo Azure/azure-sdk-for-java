@@ -14,21 +14,21 @@ public final class ThrottlingMetricTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThrottlingMetric model = BinaryData
-            .fromString("{\"type\":\"NotSpecified\",\"limit\":6851389169185127110,\"interval\":\"PT202H18M55S\"}")
+            .fromString("{\"type\":\"NumberOfRequests\",\"limit\":6597386735220363785,\"interval\":\"PT46H27M33S\"}")
             .toObject(ThrottlingMetric.class);
-        Assertions.assertEquals(ThrottlingMetricType.NOT_SPECIFIED, model.type());
-        Assertions.assertEquals(6851389169185127110L, model.limit());
-        Assertions.assertEquals(Duration.parse("PT202H18M55S"), model.interval());
+        Assertions.assertEquals(ThrottlingMetricType.NUMBER_OF_REQUESTS, model.type());
+        Assertions.assertEquals(6597386735220363785L, model.limit());
+        Assertions.assertEquals(Duration.parse("PT46H27M33S"), model.interval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThrottlingMetric model = new ThrottlingMetric().withType(ThrottlingMetricType.NOT_SPECIFIED)
-            .withLimit(6851389169185127110L)
-            .withInterval(Duration.parse("PT202H18M55S"));
+        ThrottlingMetric model = new ThrottlingMetric().withType(ThrottlingMetricType.NUMBER_OF_REQUESTS)
+            .withLimit(6597386735220363785L)
+            .withInterval(Duration.parse("PT46H27M33S"));
         model = BinaryData.fromObject(model).toObject(ThrottlingMetric.class);
-        Assertions.assertEquals(ThrottlingMetricType.NOT_SPECIFIED, model.type());
-        Assertions.assertEquals(6851389169185127110L, model.limit());
-        Assertions.assertEquals(Duration.parse("PT202H18M55S"), model.interval());
+        Assertions.assertEquals(ThrottlingMetricType.NUMBER_OF_REQUESTS, model.type());
+        Assertions.assertEquals(6597386735220363785L, model.limit());
+        Assertions.assertEquals(Duration.parse("PT46H27M33S"), model.interval());
     }
 }

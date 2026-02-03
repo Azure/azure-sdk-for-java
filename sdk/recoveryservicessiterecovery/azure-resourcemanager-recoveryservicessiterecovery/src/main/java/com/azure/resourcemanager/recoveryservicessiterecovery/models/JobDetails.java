@@ -111,6 +111,12 @@ public class JobDetails implements JsonSerializable<JobDetails> {
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("AsrJobDetails".equals(discriminatorValue)) {
                     return AsrJobDetails.fromJson(readerToUse.reset());
+                } else if ("ClusterFailoverJobDetails".equals(discriminatorValue)) {
+                    return ClusterFailoverJobDetails.fromJson(readerToUse.reset());
+                } else if ("ClusterSwitchProtectionJobDetails".equals(discriminatorValue)) {
+                    return ClusterSwitchProtectionJobDetails.fromJson(readerToUse.reset());
+                } else if ("ClusterTestFailoverJobDetails".equals(discriminatorValue)) {
+                    return ClusterTestFailoverJobDetails.fromJson(readerToUse.reset());
                 } else if ("ExportJobDetails".equals(discriminatorValue)) {
                     return ExportJobDetails.fromJson(readerToUse.reset());
                 } else if ("FailoverJobDetails".equals(discriminatorValue)) {

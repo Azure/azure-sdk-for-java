@@ -24,7 +24,6 @@ import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
@@ -40,6 +39,21 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient).assertSync().build();
+    }
+
+    /**
+     * Tests that a Key Vault can be pre-backed up.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME)
+    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
+    public void beginPreBackup(HttpClient httpClient) {
+        getClient(httpClient, false);
+
+        SyncPoller<KeyVaultBackupOperation, Void> backupPoller
+            = setPlaybackSyncPollerPollInterval(client.beginPreBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
+
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
     }
 
     /**
@@ -63,22 +77,31 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     }
 
     /**
-     * Tests that a Key Vault can be pre-backed up.
+     * Tests that a Key Vault can be pre-restored from a backup.
      */
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginPreBackup(HttpClient httpClient) {
+    public void beginPreRestore(HttpClient httpClient) {
         getClient(httpClient, false);
 
+        // Create a backup
         SyncPoller<KeyVaultBackupOperation, String> backupPoller
-            = setPlaybackSyncPollerPollInterval(client.beginPreBackup(blobStorageUrl, sasToken));
-        PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.waitForCompletion();
+            = setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
+        PollResponse<KeyVaultBackupOperation> backupPollResponse = backupPoller.waitForCompletion();
 
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, backupPollResponse.getStatus());
 
-        String backupBlobUri = backupPoller.getFinalResult();
+        // Restore the backup
+        String backupFolderUrl = backupPoller.getFinalResult();
+        SyncPoller<KeyVaultRestoreOperation, Void> restorePoller
+            = setPlaybackSyncPollerPollInterval(client.beginPreRestore(backupFolderUrl, sasToken));
+        PollResponse<KeyVaultRestoreOperation> restorePollResponse = restorePoller.waitForCompletion();
 
-        assertNull(backupBlobUri);
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
+
+        // For some reason, the service might still think a restore operation is running even after returning a success
+        // signal. This gives it some time to "clear" the operation.
+        sleepIfRunningAgainstService(30000);
     }
 
     /**
@@ -106,34 +129,6 @@ public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
         PollResponse<KeyVaultRestoreOperation> restoreResponse = restorePoller.poll();
 
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restoreResponse.getStatus());
-
-        // For some reason, the service might still think a restore operation is running even after returning a success
-        // signal. This gives it some time to "clear" the operation.
-        sleepIfRunningAgainstService(30000);
-    }
-
-    /**
-     * Tests that a Key Vault can be pre-restored from a backup.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME)
-    @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void beginPreRestore(HttpClient httpClient) {
-        getClient(httpClient, false);
-
-        // Create a backup
-        SyncPoller<KeyVaultBackupOperation, String> backupPoller
-            = setPlaybackSyncPollerPollInterval(client.beginBackup(blobStorageUrl, sasToken));
-        PollResponse<KeyVaultBackupOperation> backupPollResponse = backupPoller.waitForCompletion();
-
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, backupPollResponse.getStatus());
-
-        // Restore the backup
-        String backupFolderUrl = backupPoller.getFinalResult();
-        SyncPoller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller
-            = setPlaybackSyncPollerPollInterval(client.beginPreRestore(backupFolderUrl, sasToken));
-        PollResponse<KeyVaultRestoreOperation> restorePollResponse = restorePoller.waitForCompletion();
-
-        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, restorePollResponse.getStatus());
 
         // For some reason, the service might still think a restore operation is running even after returning a success
         // signal. This gives it some time to "clear" the operation.

@@ -4,32 +4,44 @@
 
 package com.azure.health.deidentification;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.models.DeidentificationContent;
-import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public final class ReadmeSamples {
-    public void readmeSamples() {
-        // BEGIN: com.azure.health.deidentification.readme
-        DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+    private final DeidentificationClient deidentificationClient = new DeidentificationClientBuilder().buildClient();
 
-        DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
-        // END: com.azure.health.deidentification.readme
+    public void createClient() {
+        // BEGIN: readme-sample-create-client
+        DeidentificationClient deidentificationClient = new DeidentificationClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("DEID_ENDPOINT"))
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
+        // END: readme-sample-create-client
+    }
 
-        String inputText = "Hello, my name is John Smith.";
-        DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+    public void createAsyncClient() {
+        // BEGIN: readme-sample-create-async-client
+        DeidentificationAsyncClient deidentificationAsyncClient = new DeidentificationClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("DEID_ENDPOINT"))
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+        // END: readme-sample-create-async-client
+    }
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
-        System.out.println("Deidentified output: " + result.getOutputText());
+    /**
+     * Code snippet for handling exception
+     */
+    public void handlingException() {
+        // BEGIN: readme-sample-handlingException
+        try {
+            DeidentificationContent content = new DeidentificationContent("input text");
+            deidentificationClient.deidentifyText(content);
+        } catch (HttpResponseException e) {
+            System.out.println(e.getMessage());
+            // Do something with the exception
+        }
+        // END: readme-sample-handlingException
     }
 }

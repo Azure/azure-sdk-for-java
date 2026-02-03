@@ -14,21 +14,21 @@ public final class NginxPrivateIpAddressTests {
     public void testDeserialize() throws Exception {
         NginxPrivateIpAddress model = BinaryData
             .fromString(
-                "{\"privateIPAddress\":\"vyvdcs\",\"privateIPAllocationMethod\":\"Static\",\"subnetId\":\"naamde\"}")
+                "{\"privateIPAddress\":\"hoxus\",\"privateIPAllocationMethod\":\"Static\",\"subnetId\":\"bgyepsbj\"}")
             .toObject(NginxPrivateIpAddress.class);
-        Assertions.assertEquals("vyvdcs", model.privateIpAddress());
+        Assertions.assertEquals("hoxus", model.privateIpAddress());
         Assertions.assertEquals(NginxPrivateIpAllocationMethod.STATIC, model.privateIpAllocationMethod());
-        Assertions.assertEquals("naamde", model.subnetId());
+        Assertions.assertEquals("bgyepsbj", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxPrivateIpAddress model = new NginxPrivateIpAddress().withPrivateIpAddress("vyvdcs")
+        NginxPrivateIpAddress model = new NginxPrivateIpAddress().withPrivateIpAddress("hoxus")
             .withPrivateIpAllocationMethod(NginxPrivateIpAllocationMethod.STATIC)
-            .withSubnetId("naamde");
+            .withSubnetId("bgyepsbj");
         model = BinaryData.fromObject(model).toObject(NginxPrivateIpAddress.class);
-        Assertions.assertEquals("vyvdcs", model.privateIpAddress());
+        Assertions.assertEquals("hoxus", model.privateIpAddress());
         Assertions.assertEquals(NginxPrivateIpAllocationMethod.STATIC, model.privateIpAllocationMethod());
-        Assertions.assertEquals("naamde", model.subnetId());
+        Assertions.assertEquals("bgyepsbj", model.subnetId());
     }
 }

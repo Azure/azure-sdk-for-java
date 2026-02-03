@@ -40,26 +40,26 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ReplicationProtectedItem> listByReplicationProtectionContainers(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName) {
+    public PagedIterable<ReplicationProtectedItem> listByReplicationProtectionContainers(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName) {
         PagedIterable<ReplicationProtectedItemInner> inner = this.serviceClient()
-            .listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName,
+            .listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName,
                 protectionContainerName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationProtectedItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ReplicationProtectedItem> listByReplicationProtectionContainers(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, Context context) {
+    public PagedIterable<ReplicationProtectedItem> listByReplicationProtectionContainers(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, Context context) {
         PagedIterable<ReplicationProtectedItemInner> inner = this.serviceClient()
-            .listByReplicationProtectionContainers(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .listByReplicationProtectionContainers(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationProtectedItemImpl(inner1, this.manager()));
     }
 
-    public Response<ReplicationProtectedItem> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<ReplicationProtectedItem> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context) {
         Response<ReplicationProtectedItemInner> inner = this.serviceClient()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -69,10 +69,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem get(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .get(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            .get(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
         } else {
@@ -80,23 +80,23 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+    public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
         this.serviceClient()
-            .purge(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName);
+            .purge(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName);
     }
 
-    public void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+    public void purge(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, Context context) {
         this.serviceClient()
-            .purge(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .purge(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 context);
     }
 
-    public ReplicationProtectedItem addDisks(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem addDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, AddDisksInput addDisksInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .addDisks(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .addDisks(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 addDisksInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -105,11 +105,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem addDisks(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem addDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, AddDisksInput addDisksInput,
         Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .addDisks(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .addDisks(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 addDisksInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -118,11 +118,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem applyRecoveryPoint(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem applyRecoveryPoint(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .applyRecoveryPoint(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, applyRecoveryPointInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -131,11 +131,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem applyRecoveryPoint(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem applyRecoveryPoint(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput, Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .applyRecoveryPoint(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .applyRecoveryPoint(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, applyRecoveryPointInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -144,10 +144,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem failoverCancel(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem failoverCancel(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .failoverCancel(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .failoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -156,10 +156,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem failoverCancel(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem failoverCancel(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .failoverCancel(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .failoverCancel(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -168,10 +168,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem failoverCommit(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem failoverCommit(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .failoverCommit(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -180,10 +180,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem failoverCommit(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem failoverCommit(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .failoverCommit(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .failoverCommit(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -192,10 +192,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem plannedFailover(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem plannedFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, PlannedFailoverInput failoverInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .plannedFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .plannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, failoverInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -204,11 +204,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem plannedFailover(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem plannedFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, PlannedFailoverInput failoverInput,
         Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .plannedFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .plannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, failoverInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -217,24 +217,24 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, DisableProtectionInput disableProtectionInput) {
         this.serviceClient()
-            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .delete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 disableProtectionInput);
     }
 
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName, DisableProtectionInput disableProtectionInput, Context context) {
         this.serviceClient()
-            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .delete(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 disableProtectionInput, context);
     }
 
-    public ReplicationProtectedItem removeDisks(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem removeDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, RemoveDisksInput removeDisksInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .removeDisks(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .removeDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, removeDisksInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -243,11 +243,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem removeDisks(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem removeDisks(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, RemoveDisksInput removeDisksInput,
         Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .removeDisks(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .removeDisks(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, removeDisksInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -256,10 +256,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem repairReplication(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem repairReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .repairReplication(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -268,10 +268,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem repairReplication(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem repairReplication(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .repairReplication(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .repairReplication(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -280,10 +280,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem reprotect(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem reprotect(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, ReverseReplicationInput reprotectInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .reprotect(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .reprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, reprotectInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -292,11 +292,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem reprotect(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem reprotect(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, ReverseReplicationInput reprotectInput,
         Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .reprotect(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .reprotect(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, reprotectInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -305,11 +305,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem resolveHealthErrors(String resourceName, String resourceGroupName,
+    public ReplicationProtectedItem resolveHealthErrors(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ResolveHealthInput resolveHealthInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .resolveHealthErrors(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .resolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, resolveHealthInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -318,11 +318,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem resolveHealthErrors(String resourceName, String resourceGroupName,
+    public ReplicationProtectedItem resolveHealthErrors(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         ResolveHealthInput resolveHealthInput, Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .resolveHealthErrors(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .resolveHealthErrors(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, resolveHealthInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -331,10 +331,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem switchProvider(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem switchProvider(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, SwitchProviderInput switchProviderInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .switchProvider(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .switchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, switchProviderInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -343,11 +343,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem switchProvider(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem switchProvider(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, SwitchProviderInput switchProviderInput,
         Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .switchProvider(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .switchProvider(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, switchProviderInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -356,10 +356,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem testFailover(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem testFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, TestFailoverInput testfailoverInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .testFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, testfailoverInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -368,11 +368,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem testFailover(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem testFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, TestFailoverInput testfailoverInput,
         Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .testFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .testFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, testfailoverInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -381,11 +381,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem testFailoverCleanup(String resourceName, String resourceGroupName,
+    public ReplicationProtectedItem testFailoverCleanup(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         TestFailoverCleanupInput cleanupInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .testFailoverCleanup(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, cleanupInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -394,11 +394,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem testFailoverCleanup(String resourceName, String resourceGroupName,
+    public ReplicationProtectedItem testFailoverCleanup(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         TestFailoverCleanupInput cleanupInput, Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .testFailoverCleanup(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .testFailoverCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, cleanupInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -407,10 +407,10 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem unplannedFailover(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem unplannedFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, UnplannedFailoverInput failoverInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .unplannedFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, failoverInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -419,11 +419,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem unplannedFailover(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem unplannedFailover(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, UnplannedFailoverInput failoverInput,
         Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .unplannedFailover(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .unplannedFailover(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, failoverInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -432,11 +432,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem updateAppliance(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem updateAppliance(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .updateAppliance(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .updateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, applianceUpdateInput);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -445,11 +445,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem updateAppliance(String resourceName, String resourceGroupName, String fabricName,
+    public ReplicationProtectedItem updateAppliance(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput, Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .updateAppliance(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .updateAppliance(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, applianceUpdateInput, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -458,11 +458,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem updateMobilityService(String resourceName, String resourceGroupName,
+    public ReplicationProtectedItem updateMobilityService(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateMobilityServiceRequest updateMobilityServiceRequest) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .updateMobilityService(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .updateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, updateMobilityServiceRequest);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -471,11 +471,11 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public ReplicationProtectedItem updateMobilityService(String resourceName, String resourceGroupName,
+    public ReplicationProtectedItem updateMobilityService(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateMobilityServiceRequest updateMobilityServiceRequest, Context context) {
         ReplicationProtectedItemInner inner = this.serviceClient()
-            .updateMobilityService(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .updateMobilityService(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, updateMobilityServiceRequest, context);
         if (inner != null) {
             return new ReplicationProtectedItemImpl(inner, this.manager());
@@ -484,28 +484,28 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
         }
     }
 
-    public PagedIterable<ReplicationProtectedItem> list(String resourceName, String resourceGroupName) {
-        PagedIterable<ReplicationProtectedItemInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
+    public PagedIterable<ReplicationProtectedItem> list(String resourceGroupName, String resourceName) {
+        PagedIterable<ReplicationProtectedItemInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationProtectedItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ReplicationProtectedItem> list(String resourceName, String resourceGroupName, String skipToken,
+    public PagedIterable<ReplicationProtectedItem> list(String resourceGroupName, String resourceName, String skipToken,
         String filter, Context context) {
         PagedIterable<ReplicationProtectedItemInner> inner
-            = this.serviceClient().list(resourceName, resourceGroupName, skipToken, filter, context);
+            = this.serviceClient().list(resourceGroupName, resourceName, skipToken, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationProtectedItemImpl(inner1, this.manager()));
     }
 
     public ReplicationProtectedItem getById(String id) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -524,21 +524,21 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
                 .format("The resource ID '%s' is not valid. Missing path segment 'replicationProtectedItems'.", id)));
         }
         return this
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, Context.NONE)
             .getValue();
     }
 
     public Response<ReplicationProtectedItem> getByIdWithResponse(String id, Context context) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -556,7 +556,7 @@ public final class ReplicationProtectedItemsImpl implements ReplicationProtected
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'replicationProtectedItems'.", id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return this.getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
             replicatedProtectedItemName, context);
     }
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentFormat;
@@ -22,22 +22,21 @@ public final class PolicyFragmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"p\",\"description\":\"d\",\"format\":\"rawxml\"},\"id\":\"gyelvyh\",\"name\":\"vpuqyrp\",\"type\":\"bbkhc\"}";
+            = "{\"properties\":{\"value\":\"jtpszcawfupnyplu\",\"description\":\"rjselauzrpes\",\"format\":\"xml\",\"provisioningState\":\"egzxrusafvf\"},\"id\":\"yqa\",\"name\":\"uoh\",\"type\":\"kimntxdvlqmn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyFragmentContract response = manager.policyFragments()
-            .getWithResponse("vhrqxrqghot", "n", "zickgyga", PolicyFragmentContentFormat.RAWXML,
-                com.azure.core.util.Context.NONE)
+            .getWithResponse("l", "msrwlfg", "uu", PolicyFragmentContentFormat.XML, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("p", response.value());
-        Assertions.assertEquals("d", response.description());
-        Assertions.assertEquals(PolicyFragmentContentFormat.RAWXML, response.format());
+        Assertions.assertEquals("jtpszcawfupnyplu", response.value());
+        Assertions.assertEquals("rjselauzrpes", response.description());
+        Assertions.assertEquals(PolicyFragmentContentFormat.XML, response.format());
     }
 }

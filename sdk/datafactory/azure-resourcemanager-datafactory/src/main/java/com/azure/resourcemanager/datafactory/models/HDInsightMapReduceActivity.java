@@ -52,7 +52,7 @@ public final class HDInsightMapReduceActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private HDInsightMapReduceActivityTypeProperties innerTypeProperties() {
+    HDInsightMapReduceActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

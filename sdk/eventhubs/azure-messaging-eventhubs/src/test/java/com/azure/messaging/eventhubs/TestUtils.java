@@ -88,7 +88,8 @@ public final class TestUtils {
 
     // System and application properties from the generated test message.
     static final Instant ENQUEUED_TIME = Instant.ofEpochSecond(1561344661);
-    static final Long OFFSET = 1534L;
+    static final Long OFFSET = 15434L;
+    static final String OFFSET_STRING = String.valueOf(OFFSET);
     static final String PARTITION_KEY = "a-partition-key";
     static final Long SEQUENCE_NUMBER = 1025L;
     static final String OTHER_SYSTEM_PROPERTY = "Some-other-system-property";
@@ -179,7 +180,7 @@ public final class TestUtils {
      */
     static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
         final Message message
-            = getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+            = getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET_STRING, Date.from(ENQUEUED_TIME));
 
         Map<Symbol, Object> value = message.getMessageAnnotations().getValue();
         value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
@@ -202,7 +203,7 @@ public final class TestUtils {
     /**
      * Creates a message with the required system properties set.
      */
-    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, Long offsetNumber,
+    static Message getMessage(byte[] contents, String messageTrackingValue, Long sequenceNumber, String offsetNumber,
         Date enqueuedTime) {
 
         final Map<Symbol, Object> systemProperties = new HashMap<>();
@@ -245,7 +246,7 @@ public final class TestUtils {
         return eventData;
     }
 
-    public static EventData getEvent(AmqpAnnotatedMessage amqpAnnotatedMessage, Long offset, long sequenceNumber,
+    public static EventData getEvent(AmqpAnnotatedMessage amqpAnnotatedMessage, String offset, long sequenceNumber,
         Instant enqueuedTime) {
 
         amqpAnnotatedMessage.getMessageAnnotations()

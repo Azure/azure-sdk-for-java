@@ -14,27 +14,27 @@ public final class DataflowSourceOperationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowSourceOperationSettings model = BinaryData.fromString(
-            "{\"endpointRef\":\"wiyzvqtmnubexkp\",\"assetRef\":\"smond\",\"serializationFormat\":\"Json\",\"schemaRef\":\"xvy\",\"dataSources\":[\"mg\",\"opkwhojv\",\"ajqgxy\"]}")
+            "{\"endpointRef\":\"q\",\"assetRef\":\"wpmqt\",\"serializationFormat\":\"Json\",\"schemaRef\":\"ujmkcjhwqy\",\"dataSources\":[\"r\",\"bnw\",\"ewgdrjervn\",\"enq\"]}")
             .toObject(DataflowSourceOperationSettings.class);
-        Assertions.assertEquals("wiyzvqtmnubexkp", model.endpointRef());
-        Assertions.assertEquals("smond", model.assetRef());
+        Assertions.assertEquals("q", model.endpointRef());
+        Assertions.assertEquals("wpmqt", model.assetRef());
         Assertions.assertEquals(SourceSerializationFormat.JSON, model.serializationFormat());
-        Assertions.assertEquals("xvy", model.schemaRef());
-        Assertions.assertEquals("mg", model.dataSources().get(0));
+        Assertions.assertEquals("ujmkcjhwqy", model.schemaRef());
+        Assertions.assertEquals("r", model.dataSources().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowSourceOperationSettings model = new DataflowSourceOperationSettings().withEndpointRef("wiyzvqtmnubexkp")
-            .withAssetRef("smond")
+        DataflowSourceOperationSettings model = new DataflowSourceOperationSettings().withEndpointRef("q")
+            .withAssetRef("wpmqt")
             .withSerializationFormat(SourceSerializationFormat.JSON)
-            .withSchemaRef("xvy")
-            .withDataSources(Arrays.asList("mg", "opkwhojv", "ajqgxy"));
+            .withSchemaRef("ujmkcjhwqy")
+            .withDataSources(Arrays.asList("r", "bnw", "ewgdrjervn", "enq"));
         model = BinaryData.fromObject(model).toObject(DataflowSourceOperationSettings.class);
-        Assertions.assertEquals("wiyzvqtmnubexkp", model.endpointRef());
-        Assertions.assertEquals("smond", model.assetRef());
+        Assertions.assertEquals("q", model.endpointRef());
+        Assertions.assertEquals("wpmqt", model.assetRef());
         Assertions.assertEquals(SourceSerializationFormat.JSON, model.serializationFormat());
-        Assertions.assertEquals("xvy", model.schemaRef());
-        Assertions.assertEquals("mg", model.dataSources().get(0));
+        Assertions.assertEquals("ujmkcjhwqy", model.schemaRef());
+        Assertions.assertEquals("r", model.dataSources().get(0));
     }
 }

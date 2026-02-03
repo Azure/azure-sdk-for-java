@@ -4,6 +4,6 @@
 
 /**
  * Package containing the service clients for ProviderHub.
- * Microsoft ProviderHub.
+ * Provider Hub.
  */
 package com.azure.resourcemanager.providerhub.fluent;

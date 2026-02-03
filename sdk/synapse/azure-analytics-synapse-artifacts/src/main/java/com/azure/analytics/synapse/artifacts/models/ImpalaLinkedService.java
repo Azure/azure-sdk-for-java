@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,71 +22,97 @@ public class ImpalaLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Impala";
 
     /*
      * The IP address or host name of the Impala server. (i.e. 192.168.222.160)
      */
+    @Generated
     private Object host;
 
     /*
      * The TCP port that the Impala server uses to listen for client connections. The default value is 21050.
      */
+    @Generated
     private Object port;
 
     /*
      * The authentication type to use.
      */
+    @Generated
     private ImpalaAuthenticationType authenticationType;
 
     /*
      * The user name used to access the Impala server. The default value is anonymous when using SASLUsername.
      */
+    @Generated
     private Object username;
 
     /*
      * The password corresponding to the user name when using UsernameAndPassword.
      */
+    @Generated
     private SecretBase password;
+
+    /*
+     * The transport protocol to use in the Thrift layer (for V2 only). Default value is Binary.
+     */
+    @Generated
+    private ImpalaThriftTransportProtocol thriftTransportProtocol;
 
     /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
+    @Generated
     private Object enableSsl;
+
+    /*
+     * Specify whether to enable server SSL certificate validation when you connect.Always use System Trust Store (for
+     * V2 only). The default value is true.
+     */
+    @Generated
+    private Object enableServerCertificateValidation;
 
     /*
      * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
      * installed with the IR.
      */
+    @Generated
     private Object trustedCertPath;
 
     /*
      * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
      * value is false.
      */
+    @Generated
     private Object useSystemTrustStore;
 
     /*
      * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
      * connecting over SSL. The default value is false.
      */
+    @Generated
     private Object allowHostNameCNMismatch;
 
     /*
      * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
+    @Generated
     private Object allowSelfSignedServerCert;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of ImpalaLinkedService class.
      */
+    @Generated
     public ImpalaLinkedService() {
     }
 
@@ -94,6 +121,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -104,6 +132,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -114,6 +143,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setHost(Object host) {
         this.host = host;
         return this;
@@ -125,6 +155,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -136,6 +167,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -146,6 +178,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public ImpalaAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -156,6 +189,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setAuthenticationType(ImpalaAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -167,6 +201,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -178,6 +213,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -188,6 +224,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -198,8 +235,33 @@ public class ImpalaLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setPassword(SecretBase password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the thriftTransportProtocol property: The transport protocol to use in the Thrift layer (for V2 only).
+     * Default value is Binary.
+     * 
+     * @return the thriftTransportProtocol value.
+     */
+    @Generated
+    public ImpalaThriftTransportProtocol getThriftTransportProtocol() {
+        return this.thriftTransportProtocol;
+    }
+
+    /**
+     * Set the thriftTransportProtocol property: The transport protocol to use in the Thrift layer (for V2 only).
+     * Default value is Binary.
+     * 
+     * @param thriftTransportProtocol the thriftTransportProtocol value to set.
+     * @return the ImpalaLinkedService object itself.
+     */
+    @Generated
+    public ImpalaLinkedService setThriftTransportProtocol(ImpalaThriftTransportProtocol thriftTransportProtocol) {
+        this.thriftTransportProtocol = thriftTransportProtocol;
         return this;
     }
 
@@ -209,6 +271,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the enableSsl value.
      */
+    @Generated
     public Object getEnableSsl() {
         return this.enableSsl;
     }
@@ -220,8 +283,33 @@ public class ImpalaLinkedService extends LinkedService {
      * @param enableSsl the enableSsl value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setEnableSsl(Object enableSsl) {
         this.enableSsl = enableSsl;
+        return this;
+    }
+
+    /**
+     * Get the enableServerCertificateValidation property: Specify whether to enable server SSL certificate validation
+     * when you connect.Always use System Trust Store (for V2 only). The default value is true.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    @Generated
+    public Object getEnableServerCertificateValidation() {
+        return this.enableServerCertificateValidation;
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specify whether to enable server SSL certificate validation
+     * when you connect.Always use System Trust Store (for V2 only). The default value is true.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the ImpalaLinkedService object itself.
+     */
+    @Generated
+    public ImpalaLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        this.enableServerCertificateValidation = enableServerCertificateValidation;
         return this;
     }
 
@@ -232,6 +320,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the trustedCertPath value.
      */
+    @Generated
     public Object getTrustedCertPath() {
         return this.trustedCertPath;
     }
@@ -244,6 +333,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setTrustedCertPath(Object trustedCertPath) {
         this.trustedCertPath = trustedCertPath;
         return this;
@@ -255,6 +345,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the useSystemTrustStore value.
      */
+    @Generated
     public Object getUseSystemTrustStore() {
         return this.useSystemTrustStore;
     }
@@ -266,6 +357,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setUseSystemTrustStore(Object useSystemTrustStore) {
         this.useSystemTrustStore = useSystemTrustStore;
         return this;
@@ -277,6 +369,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the allowHostNameCNMismatch value.
      */
+    @Generated
     public Object getAllowHostNameCNMismatch() {
         return this.allowHostNameCNMismatch;
     }
@@ -288,6 +381,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param allowHostNameCNMismatch the allowHostNameCNMismatch value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setAllowHostNameCNMismatch(Object allowHostNameCNMismatch) {
         this.allowHostNameCNMismatch = allowHostNameCNMismatch;
         return this;
@@ -299,6 +393,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the allowSelfSignedServerCert value.
      */
+    @Generated
     public Object getAllowSelfSignedServerCert() {
         return this.allowSelfSignedServerCert;
     }
@@ -310,6 +405,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setAllowSelfSignedServerCert(Object allowSelfSignedServerCert) {
         this.allowSelfSignedServerCert = allowSelfSignedServerCert;
         return this;
@@ -321,6 +417,7 @@ public class ImpalaLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -332,6 +429,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ImpalaLinkedService object itself.
      */
+    @Generated
     public ImpalaLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -340,6 +438,17 @@ public class ImpalaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public ImpalaLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public ImpalaLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -349,6 +458,7 @@ public class ImpalaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ImpalaLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -358,6 +468,7 @@ public class ImpalaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ImpalaLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -367,6 +478,7 @@ public class ImpalaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ImpalaLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -376,9 +488,11 @@ public class ImpalaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -389,7 +503,9 @@ public class ImpalaLinkedService extends LinkedService {
             || authenticationType != null
             || username != null
             || password != null
+            || thriftTransportProtocol != null
             || enableSsl != null
+            || enableServerCertificateValidation != null
             || trustedCertPath != null
             || useSystemTrustStore != null
             || allowHostNameCNMismatch != null
@@ -397,17 +513,39 @@ public class ImpalaLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("host", this.host);
-            jsonWriter.writeUntypedField("port", this.port);
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
-            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
-            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeStringField("thriftTransportProtocol",
+                this.thriftTransportProtocol == null ? null : this.thriftTransportProtocol.toString());
+            if (this.enableSsl != null) {
+                jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.enableServerCertificateValidation != null) {
+                jsonWriter.writeUntypedField("enableServerCertificateValidation",
+                    this.enableServerCertificateValidation);
+            }
+            if (this.trustedCertPath != null) {
+                jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+            }
+            if (this.useSystemTrustStore != null) {
+                jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+            }
+            if (this.allowHostNameCNMismatch != null) {
+                jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
+            }
+            if (this.allowSelfSignedServerCert != null) {
+                jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -427,6 +565,7 @@ public class ImpalaLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ImpalaLinkedService.
      */
+    @Generated
     public static ImpalaLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ImpalaLinkedService deserializedImpalaLinkedService = new ImpalaLinkedService();
@@ -435,7 +574,9 @@ public class ImpalaLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedImpalaLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedImpalaLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedImpalaLinkedService.setDescription(reader.getString());
@@ -464,8 +605,13 @@ public class ImpalaLinkedService extends LinkedService {
                             deserializedImpalaLinkedService.username = reader.readUntyped();
                         } else if ("password".equals(fieldName)) {
                             deserializedImpalaLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("thriftTransportProtocol".equals(fieldName)) {
+                            deserializedImpalaLinkedService.thriftTransportProtocol
+                                = ImpalaThriftTransportProtocol.fromString(reader.getString());
                         } else if ("enableSsl".equals(fieldName)) {
                             deserializedImpalaLinkedService.enableSsl = reader.readUntyped();
+                        } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                            deserializedImpalaLinkedService.enableServerCertificateValidation = reader.readUntyped();
                         } else if ("trustedCertPath".equals(fieldName)) {
                             deserializedImpalaLinkedService.trustedCertPath = reader.readUntyped();
                         } else if ("useSystemTrustStore".equals(fieldName)) {

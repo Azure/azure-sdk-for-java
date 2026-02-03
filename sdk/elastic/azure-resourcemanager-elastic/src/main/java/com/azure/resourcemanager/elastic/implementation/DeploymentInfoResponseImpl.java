@@ -48,6 +48,14 @@ public final class DeploymentInfoResponseImpl implements DeploymentInfoResponse 
         return this.innerModel().marketplaceSaasInfo();
     }
 
+    public String projectType() {
+        return this.innerModel().projectType();
+    }
+
+    public String configurationType() {
+        return this.innerModel().configurationType();
+    }
+
     public DeploymentInfoResponseInner innerModel() {
         return this.innerObject;
     }

@@ -52,7 +52,7 @@ public final class AzureDataLakeAnalyticsLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDataLakeAnalyticsLinkedServiceTypeProperties innerTypeProperties() {
+    AzureDataLakeAnalyticsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -63,7 +63,7 @@ public final class DataFlowsImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientDataF")
+    @ServiceInterface(name = "ArtifactsClientDataFlows")
     public interface DataFlowsService {
         @Put("/dataflows/{dataFlowName}")
         @ExpectedResponses({ 200, 202 })

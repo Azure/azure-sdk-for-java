@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
@@ -110,7 +111,7 @@ public class PhoneNumbersClientBuilderTest {
     public void buildClientWithServiceVersion() {
         // Build client with required settings and mock configuration
         PhoneNumbersClient phoneNumberClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-            .serviceVersion(PhoneNumbersServiceVersion.V2024_03_01_PREVIEW)
+            .serviceVersion(PhoneNumbersServiceVersion.V2025_02_11)
             .buildClient();
 
         // Validate client created with expected settings
@@ -227,7 +228,7 @@ public class PhoneNumbersClientBuilderTest {
         // Build client with required settings and mock configuration
         PhoneNumbersAsyncClient phoneNumberAsyncClient
             = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
-                .serviceVersion(PhoneNumbersServiceVersion.V2024_03_01_PREVIEW)
+                .serviceVersion(PhoneNumbersServiceVersion.V2025_02_11)
                 .buildAsyncClient();
 
         // Validate client created with expected settings

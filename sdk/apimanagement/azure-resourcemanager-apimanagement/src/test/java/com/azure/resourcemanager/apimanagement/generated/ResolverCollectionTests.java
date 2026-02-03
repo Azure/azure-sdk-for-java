@@ -12,15 +12,15 @@ public final class ResolverCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResolverCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"toaukhfkvcisiz\",\"path\":\"a\",\"description\":\"sx\"},\"id\":\"wuived\",\"name\":\"cgyee\",\"type\":\"xeiqbpsmg\"},{\"properties\":{\"displayName\":\"u\",\"path\":\"ljdlrgmspl\",\"description\":\"auf\"},\"id\":\"shhvnewgnxky\",\"name\":\"pqanxrjkix\",\"type\":\"wbtaoyp\"},{\"properties\":{\"displayName\":\"hshxcylhkgmnsghp\",\"path\":\"cphdrwjjkhvyo\",\"description\":\"c\"},\"id\":\"u\",\"name\":\"vxnqmhrpqpd\",\"type\":\"wmkoisq\"},{\"properties\":{\"displayName\":\"f\",\"path\":\"uifmc\",\"description\":\"p\"},\"id\":\"bkdq\",\"name\":\"rdzsylollgtrczzy\",\"type\":\"mxzjijpvua\"}],\"count\":1011934042865512605,\"nextLink\":\"ci\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"htmoqqtlffhzbkr\",\"path\":\"jjavfq\",\"description\":\"hnqoewdo\"},\"id\":\"iyet\",\"name\":\"sypvidbztjhqtfb\",\"type\":\"vnynkb\"}],\"count\":8947049902895615006,\"nextLink\":\"uhpsprkzyaupia\"}")
             .toObject(ResolverCollection.class);
-        Assertions.assertEquals(1011934042865512605L, model.count());
+        Assertions.assertEquals(8947049902895615006L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResolverCollection model = new ResolverCollection().withCount(1011934042865512605L);
+        ResolverCollection model = new ResolverCollection().withCount(8947049902895615006L);
         model = BinaryData.fromObject(model).toObject(ResolverCollection.class);
-        Assertions.assertEquals(1011934042865512605L, model.count());
+        Assertions.assertEquals(8947049902895615006L, model.count());
     }
 }

@@ -7,12 +7,14 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import io.netty.handler.codec.DecoderException;
 
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
+import java.util.stream.Stream;
 
 public final class RntbdConstants {
 
@@ -348,7 +350,7 @@ public final class RntbdConstants {
                 case 0x0025:
                     return RntbdOperationType.Batch;
                 default:
-                    throw new DecoderException(lenientFormat("expected byte value matching %s value, not %s",
+                    throw new DecoderException(String.format("expected byte value matching %s value, not %s",
                         RntbdOperationType.class.getSimpleName(),
                         id));
             }
@@ -425,7 +427,7 @@ public final class RntbdConstants {
                 case Batch:
                     return RntbdOperationType.Batch;
                 default:
-                    throw new IllegalArgumentException(lenientFormat("unrecognized operation type: %s", type));
+                    throw new IllegalArgumentException(String.format("unrecognized operation type: %s", type));
             }
         }
 
@@ -495,7 +497,7 @@ public final class RntbdConstants {
         ConsistencyLevel((short) 0x0010, RntbdTokenType.Byte, false),
         EntityId((short) 0x0011, RntbdTokenType.String, false),
         ResourceSchemaName((short) 0x0012, RntbdTokenType.SmallString, false),
-        ReplicaPath((short) 0x0013, RntbdTokenType.String, true),
+        ReplicaPath((short) 0x0013, RntbdTokenType.String, false), // true in direct, but not for thin client
         ResourceTokenExpiry((short) 0x0014, RntbdTokenType.ULong, false),
         DatabaseName((short) 0x0015, RntbdTokenType.String, false),
         CollectionName((short) 0x0016, RntbdTokenType.String, false),
@@ -575,7 +577,9 @@ public final class RntbdConstants {
         EndId((short) 0x0060, RntbdTokenType.Bytes, false),
         FanoutOperationState((short) 0x0061, RntbdTokenType.Byte, false),
         StartEpk((short) 0x0062, RntbdTokenType.Bytes, false),
+        StartEpkHash((short)0x00D2, RntbdTokenType.Bytes, false),
         EndEpk((short) 0x0063, RntbdTokenType.Bytes, false),
+        EndEpkHash((short)0x00D3, RntbdTokenType.Bytes, false),
         ReadFeedKeyType((short) 0x0064, RntbdTokenType.Byte, false),
         ContentSerializationFormat((short) 0x0065, RntbdTokenType.Byte, false),
         AllowTentativeWrites((short) 0x0066, RntbdTokenType.Byte, false),
@@ -591,13 +595,48 @@ public final class RntbdConstants {
         CorrelatedActivityId((short) 0x00B0, RntbdTokenType.Guid, false),
         SDKSupportedCapabilities((short) 0x00A2, RntbdTokenType.ULong, false),
         ChangeFeedWireFormatVersion((short) 0x00B2, RntbdTokenType.String, false),
-        PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false);
+        PriorityLevel((short) 0x00BF, RntbdTokenType.Byte, false),
+        GlobalDatabaseAccountName((short) 0x00CE, RntbdTokenType.String, false),
+        ThroughputBucket((short)0x00DB, RntbdTokenType.Byte, false);
+
+        public static final List<RntbdRequestHeader> thinClientHeadersInOrderList = Arrays.asList(
+            EffectivePartitionKey,
+            StartEpkHash,
+            EndEpkHash,
+            GlobalDatabaseAccountName,
+            DatabaseName,
+            CollectionName,
+            CollectionRid,
+            ResourceId,
+            PayloadPresent,
+            DocumentName,
+            AuthorizationToken,
+            Date);
+
+        private static final List<RntbdRequestHeader> thinClientExclusionList = Arrays.asList(
+            RntbdConstants.RntbdRequestHeader.TransportRequestID,
+            RntbdRequestHeader.IntendedCollectionRid,
+            RntbdConstants.RntbdRequestHeader.ReplicaPath);
+
+        public static final Set<Short> thinClientProxyExcludedSet;
+        public static final Set<Short> thinClientProxyOrderedOrExcludedSet;
 
         public static final Map<Short, RntbdRequestHeader> map;
         public static final EnumSet<RntbdRequestHeader> set = EnumSet.allOf(RntbdRequestHeader.class);
 
         static {
             final Collector<RntbdRequestHeader, ?, Map<Short, RntbdRequestHeader>> collector = Collectors.toMap(RntbdRequestHeader::id, h -> h);
+            thinClientProxyOrderedOrExcludedSet =
+                Stream.concat(
+                          thinClientExclusionList.stream(),
+                          thinClientHeadersInOrderList.stream()
+                      )
+                      .map(RntbdRequestHeader::id)
+                      .collect(Collectors.toSet());
+            thinClientProxyExcludedSet =
+                thinClientExclusionList.stream()
+                                       .map(RntbdRequestHeader::id)
+                                       .collect(Collectors.toSet());
             map = set.stream().collect(collector);
         }
 
@@ -726,7 +765,7 @@ public final class RntbdConstants {
                 case 0x001D:
                     return RntbdResourceType.UserDefinedType;
                 default:
-                    throw new DecoderException(lenientFormat("expected byte value matching %s value, not %s",
+                    throw new DecoderException(String.format("expected byte value matching %s value, not %s",
                         RntbdResourceType.class.getSimpleName(),
                         id));
             }
@@ -792,7 +831,7 @@ public final class RntbdConstants {
                 case UserDefinedType:
                     return RntbdResourceType.UserDefinedType;
                 default:
-                    throw new IllegalArgumentException(lenientFormat("unrecognized resource type: %s", type));
+                    throw new IllegalArgumentException(String.format("unrecognized resource type: %s", type));
             }
         }
 

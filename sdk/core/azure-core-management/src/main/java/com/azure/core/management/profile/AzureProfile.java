@@ -25,7 +25,7 @@ public final class AzureProfile {
     static {
         ENDPOINT_MAP.put(AzureCloud.AZURE_PUBLIC_CLOUD, AzureEnvironment.AZURE);
         ENDPOINT_MAP.put(AzureCloud.AZURE_CHINA_CLOUD, AzureEnvironment.AZURE_CHINA);
-        ENDPOINT_MAP.put(AzureCloud.AZURE_US_GOVERNMENT, AzureEnvironment.AZURE_US_GOVERNMENT);
+        ENDPOINT_MAP.put(AzureCloud.AZURE_US_GOVERNMENT_CLOUD, AzureEnvironment.AZURE_US_GOVERNMENT);
     }
 
     /**

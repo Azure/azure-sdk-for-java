@@ -11,7 +11,7 @@ public final class ImportJobPropertiesStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportJobPropertiesStatus model = BinaryData.fromString(
-            "{\"state\":\"Canceled\",\"statusMessage\":\"dmgloug\",\"totalBlobsWalked\":9051452946148232776,\"blobsWalkedPerSecond\":2331240743756595548,\"totalBlobsImported\":5083557747309548738,\"blobsImportedPerSecond\":6527154524069647921,\"lastCompletionTime\":\"2021-10-29T20:46:58Z\",\"lastStartedTime\":\"2021-01-27T01:22:28Z\",\"totalErrors\":807711520,\"totalConflicts\":1678823592}")
+            "{\"state\":\"CompletedPartial\",\"statusMessage\":\"sne\",\"totalBlobsWalked\":837067039113006731,\"blobsWalkedPerSecond\":3737302569557289167,\"totalBlobsImported\":2061159305450396728,\"importedFiles\":2982546818195845622,\"importedDirectories\":1362560180657370264,\"importedSymlinks\":942028435956998498,\"preexistingFiles\":58970486403942068,\"preexistingDirectories\":8236287813880835178,\"preexistingSymlinks\":3542562338456254533,\"blobsImportedPerSecond\":5074380503450895831,\"lastCompletionTime\":\"2021-02-24T22:08:06Z\",\"lastStartedTime\":\"2021-04-10T22:55:54Z\",\"totalErrors\":19452143,\"totalConflicts\":69430164}")
             .toObject(ImportJobPropertiesStatus.class);
     }
 

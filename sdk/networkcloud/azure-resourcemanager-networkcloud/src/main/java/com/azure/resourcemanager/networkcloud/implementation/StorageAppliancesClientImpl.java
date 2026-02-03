@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.StorageAppliancesClient;
@@ -39,6 +41,7 @@ import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInne
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceList;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliancePatchParameters;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -73,7 +76,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NetworkCloudStorageA")
+    @ServiceInterface(name = "NetworkCloudStorageAppliances")
     public interface StorageAppliancesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/storageAppliances")
@@ -81,6 +84,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageApplianceList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/storageAppliances")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StorageApplianceList> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -89,8 +102,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageApplianceList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StorageApplianceList> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
@@ -103,13 +125,36 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StorageApplianceInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageApplianceName") String storageApplianceName,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") StorageApplianceInner storageApplianceParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
             @BodyParam("application/json") StorageApplianceInner storageApplianceParameters,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -120,8 +165,18 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
@@ -130,7 +185,20 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageApplianceName") String storageApplianceName,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @BodyParam("application/json") StorageAppliancePatchParameters storageApplianceUpdateParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
             @BodyParam("application/json") StorageAppliancePatchParameters storageApplianceUpdateParameters,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -139,6 +207,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagement(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/disableRemoteVendorManagement")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> disableRemoteVendorManagementSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("Accept") String accept,
@@ -156,6 +234,39 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/enableRemoteVendorManagement")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> enableRemoteVendorManagementSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName,
+            @BodyParam("application/json") StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/runReadCommands")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> runReadCommands(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName,
+            @BodyParam("application/json") StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/runReadCommands")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> runReadCommandsSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName,
+            @BodyParam("application/json") StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -167,7 +278,23 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StorageApplianceList> listBySubscriptionNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageApplianceList>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StorageApplianceList> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -177,13 +304,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of storage appliances in the provided subscription along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -195,7 +326,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context))
+                this.client.getSubscriptionId(), top, skipToken, accept, context))
             .<PagedResponse<StorageApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -206,30 +337,18 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
-     * @param context The context to associate with this operation.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return a list of storage appliances in the provided subscription as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<StorageApplianceInner> listAsync(Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -243,7 +362,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageApplianceInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
@@ -252,16 +373,64 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StorageApplianceInner> listSinglePage(Integer top, String skipToken) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StorageApplianceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List storage appliances in the subscription.
+     * 
+     * Get a list of storage appliances in the provided subscription.
+     * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided subscription as paginated response with {@link PagedFlux}.
+     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageApplianceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StorageApplianceInner> listSinglePage(Integer top, String skipToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StorageApplianceList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), top, skipToken, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -276,7 +445,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> list() {
-        return new PagedIterable<>(listAsync());
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -284,6 +456,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * Get a list of storage appliances in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -292,8 +467,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageApplianceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+    public PagedIterable<StorageApplianceInner> list(Integer top, String skipToken, Context context) {
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -302,6 +478,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -309,7 +488,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -325,7 +505,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context))
             .<PagedResponse<StorageApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -337,35 +517,19 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of storage appliances in the provided resource group as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<StorageApplianceInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        String skipToken) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -381,7 +545,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageApplianceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -391,16 +557,77 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StorageApplianceInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StorageApplianceList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List storage appliances in the resource group.
+     * 
+     * Get a list of storage appliances in the provided resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of storage appliances in the provided resource group as paginated response with {@link PagedFlux}.
+     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageApplianceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StorageApplianceInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StorageApplianceList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -417,7 +644,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -426,6 +656,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * Get a list of storage appliances in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -434,8 +667,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+    public PagedIterable<StorageApplianceInner> listByResourceGroup(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -484,45 +719,6 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the provided storage appliance along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageApplianceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String storageApplianceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context);
-    }
-
-    /**
-     * Retrieve the storage appliance.
-     * 
-     * Get properties of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -550,7 +746,27 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StorageApplianceInner> getByResourceGroupWithResponse(String resourceGroupName,
         String storageApplianceName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, storageApplianceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context);
     }
 
     /**
@@ -573,12 +789,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -587,7 +807,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
+        String storageApplianceName, StorageApplianceInner storageApplianceParameters, String ifMatch,
+        String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -613,68 +834,129 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, storageApplianceParameters,
-                accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+                storageApplianceParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
-     * @param context The context to associate with this operation.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String storageApplianceName, StorageApplianceInner storageApplianceParameters, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
         }
         if (storageApplianceParameters == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter storageApplianceParameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter storageApplianceParameters is required and cannot be null."));
         } else {
             storageApplianceParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, storageApplianceParameters,
-            accept, context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceParameters, accept, Context.NONE);
     }
 
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters, String ifMatch, String ifNoneMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter storageApplianceParameters is required and cannot be null."));
+        } else {
+            storageApplianceParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceParameters, accept, context);
+    }
+
+    /**
+     * Create or update the storage appliance.
+     * 
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -683,9 +965,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceParameters);
+        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
+        String ifMatch, String ifNoneMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, storageApplianceName,
+            storageApplianceParameters, ifMatch, ifNoneMatch);
         return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
             this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class,
             this.client.getContext());
@@ -694,13 +977,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -709,20 +991,50 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
-        Context context) {
-        context = this.client.mergeContext(context);
+        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, storageApplianceName,
-            storageApplianceParameters, context);
+            storageApplianceParameters, ifMatch, ifNoneMatch);
         return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class, context);
+            this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
+     * appliance.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
+        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
+        String ifMatch, String ifNoneMatch) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, storageApplianceName,
+            storageApplianceParameters, ifMatch, ifNoneMatch);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
+            StorageApplianceInner.class, StorageApplianceInner.class, Context.NONE);
+    }
+
+    /**
+     * Create or update the storage appliance.
+     * 
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -736,19 +1048,27 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
         String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters)
-            .getSyncPoller();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, storageApplianceName,
+            storageApplianceParameters, ifMatch, ifNoneMatch);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
+            StorageApplianceInner.class, StorageApplianceInner.class, Context.NONE);
     }
 
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -759,17 +1079,44 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
         String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters, context)
-            .getSyncPoller();
+        String ifMatch, String ifNoneMatch, Context context) {
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, storageApplianceName,
+            storageApplianceParameters, ifMatch, ifNoneMatch, context);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
+            StorageApplianceInner.class, StorageApplianceInner.class, context);
     }
 
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storageAppliance represents on-premises Network Cloud storage appliance on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StorageApplianceInner> createOrUpdateAsync(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters, String ifMatch, String ifNoneMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
+            ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update the storage appliance.
+     * 
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -783,39 +1130,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> createOrUpdateAsync(String resourceGroupName, String storageApplianceName,
         StorageApplianceInner storageApplianceParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
+            ifNoneMatch).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageAppliance represents on-premises Network Cloud storage appliance on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageApplianceInner> createOrUpdateAsync(String resourceGroupName, String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update the storage appliance.
-     * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -828,18 +1153,25 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
         StorageApplianceInner storageApplianceParameters) {
-        return createOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters).block();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginCreateOrUpdate(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
+            ifNoneMatch).getFinalResult();
     }
 
     /**
      * Create or update the storage appliance.
      * 
-     * Create a new storage appliance or update the properties of the existing one.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Create a new storage appliance or update the properties of the existing one. All customer initiated requests will
+     * be rejected as the life cycle of this resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -848,19 +1180,23 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters, context)
-            .block();
+        StorageApplianceInner storageApplianceParameters, String ifMatch, String ifNoneMatch, Context context) {
+        return beginCreateOrUpdate(resourceGroupName, storageApplianceName, storageApplianceParameters, ifMatch,
+            ifNoneMatch, context).getFinalResult();
     }
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -869,7 +1205,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String storageApplianceName) {
+        String storageApplianceName, String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -889,55 +1225,132 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String storageApplianceName, Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageApplianceName,
+        String ifMatch, String ifNoneMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, storageApplianceName, accept, context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, accept,
+            Context.NONE);
     }
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String storageApplianceName,
+        String ifMatch, String ifNoneMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, accept,
+            context);
+    }
+
+    /**
+     * Delete the storage appliance.
+     * 
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDeleteAsync(String resourceGroupName, String storageApplianceName, String ifMatch, String ifNoneMatch) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete the storage appliance.
+     * 
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -949,7 +1362,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDeleteAsync(String resourceGroupName, String storageApplianceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, storageApplianceName);
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
@@ -958,32 +1374,34 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginDeleteAsync(String resourceGroupName, String storageApplianceName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, storageApplianceName, context);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
-            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginDelete(String resourceGroupName, String storageApplianceName, String ifMatch, String ifNoneMatch) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -995,17 +1413,26 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDelete(String resourceGroupName, String storageApplianceName) {
-        return this.beginDeleteAsync(resourceGroupName, storageApplianceName).getSyncPoller();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1013,16 +1440,43 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginDelete(String resourceGroupName, String storageApplianceName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, storageApplianceName, context).getSyncPoller();
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
+        String resourceGroupName, String storageApplianceName, String ifMatch, String ifNoneMatch, Context context) {
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String storageApplianceName,
+        String ifMatch, String ifNoneMatch) {
+        return beginDeleteAsync(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete the storage appliance.
+     * 
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -1033,36 +1487,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String storageApplianceName) {
-        return beginDeleteAsync(resourceGroupName, storageApplianceName).last()
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginDeleteAsync(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> deleteAsync(String resourceGroupName, String storageApplianceName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, storageApplianceName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete the storage appliance.
-     * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
@@ -1073,17 +1508,23 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName) {
-        return deleteAsync(resourceGroupName, storageApplianceName).block();
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
+        return beginDelete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch).getFinalResult();
     }
 
     /**
      * Delete the storage appliance.
      * 
-     * Delete the provided storage appliance.
-     * All customer initiated requests will be rejected as the life cycle of this resource is managed by the system.
+     * Delete the provided storage appliance. All customer initiated requests will be rejected as the life cycle of this
+     * resource is managed by the system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1091,8 +1532,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName, Context context) {
-        return deleteAsync(resourceGroupName, storageApplianceName, context).block();
+    public OperationStatusResultInner delete(String resourceGroupName, String storageApplianceName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        return beginDelete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context).getFinalResult();
     }
 
     /**
@@ -1103,6 +1545,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1112,7 +1558,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters) {
+        String storageApplianceName, String ifMatch, String ifNoneMatch,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -1135,7 +1582,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
                 storageApplianceUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1148,41 +1595,44 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters,
-        Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageApplianceName,
+        String ifMatch, String ifNoneMatch, StorageAppliancePatchParameters storageApplianceUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
         }
         if (storageApplianceUpdateParameters != null) {
             storageApplianceUpdateParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, accept, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceUpdateParameters, accept, Context.NONE);
     }
 
     /**
@@ -1193,6 +1643,60 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
+     * @param storageApplianceUpdateParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return storageAppliance represents on-premises Network Cloud storage appliance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String storageApplianceName,
+        String ifMatch, String ifNoneMatch, StorageAppliancePatchParameters storageApplianceUpdateParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceUpdateParameters != null) {
+            storageApplianceUpdateParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceUpdateParameters, accept, context);
+    }
+
+    /**
+     * Patch the storage appliance.
+     * 
+     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
+     * Properties and tag updates can be done independently.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1202,10 +1706,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdateAsync(
-        String resourceGroupName, String storageApplianceName,
+        String resourceGroupName, String storageApplianceName, String ifMatch, String ifNoneMatch,
         StorageAppliancePatchParameters storageApplianceUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, storageApplianceName,
+            ifMatch, ifNoneMatch, storageApplianceUpdateParameters);
         return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
             this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class,
             this.client.getContext());
@@ -1228,9 +1732,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner>
         beginUpdateAsync(String resourceGroupName, String storageApplianceName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, storageApplianceName,
+            ifMatch, ifNoneMatch, storageApplianceUpdateParameters);
         return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
             this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class,
             this.client.getContext());
@@ -1244,23 +1750,25 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of storageAppliance represents on-premises Network Cloud storage
+     * @return the {@link SyncPoller} for polling of storageAppliance represents on-premises Network Cloud storage
      * appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdateAsync(
-        String resourceGroupName, String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, storageApplianceName,
-            storageApplianceUpdateParameters, context);
-        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class, context);
+    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
+        String storageApplianceName, String ifMatch, String ifNoneMatch,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageApplianceName, ifMatch,
+            ifNoneMatch, storageApplianceUpdateParameters);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
+            StorageApplianceInner.class, StorageApplianceInner.class, Context.NONE);
     }
 
     /**
@@ -1280,9 +1788,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
         String storageApplianceName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        return this.beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters)
-            .getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageApplianceName, ifMatch,
+            ifNoneMatch, storageApplianceUpdateParameters);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
+            StorageApplianceInner.class, StorageApplianceInner.class, Context.NONE);
     }
 
     /**
@@ -1293,6 +1805,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1303,10 +1819,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
-        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters,
-        Context context) {
-        return this.beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, context)
-            .getSyncPoller();
+        String storageApplianceName, String ifMatch, String ifNoneMatch,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, storageApplianceName, ifMatch,
+            ifNoneMatch, storageApplianceUpdateParameters, context);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(response,
+            StorageApplianceInner.class, StorageApplianceInner.class, context);
     }
 
     /**
@@ -1317,6 +1835,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1326,9 +1848,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        String ifMatch, String ifNoneMatch, StorageAppliancePatchParameters storageApplianceUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1347,33 +1869,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        return beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Patch the storage appliance.
-     * 
-     * Update properties of the provided storage appliance, or update tags associated with the storage appliance
-     * Properties and tag updates can be done independently.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceUpdateParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageAppliance represents on-premises Network Cloud storage appliance on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1391,8 +1891,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageApplianceInner update(String resourceGroupName, String storageApplianceName) {
+        final String ifMatch = null;
+        final String ifNoneMatch = null;
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        return updateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters).block();
+        return beginUpdate(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceUpdateParameters).getFinalResult();
     }
 
     /**
@@ -1403,6 +1906,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param storageApplianceUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1411,9 +1918,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageApplianceInner update(String resourceGroupName, String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
-        return updateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, context).block();
+    public StorageApplianceInner update(String resourceGroupName, String storageApplianceName, String ifMatch,
+        String ifNoneMatch, StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
+        return beginUpdate(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch,
+            storageApplianceUpdateParameters, context).getFinalResult();
     }
 
     /**
@@ -1463,35 +1971,73 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> disableRemoteVendorManagementWithResponse(String resourceGroupName,
+        String storageApplianceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableRemoteVendorManagementSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, Context.NONE);
+    }
+
+    /**
+     * Turn off remote vendor management for a storage appliance, if supported.
+     * 
+     * Disable remote vendor management of the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
+    private Response<BinaryData> disableRemoteVendorManagementWithResponse(String resourceGroupName,
         String storageApplianceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableRemoteVendorManagement(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.disableRemoteVendorManagementSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context);
     }
 
@@ -1524,30 +2070,6 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginDisableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = disableRemoteVendorManagementWithResponseAsync(resourceGroupName, storageApplianceName, context);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
-            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
-    }
-
-    /**
-     * Turn off remote vendor management for a storage appliance, if supported.
-     * 
-     * Disable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1556,7 +2078,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
-        return this.beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName).getSyncPoller();
+        Response<BinaryData> response
+            = disableRemoteVendorManagementWithResponse(resourceGroupName, storageApplianceName);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
@@ -1575,8 +2100,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName, Context context) {
-        return this.beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = disableRemoteVendorManagementWithResponse(resourceGroupName, storageApplianceName, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
@@ -1605,26 +2132,6 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> disableRemoteVendorManagementAsync(String resourceGroupName,
-        String storageApplianceName, Context context) {
-        return beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Turn off remote vendor management for a storage appliance, if supported.
-     * 
-     * Disable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1633,7 +2140,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner disableRemoteVendorManagement(String resourceGroupName,
         String storageApplianceName) {
-        return disableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName).block();
+        return beginDisableRemoteVendorManagement(resourceGroupName, storageApplianceName).getFinalResult();
     }
 
     /**
@@ -1652,7 +2159,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OperationStatusResultInner disableRemoteVendorManagement(String resourceGroupName,
         String storageApplianceName, Context context) {
-        return disableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context).block();
+        return beginDisableRemoteVendorManagement(resourceGroupName, storageApplianceName, context).getFinalResult();
     }
 
     /**
@@ -1708,40 +2215,84 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the current status of an async operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
+    private Response<BinaryData> enableRemoteVendorManagementWithResponse(String resourceGroupName,
         String storageApplianceName,
-        StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
-        Context context) {
+        StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (storageApplianceName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
         }
         if (storageApplianceEnableRemoteVendorManagementParameters != null) {
             storageApplianceEnableRemoteVendorManagementParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.enableRemoteVendorManagement(this.client.getEndpoint(), this.client.getApiVersion(),
+        return service.enableRemoteVendorManagementSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters, accept, Context.NONE);
+    }
+
+    /**
+     * Turn on remote vendor management for a storage appliance, if supported.
+     * 
+     * Enable remote vendor management of the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> enableRemoteVendorManagementWithResponse(String resourceGroupName,
+        String storageApplianceName,
+        StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceEnableRemoteVendorManagementParameters != null) {
+            storageApplianceEnableRemoteVendorManagementParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.enableRemoteVendorManagementSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
             storageApplianceEnableRemoteVendorManagementParameters, accept, context);
     }
@@ -1802,22 +2353,19 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
      * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginEnableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName,
-            StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = enableRemoteVendorManagementWithResponseAsync(resourceGroupName,
-            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters, context);
-        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
-            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginEnableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
+            StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
+        Response<BinaryData> response = enableRemoteVendorManagementWithResponse(resourceGroupName,
+            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
@@ -1837,10 +2385,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         beginEnableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
         final StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters
             = null;
-        return this
-            .beginEnableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
-                storageApplianceEnableRemoteVendorManagementParameters)
-            .getSyncPoller();
+        Response<BinaryData> response = enableRemoteVendorManagementWithResponse(resourceGroupName,
+            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
     }
 
     /**
@@ -1862,10 +2410,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         beginEnableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
             StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
             Context context) {
-        return this
-            .beginEnableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
-                storageApplianceEnableRemoteVendorManagementParameters, context)
-            .getSyncPoller();
+        Response<BinaryData> response = enableRemoteVendorManagementWithResponse(resourceGroupName,
+            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
@@ -1919,30 +2467,6 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param storageApplianceName The name of the storage appliance.
-     * @param storageApplianceEnableRemoteVendorManagementParameters The request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
-        Context context) {
-        return beginEnableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
-            storageApplianceEnableRemoteVendorManagementParameters, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Turn on remote vendor management for a storage appliance, if supported.
-     * 
-     * Enable remote vendor management of the provided storage appliance.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param storageApplianceName The name of the storage appliance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1953,8 +2477,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         String storageApplianceName) {
         final StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters
             = null;
-        return enableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
-            storageApplianceEnableRemoteVendorManagementParameters).block();
+        return beginEnableRemoteVendorManagement(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters).getFinalResult();
     }
 
     /**
@@ -1976,19 +2500,296 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context) {
-        return enableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
-            storageApplianceEnableRemoteVendorManagementParameters, context).block();
+        return beginEnableRemoteVendorManagement(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters, context).getFinalResult();
     }
 
     /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> runReadCommandsWithResponseAsync(String resourceGroupName,
+        String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceRunReadCommandsParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter storageApplianceRunReadCommandsParameters is required and cannot be null."));
+        } else {
+            storageApplianceRunReadCommandsParameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.runReadCommands(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+                storageApplianceRunReadCommandsParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> runReadCommandsWithResponse(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceRunReadCommandsParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter storageApplianceRunReadCommandsParameters is required and cannot be null."));
+        } else {
+            storageApplianceRunReadCommandsParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.runReadCommandsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters, accept, Context.NONE);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> runReadCommandsWithResponse(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (storageApplianceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
+        }
+        if (storageApplianceRunReadCommandsParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter storageApplianceRunReadCommandsParameters is required and cannot be null."));
+        } else {
+            storageApplianceRunReadCommandsParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.runReadCommandsSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters, accept, context);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommandsAsync(
+        String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = runReadCommandsWithResponseAsync(resourceGroupName,
+            storageApplianceName, storageApplianceRunReadCommandsParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
+        String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        Response<BinaryData> response = runReadCommandsWithResponse(resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, Context.NONE);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRunReadCommands(
+        String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        Response<BinaryData> response = runReadCommandsWithResponse(resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(response,
+            OperationStatusResultInner.class, OperationStatusResultInner.class, context);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OperationStatusResultInner> runReadCommandsAsync(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        return beginRunReadCommandsAsync(resourceGroupName, storageApplianceName,
+            storageApplianceRunReadCommandsParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        return beginRunReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters)
+            .getFinalResult();
+    }
+
+    /**
+     * Run read-only commands against a storage appliance.
+     * 
+     * Run one or more read-only commands on the provided storage appliance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param storageApplianceName The name of the storage appliance.
+     * @param storageApplianceRunReadCommandsParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusResultInner runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        return beginRunReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
+            context).getFinalResult();
+    }
+
+    /**
+     * List storage appliances in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2009,6 +2810,37 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     }
 
     /**
+     * List storage appliances in the subscription.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StorageApplianceInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StorageApplianceList> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List storage appliances in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2016,34 +2848,36 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of storage appliances in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<StorageApplianceInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StorageApplianceList> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
+     * List storage appliances in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
+     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2065,6 +2899,37 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     }
 
     /**
+     * List storage appliances in the resource group.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StorageApplianceInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StorageApplianceList> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List storage appliances in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2072,23 +2937,25 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storageApplianceList represents a list of storage appliances along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of storage appliances in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<StorageApplianceInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StorageApplianceList> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAppliancesClientImpl.class);
 }

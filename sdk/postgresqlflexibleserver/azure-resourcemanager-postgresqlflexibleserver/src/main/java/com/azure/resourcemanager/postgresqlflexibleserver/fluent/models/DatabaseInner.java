@@ -13,12 +13,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Represents a Database.
+ * Represents a database.
  */
 @Fluent
 public final class DatabaseInner extends ProxyResource {
     /*
-     * The properties of a database.
+     * Properties of a database.
      */
     private DatabaseProperties innerProperties;
 
@@ -49,7 +49,7 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The properties of a database.
+     * Get the innerProperties property: Properties of a database.
      * 
      * @return the innerProperties value.
      */
@@ -97,7 +97,7 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the charset property: The charset of the database.
+     * Get the charset property: Character set of the database.
      * 
      * @return the charset value.
      */
@@ -106,7 +106,7 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Set the charset property: The charset of the database.
+     * Set the charset property: Character set of the database.
      * 
      * @param charset the charset value to set.
      * @return the DatabaseInner object itself.
@@ -120,7 +120,7 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the collation property: The collation of the database.
+     * Get the collation property: Collation of the database.
      * 
      * @return the collation value.
      */
@@ -129,7 +129,7 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Set the collation property: The collation of the database.
+     * Set the collation property: Collation of the database.
      * 
      * @param collation the collation value to set.
      * @return the DatabaseInner object itself.

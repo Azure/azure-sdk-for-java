@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationProtectionIntent;
@@ -22,19 +22,19 @@ public final class ReplicationProtectionIntentsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"friendlyName\":\"mrgm\",\"jobId\":\"gtlhz\",\"jobState\":\"a\",\"isActive\":false,\"creationTimeUTC\":\"iy\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"nvzmsvzng\",\"id\":\"eqzhehgvmm\",\"name\":\"oyzgnbnypluz\",\"type\":\"pkfcdfu\"}]}";
+            = "{\"value\":[{\"properties\":{\"friendlyName\":\"uaiuvemqcb\",\"jobId\":\"ivexiathm\",\"jobState\":\"yywy\",\"isActive\":true,\"creationTimeUTC\":\"kbfxqcapggeci\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"mxokbutb\",\"id\":\"zcxzayv\",\"name\":\"sejdhrodyiitr\",\"type\":\"ddjtgoppy\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ReplicationProtectionIntent> response = manager.replicationProtectionIntents()
-            .list("frzcwuejmxl", "zlnzyrgr", "hchraunjovlx", "tvmvzpni", com.azure.core.util.Context.NONE);
+            .list("gotdt", "cktkalhpiybfnky", "zri", "nqlwogq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mrgm", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals("nvzmsvzng", response.iterator().next().location());
+        Assertions.assertEquals("uaiuvemqcb", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("mxokbutb", response.iterator().next().location());
     }
 }

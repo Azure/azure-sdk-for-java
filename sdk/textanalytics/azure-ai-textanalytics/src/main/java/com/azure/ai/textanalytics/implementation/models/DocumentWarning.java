@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
     /*
      * Error code.
      */
+    @Generated
     private WarningCodeValue code;
 
     /*
      * Warning message.
      */
+    @Generated
     private String message;
 
     /*
      * A JSON pointer reference indicating the target object.
      */
+    @Generated
     private String targetRef;
 
     /**
      * Creates an instance of DocumentWarning class.
      */
+    @Generated
     public DocumentWarning() {
     }
 
@@ -42,6 +47,7 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
      * 
      * @return the code value.
      */
+    @Generated
     public WarningCodeValue getCode() {
         return this.code;
     }
@@ -52,6 +58,7 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
      * @param code the code value to set.
      * @return the DocumentWarning object itself.
      */
+    @Generated
     public DocumentWarning setCode(WarningCodeValue code) {
         this.code = code;
         return this;
@@ -62,6 +69,7 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -72,6 +80,7 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
      * @param message the message value to set.
      * @return the DocumentWarning object itself.
      */
+    @Generated
     public DocumentWarning setMessage(String message) {
         this.message = message;
         return this;
@@ -82,6 +91,7 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
      * 
      * @return the targetRef value.
      */
+    @Generated
     public String getTargetRef() {
         return this.targetRef;
     }
@@ -92,6 +102,7 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
      * @param targetRef the targetRef value to set.
      * @return the DocumentWarning object itself.
      */
+    @Generated
     public DocumentWarning setTargetRef(String targetRef) {
         this.targetRef = targetRef;
         return this;
@@ -100,6 +111,7 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -118,6 +130,7 @@ public final class DocumentWarning implements JsonSerializable<DocumentWarning> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DocumentWarning.
      */
+    @Generated
     public static DocumentWarning fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentWarning deserializedDocumentWarning = new DocumentWarning();

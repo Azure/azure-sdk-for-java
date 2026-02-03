@@ -30,7 +30,7 @@ public final class PartnerNamespaceInner extends Resource {
     private PartnerNamespaceProperties innerProperties;
 
     /*
-     * The system metadata relating to Partner Namespace resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -65,7 +65,7 @@ public final class PartnerNamespaceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Partner Namespace resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
@@ -258,8 +258,8 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the partner namespace.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the partner namespace.
      * 
      * @return the disableLocalAuth value.
      */
@@ -269,8 +269,8 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the partner namespace.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the partner namespace.
      * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the PartnerNamespaceInner object itself.

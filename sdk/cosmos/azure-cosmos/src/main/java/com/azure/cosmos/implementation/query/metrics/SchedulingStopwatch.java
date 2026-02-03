@@ -26,7 +26,7 @@ public class SchedulingStopwatch {
 
     /**
      * Tells the SchedulingStopwatch know that the process is in a state where it is ready to be worked on,
-     * which in turn starts the stopwatch for for response time and turnaround time.
+     * which in turn starts the stopwatch for response time and turnaround time.
      */
     public void ready() {
         startStopWatch(this.turnaroundTimeStopwatch);
@@ -34,20 +34,26 @@ public class SchedulingStopwatch {
     }
 
     public void start() {
-        if (!this.runTimeStopwatch.isStarted()) {
+        synchronized (this.runTimeStopwatch) {
+            if (this.runTimeStopwatch.isStarted()) {
+                return;
+            }
             if (!this.responded) {
                 // This is the first time the process got a response, so the response time stopwatch needs to stop.
-                this.responseTimeStopwatch.stop();
+                stopStopWatch(this.responseTimeStopwatch);
                 this.responded = true;
             }
             this.runTimeStopwatch.reset();
-            startStopWatch(this.runTimeStopwatch);
+            this.runTimeStopwatch.start();
         }
     }
 
     public void stop() {
-        if (this.runTimeStopwatch.isStarted()) {
-            stopStopWatch(this.runTimeStopwatch);
+        synchronized (this.runTimeStopwatch) {
+            if (!this.runTimeStopwatch.isStarted()) {
+                return;
+            }
+            this.runTimeStopwatch.stop();
             this.numPreemptions++;
         }
     }
@@ -59,12 +65,18 @@ public class SchedulingStopwatch {
 
     private void startStopWatch(StopWatch stopwatch) {
         synchronized (stopwatch) {
+            if (stopwatch.isStarted()) {
+                return; // idempotent start
+            }
             stopwatch.start();
         }
     }
 
     private void stopStopWatch(StopWatch stopwatch) {
         synchronized (stopwatch) {
+            if (!stopwatch.isStarted()) {
+                return; // idempotent stop
+            }
             stopwatch.stop();
         }
     }

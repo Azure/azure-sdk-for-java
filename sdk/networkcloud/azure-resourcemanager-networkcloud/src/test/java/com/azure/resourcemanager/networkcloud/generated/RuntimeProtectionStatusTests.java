@@ -11,7 +11,7 @@ public final class RuntimeProtectionStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RuntimeProtectionStatus model = BinaryData.fromString(
-            "{\"definitionsLastUpdated\":\"2021-11-03T18:10:18Z\",\"definitionsVersion\":\"pnddhsgcbacphejk\",\"scanCompletedTime\":\"2021-06-08T17:38:25Z\",\"scanScheduledTime\":\"2021-05-11T13:05:51Z\",\"scanStartedTime\":\"2021-02-05T05:14:14Z\"}")
+            "{\"definitionsLastUpdated\":\"2021-06-02T14:17:50Z\",\"definitionsVersion\":\"ureximoryocfs\",\"scanCompletedTime\":\"2021-11-18T00:18:58Z\",\"scanScheduledTime\":\"2021-10-09T18:45:34Z\",\"scanStartedTime\":\"2021-12-09T10:40:37Z\"}")
             .toObject(RuntimeProtectionStatus.class);
     }
 

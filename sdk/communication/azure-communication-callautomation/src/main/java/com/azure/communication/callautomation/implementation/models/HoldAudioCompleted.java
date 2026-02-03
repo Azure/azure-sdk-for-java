@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The HoldAudioCompleted model.
+ * Hold Audio Completed event.
  */
 @Fluent
 public final class HoldAudioCompleted implements JsonSerializable<HoldAudioCompleted> {

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.providerhub.fluent.models.SkuResourceInner;
 
@@ -38,6 +39,13 @@ public interface SkuResource {
      * @return the properties value.
      */
     SkuResourceProperties properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.providerhub.fluent.models.SkuResourceInner object.

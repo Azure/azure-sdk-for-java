@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,27 +21,32 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
     /*
      * Type of data source credential
      */
+    @Generated
     private DataSourceCredentialType dataSourceCredentialType
         = DataSourceCredentialType.fromString("DataSourceCredential");
 
     /*
      * Unique id of data source credential
      */
+    @Generated
     private UUID dataSourceCredentialId;
 
     /*
      * Name of data source credential
      */
+    @Generated
     private String dataSourceCredentialName;
 
     /*
      * Description of data source credential
      */
+    @Generated
     private String dataSourceCredentialDescription;
 
     /**
      * Creates an instance of DataSourceCredential class.
      */
+    @Generated
     public DataSourceCredential() {
     }
 
@@ -49,6 +55,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * 
      * @return the dataSourceCredentialType value.
      */
+    @Generated
     public DataSourceCredentialType getDataSourceCredentialType() {
         return this.dataSourceCredentialType;
     }
@@ -58,6 +65,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * 
      * @return the dataSourceCredentialId value.
      */
+    @Generated
     public UUID getDataSourceCredentialId() {
         return this.dataSourceCredentialId;
     }
@@ -68,6 +76,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * @param dataSourceCredentialId the dataSourceCredentialId value to set.
      * @return the DataSourceCredential object itself.
      */
+    @Generated
     DataSourceCredential setDataSourceCredentialId(UUID dataSourceCredentialId) {
         this.dataSourceCredentialId = dataSourceCredentialId;
         return this;
@@ -78,6 +87,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * 
      * @return the dataSourceCredentialName value.
      */
+    @Generated
     public String getDataSourceCredentialName() {
         return this.dataSourceCredentialName;
     }
@@ -88,6 +98,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * @param dataSourceCredentialName the dataSourceCredentialName value to set.
      * @return the DataSourceCredential object itself.
      */
+    @Generated
     public DataSourceCredential setDataSourceCredentialName(String dataSourceCredentialName) {
         this.dataSourceCredentialName = dataSourceCredentialName;
         return this;
@@ -98,6 +109,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * 
      * @return the dataSourceCredentialDescription value.
      */
+    @Generated
     public String getDataSourceCredentialDescription() {
         return this.dataSourceCredentialDescription;
     }
@@ -108,6 +120,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * @param dataSourceCredentialDescription the dataSourceCredentialDescription value to set.
      * @return the DataSourceCredential object itself.
      */
+    @Generated
     public DataSourceCredential setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
         this.dataSourceCredentialDescription = dataSourceCredentialDescription;
         return this;
@@ -116,6 +129,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -135,6 +149,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DataSourceCredential.
      */
+    @Generated
     public static DataSourceCredential fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -166,6 +181,7 @@ public class DataSourceCredential implements JsonSerializable<DataSourceCredenti
         });
     }
 
+    @Generated
     static DataSourceCredential fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataSourceCredential deserializedDataSourceCredential = new DataSourceCredential();

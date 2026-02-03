@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Description about the errors happen while performing migration validation.
  */
-@Immutable
+@Fluent
 public final class ValidationError implements JsonSerializable<ValidationError> {
     /*
      * Error Text
@@ -42,12 +42,34 @@ public final class ValidationError implements JsonSerializable<ValidationError> 
     }
 
     /**
+     * Set the text property: Error Text.
+     * 
+     * @param text the text value to set.
+     * @return the ValidationError object itself.
+     */
+    public ValidationError withText(String text) {
+        this.text = text;
+        return this;
+    }
+
+    /**
      * Get the severity property: Severity of the error.
      * 
      * @return the severity value.
      */
     public Severity severity() {
         return this.severity;
+    }
+
+    /**
+     * Set the severity property: Severity of the error.
+     * 
+     * @param severity the severity value to set.
+     * @return the ValidationError object itself.
+     */
+    public ValidationError withSeverity(Severity severity) {
+        this.severity = severity;
+        return this;
     }
 
     /**
@@ -64,6 +86,8 @@ public final class ValidationError implements JsonSerializable<ValidationError> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
         return jsonWriter.writeEndObject();
     }
 

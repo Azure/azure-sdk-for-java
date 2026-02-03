@@ -42,7 +42,7 @@ import java.util.Arrays;
 public final class ProtectionPoliciesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
@@ -108,7 +108,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
      */
     /**
@@ -135,7 +135,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
      */
     /**
@@ -188,7 +188,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
      */
     /**
@@ -246,7 +246,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
      */
     /**
@@ -294,7 +294,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
@@ -347,7 +347,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/V2Policy/IaaS_v2_hourly.json
      */
     /**
@@ -404,7 +404,7 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * AzureIaasVm/V2Policy/IaaS_v2_daily.json
      */
     /**

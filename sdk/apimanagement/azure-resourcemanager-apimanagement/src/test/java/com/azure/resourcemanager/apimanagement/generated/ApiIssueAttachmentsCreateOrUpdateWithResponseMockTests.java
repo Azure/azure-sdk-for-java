@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.IssueAttachmentContract;
@@ -21,26 +21,26 @@ public final class ApiIssueAttachmentsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"rlcydjht\",\"contentFormat\":\"jse\",\"content\":\"wiynd\"},\"id\":\"rdonkgobx\",\"name\":\"lr\",\"type\":\"olenrswknpdr\"}";
+            = "{\"properties\":{\"title\":\"sf\",\"contentFormat\":\"otumbmwgft\",\"content\":\"hfgmuxuqiagsko\"},\"id\":\"kuqirhskxpao\",\"name\":\"kgvnlfu\",\"type\":\"yxfzibrl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IssueAttachmentContract response = manager.apiIssueAttachments()
-            .define("p")
-            .withExistingIssue("wdalisd", "qngca", "dz", "nloou")
-            .withTitle("mdahyclx")
-            .withContentFormat("sidoebldpo")
-            .withContent("affjkrtnh")
-            .withIfMatch("nqekwankl")
+            .define("cgmbg")
+            .withExistingIssue("pkephujeucosvkke", "rgvypa", "pjpyillgnuee", "fpffbuqxknv")
+            .withTitle("ojfchicpa")
+            .withContentFormat("exzoksgqhboojuxi")
+            .withContent("ozb")
+            .withIfMatch("tkb")
             .create();
 
-        Assertions.assertEquals("rlcydjht", response.title());
-        Assertions.assertEquals("jse", response.contentFormat());
-        Assertions.assertEquals("wiynd", response.content());
+        Assertions.assertEquals("sf", response.title());
+        Assertions.assertEquals("otumbmwgft", response.contentFormat());
+        Assertions.assertEquals("hfgmuxuqiagsko", response.content());
     }
 }

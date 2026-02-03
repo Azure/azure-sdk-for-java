@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,9 +18,14 @@ import java.util.List;
 @Immutable
 public final class ContainerGroupInstanceCountSummary implements JsonSerializable<ContainerGroupInstanceCountSummary> {
     /*
-     * The count of pooled resources in each state.
+     * The zone that the provided counts are in. It will not have a value if zones are not enabled.
      */
-    private List<PoolResourceStateCount> instanceCountsByState;
+    private Long zone;
+
+    /*
+     * The count of pooled container groups in each state for the given zone.
+     */
+    private List<PoolContainerGroupStateCount> instanceCountsByState;
 
     /**
      * Creates an instance of ContainerGroupInstanceCountSummary class.
@@ -30,30 +34,23 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
     }
 
     /**
-     * Get the instanceCountsByState property: The count of pooled resources in each state.
+     * Get the zone property: The zone that the provided counts are in. It will not have a value if zones are not
+     * enabled.
      * 
-     * @return the instanceCountsByState value.
+     * @return the zone value.
      */
-    public List<PoolResourceStateCount> instanceCountsByState() {
-        return this.instanceCountsByState;
+    public Long zone() {
+        return this.zone;
     }
 
     /**
-     * Validates the instance.
+     * Get the instanceCountsByState property: The count of pooled container groups in each state for the given zone.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the instanceCountsByState value.
      */
-    public void validate() {
-        if (instanceCountsByState() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property instanceCountsByState in model ContainerGroupInstanceCountSummary"));
-        } else {
-            instanceCountsByState().forEach(e -> e.validate());
-        }
+    public List<PoolContainerGroupStateCount> instanceCountsByState() {
+        return this.instanceCountsByState;
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerGroupInstanceCountSummary.class);
 
     /**
      * {@inheritDoc}
@@ -63,6 +60,7 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("instanceCountsByState", this.instanceCountsByState,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("zone", this.zone);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,9 +82,11 @@ public final class ContainerGroupInstanceCountSummary implements JsonSerializabl
                 reader.nextToken();
 
                 if ("instanceCountsByState".equals(fieldName)) {
-                    List<PoolResourceStateCount> instanceCountsByState
-                        = reader.readArray(reader1 -> PoolResourceStateCount.fromJson(reader1));
+                    List<PoolContainerGroupStateCount> instanceCountsByState
+                        = reader.readArray(reader1 -> PoolContainerGroupStateCount.fromJson(reader1));
                     deserializedContainerGroupInstanceCountSummary.instanceCountsByState = instanceCountsByState;
+                } else if ("zone".equals(fieldName)) {
+                    deserializedContainerGroupInstanceCountSummary.zone = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }

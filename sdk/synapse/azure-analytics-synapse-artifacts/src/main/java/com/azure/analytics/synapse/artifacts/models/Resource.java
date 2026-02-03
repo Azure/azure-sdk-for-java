@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,21 +24,25 @@ public class Resource implements JsonSerializable<Resource> {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{
      * resourceType}/{resourceName}
      */
+    @Generated
     private String id;
 
     /*
      * The name of the resource
      */
+    @Generated
     private String name;
 
     /*
      * The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
      */
+    @Generated
     private String type;
 
     /**
      * Creates an instance of Resource class.
      */
+    @Generated
     public Resource() {
     }
 
@@ -47,6 +52,7 @@ public class Resource implements JsonSerializable<Resource> {
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -58,6 +64,7 @@ public class Resource implements JsonSerializable<Resource> {
      * @param id the id value to set.
      * @return the Resource object itself.
      */
+    @Generated
     Resource setId(String id) {
         this.id = id;
         return this;
@@ -68,6 +75,7 @@ public class Resource implements JsonSerializable<Resource> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -78,6 +86,7 @@ public class Resource implements JsonSerializable<Resource> {
      * @param name the name value to set.
      * @return the Resource object itself.
      */
+    @Generated
     Resource setName(String name) {
         this.name = name;
         return this;
@@ -89,6 +98,7 @@ public class Resource implements JsonSerializable<Resource> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -100,6 +110,7 @@ public class Resource implements JsonSerializable<Resource> {
      * @param type the type value to set.
      * @return the Resource object itself.
      */
+    @Generated
     Resource setType(String type) {
         this.type = type;
         return this;
@@ -108,6 +119,7 @@ public class Resource implements JsonSerializable<Resource> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -122,6 +134,7 @@ public class Resource implements JsonSerializable<Resource> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the Resource.
      */
+    @Generated
     public static Resource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Resource deserializedResource = new Resource();

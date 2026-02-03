@@ -89,7 +89,7 @@ public final class DocumentModelsImpl {
      * perform REST calls.
      */
     @Host("{endpoint}/formrecognizer")
-    @ServiceInterface(name = "FormRecognizerClient")
+    @ServiceInterface(name = "FormRecognizerClientDocumentModels")
     public interface DocumentModelsService {
         @Post("/documentModels/{modelId}:analyze")
         @ExpectedResponses({ 202 })
@@ -2978,8 +2978,7 @@ public final class DocumentModelsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DocumentModelSummary> listModels() {
-        return new PagedIterable<>(() -> listModelsSinglePage(Context.NONE),
-            nextLink -> listModelsNextSinglePage(nextLink));
+        return new PagedIterable<>(() -> listModelsSinglePage(), nextLink -> listModelsNextSinglePage(nextLink));
     }
 
     /**

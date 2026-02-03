@@ -30,4 +30,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus-track2-perf%2FREADME.png)
+

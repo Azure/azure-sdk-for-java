@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public final class TelemetryEventData extends MonitorDomain {
     /*
      * Event name. Keep it low cardinality to allow proper grouping and useful metrics.
      */
+    @Generated
     private String name;
 
     /*
      * Collection of custom properties.
      */
+    @Generated
     private Map<String, String> properties;
 
     /*
      * Collection of custom measurements.
      */
+    @Generated
     private Map<String, Double> measurements;
 
     /**
      * Creates an instance of TelemetryEventData class.
      */
+    @Generated
     public TelemetryEventData() {
     }
 
@@ -44,6 +49,7 @@ public final class TelemetryEventData extends MonitorDomain {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -54,6 +60,7 @@ public final class TelemetryEventData extends MonitorDomain {
      * @param name the name value to set.
      * @return the TelemetryEventData object itself.
      */
+    @Generated
     public TelemetryEventData setName(String name) {
         this.name = name;
         return this;
@@ -64,6 +71,7 @@ public final class TelemetryEventData extends MonitorDomain {
      * 
      * @return the properties value.
      */
+    @Generated
     public Map<String, String> getProperties() {
         return this.properties;
     }
@@ -74,6 +82,7 @@ public final class TelemetryEventData extends MonitorDomain {
      * @param properties the properties value to set.
      * @return the TelemetryEventData object itself.
      */
+    @Generated
     public TelemetryEventData setProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
@@ -84,6 +93,7 @@ public final class TelemetryEventData extends MonitorDomain {
      * 
      * @return the measurements value.
      */
+    @Generated
     public Map<String, Double> getMeasurements() {
         return this.measurements;
     }
@@ -94,6 +104,7 @@ public final class TelemetryEventData extends MonitorDomain {
      * @param measurements the measurements value to set.
      * @return the TelemetryEventData object itself.
      */
+    @Generated
     public TelemetryEventData setMeasurements(Map<String, Double> measurements) {
         this.measurements = measurements;
         return this;
@@ -102,6 +113,7 @@ public final class TelemetryEventData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public TelemetryEventData setVersion(int version) {
         super.setVersion(version);
@@ -111,6 +123,7 @@ public final class TelemetryEventData extends MonitorDomain {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -135,6 +148,7 @@ public final class TelemetryEventData extends MonitorDomain {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TelemetryEventData.
      */
+    @Generated
     public static TelemetryEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TelemetryEventData deserializedTelemetryEventData = new TelemetryEventData();

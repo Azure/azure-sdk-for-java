@@ -76,15 +76,14 @@ public final class UsersImpl implements Users {
         }
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String userId,
-        String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType,
-                context);
-    }
-
     public void delete(String resourceGroupName, String serviceName, String userId, String ifMatch) {
         this.serviceClient().delete(resourceGroupName, serviceName, userId, ifMatch);
+    }
+
+    public void delete(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context) {
+        this.serviceClient()
+            .delete(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType, context);
     }
 
     public Response<GenerateSsoUrlResult> generateSsoUrlWithResponse(String resourceGroupName, String serviceName,
@@ -189,11 +188,11 @@ public final class UsersImpl implements Users {
         Boolean localDeleteSubscriptions = null;
         Boolean localNotify = null;
         AppType localAppType = null;
-        this.deleteWithResponse(resourceGroupName, serviceName, userId, localIfMatch, localDeleteSubscriptions,
-            localNotify, localAppType, Context.NONE);
+        this.delete(resourceGroupName, serviceName, userId, localIfMatch, localDeleteSubscriptions, localNotify,
+            localAppType, Context.NONE);
     }
 
-    public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Boolean deleteSubscriptions, Boolean notify,
+    public void deleteByIdWithResponse(String id, String ifMatch, Boolean deleteSubscriptions, Boolean notify,
         AppType appType, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
@@ -210,8 +209,7 @@ public final class UsersImpl implements Users {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'users'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify,
-            appType, context);
+        this.delete(resourceGroupName, serviceName, userId, ifMatch, deleteSubscriptions, notify, appType, context);
     }
 
     private UsersClient serviceClient() {

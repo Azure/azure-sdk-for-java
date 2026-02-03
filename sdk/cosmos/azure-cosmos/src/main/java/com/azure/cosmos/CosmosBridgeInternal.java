@@ -113,8 +113,7 @@ public final class CosmosBridgeInternal {
             .preferredRegions(builder.getPreferredRegions())
             .endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled())
             .multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled())
-            .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled())
-            .clientTelemetryEnabled(builder.isClientTelemetryEnabled());
+            .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
 
         return copy;
     }

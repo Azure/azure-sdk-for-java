@@ -16,26 +16,24 @@ public final class RecoveryPlanActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanAction model = BinaryData.fromString(
-            "{\"actionName\":\"tod\",\"failoverTypes\":[\"RepairReplication\",\"UnplannedFailover\",\"TestFailoverCleanup\",\"PlannedFailover\"],\"failoverDirections\":[\"RecoveryToPrimary\",\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}")
+            "{\"actionName\":\"ntasfaymxbu\",\"failoverTypes\":[\"TestFailover\",\"Failback\",\"ReverseReplicate\",\"FinalizeFailback\"],\"failoverDirections\":[\"RecoveryToPrimary\"],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}")
             .toObject(RecoveryPlanAction.class);
-        Assertions.assertEquals("tod", model.actionName());
-        Assertions.assertEquals(ReplicationProtectedItemOperation.REPAIR_REPLICATION, model.failoverTypes().get(0));
+        Assertions.assertEquals("ntasfaymxbu", model.actionName());
+        Assertions.assertEquals(ReplicationProtectedItemOperation.TEST_FAILOVER, model.failoverTypes().get(0));
         Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY, model.failoverDirections().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanAction model = new RecoveryPlanAction().withActionName("tod")
-            .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.REPAIR_REPLICATION,
-                ReplicationProtectedItemOperation.UNPLANNED_FAILOVER,
-                ReplicationProtectedItemOperation.TEST_FAILOVER_CLEANUP,
-                ReplicationProtectedItemOperation.PLANNED_FAILOVER))
-            .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
-                PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
+        RecoveryPlanAction model = new RecoveryPlanAction().withActionName("ntasfaymxbu")
+            .withFailoverTypes(Arrays.asList(ReplicationProtectedItemOperation.TEST_FAILOVER,
+                ReplicationProtectedItemOperation.FAILBACK, ReplicationProtectedItemOperation.REVERSE_REPLICATE,
+                ReplicationProtectedItemOperation.FINALIZE_FAILBACK))
+            .withFailoverDirections(Arrays.asList(PossibleOperationsDirections.RECOVERY_TO_PRIMARY))
             .withCustomDetails(new RecoveryPlanActionDetails());
         model = BinaryData.fromObject(model).toObject(RecoveryPlanAction.class);
-        Assertions.assertEquals("tod", model.actionName());
-        Assertions.assertEquals(ReplicationProtectedItemOperation.REPAIR_REPLICATION, model.failoverTypes().get(0));
+        Assertions.assertEquals("ntasfaymxbu", model.actionName());
+        Assertions.assertEquals(ReplicationProtectedItemOperation.TEST_FAILOVER, model.failoverTypes().get(0));
         Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY, model.failoverDirections().get(0));
     }
 }

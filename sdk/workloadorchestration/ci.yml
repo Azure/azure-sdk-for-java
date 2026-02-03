@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/workloadorchestration/ci.yml
+      - sdk/workloadorchestration/azure-resourcemanager-workloadorchestration/
+    exclude:
+      - sdk/workloadorchestration/pom.xml
+      - sdk/workloadorchestration/azure-resourcemanager-workloadorchestration/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/workloadorchestration/ci.yml
+      - sdk/workloadorchestration/azure-resourcemanager-workloadorchestration/
+    exclude:
+      - sdk/workloadorchestration/pom.xml
+      - sdk/workloadorchestration/azure-resourcemanager-workloadorchestration/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerworkloadorchestration
+    displayName: azure-resourcemanager-workloadorchestration
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: workloadorchestration
+    Artifacts:
+      - name: azure-resourcemanager-workloadorchestration
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerworkloadorchestration
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerworkloadorchestration }}

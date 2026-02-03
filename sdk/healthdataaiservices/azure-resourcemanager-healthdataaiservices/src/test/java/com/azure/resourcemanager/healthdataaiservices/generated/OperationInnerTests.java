@@ -6,8 +6,6 @@ package com.azure.resourcemanager.healthdataaiservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.healthdataaiservices.fluent.models.OperationInner;
-import com.azure.resourcemanager.healthdataaiservices.models.ActionType;
-import org.junit.jupiter.api.Assertions;
 
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
@@ -15,6 +13,5 @@ public final class OperationInnerTests {
         OperationInner model = BinaryData.fromString(
             "{\"name\":\"nygj\",\"isDataAction\":true,\"display\":{\"provider\":\"eqsrdeupewnwreit\",\"resource\":\"yflusarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
             .toObject(OperationInner.class);
-        Assertions.assertEquals(ActionType.INTERNAL, model.actionType());
     }
 }

@@ -197,8 +197,12 @@ public final class ActivityPolicy implements JsonSerializable<ActivityPolicy> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("timeout", this.timeout);
-        jsonWriter.writeUntypedField("retry", this.retry);
+        if (this.timeout != null) {
+            jsonWriter.writeUntypedField("timeout", this.timeout);
+        }
+        if (this.retry != null) {
+            jsonWriter.writeUntypedField("retry", this.retry);
+        }
         jsonWriter.writeNumberField("retryIntervalInSeconds", this.retryIntervalInSeconds);
         jsonWriter.writeBooleanField("secureInput", this.secureInput);
         jsonWriter.writeBooleanField("secureOutput", this.secureOutput);

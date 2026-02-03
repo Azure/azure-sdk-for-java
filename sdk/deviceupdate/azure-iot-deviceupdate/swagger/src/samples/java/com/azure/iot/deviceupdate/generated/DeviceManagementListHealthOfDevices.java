@@ -18,10 +18,10 @@ public class DeviceManagementListHealthOfDevices {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementlisthealthofdevices.devicemanagementlisthealthofdevices
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-list-health-of-devices.device-management-list-health-of-devices
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response
             = deviceManagementClient.listHealthOfDevices("state eq 'unhealthy'", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementlisthealthofdevices.devicemanagementlisthealthofdevices
+        // END:com.azure.iot.deviceupdate.generated.device-management-list-health-of-devices.device-management-list-health-of-devices
     }
 }

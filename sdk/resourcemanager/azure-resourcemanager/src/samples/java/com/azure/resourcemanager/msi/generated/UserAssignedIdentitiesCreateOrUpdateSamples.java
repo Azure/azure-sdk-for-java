@@ -14,7 +14,7 @@ import java.util.Map;
 public final class UserAssignedIdentitiesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityCreate.json
+     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/IdentityCreate.json
      */
     /**
      * Sample code: IdentityCreate.

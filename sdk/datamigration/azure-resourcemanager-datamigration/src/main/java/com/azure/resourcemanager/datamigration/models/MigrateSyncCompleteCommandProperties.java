@@ -9,6 +9,7 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
 
@@ -16,11 +17,11 @@ import java.util.List;
  * Properties for the command that completes sync migration for a database.
  */
 @Fluent
-public final class MigrateSyncCompleteCommandProperties extends CommandProperties {
+public final class MigrateSyncCompleteCommandProperties extends CommandPropertiesInner {
     /*
      * Command type.
      */
-    private String commandType = "Migrate.Sync.Complete.Database";
+    private CommandType commandType = CommandType.MIGRATE_SYNC_COMPLETE_DATABASE;
 
     /*
      * Command input
@@ -31,6 +32,21 @@ public final class MigrateSyncCompleteCommandProperties extends CommandPropertie
      * Command output. This is ignored if submitted.
      */
     private MigrateSyncCompleteCommandOutput output;
+
+    /*
+     * Command id
+     */
+    private String commandId;
+
+    /*
+     * The state of the command. This is ignored if submitted.
+     */
+    private CommandState state;
+
+    /*
+     * Array of errors. This is ignored if submitted.
+     */
+    private List<ManagementError> errors;
 
     /**
      * Creates an instance of MigrateSyncCompleteCommandProperties class.
@@ -44,7 +60,7 @@ public final class MigrateSyncCompleteCommandProperties extends CommandPropertie
      * @return the commandType value.
      */
     @Override
-    public String commandType() {
+    public CommandType commandType() {
         return this.commandType;
     }
 
@@ -78,6 +94,46 @@ public final class MigrateSyncCompleteCommandProperties extends CommandPropertie
     }
 
     /**
+     * Get the commandId property: Command id.
+     * 
+     * @return the commandId value.
+     */
+    public String commandId() {
+        return this.commandId;
+    }
+
+    /**
+     * Set the commandId property: Command id.
+     * 
+     * @param commandId the commandId value to set.
+     * @return the MigrateSyncCompleteCommandProperties object itself.
+     */
+    public MigrateSyncCompleteCommandProperties withCommandId(String commandId) {
+        this.commandId = commandId;
+        return this;
+    }
+
+    /**
+     * Get the state property: The state of the command. This is ignored if submitted.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public CommandState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the errors property: Array of errors. This is ignored if submitted.
+     * 
+     * @return the errors value.
+     */
+    @Override
+    public List<ManagementError> errors() {
+        return this.errors;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -98,8 +154,9 @@ public final class MigrateSyncCompleteCommandProperties extends CommandPropertie
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("commandType", this.commandType);
+        jsonWriter.writeStringField("commandType", this.commandType == null ? null : this.commandType.toString());
         jsonWriter.writeJsonField("input", this.input);
+        jsonWriter.writeStringField("commandId", this.commandId);
         return jsonWriter.writeEndObject();
     }
 
@@ -121,18 +178,21 @@ public final class MigrateSyncCompleteCommandProperties extends CommandPropertie
 
                 if ("errors".equals(fieldName)) {
                     List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
-                    deserializedMigrateSyncCompleteCommandProperties.withErrors(errors);
+                    deserializedMigrateSyncCompleteCommandProperties.errors = errors;
                 } else if ("state".equals(fieldName)) {
-                    deserializedMigrateSyncCompleteCommandProperties
-                        .withState(CommandState.fromString(reader.getString()));
+                    deserializedMigrateSyncCompleteCommandProperties.state
+                        = CommandState.fromString(reader.getString());
                 } else if ("commandType".equals(fieldName)) {
-                    deserializedMigrateSyncCompleteCommandProperties.commandType = reader.getString();
+                    deserializedMigrateSyncCompleteCommandProperties.commandType
+                        = CommandType.fromString(reader.getString());
                 } else if ("input".equals(fieldName)) {
                     deserializedMigrateSyncCompleteCommandProperties.input
                         = MigrateSyncCompleteCommandInput.fromJson(reader);
                 } else if ("output".equals(fieldName)) {
                     deserializedMigrateSyncCompleteCommandProperties.output
                         = MigrateSyncCompleteCommandOutput.fromJson(reader);
+                } else if ("commandId".equals(fieldName)) {
+                    deserializedMigrateSyncCompleteCommandProperties.commandId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

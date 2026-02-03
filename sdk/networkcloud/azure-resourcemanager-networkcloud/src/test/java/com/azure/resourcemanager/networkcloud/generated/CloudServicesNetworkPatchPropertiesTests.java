@@ -7,6 +7,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkcloud.fluent.models.CloudServicesNetworkPatchProperties;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageMode;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageOptionsPatch;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
 import com.azure.resourcemanager.networkcloud.models.EndpointDependency;
 import java.util.Arrays;
@@ -16,45 +18,63 @@ public final class CloudServicesNetworkPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CloudServicesNetworkPatchProperties model = BinaryData.fromString(
-            "{\"additionalEgressEndpoints\":[{\"category\":\"uporqzdfu\",\"endpoints\":[{\"domainName\":\"zvkfv\",\"port\":1214899172154978502},{\"domainName\":\"mx\",\"port\":4727714807604035752},{\"domainName\":\"okmvkhlggd\",\"port\":2004260246553251332},{\"domainName\":\"zqkzszuwi\",\"port\":4666972978332386288}]},{\"category\":\"xxhljfpgpic\",\"endpoints\":[{\"domainName\":\"nzhrgmqgjsxvpqcb\",\"port\":4991473010028453976},{\"domainName\":\"odth\",\"port\":4486642012912512601},{\"domainName\":\"vriibakclacjfr\",\"port\":6094624010388997656}]},{\"category\":\"sxauzlwvsgmwohqf\",\"endpoints\":[{\"domainName\":\"zvuxm\",\"port\":5429285928052285759}]},{\"category\":\"vthn\",\"endpoints\":[{\"domainName\":\"zt\",\"port\":2859990961700396101}]}],\"enableDefaultEgressEndpoints\":\"True\"}")
+            "{\"additionalEgressEndpoints\":[{\"category\":\"sxcdgljplkeuach\",\"endpoints\":[{\"domainName\":\"mflrytswfpfmdgyc\",\"port\":2432394852531944937},{\"domainName\":\"kwhqj\",\"port\":5686621120281636649},{\"domainName\":\"urlpshh\",\"port\":7118645159818528146}]},{\"category\":\"dwqslsrhmpqvw\",\"endpoints\":[{\"domainName\":\"kondcb\",\"port\":7748701616032093225},{\"domainName\":\"uvqejosovyrrle\",\"port\":7121300630557457909},{\"domainName\":\"nu\",\"port\":9017762736115514646}]},{\"category\":\"qobbpihehcec\",\"endpoints\":[{\"domainName\":\"mrqbrjbbmpxdlv\",\"port\":2102350623609121366},{\"domainName\":\"e\",\"port\":6277267210588424602},{\"domainName\":\"eqwjksgh\",\"port\":6552237191455504993}]},{\"category\":\"hxogjggsvoujkxi\",\"endpoints\":[{\"domainName\":\"afhrkmdyomk\",\"port\":1583664453872709326},{\"domainName\":\"fbhdy\",\"port\":8094379454967795002}]}],\"enableDefaultEgressEndpoints\":\"False\",\"storageOptions\":{\"mode\":\"Standard\",\"sizeMiB\":1698098301305470881,\"storageApplianceId\":\"wzovgk\"}}")
             .toObject(CloudServicesNetworkPatchProperties.class);
-        Assertions.assertEquals("uporqzdfu", model.additionalEgressEndpoints().get(0).category());
-        Assertions.assertEquals("zvkfv", model.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions.assertEquals(1214899172154978502L,
+        Assertions.assertEquals("sxcdgljplkeuach", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("mflrytswfpfmdgyc",
+            model.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals(2432394852531944937L,
             model.additionalEgressEndpoints().get(0).endpoints().get(0).port());
-        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE,
             model.enableDefaultEgressEndpoints());
+        Assertions.assertEquals(CloudServicesNetworkStorageMode.STANDARD, model.storageOptions().mode());
+        Assertions.assertEquals(1698098301305470881L, model.storageOptions().sizeMiB());
+        Assertions.assertEquals("wzovgk", model.storageOptions().storageApplianceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CloudServicesNetworkPatchProperties model
             = new CloudServicesNetworkPatchProperties()
-                .withAdditionalEgressEndpoints(Arrays.asList(
-                    new EgressEndpoint().withCategory("uporqzdfu")
-                        .withEndpoints(Arrays.asList(
-                            new EndpointDependency().withDomainName("zvkfv").withPort(1214899172154978502L),
-                            new EndpointDependency().withDomainName("mx").withPort(4727714807604035752L),
-                            new EndpointDependency().withDomainName("okmvkhlggd").withPort(2004260246553251332L),
-                            new EndpointDependency().withDomainName("zqkzszuwi").withPort(4666972978332386288L))),
-                    new EgressEndpoint().withCategory("xxhljfpgpic")
-                        .withEndpoints(Arrays.asList(
-                            new EndpointDependency().withDomainName("nzhrgmqgjsxvpqcb").withPort(4991473010028453976L),
-                            new EndpointDependency().withDomainName("odth").withPort(4486642012912512601L),
-                            new EndpointDependency().withDomainName("vriibakclacjfr").withPort(6094624010388997656L))),
-                    new EgressEndpoint().withCategory("sxauzlwvsgmwohqf")
-                        .withEndpoints(Arrays
-                            .asList(new EndpointDependency().withDomainName("zvuxm").withPort(5429285928052285759L))),
-                    new EgressEndpoint().withCategory("vthn")
-                        .withEndpoints(Arrays
-                            .asList(new EndpointDependency().withDomainName("zt").withPort(2859990961700396101L)))))
-                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE);
+                .withAdditionalEgressEndpoints(
+                    Arrays.asList(
+                        new EgressEndpoint().withCategory("sxcdgljplkeuach")
+                            .withEndpoints(Arrays.asList(
+                                new EndpointDependency().withDomainName("mflrytswfpfmdgyc")
+                                    .withPort(2432394852531944937L),
+                                new EndpointDependency().withDomainName("kwhqj").withPort(5686621120281636649L),
+                                new EndpointDependency().withDomainName("urlpshh").withPort(7118645159818528146L))),
+                        new EgressEndpoint().withCategory("dwqslsrhmpqvw")
+                            .withEndpoints(Arrays.asList(
+                                new EndpointDependency().withDomainName("kondcb").withPort(7748701616032093225L),
+                                new EndpointDependency().withDomainName("uvqejosovyrrle")
+                                    .withPort(7121300630557457909L),
+                                new EndpointDependency().withDomainName("nu").withPort(9017762736115514646L))),
+                        new EgressEndpoint().withCategory("qobbpihehcec")
+                            .withEndpoints(Arrays.asList(
+                                new EndpointDependency().withDomainName("mrqbrjbbmpxdlv")
+                                    .withPort(2102350623609121366L),
+                                new EndpointDependency().withDomainName("e").withPort(6277267210588424602L),
+                                new EndpointDependency().withDomainName("eqwjksgh").withPort(6552237191455504993L))),
+                        new EgressEndpoint().withCategory("hxogjggsvoujkxi")
+                            .withEndpoints(Arrays.asList(
+                                new EndpointDependency().withDomainName("afhrkmdyomk").withPort(1583664453872709326L),
+                                new EndpointDependency().withDomainName("fbhdy").withPort(8094379454967795002L)))))
+                .withEnableDefaultEgressEndpoints(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE)
+                .withStorageOptions(
+                    new CloudServicesNetworkStorageOptionsPatch().withMode(CloudServicesNetworkStorageMode.STANDARD)
+                        .withSizeMiB(1698098301305470881L)
+                        .withStorageApplianceId("wzovgk"));
         model = BinaryData.fromObject(model).toObject(CloudServicesNetworkPatchProperties.class);
-        Assertions.assertEquals("uporqzdfu", model.additionalEgressEndpoints().get(0).category());
-        Assertions.assertEquals("zvkfv", model.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions.assertEquals(1214899172154978502L,
+        Assertions.assertEquals("sxcdgljplkeuach", model.additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("mflrytswfpfmdgyc",
+            model.additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals(2432394852531944937L,
             model.additionalEgressEndpoints().get(0).endpoints().get(0).port());
-        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE,
             model.enableDefaultEgressEndpoints());
+        Assertions.assertEquals(CloudServicesNetworkStorageMode.STANDARD, model.storageOptions().mode());
+        Assertions.assertEquals(1698098301305470881L, model.storageOptions().sizeMiB());
+        Assertions.assertEquals("wzovgk", model.storageOptions().storageApplianceId());
     }
 }

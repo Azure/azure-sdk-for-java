@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,26 +21,31 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
     /*
      * The version of Storage Analytics to configure.
      */
+    @Generated
     private String version;
 
     /*
      * Indicates whether metrics are enabled for the File service.
      */
+    @Generated
     private boolean enabled;
 
     /*
      * Indicates whether metrics should generate summary statistics for called API operations.
      */
+    @Generated
     private Boolean includeApis;
 
     /*
      * The retention policy.
      */
+    @Generated
     private ShareRetentionPolicy retentionPolicy;
 
     /**
      * Creates an instance of ShareMetrics class.
      */
+    @Generated
     public ShareMetrics() {
     }
 
@@ -49,6 +54,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -59,6 +65,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * @param version the version value to set.
      * @return the ShareMetrics object itself.
      */
+    @Generated
     public ShareMetrics setVersion(String version) {
         this.version = version;
         return this;
@@ -69,6 +76,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * 
      * @return the enabled value.
      */
+    @Generated
     public boolean isEnabled() {
         return this.enabled;
     }
@@ -79,6 +87,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * @param enabled the enabled value to set.
      * @return the ShareMetrics object itself.
      */
+    @Generated
     public ShareMetrics setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
@@ -90,6 +99,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * 
      * @return the includeApis value.
      */
+    @Generated
     public Boolean isIncludeApis() {
         return this.includeApis;
     }
@@ -101,6 +111,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * @param includeApis the includeApis value to set.
      * @return the ShareMetrics object itself.
      */
+    @Generated
     public ShareMetrics setIncludeApis(Boolean includeApis) {
         this.includeApis = includeApis;
         return this;
@@ -111,6 +122,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * 
      * @return the retentionPolicy value.
      */
+    @Generated
     public ShareRetentionPolicy getRetentionPolicy() {
         return this.retentionPolicy;
     }
@@ -121,19 +133,22 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the ShareMetrics object itself.
      */
+    @Generated
     public ShareMetrics setRetentionPolicy(ShareRetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareMetrics" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ShareMetrics" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Version", this.version);
         xmlWriter.writeBooleanElement("Enabled", this.enabled);
@@ -150,6 +165,7 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareMetrics.
      */
+    @Generated
     public static ShareMetrics fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -164,8 +180,10 @@ public final class ShareMetrics implements XmlSerializable<ShareMetrics> {
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareMetrics.
      */
+    @Generated
     public static ShareMetrics fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ShareMetrics" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "ShareMetrics" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareMetrics deserializedShareMetrics = new ShareMetrics();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

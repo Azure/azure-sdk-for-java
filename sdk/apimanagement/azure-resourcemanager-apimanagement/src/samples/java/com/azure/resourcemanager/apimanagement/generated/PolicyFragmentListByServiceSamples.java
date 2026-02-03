@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class PolicyFragmentListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPolicyFragments.json
      */
     /**
@@ -21,6 +21,6 @@ public final class PolicyFragmentListByServiceSamples {
     public static void
         apiManagementListPolicyFragments(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.policyFragments()
-            .listByServiceWithResponse("rg1", "apimService1", null, null, null, null, com.azure.core.util.Context.NONE);
+            .listByService("rg1", "apimService1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

@@ -34,10 +34,9 @@ import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
 import com.azure.data.tables.implementation.StorageConnectionString;
-import com.azure.data.tables.implementation.StorageConstants;
 import com.azure.data.tables.implementation.TableBearerTokenChallengeAuthorizationPolicy;
 import com.azure.data.tables.implementation.TableUtils;
-import com.azure.data.tables.implementation.TablesConstants;
+import com.azure.data.tables.models.TableAudience;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ final class BuilderHelper {
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-data-tables.properties");
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
-    private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
+    private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.";
     private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
 
     public static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
@@ -61,9 +60,11 @@ final class BuilderHelper {
         RetryPolicy retryPolicy, RetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions,
         HttpClient httpClient, List<HttpPipelinePolicy> perCallAdditionalPolicies,
         List<HttpPipelinePolicy> perRetryAdditionalPolicies, Configuration configuration, ClientLogger logger,
-        boolean enableTenantDiscovery) {
+        boolean enableTenantDiscovery, TableAudience audience) {
         configuration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         logOptions = (logOptions == null) ? new HttpLogOptions() : logOptions;
+
+        audience = (audience != null) ? audience : getDefaulTableAudience(TableUtils.isCosmosEndpoint(endpoint));
 
         if (retryPolicy != null && retryOptions != null) {
             throw logger.logExceptionAsWarning(
@@ -115,7 +116,7 @@ final class BuilderHelper {
             credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else if (tokenCredential != null) {
             credentialPolicy = new TableBearerTokenChallengeAuthorizationPolicy(tokenCredential, enableTenantDiscovery,
-                TableUtils.isCosmosEndpoint(endpoint) ? TablesConstants.COSMOS_SCOPE : StorageConstants.STORAGE_SCOPE);
+                audience.getDefaultScope());
         } else {
             throw logger.logExceptionAsError(
                 new IllegalStateException("A form of authentication is required to create a client. Use a builder's "
@@ -209,5 +210,9 @@ final class BuilderHelper {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, TABLES_TRACING_NAMESPACE_VALUE, tracingOptions);
+    }
+
+    private static TableAudience getDefaulTableAudience(boolean isCosmosEndpoint) {
+        return isCosmosEndpoint ? TableAudience.AZURE_COSMOS_PUBLIC_CLOUD : TableAudience.AZURE_STORAGE_PUBLIC_CLOUD;
     }
 }

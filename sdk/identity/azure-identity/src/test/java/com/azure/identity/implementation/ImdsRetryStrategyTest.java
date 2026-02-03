@@ -3,12 +3,15 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.http.HttpResponse;
 import com.azure.core.test.http.MockHttpResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.util.stream.Stream;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -34,29 +37,32 @@ public class ImdsRetryStrategyTest {
         }
     }
 
-    @Test
-    public void testShouldRetry() {
+    @ParameterizedTest
+    @MethodSource("shouldRetryInDifferentScenarios")
+    public void testShouldRetry(String headerValue, int statusCode, boolean expectedRetry, String description) {
         ImdsRetryStrategy imdsRetryStrategy = new ImdsRetryStrategy();
 
-        HttpResponse httpResponse = new MockHttpResponse(null, 400);
+        MockHttpResponse httpResponse = new MockHttpResponse(null, statusCode);
+        if (headerValue != null) {
+            httpResponse.addHeader("ResponseMessage", headerValue);
+        }
 
-        Assertions.assertFalse(imdsRetryStrategy.shouldRetry(httpResponse),
-            "Imds Retry Strategy should not retry on 400 status response.");
+        Assertions.assertEquals(expectedRetry, imdsRetryStrategy.shouldRetry(httpResponse), description);
+    }
 
-        Assertions.assertTrue(imdsRetryStrategy.shouldRetry(new MockHttpResponse(null, 410)),
-            "Imds Retry Strategy should retry on 410 status response.");
-
-        Assertions.assertTrue(imdsRetryStrategy.shouldRetry(new MockHttpResponse(null, 429)),
-            "Imds Retry Strategy should retry on 429 status response.");
-
-        Assertions.assertTrue(imdsRetryStrategy.shouldRetry(new MockHttpResponse(null, 500)),
-            "Imds Retry Strategy should retry on 429 status response.");
-
-        Assertions.assertTrue(imdsRetryStrategy.shouldRetry(new MockHttpResponse(null, 599)),
-            "Imds Retry Strategy should retry on 429 status response.");
-
-        Assertions.assertTrue(imdsRetryStrategy.shouldRetry(new MockHttpResponse(null, 404)),
-            "Imds Retry Strategy should retry on 429 status response.");
+    private static Stream<Arguments> shouldRetryInDifferentScenarios() {
+        return Stream.of(Arguments.of(null, 400, false, "Imds Retry Strategy should not retry on 400 status response"),
+            Arguments.of(null, 410, true, "Imds Retry Strategy should retry on 410 status response"),
+            Arguments.of(null, 429, true, "Imds Retry Strategy should retry on 429 status response"),
+            Arguments.of(null, 500, true, "Imds Retry Strategy should retry on 500 status reponse"),
+            Arguments.of(null, 599, true, "Imds Retry Strategy should retry on 599 status response"),
+            Arguments.of(null, 404, true, "Imds Retry Strategy should retry on 404 status response"),
+            Arguments.of("A socket operation was attempted to an unreachable", 403, true,
+                "Imds Retry Strategy should retry on 403 with unreachable message"),
+            Arguments.of("Access denied", 403, false,
+                "Imds Retry Strategy should not retry on 403 with Access Denied message"),
+            Arguments.of(null, 403, false,
+                "Imds Retry Strategy should not retry on 403 with no ResponseMessage header"));
     }
 
     @Test

@@ -14,7 +14,7 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtTe
 public final class ReplicationMigrationItemsTestMigrateSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationMigrationItems_TestMigrate.json
      */
     /**
@@ -25,12 +25,13 @@ public final class ReplicationMigrationItemsTestMigrateSamples {
     public static void
         testMigrateItem(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationMigrationItems()
-            .testMigrate("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
+            .testMigrate("resourcegroup1", "migrationvault", "vmwarefabric1", "vmwareContainer1", "virtualmachine1",
                 new TestMigrateInput().withProperties(new TestMigrateInputProperties()
                     .withProviderSpecificDetails(new VMwareCbtTestMigrateInput().withRecoveryPointId(
                         "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/9e737191-317e-43d0-8c83-e32ac3b34686")
                         .withNetworkId(
-                            "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Network/virtualNetworks/virtualNetwork1"))),
+                            "/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.Network/virtualNetworks/virtualNetwork1")
+                        .withOsUpgradeVersion("Microsoft Windows Server 2019 (64-bit)"))),
                 com.azure.core.util.Context.NONE);
     }
 }

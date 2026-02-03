@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolUpgradeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolUpgradeSettings model = BinaryData
-            .fromString(
-                "{\"drainTimeout\":6269428665110751573,\"maxSurge\":\"moadsuvarmy\",\"maxUnavailable\":\"mjsjqb\"}")
+        AgentPoolUpgradeSettings model = BinaryData.fromString(
+            "{\"drainTimeout\":2176235645270803384,\"maxSurge\":\"jivfxzsjabib\",\"maxUnavailable\":\"stawfsdjpvkv\"}")
             .toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals(6269428665110751573L, model.drainTimeout());
-        Assertions.assertEquals("moadsuvarmy", model.maxSurge());
-        Assertions.assertEquals("mjsjqb", model.maxUnavailable());
+        Assertions.assertEquals(2176235645270803384L, model.drainTimeout());
+        Assertions.assertEquals("jivfxzsjabib", model.maxSurge());
+        Assertions.assertEquals("stawfsdjpvkv", model.maxUnavailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(6269428665110751573L)
-            .withMaxSurge("moadsuvarmy")
-            .withMaxUnavailable("mjsjqb");
+        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(2176235645270803384L)
+            .withMaxSurge("jivfxzsjabib")
+            .withMaxUnavailable("stawfsdjpvkv");
         model = BinaryData.fromObject(model).toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals(6269428665110751573L, model.drainTimeout());
-        Assertions.assertEquals("moadsuvarmy", model.maxSurge());
-        Assertions.assertEquals("mjsjqb", model.maxUnavailable());
+        Assertions.assertEquals(2176235645270803384L, model.drainTimeout());
+        Assertions.assertEquals("jivfxzsjabib", model.maxSurge());
+        Assertions.assertEquals("stawfsdjpvkv", model.maxUnavailable());
     }
 }

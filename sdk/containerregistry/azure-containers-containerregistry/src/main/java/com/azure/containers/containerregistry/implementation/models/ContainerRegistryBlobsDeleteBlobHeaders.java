@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class ContainerRegistryBlobsDeleteBlobHeaders {
     /*
      * The Docker-Content-Digest property.
      */
+    @Generated
     private String dockerContentDigest;
 
     private static final HttpHeaderName DOCKER_CONTENT_DIGEST = HttpHeaderName.fromString("Docker-Content-Digest");
@@ -35,6 +37,7 @@ public final class ContainerRegistryBlobsDeleteBlobHeaders {
      * 
      * @return the dockerContentDigest value.
      */
+    @Generated
     public String getDockerContentDigest() {
         return this.dockerContentDigest;
     }
@@ -45,6 +48,7 @@ public final class ContainerRegistryBlobsDeleteBlobHeaders {
      * @param dockerContentDigest the dockerContentDigest value to set.
      * @return the ContainerRegistryBlobsDeleteBlobHeaders object itself.
      */
+    @Generated
     public ContainerRegistryBlobsDeleteBlobHeaders setDockerContentDigest(String dockerContentDigest) {
         this.dockerContentDigest = dockerContentDigest;
         return this;

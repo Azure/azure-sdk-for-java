@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import java.nio.charset.StandardCharsets;
@@ -25,10 +25,10 @@ public final class ChangeDataCapturesStartWithResponseMockTests {
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.changeDataCaptures()
-            .startWithResponse("q", "ymmqxndxppzyiyc", "powjyfbnqohc", com.azure.core.util.Context.NONE);
+            .startWithResponse("ymaznmqlpn", "ppagv", "nryjqboylm", com.azure.core.util.Context.NONE);
 
     }
 }

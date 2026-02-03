@@ -6,7 +6,12 @@
             "type": "String"
         },
         "endpointType": {
-            "type": "String"
+            "type": "String",
+            "allowedValues": [
+                "storage",
+                "cosmos"
+            ],
+            "defaultValue": "cosmos"
         },
         "testApplicationOid": {
             "type": "string",
@@ -17,7 +22,7 @@
     },
     "variables": {
         "storageMgmtApiVersion": "2022-05-01",
-        "cosmosMgmtApiVersion": "2024-05-15",
+        "cosmosMgmtApiVersion": "2024-11-15",
         "cosmosAuthorizationApiVersion": "2023-07-01-preview",
         "storageAuthorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')]",

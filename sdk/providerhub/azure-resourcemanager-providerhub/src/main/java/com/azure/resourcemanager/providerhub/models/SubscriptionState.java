@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for SubscriptionState.
+ * The subscription state.
  */
 public final class SubscriptionState extends ExpandableStringEnum<SubscriptionState> {
     /**

@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class MuteParticipantsRequestInternal implements JsonSerializable<M
      * Participants to be muted from the call.
      * Only ACS Users are supported.
      */
+    @Generated
     private List<CommunicationIdentifierModel> targetParticipants;
 
     /*
      * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
+    @Generated
     private String operationContext;
 
     /**
      * Creates an instance of MuteParticipantsRequestInternal class.
      */
+    @Generated
     public MuteParticipantsRequestInternal() {
     }
 
@@ -40,6 +44,7 @@ public final class MuteParticipantsRequestInternal implements JsonSerializable<M
      * 
      * @return the targetParticipants value.
      */
+    @Generated
     public List<CommunicationIdentifierModel> getTargetParticipants() {
         return this.targetParticipants;
     }
@@ -51,6 +56,7 @@ public final class MuteParticipantsRequestInternal implements JsonSerializable<M
      * @param targetParticipants the targetParticipants value to set.
      * @return the MuteParticipantsRequestInternal object itself.
      */
+    @Generated
     public MuteParticipantsRequestInternal
         setTargetParticipants(List<CommunicationIdentifierModel> targetParticipants) {
         this.targetParticipants = targetParticipants;
@@ -63,6 +69,7 @@ public final class MuteParticipantsRequestInternal implements JsonSerializable<M
      * 
      * @return the operationContext value.
      */
+    @Generated
     public String getOperationContext() {
         return this.operationContext;
     }
@@ -74,6 +81,7 @@ public final class MuteParticipantsRequestInternal implements JsonSerializable<M
      * @param operationContext the operationContext value to set.
      * @return the MuteParticipantsRequestInternal object itself.
      */
+    @Generated
     public MuteParticipantsRequestInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
@@ -82,6 +90,7 @@ public final class MuteParticipantsRequestInternal implements JsonSerializable<M
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -100,6 +109,7 @@ public final class MuteParticipantsRequestInternal implements JsonSerializable<M
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MuteParticipantsRequestInternal.
      */
+    @Generated
     public static MuteParticipantsRequestInternal fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MuteParticipantsRequestInternal deserializedMuteParticipantsRequestInternal

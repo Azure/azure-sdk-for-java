@@ -14,32 +14,40 @@ public final class ExecuteScriptActionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteScriptActionParameters model = BinaryData.fromString(
-            "{\"scriptActions\":[{\"name\":\"ddjib\",\"uri\":\"bxv\",\"parameters\":\"itvtzeexavo\",\"roles\":[\"fglecdmdqbwp\",\"pqtgsfjac\"],\"applicationName\":\"lhhxudbxvodhtnsi\"},{\"name\":\"ud\",\"uri\":\"z\",\"parameters\":\"es\",\"roles\":[\"dlpagzrcxfail\",\"f\"],\"applicationName\":\"m\"}],\"persistOnSuccess\":true}")
+            "{\"scriptActions\":[{\"name\":\"mfblcqcuubg\",\"uri\":\"ibrta\",\"parameters\":\"etttwgdslqxihhr\",\"roles\":[\"oi\",\"qseypxiutcxa\",\"zhyrpeto\"],\"applicationName\":\"bjoxs\"},{\"name\":\"hvnh\",\"uri\":\"abrqnkkzj\",\"parameters\":\"b\",\"roles\":[\"gaehvvibrxjjst\",\"qbeitpkxztmoob\",\"lftidgfcwqmpim\",\"qxzhem\"],\"applicationName\":\"h\"},{\"name\":\"hujswtwkozzwcul\",\"uri\":\"bawpfajnjwltlwt\",\"parameters\":\"guk\",\"roles\":[\"lhsnvkcdmx\",\"rpoaimlnwi\"],\"applicationName\":\"omylwea\"},{\"name\":\"ulcsethwwnpj\",\"uri\":\"l\",\"parameters\":\"swpchwahfbousn\",\"roles\":[\"pgfewetwlyx\",\"ncxykxhdjhlimm\"],\"applicationName\":\"x\"}],\"persistOnSuccess\":false}")
             .toObject(ExecuteScriptActionParameters.class);
-        Assertions.assertEquals("ddjib", model.scriptActions().get(0).name());
-        Assertions.assertEquals("bxv", model.scriptActions().get(0).uri());
-        Assertions.assertEquals("itvtzeexavo", model.scriptActions().get(0).parameters());
-        Assertions.assertEquals("fglecdmdqbwp", model.scriptActions().get(0).roles().get(0));
-        Assertions.assertEquals(true, model.persistOnSuccess());
+        Assertions.assertEquals("mfblcqcuubg", model.scriptActions().get(0).name());
+        Assertions.assertEquals("ibrta", model.scriptActions().get(0).uri());
+        Assertions.assertEquals("etttwgdslqxihhr", model.scriptActions().get(0).parameters());
+        Assertions.assertEquals("oi", model.scriptActions().get(0).roles().get(0));
+        Assertions.assertFalse(model.persistOnSuccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteScriptActionParameters model = new ExecuteScriptActionParameters().withScriptActions(Arrays.asList(
-            new RuntimeScriptAction().withName("ddjib")
-                .withUri("bxv")
-                .withParameters("itvtzeexavo")
-                .withRoles(Arrays.asList("fglecdmdqbwp", "pqtgsfjac")),
-            new RuntimeScriptAction().withName("ud")
-                .withUri("z")
-                .withParameters("es")
-                .withRoles(Arrays.asList("dlpagzrcxfail", "f"))))
-            .withPersistOnSuccess(true);
+            new RuntimeScriptAction().withName("mfblcqcuubg")
+                .withUri("ibrta")
+                .withParameters("etttwgdslqxihhr")
+                .withRoles(Arrays.asList("oi", "qseypxiutcxa", "zhyrpeto")),
+            new RuntimeScriptAction().withName("hvnh")
+                .withUri("abrqnkkzj")
+                .withParameters("b")
+                .withRoles(Arrays.asList("gaehvvibrxjjst", "qbeitpkxztmoob", "lftidgfcwqmpim", "qxzhem")),
+            new RuntimeScriptAction().withName("hujswtwkozzwcul")
+                .withUri("bawpfajnjwltlwt")
+                .withParameters("guk")
+                .withRoles(Arrays.asList("lhsnvkcdmx", "rpoaimlnwi")),
+            new RuntimeScriptAction().withName("ulcsethwwnpj")
+                .withUri("l")
+                .withParameters("swpchwahfbousn")
+                .withRoles(Arrays.asList("pgfewetwlyx", "ncxykxhdjhlimm"))))
+            .withPersistOnSuccess(false);
         model = BinaryData.fromObject(model).toObject(ExecuteScriptActionParameters.class);
-        Assertions.assertEquals("ddjib", model.scriptActions().get(0).name());
-        Assertions.assertEquals("bxv", model.scriptActions().get(0).uri());
-        Assertions.assertEquals("itvtzeexavo", model.scriptActions().get(0).parameters());
-        Assertions.assertEquals("fglecdmdqbwp", model.scriptActions().get(0).roles().get(0));
-        Assertions.assertEquals(true, model.persistOnSuccess());
+        Assertions.assertEquals("mfblcqcuubg", model.scriptActions().get(0).name());
+        Assertions.assertEquals("ibrta", model.scriptActions().get(0).uri());
+        Assertions.assertEquals("etttwgdslqxihhr", model.scriptActions().get(0).parameters());
+        Assertions.assertEquals("oi", model.scriptActions().get(0).roles().get(0));
+        Assertions.assertFalse(model.persistOnSuccess());
     }
 }

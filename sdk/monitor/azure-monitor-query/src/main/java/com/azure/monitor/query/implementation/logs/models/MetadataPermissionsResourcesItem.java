@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class MetadataPermissionsResourcesItem implements JsonSerializable<
     /*
      * The resource ID on the permission indication.
      */
+    @Generated
     private final String resourceId;
 
     /*
      * The list of tables that were denied access for the resource ID.
      */
+    @Generated
     private List<String> denyTables;
 
     /**
@@ -32,6 +35,7 @@ public final class MetadataPermissionsResourcesItem implements JsonSerializable<
      * 
      * @param resourceId the resourceId value to set.
      */
+    @Generated
     public MetadataPermissionsResourcesItem(String resourceId) {
         this.resourceId = resourceId;
     }
@@ -41,6 +45,7 @@ public final class MetadataPermissionsResourcesItem implements JsonSerializable<
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -50,6 +55,7 @@ public final class MetadataPermissionsResourcesItem implements JsonSerializable<
      * 
      * @return the denyTables value.
      */
+    @Generated
     public List<String> getDenyTables() {
         return this.denyTables;
     }
@@ -60,6 +66,7 @@ public final class MetadataPermissionsResourcesItem implements JsonSerializable<
      * @param denyTables the denyTables value to set.
      * @return the MetadataPermissionsResourcesItem object itself.
      */
+    @Generated
     public MetadataPermissionsResourcesItem setDenyTables(List<String> denyTables) {
         this.denyTables = denyTables;
         return this;
@@ -68,6 +75,7 @@ public final class MetadataPermissionsResourcesItem implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -85,6 +93,7 @@ public final class MetadataPermissionsResourcesItem implements JsonSerializable<
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataPermissionsResourcesItem.
      */
+    @Generated
     public static MetadataPermissionsResourcesItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean resourceIdFound = false;

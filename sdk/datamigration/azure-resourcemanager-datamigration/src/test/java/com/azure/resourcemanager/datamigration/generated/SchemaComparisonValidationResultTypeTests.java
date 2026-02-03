@@ -5,19 +5,30 @@
 package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.datamigration.models.ObjectType;
 import com.azure.resourcemanager.datamigration.models.SchemaComparisonValidationResultType;
+import com.azure.resourcemanager.datamigration.models.UpdateActionType;
+import org.junit.jupiter.api.Assertions;
 
 public final class SchemaComparisonValidationResultTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaComparisonValidationResultType model = BinaryData.fromString(
-            "{\"objectName\":\"rttikteusqc\",\"objectType\":\"StoredProcedures\",\"updateAction\":\"AddedOnTarget\"}")
+        SchemaComparisonValidationResultType model = BinaryData
+            .fromString("{\"objectName\":\"gyipem\",\"objectType\":\"Table\",\"updateAction\":\"AddedOnTarget\"}")
             .toObject(SchemaComparisonValidationResultType.class);
+        Assertions.assertEquals("gyipem", model.objectName());
+        Assertions.assertEquals(ObjectType.TABLE, model.objectType());
+        Assertions.assertEquals(UpdateActionType.ADDED_ON_TARGET, model.updateAction());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SchemaComparisonValidationResultType model = new SchemaComparisonValidationResultType();
+        SchemaComparisonValidationResultType model = new SchemaComparisonValidationResultType().withObjectName("gyipem")
+            .withObjectType(ObjectType.TABLE)
+            .withUpdateAction(UpdateActionType.ADDED_ON_TARGET);
         model = BinaryData.fromObject(model).toObject(SchemaComparisonValidationResultType.class);
+        Assertions.assertEquals("gyipem", model.objectName());
+        Assertions.assertEquals(ObjectType.TABLE, model.objectType());
+        Assertions.assertEquals(UpdateActionType.ADDED_ON_TARGET, model.updateAction());
     }
 }

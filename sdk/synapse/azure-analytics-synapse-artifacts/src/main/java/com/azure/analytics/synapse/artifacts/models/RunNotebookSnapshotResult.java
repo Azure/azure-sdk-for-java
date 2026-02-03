@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,41 +20,49 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
     /*
      * Run notebook snapshot.
      */
+    @Generated
     private RunNotebookSnapshot snapshot;
 
     /*
      * Run notebook error.
      */
+    @Generated
     private RunNotebookError error;
 
     /*
      * Run id.
      */
+    @Generated
     private String runId;
 
     /*
      * Status of the run notebook.
      */
+    @Generated
     private String runStatus;
 
     /*
      * Timestamp of last update.
      */
+    @Generated
     private String lastCheckedOn;
 
     /*
      * Livy session id.
      */
+    @Generated
     private String sessionId;
 
     /*
      * SparkPool name.
      */
+    @Generated
     private String sparkPool;
 
     /**
      * Creates an instance of RunNotebookSnapshotResult class.
      */
+    @Generated
     public RunNotebookSnapshotResult() {
     }
 
@@ -62,6 +71,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * 
      * @return the snapshot value.
      */
+    @Generated
     public RunNotebookSnapshot getSnapshot() {
         return this.snapshot;
     }
@@ -72,6 +82,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * @param snapshot the snapshot value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
+    @Generated
     public RunNotebookSnapshotResult setSnapshot(RunNotebookSnapshot snapshot) {
         this.snapshot = snapshot;
         return this;
@@ -82,6 +93,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * 
      * @return the error value.
      */
+    @Generated
     public RunNotebookError getError() {
         return this.error;
     }
@@ -92,6 +104,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * @param error the error value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
+    @Generated
     public RunNotebookSnapshotResult setError(RunNotebookError error) {
         this.error = error;
         return this;
@@ -102,6 +115,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * 
      * @return the runId value.
      */
+    @Generated
     public String getRunId() {
         return this.runId;
     }
@@ -112,6 +126,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * @param runId the runId value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
+    @Generated
     public RunNotebookSnapshotResult setRunId(String runId) {
         this.runId = runId;
         return this;
@@ -122,6 +137,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * 
      * @return the runStatus value.
      */
+    @Generated
     public String getRunStatus() {
         return this.runStatus;
     }
@@ -132,6 +148,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * @param runStatus the runStatus value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
+    @Generated
     public RunNotebookSnapshotResult setRunStatus(String runStatus) {
         this.runStatus = runStatus;
         return this;
@@ -142,6 +159,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * 
      * @return the lastCheckedOn value.
      */
+    @Generated
     public String getLastCheckedOn() {
         return this.lastCheckedOn;
     }
@@ -152,6 +170,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * @param lastCheckedOn the lastCheckedOn value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
+    @Generated
     public RunNotebookSnapshotResult setLastCheckedOn(String lastCheckedOn) {
         this.lastCheckedOn = lastCheckedOn;
         return this;
@@ -162,6 +181,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -172,6 +192,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * @param sessionId the sessionId value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
+    @Generated
     public RunNotebookSnapshotResult setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -182,6 +203,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * 
      * @return the sparkPool value.
      */
+    @Generated
     public String getSparkPool() {
         return this.sparkPool;
     }
@@ -192,6 +214,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookSnapshotResult object itself.
      */
+    @Generated
     public RunNotebookSnapshotResult setSparkPool(String sparkPool) {
         this.sparkPool = sparkPool;
         return this;
@@ -200,6 +223,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -222,6 +246,7 @@ public final class RunNotebookSnapshotResult implements JsonSerializable<RunNote
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunNotebookSnapshotResult.
      */
+    @Generated
     public static RunNotebookSnapshotResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunNotebookSnapshotResult deserializedRunNotebookSnapshotResult = new RunNotebookSnapshotResult();

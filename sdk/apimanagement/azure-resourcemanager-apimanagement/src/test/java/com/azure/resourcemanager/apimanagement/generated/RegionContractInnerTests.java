@@ -12,17 +12,17 @@ public final class RegionContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RegionContractInner model
-            = BinaryData.fromString("{\"name\":\"plgtpvd\",\"isMasterRegion\":false,\"isDeleted\":true}")
+            = BinaryData.fromString("{\"name\":\"fdyldhgyed\",\"isMasterRegion\":true,\"isDeleted\":false}")
                 .toObject(RegionContractInner.class);
-        Assertions.assertEquals(false, model.isMasterRegion());
-        Assertions.assertEquals(true, model.isDeleted());
+        Assertions.assertTrue(model.isMasterRegion());
+        Assertions.assertFalse(model.isDeleted());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionContractInner model = new RegionContractInner().withIsMasterRegion(false).withIsDeleted(true);
+        RegionContractInner model = new RegionContractInner().withIsMasterRegion(true).withIsDeleted(false);
         model = BinaryData.fromObject(model).toObject(RegionContractInner.class);
-        Assertions.assertEquals(false, model.isMasterRegion());
-        Assertions.assertEquals(true, model.isDeleted());
+        Assertions.assertTrue(model.isMasterRegion());
+        Assertions.assertFalse(model.isDeleted());
     }
 }

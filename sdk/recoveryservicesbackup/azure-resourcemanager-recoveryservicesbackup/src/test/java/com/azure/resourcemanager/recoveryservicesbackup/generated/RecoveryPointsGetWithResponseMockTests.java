@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
@@ -21,21 +21,22 @@ public final class RecoveryPointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"rebluimmbwxsf\",\"location\":\"td\",\"tags\":{\"okqkbudbtwao\":\"xekr\",\"taaknwfrkebsmhp\":\"bavly\",\"gatolekscbctnan\":\"ujd\",\"wnsnlaimouxwks\":\"imwbzxpdcldpk\"},\"id\":\"mud\",\"name\":\"fco\",\"type\":\"bicziuswswj\"}";
+            = "{\"properties\":{\"objectType\":\"RecoveryPoint\"},\"eTag\":\"runfhiucnmfb\",\"location\":\"paqkt\",\"tags\":{\"xiuxqggvqrnhy\":\"mzuedkyzbfvxovq\",\"rqrkijpeuqlsdx\":\"lwcjsqggjhffb\"},\"id\":\"qztvx\",\"name\":\"mwwmjswenaww\",\"type\":\"me\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecoveryPointResource response = manager.recoveryPoints()
-            .getWithResponse("bjwzzos", "pkybtgl", "kzpgaj", "qjcemqbmf", "vqar", "z", com.azure.core.util.Context.NONE)
+            .getWithResponse("guhfupe", "asvvoqsbpkfl", "nfkgxsyaowuzowpu", "hdkcprgu", "xrztiochlu", "ixmqrudjizcbf",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("td", response.location());
-        Assertions.assertEquals("xekr", response.tags().get("okqkbudbtwao"));
-        Assertions.assertEquals("rebluimmbwxsf", response.etag());
+        Assertions.assertEquals("paqkt", response.location());
+        Assertions.assertEquals("mzuedkyzbfvxovq", response.tags().get("xiuxqggvqrnhy"));
+        Assertions.assertEquals("runfhiucnmfb", response.etag());
     }
 }

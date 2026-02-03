@@ -17,8 +17,8 @@ public interface StorageClassificationMappings {
      * 
      * Lists the storage classification mappings for the fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param storageClassificationName Storage classification name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,16 +26,16 @@ public interface StorageClassificationMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of storage mapping details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceName,
-        String resourceGroupName, String fabricName, String storageClassificationName);
+    PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceGroupName,
+        String resourceName, String fabricName, String storageClassificationName);
 
     /**
      * Gets the list of storage classification mappings objects under a storage.
      * 
      * Lists the storage classification mappings for the fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param storageClassificationName Storage classification name.
      * @param context The context to associate with this operation.
@@ -44,16 +44,16 @@ public interface StorageClassificationMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of storage mapping details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceName,
-        String resourceGroupName, String fabricName, String storageClassificationName, Context context);
+    PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceGroupName,
+        String resourceName, String fabricName, String storageClassificationName, Context context);
 
     /**
      * Gets the details of a storage classification mapping.
      * 
      * Gets the details of the specified storage classification mapping.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param storageClassificationName Storage classification name.
      * @param storageClassificationMappingName Storage classification mapping name.
@@ -63,7 +63,7 @@ public interface StorageClassificationMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified storage classification mapping along with {@link Response}.
      */
-    Response<StorageClassificationMapping> getWithResponse(String resourceName, String resourceGroupName,
+    Response<StorageClassificationMapping> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context);
 
     /**
@@ -71,8 +71,8 @@ public interface StorageClassificationMappings {
      * 
      * Gets the details of the specified storage classification mapping.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param storageClassificationName Storage classification name.
      * @param storageClassificationMappingName Storage classification mapping name.
@@ -81,7 +81,7 @@ public interface StorageClassificationMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified storage classification mapping.
      */
-    StorageClassificationMapping get(String resourceName, String resourceGroupName, String fabricName,
+    StorageClassificationMapping get(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName);
 
     /**
@@ -89,8 +89,8 @@ public interface StorageClassificationMappings {
      * 
      * The operation to delete a storage classification mapping.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param storageClassificationName Storage classification name.
      * @param storageClassificationMappingName Storage classification mapping name.
@@ -98,7 +98,7 @@ public interface StorageClassificationMappings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceName, String resourceGroupName, String fabricName, String storageClassificationName,
+    void delete(String resourceGroupName, String resourceName, String fabricName, String storageClassificationName,
         String storageClassificationMappingName);
 
     /**
@@ -106,8 +106,8 @@ public interface StorageClassificationMappings {
      * 
      * The operation to delete a storage classification mapping.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param storageClassificationName Storage classification name.
      * @param storageClassificationMappingName Storage classification mapping name.
@@ -116,7 +116,7 @@ public interface StorageClassificationMappings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceName, String resourceGroupName, String fabricName, String storageClassificationName,
+    void delete(String resourceGroupName, String resourceName, String fabricName, String storageClassificationName,
         String storageClassificationMappingName, Context context);
 
     /**
@@ -124,29 +124,29 @@ public interface StorageClassificationMappings {
      * 
      * Lists the storage classification mappings in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of storage mapping details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StorageClassificationMapping> list(String resourceName, String resourceGroupName);
+    PagedIterable<StorageClassificationMapping> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of storage classification mappings objects under a vault.
      * 
      * Lists the storage classification mappings in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of storage mapping details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StorageClassificationMapping> list(String resourceName, String resourceGroupName, Context context);
+    PagedIterable<StorageClassificationMapping> list(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the details of a storage classification mapping.

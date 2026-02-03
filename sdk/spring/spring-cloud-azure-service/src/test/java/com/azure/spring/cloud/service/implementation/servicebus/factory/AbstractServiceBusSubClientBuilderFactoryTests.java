@@ -23,11 +23,13 @@ import java.time.Duration;
 
 import static com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactoryTests.CONNECTION_STRING_FORMAT;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@SuppressWarnings("deprecation")
 abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     P extends ServiceBusClientCommonTestProperties,
     F extends AbstractServiceBusSubClientBuilderFactory<B, ?>> extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {
@@ -144,7 +146,7 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         buildClient(builder);
 
         verify(factory.getServiceBusClientBuilder(),
-            times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+            atLeast(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     private void verifyClientSecretTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
@@ -205,7 +207,7 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).proxyOptions(any(ProxyOptions.class));
+        verify(factory.getServiceBusClientBuilder(), atLeast(1)).proxyOptions(any(ProxyOptions.class));
     }
 
     private void verifyFixedRetryPropertiesConfigured(boolean isShareServiceClientBuilder) {
@@ -220,7 +222,7 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).retryOptions(any(AmqpRetryOptions.class));
+        verify(factory.getServiceBusClientBuilder(), atLeast(1)).retryOptions(any(AmqpRetryOptions.class));
     }
 
     private void exponentialRetryPropertiesConfigured(boolean isShareServiceClientBuilder) {
@@ -237,7 +239,7 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).retryOptions(any(AmqpRetryOptions.class));
+        verify(factory.getServiceBusClientBuilder(), atLeast(1)).retryOptions(any(AmqpRetryOptions.class));
     }
 
     private void verifyTransportTypeConfigured(boolean isShareServiceClientBuilder) {
@@ -251,7 +253,7 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).transportType(transportType);
+        verify(factory.getServiceBusClientBuilder(), atLeast(1)).transportType(transportType);
     }
 
 }

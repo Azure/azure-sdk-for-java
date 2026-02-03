@@ -51,7 +51,7 @@ public final class SquareLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SquareLinkedServiceTypeProperties innerTypeProperties() {
+    SquareLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceInne
 import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliance;
 import com.azure.resourcemanager.networkcloud.models.StorageApplianceEnableRemoteVendorManagementParameters;
+import com.azure.resourcemanager.networkcloud.models.StorageApplianceRunReadCommandsParameters;
 import com.azure.resourcemanager.networkcloud.models.StorageAppliances;
 
 public final class StorageAppliancesImpl implements StorageAppliances {
@@ -35,8 +36,8 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageAppliance> list(Context context) {
-        PagedIterable<StorageApplianceInner> inner = this.serviceClient().list(context);
+    public PagedIterable<StorageAppliance> list(Integer top, String skipToken, Context context) {
+        PagedIterable<StorageApplianceInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
@@ -45,9 +46,10 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<StorageAppliance> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
         PagedIterable<StorageApplianceInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageApplianceImpl(inner1, this.manager()));
     }
 
@@ -81,9 +83,10 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String storageApplianceName, Context context) {
+    public OperationStatusResult delete(String resourceGroupName, String storageApplianceName, String ifMatch,
+        String ifNoneMatch, Context context) {
         OperationStatusResultInner inner
-            = this.serviceClient().delete(resourceGroupName, storageApplianceName, context);
+            = this.serviceClient().delete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -135,6 +138,29 @@ public final class StorageAppliancesImpl implements StorageAppliances {
         }
     }
 
+    public OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult runReadCommands(String resourceGroupName, String storageApplianceName,
+        StorageApplianceRunReadCommandsParameters storageApplianceRunReadCommandsParameters, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .runReadCommands(resourceGroupName, storageApplianceName, storageApplianceRunReadCommandsParameters,
+                context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public StorageAppliance getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
@@ -174,10 +200,13 @@ public final class StorageAppliancesImpl implements StorageAppliances {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
         }
-        return this.delete(resourceGroupName, storageApplianceName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, storageApplianceName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -188,7 +217,7 @@ public final class StorageAppliancesImpl implements StorageAppliances {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'storageAppliances'.", id)));
         }
-        return this.delete(resourceGroupName, storageApplianceName, context);
+        return this.delete(resourceGroupName, storageApplianceName, ifMatch, ifNoneMatch, context);
     }
 
     private StorageAppliancesClient serviceClient() {

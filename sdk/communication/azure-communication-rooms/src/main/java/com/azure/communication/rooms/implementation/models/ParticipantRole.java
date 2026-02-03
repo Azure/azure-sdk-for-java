@@ -4,6 +4,7 @@
 
 package com.azure.communication.rooms.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,23 +15,33 @@ public final class ParticipantRole extends ExpandableStringEnum<ParticipantRole>
     /**
      * Static value Presenter for ParticipantRole.
      */
+    @Generated
     public static final ParticipantRole PRESENTER = fromString("Presenter");
 
     /**
      * Static value Attendee for ParticipantRole.
      */
+    @Generated
     public static final ParticipantRole ATTENDEE = fromString("Attendee");
 
     /**
      * Static value Consumer for ParticipantRole.
      */
+    @Generated
     public static final ParticipantRole CONSUMER = fromString("Consumer");
+
+    /**
+     * Static value Collaborator for ParticipantRole.
+     */
+    @Generated
+    public static final ParticipantRole COLLABORATOR = fromString("Collaborator");
 
     /**
      * Creates a new instance of ParticipantRole value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ParticipantRole() {
     }
@@ -41,6 +52,7 @@ public final class ParticipantRole extends ExpandableStringEnum<ParticipantRole>
      * @param name a name to look for.
      * @return the corresponding ParticipantRole.
      */
+    @Generated
     public static ParticipantRole fromString(String name) {
         return fromString(name, ParticipantRole.class);
     }
@@ -50,6 +62,7 @@ public final class ParticipantRole extends ExpandableStringEnum<ParticipantRole>
      * 
      * @return known ParticipantRole values.
      */
+    @Generated
     public static Collection<ParticipantRole> values() {
         return values(ParticipantRole.class);
     }

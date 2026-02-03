@@ -4,12 +4,21 @@
 
 package com.azure.resourcemanager.neonpostgres.generated;
 
+import com.azure.resourcemanager.neonpostgres.models.Attributes;
+import com.azure.resourcemanager.neonpostgres.models.AutoscalingSize;
+import com.azure.resourcemanager.neonpostgres.models.BranchProperties;
 import com.azure.resourcemanager.neonpostgres.models.CompanyDetails;
+import com.azure.resourcemanager.neonpostgres.models.DefaultEndpointSettings;
+import com.azure.resourcemanager.neonpostgres.models.EndpointProperties;
+import com.azure.resourcemanager.neonpostgres.models.EndpointType;
 import com.azure.resourcemanager.neonpostgres.models.MarketplaceDetails;
 import com.azure.resourcemanager.neonpostgres.models.MarketplaceSubscriptionStatus;
+import com.azure.resourcemanager.neonpostgres.models.NeonDatabaseProperties;
+import com.azure.resourcemanager.neonpostgres.models.NeonRoleProperties;
 import com.azure.resourcemanager.neonpostgres.models.OfferDetails;
 import com.azure.resourcemanager.neonpostgres.models.OrganizationProperties;
 import com.azure.resourcemanager.neonpostgres.models.PartnerOrganizationProperties;
+import com.azure.resourcemanager.neonpostgres.models.ProjectProperties;
 import com.azure.resourcemanager.neonpostgres.models.SingleSignOnProperties;
 import com.azure.resourcemanager.neonpostgres.models.SingleSignOnStates;
 import com.azure.resourcemanager.neonpostgres.models.UserDetails;
@@ -22,47 +31,97 @@ import java.util.Map;
  */
 public final class OrganizationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-01-preview/Organizations_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-06-23-preview/Organizations_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Organizations_CreateOrUpdate.
+     * Sample code: Organizations_CreateOrUpdate_MaximumSet.
      * 
      * @param manager Entry point to NeonPostgresManager.
      */
-    public static void organizationsCreateOrUpdate(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
+    public static void
+        organizationsCreateOrUpdateMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
         manager.organizations()
-            .define("XB-.:")
-            .withRegion("upxxgikyqrbnv")
+            .define("myOrganization")
+            .withRegion("westus")
             .withExistingResourceGroup("rgneon")
-            .withTags(mapOf("key2099", "fakeTokenPlaceholder"))
-            .withProperties(new OrganizationProperties()
-                .withMarketplaceDetails(new MarketplaceDetails().withSubscriptionId("yxmkfivp")
-                    .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
-                    .withOfferDetails(new OfferDetails().withPublisherId("hporaxnopmolttlnkbarw")
-                        .withOfferId("bunyeeupoedueofwrzej")
-                        .withPlanId("nlbfiwtslenfwek")
-                        .withPlanName("ljbmgpkfqklaufacbpml")
-                        .withTermUnit("qbcq")
-                        .withTermId("aedlchikwqckuploswthvshe")))
-                .withUserDetails(new UserDetails().withFirstName("buwwe")
-                    .withLastName("escynjpynkoox")
-                    .withEmailAddress("3i_%@w8-y.H-p.tvj.dG")
-                    .withUpn("fwedjamgwwrotcjaucuzdwycfjdqn")
-                    .withPhoneNumber("dlrqoowumy"))
-                .withCompanyDetails(new CompanyDetails().withCompanyName("uxn")
-                    .withCountry("lpajqzptqchuko")
-                    .withOfficeAddress("chpkrlpmfslmawgunjxdllzcrctykq")
-                    .withBusinessPhone("hbeb")
-                    .withDomain("krjldeakhwiepvs")
-                    .withNumberOfEmployees(23L))
-                .withPartnerOrganizationProperties(
-                    new PartnerOrganizationProperties().withOrganizationId("nrhvoqzulowcunhmvwfgjcaibvwcl")
-                        .withOrganizationName("2__.-")
-                        .withSingleSignOnProperties(
-                            new SingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
-                                .withEnterpriseAppId("fpibacregjfncfdsojs")
-                                .withSingleSignOnUrl("tmojh")
-                                .withAadDomains(Arrays.asList("kndszgrwzbvvlssvkej")))))
+            .withTags(mapOf("environment", "development"))
+            .withProperties(
+                new OrganizationProperties()
+                    .withMarketplaceDetails(
+                        new MarketplaceDetails().withSubscriptionId("DFF26289-4E9C-46D0-890E-F8BE27BDA8C2")
+                            .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
+                            .withOfferDetails(new OfferDetails().withPublisherId("neon-tech")
+                                .withOfferId("neon-postgres")
+                                .withPlanId("standard")
+                                .withPlanName("Standard")
+                                .withTermUnit("Monthly")
+                                .withTermId("hjk5")))
+                    .withUserDetails(new UserDetails().withFirstName("John")
+                        .withLastName("Doe")
+                        .withEmailAddress("john.doe@example.com")
+                        .withUpn("john.doe@example.com")
+                        .withPhoneNumber("555-123-4567"))
+                    .withCompanyDetails(new CompanyDetails().withCompanyName("Contoso Ltd")
+                        .withCountry("United States")
+                        .withOfficeAddress("123 Main Street, Seattle, WA 98101")
+                        .withBusinessPhone("555-987-6543")
+                        .withDomain("contoso.com")
+                        .withNumberOfEmployees(30L))
+                    .withPartnerOrganizationProperties(
+                        new PartnerOrganizationProperties().withOrganizationId("12a34b56-7c89-0d12-e34f-g56h7i8j9k0l")
+                            .withOrganizationName("Contoso")
+                            .withSingleSignOnProperties(new SingleSignOnProperties()
+                                .withSingleSignOnState(SingleSignOnStates.INITIAL)
+                                .withEnterpriseAppId("98f76e54-3d21-0c9b-a87f-6e5d4c3b2a10")
+                                .withSingleSignOnUrl("https://login.microsoftonline.com/")
+                                .withAadDomains(Arrays.asList("contoso.com"))))
+                    .withProjectProperties(new ProjectProperties().withEntityName("myProject")
+                        .withAttributes(Arrays.asList(new Attributes().withName("environment").withValue("dev")))
+                        .withRegionId("westus")
+                        .withStorage(22L)
+                        .withPgVersion(14)
+                        .withHistoryRetention(3)
+                        .withDefaultEndpointSettings(new DefaultEndpointSettings().withAutoscalingLimitMinCu(3.0)
+                            .withAutoscalingLimitMaxCu(28.0))
+                        .withBranch(new BranchProperties().withEntityName("feature")
+                            .withAttributes(Arrays.asList(new Attributes().withName("environment").withValue("dev")))
+                            .withProjectId("project-123")
+                            .withParentId("main-branch")
+                            .withRoles(Arrays.asList(new NeonRoleProperties().withEntityName("read_only_role")
+                                .withAttributes(
+                                    Arrays.asList(new Attributes().withName("environment").withValue("dev")))
+                                .withBranchId("branch-123")
+                                .withPermissions(Arrays.asList("SELECT"))
+                                .withIsSuperUser(true)))
+                            .withDatabases(Arrays.asList(new NeonDatabaseProperties().withEntityName("appdb")
+                                .withAttributes(
+                                    Arrays.asList(new Attributes().withName("environment").withValue("dev")))
+                                .withBranchId("branch-123")
+                                .withOwnerName("postgres")))
+                            .withEndpoints(Arrays.asList(new EndpointProperties().withEntityName("read-endpoint")
+                                .withAttributes(
+                                    Arrays.asList(new Attributes().withName("environment").withValue("dev")))
+                                .withProjectId("project-123")
+                                .withBranchId("branch-123")
+                                .withEndpointType(EndpointType.READ_ONLY)
+                                .withSize(new AutoscalingSize().withAutoscalingLimitMinCu(3.0)
+                                    .withAutoscalingLimitMaxCu(14.0)))))
+                        .withRoles(Arrays.asList(new NeonRoleProperties().withEntityName("admin_role")
+                            .withAttributes(Arrays.asList(new Attributes().withName("environment").withValue("dev")))
+                            .withBranchId("branch-123")
+                            .withPermissions(Arrays.asList("ALL"))
+                            .withIsSuperUser(true)))
+                        .withDatabases(Arrays.asList(new NeonDatabaseProperties().withEntityName("maindb")
+                            .withAttributes(Arrays.asList(new Attributes().withName("environment").withValue("dev")))
+                            .withBranchId("branch-123")
+                            .withOwnerName("postgres")))
+                        .withEndpoints(Arrays.asList(new EndpointProperties().withEntityName("primary-endpoint")
+                            .withAttributes(Arrays.asList(new Attributes().withName("environment").withValue("dev")))
+                            .withProjectId("project-123")
+                            .withBranchId("branch-123")
+                            .withEndpointType(EndpointType.READ_ONLY)
+                            .withSize(new AutoscalingSize().withAutoscalingLimitMinCu(3.0)
+                                .withAutoscalingLimitMaxCu(14.0))))))
             .create();
     }
 

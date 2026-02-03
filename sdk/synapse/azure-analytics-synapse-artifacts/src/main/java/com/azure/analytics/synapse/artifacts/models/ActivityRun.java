@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,76 +24,91 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
     /*
      * The name of the pipeline.
      */
+    @Generated
     private String pipelineName;
 
     /*
      * The id of the pipeline run.
      */
+    @Generated
     private String pipelineRunId;
 
     /*
      * The name of the activity.
      */
+    @Generated
     private String activityName;
 
     /*
      * The type of the activity.
      */
+    @Generated
     private String activityType;
 
     /*
      * The id of the activity run.
      */
+    @Generated
     private String activityRunId;
 
     /*
      * The name of the compute linked service.
      */
+    @Generated
     private String linkedServiceName;
 
     /*
      * The status of the activity run.
      */
+    @Generated
     private String status;
 
     /*
      * The start time of the activity run in 'ISO 8601' format.
      */
+    @Generated
     private OffsetDateTime activityRunStart;
 
     /*
      * The end time of the activity run in 'ISO 8601' format.
      */
+    @Generated
     private OffsetDateTime activityRunEnd;
 
     /*
      * The duration of the activity run.
      */
+    @Generated
     private Integer durationInMs;
 
     /*
      * The input for the activity.
      */
+    @Generated
     private Object input;
 
     /*
      * The output for the activity.
      */
+    @Generated
     private Object output;
 
     /*
      * The error if any from the activity run.
      */
+    @Generated
     private Object error;
 
     /*
      * Information about an activity run in a pipeline.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of ActivityRun class.
      */
+    @Generated
     public ActivityRun() {
     }
 
@@ -101,6 +117,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the pipelineName value.
      */
+    @Generated
     public String getPipelineName() {
         return this.pipelineName;
     }
@@ -110,6 +127,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the pipelineRunId value.
      */
+    @Generated
     public String getPipelineRunId() {
         return this.pipelineRunId;
     }
@@ -119,6 +137,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the activityName value.
      */
+    @Generated
     public String getActivityName() {
         return this.activityName;
     }
@@ -128,6 +147,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the activityType value.
      */
+    @Generated
     public String getActivityType() {
         return this.activityType;
     }
@@ -137,6 +157,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the activityRunId value.
      */
+    @Generated
     public String getActivityRunId() {
         return this.activityRunId;
     }
@@ -146,6 +167,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public String getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -155,6 +177,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -164,6 +187,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the activityRunStart value.
      */
+    @Generated
     public OffsetDateTime getActivityRunStart() {
         return this.activityRunStart;
     }
@@ -173,6 +197,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the activityRunEnd value.
      */
+    @Generated
     public OffsetDateTime getActivityRunEnd() {
         return this.activityRunEnd;
     }
@@ -182,6 +207,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the durationInMs value.
      */
+    @Generated
     public Integer getDurationInMs() {
         return this.durationInMs;
     }
@@ -191,6 +217,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the input value.
      */
+    @Generated
     public Object getInput() {
         return this.input;
     }
@@ -200,6 +227,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the output value.
      */
+    @Generated
     public Object getOutput() {
         return this.output;
     }
@@ -209,6 +237,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the error value.
      */
+    @Generated
     public Object getError() {
         return this.error;
     }
@@ -218,6 +247,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -228,6 +258,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the ActivityRun object itself.
      */
+    @Generated
     public ActivityRun setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -236,6 +267,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -255,6 +287,7 @@ public final class ActivityRun implements JsonSerializable<ActivityRun> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ActivityRun.
      */
+    @Generated
     public static ActivityRun fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ActivityRun deserializedActivityRun = new ActivityRun();

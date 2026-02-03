@@ -3,12 +3,13 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.query.IndexProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -23,6 +24,10 @@ public final class CosmosVectorIndexSpec {
     private Integer quantizationSizeInBytes;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer indexingSearchListSize;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<String> vectorIndexShardKeys;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private QuantizerType quantizerType;
     private final JsonSerializable jsonSerializable;
 
     /**
@@ -48,7 +53,7 @@ public final class CosmosVectorIndexSpec {
      * @return the SpatialSpec.
      */
     public CosmosVectorIndexSpec setPath(String path) {
-        this.jsonSerializable.set(Constants.Properties.PATH, path, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.PATH, path);
         return this;
     }
 
@@ -76,8 +81,37 @@ public final class CosmosVectorIndexSpec {
             throw new IllegalArgumentException(String.format("%s is an invalid index type. Valid index types are 'flat', 'quantizedFlat' or 'diskANN'.", type));
         }
         this.type = type;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type);
 
+        return this;
+    }
+
+    /**
+     * Gets the quantizer type.
+     *
+     * @return the quantizer type.
+     */
+    public QuantizerType getQuantizerType() {
+        if (this.quantizerType == null) {
+            this.quantizerType = this.jsonSerializable.getObject(Constants.Properties.QUANTIZER_TYPE, QuantizerType.class);
+        }
+        return this.quantizerType;
+    }
+
+    /**
+     * Set the quantizer type.
+     *
+     * @param quantizerType The quantizer type
+     * @return the CosmosVectorIndexSpec.
+     */
+    public CosmosVectorIndexSpec setQuantizerType(QuantizerType quantizerType) {
+        if (validateIndexType(IndexProperty.QUANTIZER_TYPE) && quantizerType != null) {
+            this.quantizerType = quantizerType;
+            this.jsonSerializable.set(Constants.Properties.QUANTIZER_TYPE, quantizerType);
+        } else {
+            this.quantizerType = null;
+            this.jsonSerializable.remove(Constants.Properties.QUANTIZER_TYPE);
+        }
         return this;
     }
 
@@ -108,7 +142,7 @@ public final class CosmosVectorIndexSpec {
     public CosmosVectorIndexSpec setQuantizationSizeInBytes(Integer quantizationByteSize) {
         if (validateIndexType(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) && quantizationByteSize != null) {
             this.quantizationSizeInBytes = quantizationByteSize;
-            this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_SIZE_IN_BYTES, this.quantizationSizeInBytes, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_SIZE_IN_BYTES, this.quantizationSizeInBytes);
         } else {
             this.quantizationSizeInBytes = null;
         }
@@ -141,9 +175,41 @@ public final class CosmosVectorIndexSpec {
     public CosmosVectorIndexSpec setIndexingSearchListSize(Integer indexingSearchListSize) {
         if (validateIndexType(IndexProperty.INDEXING_SEARCH_LIST_SIZE) && indexingSearchListSize != null) {
             this.indexingSearchListSize = indexingSearchListSize;
-            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE, this.indexingSearchListSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE, this.indexingSearchListSize);
         } else {
             this.indexingSearchListSize = null;
+        }
+        return this;
+    }
+
+    /**
+     * Gets the vector indexing shard keys
+     *
+     * @return vectorIndexShardKeys the list of string containing the shard keys used for partitioning the
+     * vector indexes. This applies to index types diskANN and quantizedFlat. The maximum allowed size for
+     * this array is currently limited to 1 - that is, there is only one allowed path.
+     */
+    public List<String> getVectorIndexShardKeys() {
+        if (this.vectorIndexShardKeys == null) {
+            this.vectorIndexShardKeys = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEX_SHARD_KEYS, String.class);
+        }
+        return this.vectorIndexShardKeys;
+    }
+
+    /**
+     * Sets the vector indexing shard keys
+     *
+     * @param vectorIndexShardKeys vectorIndexShardKeys the list of string containing the shard keys used for partitioning the
+     *                            vector indexes. This applies to index types diskANN and quantizedFlat. The maximum allowed size for
+     *                            this array is currently limited to 1 - that is, there is only one allowed path.
+     * @return CosmosVectorIndexSpec
+     */
+    public CosmosVectorIndexSpec setVectorIndexShardKeys(List<String> vectorIndexShardKeys) {
+        if (validateIndexType(IndexProperty.VECTOR_INDEX_SHARD_KEYS) && vectorIndexShardKeys != null) {
+            this.vectorIndexShardKeys = vectorIndexShardKeys;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEYS, this.vectorIndexShardKeys);
+        } else {
+            this.vectorIndexShardKeys = null;
         }
         return this;
     }
@@ -158,7 +224,9 @@ public final class CosmosVectorIndexSpec {
 
     private Boolean validateIndexType(IndexProperty indexProperty) {
         String vectorIndexType = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
-        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES)) {
+        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) ||
+            (indexProperty.equals(IndexProperty.VECTOR_INDEX_SHARD_KEYS)) ||
+            (indexProperty.equals(IndexProperty.QUANTIZER_TYPE))) {
             return vectorIndexType.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
                 vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
         }

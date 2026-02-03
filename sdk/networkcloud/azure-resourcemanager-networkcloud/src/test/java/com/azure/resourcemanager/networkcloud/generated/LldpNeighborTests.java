@@ -11,7 +11,7 @@ public final class LldpNeighborTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LldpNeighbor model = BinaryData.fromString(
-            "{\"portDescription\":\"ozwyiftyhxhuro\",\"portName\":\"tyxolniwpwc\",\"systemDescription\":\"jfkgiawxk\",\"systemName\":\"ypl\"}")
+            "{\"portDescription\":\"cpkvxodp\",\"portName\":\"zmyzydagf\",\"systemDescription\":\"xbezyiuokktwh\",\"systemName\":\"xw\"}")
             .toObject(LldpNeighbor.class);
     }
 

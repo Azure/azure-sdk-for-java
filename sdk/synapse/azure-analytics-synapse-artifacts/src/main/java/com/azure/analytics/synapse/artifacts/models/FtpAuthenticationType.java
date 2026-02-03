@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class FtpAuthenticationType extends ExpandableStringEnum<FtpAuthent
     /**
      * Static value Basic for FtpAuthenticationType.
      */
+    @Generated
     public static final FtpAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Anonymous for FtpAuthenticationType.
      */
+    @Generated
     public static final FtpAuthenticationType ANONYMOUS = fromString("Anonymous");
 
     /**
@@ -26,6 +29,7 @@ public final class FtpAuthenticationType extends ExpandableStringEnum<FtpAuthent
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FtpAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class FtpAuthenticationType extends ExpandableStringEnum<FtpAuthent
      * @param name a name to look for.
      * @return the corresponding FtpAuthenticationType.
      */
+    @Generated
     public static FtpAuthenticationType fromString(String name) {
         return fromString(name, FtpAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class FtpAuthenticationType extends ExpandableStringEnum<FtpAuthent
      * 
      * @return known FtpAuthenticationType values.
      */
+    @Generated
     public static Collection<FtpAuthenticationType> values() {
         return values(FtpAuthenticationType.class);
     }

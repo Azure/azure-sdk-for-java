@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "SapCloudForCustomerResource";
 
     /*
      * The path of the SAP Cloud for Customer OData entity. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object path;
 
     /**
      * Creates an instance of SapCloudForCustomerResourceDataset class.
      */
+    @Generated
     public SapCloudForCustomerResourceDataset() {
     }
 
@@ -39,6 +43,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -50,6 +55,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
      * 
      * @return the path value.
      */
+    @Generated
     public Object getPath() {
         return this.path;
     }
@@ -61,6 +67,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
      * @param path the path value to set.
      * @return the SapCloudForCustomerResourceDataset object itself.
      */
+    @Generated
     public SapCloudForCustomerResourceDataset setPath(Object path) {
         this.path = path;
         return this;
@@ -69,6 +76,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerResourceDataset setDescription(String description) {
         super.setDescription(description);
@@ -78,6 +86,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -87,6 +96,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -96,6 +106,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -105,6 +116,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -114,6 +126,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -123,6 +136,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapCloudForCustomerResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -132,13 +146,18 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -165,6 +184,7 @@ public class SapCloudForCustomerResourceDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapCloudForCustomerResourceDataset.
      */
+    @Generated
     public static SapCloudForCustomerResourceDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapCloudForCustomerResourceDataset deserializedSapCloudForCustomerResourceDataset

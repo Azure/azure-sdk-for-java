@@ -4,6 +4,7 @@
 
 package com.azure.ai.formrecognizer.documentanalysis.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class FontWeight extends ExpandableStringEnum<FontWeight> {
     /**
      * Characters are represented normally.
      */
+    @Generated
     public static final FontWeight NORMAL = fromString("normal");
 
     /**
      * Characters are represented with thicker strokes.
      */
+    @Generated
     public static final FontWeight BOLD = fromString("bold");
 
     /**
@@ -26,6 +29,7 @@ public final class FontWeight extends ExpandableStringEnum<FontWeight> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public FontWeight() {
     }
@@ -36,6 +40,7 @@ public final class FontWeight extends ExpandableStringEnum<FontWeight> {
      * @param name a name to look for.
      * @return the corresponding FontWeight.
      */
+    @Generated
     public static FontWeight fromString(String name) {
         return fromString(name, FontWeight.class);
     }
@@ -45,6 +50,7 @@ public final class FontWeight extends ExpandableStringEnum<FontWeight> {
      * 
      * @return known FontWeight values.
      */
+    @Generated
     public static Collection<FontWeight> values() {
         return values(FontWeight.class);
     }

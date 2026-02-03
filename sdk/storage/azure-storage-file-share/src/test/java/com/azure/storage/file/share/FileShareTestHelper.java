@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.models.ClearRange;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePropertySemantics;
 import com.azure.storage.file.share.models.FileRange;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.ShareCorsRule;
@@ -43,6 +44,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class FileShareTestHelper {
     private static final ClientLogger LOGGER = new ClientLogger(FileShareTestHelper.class);
@@ -374,6 +376,16 @@ public class FileShareTestHelper {
 
     protected static Stream<Arguments> filePermissionFormatSupplier() {
         return Stream.of(Arguments.of(FilePermissionFormat.SDDL), Arguments.of(FilePermissionFormat.BINARY),
+            Arguments.of((Object) null));
+    }
+
+    protected static void assertSmbPropertiesNull(FileSmbProperties smbProperties) {
+        assertNull(smbProperties.getFilePermissionKey());
+        assertNull(smbProperties.getNtfsFileAttributes());
+    }
+
+    protected static Stream<Arguments> filePropertySemanticsSupplier() {
+        return Stream.of(Arguments.of(FilePropertySemantics.NEW), Arguments.of(FilePropertySemantics.RESTORE),
             Arguments.of((Object) null));
     }
 }

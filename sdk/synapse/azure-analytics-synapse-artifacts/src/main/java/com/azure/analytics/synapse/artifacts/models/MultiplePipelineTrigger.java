@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,19 @@ public class MultiplePipelineTrigger extends Trigger {
     /*
      * Trigger type.
      */
+    @Generated
     private String type = "MultiplePipelineTrigger";
 
     /*
      * Pipelines that need to be started.
      */
+    @Generated
     private List<TriggerPipelineReference> pipelines;
-
-    /*
-     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
-     */
-    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of MultiplePipelineTrigger class.
      */
+    @Generated
     public MultiplePipelineTrigger() {
     }
 
@@ -44,6 +43,7 @@ public class MultiplePipelineTrigger extends Trigger {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +54,7 @@ public class MultiplePipelineTrigger extends Trigger {
      * 
      * @return the pipelines value.
      */
+    @Generated
     public List<TriggerPipelineReference> getPipelines() {
         return this.pipelines;
     }
@@ -64,25 +65,16 @@ public class MultiplePipelineTrigger extends Trigger {
      * @param pipelines the pipelines value to set.
      * @return the MultiplePipelineTrigger object itself.
      */
+    @Generated
     public MultiplePipelineTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         this.pipelines = pipelines;
         return this;
     }
 
     /**
-     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
-     * the Trigger.
-     * 
-     * @return the runtimeState value.
-     */
-    @Override
-    public TriggerRuntimeState getRuntimeState() {
-        return this.runtimeState;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MultiplePipelineTrigger setDescription(String description) {
         super.setDescription(description);
@@ -92,6 +84,7 @@ public class MultiplePipelineTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MultiplePipelineTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -101,6 +94,7 @@ public class MultiplePipelineTrigger extends Trigger {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -124,6 +118,7 @@ public class MultiplePipelineTrigger extends Trigger {
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the MultiplePipelineTrigger.
      */
+    @Generated
     public static MultiplePipelineTrigger fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -155,6 +150,7 @@ public class MultiplePipelineTrigger extends Trigger {
         });
     }
 
+    @Generated
     static MultiplePipelineTrigger fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MultiplePipelineTrigger deserializedMultiplePipelineTrigger = new MultiplePipelineTrigger();
@@ -166,8 +162,8 @@ public class MultiplePipelineTrigger extends Trigger {
                 if ("description".equals(fieldName)) {
                     deserializedMultiplePipelineTrigger.setDescription(reader.getString());
                 } else if ("runtimeState".equals(fieldName)) {
-                    deserializedMultiplePipelineTrigger.runtimeState
-                        = TriggerRuntimeState.fromString(reader.getString());
+                    deserializedMultiplePipelineTrigger
+                        .setRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
                 } else if ("annotations".equals(fieldName)) {
                     List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
                     deserializedMultiplePipelineTrigger.setAnnotations(annotations);

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpoint
 public final class PrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"xzvlvqhjkbegib\"}").toObject(PrivateEndpoint.class);
+        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"iwii\"}").toObject(PrivateEndpoint.class);
     }
 
     @org.junit.jupiter.api.Test

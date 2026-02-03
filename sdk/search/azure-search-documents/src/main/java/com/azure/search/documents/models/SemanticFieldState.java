@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,16 +17,19 @@ public final class SemanticFieldState extends ExpandableStringEnum<SemanticField
     /**
      * The field was fully used for semantic enrichment.
      */
+    @Generated
     public static final SemanticFieldState USED = fromString("used");
 
     /**
      * The field was not used for semantic enrichment.
      */
+    @Generated
     public static final SemanticFieldState UNUSED = fromString("unused");
 
     /**
      * The field was partially used for semantic enrichment.
      */
+    @Generated
     public static final SemanticFieldState PARTIAL = fromString("partial");
 
     /**
@@ -33,6 +37,7 @@ public final class SemanticFieldState extends ExpandableStringEnum<SemanticField
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SemanticFieldState() {
     }
@@ -43,6 +48,7 @@ public final class SemanticFieldState extends ExpandableStringEnum<SemanticField
      * @param name a name to look for.
      * @return the corresponding SemanticFieldState.
      */
+    @Generated
     public static SemanticFieldState fromString(String name) {
         return fromString(name, SemanticFieldState.class);
     }
@@ -52,6 +58,7 @@ public final class SemanticFieldState extends ExpandableStringEnum<SemanticField
      * 
      * @return known SemanticFieldState values.
      */
+    @Generated
     public static Collection<SemanticFieldState> values() {
         return values(SemanticFieldState.class);
     }

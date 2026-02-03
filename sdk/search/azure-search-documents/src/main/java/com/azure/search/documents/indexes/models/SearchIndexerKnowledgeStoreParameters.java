@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -25,17 +26,20 @@ public final class SearchIndexerKnowledgeStoreParameters
     /*
      * Whether or not projections should synthesize a generated key name if one isn't already present.
      */
+    @Generated
     private Boolean synthesizeGeneratedKeyName;
 
     /*
      * A dictionary of knowledge store-specific configuration properties. Each name is the name of a specific property.
      * Each value must be of a primitive type.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of SearchIndexerKnowledgeStoreParameters class.
      */
+    @Generated
     public SearchIndexerKnowledgeStoreParameters() {
     }
 
@@ -45,6 +49,7 @@ public final class SearchIndexerKnowledgeStoreParameters
      * 
      * @return the synthesizeGeneratedKeyName value.
      */
+    @Generated
     public Boolean isSynthesizeGeneratedKeyName() {
         return this.synthesizeGeneratedKeyName;
     }
@@ -56,6 +61,7 @@ public final class SearchIndexerKnowledgeStoreParameters
      * @param synthesizeGeneratedKeyName the synthesizeGeneratedKeyName value to set.
      * @return the SearchIndexerKnowledgeStoreParameters object itself.
      */
+    @Generated
     public SearchIndexerKnowledgeStoreParameters setSynthesizeGeneratedKeyName(Boolean synthesizeGeneratedKeyName) {
         this.synthesizeGeneratedKeyName = synthesizeGeneratedKeyName;
         return this;
@@ -67,6 +73,7 @@ public final class SearchIndexerKnowledgeStoreParameters
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -78,6 +85,7 @@ public final class SearchIndexerKnowledgeStoreParameters
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchIndexerKnowledgeStoreParameters object itself.
      */
+    @Generated
     public SearchIndexerKnowledgeStoreParameters setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -86,6 +94,7 @@ public final class SearchIndexerKnowledgeStoreParameters
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -106,6 +115,7 @@ public final class SearchIndexerKnowledgeStoreParameters
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerKnowledgeStoreParameters.
      */
+    @Generated
     public static SearchIndexerKnowledgeStoreParameters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchIndexerKnowledgeStoreParameters deserializedSearchIndexerKnowledgeStoreParameters

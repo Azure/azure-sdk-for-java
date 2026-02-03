@@ -124,14 +124,6 @@ public final class SingleSignOnProperties implements JsonSerializable<SingleSign
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

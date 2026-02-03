@@ -18,7 +18,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
+import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsBuilder;
 
 /**
  * <p>Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.</p>
@@ -71,7 +71,7 @@ public final class LogsQueryClientBuilder
     implements EndpointTrait<LogsQueryClientBuilder>, HttpTrait<LogsQueryClientBuilder>,
     ConfigurationTrait<LogsQueryClientBuilder>, TokenCredentialTrait<LogsQueryClientBuilder> {
     private final ClientLogger logger = new ClientLogger(LogsQueryClientBuilder.class);
-    private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
+    private final AzureLogAnalyticsBuilder innerLogBuilder = new AzureLogAnalyticsBuilder();
     private LogsQueryServiceVersion serviceVersion;
 
     /**

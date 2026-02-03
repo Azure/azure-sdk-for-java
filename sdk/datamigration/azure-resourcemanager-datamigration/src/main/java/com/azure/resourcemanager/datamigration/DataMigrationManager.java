@@ -22,25 +22,45 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.DataMigrationManagementClient;
 import com.azure.resourcemanager.datamigration.implementation.DataMigrationManagementClientBuilder;
+import com.azure.resourcemanager.datamigration.implementation.DatabaseMigrationsMongoToCosmosDbRUMongoesImpl;
+import com.azure.resourcemanager.datamigration.implementation.DatabaseMigrationsMongoToCosmosDbvCoreMongoesImpl;
+import com.azure.resourcemanager.datamigration.implementation.DatabaseMigrationsSqlDbsImpl;
+import com.azure.resourcemanager.datamigration.implementation.DatabaseMigrationsSqlMisImpl;
+import com.azure.resourcemanager.datamigration.implementation.DatabaseMigrationsSqlVmsImpl;
+import com.azure.resourcemanager.datamigration.implementation.FilesImpl;
+import com.azure.resourcemanager.datamigration.implementation.MigrationServicesImpl;
 import com.azure.resourcemanager.datamigration.implementation.OperationsImpl;
 import com.azure.resourcemanager.datamigration.implementation.ProjectsImpl;
 import com.azure.resourcemanager.datamigration.implementation.ResourceSkusImpl;
+import com.azure.resourcemanager.datamigration.implementation.ServiceTasksImpl;
 import com.azure.resourcemanager.datamigration.implementation.ServicesImpl;
+import com.azure.resourcemanager.datamigration.implementation.SqlMigrationServicesImpl;
 import com.azure.resourcemanager.datamigration.implementation.TasksImpl;
 import com.azure.resourcemanager.datamigration.implementation.UsagesImpl;
+import com.azure.resourcemanager.datamigration.models.DatabaseMigrationsMongoToCosmosDbRUMongoes;
+import com.azure.resourcemanager.datamigration.models.DatabaseMigrationsMongoToCosmosDbvCoreMongoes;
+import com.azure.resourcemanager.datamigration.models.DatabaseMigrationsSqlDbs;
+import com.azure.resourcemanager.datamigration.models.DatabaseMigrationsSqlMis;
+import com.azure.resourcemanager.datamigration.models.DatabaseMigrationsSqlVms;
+import com.azure.resourcemanager.datamigration.models.Files;
+import com.azure.resourcemanager.datamigration.models.MigrationServices;
 import com.azure.resourcemanager.datamigration.models.Operations;
 import com.azure.resourcemanager.datamigration.models.Projects;
 import com.azure.resourcemanager.datamigration.models.ResourceSkus;
+import com.azure.resourcemanager.datamigration.models.ServiceTasks;
 import com.azure.resourcemanager.datamigration.models.Services;
+import com.azure.resourcemanager.datamigration.models.SqlMigrationServices;
 import com.azure.resourcemanager.datamigration.models.Tasks;
 import com.azure.resourcemanager.datamigration.models.Usages;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -49,17 +69,35 @@ import java.util.stream.Collectors;
  * Data Migration Client.
  */
 public final class DataMigrationManager {
+    private DatabaseMigrationsMongoToCosmosDbRUMongoes databaseMigrationsMongoToCosmosDbRUMongoes;
+
+    private DatabaseMigrationsMongoToCosmosDbvCoreMongoes databaseMigrationsMongoToCosmosDbvCoreMongoes;
+
+    private DatabaseMigrationsSqlDbs databaseMigrationsSqlDbs;
+
+    private DatabaseMigrationsSqlMis databaseMigrationsSqlMis;
+
+    private DatabaseMigrationsSqlVms databaseMigrationsSqlVms;
+
+    private Operations operations;
+
+    private MigrationServices migrationServices;
+
+    private SqlMigrationServices sqlMigrationServices;
+
     private ResourceSkus resourceSkus;
 
     private Services services;
 
     private Tasks tasks;
 
+    private ServiceTasks serviceTasks;
+
     private Projects projects;
 
     private Usages usages;
 
-    private Operations operations;
+    private Files files;
 
     private final DataMigrationManagementClient clientObject;
 
@@ -113,6 +151,9 @@ public final class DataMigrationManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-datamigration.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -220,12 +261,14 @@ public final class DataMigrationManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.datamigration")
                 .append("/")
-                .append("1.0.0");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -272,6 +315,108 @@ public final class DataMigrationManager {
     }
 
     /**
+     * Gets the resource collection API of DatabaseMigrationsMongoToCosmosDbRUMongoes. It manages
+     * DatabaseMigrationCosmosDbMongo.
+     * 
+     * @return Resource collection API of DatabaseMigrationsMongoToCosmosDbRUMongoes.
+     */
+    public DatabaseMigrationsMongoToCosmosDbRUMongoes databaseMigrationsMongoToCosmosDbRUMongoes() {
+        if (this.databaseMigrationsMongoToCosmosDbRUMongoes == null) {
+            this.databaseMigrationsMongoToCosmosDbRUMongoes = new DatabaseMigrationsMongoToCosmosDbRUMongoesImpl(
+                clientObject.getDatabaseMigrationsMongoToCosmosDbRUMongoes(), this);
+        }
+        return databaseMigrationsMongoToCosmosDbRUMongoes;
+    }
+
+    /**
+     * Gets the resource collection API of DatabaseMigrationsMongoToCosmosDbvCoreMongoes.
+     * 
+     * @return Resource collection API of DatabaseMigrationsMongoToCosmosDbvCoreMongoes.
+     */
+    public DatabaseMigrationsMongoToCosmosDbvCoreMongoes databaseMigrationsMongoToCosmosDbvCoreMongoes() {
+        if (this.databaseMigrationsMongoToCosmosDbvCoreMongoes == null) {
+            this.databaseMigrationsMongoToCosmosDbvCoreMongoes = new DatabaseMigrationsMongoToCosmosDbvCoreMongoesImpl(
+                clientObject.getDatabaseMigrationsMongoToCosmosDbvCoreMongoes(), this);
+        }
+        return databaseMigrationsMongoToCosmosDbvCoreMongoes;
+    }
+
+    /**
+     * Gets the resource collection API of DatabaseMigrationsSqlDbs. It manages DatabaseMigrationSqlDb.
+     * 
+     * @return Resource collection API of DatabaseMigrationsSqlDbs.
+     */
+    public DatabaseMigrationsSqlDbs databaseMigrationsSqlDbs() {
+        if (this.databaseMigrationsSqlDbs == null) {
+            this.databaseMigrationsSqlDbs
+                = new DatabaseMigrationsSqlDbsImpl(clientObject.getDatabaseMigrationsSqlDbs(), this);
+        }
+        return databaseMigrationsSqlDbs;
+    }
+
+    /**
+     * Gets the resource collection API of DatabaseMigrationsSqlMis. It manages DatabaseMigrationSqlMi.
+     * 
+     * @return Resource collection API of DatabaseMigrationsSqlMis.
+     */
+    public DatabaseMigrationsSqlMis databaseMigrationsSqlMis() {
+        if (this.databaseMigrationsSqlMis == null) {
+            this.databaseMigrationsSqlMis
+                = new DatabaseMigrationsSqlMisImpl(clientObject.getDatabaseMigrationsSqlMis(), this);
+        }
+        return databaseMigrationsSqlMis;
+    }
+
+    /**
+     * Gets the resource collection API of DatabaseMigrationsSqlVms. It manages DatabaseMigrationSqlVm.
+     * 
+     * @return Resource collection API of DatabaseMigrationsSqlVms.
+     */
+    public DatabaseMigrationsSqlVms databaseMigrationsSqlVms() {
+        if (this.databaseMigrationsSqlVms == null) {
+            this.databaseMigrationsSqlVms
+                = new DatabaseMigrationsSqlVmsImpl(clientObject.getDatabaseMigrationsSqlVms(), this);
+        }
+        return databaseMigrationsSqlVms;
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     * 
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
+    }
+
+    /**
+     * Gets the resource collection API of MigrationServices. It manages MigrationService.
+     * 
+     * @return Resource collection API of MigrationServices.
+     */
+    public MigrationServices migrationServices() {
+        if (this.migrationServices == null) {
+            this.migrationServices = new MigrationServicesImpl(clientObject.getMigrationServices(), this);
+        }
+        return migrationServices;
+    }
+
+    /**
+     * Gets the resource collection API of SqlMigrationServices. It manages SqlMigrationService.
+     * 
+     * @return Resource collection API of SqlMigrationServices.
+     */
+    public SqlMigrationServices sqlMigrationServices() {
+        if (this.sqlMigrationServices == null) {
+            this.sqlMigrationServices = new SqlMigrationServicesImpl(clientObject.getSqlMigrationServices(), this);
+        }
+        return sqlMigrationServices;
+    }
+
+    /**
      * Gets the resource collection API of ResourceSkus.
      * 
      * @return Resource collection API of ResourceSkus.
@@ -308,6 +453,18 @@ public final class DataMigrationManager {
     }
 
     /**
+     * Gets the resource collection API of ServiceTasks.
+     * 
+     * @return Resource collection API of ServiceTasks.
+     */
+    public ServiceTasks serviceTasks() {
+        if (this.serviceTasks == null) {
+            this.serviceTasks = new ServiceTasksImpl(clientObject.getServiceTasks(), this);
+        }
+        return serviceTasks;
+    }
+
+    /**
      * Gets the resource collection API of Projects. It manages Project.
      * 
      * @return Resource collection API of Projects.
@@ -332,15 +489,15 @@ public final class DataMigrationManager {
     }
 
     /**
-     * Gets the resource collection API of Operations.
+     * Gets the resource collection API of Files. It manages ProjectFile.
      * 
-     * @return Resource collection API of Operations.
+     * @return Resource collection API of Files.
      */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    public Files files() {
+        if (this.files == null) {
+            this.files = new FilesImpl(clientObject.getFiles(), this);
         }
-        return operations;
+        return files;
     }
 
     /**

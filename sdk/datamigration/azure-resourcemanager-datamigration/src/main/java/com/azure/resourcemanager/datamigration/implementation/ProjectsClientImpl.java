@@ -29,6 +29,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datamigration.fluent.ProjectsClient;
 import com.azure.resourcemanager.datamigration.fluent.models.ProjectInner;
 import com.azure.resourcemanager.datamigration.models.ProjectList;
@@ -63,13 +64,22 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DataMigrationManagem")
+    @ServiceInterface(name = "DataMigrationManagementClientProjects")
     public interface ProjectsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectList>> listByResourceGroup(@HostParam("$host") String endpoint,
+        Mono<Response<ProjectList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ProjectList> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
             @PathParam("serviceName") String serviceName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -85,6 +95,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ProjectInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ProjectInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -94,10 +114,29 @@ public final class ProjectsClientImpl implements ProjectsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ProjectInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("deleteRunningTasks") Boolean deleteRunningTasks,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
             @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
             @QueryParam("api-version") String apiVersion, @QueryParam("deleteRunningTasks") Boolean deleteRunningTasks,
@@ -114,12 +153,28 @@ public final class ProjectsClientImpl implements ProjectsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ProjectInner> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ProjectInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ProjectList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ProjectList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -137,7 +192,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProjectInner>> listByResourceGroupSinglePageAsync(String groupName, String serviceName) {
+    private Mono<PagedResponse<ProjectInner>> listSinglePageAsync(String groupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -154,8 +209,8 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
-                this.client.getSubscriptionId(), groupName, serviceName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName,
+                serviceName, this.client.getApiVersion(), accept, context))
             .<PagedResponse<ProjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -169,56 +224,55 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return oData page of project resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ProjectInner> listAsync(String groupName, String serviceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(groupName, serviceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get projects in a service
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
+     * @param groupName Name of the resource group.
+     * @param serviceName Name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oData page of project resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProjectInner>> listByResourceGroupSinglePageAsync(String groupName, String serviceName,
-        Context context) {
+    private PagedResponse<ProjectInner> listSinglePage(String groupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
         if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get projects in a service
-     * 
-     * The project resource is a nested resource representing a stored migration project. This method returns a list of
-     * projects owned by a service resource.
-     * 
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProjectInner> listByResourceGroupAsync(String groupName, String serviceName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(groupName, serviceName),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+        Response<ProjectList> res = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            groupName, serviceName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -233,12 +287,33 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources as paginated response with {@link PagedFlux}.
+     * @return oData page of project resources along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProjectInner> listByResourceGroupAsync(String groupName, String serviceName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(groupName, serviceName, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ProjectInner> listSinglePage(String groupName, String serviceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ProjectList> res = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            groupName, serviceName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -255,8 +330,9 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return oData page of project resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProjectInner> listByResourceGroup(String groupName, String serviceName) {
-        return new PagedIterable<>(listByResourceGroupAsync(groupName, serviceName));
+    public PagedIterable<ProjectInner> list(String groupName, String serviceName) {
+        return new PagedIterable<>(() -> listSinglePage(groupName, serviceName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -274,8 +350,9 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return oData page of project resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProjectInner> listByResourceGroup(String groupName, String serviceName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(groupName, serviceName, context));
+    public PagedIterable<ProjectInner> list(String groupName, String serviceName, Context context) {
+        return new PagedIterable<>(() -> listSinglePage(groupName, serviceName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -335,53 +412,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
      * @param parameters Information about the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(String groupName, String serviceName,
-        String projectName, ProjectInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName,
-            serviceName, projectName, this.client.getApiVersion(), parameters, accept, context);
-    }
-
-    /**
-     * Create or update project
-     * 
-     * The project resource is a nested resource representing a stored migration project. The PUT method creates a new
-     * project or updates an existing one.
-     * 
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param projectName Name of the project.
-     * @param parameters Information about the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -413,7 +443,37 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProjectInner> createOrUpdateWithResponse(String groupName, String serviceName, String projectName,
         ProjectInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(groupName, serviceName, projectName, parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName,
+            serviceName, projectName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -487,47 +547,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> getWithResponseAsync(String groupName, String serviceName, String projectName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
-            projectName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get project information
-     * 
-     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
-     * information about a project.
-     * 
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param projectName Name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -557,7 +576,31 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProjectInner> getWithResponse(String groupName, String serviceName, String projectName,
         Context context) {
-        return getWithResponseAsync(groupName, serviceName, projectName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
+            projectName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -630,48 +673,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
-     * @param deleteRunningTasks Delete the resource even if it contains running tasks.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String groupName, String serviceName, String projectName,
-        Boolean deleteRunningTasks, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
-            projectName, this.client.getApiVersion(), deleteRunningTasks, accept, context);
-    }
-
-    /**
-     * Delete project
-     * 
-     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
-     * project.
-     * 
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param projectName Name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -703,7 +704,31 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String groupName, String serviceName, String projectName,
         Boolean deleteRunningTasks, Context context) {
-        return deleteWithResponseAsync(groupName, serviceName, projectName, deleteRunningTasks, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
+            projectName, this.client.getApiVersion(), deleteRunningTasks, accept, context);
     }
 
     /**
@@ -782,53 +807,6 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
      * @param parameters Information about the project.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> updateWithResponseAsync(String groupName, String serviceName,
-        String projectName, ProjectInner parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (groupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
-        }
-        if (serviceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
-        }
-        if (projectName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
-            projectName, this.client.getApiVersion(), parameters, accept, context);
-    }
-
-    /**
-     * Update project
-     * 
-     * The project resource is a nested resource representing a stored migration project. The PATCH method updates an
-     * existing project.
-     * 
-     * @param groupName Name of the resource group.
-     * @param serviceName Name of the service.
-     * @param projectName Name of the project.
-     * @param parameters Information about the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -860,7 +838,37 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ProjectInner> updateWithResponse(String groupName, String serviceName, String projectName,
         ProjectInner parameters, Context context) {
-        return updateWithResponseAsync(groupName, serviceName, projectName, parameters, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (groupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
+            projectName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -884,6 +892,8 @@ public final class ProjectsClientImpl implements ProjectsClient {
     }
 
     /**
+     * Get projects in a service
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -894,7 +904,7 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProjectInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<ProjectInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -903,15 +913,43 @@ public final class ProjectsClientImpl implements ProjectsClient {
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ProjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get projects in a service
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oData page of project resources along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ProjectInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ProjectList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get projects in a service
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -919,22 +957,24 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return oData page of project resources along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProjectInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<ProjectInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ProjectList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ProjectsClientImpl.class);
 }

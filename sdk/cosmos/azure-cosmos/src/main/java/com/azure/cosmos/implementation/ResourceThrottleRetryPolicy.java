@@ -28,31 +28,32 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     private int currentAttemptCount;
     private Duration cumulativeRetryDelay;
     private RetryContext retryContext;
-    private final boolean retryOnClientSideThrottledBatchRequests;
+    private final boolean disableRetryForThrottledBatchRequest;
+    private RxDocumentServiceRequest request;
 
     public ResourceThrottleRetryPolicy(
         int maxAttemptCount,
         Duration maxWaitTime,
         RetryContext retryContext,
-        boolean retryOnClientSideThrottledBatchRequests) {
+        boolean disableRetryForThrottledBatchRequest) {
 
-        this(maxAttemptCount, maxWaitTime, retryOnClientSideThrottledBatchRequests);
+        this(maxAttemptCount, maxWaitTime, disableRetryForThrottledBatchRequest);
         this.retryContext = retryContext;
     }
 
     public ResourceThrottleRetryPolicy(
         int maxAttemptCount,
         Duration maxWaitTime,
-        boolean retryOnClientSideThrottledBatchRequests) {
+        boolean disableRetryForThrottledBatchRequest) {
 
-        this(maxAttemptCount, maxWaitTime, 1, retryOnClientSideThrottledBatchRequests);
+        this(maxAttemptCount, maxWaitTime, 1, disableRetryForThrottledBatchRequest);
     }
 
     public ResourceThrottleRetryPolicy(
         int maxAttemptCount,
         Duration maxWaitTime,
         int backoffDelayFactor,
-        boolean retryOnClientSideThrottledBatchRequests) {
+        boolean disableRetryForThrottledBatchRequest) {
 
         Utils.checkStateOrThrow(maxWaitTime.getSeconds() <= Integer.MAX_VALUE / 1000, "maxWaitTime", "maxWaitTime must not be larger than " + Integer.MAX_VALUE / 1000);
 
@@ -61,7 +62,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         this.maxWaitTime = maxWaitTime;
         this.currentAttemptCount = 0;
         this.cumulativeRetryDelay = Duration.ZERO;
-        this.retryOnClientSideThrottledBatchRequests = retryOnClientSideThrottledBatchRequests;
+        this.disableRetryForThrottledBatchRequest = disableRetryForThrottledBatchRequest;
     }
 
     @Override
@@ -74,11 +75,18 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                 "Operation will NOT be retried - not a throttled request. Current attempt {}",
                 this.currentAttemptCount,
                 exception);
-            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
+            return Mono.just(ShouldRetryResult.errorOnNonRelatedException(exception));
         }
 
-        if (!retryOnClientSideThrottledBatchRequests &&
-            dce.getSubStatusCode() == HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_BULK_REQUEST_RATE_TOO_LARGE) {
+        if (disableRetryForThrottledBatchRequest &&
+            this.request != null &&
+            this.request.getOperationType() == OperationType.Batch &&
+            this.request.getResourceType() == ResourceType.Document) {
+
+            logger.trace(
+                "Operation will NOT be retried - retry is disabled for batch request. Current attempt {}",
+                this.currentAttemptCount,
+                exception);
 
             return Mono.just(ShouldRetryResult.noRetry());
         }
@@ -113,7 +121,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
 
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
-        // no op
+        this.request = request;
     }
 
     @Override

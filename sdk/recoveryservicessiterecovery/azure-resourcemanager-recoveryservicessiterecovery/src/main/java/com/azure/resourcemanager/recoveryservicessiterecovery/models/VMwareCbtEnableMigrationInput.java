@@ -44,6 +44,11 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
      * A value indicating whether bulk SQL RP registration to be done.
      */
     private String performSqlBulkRegistration;
@@ -148,6 +153,11 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
      */
     private Map<String, String> targetNicTags;
 
+    /*
+     * The OS name selected by user.
+     */
+    private String userSelectedOSName;
+
     /**
      * Creates an instance of VMwareCbtEnableMigrationInput class.
      */
@@ -241,6 +251,26 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
      */
     public VMwareCbtEnableMigrationInput withSqlServerLicenseType(SqlServerLicenseType sqlServerLicenseType) {
         this.sqlServerLicenseType = sqlServerLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the VMwareCbtEnableMigrationInput object itself.
+     */
+    public VMwareCbtEnableMigrationInput withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
         return this;
     }
 
@@ -667,6 +697,26 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
     }
 
     /**
+     * Get the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @return the userSelectedOSName value.
+     */
+    public String userSelectedOSName() {
+        return this.userSelectedOSName;
+    }
+
+    /**
+     * Set the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @param userSelectedOSName the userSelectedOSName value to set.
+     * @return the VMwareCbtEnableMigrationInput object itself.
+     */
+    public VMwareCbtEnableMigrationInput withUserSelectedOSName(String userSelectedOSName) {
+        this.userSelectedOSName = userSelectedOSName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -729,6 +779,8 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
         jsonWriter.writeStringField("sqlServerLicenseType",
             this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
         jsonWriter.writeStringField("performSqlBulkRegistration", this.performSqlBulkRegistration);
         jsonWriter.writeStringField("targetVmName", this.targetVmName);
         jsonWriter.writeStringField("targetVmSize", this.targetVmSize);
@@ -748,6 +800,7 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
         jsonWriter.writeMapField("targetDiskTags", this.targetDiskTags,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("userSelectedOSName", this.userSelectedOSName);
         return jsonWriter.writeEndObject();
     }
 
@@ -789,6 +842,9 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
                 } else if ("sqlServerLicenseType".equals(fieldName)) {
                     deserializedVMwareCbtEnableMigrationInput.sqlServerLicenseType
                         = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
                 } else if ("performSqlBulkRegistration".equals(fieldName)) {
                     deserializedVMwareCbtEnableMigrationInput.performSqlBulkRegistration = reader.getString();
                 } else if ("targetVmName".equals(fieldName)) {
@@ -829,6 +885,8 @@ public final class VMwareCbtEnableMigrationInput extends EnableMigrationProvider
                 } else if ("targetNicTags".equals(fieldName)) {
                     Map<String, String> targetNicTags = reader.readMap(reader1 -> reader1.getString());
                     deserializedVMwareCbtEnableMigrationInput.targetNicTags = targetNicTags;
+                } else if ("userSelectedOSName".equals(fieldName)) {
+                    deserializedVMwareCbtEnableMigrationInput.userSelectedOSName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureWorkloadJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureWorkloadJobTaskDetails model = BinaryData.fromString("{\"taskId\":\"riaa\",\"status\":\"uagydwqfbylyrf\"}")
-            .toObject(AzureWorkloadJobTaskDetails.class);
-        Assertions.assertEquals("riaa", model.taskId());
-        Assertions.assertEquals("uagydwqfbylyrf", model.status());
+        AzureWorkloadJobTaskDetails model
+            = BinaryData.fromString("{\"taskId\":\"ffukiscvw\",\"status\":\"hwplefaxvx\"}")
+                .toObject(AzureWorkloadJobTaskDetails.class);
+        Assertions.assertEquals("ffukiscvw", model.taskId());
+        Assertions.assertEquals("hwplefaxvx", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadJobTaskDetails model
-            = new AzureWorkloadJobTaskDetails().withTaskId("riaa").withStatus("uagydwqfbylyrf");
+            = new AzureWorkloadJobTaskDetails().withTaskId("ffukiscvw").withStatus("hwplefaxvx");
         model = BinaryData.fromObject(model).toObject(AzureWorkloadJobTaskDetails.class);
-        Assertions.assertEquals("riaa", model.taskId());
-        Assertions.assertEquals("uagydwqfbylyrf", model.status());
+        Assertions.assertEquals("ffukiscvw", model.taskId());
+        Assertions.assertEquals("hwplefaxvx", model.status());
     }
 }

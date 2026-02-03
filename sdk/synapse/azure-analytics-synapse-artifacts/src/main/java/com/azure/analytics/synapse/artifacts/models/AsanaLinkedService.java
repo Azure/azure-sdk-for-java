@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,22 +22,26 @@ public class AsanaLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Asana";
 
     /*
      * The api token for the Asana source.
      */
+    @Generated
     private SecretBase apiToken;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of AsanaLinkedService class.
      */
+    @Generated
     public AsanaLinkedService() {
     }
 
@@ -45,6 +50,7 @@ public class AsanaLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -55,6 +61,7 @@ public class AsanaLinkedService extends LinkedService {
      * 
      * @return the apiToken value.
      */
+    @Generated
     public SecretBase getApiToken() {
         return this.apiToken;
     }
@@ -65,6 +72,7 @@ public class AsanaLinkedService extends LinkedService {
      * @param apiToken the apiToken value to set.
      * @return the AsanaLinkedService object itself.
      */
+    @Generated
     public AsanaLinkedService setApiToken(SecretBase apiToken) {
         this.apiToken = apiToken;
         return this;
@@ -76,6 +84,7 @@ public class AsanaLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -87,6 +96,7 @@ public class AsanaLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AsanaLinkedService object itself.
      */
+    @Generated
     public AsanaLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -95,6 +105,17 @@ public class AsanaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public AsanaLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public AsanaLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -104,6 +125,7 @@ public class AsanaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AsanaLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -113,6 +135,7 @@ public class AsanaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AsanaLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -122,6 +145,7 @@ public class AsanaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AsanaLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -131,9 +155,11 @@ public class AsanaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -142,7 +168,9 @@ public class AsanaLinkedService extends LinkedService {
         if (apiToken != null || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("apiToken", this.apiToken);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -162,6 +190,7 @@ public class AsanaLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AsanaLinkedService.
      */
+    @Generated
     public static AsanaLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AsanaLinkedService deserializedAsanaLinkedService = new AsanaLinkedService();
@@ -170,7 +199,9 @@ public class AsanaLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAsanaLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAsanaLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedAsanaLinkedService.setDescription(reader.getString());

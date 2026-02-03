@@ -12,18 +12,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Microsoft Fabric LakeHouse Table dataset properties.
+ * Microsoft Fabric Lakehouse Table dataset properties.
  */
 @Fluent
 public final class LakeHouseTableDatasetTypeProperties
     implements JsonSerializable<LakeHouseTableDatasetTypeProperties> {
     /*
-     * The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType string).
+     * The schema name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType string).
      */
     private Object schema;
 
     /*
-     * The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType string).
+     * The name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType string).
      */
     private Object table;
 
@@ -34,7 +34,7 @@ public final class LakeHouseTableDatasetTypeProperties
     }
 
     /**
-     * Get the schema property: The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
+     * Get the schema property: The schema name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with
      * resultType string).
      * 
      * @return the schema value.
@@ -44,7 +44,7 @@ public final class LakeHouseTableDatasetTypeProperties
     }
 
     /**
-     * Set the schema property: The schema name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with
+     * Set the schema property: The schema name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with
      * resultType string).
      * 
      * @param schema the schema value to set.
@@ -56,7 +56,7 @@ public final class LakeHouseTableDatasetTypeProperties
     }
 
     /**
-     * Get the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * Get the table property: The name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType
      * string).
      * 
      * @return the table value.
@@ -66,7 +66,7 @@ public final class LakeHouseTableDatasetTypeProperties
     }
 
     /**
-     * Set the table property: The name of Microsoft Fabric LakeHouse Table. Type: string (or Expression with resultType
+     * Set the table property: The name of Microsoft Fabric Lakehouse Table. Type: string (or Expression with resultType
      * string).
      * 
      * @param table the table value to set.
@@ -91,8 +91,12 @@ public final class LakeHouseTableDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("schema", this.schema);
-        jsonWriter.writeUntypedField("table", this.table);
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
         return jsonWriter.writeEndObject();
     }
 

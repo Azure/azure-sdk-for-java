@@ -7,8 +7,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.RaiBlocklist;
@@ -22,19 +22,19 @@ public final class RaiBlocklistsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"mbpjptnvwjh\",\"tags\":{\"btpakftngatw\":\"dqpx\",\"pycvjqdvdwkqpldr\":\"ykyutrymdwmfj\",\"taoutnpdct\":\"efgnaavuagnt\",\"yeuyldph\":\"hspfefyihd\"},\"properties\":{\"description\":\"bkcgsuthhllnm\"},\"id\":\"y\",\"name\":\"efxexlf\",\"type\":\"i\"}]}";
+            = "{\"value\":[{\"etag\":\"swhddzydisnuep\",\"tags\":{\"ibz\":\"jlnldpxottdiiaoc\"},\"properties\":{\"description\":\"weebiphryv\"},\"id\":\"wqwoqsratjhdhzyb\",\"name\":\"pijhfrzgdkk\",\"type\":\"gv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RaiBlocklist> response
-            = manager.raiBlocklists().list("ev", "wmseharxifvqn", com.azure.core.util.Context.NONE);
+            = manager.raiBlocklists().list("upyvqyvliq", "ipsejbsvsia", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dqpx", response.iterator().next().tags().get("btpakftngatw"));
-        Assertions.assertEquals("bkcgsuthhllnm", response.iterator().next().properties().description());
+        Assertions.assertEquals("jlnldpxottdiiaoc", response.iterator().next().tags().get("ibz"));
+        Assertions.assertEquals("weebiphryv", response.iterator().next().properties().description());
     }
 }

@@ -14,51 +14,46 @@ public final class PrivateLinkResourcesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkResourcesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"groupId\":\"yzqedikdfrd\",\"displayName\":\"qmrjg\",\"requiredMembers\":[\"fqlggw\",\"iwzcxmjpbyeph\"],\"requiredZoneNames\":[\"vljvrc\"]},\"id\":\"fqip\",\"name\":\"hnp\",\"type\":\"yqwcabvnuil\"},{\"properties\":{\"groupId\":\"aswlp\",\"displayName\":\"gm\",\"requiredMembers\":[\"jlrxwtoaukhfk\",\"cisiz\",\"oaedsxjwuivedwcg\"],\"requiredZoneNames\":[\"wxeiqbpsmgomg\",\"amljdlrgmsplzgau\",\"cshhv\"]},\"id\":\"wgnxkympqanxrj\",\"name\":\"xtwbta\",\"type\":\"pnyghs\"},{\"properties\":{\"groupId\":\"ylhk\",\"displayName\":\"nsghp\",\"requiredMembers\":[\"phdrw\",\"jkhvyomacluzvxnq\",\"hrpq\",\"df\"],\"requiredZoneNames\":[\"oi\"]},\"id\":\"css\",\"name\":\"xuifmcsypobkdqz\",\"type\":\"zsylollgt\"}],\"nextLink\":\"zzydmxzjijpvua\"}")
+            "{\"value\":[{\"properties\":{\"groupId\":\"gahttzlswvaj\",\"displayName\":\"utlxjoqzasunwqrj\",\"requiredMembers\":[\"gqhaohcmbuocn\"],\"requiredZoneNames\":[\"hmbpyryxamebly\",\"yvk\"]},\"id\":\"m\",\"name\":\"cxneh\",\"type\":\"mtodl\"},{\"properties\":{\"groupId\":\"apucygvo\",\"displayName\":\"yunssx\",\"requiredMembers\":[\"ieegjl\"],\"requiredZoneNames\":[\"paseksgb\",\"xantuygdhg\",\"qipir\"]},\"id\":\"wrq\",\"name\":\"ulopmjnlexwhcb\",\"type\":\"ibkeph\"}],\"nextLink\":\"uerct\"}")
             .toObject(PrivateLinkResourcesListResult.class);
-        Assertions.assertEquals("fqip", model.value().get(0).id());
-        Assertions.assertEquals("hnp", model.value().get(0).name());
-        Assertions.assertEquals("yqwcabvnuil", model.value().get(0).type());
-        Assertions.assertEquals("yzqedikdfrd", model.value().get(0).groupId());
-        Assertions.assertEquals("qmrjg", model.value().get(0).displayName());
-        Assertions.assertEquals("fqlggw", model.value().get(0).requiredMembers().get(0));
-        Assertions.assertEquals("vljvrc", model.value().get(0).requiredZoneNames().get(0));
-        Assertions.assertEquals("zzydmxzjijpvua", model.nextLink());
+        Assertions.assertEquals("m", model.value().get(0).id());
+        Assertions.assertEquals("cxneh", model.value().get(0).name());
+        Assertions.assertEquals("mtodl", model.value().get(0).type());
+        Assertions.assertEquals("gahttzlswvaj", model.value().get(0).groupId());
+        Assertions.assertEquals("utlxjoqzasunwqrj", model.value().get(0).displayName());
+        Assertions.assertEquals("gqhaohcmbuocn", model.value().get(0).requiredMembers().get(0));
+        Assertions.assertEquals("hmbpyryxamebly", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("uerct", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourcesListResult model = new PrivateLinkResourcesListResult().withValue(Arrays.asList(
-            new PrivateLinkResourceInner().withId("fqip")
-                .withName("hnp")
-                .withType("yqwcabvnuil")
-                .withGroupId("yzqedikdfrd")
-                .withDisplayName("qmrjg")
-                .withRequiredMembers(Arrays.asList("fqlggw", "iwzcxmjpbyeph"))
-                .withRequiredZoneNames(Arrays.asList("vljvrc")),
-            new PrivateLinkResourceInner().withId("wgnxkympqanxrj")
-                .withName("xtwbta")
-                .withType("pnyghs")
-                .withGroupId("aswlp")
-                .withDisplayName("gm")
-                .withRequiredMembers(Arrays.asList("jlrxwtoaukhfk", "cisiz", "oaedsxjwuivedwcg"))
-                .withRequiredZoneNames(Arrays.asList("wxeiqbpsmgomg", "amljdlrgmsplzgau", "cshhv")),
-            new PrivateLinkResourceInner().withId("css")
-                .withName("xuifmcsypobkdqz")
-                .withType("zsylollgt")
-                .withGroupId("ylhk")
-                .withDisplayName("nsghp")
-                .withRequiredMembers(Arrays.asList("phdrw", "jkhvyomacluzvxnq", "hrpq", "df"))
-                .withRequiredZoneNames(Arrays.asList("oi"))))
-            .withNextLink("zzydmxzjijpvua");
+        PrivateLinkResourcesListResult model
+            = new PrivateLinkResourcesListResult()
+                .withValue(Arrays.asList(
+                    new PrivateLinkResourceInner().withId("m")
+                        .withName("cxneh")
+                        .withType("mtodl")
+                        .withGroupId("gahttzlswvaj")
+                        .withDisplayName("utlxjoqzasunwqrj")
+                        .withRequiredMembers(Arrays.asList("gqhaohcmbuocn"))
+                        .withRequiredZoneNames(Arrays.asList("hmbpyryxamebly", "yvk")),
+                    new PrivateLinkResourceInner().withId("wrq")
+                        .withName("ulopmjnlexwhcb")
+                        .withType("ibkeph")
+                        .withGroupId("apucygvo")
+                        .withDisplayName("yunssx")
+                        .withRequiredMembers(Arrays.asList("ieegjl"))
+                        .withRequiredZoneNames(Arrays.asList("paseksgb", "xantuygdhg", "qipir"))))
+                .withNextLink("uerct");
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourcesListResult.class);
-        Assertions.assertEquals("fqip", model.value().get(0).id());
-        Assertions.assertEquals("hnp", model.value().get(0).name());
-        Assertions.assertEquals("yqwcabvnuil", model.value().get(0).type());
-        Assertions.assertEquals("yzqedikdfrd", model.value().get(0).groupId());
-        Assertions.assertEquals("qmrjg", model.value().get(0).displayName());
-        Assertions.assertEquals("fqlggw", model.value().get(0).requiredMembers().get(0));
-        Assertions.assertEquals("vljvrc", model.value().get(0).requiredZoneNames().get(0));
-        Assertions.assertEquals("zzydmxzjijpvua", model.nextLink());
+        Assertions.assertEquals("m", model.value().get(0).id());
+        Assertions.assertEquals("cxneh", model.value().get(0).name());
+        Assertions.assertEquals("mtodl", model.value().get(0).type());
+        Assertions.assertEquals("gahttzlswvaj", model.value().get(0).groupId());
+        Assertions.assertEquals("utlxjoqzasunwqrj", model.value().get(0).displayName());
+        Assertions.assertEquals("gqhaohcmbuocn", model.value().get(0).requiredMembers().get(0));
+        Assertions.assertEquals("hmbpyryxamebly", model.value().get(0).requiredZoneNames().get(0));
+        Assertions.assertEquals("uerct", model.nextLink());
     }
 }

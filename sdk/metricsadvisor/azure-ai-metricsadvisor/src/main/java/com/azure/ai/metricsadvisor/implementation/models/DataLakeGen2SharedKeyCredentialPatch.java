@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
     /*
      * Type of data source credential
      */
+    @Generated
     private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY;
 
     /*
      * The parameters property.
      */
+    @Generated
     private DataLakeGen2SharedKeyParamPatch parameters;
 
     /**
      * Creates an instance of DataLakeGen2SharedKeyCredentialPatch class.
      */
+    @Generated
     public DataLakeGen2SharedKeyCredentialPatch() {
     }
 
@@ -36,6 +40,7 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
      * 
      * @return the dataSourceCredentialType value.
      */
+    @Generated
     @Override
     public DataSourceCredentialType getDataSourceCredentialType() {
         return this.dataSourceCredentialType;
@@ -46,6 +51,7 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
      * 
      * @return the parameters value.
      */
+    @Generated
     public DataLakeGen2SharedKeyParamPatch getParameters() {
         return this.parameters;
     }
@@ -56,6 +62,7 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
      * @param parameters the parameters value to set.
      * @return the DataLakeGen2SharedKeyCredentialPatch object itself.
      */
+    @Generated
     public DataLakeGen2SharedKeyCredentialPatch setParameters(DataLakeGen2SharedKeyParamPatch parameters) {
         this.parameters = parameters;
         return this;
@@ -64,6 +71,7 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataLakeGen2SharedKeyCredentialPatch setDataSourceCredentialName(String dataSourceCredentialName) {
         super.setDataSourceCredentialName(dataSourceCredentialName);
@@ -73,6 +81,7 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DataLakeGen2SharedKeyCredentialPatch
         setDataSourceCredentialDescription(String dataSourceCredentialDescription) {
@@ -83,6 +92,7 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +112,7 @@ public final class DataLakeGen2SharedKeyCredentialPatch extends DataSourceCreden
      * or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataLakeGen2SharedKeyCredentialPatch.
      */
+    @Generated
     public static DataLakeGen2SharedKeyCredentialPatch fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataLakeGen2SharedKeyCredentialPatch deserializedDataLakeGen2SharedKeyCredentialPatch

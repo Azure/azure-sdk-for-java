@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.ClientGroup;
@@ -22,20 +22,20 @@ public final class ClientGroupsListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"vpaklozkxbz\",\"query\":\"ejpl\",\"provisioningState\":\"Canceled\"},\"id\":\"bttt\",\"name\":\"gs\",\"type\":\"xunrswgkpjhboy\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"tmol\",\"query\":\"ywmpinmzvfkneer\",\"provisioningState\":\"Failed\"},\"id\":\"knsjulugd\",\"name\":\"bnhrxlelfjhkeiz\",\"type\":\"pihtdmiwjekpt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ClientGroup> response = manager.clientGroups()
-            .listByNamespace("etjdvqydieqqkwa", "uwdxvqzxoebwgj", "bibanbau", 319172782,
+            .listByNamespace("lpbcjtrpz", "yudivbxnhsqeaeo", "qelwgdhuruzytza", 430723655,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vpaklozkxbz", response.iterator().next().description());
-        Assertions.assertEquals("ejpl", response.iterator().next().query());
+        Assertions.assertEquals("tmol", response.iterator().next().description());
+        Assertions.assertEquals("ywmpinmzvfkneer", response.iterator().next().query());
     }
 }

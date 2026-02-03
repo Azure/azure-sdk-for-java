@@ -27,6 +27,31 @@ public final class SqlConnectionInfo extends ConnectionInfo {
     private String dataSource;
 
     /*
+     * name of the server
+     */
+    private String serverName;
+
+    /*
+     * Port for Server
+     */
+    private Integer port;
+
+    /*
+     * server version
+     */
+    private String serverVersion;
+
+    /*
+     * server brand version
+     */
+    private String serverBrandVersion;
+
+    /*
+     * Represents the ID of an HTTP resource represented by an Azure resource provider.
+     */
+    private String resourceId;
+
+    /*
      * Authentication type to use for connection
      */
     private AuthenticationType authentication;
@@ -84,6 +109,106 @@ public final class SqlConnectionInfo extends ConnectionInfo {
      */
     public SqlConnectionInfo withDataSource(String dataSource) {
         this.dataSource = dataSource;
+        return this;
+    }
+
+    /**
+     * Get the serverName property: name of the server.
+     * 
+     * @return the serverName value.
+     */
+    public String serverName() {
+        return this.serverName;
+    }
+
+    /**
+     * Set the serverName property: name of the server.
+     * 
+     * @param serverName the serverName value to set.
+     * @return the SqlConnectionInfo object itself.
+     */
+    public SqlConnectionInfo withServerName(String serverName) {
+        this.serverName = serverName;
+        return this;
+    }
+
+    /**
+     * Get the port property: Port for Server.
+     * 
+     * @return the port value.
+     */
+    public Integer port() {
+        return this.port;
+    }
+
+    /**
+     * Set the port property: Port for Server.
+     * 
+     * @param port the port value to set.
+     * @return the SqlConnectionInfo object itself.
+     */
+    public SqlConnectionInfo withPort(Integer port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the serverVersion property: server version.
+     * 
+     * @return the serverVersion value.
+     */
+    public String serverVersion() {
+        return this.serverVersion;
+    }
+
+    /**
+     * Set the serverVersion property: server version.
+     * 
+     * @param serverVersion the serverVersion value to set.
+     * @return the SqlConnectionInfo object itself.
+     */
+    public SqlConnectionInfo withServerVersion(String serverVersion) {
+        this.serverVersion = serverVersion;
+        return this;
+    }
+
+    /**
+     * Get the serverBrandVersion property: server brand version.
+     * 
+     * @return the serverBrandVersion value.
+     */
+    public String serverBrandVersion() {
+        return this.serverBrandVersion;
+    }
+
+    /**
+     * Set the serverBrandVersion property: server brand version.
+     * 
+     * @param serverBrandVersion the serverBrandVersion value to set.
+     * @return the SqlConnectionInfo object itself.
+     */
+    public SqlConnectionInfo withServerBrandVersion(String serverBrandVersion) {
+        this.serverBrandVersion = serverBrandVersion;
+        return this;
+    }
+
+    /**
+     * Get the resourceId property: Represents the ID of an HTTP resource represented by an Azure resource provider.
+     * 
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.resourceId;
+    }
+
+    /**
+     * Set the resourceId property: Represents the ID of an HTTP resource represented by an Azure resource provider.
+     * 
+     * @param resourceId the resourceId value to set.
+     * @return the SqlConnectionInfo object itself.
+     */
+    public SqlConnectionInfo withResourceId(String resourceId) {
+        this.resourceId = resourceId;
         return this;
     }
 
@@ -230,6 +355,11 @@ public final class SqlConnectionInfo extends ConnectionInfo {
         jsonWriter.writeStringField("password", password());
         jsonWriter.writeStringField("dataSource", this.dataSource);
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("serverName", this.serverName);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("serverVersion", this.serverVersion);
+        jsonWriter.writeStringField("serverBrandVersion", this.serverBrandVersion);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("authentication",
             this.authentication == null ? null : this.authentication.toString());
         jsonWriter.writeBooleanField("encryptConnection", this.encryptConnection);
@@ -263,6 +393,16 @@ public final class SqlConnectionInfo extends ConnectionInfo {
                     deserializedSqlConnectionInfo.dataSource = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedSqlConnectionInfo.type = reader.getString();
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.serverName = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.port = reader.getNullable(JsonReader::getInt);
+                } else if ("serverVersion".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.serverVersion = reader.getString();
+                } else if ("serverBrandVersion".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.serverBrandVersion = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedSqlConnectionInfo.resourceId = reader.getString();
                 } else if ("authentication".equals(fieldName)) {
                     deserializedSqlConnectionInfo.authentication = AuthenticationType.fromString(reader.getString());
                 } else if ("encryptConnection".equals(fieldName)) {

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VaultSetting;
@@ -22,24 +22,24 @@ public final class ReplicationVaultSettingsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"migrationSolutionId\":\"inrufq\",\"vmwareToAzureProviderType\":\"uygasfmhb\"},\"location\":\"ewk\",\"id\":\"natxvuzccaliry\",\"name\":\"ytc\",\"type\":\"qpjohlcbn\"}";
+            = "{\"properties\":{\"migrationSolutionId\":\"ooghjxhppp\",\"vmwareToAzureProviderType\":\"sqiwlm\"},\"location\":\"jtoseohoyg\",\"id\":\"wdzizzu\",\"name\":\"d\",\"type\":\"rcppqvovsirtas\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         VaultSetting response = manager.replicationVaultSettings()
-            .define("mwaxsymnrtv")
-            .withExistingVault("zrkrztpyay", "hxl")
-            .withProperties(new VaultSettingCreationInputProperties().withMigrationSolutionId("imavyotpcvpahh")
-                .withVmwareToAzureProviderType("vyqpvzxxzndw"))
+            .define("pqifsgzfgxwf")
+            .withExistingVault("hmmgblqyfg", "b")
+            .withProperties(new VaultSettingCreationInputProperties().withMigrationSolutionId("iq")
+                .withVmwareToAzureProviderType("sohwn"))
             .create();
 
-        Assertions.assertEquals("inrufq", response.properties().migrationSolutionId());
-        Assertions.assertEquals("uygasfmhb", response.properties().vmwareToAzureProviderType());
-        Assertions.assertEquals("ewk", response.location());
+        Assertions.assertEquals("ooghjxhppp", response.properties().migrationSolutionId());
+        Assertions.assertEquals("sqiwlm", response.properties().vmwareToAzureProviderType());
+        Assertions.assertEquals("jtoseohoyg", response.location());
     }
 }

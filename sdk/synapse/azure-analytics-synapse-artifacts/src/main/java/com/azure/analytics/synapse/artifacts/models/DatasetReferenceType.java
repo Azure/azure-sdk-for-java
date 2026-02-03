@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ public final class DatasetReferenceType extends ExpandableStringEnum<DatasetRefe
     /**
      * Static value DatasetReference for DatasetReferenceType.
      */
+    @Generated
     public static final DatasetReferenceType DATASET_REFERENCE = fromString("DatasetReference");
 
     /**
@@ -21,6 +23,7 @@ public final class DatasetReferenceType extends ExpandableStringEnum<DatasetRefe
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DatasetReferenceType() {
     }
@@ -31,6 +34,7 @@ public final class DatasetReferenceType extends ExpandableStringEnum<DatasetRefe
      * @param name a name to look for.
      * @return the corresponding DatasetReferenceType.
      */
+    @Generated
     public static DatasetReferenceType fromString(String name) {
         return fromString(name, DatasetReferenceType.class);
     }
@@ -40,6 +44,7 @@ public final class DatasetReferenceType extends ExpandableStringEnum<DatasetRefe
      * 
      * @return known DatasetReferenceType values.
      */
+    @Generated
     public static Collection<DatasetReferenceType> values() {
         return values(DatasetReferenceType.class);
     }

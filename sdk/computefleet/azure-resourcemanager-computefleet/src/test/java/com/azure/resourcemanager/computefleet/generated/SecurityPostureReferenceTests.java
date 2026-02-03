@@ -17,7 +17,7 @@ public final class SecurityPostureReferenceTests {
                 .toObject(SecurityPostureReference.class);
         Assertions.assertEquals("ah", model.id());
         Assertions.assertEquals("y", model.excludeExtensions().get(0));
-        Assertions.assertEquals(true, model.isOverridable());
+        Assertions.assertTrue(model.isOverridable());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,6 +28,6 @@ public final class SecurityPostureReferenceTests {
         model = BinaryData.fromObject(model).toObject(SecurityPostureReference.class);
         Assertions.assertEquals("ah", model.id());
         Assertions.assertEquals("y", model.excludeExtensions().get(0));
-        Assertions.assertEquals(true, model.isOverridable());
+        Assertions.assertTrue(model.isOverridable());
     }
 }

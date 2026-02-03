@@ -116,14 +116,27 @@ public interface ResourceTypeRegistrationsClient {
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String providerNamespace, String resourceType);
+
+    /**
+     * Deletes a resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String providerNamespace, String resourceType, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String providerNamespace, String resourceType, Context context);
 
     /**
      * Deletes a resource type.
@@ -136,6 +149,19 @@ public interface ResourceTypeRegistrationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String providerNamespace, String resourceType);
+
+    /**
+     * Deletes a resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String providerNamespace, String resourceType, Context context);
 
     /**
      * Gets the list of the resource types for the given provider.

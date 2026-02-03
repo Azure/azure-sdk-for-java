@@ -28,8 +28,8 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * values are: **CacheDisk,** **ResourceDisk.** The defaulting behavior is:
      * **CacheDisk** if one is configured for the VM size otherwise **ResourceDisk**
      * is used. Refer to the VM size documentation for Windows VM at
-     * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
-     * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
+     * https://learn.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
+     * https://learn.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
      * sizes exposes a cache disk.
      */
     private DiffDiskPlacement placement;
@@ -65,8 +65,8 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * values are: **CacheDisk,** **ResourceDisk.** The defaulting behavior is:
      * **CacheDisk** if one is configured for the VM size otherwise **ResourceDisk**
      * is used. Refer to the VM size documentation for Windows VM at
-     * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
-     * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
+     * https://learn.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
+     * https://learn.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
      * sizes exposes a cache disk.
      * 
      * @return the placement value.
@@ -80,8 +80,8 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
      * values are: **CacheDisk,** **ResourceDisk.** The defaulting behavior is:
      * **CacheDisk** if one is configured for the VM size otherwise **ResourceDisk**
      * is used. Refer to the VM size documentation for Windows VM at
-     * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
-     * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
+     * https://learn.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
+     * https://learn.microsoft.com/azure/virtual-machines/linux/sizes to check which VM
      * sizes exposes a cache disk.
      * 
      * @param placement the placement value to set.
@@ -90,14 +90,6 @@ public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings
     public DiffDiskSettings withPlacement(DiffDiskPlacement placement) {
         this.placement = placement;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

@@ -12,18 +12,18 @@ public final class SchemaRegistryUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SchemaRegistryUpdateProperties model
-            = BinaryData.fromString("{\"displayName\":\"tldwkyzxuutk\",\"description\":\"ws\"}")
+            = BinaryData.fromString("{\"displayName\":\"itgvkx\",\"description\":\"yqdrf\"}")
                 .toObject(SchemaRegistryUpdateProperties.class);
-        Assertions.assertEquals("tldwkyzxuutk", model.displayName());
-        Assertions.assertEquals("ws", model.description());
+        Assertions.assertEquals("itgvkx", model.displayName());
+        Assertions.assertEquals("yqdrf", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaRegistryUpdateProperties model
-            = new SchemaRegistryUpdateProperties().withDisplayName("tldwkyzxuutk").withDescription("ws");
+            = new SchemaRegistryUpdateProperties().withDisplayName("itgvkx").withDescription("yqdrf");
         model = BinaryData.fromObject(model).toObject(SchemaRegistryUpdateProperties.class);
-        Assertions.assertEquals("tldwkyzxuutk", model.displayName());
-        Assertions.assertEquals("ws", model.description());
+        Assertions.assertEquals("itgvkx", model.displayName());
+        Assertions.assertEquals("yqdrf", model.description());
     }
 }

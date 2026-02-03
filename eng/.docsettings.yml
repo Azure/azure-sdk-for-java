@@ -19,7 +19,6 @@ omitted_paths:
   - sdk/*/*-stress/*
   - doc/*
   - eng/*
-  - common/smoke-tests/*
   - samples/*
 language: java
 root_check_enabled: True
@@ -32,46 +31,9 @@ required_readme_sections:
   - ^Next steps$
   - ^Contributing$
 known_presence_issues:
-  - ['sdk/cognitiveservices/ms-azure-cs-autosuggest', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-computervision', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-contentmoderator', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-customimagesearch', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-customsearch', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-customvision-prediction', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-customvision-training', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-entitysearch', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-faceapi', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-imagesearch', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-luis-authoring', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-luis-runtime', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-newssearch', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-qnamaker', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-spellcheck', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-videosearch', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-visualsearch', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-websearch', '#2847']
-  - ['sdk/mediaservices/microsoft-azure-media', '#2847']
   - ['sdk/servicebus/microsoft-azure-servicebus', '#2847']
   # Changelog List
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-autosuggest/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-computervision/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-contentmoderator/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-customimagesearch/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-customsearch/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-customvision-prediction/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-customvision-training/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-entitysearch/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-faceapi/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-imagesearch/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-luis-authoring/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-luis-runtime/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-newssearch/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-qnamaker/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-spellcheck/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-videosearch/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-visualsearch/CHANGELOG.md', '#2847']
-  - ['sdk/cognitiveservices/ms-azure-cs-websearch/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/azure-cosmos-examples/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/azure-cosmos-kafka-connect/CHANGELOG.md', '#2847']
   - ['sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/CHANGELOG.md', '#2847']
@@ -85,7 +47,6 @@ known_presence_issues:
   - ['sdk/keyvault/microsoft-azure-keyvault-extensions/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-webkey/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-test/CHANGELOG.md', '#2847']
-  - ['sdk/mediaservices/microsoft-azure-media/CHANGELOG.md', '#2847']
   - ['sdk/servicebus/microsoft-azure-servicebus/CHANGELOG.md', '#2847']
   - ['sdk/keyvault/microsoft-azure-keyvault-complete/CHANGELOG.md', '#2847']
 
@@ -98,6 +59,7 @@ known_content_issues:
   - ['sdk/core/README.md', '#3113']
   - ['sdk/clientcore/README.md', '#3113']
   - ['sdk/clientcore/core/README.md', '#3113']
+  - ['sdk/clientcore/http-netty4/README.md', '#3113']
   - ['sdk/clientcore/http-okhttp3/README.md', '#3113']
   - ['sdk/clientcore/tools/annotation-processor/README.md', '#3113']
   - ['sdk/clientcore/optional-dependency-tests/README.md', '#3113']
@@ -116,7 +78,10 @@ known_content_issues:
   - ['sdk/cosmos/azure-cosmos-spark_3-3_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-4_2-12/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3-5_2-12/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_3-5_2-13/README.md', '#3113']
+  - ['sdk/cosmos/azure-cosmos-spark_4-0_2-13/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/README.md', '#3113']
+  - ['sdk/cosmos/fabric-cosmos-spark-auth_3/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/dev/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/catalog-api.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-spark_3_2-12/docs/configuration-reference.md', '#3113']
@@ -131,6 +96,7 @@ known_content_issues:
   - ['sdk/keyvault/azure-security-keyvault-administration/README.md', '#3113']
   - ['sdk/monitor/azure-monitor-spring-native/README.md', '#3113']
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
+  - ['sdk/parents/azure-client-sdk-parent-v2/README.md', '#3113']
   - ['sdk/parents/azure-code-customization-parent/README.md', '#3113']
   - ['sdk/parents/azure-perf-test-parent/README.md', '#3113']
   - ['sdk/parents/clientcore-parent/README.md', '#3113']

@@ -15,22 +15,22 @@ public final class RaiBlocklistItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiBlocklistItemInner model = BinaryData.fromString(
-            "{\"etag\":\"xfzwi\",\"tags\":{\"yzsxjrkambtrne\":\"zjb\",\"eqvldspast\":\"vmnvu\"},\"properties\":{\"pattern\":\"kdmflvestmjlx\",\"isRegex\":true},\"id\":\"lozapeewchpxlk\",\"name\":\"wk\",\"type\":\"ziycslevufuztck\"}")
+            "{\"etag\":\"mdy\",\"tags\":{\"p\":\"wdigumbnraauz\",\"uvvfonkp\":\"jazysdzhezwwvaiq\"},\"properties\":{\"pattern\":\"yik\",\"isRegex\":false},\"id\":\"uyav\",\"name\":\"uwmncs\",\"type\":\"tijfybvp\"}")
             .toObject(RaiBlocklistItemInner.class);
-        Assertions.assertEquals("zjb", model.tags().get("yzsxjrkambtrne"));
-        Assertions.assertEquals("kdmflvestmjlx", model.properties().pattern());
-        Assertions.assertEquals(true, model.properties().isRegex());
+        Assertions.assertEquals("wdigumbnraauz", model.tags().get("p"));
+        Assertions.assertEquals("yik", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RaiBlocklistItemInner model
-            = new RaiBlocklistItemInner().withTags(mapOf("yzsxjrkambtrne", "zjb", "eqvldspast", "vmnvu"))
-                .withProperties(new RaiBlocklistItemProperties().withPattern("kdmflvestmjlx").withIsRegex(true));
+            = new RaiBlocklistItemInner().withTags(mapOf("p", "wdigumbnraauz", "uvvfonkp", "jazysdzhezwwvaiq"))
+                .withProperties(new RaiBlocklistItemProperties().withPattern("yik").withIsRegex(false));
         model = BinaryData.fromObject(model).toObject(RaiBlocklistItemInner.class);
-        Assertions.assertEquals("zjb", model.tags().get("yzsxjrkambtrne"));
-        Assertions.assertEquals("kdmflvestmjlx", model.properties().pattern());
-        Assertions.assertEquals(true, model.properties().isRegex());
+        Assertions.assertEquals("wdigumbnraauz", model.tags().get("p"));
+        Assertions.assertEquals("yik", model.properties().pattern());
+        Assertions.assertFalse(model.properties().isRegex());
     }
 
     // Use "Map.of" if available

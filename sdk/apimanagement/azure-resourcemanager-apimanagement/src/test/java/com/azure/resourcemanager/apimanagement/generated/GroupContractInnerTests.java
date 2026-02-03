@@ -13,24 +13,24 @@ public final class GroupContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"kyypzkgxfxfmy\",\"description\":\"sdbpokszanmh\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"diuwki\"},\"id\":\"kskw\",\"name\":\"tsdetjygowifcq\",\"type\":\"olzkgys\"}")
+            "{\"properties\":{\"displayName\":\"nndx\",\"description\":\"o\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"ptqmawzjdrpiz\"},\"id\":\"ulgyctsdbtqgku\",\"name\":\"dsooxr\",\"type\":\"w\"}")
             .toObject(GroupContractInner.class);
-        Assertions.assertEquals("kyypzkgxfxfmy", model.displayName());
-        Assertions.assertEquals("sdbpokszanmh", model.description());
-        Assertions.assertEquals(GroupType.CUSTOM, model.typePropertiesType());
-        Assertions.assertEquals("diuwki", model.externalId());
+        Assertions.assertEquals("nndx", model.displayName());
+        Assertions.assertEquals("o", model.description());
+        Assertions.assertEquals(GroupType.EXTERNAL, model.typePropertiesType());
+        Assertions.assertEquals("ptqmawzjdrpiz", model.externalId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupContractInner model = new GroupContractInner().withDisplayName("kyypzkgxfxfmy")
-            .withDescription("sdbpokszanmh")
-            .withTypePropertiesType(GroupType.CUSTOM)
-            .withExternalId("diuwki");
+        GroupContractInner model = new GroupContractInner().withDisplayName("nndx")
+            .withDescription("o")
+            .withTypePropertiesType(GroupType.EXTERNAL)
+            .withExternalId("ptqmawzjdrpiz");
         model = BinaryData.fromObject(model).toObject(GroupContractInner.class);
-        Assertions.assertEquals("kyypzkgxfxfmy", model.displayName());
-        Assertions.assertEquals("sdbpokszanmh", model.description());
-        Assertions.assertEquals(GroupType.CUSTOM, model.typePropertiesType());
-        Assertions.assertEquals("diuwki", model.externalId());
+        Assertions.assertEquals("nndx", model.displayName());
+        Assertions.assertEquals("o", model.description());
+        Assertions.assertEquals(GroupType.EXTERNAL, model.typePropertiesType());
+        Assertions.assertEquals("ptqmawzjdrpiz", model.externalId());
     }
 }

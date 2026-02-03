@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.spark.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,21 +15,25 @@ public final class SparkBatchJobResultType extends ExpandableStringEnum<SparkBat
     /**
      * Static value Uncertain for SparkBatchJobResultType.
      */
+    @Generated
     public static final SparkBatchJobResultType UNCERTAIN = fromString("Uncertain");
 
     /**
      * Static value Succeeded for SparkBatchJobResultType.
      */
+    @Generated
     public static final SparkBatchJobResultType SUCCEEDED = fromString("Succeeded");
 
     /**
      * Static value Failed for SparkBatchJobResultType.
      */
+    @Generated
     public static final SparkBatchJobResultType FAILED = fromString("Failed");
 
     /**
      * Static value Cancelled for SparkBatchJobResultType.
      */
+    @Generated
     public static final SparkBatchJobResultType CANCELLED = fromString("Cancelled");
 
     /**
@@ -36,6 +41,7 @@ public final class SparkBatchJobResultType extends ExpandableStringEnum<SparkBat
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SparkBatchJobResultType() {
     }
@@ -46,6 +52,7 @@ public final class SparkBatchJobResultType extends ExpandableStringEnum<SparkBat
      * @param name a name to look for.
      * @return the corresponding SparkBatchJobResultType.
      */
+    @Generated
     public static SparkBatchJobResultType fromString(String name) {
         return fromString(name, SparkBatchJobResultType.class);
     }
@@ -55,6 +62,7 @@ public final class SparkBatchJobResultType extends ExpandableStringEnum<SparkBat
      * 
      * @return known SparkBatchJobResultType values.
      */
+    @Generated
     public static Collection<SparkBatchJobResultType> values() {
         return values(SparkBatchJobResultType.class);
     }

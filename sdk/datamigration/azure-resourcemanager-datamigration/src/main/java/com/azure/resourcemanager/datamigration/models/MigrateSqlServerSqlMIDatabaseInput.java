@@ -38,6 +38,11 @@ public final class MigrateSqlServerSqlMIDatabaseInput implements JsonSerializabl
      */
     private List<String> backupFilePaths;
 
+    /*
+     * id of the database
+     */
+    private String id;
+
     /**
      * Creates an instance of MigrateSqlServerSqlMIDatabaseInput class.
      */
@@ -125,6 +130,26 @@ public final class MigrateSqlServerSqlMIDatabaseInput implements JsonSerializabl
     }
 
     /**
+     * Get the id property: id of the database.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: id of the database.
+     * 
+     * @param id the id value to set.
+     * @return the MigrateSqlServerSqlMIDatabaseInput object itself.
+     */
+    public MigrateSqlServerSqlMIDatabaseInput withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -158,6 +183,7 @@ public final class MigrateSqlServerSqlMIDatabaseInput implements JsonSerializabl
         jsonWriter.writeJsonField("backupFileShare", this.backupFileShare);
         jsonWriter.writeArrayField("backupFilePaths", this.backupFilePaths,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
     }
 
@@ -187,6 +213,8 @@ public final class MigrateSqlServerSqlMIDatabaseInput implements JsonSerializabl
                 } else if ("backupFilePaths".equals(fieldName)) {
                     List<String> backupFilePaths = reader.readArray(reader1 -> reader1.getString());
                     deserializedMigrateSqlServerSqlMIDatabaseInput.backupFilePaths = backupFilePaths;
+                } else if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMIDatabaseInput.id = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

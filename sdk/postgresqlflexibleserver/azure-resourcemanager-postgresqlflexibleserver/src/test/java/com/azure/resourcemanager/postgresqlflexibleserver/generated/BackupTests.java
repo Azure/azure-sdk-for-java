@@ -6,25 +6,25 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.GeoRedundantBackupEnum;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.GeographicallyRedundantBackup;
 import org.junit.jupiter.api.Assertions;
 
 public final class BackupTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Backup model = BinaryData.fromString(
-            "{\"backupRetentionDays\":585337534,\"geoRedundantBackup\":\"Enabled\",\"earliestRestoreDate\":\"2021-10-15T08:45:58Z\"}")
+            "{\"backupRetentionDays\":1112510482,\"geoRedundantBackup\":\"Disabled\",\"earliestRestoreDate\":\"2021-10-31T10:15:37Z\"}")
             .toObject(Backup.class);
-        Assertions.assertEquals(585337534, model.backupRetentionDays());
-        Assertions.assertEquals(GeoRedundantBackupEnum.ENABLED, model.geoRedundantBackup());
+        Assertions.assertEquals(1112510482, model.backupRetentionDays());
+        Assertions.assertEquals(GeographicallyRedundantBackup.DISABLED, model.geoRedundantBackup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Backup model
-            = new Backup().withBackupRetentionDays(585337534).withGeoRedundantBackup(GeoRedundantBackupEnum.ENABLED);
+        Backup model = new Backup().withBackupRetentionDays(1112510482)
+            .withGeoRedundantBackup(GeographicallyRedundantBackup.DISABLED);
         model = BinaryData.fromObject(model).toObject(Backup.class);
-        Assertions.assertEquals(585337534, model.backupRetentionDays());
-        Assertions.assertEquals(GeoRedundantBackupEnum.ENABLED, model.geoRedundantBackup());
+        Assertions.assertEquals(1112510482, model.backupRetentionDays());
+        Assertions.assertEquals(GeographicallyRedundantBackup.DISABLED, model.geoRedundantBackup());
     }
 }

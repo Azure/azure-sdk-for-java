@@ -12,15 +12,15 @@ public final class RecoveryPlanManualActionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanManualActionDetails model
-            = BinaryData.fromString("{\"instanceType\":\"ManualActionDetails\",\"description\":\"imcwqxynqjgsa\"}")
+            = BinaryData.fromString("{\"instanceType\":\"ManualActionDetails\",\"description\":\"xpqhmlq\"}")
                 .toObject(RecoveryPlanManualActionDetails.class);
-        Assertions.assertEquals("imcwqxynqjgsa", model.description());
+        Assertions.assertEquals("xpqhmlq", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanManualActionDetails model = new RecoveryPlanManualActionDetails().withDescription("imcwqxynqjgsa");
+        RecoveryPlanManualActionDetails model = new RecoveryPlanManualActionDetails().withDescription("xpqhmlq");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanManualActionDetails.class);
-        Assertions.assertEquals("imcwqxynqjgsa", model.description());
+        Assertions.assertEquals("xpqhmlq", model.description());
     }
 }

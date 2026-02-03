@@ -97,13 +97,13 @@ public interface RecoveryPlan {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceName, resourceGroupName.
+             * Specifies resourceGroupName, resourceName.
              * 
-             * @param resourceName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+             * @param resourceName The name of the recovery services vault.
              * @return the next definition stage.
              */
-            WithProperties withExistingVault(String resourceName, String resourceGroupName);
+            WithProperties withExistingVault(String resourceGroupName, String resourceName);
         }
 
         /**
@@ -279,7 +279,8 @@ public interface RecoveryPlan {
     /**
      * Execute reprotect of the recovery plan.
      * 
-     * The operation to reprotect(reverse replicate) a recovery plan.
+     * The operation to reprotect(reverse replicate) a recovery plan. This api is for deprecated scenarios and no longer
+     * works.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,7 +291,8 @@ public interface RecoveryPlan {
     /**
      * Execute reprotect of the recovery plan.
      * 
-     * The operation to reprotect(reverse replicate) a recovery plan.
+     * The operation to reprotect(reverse replicate) a recovery plan. This api is for deprecated scenarios and no longer
+     * works.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

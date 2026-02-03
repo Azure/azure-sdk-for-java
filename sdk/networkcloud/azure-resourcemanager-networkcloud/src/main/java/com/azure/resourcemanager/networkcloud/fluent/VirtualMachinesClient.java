@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.networkcloud.fluent.models.VirtualMachineInner;
+import com.azure.resourcemanager.networkcloud.models.VirtualMachineAssignRelayParameters;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePatchParameters;
 import com.azure.resourcemanager.networkcloud.models.VirtualMachinePowerOffParameters;
 
@@ -37,6 +38,9 @@ public interface VirtualMachinesClient {
      * 
      * Get a list of virtual machines in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,7 +48,7 @@ public interface VirtualMachinesClient {
      * @return a list of virtual machines in the provided subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineInner> list(Context context);
+    PagedIterable<VirtualMachineInner> list(Integer top, String skipToken, Context context);
 
     /**
      * List virtual machines in the resource group.
@@ -67,6 +71,9 @@ public interface VirtualMachinesClient {
      * Get a list of virtual machines in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,7 +82,8 @@ public interface VirtualMachinesClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the virtual machine.
@@ -135,6 +143,10 @@ public interface VirtualMachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +156,8 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
-        String virtualMachineName, VirtualMachineInner virtualMachineParameters, Context context);
+        String virtualMachineName, VirtualMachineInner virtualMachineParameters, String ifMatch, String ifNoneMatch,
+        Context context);
 
     /**
      * Create or update the virtual machine.
@@ -171,6 +184,10 @@ public interface VirtualMachinesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
      * @param virtualMachineParameters The request body.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -179,7 +196,7 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VirtualMachineInner createOrUpdate(String resourceGroupName, String virtualMachineName,
-        VirtualMachineInner virtualMachineParameters, Context context);
+        VirtualMachineInner virtualMachineParameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the virtual machine.
@@ -204,6 +221,10 @@ public interface VirtualMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,7 +233,7 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
-        String virtualMachineName, Context context);
+        String virtualMachineName, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Delete the virtual machine.
@@ -236,6 +257,10 @@ public interface VirtualMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -243,7 +268,8 @@ public interface VirtualMachinesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(String resourceGroupName, String virtualMachineName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String virtualMachineName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Patch the virtual machine.
@@ -271,6 +297,10 @@ public interface VirtualMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param virtualMachineUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,7 +311,8 @@ public interface VirtualMachinesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName,
-        String virtualMachineName, VirtualMachinePatchParameters virtualMachineUpdateParameters, Context context);
+        String virtualMachineName, String ifMatch, String ifNoneMatch,
+        VirtualMachinePatchParameters virtualMachineUpdateParameters, Context context);
 
     /**
      * Patch the virtual machine.
@@ -307,6 +338,10 @@ public interface VirtualMachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param virtualMachineUpdateParameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,8 +350,76 @@ public interface VirtualMachinesClient {
      * @return virtualMachine represents the on-premises Network Cloud virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner update(String resourceGroupName, String virtualMachineName,
+    VirtualMachineInner update(String resourceGroupName, String virtualMachineName, String ifMatch, String ifNoneMatch,
         VirtualMachinePatchParameters virtualMachineUpdateParameters, Context context);
+
+    /**
+     * Assigns a relay to the specified Microsoft.HybridCompute machine.
+     * 
+     * Assigns a relay to the specified Microsoft.HybridCompute machine associated with the provided virtual machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginAssignRelay(String resourceGroupName, String virtualMachineName);
+
+    /**
+     * Assigns a relay to the specified Microsoft.HybridCompute machine.
+     * 
+     * Assigns a relay to the specified Microsoft.HybridCompute machine associated with the provided virtual machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineName The name of the virtual machine.
+     * @param virtualMachineAssignRelayParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginAssignRelay(
+        String resourceGroupName, String virtualMachineName,
+        VirtualMachineAssignRelayParameters virtualMachineAssignRelayParameters, Context context);
+
+    /**
+     * Assigns a relay to the specified Microsoft.HybridCompute machine.
+     * 
+     * Assigns a relay to the specified Microsoft.HybridCompute machine associated with the provided virtual machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner assignRelay(String resourceGroupName, String virtualMachineName);
+
+    /**
+     * Assigns a relay to the specified Microsoft.HybridCompute machine.
+     * 
+     * Assigns a relay to the specified Microsoft.HybridCompute machine associated with the provided virtual machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param virtualMachineName The name of the virtual machine.
+     * @param virtualMachineAssignRelayParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationStatusResultInner assignRelay(String resourceGroupName, String virtualMachineName,
+        VirtualMachineAssignRelayParameters virtualMachineAssignRelayParameters, Context context);
 
     /**
      * Power off the virtual machine.

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiLicenseInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiLicenseInformation model = BinaryData.fromString("{\"name\":\"uvm\",\"url\":\"ozkrwfndiodjpslw\"}")
+        ApiLicenseInformation model = BinaryData.fromString("{\"name\":\"nltyfsoppusuesnz\",\"url\":\"ej\"}")
             .toObject(ApiLicenseInformation.class);
-        Assertions.assertEquals("uvm", model.name());
-        Assertions.assertEquals("ozkrwfndiodjpslw", model.url());
+        Assertions.assertEquals("nltyfsoppusuesnz", model.name());
+        Assertions.assertEquals("ej", model.url());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiLicenseInformation model = new ApiLicenseInformation().withName("uvm").withUrl("ozkrwfndiodjpslw");
+        ApiLicenseInformation model = new ApiLicenseInformation().withName("nltyfsoppusuesnz").withUrl("ej");
         model = BinaryData.fromObject(model).toObject(ApiLicenseInformation.class);
-        Assertions.assertEquals("uvm", model.name());
-        Assertions.assertEquals("ozkrwfndiodjpslw", model.url());
+        Assertions.assertEquals("nltyfsoppusuesnz", model.name());
+        Assertions.assertEquals("ej", model.url());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class MetastoreRegisterObject implements JsonSerializable<Metastore
     /*
      * The input folder containing CDM files.
      */
+    @Generated
     private String inputFolder;
 
     /**
      * Creates an instance of MetastoreRegisterObject class.
      */
+    @Generated
     public MetastoreRegisterObject() {
     }
 
@@ -32,6 +35,7 @@ public final class MetastoreRegisterObject implements JsonSerializable<Metastore
      * 
      * @return the inputFolder value.
      */
+    @Generated
     public String getInputFolder() {
         return this.inputFolder;
     }
@@ -42,6 +46,7 @@ public final class MetastoreRegisterObject implements JsonSerializable<Metastore
      * @param inputFolder the inputFolder value to set.
      * @return the MetastoreRegisterObject object itself.
      */
+    @Generated
     public MetastoreRegisterObject setInputFolder(String inputFolder) {
         this.inputFolder = inputFolder;
         return this;
@@ -50,6 +55,7 @@ public final class MetastoreRegisterObject implements JsonSerializable<Metastore
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class MetastoreRegisterObject implements JsonSerializable<Metastore
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetastoreRegisterObject.
      */
+    @Generated
     public static MetastoreRegisterObject fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MetastoreRegisterObject deserializedMetastoreRegisterObject = new MetastoreRegisterObject();

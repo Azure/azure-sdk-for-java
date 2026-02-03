@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Format of the Content in which the API is getting imported.
+ * Format of the Content in which the API is getting imported. New formats can be added in the future.
  */
 public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
     /**
@@ -65,6 +65,26 @@ public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
      * Static value graphql-link for ContentFormat.
      */
     public static final ContentFormat GRAPHQL_LINK = fromString("graphql-link");
+
+    /**
+     * Static value odata for ContentFormat.
+     */
+    public static final ContentFormat ODATA = fromString("odata");
+
+    /**
+     * Static value odata-link for ContentFormat.
+     */
+    public static final ContentFormat ODATA_LINK = fromString("odata-link");
+
+    /**
+     * Static value grpc for ContentFormat.
+     */
+    public static final ContentFormat GRPC = fromString("grpc");
+
+    /**
+     * Static value grpc-link for ContentFormat.
+     */
+    public static final ContentFormat GRPC_LINK = fromString("grpc-link");
 
     /**
      * Creates a new instance of ContentFormat value.

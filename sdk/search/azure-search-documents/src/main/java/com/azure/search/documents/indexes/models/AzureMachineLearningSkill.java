@@ -7,6 +7,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -25,17 +26,20 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     /*
      * A URI fragment specifying the type of skill.
      */
+    @Generated
     private String odataType = "#Microsoft.Skills.Custom.AmlSkill";
 
     /*
      * (Required for no authentication or key authentication) The scoring URI of the AML service to which the JSON
      * payload will be sent. Only the https URI scheme is allowed.
      */
+    @Generated
     private String scoringUri;
 
     /*
      * (Required for key authentication) The key for the AML service.
      */
+    @Generated
     private String authenticationKey;
 
     /*
@@ -44,16 +48,19 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.MachineLearningServices/workspaces/{workspace
      * -name}/services/{service_name}.
      */
+    @Generated
     private String resourceId;
 
     /*
      * (Optional) When specified, indicates the timeout for the http client making the API call.
      */
+    @Generated
     private Duration timeout;
 
     /*
      * (Optional for token authentication). The region the AML service is deployed in.
      */
+    @Generated
     private String region;
 
     /*
@@ -63,6 +70,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * indexer. If not set, a default value of 5 is used. The degreeOfParallelism can be set to a maximum of 10 and a
      * minimum of 1.
      */
+    @Generated
     private Integer degreeOfParallelism;
 
     /**
@@ -71,6 +79,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
+    @Generated
     public AzureMachineLearningSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs) {
         super(inputs, outputs);
     }
@@ -80,6 +89,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * 
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -91,6 +101,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * 
      * @return the scoringUri value.
      */
+    @Generated
     public String getScoringUri() {
         return this.scoringUri;
     }
@@ -102,6 +113,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param scoringUri the scoringUri value to set.
      * @return the AzureMachineLearningSkill object itself.
      */
+    @Generated
     public AzureMachineLearningSkill setScoringUri(String scoringUri) {
         this.scoringUri = scoringUri;
         return this;
@@ -112,6 +124,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * 
      * @return the authenticationKey value.
      */
+    @Generated
     public String getAuthenticationKey() {
         return this.authenticationKey;
     }
@@ -122,6 +135,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param authenticationKey the authenticationKey value to set.
      * @return the AzureMachineLearningSkill object itself.
      */
+    @Generated
     public AzureMachineLearningSkill setAuthenticationKey(String authenticationKey) {
         this.authenticationKey = authenticationKey;
         return this;
@@ -134,6 +148,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * 
      * @return the resourceId value.
      */
+    @Generated
     public String getResourceId() {
         return this.resourceId;
     }
@@ -146,6 +161,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param resourceId the resourceId value to set.
      * @return the AzureMachineLearningSkill object itself.
      */
+    @Generated
     public AzureMachineLearningSkill setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
@@ -157,6 +173,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * 
      * @return the timeout value.
      */
+    @Generated
     public Duration getTimeout() {
         return this.timeout;
     }
@@ -168,6 +185,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param timeout the timeout value to set.
      * @return the AzureMachineLearningSkill object itself.
      */
+    @Generated
     public AzureMachineLearningSkill setTimeout(Duration timeout) {
         this.timeout = timeout;
         return this;
@@ -178,6 +196,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * 
      * @return the region value.
      */
+    @Generated
     public String getRegion() {
         return this.region;
     }
@@ -188,6 +207,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param region the region value to set.
      * @return the AzureMachineLearningSkill object itself.
      */
+    @Generated
     public AzureMachineLearningSkill setRegion(String region) {
         this.region = region;
         return this;
@@ -202,6 +222,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * 
      * @return the degreeOfParallelism value.
      */
+    @Generated
     public Integer getDegreeOfParallelism() {
         return this.degreeOfParallelism;
     }
@@ -216,6 +237,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @param degreeOfParallelism the degreeOfParallelism value to set.
      * @return the AzureMachineLearningSkill object itself.
      */
+    @Generated
     public AzureMachineLearningSkill setDegreeOfParallelism(Integer degreeOfParallelism) {
         this.degreeOfParallelism = degreeOfParallelism;
         return this;
@@ -224,6 +246,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMachineLearningSkill setName(String name) {
         super.setName(name);
@@ -233,6 +256,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMachineLearningSkill setDescription(String description) {
         super.setDescription(description);
@@ -242,6 +266,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureMachineLearningSkill setContext(String context) {
         super.setContext(context);
@@ -251,6 +276,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -278,6 +304,7 @@ public final class AzureMachineLearningSkill extends SearchIndexerSkill {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMachineLearningSkill.
      */
+    @Generated
     public static AzureMachineLearningSkill fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean inputsFound = false;

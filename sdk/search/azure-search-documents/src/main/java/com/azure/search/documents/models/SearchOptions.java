@@ -144,6 +144,14 @@ public final class SearchOptions {
     private SemanticSearchOptions semanticSearchOptions;
     private VectorSearchOptions vectorSearchOptions;
 
+    /*
+    * Specifies whether to enable elevated read for search requests. When enabled, and when the caller has the required RBAC role,
+    * elevated read allows the search request to access all documents in the index, including those with restricted ACLs.
+    * This feature is intended for administrative and investigative scenarios and should be used with care, as it bypasses standard ACL filtering.
+    * Standard queries (without elevated read) only return public documents or those the caller is authorized to access.
+    */
+    private Boolean enableElevatedRead;
+
     /**
      * Creates an instance of {@link SearchOptions}.
      */
@@ -575,7 +583,7 @@ public final class SearchOptions {
      *
      * @return the debug value.
      */
-    public QueryDebugMode getDebug() {
+    public QueryDebugMode getDebugMode() {
         return this.debug;
     }
 
@@ -585,7 +593,7 @@ public final class SearchOptions {
      * @param debug the debug value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setDebug(QueryDebugMode debug) {
+    public SearchOptions setDebugMode(QueryDebugMode debug) {
         this.debug = debug;
         return this;
     }
@@ -669,4 +677,31 @@ public final class SearchOptions {
     public VectorSearchOptions getVectorSearchOptions() {
         return this.vectorSearchOptions;
     }
+
+    /**
+     * Get the enableElevatedRead property: A value that specifies whether to enable elevated read for search
+     * requests. Elevated read allows search requests to read the latest committed index changes, reducing the latency
+     * between document upload and their availability for search. This may have a negative impact on search request
+     * performance.
+     *
+     * @return the enableElevatedRead value.
+     */
+    public Boolean isElevatedReadEnabled() {
+        return this.enableElevatedRead;
+    }
+
+    /**
+     * Set the enableElevatedRead property: A value that specifies whether to enable elevated read for search
+     * requests. Elevated read allows search requests to read the latest committed index changes, reducing the latency
+     * between document upload and their availability for search. This may have a negative impact on search request
+     * performance.
+     *
+     * @param enableElevatedRead the enableElevatedRead value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setElevatedReadEnabled(Boolean enableElevatedRead) {
+        this.enableElevatedRead = enableElevatedRead;
+        return this;
+    }
+
 }

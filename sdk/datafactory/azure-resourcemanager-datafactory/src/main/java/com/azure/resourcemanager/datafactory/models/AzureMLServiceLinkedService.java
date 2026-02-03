@@ -52,7 +52,7 @@ public final class AzureMLServiceLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureMLServiceLinkedServiceTypeProperties innerTypeProperties() {
+    AzureMLServiceLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

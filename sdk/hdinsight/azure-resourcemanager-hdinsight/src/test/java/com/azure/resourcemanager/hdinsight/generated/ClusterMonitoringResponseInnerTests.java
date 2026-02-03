@@ -12,18 +12,18 @@ public final class ClusterMonitoringResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterMonitoringResponseInner model
-            = BinaryData.fromString("{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"fpubjibwwi\"}")
+            = BinaryData.fromString("{\"clusterMonitoringEnabled\":false,\"workspaceId\":\"jphuopxodlqi\"}")
                 .toObject(ClusterMonitoringResponseInner.class);
-        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("fpubjibwwi", model.workspaceId());
+        Assertions.assertFalse(model.clusterMonitoringEnabled());
+        Assertions.assertEquals("jphuopxodlqi", model.workspaceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMonitoringResponseInner model
-            = new ClusterMonitoringResponseInner().withClusterMonitoringEnabled(false).withWorkspaceId("fpubjibwwi");
+            = new ClusterMonitoringResponseInner().withClusterMonitoringEnabled(false).withWorkspaceId("jphuopxodlqi");
         model = BinaryData.fromObject(model).toObject(ClusterMonitoringResponseInner.class);
-        Assertions.assertEquals(false, model.clusterMonitoringEnabled());
-        Assertions.assertEquals("fpubjibwwi", model.workspaceId());
+        Assertions.assertFalse(model.clusterMonitoringEnabled());
+        Assertions.assertEquals("jphuopxodlqi", model.workspaceId());
     }
 }

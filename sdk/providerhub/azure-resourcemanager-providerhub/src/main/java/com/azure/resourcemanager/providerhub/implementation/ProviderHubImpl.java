@@ -15,20 +15,27 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.SyncPollerFactory;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.providerhub.fluent.AuthorizedApplicationsClient;
 import com.azure.resourcemanager.providerhub.fluent.CustomRolloutsClient;
 import com.azure.resourcemanager.providerhub.fluent.DefaultRolloutsClient;
+import com.azure.resourcemanager.providerhub.fluent.NewRegionFrontloadReleasesClient;
 import com.azure.resourcemanager.providerhub.fluent.NotificationRegistrationsClient;
 import com.azure.resourcemanager.providerhub.fluent.OperationsClient;
 import com.azure.resourcemanager.providerhub.fluent.ProviderHub;
+import com.azure.resourcemanager.providerhub.fluent.ProviderMonitorSettingsClient;
 import com.azure.resourcemanager.providerhub.fluent.ProviderRegistrationsClient;
+import com.azure.resourcemanager.providerhub.fluent.ResourceActionsClient;
 import com.azure.resourcemanager.providerhub.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.providerhub.fluent.ResourceTypeRegistrationsClient;
 import com.azure.resourcemanager.providerhub.fluent.SkusClient;
@@ -47,12 +54,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = ProviderHubBuilder.class)
 public final class ProviderHubImpl implements ProviderHub {
     /**
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -243,13 +250,69 @@ public final class ProviderHubImpl implements ProviderHub {
     }
 
     /**
+     * The ResourceActionsClient object to access its operations.
+     */
+    private final ResourceActionsClient resourceActions;
+
+    /**
+     * Gets the ResourceActionsClient object to access its operations.
+     * 
+     * @return the ResourceActionsClient object.
+     */
+    public ResourceActionsClient getResourceActions() {
+        return this.resourceActions;
+    }
+
+    /**
+     * The AuthorizedApplicationsClient object to access its operations.
+     */
+    private final AuthorizedApplicationsClient authorizedApplications;
+
+    /**
+     * Gets the AuthorizedApplicationsClient object to access its operations.
+     * 
+     * @return the AuthorizedApplicationsClient object.
+     */
+    public AuthorizedApplicationsClient getAuthorizedApplications() {
+        return this.authorizedApplications;
+    }
+
+    /**
+     * The ProviderMonitorSettingsClient object to access its operations.
+     */
+    private final ProviderMonitorSettingsClient providerMonitorSettings;
+
+    /**
+     * Gets the ProviderMonitorSettingsClient object to access its operations.
+     * 
+     * @return the ProviderMonitorSettingsClient object.
+     */
+    public ProviderMonitorSettingsClient getProviderMonitorSettings() {
+        return this.providerMonitorSettings;
+    }
+
+    /**
+     * The NewRegionFrontloadReleasesClient object to access its operations.
+     */
+    private final NewRegionFrontloadReleasesClient newRegionFrontloadReleases;
+
+    /**
+     * Gets the NewRegionFrontloadReleasesClient object to access its operations.
+     * 
+     * @return the NewRegionFrontloadReleasesClient object.
+     */
+    public NewRegionFrontloadReleasesClient getNewRegionFrontloadReleases() {
+        return this.newRegionFrontloadReleases;
+    }
+
+    /**
      * Initializes an instance of ProviderHub client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     ProviderHubImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
@@ -259,7 +322,7 @@ public final class ProviderHubImpl implements ProviderHub {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-11-20";
+        this.apiVersion = "2024-09-01";
         this.customRollouts = new CustomRolloutsClientImpl(this);
         this.defaultRollouts = new DefaultRolloutsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);
@@ -268,6 +331,10 @@ public final class ProviderHubImpl implements ProviderHub {
         this.providerRegistrations = new ProviderRegistrationsClientImpl(this);
         this.resourceTypeRegistrations = new ResourceTypeRegistrationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
+        this.resourceActions = new ResourceActionsClientImpl(this);
+        this.authorizedApplications = new AuthorizedApplicationsClientImpl(this);
+        this.providerMonitorSettings = new ProviderMonitorSettingsClientImpl(this);
+        this.newRegionFrontloadReleases = new NewRegionFrontloadReleasesClientImpl(this);
     }
 
     /**
@@ -305,6 +372,23 @@ public final class ProviderHubImpl implements ProviderHub {
         HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
         return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
             defaultPollInterval, activationResponse, context);
+    }
+
+    /**
+     * Gets long running operation result.
+     * 
+     * @param activationResponse the response of activation operation.
+     * @param pollResultType type of poll result.
+     * @param finalResultType type of final result.
+     * @param context the context shared by all requests.
+     * @param <T> type of poll result.
+     * @param <U> type of final result.
+     * @return SyncPoller for poll result and final result.
+     */
+    public <T, U> SyncPoller<PollResult<T>, U> getLroResult(Response<BinaryData> activationResponse,
+        Type pollResultType, Type finalResultType, Context context) {
+        return SyncPollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, () -> activationResponse, context);
     }
 
     /**

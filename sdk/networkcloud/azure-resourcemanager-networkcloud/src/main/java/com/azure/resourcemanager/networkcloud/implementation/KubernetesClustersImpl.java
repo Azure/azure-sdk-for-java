@@ -35,8 +35,8 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<KubernetesCluster> list(Context context) {
-        PagedIterable<KubernetesClusterInner> inner = this.serviceClient().list(context);
+    public PagedIterable<KubernetesCluster> list(Integer top, String skipToken, Context context) {
+        PagedIterable<KubernetesClusterInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
     }
 
@@ -45,9 +45,10 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<KubernetesCluster> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<KubernetesCluster> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
         PagedIterable<KubernetesClusterInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new KubernetesClusterImpl(inner1, this.manager()));
     }
 
@@ -82,9 +83,10 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String kubernetesClusterName, Context context) {
+    public OperationStatusResult delete(String resourceGroupName, String kubernetesClusterName, String ifMatch,
+        String ifNoneMatch, Context context) {
         OperationStatusResultInner inner
-            = this.serviceClient().delete(resourceGroupName, kubernetesClusterName, context);
+            = this.serviceClient().delete(resourceGroupName, kubernetesClusterName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -153,10 +155,13 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
         }
-        return this.delete(resourceGroupName, kubernetesClusterName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, kubernetesClusterName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -167,7 +172,7 @@ public final class KubernetesClustersImpl implements KubernetesClusters {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kubernetesClusters'.", id)));
         }
-        return this.delete(resourceGroupName, kubernetesClusterName, context);
+        return this.delete(resourceGroupName, kubernetesClusterName, ifMatch, ifNoneMatch, context);
     }
 
     private KubernetesClustersClient serviceClient() {

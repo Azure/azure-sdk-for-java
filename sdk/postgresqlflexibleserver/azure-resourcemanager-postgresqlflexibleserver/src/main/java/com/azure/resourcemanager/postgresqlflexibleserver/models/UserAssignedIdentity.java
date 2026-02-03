@@ -14,22 +14,27 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Information describing the identities associated with this application.
+ * Identities associated with a server.
  */
 @Fluent
 public final class UserAssignedIdentity implements JsonSerializable<UserAssignedIdentity> {
     /*
-     * represents user assigned identities map.
+     * Map of user assigned managed identities.
      */
     private Map<String, UserIdentity> userAssignedIdentities;
 
     /*
-     * the types of identities associated with this resource; currently restricted to 'None and UserAssigned'
+     * Identifier of the object of the service principal associated to the user assigned managed identity.
+     */
+    private String principalId;
+
+    /*
+     * Types of identities associated with a server.
      */
     private IdentityType type;
 
     /*
-     * Tenant id of the server.
+     * Identifier of the tenant of a server.
      */
     private String tenantId;
 
@@ -40,7 +45,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the userAssignedIdentities property: represents user assigned identities map.
+     * Get the userAssignedIdentities property: Map of user assigned managed identities.
      * 
      * @return the userAssignedIdentities value.
      */
@@ -49,7 +54,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Set the userAssignedIdentities property: represents user assigned identities map.
+     * Set the userAssignedIdentities property: Map of user assigned managed identities.
      * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the UserAssignedIdentity object itself.
@@ -60,8 +65,29 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the type property: the types of identities associated with this resource; currently restricted to 'None and
-     * UserAssigned'.
+     * Get the principalId property: Identifier of the object of the service principal associated to the user assigned
+     * managed identity.
+     * 
+     * @return the principalId value.
+     */
+    public String principalId() {
+        return this.principalId;
+    }
+
+    /**
+     * Set the principalId property: Identifier of the object of the service principal associated to the user assigned
+     * managed identity.
+     * 
+     * @param principalId the principalId value to set.
+     * @return the UserAssignedIdentity object itself.
+     */
+    public UserAssignedIdentity withPrincipalId(String principalId) {
+        this.principalId = principalId;
+        return this;
+    }
+
+    /**
+     * Get the type property: Types of identities associated with a server.
      * 
      * @return the type value.
      */
@@ -70,8 +96,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Set the type property: the types of identities associated with this resource; currently restricted to 'None and
-     * UserAssigned'.
+     * Set the type property: Types of identities associated with a server.
      * 
      * @param type the type value to set.
      * @return the UserAssignedIdentity object itself.
@@ -82,7 +107,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
     }
 
     /**
-     * Get the tenantId property: Tenant id of the server.
+     * Get the tenantId property: Identifier of the tenant of a server.
      * 
      * @return the tenantId value.
      */
@@ -120,6 +145,7 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeMapField("userAssignedIdentities", this.userAssignedIdentities,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("principalId", this.principalId);
         return jsonWriter.writeEndObject();
     }
 
@@ -145,6 +171,8 @@ public final class UserAssignedIdentity implements JsonSerializable<UserAssigned
                     Map<String, UserIdentity> userAssignedIdentities
                         = reader.readMap(reader1 -> UserIdentity.fromJson(reader1));
                     deserializedUserAssignedIdentity.userAssignedIdentities = userAssignedIdentities;
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.principalId = reader.getString();
                 } else if ("tenantId".equals(fieldName)) {
                     deserializedUserAssignedIdentity.tenantId = reader.getString();
                 } else {

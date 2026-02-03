@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.providerhub.models;
 
 /**
- * Defines values for ResourceAccessPolicy.
+ * The resource access policy.
  */
 public enum ResourceAccessPolicy {
     /**

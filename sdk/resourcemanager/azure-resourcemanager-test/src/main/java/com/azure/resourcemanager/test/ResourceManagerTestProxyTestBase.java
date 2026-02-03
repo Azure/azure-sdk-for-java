@@ -3,7 +3,6 @@
 package com.azure.resourcemanager.test;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -13,22 +12,21 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.resourcemanager.test.model.AzureUser;
 import com.azure.resourcemanager.test.policy.HttpDebugLoggingPolicy;
+import com.azure.resourcemanager.test.utils.CliRunner;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
@@ -36,11 +34,9 @@ import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import reactor.core.Exceptions;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -68,7 +64,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -130,7 +125,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
      */
     @RegisterExtension
     final PlaybackTimeoutInterceptor playbackTimeoutInterceptor
-        = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(60));
+        = new PlaybackTimeoutInterceptor(() -> Duration.ofSeconds(120));
 
     /**
      * Initializes ResourceManagerTestProxyTestBase class.
@@ -237,70 +232,8 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
         if (!isPlaybackMode()) {
             String azCommand = "az ad signed-in-user show --output json";
 
-            final Pattern windowsProcessErrorMessage = Pattern.compile("'azd?' is not recognized");
-            final Pattern shProcessErrorMessage = Pattern.compile("azd?:.*not found");
             try {
-                String starter;
-                String switcher;
-                if (IdentityUtil.isWindowsPlatform()) {
-                    starter = "cmd.exe";
-                    switcher = "/c";
-                } else {
-                    starter = "/bin/sh";
-                    switcher = "-c";
-                }
-
-                ProcessBuilder builder = new ProcessBuilder(starter, switcher, azCommand.toString());
-                // Redirects stdin to dev null, helps to avoid messages sent in by the cmd process to upgrade etc.
-                builder.redirectInput(ProcessBuilder.Redirect.from(IdentityUtil.NULL_FILE));
-
-                builder.redirectErrorStream(true);
-                Process process = builder.start();
-
-                StringBuilder output = new StringBuilder();
-                try (BufferedReader reader
-                    = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
-                    String line;
-                    while (true) {
-                        line = reader.readLine();
-                        if (line == null) {
-                            break;
-                        }
-
-                        if (windowsProcessErrorMessage.matcher(line).find()
-                            || shProcessErrorMessage.matcher(line).find()) {
-                            throw LOGGER.logExceptionAsError(new RuntimeException(
-                                "AzureCliCredential authentication unavailable. Azure CLI not installed."
-                                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                                    + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
-                        }
-                        output.append(line);
-                    }
-                }
-                String processOutput = output.toString();
-
-                // wait(at most) 10 seconds for the process to complete
-                process.waitFor(10, TimeUnit.SECONDS);
-
-                if (process.exitValue() != 0) {
-                    if (processOutput.length() > 0) {
-                        if (processOutput.contains("az login") || processOutput.contains("az account set")) {
-                            throw LOGGER.logExceptionAsError(new RuntimeException(
-                                "AzureCliCredential authentication unavailable. Azure CLI not installed."
-                                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
-                                    + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
-                        }
-                        throw LOGGER.logExceptionAsError(
-                            new ClientAuthenticationException("get Azure CLI current signed-in user failed", null));
-                    } else {
-                        throw LOGGER.logExceptionAsError(
-                            new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
-                    }
-                }
-
-                LOGGER
-                    .verbose("Get Azure CLI signed-in user => A response was received from Azure CLI, deserializing the"
-                        + " response into an signed-in user.");
+                String processOutput = CliRunner.run(azCommand);
                 try (JsonReader reader = JsonProviders.createReader(processOutput)) {
                     Map<String, Object> signedInUserInfo = reader.readMap(JsonReader::readUntyped);
                     String userPrincipalName = (String) signedInUserInfo.get("userPrincipalName");
@@ -312,15 +245,6 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             }
         }
         return azureCliUser;
-    }
-
-    private static String getSafeWorkingDirectory() {
-        if (IdentityUtil.isWindowsPlatform()) {
-            String windowsSystemRoot = System.getenv("SystemRoot");
-            return CoreUtils.isNullOrEmpty(windowsSystemRoot) ? null : windowsSystemRoot + "\\system32";
-        } else {
-            return "/bin/";
-        }
     }
 
     /**
@@ -380,16 +304,19 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             }
         }
 
+        credential = TestUtilities.getTokenCredentialForTest(getTestMode());
+
         if (isPlaybackMode()) {
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
-            httpPipeline = buildHttpPipeline(new MockTokenCredential(), testProfile,
+            httpPipeline = buildHttpPipeline(credential, testProfile,
                 new HttpLogOptions().setLogLevel(httpLogDetailLevel), policies, interceptorManager.getPlaybackClient());
             if (!testContextManager.doNotRecordTest()) {
                 // don't match api-version when matching url
                 interceptorManager.addMatchers(Collections
                     .singletonList(new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("api-version"))
-                        .setExcludedHeaders(Arrays.asList("If-Match"))));
+                        .setExcludedHeaders(Arrays.asList("If-Match"))
+                        .setQueryOrderingIgnored(true)));
                 addSanitizers();
                 removeSanitizers();
             }
@@ -400,10 +327,7 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             String subscriptionId
                 = Objects.requireNonNull(configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
                     "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
-            credential
-                = new DefaultAzureCredentialBuilder().authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
-                    .build();
-            testProfile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
+            testProfile = new AzureProfile(tenantId, subscriptionId, AzureCloud.AZURE_PUBLIC_CLOUD);
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             if (interceptorManager.isRecordMode() && !testContextManager.doNotRecordTest()) {

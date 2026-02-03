@@ -14,20 +14,21 @@ public final class ServiceBusQueueEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"wnvz\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"oywsxvjabjqqaxu\"}]}")
+            "{\"resourceId\":\"isubxbteog\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"ij\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"kw\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"fksxqce\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"fpxgnmqvz\"}]}")
             .toObject(ServiceBusQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("wnvz", model.resourceId());
-        Assertions.assertEquals("oywsxvjabjqqaxu", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("isubxbteog", model.resourceId());
+        Assertions.assertEquals("ij", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceBusQueueEventSubscriptionDestinationProperties model
-            = new ServiceBusQueueEventSubscriptionDestinationProperties().withResourceId("wnvz")
-                .withDeliveryAttributeMappings(
-                    Arrays.asList(new DeliveryAttributeMapping().withName("oywsxvjabjqqaxu")));
+            = new ServiceBusQueueEventSubscriptionDestinationProperties().withResourceId("isubxbteog")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("ij"),
+                    new DeliveryAttributeMapping().withName("kw"), new DeliveryAttributeMapping().withName("fksxqce"),
+                    new DeliveryAttributeMapping().withName("fpxgnmqvz")));
         model = BinaryData.fromObject(model).toObject(ServiceBusQueueEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("wnvz", model.resourceId());
-        Assertions.assertEquals("oywsxvjabjqqaxu", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("isubxbteog", model.resourceId());
+        Assertions.assertEquals("ij", model.deliveryAttributeMappings().get(0).name());
     }
 }

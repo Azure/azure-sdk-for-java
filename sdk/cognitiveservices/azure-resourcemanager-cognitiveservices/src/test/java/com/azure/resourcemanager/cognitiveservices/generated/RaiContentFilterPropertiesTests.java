@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class RaiContentFilterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RaiContentFilterProperties model
-            = BinaryData.fromString("{\"name\":\"gkynscliqh\",\"isMultiLevelFilter\":false,\"source\":\"Prompt\"}")
-                .toObject(RaiContentFilterProperties.class);
-        Assertions.assertEquals("gkynscliqh", model.name());
-        Assertions.assertEquals(false, model.isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
+        RaiContentFilterProperties model = BinaryData
+            .fromString("{\"name\":\"wltlwtjjguktalh\",\"isMultiLevelFilter\":false,\"source\":\"Completion\"}")
+            .toObject(RaiContentFilterProperties.class);
+        Assertions.assertEquals("wltlwtjjguktalh", model.name());
+        Assertions.assertFalse(model.isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiContentFilterProperties model = new RaiContentFilterProperties().withName("gkynscliqh")
+        RaiContentFilterProperties model = new RaiContentFilterProperties().withName("wltlwtjjguktalh")
             .withIsMultiLevelFilter(false)
-            .withSource(RaiPolicyContentSource.PROMPT);
+            .withSource(RaiPolicyContentSource.COMPLETION);
         model = BinaryData.fromObject(model).toObject(RaiContentFilterProperties.class);
-        Assertions.assertEquals("gkynscliqh", model.name());
-        Assertions.assertEquals(false, model.isMultiLevelFilter());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
+        Assertions.assertEquals("wltlwtjjguktalh", model.name());
+        Assertions.assertFalse(model.isMultiLevelFilter());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
     }
 }

@@ -12,39 +12,49 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Sku capability.
+ * Capabilities in terms of compute.
  */
 @Immutable
 public final class ServerSkuCapability extends CapabilityBase {
     /*
-     * Sku name
+     * Name of the compute (SKU).
      */
     private String name;
 
     /*
-     * Supported vCores
+     * vCores available for this compute.
      */
     private Integer vCores;
 
     /*
-     * Supported IOPS
+     * Maximum IOPS supported by this compute.
      */
     private Integer supportedIops;
 
     /*
-     * Supported memory per vCore in MB
+     * Supported memory (in MB) per virtual core assigned to this compute.
      */
     private Long supportedMemoryPerVcoreMb;
 
     /*
-     * List of supported Availability Zones. E.g. "1", "2", "3"
+     * List of supported availability zones. E.g. '1', '2', '3'
      */
     private List<String> supportedZones;
 
     /*
-     * Supported high availability mode
+     * Modes of high availability supported for this compute.
      */
-    private List<HaMode> supportedHaMode;
+    private List<HighAvailabilityMode> supportedHaMode;
+
+    /*
+     * Features supported.
+     */
+    private List<SupportedFeature> supportedFeatures;
+
+    /*
+     * Security profile of the compute. Indicates if it's a Confidential Compute virtual machine.
+     */
+    private String securityProfile;
 
     /*
      * The reason for the capability not being available.
@@ -63,7 +73,7 @@ public final class ServerSkuCapability extends CapabilityBase {
     }
 
     /**
-     * Get the name property: Sku name.
+     * Get the name property: Name of the compute (SKU).
      * 
      * @return the name value.
      */
@@ -72,7 +82,7 @@ public final class ServerSkuCapability extends CapabilityBase {
     }
 
     /**
-     * Get the vCores property: Supported vCores.
+     * Get the vCores property: vCores available for this compute.
      * 
      * @return the vCores value.
      */
@@ -81,7 +91,7 @@ public final class ServerSkuCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedIops property: Supported IOPS.
+     * Get the supportedIops property: Maximum IOPS supported by this compute.
      * 
      * @return the supportedIops value.
      */
@@ -90,7 +100,7 @@ public final class ServerSkuCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedMemoryPerVcoreMb property: Supported memory per vCore in MB.
+     * Get the supportedMemoryPerVcoreMb property: Supported memory (in MB) per virtual core assigned to this compute.
      * 
      * @return the supportedMemoryPerVcoreMb value.
      */
@@ -99,7 +109,7 @@ public final class ServerSkuCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedZones property: List of supported Availability Zones. E.g. "1", "2", "3".
+     * Get the supportedZones property: List of supported availability zones. E.g. '1', '2', '3'.
      * 
      * @return the supportedZones value.
      */
@@ -108,12 +118,31 @@ public final class ServerSkuCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedHaMode property: Supported high availability mode.
+     * Get the supportedHaMode property: Modes of high availability supported for this compute.
      * 
      * @return the supportedHaMode value.
      */
-    public List<HaMode> supportedHaMode() {
+    public List<HighAvailabilityMode> supportedHaMode() {
         return this.supportedHaMode;
+    }
+
+    /**
+     * Get the supportedFeatures property: Features supported.
+     * 
+     * @return the supportedFeatures value.
+     */
+    public List<SupportedFeature> supportedFeatures() {
+        return this.supportedFeatures;
+    }
+
+    /**
+     * Get the securityProfile property: Security profile of the compute. Indicates if it's a Confidential Compute
+     * virtual machine.
+     * 
+     * @return the securityProfile value.
+     */
+    public String securityProfile() {
+        return this.securityProfile;
     }
 
     /**
@@ -143,6 +172,9 @@ public final class ServerSkuCapability extends CapabilityBase {
      */
     @Override
     public void validate() {
+        if (supportedFeatures() != null) {
+            supportedFeatures().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -185,8 +217,15 @@ public final class ServerSkuCapability extends CapabilityBase {
                     List<String> supportedZones = reader.readArray(reader1 -> reader1.getString());
                     deserializedServerSkuCapability.supportedZones = supportedZones;
                 } else if ("supportedHaMode".equals(fieldName)) {
-                    List<HaMode> supportedHaMode = reader.readArray(reader1 -> HaMode.fromString(reader1.getString()));
+                    List<HighAvailabilityMode> supportedHaMode
+                        = reader.readArray(reader1 -> HighAvailabilityMode.fromString(reader1.getString()));
                     deserializedServerSkuCapability.supportedHaMode = supportedHaMode;
+                } else if ("supportedFeatures".equals(fieldName)) {
+                    List<SupportedFeature> supportedFeatures
+                        = reader.readArray(reader1 -> SupportedFeature.fromJson(reader1));
+                    deserializedServerSkuCapability.supportedFeatures = supportedFeatures;
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedServerSkuCapability.securityProfile = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

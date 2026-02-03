@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -21,11 +22,13 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
     /**
      * Do not return captions for the query.
      */
+    @Generated
     public static final QueryCaptionType NONE = fromString("none");
 
     /**
      * Extracts captions from the matching documents that contain passages relevant to the search query.
      */
+    @Generated
     public static final QueryCaptionType EXTRACTIVE = fromString("extractive");
 
     /**
@@ -33,6 +36,7 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public QueryCaptionType() {
     }
@@ -43,6 +47,7 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
      * @param name a name to look for.
      * @return the corresponding QueryCaptionType.
      */
+    @Generated
     public static QueryCaptionType fromString(String name) {
         return fromString(name, QueryCaptionType.class);
     }
@@ -52,6 +57,7 @@ public final class QueryCaptionType extends ExpandableStringEnum<QueryCaptionTyp
      * 
      * @return known QueryCaptionType values.
      */
+    @Generated
     public static Collection<QueryCaptionType> values() {
         return values(QueryCaptionType.class);
     }

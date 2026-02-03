@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -18,18 +19,23 @@ import java.io.IOException;
 @Immutable
 public final class RouteSectionTecCause implements JsonSerializable<RouteSectionTecCause> {
     /*
-     * The main cause of the traffic event. Contains a value in the tec002:CauseCode table, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
+     * The main cause of the traffic event. Contains a value in the tec002:CauseCode table, as defined in the
+     * [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
      */
+    @Generated
     private Integer mainCauseCode;
 
     /*
-     * The subcause of the traffic event. Contains a value in the sub cause table defined by the mainCauseCode, as defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
+     * The subcause of the traffic event. Contains a value in the sub cause table defined by the mainCauseCode, as
+     * defined in the [TPEG2-TEC](https://www.iso.org/standard/63116.html) standard.
      */
+    @Generated
     private Integer subCauseCode;
 
     /**
      * Creates an instance of RouteSectionTecCause class.
      */
+    @Generated
     public RouteSectionTecCause() {
     }
 
@@ -39,6 +45,7 @@ public final class RouteSectionTecCause implements JsonSerializable<RouteSection
      * 
      * @return the mainCauseCode value.
      */
+    @Generated
     public Integer getMainCauseCode() {
         return this.mainCauseCode;
     }
@@ -49,6 +56,7 @@ public final class RouteSectionTecCause implements JsonSerializable<RouteSection
      * 
      * @return the subCauseCode value.
      */
+    @Generated
     public Integer getSubCauseCode() {
         return this.subCauseCode;
     }
@@ -56,6 +64,7 @@ public final class RouteSectionTecCause implements JsonSerializable<RouteSection
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -70,6 +79,7 @@ public final class RouteSectionTecCause implements JsonSerializable<RouteSection
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the RouteSectionTecCause.
      */
+    @Generated
     public static RouteSectionTecCause fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RouteSectionTecCause deserializedRouteSectionTecCause = new RouteSectionTecCause();

@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,19 +17,28 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
     /**
      * The indexer is indexing all documents in the datasource.
      */
+    @Generated
     public static final IndexingMode INDEXING_ALL_DOCS = fromString("indexingAllDocs");
 
     /**
      * The indexer is indexing selective, reset documents in the datasource. The documents being indexed are defined on
      * indexer status.
      */
+    @Generated
     public static final IndexingMode INDEXING_RESET_DOCS = fromString("indexingResetDocs");
+
+    /**
+     * The indexer is resyncing and indexing selective option(s) from the datasource.
+     */
+    @Generated
+    public static final IndexingMode INDEXING_RESYNC = fromString("indexingResync");
 
     /**
      * Creates a new instance of IndexingMode value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public IndexingMode() {
     }
@@ -39,6 +49,7 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
      * @param name a name to look for.
      * @return the corresponding IndexingMode.
      */
+    @Generated
     public static IndexingMode fromString(String name) {
         return fromString(name, IndexingMode.class);
     }
@@ -48,6 +59,7 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
      * 
      * @return known IndexingMode values.
      */
+    @Generated
     public static Collection<IndexingMode> values() {
         return values(IndexingMode.class);
     }

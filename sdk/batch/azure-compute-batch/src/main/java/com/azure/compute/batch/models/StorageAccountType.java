@@ -25,6 +25,12 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
     public static final StorageAccountType PREMIUM_LRS = fromString("premium_lrs");
 
     /**
+     * The data disk / OS disk should use standard SSD locally redundant storage.
+     */
+    @Generated
+    public static final StorageAccountType STANDARD_SSDLRS = fromString("standardssd_lrs");
+
+    /**
      * Creates a new instance of StorageAccountType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -54,10 +60,4 @@ public final class StorageAccountType extends ExpandableStringEnum<StorageAccoun
     public static Collection<StorageAccountType> values() {
         return values(StorageAccountType.class);
     }
-
-    /**
-     * The data disk / OS disk should use standard SSD locally redundant storage.
-     */
-    @Generated
-    public static final StorageAccountType STANDARD_SSDLRS = fromString("standardssd_lrs");
 }

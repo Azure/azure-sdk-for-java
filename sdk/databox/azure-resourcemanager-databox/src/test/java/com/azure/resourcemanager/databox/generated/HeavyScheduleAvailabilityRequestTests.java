@@ -6,24 +6,28 @@ package com.azure.resourcemanager.databox.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.databox.models.HeavyScheduleAvailabilityRequest;
+import com.azure.resourcemanager.databox.models.ModelName;
 import org.junit.jupiter.api.Assertions;
 
 public final class HeavyScheduleAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HeavyScheduleAvailabilityRequest model = BinaryData
-            .fromString("{\"skuName\":\"DataBoxHeavy\",\"storageLocation\":\"lolp\",\"country\":\"ksrpqv\"}")
+        HeavyScheduleAvailabilityRequest model = BinaryData.fromString(
+            "{\"skuName\":\"DataBoxHeavy\",\"storageLocation\":\"lstvlzywe\",\"country\":\"zrncsdt\",\"model\":\"DataBoxDisk\"}")
             .toObject(HeavyScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("lolp", model.storageLocation());
-        Assertions.assertEquals("ksrpqv", model.country());
+        Assertions.assertEquals("lstvlzywe", model.storageLocation());
+        Assertions.assertEquals("zrncsdt", model.country());
+        Assertions.assertEquals(ModelName.DATA_BOX_DISK, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HeavyScheduleAvailabilityRequest model
-            = new HeavyScheduleAvailabilityRequest().withStorageLocation("lolp").withCountry("ksrpqv");
+        HeavyScheduleAvailabilityRequest model = new HeavyScheduleAvailabilityRequest().withStorageLocation("lstvlzywe")
+            .withCountry("zrncsdt")
+            .withModel(ModelName.DATA_BOX_DISK);
         model = BinaryData.fromObject(model).toObject(HeavyScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("lolp", model.storageLocation());
-        Assertions.assertEquals("ksrpqv", model.country());
+        Assertions.assertEquals("lstvlzywe", model.storageLocation());
+        Assertions.assertEquals("zrncsdt", model.country());
+        Assertions.assertEquals(ModelName.DATA_BOX_DISK, model.model());
     }
 }

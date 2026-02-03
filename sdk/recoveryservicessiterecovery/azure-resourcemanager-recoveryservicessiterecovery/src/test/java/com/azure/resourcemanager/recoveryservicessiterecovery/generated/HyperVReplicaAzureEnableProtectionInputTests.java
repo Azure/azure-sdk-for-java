@@ -9,6 +9,10 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.DiskAccount
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureDiskInputDetails;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.HyperVReplicaAzureEnableProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.LicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.LinuxLicenseType;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SecurityConfiguration;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SecurityProfileProperties;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.SecurityType;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SqlServerLicenseType;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,115 +23,143 @@ public final class HyperVReplicaAzureEnableProtectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVReplicaAzureEnableProtectionInput model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVReplicaAzure\",\"hvHostVmId\":\"adxkxeqbwpntghy\",\"vmName\":\"a\",\"osType\":\"drnxsluvlzla\",\"vhdId\":\"t\",\"targetStorageAccountId\":\"pbqhvfdqqjwkr\",\"targetAzureNetworkId\":\"zdanojis\",\"targetAzureSubnetId\":\"lmvokat\",\"enableRdpOnTargetOption\":\"tjctibpvbkaeh\",\"targetAzureVmName\":\"mzy\",\"logStorageAccountId\":\"fwakw\",\"disksToInclude\":[\"vmakxhysowljuxl\",\"bectvtfjmskdch\"],\"targetAzureV1ResourceGroupId\":\"iubavlzwpvgm\",\"targetAzureV2ResourceGroupId\":\"lkzazmgok\",\"useManagedDisks\":\"gjqafkmkrokzr\",\"targetAvailabilitySetId\":\"qetwpqrtvaozn\",\"targetAvailabilityZone\":\"ixiezeag\",\"licenseType\":\"NotSpecified\",\"sqlServerLicenseType\":\"NotSpecified\",\"targetVmSize\":\"ugedh\",\"targetProximityPlacementGroupId\":\"jstlzmblsyj\",\"useManagedDisksForReplication\":\"olctae\",\"diskType\":\"Standard_LRS\",\"disksToIncludeForManagedDisks\":[{\"diskId\":\"edjc\",\"logStorageAccountId\":\"tb\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"gdxzvsgeafgfoseh\"},{\"diskId\":\"zsxezppkkwaae\",\"logStorageAccountId\":\"yfjlpzeqto\",\"diskType\":\"Premium_LRS\",\"diskEncryptionSetId\":\"ixlajmllpquevham\"}],\"diskEncryptionSetId\":\"wg\",\"targetVmTags\":{\"qovchiqbp\":\"mkekxpkzwaqxo\"},\"seedManagedDiskTags\":{\"ztekxbyjgmsfep\":\"idu\",\"dicxdw\":\"yihpqadagrh\",\"vcxjsgbipcukdvek\":\"jfowxwy\",\"scrdp\":\"buhoduchv\"},\"targetManagedDiskTags\":{\"szekbh\":\"dyjdussp\",\"hbfrnuybfflj\":\"lkaaggkr\"},\"targetNicTags\":{\"srexxfavs\":\"mreoagsqtaad\",\"l\":\"wudohzilfm\"}}")
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"hvHostVmId\":\"qiynez\",\"vmName\":\"lln\",\"osType\":\"iiwv\",\"userSelectedOSName\":\"umxpymdj\",\"vhdId\":\"axroqvqpilrgunc\",\"targetStorageAccountId\":\"lduwzorxsb\",\"targetAzureNetworkId\":\"aqklxy\",\"targetAzureSubnetId\":\"kqv\",\"enableRdpOnTargetOption\":\"epdxcltuubwyvpj\",\"targetAzureVmName\":\"wcpjqduqgi\",\"logStorageAccountId\":\"xkydfbwlja\",\"disksToInclude\":[\"erkjddv\",\"gliegftcvbiif\",\"ksdwgdnk\"],\"targetAzureV1ResourceGroupId\":\"gmwdh\",\"targetAzureV2ResourceGroupId\":\"buvczldbglzoutb\",\"useManagedDisks\":\"qgz\",\"targetAvailabilitySetId\":\"ajclyzgsnorbjg\",\"targetAvailabilityZone\":\"zjotvmrxkhlo\",\"licenseType\":\"NoLicenseType\",\"sqlServerLicenseType\":\"PAYG\",\"linuxLicenseType\":\"NoLicenseType\",\"targetVmSecurityProfile\":{\"targetVmSecurityType\":\"ConfidentialVM\",\"targetVmSecureBoot\":\"Enabled\",\"targetVmTpm\":\"Enabled\",\"targetVmMonitoring\":\"Disabled\",\"targetVmConfidentialEncryption\":\"Disabled\"},\"targetVmSize\":\"osnuudtelv\",\"targetProximityPlacementGroupId\":\"ibdrqrswhbuubpyr\",\"useManagedDisksForReplication\":\"tjoxztfw\",\"diskType\":\"StandardSSD_ZRS\",\"disksToIncludeForManagedDisks\":[{\"diskId\":\"zevjnnctag\",\"logStorageAccountId\":\"v\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"pemhzcgkrepdqhqy\",\"sectorSizeInBytes\":1873371469},{\"diskId\":\"e\",\"logStorageAccountId\":\"xqabckmzeoxi\",\"diskType\":\"PremiumV2_LRS\",\"diskEncryptionSetId\":\"eoh\",\"sectorSizeInBytes\":257838821}],\"diskEncryptionSetId\":\"puz\",\"targetVmTags\":{\"angp\":\"eezn\",\"phmsexroq\":\"bfaxyxzlbc\"},\"seedManagedDiskTags\":{\"qgpkrie\":\"ktxfvonfe\",\"kyfwnwpiwxeiicr\":\"bgnixxoww\"},\"targetManagedDiskTags\":{\"dm\":\"pk\"},\"targetNicTags\":{\"ws\":\"ijvs\",\"wrasekw\":\"gkjgya\",\"wyxqiclad\":\"fcvoinwoqar\",\"ob\":\"atdavuqmcbyms\"}}")
             .toObject(HyperVReplicaAzureEnableProtectionInput.class);
-        Assertions.assertEquals("adxkxeqbwpntghy", model.hvHostVmId());
-        Assertions.assertEquals("a", model.vmName());
-        Assertions.assertEquals("drnxsluvlzla", model.osType());
-        Assertions.assertEquals("t", model.vhdId());
-        Assertions.assertEquals("pbqhvfdqqjwkr", model.targetStorageAccountId());
-        Assertions.assertEquals("zdanojis", model.targetAzureNetworkId());
-        Assertions.assertEquals("lmvokat", model.targetAzureSubnetId());
-        Assertions.assertEquals("tjctibpvbkaeh", model.enableRdpOnTargetOption());
-        Assertions.assertEquals("mzy", model.targetAzureVmName());
-        Assertions.assertEquals("fwakw", model.logStorageAccountId());
-        Assertions.assertEquals("vmakxhysowljuxl", model.disksToInclude().get(0));
-        Assertions.assertEquals("iubavlzwpvgm", model.targetAzureV1ResourceGroupId());
-        Assertions.assertEquals("lkzazmgok", model.targetAzureV2ResourceGroupId());
-        Assertions.assertEquals("gjqafkmkrokzr", model.useManagedDisks());
-        Assertions.assertEquals("qetwpqrtvaozn", model.targetAvailabilitySetId());
-        Assertions.assertEquals("ixiezeag", model.targetAvailabilityZone());
-        Assertions.assertEquals(LicenseType.NOT_SPECIFIED, model.licenseType());
-        Assertions.assertEquals(SqlServerLicenseType.NOT_SPECIFIED, model.sqlServerLicenseType());
-        Assertions.assertEquals("ugedh", model.targetVmSize());
-        Assertions.assertEquals("jstlzmblsyj", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("olctae", model.useManagedDisksForReplication());
-        Assertions.assertEquals(DiskAccountType.STANDARD_LRS, model.diskType());
-        Assertions.assertEquals("edjc", model.disksToIncludeForManagedDisks().get(0).diskId());
-        Assertions.assertEquals("tb", model.disksToIncludeForManagedDisks().get(0).logStorageAccountId());
+        Assertions.assertEquals("qiynez", model.hvHostVmId());
+        Assertions.assertEquals("lln", model.vmName());
+        Assertions.assertEquals("iiwv", model.osType());
+        Assertions.assertEquals("umxpymdj", model.userSelectedOSName());
+        Assertions.assertEquals("axroqvqpilrgunc", model.vhdId());
+        Assertions.assertEquals("lduwzorxsb", model.targetStorageAccountId());
+        Assertions.assertEquals("aqklxy", model.targetAzureNetworkId());
+        Assertions.assertEquals("kqv", model.targetAzureSubnetId());
+        Assertions.assertEquals("epdxcltuubwyvpj", model.enableRdpOnTargetOption());
+        Assertions.assertEquals("wcpjqduqgi", model.targetAzureVmName());
+        Assertions.assertEquals("xkydfbwlja", model.logStorageAccountId());
+        Assertions.assertEquals("erkjddv", model.disksToInclude().get(0));
+        Assertions.assertEquals("gmwdh", model.targetAzureV1ResourceGroupId());
+        Assertions.assertEquals("buvczldbglzoutb", model.targetAzureV2ResourceGroupId());
+        Assertions.assertEquals("qgz", model.useManagedDisks());
+        Assertions.assertEquals("ajclyzgsnorbjg", model.targetAvailabilitySetId());
+        Assertions.assertEquals("zjotvmrxkhlo", model.targetAvailabilityZone());
+        Assertions.assertEquals(LicenseType.NO_LICENSE_TYPE, model.licenseType());
+        Assertions.assertEquals(SqlServerLicenseType.PAYG, model.sqlServerLicenseType());
+        Assertions.assertEquals(LinuxLicenseType.NO_LICENSE_TYPE, model.linuxLicenseType());
+        Assertions.assertEquals(SecurityType.CONFIDENTIAL_VM, model.targetVmSecurityProfile().targetVmSecurityType());
+        Assertions.assertEquals(SecurityConfiguration.ENABLED, model.targetVmSecurityProfile().targetVmSecureBoot());
+        Assertions.assertEquals(SecurityConfiguration.ENABLED, model.targetVmSecurityProfile().targetVmTpm());
+        Assertions.assertEquals(SecurityConfiguration.DISABLED, model.targetVmSecurityProfile().targetVmMonitoring());
+        Assertions.assertEquals(SecurityConfiguration.DISABLED,
+            model.targetVmSecurityProfile().targetVmConfidentialEncryption());
+        Assertions.assertEquals("osnuudtelv", model.targetVmSize());
+        Assertions.assertEquals("ibdrqrswhbuubpyr", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("tjoxztfw", model.useManagedDisksForReplication());
+        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_ZRS, model.diskType());
+        Assertions.assertEquals("zevjnnctag", model.disksToIncludeForManagedDisks().get(0).diskId());
+        Assertions.assertEquals("v", model.disksToIncludeForManagedDisks().get(0).logStorageAccountId());
         Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS,
             model.disksToIncludeForManagedDisks().get(0).diskType());
-        Assertions.assertEquals("gdxzvsgeafgfoseh", model.disksToIncludeForManagedDisks().get(0).diskEncryptionSetId());
-        Assertions.assertEquals("wg", model.diskEncryptionSetId());
-        Assertions.assertEquals("mkekxpkzwaqxo", model.targetVmTags().get("qovchiqbp"));
-        Assertions.assertEquals("idu", model.seedManagedDiskTags().get("ztekxbyjgmsfep"));
-        Assertions.assertEquals("dyjdussp", model.targetManagedDiskTags().get("szekbh"));
-        Assertions.assertEquals("mreoagsqtaad", model.targetNicTags().get("srexxfavs"));
+        Assertions.assertEquals("pemhzcgkrepdqhqy", model.disksToIncludeForManagedDisks().get(0).diskEncryptionSetId());
+        Assertions.assertEquals(1873371469, model.disksToIncludeForManagedDisks().get(0).sectorSizeInBytes());
+        Assertions.assertEquals("puz", model.diskEncryptionSetId());
+        Assertions.assertEquals("eezn", model.targetVmTags().get("angp"));
+        Assertions.assertEquals("ktxfvonfe", model.seedManagedDiskTags().get("qgpkrie"));
+        Assertions.assertEquals("pk", model.targetManagedDiskTags().get("dm"));
+        Assertions.assertEquals("ijvs", model.targetNicTags().get("ws"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HyperVReplicaAzureEnableProtectionInput model
-            = new HyperVReplicaAzureEnableProtectionInput().withHvHostVmId("adxkxeqbwpntghy")
-                .withVmName("a")
-                .withOsType("drnxsluvlzla")
-                .withVhdId("t")
-                .withTargetStorageAccountId("pbqhvfdqqjwkr")
-                .withTargetAzureNetworkId("zdanojis")
-                .withTargetAzureSubnetId("lmvokat")
-                .withEnableRdpOnTargetOption("tjctibpvbkaeh")
-                .withTargetAzureVmName("mzy")
-                .withLogStorageAccountId("fwakw")
-                .withDisksToInclude(Arrays.asList("vmakxhysowljuxl", "bectvtfjmskdch"))
-                .withTargetAzureV1ResourceGroupId("iubavlzwpvgm")
-                .withTargetAzureV2ResourceGroupId("lkzazmgok")
-                .withUseManagedDisks("gjqafkmkrokzr")
-                .withTargetAvailabilitySetId("qetwpqrtvaozn")
-                .withTargetAvailabilityZone("ixiezeag")
-                .withLicenseType(LicenseType.NOT_SPECIFIED)
-                .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED)
-                .withTargetVmSize("ugedh")
-                .withTargetProximityPlacementGroupId("jstlzmblsyj")
-                .withUseManagedDisksForReplication("olctae")
-                .withDiskType(DiskAccountType.STANDARD_LRS)
+            = new HyperVReplicaAzureEnableProtectionInput().withHvHostVmId("qiynez")
+                .withVmName("lln")
+                .withOsType("iiwv")
+                .withUserSelectedOSName("umxpymdj")
+                .withVhdId("axroqvqpilrgunc")
+                .withTargetStorageAccountId("lduwzorxsb")
+                .withTargetAzureNetworkId("aqklxy")
+                .withTargetAzureSubnetId("kqv")
+                .withEnableRdpOnTargetOption("epdxcltuubwyvpj")
+                .withTargetAzureVmName("wcpjqduqgi")
+                .withLogStorageAccountId("xkydfbwlja")
+                .withDisksToInclude(Arrays.asList("erkjddv", "gliegftcvbiif", "ksdwgdnk"))
+                .withTargetAzureV1ResourceGroupId("gmwdh")
+                .withTargetAzureV2ResourceGroupId("buvczldbglzoutb")
+                .withUseManagedDisks("qgz")
+                .withTargetAvailabilitySetId("ajclyzgsnorbjg")
+                .withTargetAvailabilityZone("zjotvmrxkhlo")
+                .withLicenseType(LicenseType.NO_LICENSE_TYPE)
+                .withSqlServerLicenseType(SqlServerLicenseType.PAYG)
+                .withLinuxLicenseType(LinuxLicenseType.NO_LICENSE_TYPE)
+                .withTargetVmSecurityProfile(
+                    new SecurityProfileProperties().withTargetVmSecurityType(SecurityType.CONFIDENTIAL_VM)
+                        .withTargetVmSecureBoot(SecurityConfiguration.ENABLED)
+                        .withTargetVmTpm(SecurityConfiguration.ENABLED)
+                        .withTargetVmMonitoring(SecurityConfiguration.DISABLED)
+                        .withTargetVmConfidentialEncryption(SecurityConfiguration.DISABLED))
+                .withTargetVmSize("osnuudtelv")
+                .withTargetProximityPlacementGroupId("ibdrqrswhbuubpyr")
+                .withUseManagedDisksForReplication("tjoxztfw")
+                .withDiskType(DiskAccountType.STANDARD_SSD_ZRS)
                 .withDisksToIncludeForManagedDisks(Arrays.asList(
-                    new HyperVReplicaAzureDiskInputDetails().withDiskId("edjc")
-                        .withLogStorageAccountId("tb")
+                    new HyperVReplicaAzureDiskInputDetails().withDiskId("zevjnnctag")
+                        .withLogStorageAccountId("v")
                         .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-                        .withDiskEncryptionSetId("gdxzvsgeafgfoseh"),
-                    new HyperVReplicaAzureDiskInputDetails().withDiskId("zsxezppkkwaae")
-                        .withLogStorageAccountId("yfjlpzeqto")
-                        .withDiskType(DiskAccountType.PREMIUM_LRS)
-                        .withDiskEncryptionSetId("ixlajmllpquevham")))
-                .withDiskEncryptionSetId("wg")
-                .withTargetVmTags(mapOf("qovchiqbp", "mkekxpkzwaqxo"))
-                .withSeedManagedDiskTags(mapOf("ztekxbyjgmsfep", "idu", "dicxdw", "yihpqadagrh", "vcxjsgbipcukdvek",
-                    "jfowxwy", "scrdp", "buhoduchv"))
-                .withTargetManagedDiskTags(mapOf("szekbh", "dyjdussp", "hbfrnuybfflj", "lkaaggkr"))
-                .withTargetNicTags(mapOf("srexxfavs", "mreoagsqtaad", "l", "wudohzilfm"));
+                        .withDiskEncryptionSetId("pemhzcgkrepdqhqy")
+                        .withSectorSizeInBytes(1873371469),
+                    new HyperVReplicaAzureDiskInputDetails().withDiskId("e")
+                        .withLogStorageAccountId("xqabckmzeoxi")
+                        .withDiskType(DiskAccountType.PREMIUM_V2_LRS)
+                        .withDiskEncryptionSetId("eoh")
+                        .withSectorSizeInBytes(257838821)))
+                .withDiskEncryptionSetId("puz")
+                .withTargetVmTags(mapOf("angp", "eezn", "phmsexroq", "bfaxyxzlbc"))
+                .withSeedManagedDiskTags(mapOf("qgpkrie", "ktxfvonfe", "kyfwnwpiwxeiicr", "bgnixxoww"))
+                .withTargetManagedDiskTags(mapOf("dm", "pk"))
+                .withTargetNicTags(
+                    mapOf("ws", "ijvs", "wrasekw", "gkjgya", "wyxqiclad", "fcvoinwoqar", "ob", "atdavuqmcbyms"));
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureEnableProtectionInput.class);
-        Assertions.assertEquals("adxkxeqbwpntghy", model.hvHostVmId());
-        Assertions.assertEquals("a", model.vmName());
-        Assertions.assertEquals("drnxsluvlzla", model.osType());
-        Assertions.assertEquals("t", model.vhdId());
-        Assertions.assertEquals("pbqhvfdqqjwkr", model.targetStorageAccountId());
-        Assertions.assertEquals("zdanojis", model.targetAzureNetworkId());
-        Assertions.assertEquals("lmvokat", model.targetAzureSubnetId());
-        Assertions.assertEquals("tjctibpvbkaeh", model.enableRdpOnTargetOption());
-        Assertions.assertEquals("mzy", model.targetAzureVmName());
-        Assertions.assertEquals("fwakw", model.logStorageAccountId());
-        Assertions.assertEquals("vmakxhysowljuxl", model.disksToInclude().get(0));
-        Assertions.assertEquals("iubavlzwpvgm", model.targetAzureV1ResourceGroupId());
-        Assertions.assertEquals("lkzazmgok", model.targetAzureV2ResourceGroupId());
-        Assertions.assertEquals("gjqafkmkrokzr", model.useManagedDisks());
-        Assertions.assertEquals("qetwpqrtvaozn", model.targetAvailabilitySetId());
-        Assertions.assertEquals("ixiezeag", model.targetAvailabilityZone());
-        Assertions.assertEquals(LicenseType.NOT_SPECIFIED, model.licenseType());
-        Assertions.assertEquals(SqlServerLicenseType.NOT_SPECIFIED, model.sqlServerLicenseType());
-        Assertions.assertEquals("ugedh", model.targetVmSize());
-        Assertions.assertEquals("jstlzmblsyj", model.targetProximityPlacementGroupId());
-        Assertions.assertEquals("olctae", model.useManagedDisksForReplication());
-        Assertions.assertEquals(DiskAccountType.STANDARD_LRS, model.diskType());
-        Assertions.assertEquals("edjc", model.disksToIncludeForManagedDisks().get(0).diskId());
-        Assertions.assertEquals("tb", model.disksToIncludeForManagedDisks().get(0).logStorageAccountId());
+        Assertions.assertEquals("qiynez", model.hvHostVmId());
+        Assertions.assertEquals("lln", model.vmName());
+        Assertions.assertEquals("iiwv", model.osType());
+        Assertions.assertEquals("umxpymdj", model.userSelectedOSName());
+        Assertions.assertEquals("axroqvqpilrgunc", model.vhdId());
+        Assertions.assertEquals("lduwzorxsb", model.targetStorageAccountId());
+        Assertions.assertEquals("aqklxy", model.targetAzureNetworkId());
+        Assertions.assertEquals("kqv", model.targetAzureSubnetId());
+        Assertions.assertEquals("epdxcltuubwyvpj", model.enableRdpOnTargetOption());
+        Assertions.assertEquals("wcpjqduqgi", model.targetAzureVmName());
+        Assertions.assertEquals("xkydfbwlja", model.logStorageAccountId());
+        Assertions.assertEquals("erkjddv", model.disksToInclude().get(0));
+        Assertions.assertEquals("gmwdh", model.targetAzureV1ResourceGroupId());
+        Assertions.assertEquals("buvczldbglzoutb", model.targetAzureV2ResourceGroupId());
+        Assertions.assertEquals("qgz", model.useManagedDisks());
+        Assertions.assertEquals("ajclyzgsnorbjg", model.targetAvailabilitySetId());
+        Assertions.assertEquals("zjotvmrxkhlo", model.targetAvailabilityZone());
+        Assertions.assertEquals(LicenseType.NO_LICENSE_TYPE, model.licenseType());
+        Assertions.assertEquals(SqlServerLicenseType.PAYG, model.sqlServerLicenseType());
+        Assertions.assertEquals(LinuxLicenseType.NO_LICENSE_TYPE, model.linuxLicenseType());
+        Assertions.assertEquals(SecurityType.CONFIDENTIAL_VM, model.targetVmSecurityProfile().targetVmSecurityType());
+        Assertions.assertEquals(SecurityConfiguration.ENABLED, model.targetVmSecurityProfile().targetVmSecureBoot());
+        Assertions.assertEquals(SecurityConfiguration.ENABLED, model.targetVmSecurityProfile().targetVmTpm());
+        Assertions.assertEquals(SecurityConfiguration.DISABLED, model.targetVmSecurityProfile().targetVmMonitoring());
+        Assertions.assertEquals(SecurityConfiguration.DISABLED,
+            model.targetVmSecurityProfile().targetVmConfidentialEncryption());
+        Assertions.assertEquals("osnuudtelv", model.targetVmSize());
+        Assertions.assertEquals("ibdrqrswhbuubpyr", model.targetProximityPlacementGroupId());
+        Assertions.assertEquals("tjoxztfw", model.useManagedDisksForReplication());
+        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_ZRS, model.diskType());
+        Assertions.assertEquals("zevjnnctag", model.disksToIncludeForManagedDisks().get(0).diskId());
+        Assertions.assertEquals("v", model.disksToIncludeForManagedDisks().get(0).logStorageAccountId());
         Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS,
             model.disksToIncludeForManagedDisks().get(0).diskType());
-        Assertions.assertEquals("gdxzvsgeafgfoseh", model.disksToIncludeForManagedDisks().get(0).diskEncryptionSetId());
-        Assertions.assertEquals("wg", model.diskEncryptionSetId());
-        Assertions.assertEquals("mkekxpkzwaqxo", model.targetVmTags().get("qovchiqbp"));
-        Assertions.assertEquals("idu", model.seedManagedDiskTags().get("ztekxbyjgmsfep"));
-        Assertions.assertEquals("dyjdussp", model.targetManagedDiskTags().get("szekbh"));
-        Assertions.assertEquals("mreoagsqtaad", model.targetNicTags().get("srexxfavs"));
+        Assertions.assertEquals("pemhzcgkrepdqhqy", model.disksToIncludeForManagedDisks().get(0).diskEncryptionSetId());
+        Assertions.assertEquals(1873371469, model.disksToIncludeForManagedDisks().get(0).sectorSizeInBytes());
+        Assertions.assertEquals("puz", model.diskEncryptionSetId());
+        Assertions.assertEquals("eezn", model.targetVmTags().get("angp"));
+        Assertions.assertEquals("ktxfvonfe", model.seedManagedDiskTags().get("qgpkrie"));
+        Assertions.assertEquals("pk", model.targetManagedDiskTags().get("dm"));
+        Assertions.assertEquals("ijvs", model.targetNicTags().get("ws"));
     }
 
     // Use "Map.of" if available

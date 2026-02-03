@@ -14,21 +14,21 @@ public final class ResourceTypeRegistrationPropertiesTemplateDeploymentOptionsTe
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeRegistrationPropertiesTemplateDeploymentOptions model = BinaryData.fromString(
-            "{\"preflightSupported\":false,\"preflightOptions\":[\"None\",\"None\",\"ContinueDeploymentOnFailure\",\"None\"]}")
+            "{\"preflightSupported\":true,\"preflightOptions\":[\"ContinueDeploymentOnFailure\",\"ContinueDeploymentOnFailure\"]}")
             .toObject(ResourceTypeRegistrationPropertiesTemplateDeploymentOptions.class);
-        Assertions.assertEquals(false, model.preflightSupported());
-        Assertions.assertEquals(PreflightOption.NONE, model.preflightOptions().get(0));
+        Assertions.assertTrue(model.preflightSupported());
+        Assertions.assertEquals(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, model.preflightOptions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeRegistrationPropertiesTemplateDeploymentOptions model
-            = new ResourceTypeRegistrationPropertiesTemplateDeploymentOptions().withPreflightSupported(false)
-                .withPreflightOptions(Arrays.asList(PreflightOption.NONE, PreflightOption.NONE,
-                    PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, PreflightOption.NONE));
+            = new ResourceTypeRegistrationPropertiesTemplateDeploymentOptions().withPreflightSupported(true)
+                .withPreflightOptions(Arrays.asList(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE,
+                    PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE));
         model
             = BinaryData.fromObject(model).toObject(ResourceTypeRegistrationPropertiesTemplateDeploymentOptions.class);
-        Assertions.assertEquals(false, model.preflightSupported());
-        Assertions.assertEquals(PreflightOption.NONE, model.preflightOptions().get(0));
+        Assertions.assertTrue(model.preflightSupported());
+        Assertions.assertEquals(PreflightOption.CONTINUE_DEPLOYMENT_ON_FAILURE, model.preflightOptions().get(0));
     }
 }

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Forcibly unlink another database from this database.
  * 
- * Parameters for a redis enterprise active geo-replication force unlink operation.
+ * Parameters for a Redis Enterprise Active Geo Replication Force Unlink operation.
  */
 @Fluent
 public final class ForceUnlinkParameters implements JsonSerializable<ForceUnlinkParameters> {

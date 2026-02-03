@@ -6,7 +6,6 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CompositePath;
@@ -17,8 +16,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.ComparatorUtils;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -111,17 +110,19 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_MultiOrderByQueryTests() throws Exception {
+        documents = new ArrayList<>();
         client = getClientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
         truncateCollection(documentCollection);
 
+        expectCount(documentCollection, 0);
         int numberOfDocuments = 4;
 
         Random random = new Random();
@@ -138,29 +139,30 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
 
                 // Permute all the fields so that there are duplicates with tie breaks
                 InternalObjectNode numberClone = new InternalObjectNode(multiOrderByDocumentString);
-                numberClone.set(NUMBER_FIELD, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                numberClone.set(NUMBER_FIELD, random.nextInt(5));
                 numberClone.setId(UUID.randomUUID().toString());
                 this.documents.add(numberClone);
 
                 InternalObjectNode stringClone = new InternalObjectNode(multiOrderByDocumentString);
-                stringClone.set(STRING_FIELD, Integer.toString(random.nextInt(5)), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                stringClone.set(STRING_FIELD, Integer.toString(random.nextInt(5)));
                 stringClone.setId(UUID.randomUUID().toString());
                 this.documents.add(stringClone);
 
                 InternalObjectNode boolClone = new InternalObjectNode(multiOrderByDocumentString);
-                boolClone.set(BOOL_FIELD, random.nextInt(2) % 2 == 0, CosmosItemSerializer.DEFAULT_SERIALIZER);
+                boolClone.set(BOOL_FIELD, random.nextInt(2) % 2 == 0);
                 boolClone.setId(UUID.randomUUID().toString());
                 this.documents.add(boolClone);
 
                 // Also fuzz what partition it goes to
                 InternalObjectNode partitionClone = new InternalObjectNode(multiOrderByDocumentString);
-                partitionClone.set(PARTITION_KEY, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                partitionClone.set(PARTITION_KEY, random.nextInt(5));
                 partitionClone.setId(UUID.randomUUID().toString());
                 this.documents.add(partitionClone);
             }
         }
 
         voidBulkInsertBlocking(documentCollection, documents);
+        expectCount(documentCollection, documents.size());
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
@@ -169,18 +171,18 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         Random random = new Random();
         InternalObjectNode document = new InternalObjectNode();
         document.setId(UUID.randomUUID().toString());
-        document.set(NUMBER_FIELD, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(NUMBER_FIELD_2, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(BOOL_FIELD, (random.nextInt() % 2) == 0, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(STRING_FIELD, Integer.toString(random.nextInt(5)), CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(STRING_FIELD_2, Integer.toString(random.nextInt(5)), CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(NULL_FIELD, null, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(OBJECT_FIELD, "", CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(ARRAY_FIELD, (new ObjectMapper()).createArrayNode(), CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(SHORT_STRING_FIELD, "a" + random.nextInt(100), CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(MEDIUM_STRING_FIELD, "a" + random.nextInt(128) + 100, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(LONG_STRING_FIELD, "a" + random.nextInt(255) + 128, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(PARTITION_KEY, random.nextInt(5), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(NUMBER_FIELD, random.nextInt(5));
+        document.set(NUMBER_FIELD_2, random.nextInt(5));
+        document.set(BOOL_FIELD, (random.nextInt() % 2) == 0);
+        document.set(STRING_FIELD, Integer.toString(random.nextInt(5)));
+        document.set(STRING_FIELD_2, Integer.toString(random.nextInt(5)));
+        document.set(NULL_FIELD, null);
+        document.set(OBJECT_FIELD, "");
+        document.set(ARRAY_FIELD, (new ObjectMapper()).createArrayNode());
+        document.set(SHORT_STRING_FIELD, "a" + random.nextInt(100));
+        document.set(MEDIUM_STRING_FIELD, "a" + random.nextInt(128) + 100);
+        document.set(LONG_STRING_FIELD, "a" + random.nextInt(255) + 128);
+        document.set(PARTITION_KEY, random.nextInt(5));
         return document;
     }
 

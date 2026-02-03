@@ -74,7 +74,7 @@ public final class FileSystemsImpl {
      * service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureDataLakeStorage")
+    @ServiceInterface(name = "AzureDataLakeStorageRestAPIFileSystems")
     public interface FileSystemsService {
 
         @Put("/{filesystem}")
@@ -242,7 +242,7 @@ public final class FileSystemsImpl {
             @HeaderParam("x-ms-version") String version, @QueryParam("continuation") String continuation,
             @QueryParam("directory") String path, @QueryParam("recursive") boolean recursive,
             @QueryParam("maxResults") Integer maxResults, @QueryParam("upn") Boolean upn,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("beginFrom") String beginFrom, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
@@ -253,7 +253,7 @@ public final class FileSystemsImpl {
             @HeaderParam("x-ms-version") String version, @QueryParam("continuation") String continuation,
             @QueryParam("directory") String path, @QueryParam("recursive") boolean recursive,
             @QueryParam("maxResults") Integer maxResults, @QueryParam("upn") Boolean upn,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("beginFrom") String beginFrom, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
@@ -264,7 +264,7 @@ public final class FileSystemsImpl {
             @HeaderParam("x-ms-version") String version, @QueryParam("continuation") String continuation,
             @QueryParam("directory") String path, @QueryParam("recursive") boolean recursive,
             @QueryParam("maxResults") Integer maxResults, @QueryParam("upn") Boolean upn,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("beginFrom") String beginFrom, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
@@ -275,7 +275,7 @@ public final class FileSystemsImpl {
             @HeaderParam("x-ms-version") String version, @QueryParam("continuation") String continuation,
             @QueryParam("directory") String path, @QueryParam("recursive") boolean recursive,
             @QueryParam("maxResults") Integer maxResults, @QueryParam("upn") Boolean upn,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("beginFrom") String beginFrom, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{filesystem}")
         @ExpectedResponses({ 200 })
@@ -337,7 +337,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -366,7 +366,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -399,7 +399,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -428,7 +428,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -458,7 +458,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -488,7 +488,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -521,7 +521,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -556,7 +556,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -582,7 +582,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -613,12 +613,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -646,12 +646,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -696,12 +696,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -728,12 +728,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -761,12 +761,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -794,12 +794,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -844,12 +844,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -896,12 +896,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -925,12 +925,12 @@ public final class FileSystemsImpl {
      *
      * Set properties for the FileSystem. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param properties Optional. User-defined properties to be stored with the filesystem, in the format of a
      * comma-separated list of name and value pairs "n1=v1, n2=v2, ...", where each value is a base64 encoded string.
@@ -980,7 +980,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1002,7 +1002,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1028,7 +1028,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1050,7 +1050,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1073,7 +1073,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1095,7 +1095,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,7 +1121,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1149,7 +1149,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1168,7 +1168,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1197,12 +1197,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1228,12 +1228,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
@@ -1276,12 +1276,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1307,12 +1307,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
@@ -1339,12 +1339,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1370,12 +1370,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
@@ -1419,12 +1419,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
@@ -1470,12 +1470,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1497,12 +1497,12 @@ public final class FileSystemsImpl {
      * files or directories within the filesystem, will fail with status code 404 (Not Found) while the filesystem is
      * being deleted. This operation supports conditional HTTP requests. For more information, see [Specifying
      * Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param modifiedAccessConditions Parameter group.
      * @param context The context to associate with this operation.
@@ -1547,7 +1547,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1562,6 +1562,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1569,10 +1574,11 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsWithResponseAsync(boolean recursive,
-        String requestId, Integer timeout, String continuation, String path, Integer maxResults, Boolean upn) {
+        String requestId, Integer timeout, String continuation, String path, Integer maxResults, Boolean upn,
+        String beginFrom) {
         return FluxUtil
             .withContext(context -> listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path,
-                maxResults, upn, context))
+                maxResults, upn, beginFrom, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1585,7 +1591,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1600,6 +1606,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1609,11 +1620,11 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FileSystemsListPathsHeaders, PathList>> listPathsWithResponseAsync(boolean recursive,
         String requestId, Integer timeout, String continuation, String path, Integer maxResults, Boolean upn,
-        Context context) {
+        String beginFrom, Context context) {
         final String accept = "application/json";
         return service
             .listPaths(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(), requestId, timeout,
-                this.client.getVersion(), continuation, path, recursive, maxResults, upn, accept, context)
+                this.client.getVersion(), continuation, path, recursive, maxResults, upn, beginFrom, accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1626,7 +1637,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1641,6 +1652,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1648,8 +1664,8 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathList> listPathsAsync(boolean recursive, String requestId, Integer timeout, String continuation,
-        String path, Integer maxResults, Boolean upn) {
-        return listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path, maxResults, upn)
+        String path, Integer maxResults, Boolean upn, String beginFrom) {
+        return listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path, maxResults, upn, beginFrom)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1663,7 +1679,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1678,6 +1694,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1686,10 +1707,10 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathList> listPathsAsync(boolean recursive, String requestId, Integer timeout, String continuation,
-        String path, Integer maxResults, Boolean upn, Context context) {
-        return listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path, maxResults, upn, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String path, Integer maxResults, Boolean upn, String beginFrom, Context context) {
+        return listPathsWithResponseAsync(recursive, requestId, timeout, continuation, path, maxResults, upn, beginFrom,
+            context).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1701,7 +1722,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1716,6 +1737,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1723,10 +1749,10 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathList>> listPathsNoCustomHeadersWithResponseAsync(boolean recursive, String requestId,
-        Integer timeout, String continuation, String path, Integer maxResults, Boolean upn) {
+        Integer timeout, String continuation, String path, Integer maxResults, Boolean upn, String beginFrom) {
         return FluxUtil
             .withContext(context -> listPathsNoCustomHeadersWithResponseAsync(recursive, requestId, timeout,
-                continuation, path, maxResults, upn, context))
+                continuation, path, maxResults, upn, beginFrom, context))
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1739,7 +1765,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1754,6 +1780,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1762,12 +1793,13 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathList>> listPathsNoCustomHeadersWithResponseAsync(boolean recursive, String requestId,
-        Integer timeout, String continuation, String path, Integer maxResults, Boolean upn, Context context) {
+        Integer timeout, String continuation, String path, Integer maxResults, Boolean upn, String beginFrom,
+        Context context) {
         final String accept = "application/json";
         return service
             .listPathsNoCustomHeaders(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
-                requestId, timeout, this.client.getVersion(), continuation, path, recursive, maxResults, upn, accept,
-                context)
+                requestId, timeout, this.client.getVersion(), continuation, path, recursive, maxResults, upn, beginFrom,
+                accept, context)
             .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException);
     }
 
@@ -1780,7 +1812,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1795,6 +1827,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1804,12 +1841,12 @@ public final class FileSystemsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FileSystemsListPathsHeaders, PathList> listPathsWithResponse(boolean recursive,
         String requestId, Integer timeout, String continuation, String path, Integer maxResults, Boolean upn,
-        Context context) {
+        String beginFrom, Context context) {
         try {
             final String accept = "application/json";
             return service.listPathsSync(this.client.getUrl(), this.client.getFileSystem(), this.client.getResource(),
-                requestId, timeout, this.client.getVersion(), continuation, path, recursive, maxResults, upn, accept,
-                context);
+                requestId, timeout, this.client.getVersion(), continuation, path, recursive, maxResults, upn, beginFrom,
+                accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
             throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
@@ -1824,7 +1861,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1839,6 +1876,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1846,9 +1888,9 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PathList listPaths(boolean recursive, String requestId, Integer timeout, String continuation, String path,
-        Integer maxResults, Boolean upn) {
+        Integer maxResults, Boolean upn, String beginFrom) {
         try {
-            return listPathsWithResponse(recursive, requestId, timeout, continuation, path, maxResults, upn,
+            return listPathsWithResponse(recursive, requestId, timeout, continuation, path, maxResults, upn, beginFrom,
                 Context.NONE).getValue();
         } catch (DataLakeStorageExceptionInternal internalException) {
             throw ModelHelper.mapToDataLakeStorageException(internalException);
@@ -1864,7 +1906,7 @@ public final class FileSystemsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -1879,6 +1921,11 @@ public final class FileSystemsImpl {
      * Azure Active Directory Object IDs to User Principal Names. If "false", the values will be returned as Azure
      * Active Directory Object IDs. The default value is false. Note that group and application Object IDs are not
      * translated because they do not have unique friendly names.
+     * @param beginFrom Optional. A relative path within the specified directory where the listing will start from. For
+     * example, a recursive listing under directory folder1/folder2 with beginFrom as folder3/readmefile.txt will start
+     * listing from folder1/folder2/folder3/readmefile.txt. Please note that, multiple entity levels are supported for
+     * recursive listing. Non-recursive listing supports only one entity level. An error will appear if multiple entity
+     * levels are specified for non-recursive listing.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DataLakeStorageExceptionInternal thrown if the request is rejected by server.
@@ -1887,12 +1934,12 @@ public final class FileSystemsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PathList> listPathsNoCustomHeadersWithResponse(boolean recursive, String requestId, Integer timeout,
-        String continuation, String path, Integer maxResults, Boolean upn, Context context) {
+        String continuation, String path, Integer maxResults, Boolean upn, String beginFrom, Context context) {
         try {
             final String accept = "application/json";
             return service.listPathsNoCustomHeadersSync(this.client.getUrl(), this.client.getFileSystem(),
                 this.client.getResource(), requestId, timeout, this.client.getVersion(), continuation, path, recursive,
-                maxResults, upn, accept, context);
+                maxResults, upn, beginFrom, accept, context);
         } catch (DataLakeStorageExceptionInternal internalException) {
             throw ModelHelper.mapToDataLakeStorageException(internalException);
         }
@@ -1915,7 +1962,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1951,7 +1998,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -1998,7 +2045,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -2034,7 +2081,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -2071,7 +2118,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -2107,7 +2154,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -2153,7 +2200,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -2202,7 +2249,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -2240,7 +2287,7 @@ public final class FileSystemsImpl {
      * @param include Include this parameter to specify one or more datasets to include in the response.
      * @param showonly Include this parameter to specify one or more datasets to include in the response.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.

@@ -10,6 +10,7 @@ import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -152,5 +153,22 @@ public class CpkAsyncTests extends DataLakeTestBase {
         Mono<Boolean> response = cpkFile.create().then(cpkFile.getCustomerProvidedKeyAsyncClient(null).exists());
 
         StepVerifier.create(response).expectNext(true).verifyComplete();
+    }
+
+    @Test
+    public void pathGetSystemPropertiesWithoutCorrectCPK() {
+        DataLakePathCreateOptions options = new DataLakePathCreateOptions();
+        options.setEncryptionContext("encryption-context");
+
+        // The encryption key is not required for this API as the getStatus query parameter is used in the request.
+        StepVerifier
+            .create(cpkFile.createWithResponse(options)
+                .then(cpkFile.getCustomerProvidedKeyAsyncClient(null).getSystemPropertiesWithResponse(null)))
+            .assertNext(r -> {
+                assertEquals(200, r.getStatusCode());
+                assertEquals(key.getKeySha256(), r.getValue().getEncryptionKeySha256());
+                assertEquals("encryption-context", r.getValue().getEncryptionContext());
+            })
+            .verifyComplete();
     }
 }

@@ -112,10 +112,10 @@ def main():
 
     if args.skip_checkstyle:
         arguments.append('"-Dcheckstyle.skip=true"')
-    
+
     if args.skip_spotbugs:
         arguments.append('"-Dspotbugs.skip=true"')
-    
+
     if args.skip_revapi:
         arguments.append('"-Drevapi.skip=true"')
 
@@ -124,13 +124,6 @@ def main():
 
     if not args.skip_changelog:
         arguments.append('"-Dverify-changelog"')
-
-    # If Checkstyle, Spotbugs, or RevApi is being ran install sdk-build-tools to ensure the linting configuration is up-to-date.
-    if not args.skip_checkstyle or not args.skip_spotbugs or not args.skip_revapi:
-        if debug:
-            print('Installing sdk-build-tools as Checkstyle, Spotbugs, or RevApi linting is being performed.')
-        
-        os.system('mvn install -f ' + os.path.join('eng', 'code-quality-reports', 'pom.xml'))
 
     maven_command = base_command.format(','.join(list(set(build_artifacts))), ' '.join(arguments))
 

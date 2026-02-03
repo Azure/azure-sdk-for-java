@@ -6,8 +6,8 @@ package com.azure.resourcemanager.deviceregistry.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.deviceregistry.DeviceRegistryManager;
 import com.azure.resourcemanager.deviceregistry.models.SchemaVersion;
@@ -21,21 +21,21 @@ public final class SchemaVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"bfpncurdo\",\"description\":\"iithtywu\",\"schemaContent\":\"xcbihw\",\"hash\":\"nfdn\",\"provisioningState\":\"Deleting\"},\"id\":\"hrdgoihxumwcto\",\"name\":\"dzjlu\",\"type\":\"dfdlwggyts\"}";
+            = "{\"properties\":{\"uuid\":\"kphyjdxrav\",\"description\":\"qdbrxmrgc\",\"schemaContent\":\"bapxkiyfjjkb\",\"hash\":\"buscgduus\",\"provisioningState\":\"Canceled\"},\"id\":\"blevpmcluj\",\"name\":\"xkyxlzgs\",\"type\":\"gkzz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DeviceRegistryManager manager = DeviceRegistryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SchemaVersion response = manager.schemaVersions()
-            .getWithResponse("stotxh", "jujbypelmcuvhixb", "xyfwnylrcool", "ttpkiwkkbnujrywv",
+            .getWithResponse("blxydkxr", "vvbxiwkgfbqljnq", "hychocokuleh", "rqlrqffawe",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("iithtywu", response.properties().description());
-        Assertions.assertEquals("xcbihw", response.properties().schemaContent());
+        Assertions.assertEquals("qdbrxmrgc", response.properties().description());
+        Assertions.assertEquals("bapxkiyfjjkb", response.properties().schemaContent());
     }
 }

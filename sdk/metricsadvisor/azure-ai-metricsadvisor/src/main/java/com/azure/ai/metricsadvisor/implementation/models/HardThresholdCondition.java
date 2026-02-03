@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,6 +22,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * 
      * should be specified when anomalyDetectorDirection is Both or Down
      */
+    @Generated
     private Double lowerBound;
 
     /*
@@ -28,21 +30,25 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * 
      * should be specified when anomalyDetectorDirection is Both or Up
      */
+    @Generated
     private Double upperBound;
 
     /*
      * detection direction
      */
+    @Generated
     private AnomalyDetectorDirection anomalyDetectorDirection;
 
     /*
      * The suppressCondition property.
      */
+    @Generated
     private SuppressCondition suppressCondition;
 
     /**
      * Creates an instance of HardThresholdCondition class.
      */
+    @Generated
     public HardThresholdCondition() {
     }
 
@@ -53,6 +59,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * 
      * @return the lowerBound value.
      */
+    @Generated
     public Double getLowerBound() {
         return this.lowerBound;
     }
@@ -65,6 +72,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * @param lowerBound the lowerBound value to set.
      * @return the HardThresholdCondition object itself.
      */
+    @Generated
     public HardThresholdCondition setLowerBound(Double lowerBound) {
         this.lowerBound = lowerBound;
         return this;
@@ -77,6 +85,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * 
      * @return the upperBound value.
      */
+    @Generated
     public Double getUpperBound() {
         return this.upperBound;
     }
@@ -89,6 +98,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * @param upperBound the upperBound value to set.
      * @return the HardThresholdCondition object itself.
      */
+    @Generated
     public HardThresholdCondition setUpperBound(Double upperBound) {
         this.upperBound = upperBound;
         return this;
@@ -99,6 +109,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * 
      * @return the anomalyDetectorDirection value.
      */
+    @Generated
     public AnomalyDetectorDirection getAnomalyDetectorDirection() {
         return this.anomalyDetectorDirection;
     }
@@ -109,6 +120,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * @param anomalyDetectorDirection the anomalyDetectorDirection value to set.
      * @return the HardThresholdCondition object itself.
      */
+    @Generated
     public HardThresholdCondition setAnomalyDetectorDirection(AnomalyDetectorDirection anomalyDetectorDirection) {
         this.anomalyDetectorDirection = anomalyDetectorDirection;
         return this;
@@ -119,6 +131,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * 
      * @return the suppressCondition value.
      */
+    @Generated
     public SuppressCondition getSuppressCondition() {
         return this.suppressCondition;
     }
@@ -129,6 +142,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * @param suppressCondition the suppressCondition value to set.
      * @return the HardThresholdCondition object itself.
      */
+    @Generated
     public HardThresholdCondition setSuppressCondition(SuppressCondition suppressCondition) {
         this.suppressCondition = suppressCondition;
         return this;
@@ -137,6 +151,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -157,6 +172,7 @@ public final class HardThresholdCondition implements JsonSerializable<HardThresh
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HardThresholdCondition.
      */
+    @Generated
     public static HardThresholdCondition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HardThresholdCondition deserializedHardThresholdCondition = new HardThresholdCondition();

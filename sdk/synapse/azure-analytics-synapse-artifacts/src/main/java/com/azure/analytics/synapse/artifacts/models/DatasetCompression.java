@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
     /*
      * Type of dataset compression. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object type;
 
     /*
      * The dataset compression level. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object level;
 
     /*
      * The compression method used on a dataset.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of DatasetCompression class.
      */
+    @Generated
     public DatasetCompression() {
     }
 
@@ -44,6 +49,7 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
      * 
      * @return the type value.
      */
+    @Generated
     public Object getType() {
         return this.type;
     }
@@ -54,6 +60,7 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
      * @param type the type value to set.
      * @return the DatasetCompression object itself.
      */
+    @Generated
     public DatasetCompression setType(Object type) {
         this.type = type;
         return this;
@@ -64,6 +71,7 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
      * 
      * @return the level value.
      */
+    @Generated
     public Object getLevel() {
         return this.level;
     }
@@ -74,6 +82,7 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
      * @param level the level value to set.
      * @return the DatasetCompression object itself.
      */
+    @Generated
     public DatasetCompression setLevel(Object level) {
         this.level = level;
         return this;
@@ -84,6 +93,7 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -94,6 +104,7 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
      * @param additionalProperties the additionalProperties value to set.
      * @return the DatasetCompression object itself.
      */
+    @Generated
     public DatasetCompression setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -102,11 +113,14 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("type", this.type);
-        jsonWriter.writeUntypedField("level", this.level);
+        if (this.level != null) {
+            jsonWriter.writeUntypedField("level", this.level);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -124,6 +138,7 @@ public final class DatasetCompression implements JsonSerializable<DatasetCompres
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DatasetCompression.
      */
+    @Generated
     public static DatasetCompression fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatasetCompression deserializedDatasetCompression = new DatasetCompression();

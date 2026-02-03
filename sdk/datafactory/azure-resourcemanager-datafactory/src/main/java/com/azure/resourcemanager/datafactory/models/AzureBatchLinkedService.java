@@ -51,7 +51,7 @@ public final class AzureBatchLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureBatchLinkedServiceTypeProperties innerTypeProperties() {
+    AzureBatchLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -200,10 +200,18 @@ public final class XmlReadSettings extends FormatReadSettings {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("compressionProperties", this.compressionProperties);
-        jsonWriter.writeUntypedField("validationMode", this.validationMode);
-        jsonWriter.writeUntypedField("detectDataType", this.detectDataType);
-        jsonWriter.writeUntypedField("namespaces", this.namespaces);
-        jsonWriter.writeUntypedField("namespacePrefixes", this.namespacePrefixes);
+        if (this.validationMode != null) {
+            jsonWriter.writeUntypedField("validationMode", this.validationMode);
+        }
+        if (this.detectDataType != null) {
+            jsonWriter.writeUntypedField("detectDataType", this.detectDataType);
+        }
+        if (this.namespaces != null) {
+            jsonWriter.writeUntypedField("namespaces", this.namespaces);
+        }
+        if (this.namespacePrefixes != null) {
+            jsonWriter.writeUntypedField("namespacePrefixes", this.namespacePrefixes);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

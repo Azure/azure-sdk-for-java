@@ -3,12 +3,14 @@
 
 package com.azure.cosmos.kafka.connect;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.UUIDs;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCache;
+import com.azure.cosmos.kafka.connect.implementation.CosmosClientCacheItem;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
@@ -31,7 +33,6 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -49,20 +50,35 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
 
     private CosmosSinkConfig sinkConfig;
     private String connectorName;
-    private CosmosAsyncClient cosmosClient;
+    private CosmosClientCacheItem cosmosClientItem;
+
+    static {
+        //initialize all accessors from different threads can cause deadlock issues, so here we force loading ahead of time
+        ImplementationBridgeHelpers.initializeAllAccessors();
+    }
 
     @Override
     public void start(Map<String, String> props) {
         LOGGER.info("Starting the kafka cosmos sink connector");
-        this.sinkConfig = new CosmosSinkConfig(props);
-        this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
-        CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
-        this.cosmosClient =
-            CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
-        validateDatabaseAndContainers(
-            new ArrayList<>(containersConfig.getTopicToContainerMap().values()),
-            this.cosmosClient,
-            containersConfig.getDatabaseName());
+        try {
+            this.sinkConfig = new CosmosSinkConfig(props);
+            this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
+            CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
+            this.cosmosClientItem =
+                CosmosClientCache.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
+            validateDatabaseAndContainers(
+                new ArrayList<>(containersConfig.getTopicToContainerMap().values()),
+                this.cosmosClientItem.getClient(),
+                containersConfig.getDatabaseName());
+        } catch (Exception e) {
+            LOGGER.warn("Error starting the kafka cosmos sink connector", e);
+            // if connector failed to start, release initialized resources here
+            this.cleanup();
+
+            // re-throw the exception back to kafka
+            throw e;
+        }
+
     }
 
     @Override
@@ -105,7 +121,10 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
     private String getClientMetadataCachesSnapshotString() {
         CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
         List<String> containerNames = new ArrayList<>(containersConfig.getTopicToContainerMap().values());
-        CosmosAsyncDatabase database = this.cosmosClient.getDatabase(containersConfig.getDatabaseName());
+        CosmosAsyncDatabase database =
+            this.cosmosClientItem
+                .getClient()
+                .getDatabase(containersConfig.getDatabaseName());
 
         // read a random item from each container to populate the collection cache
         for (String containerName : containerNames) {
@@ -118,47 +137,50 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
         if (cosmosThroughputControlConfig.isThroughputControlEnabled()) {
             if (cosmosThroughputControlConfig.getThroughputControlAccountConfig() == null) {
                 CosmosAsyncContainer throughputControlContainer =
-                    this.cosmosClient
+                    this.cosmosClientItem
+                        .getClient()
                         .getDatabase(cosmosThroughputControlConfig.getGlobalThroughputControlDatabaseName())
                         .getContainer(cosmosThroughputControlConfig.getGlobalThroughputControlContainerName());
                 readRandomItemFromContainer(throughputControlContainer);
             }
         }
 
-        return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(this.cosmosClient);
+        return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(this.cosmosClientItem.getClient());
     }
 
     private String getThroughputControlClientMetadataCachesSnapshotString() {
-        CosmosAsyncClient throughputControlClient = null;
+        CosmosClientCacheItem throughputControlClientItem = null;
         CosmosThroughputControlConfig throughputControlConfig = this.sinkConfig.getThroughputControlConfig();
 
         try {
             if (throughputControlConfig.isThroughputControlEnabled()
                 && throughputControlConfig.getThroughputControlAccountConfig() != null) {
-                throughputControlClient = CosmosClientStore.getCosmosClient(
+                throughputControlClientItem = CosmosClientCache.getCosmosClient(
                     throughputControlConfig.getThroughputControlAccountConfig(),
                     this.connectorName
                 );
             }
 
-            if (throughputControlClient != null) {
+            if (throughputControlClientItem != null) {
                 readRandomItemFromContainer(
-                    throughputControlClient
+                    throughputControlClientItem
+                        .getClient()
                         .getDatabase(throughputControlConfig.getGlobalThroughputControlDatabaseName())
                         .getContainer(throughputControlConfig.getGlobalThroughputControlContainerName()));
+                return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClientItem.getClient());
             }
-            return KafkaCosmosUtils.convertClientMetadataCacheSnapshotToString(throughputControlClient);
 
+            return null;
         } finally {
-            if (throughputControlClient != null) {
-                throughputControlClient.close();
+            if (throughputControlClientItem != null) {
+                CosmosClientCache.releaseCosmosClient(throughputControlClientItem.getClientConfig());
             }
         }
     }
 
     private void readRandomItemFromContainer(CosmosAsyncContainer container) {
         if (container != null) {
-            container.readItem(UUID.randomUUID().toString(), new PartitionKey(UUID.randomUUID().toString()), JsonNode.class)
+            container.readItem(UUIDs.nonBlockingRandomUUID().toString(), new PartitionKey(UUIDs.nonBlockingRandomUUID().toString()), JsonNode.class)
                 .onErrorResume(throwable -> {
                     if (!KafkaCosmosExceptionsHelper.isNotFoundException(throwable)) {
                         LOGGER.warn("Failed to read item from container {}", container.getId(), throwable);
@@ -169,12 +191,18 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
         }
     }
 
+    private void cleanup() {
+        LOGGER.info("Cleaning up CosmosSinkConnector");
+        if (this.cosmosClientItem != null) {
+            CosmosClientCache.releaseCosmosClient(this.cosmosClientItem.getClientConfig());
+            this.cosmosClientItem = null;
+        }
+    }
+
     @Override
     public void stop() {
-        if (this.cosmosClient != null) {
-            this.cosmosClient.close();
-        }
-        LOGGER.info("Kafka Cosmos sink connector {} is stopped.");
+        LOGGER.info("Stopping Kafka CosmosDB sink connector");
+        cleanup();
     }
 
     @Override

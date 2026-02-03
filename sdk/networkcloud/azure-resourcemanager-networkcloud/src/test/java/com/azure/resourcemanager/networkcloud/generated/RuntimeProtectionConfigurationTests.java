@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RuntimeProtectionConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuntimeProtectionConfiguration model = BinaryData.fromString("{\"enforcementLevel\":\"Disabled\"}")
-            .toObject(RuntimeProtectionConfiguration.class);
-        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.DISABLED, model.enforcementLevel());
+        RuntimeProtectionConfiguration model
+            = BinaryData.fromString("{\"enforcementLevel\":\"Audit\"}").toObject(RuntimeProtectionConfiguration.class);
+        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.AUDIT, model.enforcementLevel());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RuntimeProtectionConfiguration model
-            = new RuntimeProtectionConfiguration().withEnforcementLevel(RuntimeProtectionEnforcementLevel.DISABLED);
+            = new RuntimeProtectionConfiguration().withEnforcementLevel(RuntimeProtectionEnforcementLevel.AUDIT);
         model = BinaryData.fromObject(model).toObject(RuntimeProtectionConfiguration.class);
-        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.DISABLED, model.enforcementLevel());
+        Assertions.assertEquals(RuntimeProtectionEnforcementLevel.AUDIT, model.enforcementLevel());
     }
 }

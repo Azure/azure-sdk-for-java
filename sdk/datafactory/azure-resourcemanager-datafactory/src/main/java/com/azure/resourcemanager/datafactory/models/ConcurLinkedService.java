@@ -51,7 +51,7 @@ public final class ConcurLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ConcurLinkedServiceTypeProperties innerTypeProperties() {
+    ConcurLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

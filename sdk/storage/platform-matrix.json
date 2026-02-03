@@ -26,9 +26,9 @@
     },
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+        "ubuntu-24.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
-      "JavaTestVersion": ["1.8", "1.21"],
+      "JavaTestVersion": ["1.8", "1.25"],
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "StorageRunStressScenarios" : "true",

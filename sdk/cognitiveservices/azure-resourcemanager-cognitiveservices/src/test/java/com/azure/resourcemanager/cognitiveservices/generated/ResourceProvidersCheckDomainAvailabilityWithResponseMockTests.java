@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
@@ -22,25 +22,27 @@ public final class ResourceProvidersCheckDomainAvailabilityWithResponseMockTests
     @Test
     public void testCheckDomainAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"isSubdomainAvailable\":true,\"reason\":\"xsi\",\"subdomainName\":\"etgbebjfulb\",\"type\":\"ichdlpn\",\"kind\":\"ubntnbatzviqsow\"}";
+            = "{\"isSubdomainAvailable\":false,\"reason\":\"bctvivuzqym\",\"subdomainName\":\"owog\",\"type\":\"it\",\"kind\":\"hzvb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DomainAvailability response = manager.resourceProviders()
-            .checkDomainAvailabilityWithResponse(new CheckDomainAvailabilityParameter().withSubdomainName("refqy")
-                .withType("qotoihiqakydiwfb")
-                .withKind("wpzdqtvhcspo"), com.azure.core.util.Context.NONE)
+            .checkDomainAvailabilityWithResponse(
+                new CheckDomainAvailabilityParameter().withSubdomainName("anniyopetxivcnr")
+                    .withType("yxnu")
+                    .withKind("ephblkwqpatvbqs"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.isSubdomainAvailable());
-        Assertions.assertEquals("xsi", response.reason());
-        Assertions.assertEquals("etgbebjfulb", response.subdomainName());
-        Assertions.assertEquals("ichdlpn", response.type());
-        Assertions.assertEquals("ubntnbatzviqsow", response.kind());
+        Assertions.assertFalse(response.isSubdomainAvailable());
+        Assertions.assertEquals("bctvivuzqym", response.reason());
+        Assertions.assertEquals("owog", response.subdomainName());
+        Assertions.assertEquals("it", response.type());
+        Assertions.assertEquals("hzvb", response.kind());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -23,26 +24,31 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
     /*
      * The result of the operation
      */
+    @Generated
     private PolicyModification policyResolution;
 
     /*
      * The SHA256 hash of the policy object modified
      */
+    @Generated
     private Base64Url policyTokenHash;
 
     /*
      * The certificate used to sign the policy object, if specified
      */
+    @Generated
     private JsonWebKey policySigner;
 
     /*
      * A JSON Web Token containing a StoredAttestationPolicy object with the attestation policy
      */
+    @Generated
     private String policy;
 
     /**
      * Creates an instance of PolicyResult class.
      */
+    @Generated
     public PolicyResult() {
     }
 
@@ -51,6 +57,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * 
      * @return the policyResolution value.
      */
+    @Generated
     public PolicyModification getPolicyResolution() {
         return this.policyResolution;
     }
@@ -61,6 +68,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * @param policyResolution the policyResolution value to set.
      * @return the PolicyResult object itself.
      */
+    @Generated
     public PolicyResult setPolicyResolution(PolicyModification policyResolution) {
         this.policyResolution = policyResolution;
         return this;
@@ -71,6 +79,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * 
      * @return the policyTokenHash value.
      */
+    @Generated
     public byte[] getPolicyTokenHash() {
         if (this.policyTokenHash == null) {
             return null;
@@ -84,6 +93,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * @param policyTokenHash the policyTokenHash value to set.
      * @return the PolicyResult object itself.
      */
+    @Generated
     public PolicyResult setPolicyTokenHash(byte[] policyTokenHash) {
         if (policyTokenHash == null) {
             this.policyTokenHash = null;
@@ -98,6 +108,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * 
      * @return the policySigner value.
      */
+    @Generated
     public JsonWebKey getPolicySigner() {
         return this.policySigner;
     }
@@ -108,6 +119,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * @param policySigner the policySigner value to set.
      * @return the PolicyResult object itself.
      */
+    @Generated
     public PolicyResult setPolicySigner(JsonWebKey policySigner) {
         this.policySigner = policySigner;
         return this;
@@ -119,6 +131,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * 
      * @return the policy value.
      */
+    @Generated
     public String getPolicy() {
         return this.policy;
     }
@@ -130,6 +143,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * @param policy the policy value to set.
      * @return the PolicyResult object itself.
      */
+    @Generated
     public PolicyResult setPolicy(String policy) {
         this.policy = policy;
         return this;
@@ -149,6 +163,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -168,6 +183,7 @@ public final class PolicyResult implements JsonSerializable<PolicyResult> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PolicyResult.
      */
+    @Generated
     public static PolicyResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PolicyResult deserializedPolicyResult = new PolicyResult();

@@ -3,16 +3,14 @@
 package com.azure.security.keyvault.keys.implementation;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
-import com.azure.security.keyvault.keys.implementation.models.KeyVaultErrorException;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,6 +28,8 @@ import java.util.function.Supplier;
  */
 public final class KeyVaultKeysUtils {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultKeysUtils.class);
+
+    public static final RequestOptions EMPTY_OPTIONS = new RequestOptions();
 
     /**
      * Creates a {@link CryptographyClientBuilder} based on the values passed from a Keys service client.
@@ -78,35 +78,19 @@ public final class KeyVaultKeysUtils {
     }
 
     /**
-     * Calls a supplier and maps any {@link KeyVaultErrorException} to an {@link HttpResponseException}.
+     * Calls a supplier and maps any {@link HttpResponseException} to an {@link HttpResponseException}.
      *
      * @param <T> The type of the result of the supplier.
      * @param call The supplier to call.
-     * @param exceptionMapper The function to map a {@link KeyVaultErrorException} to an {@link HttpResponseException}.
+     * @param exceptionMapper The function to map a {@link HttpResponseException} to an {@link HttpResponseException}.
      * @return The result of the supplier.
      */
     public static <T> T callWithMappedException(Supplier<T> call,
-        Function<KeyVaultErrorException, HttpResponseException> exceptionMapper) {
+        Function<HttpResponseException, HttpResponseException> exceptionMapper) {
         try {
             return call.get();
-        } catch (KeyVaultErrorException ex) {
-            throw exceptionMapper.apply(ex);
-        }
-    }
-
-    /**
-     * Maps a {@link KeyVaultErrorException} to an {@link HttpResponseException} for get key operations.
-     *
-     * @param ex The {@link KeyVaultErrorException} to map.
-     * @return The {@link HttpResponseException} that maps from the {@link KeyVaultErrorException}.
-     */
-    public static HttpResponseException mapGetKeyException(KeyVaultErrorException ex) {
-        if (ex.getResponse().getStatusCode() == 403) {
-            return new ResourceModifiedException(ex.getMessage(), ex.getResponse(), ex.getValue());
-        } else if (ex.getResponse().getStatusCode() == 404) {
-            return new ResourceNotFoundException(ex.getMessage(), ex.getResponse(), ex.getValue());
-        } else {
-            return ex;
+        } catch (HttpResponseException e) {
+            throw exceptionMapper.apply(e);
         }
     }
 

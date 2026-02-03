@@ -13,21 +13,21 @@ public final class CertManagerIssuerRefTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertManagerIssuerRef model
-            = BinaryData.fromString("{\"group\":\"ewrmjmwvvjektc\",\"kind\":\"Issuer\",\"name\":\"enhwlrs\"}")
+            = BinaryData.fromString("{\"group\":\"surex\",\"kind\":\"ClusterIssuer\",\"name\":\"o\"}")
                 .toObject(CertManagerIssuerRef.class);
-        Assertions.assertEquals("ewrmjmwvvjektc", model.group());
-        Assertions.assertEquals(CertManagerIssuerKind.ISSUER, model.kind());
-        Assertions.assertEquals("enhwlrs", model.name());
+        Assertions.assertEquals("surex", model.group());
+        Assertions.assertEquals(CertManagerIssuerKind.CLUSTER_ISSUER, model.kind());
+        Assertions.assertEquals("o", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertManagerIssuerRef model = new CertManagerIssuerRef().withGroup("ewrmjmwvvjektc")
-            .withKind(CertManagerIssuerKind.ISSUER)
-            .withName("enhwlrs");
+        CertManagerIssuerRef model = new CertManagerIssuerRef().withGroup("surex")
+            .withKind(CertManagerIssuerKind.CLUSTER_ISSUER)
+            .withName("o");
         model = BinaryData.fromObject(model).toObject(CertManagerIssuerRef.class);
-        Assertions.assertEquals("ewrmjmwvvjektc", model.group());
-        Assertions.assertEquals(CertManagerIssuerKind.ISSUER, model.kind());
-        Assertions.assertEquals("enhwlrs", model.name());
+        Assertions.assertEquals("surex", model.group());
+        Assertions.assertEquals(CertManagerIssuerKind.CLUSTER_ISSUER, model.kind());
+        Assertions.assertEquals("o", model.name());
     }
 }

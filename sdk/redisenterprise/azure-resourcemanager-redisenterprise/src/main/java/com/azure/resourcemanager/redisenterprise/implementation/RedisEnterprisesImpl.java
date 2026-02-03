@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterprisesClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
+import com.azure.resourcemanager.redisenterprise.fluent.models.SkuDetailsListInner;
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
 import com.azure.resourcemanager.redisenterprise.models.RedisEnterprises;
+import com.azure.resourcemanager.redisenterprise.models.SkuDetailsList;
 
 public final class RedisEnterprisesImpl implements RedisEnterprises {
     private static final ClientLogger LOGGER = new ClientLogger(RedisEnterprisesImpl.class);
@@ -74,6 +76,27 @@ public final class RedisEnterprisesImpl implements RedisEnterprises {
     public PagedIterable<Cluster> list(Context context) {
         PagedIterable<ClusterInner> inner = this.serviceClient().list(context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterImpl(inner1, this.manager()));
+    }
+
+    public Response<SkuDetailsList> listSkusForScalingWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
+        Response<SkuDetailsListInner> inner
+            = this.serviceClient().listSkusForScalingWithResponse(resourceGroupName, clusterName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SkuDetailsListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SkuDetailsList listSkusForScaling(String resourceGroupName, String clusterName) {
+        SkuDetailsListInner inner = this.serviceClient().listSkusForScaling(resourceGroupName, clusterName);
+        if (inner != null) {
+            return new SkuDetailsListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Cluster getById(String id) {

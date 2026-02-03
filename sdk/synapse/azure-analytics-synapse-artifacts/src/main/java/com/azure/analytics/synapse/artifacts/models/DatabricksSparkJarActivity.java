@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,27 +22,32 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "DatabricksSparkJar";
 
     /*
      * The full name of the class containing the main method to be executed. This class must be contained in a JAR
      * provided as a library. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object mainClassName;
 
     /*
      * Parameters that will be passed to the main method.
      */
+    @Generated
     private List<Object> parameters;
 
     /*
      * A list of libraries to be installed on the cluster that will execute the job.
      */
+    @Generated
     private List<Map<String, Object>> libraries;
 
     /**
      * Creates an instance of DatabricksSparkJarActivity class.
      */
+    @Generated
     public DatabricksSparkJarActivity() {
     }
 
@@ -50,6 +56,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -61,6 +68,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
      * 
      * @return the mainClassName value.
      */
+    @Generated
     public Object getMainClassName() {
         return this.mainClassName;
     }
@@ -72,6 +80,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
      * @param mainClassName the mainClassName value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
+    @Generated
     public DatabricksSparkJarActivity setMainClassName(Object mainClassName) {
         this.mainClassName = mainClassName;
         return this;
@@ -82,6 +91,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
      * 
      * @return the parameters value.
      */
+    @Generated
     public List<Object> getParameters() {
         return this.parameters;
     }
@@ -92,6 +102,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
+    @Generated
     public DatabricksSparkJarActivity setParameters(List<Object> parameters) {
         this.parameters = parameters;
         return this;
@@ -102,6 +113,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
      * 
      * @return the libraries value.
      */
+    @Generated
     public List<Map<String, Object>> getLibraries() {
         return this.libraries;
     }
@@ -112,6 +124,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkJarActivity object itself.
      */
+    @Generated
     public DatabricksSparkJarActivity setLibraries(List<Map<String, Object>> libraries) {
         this.libraries = libraries;
         return this;
@@ -120,6 +133,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkJarActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -129,6 +143,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkJarActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
@@ -138,6 +153,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkJarActivity setName(String name) {
         super.setName(name);
@@ -147,6 +163,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkJarActivity setDescription(String description) {
         super.setDescription(description);
@@ -156,6 +173,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkJarActivity setState(ActivityState state) {
         super.setState(state);
@@ -165,6 +183,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkJarActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -174,6 +193,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkJarActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -183,6 +203,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public DatabricksSparkJarActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -192,6 +213,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -232,6 +254,7 @@ public class DatabricksSparkJarActivity extends ExecutionActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DatabricksSparkJarActivity.
      */
+    @Generated
     public static DatabricksSparkJarActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DatabricksSparkJarActivity deserializedDatabricksSparkJarActivity = new DatabricksSparkJarActivity();

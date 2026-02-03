@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.elasticsan.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
@@ -56,6 +57,11 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
      * A boolean indicating whether or not Data Integrity Check is enabled
      */
     private Boolean enforceDataIntegrityCheckForIscsi;
+
+    /*
+     * The retention policy for the soft deleted volume group and its associated resources.
+     */
+    private DeleteRetentionPolicy deleteRetentionPolicy;
 
     /**
      * Creates an instance of VolumeGroupProperties class.
@@ -184,6 +190,28 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
     }
 
     /**
+     * Get the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @return the deleteRetentionPolicy value.
+     */
+    public DeleteRetentionPolicy deleteRetentionPolicy() {
+        return this.deleteRetentionPolicy;
+    }
+
+    /**
+     * Set the deleteRetentionPolicy property: The retention policy for the soft deleted volume group and its associated
+     * resources.
+     * 
+     * @param deleteRetentionPolicy the deleteRetentionPolicy value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        this.deleteRetentionPolicy = deleteRetentionPolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -198,6 +226,9 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+        if (deleteRetentionPolicy() != null) {
+            deleteRetentionPolicy().validate();
+        }
     }
 
     /**
@@ -211,6 +242,7 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
         jsonWriter.writeJsonField("encryptionProperties", this.encryptionProperties);
         jsonWriter.writeJsonField("networkAcls", this.networkAcls);
         jsonWriter.writeBooleanField("enforceDataIntegrityCheckForIscsi", this.enforceDataIntegrityCheckForIscsi);
+        jsonWriter.writeJsonField("deleteRetentionPolicy", this.deleteRetentionPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -247,6 +279,8 @@ public final class VolumeGroupProperties implements JsonSerializable<VolumeGroup
                 } else if ("enforceDataIntegrityCheckForIscsi".equals(fieldName)) {
                     deserializedVolumeGroupProperties.enforceDataIntegrityCheckForIscsi
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deleteRetentionPolicy".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.deleteRetentionPolicy = DeleteRetentionPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

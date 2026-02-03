@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
     /**
      * Static value Basic for SybaseAuthenticationType.
      */
+    @Generated
     public static final SybaseAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Windows for SybaseAuthenticationType.
      */
+    @Generated
     public static final SybaseAuthenticationType WINDOWS = fromString("Windows");
 
     /**
@@ -26,6 +29,7 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SybaseAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
      * @param name a name to look for.
      * @return the corresponding SybaseAuthenticationType.
      */
+    @Generated
     public static SybaseAuthenticationType fromString(String name) {
         return fromString(name, SybaseAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class SybaseAuthenticationType extends ExpandableStringEnum<SybaseA
      * 
      * @return known SybaseAuthenticationType values.
      */
+    @Generated
     public static Collection<SybaseAuthenticationType> values() {
         return values(SybaseAuthenticationType.class);
     }

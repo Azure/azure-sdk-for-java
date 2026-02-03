@@ -11,18 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizationActionMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizationActionMapping model = BinaryData.fromString("{\"original\":\"jdhtldwkyzxu\",\"desired\":\"kn\"}")
+        AuthorizationActionMapping model = BinaryData.fromString("{\"original\":\"n\",\"desired\":\"lexxbczwtru\"}")
             .toObject(AuthorizationActionMapping.class);
-        Assertions.assertEquals("jdhtldwkyzxu", model.original());
-        Assertions.assertEquals("kn", model.desired());
+        Assertions.assertEquals("n", model.original());
+        Assertions.assertEquals("lexxbczwtru", model.desired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AuthorizationActionMapping model
-            = new AuthorizationActionMapping().withOriginal("jdhtldwkyzxu").withDesired("kn");
+            = new AuthorizationActionMapping().withOriginal("n").withDesired("lexxbczwtru");
         model = BinaryData.fromObject(model).toObject(AuthorizationActionMapping.class);
-        Assertions.assertEquals("jdhtldwkyzxu", model.original());
-        Assertions.assertEquals("kn", model.desired());
+        Assertions.assertEquals("n", model.original());
+        Assertions.assertEquals("lexxbczwtru", model.desired());
     }
 }

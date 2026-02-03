@@ -21,4 +21,7 @@ public interface KeyClientManagedHsmTestBase {
 
     @Test
     void getRandomBytes(HttpClient httpClient, KeyServiceVersion serviceVersion);
+
+    @Test
+    void getKeyAttestation(HttpClient httpClient, KeyServiceVersion serviceVersion);
 }

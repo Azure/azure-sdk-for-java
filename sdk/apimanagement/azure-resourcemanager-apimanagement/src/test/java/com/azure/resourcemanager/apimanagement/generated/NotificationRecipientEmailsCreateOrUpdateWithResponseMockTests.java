@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.NotificationName;
@@ -22,20 +22,21 @@ public final class NotificationRecipientEmailsCreateOrUpdateWithResponseMockTest
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"email\":\"tjuzvyj\"},\"id\":\"uxchq\",\"name\":\"oqhqrc\",\"type\":\"ksxqfh\"}";
+            = "{\"properties\":{\"email\":\"kjexqfz\"},\"id\":\"hkr\",\"name\":\"dipwczj\",\"type\":\"nmpifj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RecipientEmailContract response = manager.notificationRecipientEmails()
-            .createOrUpdateWithResponse("rxhuqfvp", "nloqovvcxgqtquir", NotificationName.BCC, "pgzatu",
+            .createOrUpdateWithResponse("yfwa", "hmeoxxbzagwnomp",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, "iscnzcufysal",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tjuzvyj", response.email());
+        Assertions.assertEquals("kjexqfz", response.email());
     }
 }

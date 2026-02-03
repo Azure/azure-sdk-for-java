@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterResource;
@@ -25,24 +25,24 @@ public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"glcktraeraql\":{\"type\":\"Object\",\"value\":\"datathfas\"}},\"name\":\"yhwdogchdqtlbnkr\",\"type\":\"oxlwpeksrhkmzs\",\"etag\":\"p\",\"id\":\"sbp\"}";
+            = "{\"properties\":{\"cdzul\":{\"type\":\"Float\",\"value\":\"datadvey\"},\"xzszhvjfijxthojb\":{\"type\":\"String\",\"value\":\"datafxedm\"},\"qyapn\":{\"type\":\"Int\",\"value\":\"dataipc\"},\"dwdaugdgvshf\":{\"type\":\"Int\",\"value\":\"databyhdtjynus\"}},\"name\":\"ii\",\"type\":\"ki\",\"etag\":\"okjuehcrywwfnsr\",\"id\":\"jadnwafjiba\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GlobalParameterResource response = manager.globalParameters()
-            .define("aqlbdez")
-            .withExistingFactory("javpmokaqnuycd", "ymbefvuutlirz")
-            .withProperties(mapOf("ycdryjgxwd",
-                new GlobalParameterSpecification().withType(GlobalParameterType.INT).withValue("datauhearhkchyugj")))
+            .define("agsx")
+            .withExistingFactory("jh", "emlw")
+            .withProperties(mapOf("utu",
+                new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("dataaugenpipptpre")))
             .create();
 
-        Assertions.assertEquals("sbp", response.id());
-        Assertions.assertEquals(GlobalParameterType.OBJECT, response.properties().get("glcktraeraql").type());
+        Assertions.assertEquals("jadnwafjiba", response.id());
+        Assertions.assertEquals(GlobalParameterType.FLOAT, response.properties().get("cdzul").type());
     }
 
     // Use "Map.of" if available

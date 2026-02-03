@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Diagnostics;
@@ -22,35 +22,36 @@ public final class ContainerAppsDiagnosticsListDetectorsMockTests {
     @Test
     public void testListDetectors() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"oxpdxq\",\"name\":\"r\",\"description\":\"qownkiuajewnahw\",\"author\":\"jjmztnlmsoodtmv\",\"category\":\"dhdyswcrptveaj\",\"supportTopicList\":[{\"id\":\"lgsrgkrfizrpywlp\",\"pesId\":\"uqhrlmcskykp\"}],\"analysisTypes\":[\"fixcnpcfykkpy\"],\"type\":\"pawmpjprdp\",\"score\":39.779915},\"dataset\":[{\"table\":{\"tableName\":\"fjfw\",\"columns\":[{},{}],\"rows\":[\"datawk\",\"datayep\"]},\"renderingProperties\":{\"type\":206009156,\"title\":\"nidmdiaw\",\"description\":\"xkzrn\",\"isVisible\":false}},{\"table\":{\"tableName\":\"dhuosgwqpsqa\",\"columns\":[{},{}],\"rows\":[\"datadvqgcnbhcbmjkz\",\"dataibniynts\",\"datajmfmeftvhkm\",\"dataogjrhskbwgm\"]},\"renderingProperties\":{\"type\":165219531,\"title\":\"cfogxhcxnwjt\",\"description\":\"dzxcouzfwo\",\"isVisible\":false}}],\"status\":{\"message\":\"kzkdtzxsoednlwg\",\"statusId\":2125278836},\"dataProviderMetadata\":{\"providerName\":\"o\",\"propertyBag\":[{\"name\":\"qgisnionetbzdrd\",\"value\":\"enx\"}]}},\"id\":\"tlzlmtrlxcznnhz\",\"name\":\"bnbmxlxm\",\"type\":\"tygeqzus\"}]}";
+            = "{\"value\":[{\"properties\":{\"metadata\":{\"id\":\"toi\",\"name\":\"gygvfltgvdiho\",\"description\":\"krxwet\",\"author\":\"drcyrucpcun\",\"category\":\"zdqumoe\",\"supportTopicList\":[{\"id\":\"aienhqhsknd\",\"pesId\":\"lqkaadlknwf\"},{\"id\":\"nniyopetxi\",\"pesId\":\"nrlyxnuc\"},{\"id\":\"p\",\"pesId\":\"lkwq\"},{\"id\":\"tv\",\"pesId\":\"sdtcjbctvivuzqym\"}],\"analysisTypes\":[\"wogtgitsq\"],\"type\":\"vbrzcdb\",\"score\":84.15396},\"dataset\":[{\"table\":{\"tableName\":\"cxmxeatkdb\",\"columns\":[{}],\"rows\":[\"datajyibqbna\",\"datamhjrm\",\"datau\",\"datamaxljalfihcj\"]},\"renderingProperties\":{\"type\":1106408371,\"title\":\"nc\",\"description\":\"xxqcwgaxf\",\"isVisible\":true}},{\"table\":{\"tableName\":\"okzwjjzrlt\",\"columns\":[{}],\"rows\":[\"datayyfytpqsixymm\",\"dataujivyqlkjuvsm\"]},\"renderingProperties\":{\"type\":921930501,\"title\":\"oyovwz\",\"description\":\"pqvyb\",\"isVisible\":false}},{\"table\":{\"tableName\":\"x\",\"columns\":[{},{}],\"rows\":[\"datat\",\"dataubseskvcuartr\",\"dataunlpirykycndz\"]},\"renderingProperties\":{\"type\":1017219676,\"title\":\"reuykbbmnwagl\",\"description\":\"xoe\",\"isVisible\":true}}],\"status\":{\"message\":\"nfwmyymvqdbpb\",\"statusId\":1400688599},\"dataProviderMetadata\":{\"providerName\":\"vezcrcssbzhdd\",\"propertyBag\":[{\"name\":\"qfblhkalehpa\",\"value\":\"wugiqjti\"},{\"name\":\"qgdm\",\"value\":\"i\"}]}},\"id\":\"teajohiyg\",\"name\":\"pnbonhpcz\",\"type\":\"kmktpvwxqcseh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Diagnostics> response = manager.containerAppsDiagnostics()
-            .listDetectors("ffbbcngkegxcypxb", "fetwi", com.azure.core.util.Context.NONE);
+            .listDetectors("dfaifyzyzeyuube", "ds", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fixcnpcfykkpy",
-            response.iterator().next().properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("fjfw", response.iterator().next().properties().dataset().get(0).table().tableName());
-        Assertions.assertEquals(206009156,
+        Assertions.assertEquals("wogtgitsq", response.iterator().next().properties().metadata().analysisTypes().get(0));
+        Assertions.assertEquals("cxmxeatkdb",
+            response.iterator().next().properties().dataset().get(0).table().tableName());
+        Assertions.assertEquals(1106408371,
             response.iterator().next().properties().dataset().get(0).renderingProperties().type());
-        Assertions.assertEquals("nidmdiaw",
+        Assertions.assertEquals("nc",
             response.iterator().next().properties().dataset().get(0).renderingProperties().title());
-        Assertions.assertEquals("xkzrn",
+        Assertions.assertEquals("xxqcwgaxf",
             response.iterator().next().properties().dataset().get(0).renderingProperties().description());
-        Assertions.assertEquals(false,
-            response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
-        Assertions.assertEquals("kzkdtzxsoednlwg", response.iterator().next().properties().status().message());
-        Assertions.assertEquals(2125278836, response.iterator().next().properties().status().statusId());
-        Assertions.assertEquals("o", response.iterator().next().properties().dataProviderMetadata().providerName());
-        Assertions.assertEquals("qgisnionetbzdrd",
+        Assertions
+            .assertTrue(response.iterator().next().properties().dataset().get(0).renderingProperties().isVisible());
+        Assertions.assertEquals("nfwmyymvqdbpb", response.iterator().next().properties().status().message());
+        Assertions.assertEquals(1400688599, response.iterator().next().properties().status().statusId());
+        Assertions.assertEquals("vezcrcssbzhdd",
+            response.iterator().next().properties().dataProviderMetadata().providerName());
+        Assertions.assertEquals("qfblhkalehpa",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).name());
-        Assertions.assertEquals("enx",
+        Assertions.assertEquals("wugiqjti",
             response.iterator().next().properties().dataProviderMetadata().propertyBag().get(0).value());
     }
 }

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -26,6 +27,11 @@ public final class ProjectTaskInner extends ProxyResource {
      * Custom task properties
      */
     private ProjectTaskProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -86,6 +92,15 @@ public final class ProjectTaskInner extends ProxyResource {
     public ProjectTaskInner withProperties(ProjectTaskProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -166,6 +181,8 @@ public final class ProjectTaskInner extends ProxyResource {
                     deserializedProjectTaskInner.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedProjectTaskInner.properties = ProjectTaskProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedProjectTaskInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

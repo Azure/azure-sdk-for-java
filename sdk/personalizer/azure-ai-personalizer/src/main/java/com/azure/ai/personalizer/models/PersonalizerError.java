@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,31 +21,37 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
     /*
      * Error Codes returned by Personalizer
      */
+    @Generated
     private PersonalizerErrorCode code;
 
     /*
      * A message explaining the error reported by the service.
      */
+    @Generated
     private String message;
 
     /*
      * Error source element.
      */
+    @Generated
     private String target;
 
     /*
      * An array of details about specific errors that led to this reported error.
      */
+    @Generated
     private List<PersonalizerError> details;
 
     /*
      * An object containing more specific information than the parent object about the error.
      */
+    @Generated
     private InternalError innerError;
 
     /**
      * Creates an instance of PersonalizerError class.
      */
+    @Generated
     public PersonalizerError() {
     }
 
@@ -53,6 +60,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      *
      * @return the code value.
      */
+    @Generated
     public PersonalizerErrorCode getCode() {
         return this.code;
     }
@@ -63,6 +71,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      * @param code the code value to set.
      * @return the PersonalizerError object itself.
      */
+    @Generated
     PersonalizerError setCode(PersonalizerErrorCode code) {
         this.code = code;
         return this;
@@ -73,6 +82,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      *
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -83,6 +93,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      * @param message the message value to set.
      * @return the PersonalizerError object itself.
      */
+    @Generated
     PersonalizerError setMessage(String message) {
         this.message = message;
         return this;
@@ -93,6 +104,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      *
      * @return the target value.
      */
+    @Generated
     public String getTarget() {
         return this.target;
     }
@@ -103,6 +115,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      * @param target the target value to set.
      * @return the PersonalizerError object itself.
      */
+    @Generated
     PersonalizerError setTarget(String target) {
         this.target = target;
         return this;
@@ -113,6 +126,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      *
      * @return the details value.
      */
+    @Generated
     public List<PersonalizerError> getDetails() {
         return this.details;
     }
@@ -123,6 +137,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      * @param details the details value to set.
      * @return the PersonalizerError object itself.
      */
+    @Generated
     PersonalizerError setDetails(List<PersonalizerError> details) {
         this.details = details;
         return this;
@@ -134,6 +149,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      *
      * @return the innerError value.
      */
+    @Generated
     public InternalError getInnerError() {
         return this.innerError;
     }
@@ -145,6 +161,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      * @param innerError the innerError value to set.
      * @return the PersonalizerError object itself.
      */
+    @Generated
     public PersonalizerError setInnerError(InternalError innerError) {
         this.innerError = innerError;
         return this;
@@ -153,6 +170,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -173,6 +191,7 @@ public final class PersonalizerError implements JsonSerializable<PersonalizerErr
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerError.
      */
+    @Generated
     public static PersonalizerError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerError deserializedPersonalizerError = new PersonalizerError();

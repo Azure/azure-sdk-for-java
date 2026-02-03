@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,16 +22,19 @@ public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> 
      * RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status; for
      * trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
+    @Generated
     private RunQueryOrderByField orderBy;
 
     /*
      * Sorting order of the parameter.
      */
+    @Generated
     private RunQueryOrder order;
 
     /**
      * Creates an instance of RunQueryOrderBy class.
      */
+    @Generated
     public RunQueryOrderBy() {
     }
 
@@ -41,6 +45,7 @@ public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> 
      * 
      * @return the orderBy value.
      */
+    @Generated
     public RunQueryOrderByField getOrderBy() {
         return this.orderBy;
     }
@@ -53,6 +58,7 @@ public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> 
      * @param orderBy the orderBy value to set.
      * @return the RunQueryOrderBy object itself.
      */
+    @Generated
     public RunQueryOrderBy setOrderBy(RunQueryOrderByField orderBy) {
         this.orderBy = orderBy;
         return this;
@@ -63,6 +69,7 @@ public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> 
      * 
      * @return the order value.
      */
+    @Generated
     public RunQueryOrder getOrder() {
         return this.order;
     }
@@ -73,6 +80,7 @@ public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> 
      * @param order the order value to set.
      * @return the RunQueryOrderBy object itself.
      */
+    @Generated
     public RunQueryOrderBy setOrder(RunQueryOrder order) {
         this.order = order;
         return this;
@@ -81,6 +89,7 @@ public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -98,6 +107,7 @@ public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RunQueryOrderBy.
      */
+    @Generated
     public static RunQueryOrderBy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RunQueryOrderBy deserializedRunQueryOrderBy = new RunQueryOrderBy();

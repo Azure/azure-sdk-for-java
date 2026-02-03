@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerorchestratorruntime.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -61,22 +60,6 @@ public final class RwxStorageClassTypeProperties extends StorageClassTypePropert
         this.backingStorageClassName = backingStorageClassName;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (backingStorageClassName() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property backingStorageClassName in model RwxStorageClassTypeProperties"));
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(RwxStorageClassTypeProperties.class);
 
     /**
      * {@inheritDoc}

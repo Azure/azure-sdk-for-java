@@ -14,19 +14,20 @@ public final class EventHubEventSubscriptionDestinationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubEventSubscriptionDestinationProperties model = BinaryData.fromString(
-            "{\"resourceId\":\"kraokq\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"btwa\"}]}")
+            "{\"resourceId\":\"aklozk\",\"deliveryAttributeMappings\":[{\"type\":\"DeliveryAttributeMapping\",\"name\":\"pejplssa\"},{\"type\":\"DeliveryAttributeMapping\",\"name\":\"tttk\"}]}")
             .toObject(EventHubEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("kraokq", model.resourceId());
-        Assertions.assertEquals("btwa", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("aklozk", model.resourceId());
+        Assertions.assertEquals("pejplssa", model.deliveryAttributeMappings().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventHubEventSubscriptionDestinationProperties model
-            = new EventHubEventSubscriptionDestinationProperties().withResourceId("kraokq")
-                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("btwa")));
+            = new EventHubEventSubscriptionDestinationProperties().withResourceId("aklozk")
+                .withDeliveryAttributeMappings(Arrays.asList(new DeliveryAttributeMapping().withName("pejplssa"),
+                    new DeliveryAttributeMapping().withName("tttk")));
         model = BinaryData.fromObject(model).toObject(EventHubEventSubscriptionDestinationProperties.class);
-        Assertions.assertEquals("kraokq", model.resourceId());
-        Assertions.assertEquals("btwa", model.deliveryAttributeMappings().get(0).name());
+        Assertions.assertEquals("aklozk", model.resourceId());
+        Assertions.assertEquals("pejplssa", model.deliveryAttributeMappings().get(0).name());
     }
 }

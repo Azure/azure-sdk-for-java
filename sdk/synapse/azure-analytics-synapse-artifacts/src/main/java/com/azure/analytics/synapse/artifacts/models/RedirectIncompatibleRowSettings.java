@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,21 +24,25 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
      * row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object linkedServiceName;
 
     /*
      * The path for storing the redirect incompatible row data. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object path;
 
     /*
      * Redirect incompatible row settings
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of RedirectIncompatibleRowSettings class.
      */
+    @Generated
     public RedirectIncompatibleRowSettings() {
     }
 
@@ -48,6 +53,7 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public Object getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -60,6 +66,7 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the RedirectIncompatibleRowSettings object itself.
      */
+    @Generated
     public RedirectIncompatibleRowSettings setLinkedServiceName(Object linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -71,6 +78,7 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
      * 
      * @return the path value.
      */
+    @Generated
     public Object getPath() {
         return this.path;
     }
@@ -82,6 +90,7 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
      * @param path the path value to set.
      * @return the RedirectIncompatibleRowSettings object itself.
      */
+    @Generated
     public RedirectIncompatibleRowSettings setPath(Object path) {
         this.path = path;
         return this;
@@ -92,6 +101,7 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -102,6 +112,7 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
      * @param additionalProperties the additionalProperties value to set.
      * @return the RedirectIncompatibleRowSettings object itself.
      */
+    @Generated
     public RedirectIncompatibleRowSettings setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -110,11 +121,14 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("linkedServiceName", this.linkedServiceName);
-        jsonWriter.writeUntypedField("path", this.path);
+        if (this.path != null) {
+            jsonWriter.writeUntypedField("path", this.path);
+        }
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -132,6 +146,7 @@ public final class RedirectIncompatibleRowSettings implements JsonSerializable<R
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RedirectIncompatibleRowSettings.
      */
+    @Generated
     public static RedirectIncompatibleRowSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RedirectIncompatibleRowSettings deserializedRedirectIncompatibleRowSettings

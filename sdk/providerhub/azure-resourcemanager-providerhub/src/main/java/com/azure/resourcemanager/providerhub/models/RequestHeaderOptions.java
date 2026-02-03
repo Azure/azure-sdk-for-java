@@ -17,9 +17,14 @@ import java.io.IOException;
 @Fluent
 public class RequestHeaderOptions implements JsonSerializable<RequestHeaderOptions> {
     /*
-     * The optInHeaders property.
+     * The opt in headers.
      */
     private OptInHeaderType optInHeaders;
+
+    /*
+     * The opt out headers.
+     */
+    private OptOutHeaderType optOutHeaders;
 
     /**
      * Creates an instance of RequestHeaderOptions class.
@@ -28,7 +33,7 @@ public class RequestHeaderOptions implements JsonSerializable<RequestHeaderOptio
     }
 
     /**
-     * Get the optInHeaders property: The optInHeaders property.
+     * Get the optInHeaders property: The opt in headers.
      * 
      * @return the optInHeaders value.
      */
@@ -37,13 +42,33 @@ public class RequestHeaderOptions implements JsonSerializable<RequestHeaderOptio
     }
 
     /**
-     * Set the optInHeaders property: The optInHeaders property.
+     * Set the optInHeaders property: The opt in headers.
      * 
      * @param optInHeaders the optInHeaders value to set.
      * @return the RequestHeaderOptions object itself.
      */
     public RequestHeaderOptions withOptInHeaders(OptInHeaderType optInHeaders) {
         this.optInHeaders = optInHeaders;
+        return this;
+    }
+
+    /**
+     * Get the optOutHeaders property: The opt out headers.
+     * 
+     * @return the optOutHeaders value.
+     */
+    public OptOutHeaderType optOutHeaders() {
+        return this.optOutHeaders;
+    }
+
+    /**
+     * Set the optOutHeaders property: The opt out headers.
+     * 
+     * @param optOutHeaders the optOutHeaders value to set.
+     * @return the RequestHeaderOptions object itself.
+     */
+    public RequestHeaderOptions withOptOutHeaders(OptOutHeaderType optOutHeaders) {
+        this.optOutHeaders = optOutHeaders;
         return this;
     }
 
@@ -62,6 +87,7 @@ public class RequestHeaderOptions implements JsonSerializable<RequestHeaderOptio
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("optInHeaders", this.optInHeaders == null ? null : this.optInHeaders.toString());
+        jsonWriter.writeStringField("optOutHeaders", this.optOutHeaders == null ? null : this.optOutHeaders.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -82,6 +108,8 @@ public class RequestHeaderOptions implements JsonSerializable<RequestHeaderOptio
 
                 if ("optInHeaders".equals(fieldName)) {
                     deserializedRequestHeaderOptions.optInHeaders = OptInHeaderType.fromString(reader.getString());
+                } else if ("optOutHeaders".equals(fieldName)) {
+                    deserializedRequestHeaderOptions.optOutHeaders = OptOutHeaderType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

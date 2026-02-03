@@ -60,7 +60,7 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DevOpsInfrastructure")
+    @ServiceInterface(name = "DevOpsInfrastructureManagementClientResourceDetails")
     public interface ResourceDetailsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}/resources")
@@ -72,10 +72,27 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevOpsInfrastructure/pools/{poolName}/resources")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceDetailsObjectListResult> listByPoolSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("poolName") String poolName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceDetailsObjectListResult>> listByPoolNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceDetailsObjectListResult> listByPoolNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -94,21 +111,6 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceDetailsObjectInner>> listByPoolSinglePageAsync(String resourceGroupName,
         String poolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByPool(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -116,45 +118,6 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
             .<PagedResponse<ResourceDetailsObjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List ResourceDetailsObject resources by Pool.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param poolName Name of the pool. It needs to be globally unique.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceDetailsObject list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceDetailsObjectInner>> listByPoolSinglePageAsync(String resourceGroupName,
-        String poolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (poolName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByPool(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, poolName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -178,17 +141,40 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param poolName Name of the pool. It needs to be globally unique.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a ResourceDetailsObject list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceDetailsObjectInner> listByPoolSinglePage(String resourceGroupName, String poolName) {
+        final String accept = "application/json";
+        Response<ResourceDetailsObjectListResult> res
+            = service.listByPoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, poolName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List ResourceDetailsObject resources by Pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param poolName Name of the pool. It needs to be globally unique.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceDetailsObject list operation as paginated response with {@link PagedFlux}.
+     * @return the response of a ResourceDetailsObject list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceDetailsObjectInner> listByPoolAsync(String resourceGroupName, String poolName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceDetailsObjectInner> listByPoolSinglePage(String resourceGroupName, String poolName,
         Context context) {
-        return new PagedFlux<>(() -> listByPoolSinglePageAsync(resourceGroupName, poolName, context),
-            nextLink -> listByPoolNextSinglePageAsync(nextLink, context));
+        final String accept = "application/json";
+        Response<ResourceDetailsObjectListResult> res = service.listByPoolSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, poolName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -203,7 +189,8 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceDetailsObjectInner> listByPool(String resourceGroupName, String poolName) {
-        return new PagedIterable<>(listByPoolAsync(resourceGroupName, poolName));
+        return new PagedIterable<>(() -> listByPoolSinglePage(resourceGroupName, poolName),
+            nextLink -> listByPoolNextSinglePage(nextLink));
     }
 
     /**
@@ -220,7 +207,8 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceDetailsObjectInner> listByPool(String resourceGroupName, String poolName,
         Context context) {
-        return new PagedIterable<>(listByPoolAsync(resourceGroupName, poolName, context));
+        return new PagedIterable<>(() -> listByPoolSinglePage(resourceGroupName, poolName, context),
+            nextLink -> listByPoolNextSinglePage(nextLink, context));
     }
 
     /**
@@ -235,13 +223,6 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceDetailsObjectInner>> listByPoolNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByPoolNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -254,27 +235,36 @@ public final class ResourceDetailsClientImpl implements ResourceDetailsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a ResourceDetailsObject list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceDetailsObjectInner> listByPoolNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<ResourceDetailsObjectListResult> res
+            = service.listByPoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a ResourceDetailsObject list operation along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return the response of a ResourceDetailsObject list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceDetailsObjectInner>> listByPoolNextSinglePageAsync(String nextLink,
-        Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<ResourceDetailsObjectInner> listByPoolNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByPoolNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ResourceDetailsObjectListResult> res
+            = service.listByPoolNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

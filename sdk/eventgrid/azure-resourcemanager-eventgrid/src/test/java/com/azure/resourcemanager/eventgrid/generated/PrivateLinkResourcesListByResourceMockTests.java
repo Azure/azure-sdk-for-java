@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PrivateLinkResource;
@@ -22,25 +22,25 @@ public final class PrivateLinkResourcesListByResourceMockTests {
     @Test
     public void testListByResource() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupId\":\"pkhc\",\"displayName\":\"aqxukuicjufte\",\"requiredMembers\":[\"oanduewfhvpxjhx\"],\"requiredZoneNames\":[\"fjz\",\"bbwzgvzuaixcd\",\"kixsps\",\"igavk\"]},\"id\":\"yxzerejr\",\"name\":\"zjbyetjxryopta\",\"type\":\"twhlbecgih\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupId\":\"pzwhjunfdgbggc\",\"displayName\":\"zhblivw\",\"requiredMembers\":[\"udymymbhdosmbng\"],\"requiredZoneNames\":[\"gxzduvxdmxe\"]},\"id\":\"tmdm\",\"name\":\"senxoirxyd\",\"type\":\"iploisjkzsoxznnt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateLinkResource> response = manager.privateLinkResources()
-            .listByResource("zmecjjkmqenhai", "zrpv", "gloiovsl", "ivqsuvwtenb", 1771574336,
+            .listByResource("weoj", "epgcmahiwf", "yawkch", "apitskshfyftt", 2061878224,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yxzerejr", response.iterator().next().id());
-        Assertions.assertEquals("zjbyetjxryopta", response.iterator().next().name());
-        Assertions.assertEquals("twhlbecgih", response.iterator().next().type());
-        Assertions.assertEquals("pkhc", response.iterator().next().groupId());
-        Assertions.assertEquals("aqxukuicjufte", response.iterator().next().displayName());
-        Assertions.assertEquals("oanduewfhvpxjhx", response.iterator().next().requiredMembers().get(0));
-        Assertions.assertEquals("fjz", response.iterator().next().requiredZoneNames().get(0));
+        Assertions.assertEquals("tmdm", response.iterator().next().id());
+        Assertions.assertEquals("senxoirxyd", response.iterator().next().name());
+        Assertions.assertEquals("iploisjkzsoxznnt", response.iterator().next().type());
+        Assertions.assertEquals("pzwhjunfdgbggc", response.iterator().next().groupId());
+        Assertions.assertEquals("zhblivw", response.iterator().next().displayName());
+        Assertions.assertEquals("udymymbhdosmbng", response.iterator().next().requiredMembers().get(0));
+        Assertions.assertEquals("gxzduvxdmxe", response.iterator().next().requiredZoneNames().get(0));
     }
 }

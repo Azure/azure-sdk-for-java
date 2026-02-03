@@ -28,13 +28,16 @@ public interface ClusterManagers {
      * 
      * Get a list of cluster managers in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of cluster managers in the provided subscription as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ClusterManager> list(Context context);
+    PagedIterable<ClusterManager> list(Integer top, String skipToken, Context context);
 
     /**
      * List cluster managers in the resource group.
@@ -56,6 +59,9 @@ public interface ClusterManagers {
      * Get a list of cluster managers in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,7 +69,8 @@ public interface ClusterManagers {
      * @return a list of cluster managers in the provided resource group as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<ClusterManager> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<ClusterManager> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the cluster manager.
@@ -116,13 +123,18 @@ public interface ClusterManagers {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterManagerName The name of the cluster manager.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(String resourceGroupName, String clusterManagerName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String clusterManagerName, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Retrieve the cluster manager.
@@ -170,13 +182,17 @@ public interface ClusterManagers {
      * Delete the provided cluster manager.
      * 
      * @param id the resource ID.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Begins definition for a new ClusterManager resource.

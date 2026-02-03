@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,12 +17,14 @@ public final class SemanticSearchResultsType extends ExpandableStringEnum<Semant
     /**
      * Results without any semantic enrichment or reranking.
      */
+    @Generated
     public static final SemanticSearchResultsType BASE_RESULTS = fromString("baseResults");
 
     /**
      * Results have been reranked with the reranker model and will include semantic captions. They will not include any
      * answers, answers highlights or caption highlights.
      */
+    @Generated
     public static final SemanticSearchResultsType RERANKED_RESULTS = fromString("rerankedResults");
 
     /**
@@ -29,6 +32,7 @@ public final class SemanticSearchResultsType extends ExpandableStringEnum<Semant
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public SemanticSearchResultsType() {
     }
@@ -39,6 +43,7 @@ public final class SemanticSearchResultsType extends ExpandableStringEnum<Semant
      * @param name a name to look for.
      * @return the corresponding SemanticSearchResultsType.
      */
+    @Generated
     public static SemanticSearchResultsType fromString(String name) {
         return fromString(name, SemanticSearchResultsType.class);
     }
@@ -48,6 +53,7 @@ public final class SemanticSearchResultsType extends ExpandableStringEnum<Semant
      * 
      * @return known SemanticSearchResultsType values.
      */
+    @Generated
     public static Collection<SemanticSearchResultsType> values() {
         return values(SemanticSearchResultsType.class);
     }

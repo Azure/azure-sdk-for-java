@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
@@ -26,38 +26,43 @@ public final class SystemTopicsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"source\":\"mtsjkyj\",\"topicType\":\"xwdonbexftedau\",\"metricResourceId\":\"eeggzgrn\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"uumrt\",\"tenantId\":\"qgacantnsyxzxjmk\",\"userAssignedIdentities\":{\"nydscdkx\":{\"principalId\":\"lazof\",\"clientId\":\"xvtemaspm\"}}},\"location\":\"dpwjcbhaahntof\",\"tags\":{\"vsujybsrwz\":\"hpfixoskkzdf\"},\"id\":\"mr\",\"name\":\"t\",\"type\":\"dhmfppinm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"source\":\"cq\",\"topicType\":\"zmz\",\"metricResourceId\":\"cxitmhxxrqi\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"jd\",\"tenantId\":\"kvpyeyo\",\"userAssignedIdentities\":{\"fwkyluobdxw\":{\"principalId\":\"mpnqup\",\"clientId\":\"jr\"},\"cvwbz\":{\"principalId\":\"dcclcvqsr\",\"clientId\":\"ay\"},\"ydrf\":{\"principalId\":\"xlrymfj\",\"clientId\":\"piywqnp\"},\"jqpulmwqg\":{\"principalId\":\"cnyxbyx\",\"clientId\":\"hmqyncgaullfstyy\"}}},\"location\":\"hmqmiwxzf\",\"tags\":{\"dukinhlxh\":\"ucqfgufjnbxwbm\"},\"id\":\"dekekzouyveww\",\"name\":\"zrdwcg\",\"type\":\"dohgcandxfhhhte\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SystemTopic response = manager.systemTopics()
-            .define("bepgcmahiwfry")
-            .withRegion("atmdmn")
-            .withExistingResourceGroup("gyweo")
-            .withTags(mapOf("dmiplois", "nxoirxy", "ntwgkvyo", "kzsoxz", "zwwy", "psapzu"))
-            .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withPrincipalId("gbggcjx")
-                .withTenantId("blivw")
-                .withUserAssignedIdentities(mapOf("gxzduvxdmxe",
-                    new UserIdentityProperties().withPrincipalId("dymy").withClientId("hdosmbngkq"))))
-            .withSource("kapitskshfyftt")
-            .withTopicType("j")
+            .define("mbzdxmsyn")
+            .withRegion("amfbqh")
+            .withExistingResourceGroup("cxs")
+            .withTags(mapOf("fu", "k"))
+            .withIdentity(new IdentityInfo().withType(IdentityType.SYSTEM_ASSIGNED)
+                .withPrincipalId("rxbozp")
+                .withTenantId("cnwjzbqblxr")
+                .withUserAssignedIdentities(mapOf("gfhjxsawoo",
+                    new UserIdentityProperties().withPrincipalId("svoqiza").withClientId("sdso"), "mrnotocjnzdaiovr",
+                    new UserIdentityProperties().withPrincipalId("ffhx").withClientId("kmwzrdqyoy"), "uriwhjdfrw",
+                    new UserIdentityProperties().withPrincipalId("rpqphkvyyzad").withClientId("xylaypdtyzvelffo"),
+                    "oebnxsqcowscuyfq",
+                    new UserIdentityProperties().withPrincipalId("shrmnkcclpctuog").withClientId("cxjfsgmos"))))
+            .withSource("yufxuzmsvzyq")
+            .withTopicType("rnxhjtlxfikjk")
             .create();
 
-        Assertions.assertEquals("dpwjcbhaahntof", response.location());
-        Assertions.assertEquals("hpfixoskkzdf", response.tags().get("vsujybsrwz"));
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("uumrt", response.identity().principalId());
-        Assertions.assertEquals("qgacantnsyxzxjmk", response.identity().tenantId());
-        Assertions.assertEquals("lazof", response.identity().userAssignedIdentities().get("nydscdkx").principalId());
-        Assertions.assertEquals("xvtemaspm", response.identity().userAssignedIdentities().get("nydscdkx").clientId());
-        Assertions.assertEquals("mtsjkyj", response.source());
-        Assertions.assertEquals("xwdonbexftedau", response.topicType());
+        Assertions.assertEquals("hmqmiwxzf", response.location());
+        Assertions.assertEquals("ucqfgufjnbxwbm", response.tags().get("dukinhlxh"));
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("jd", response.identity().principalId());
+        Assertions.assertEquals("kvpyeyo", response.identity().tenantId());
+        Assertions.assertEquals("mpnqup",
+            response.identity().userAssignedIdentities().get("fwkyluobdxw").principalId());
+        Assertions.assertEquals("jr", response.identity().userAssignedIdentities().get("fwkyluobdxw").clientId());
+        Assertions.assertEquals("cq", response.source());
+        Assertions.assertEquals("zmz", response.topicType());
     }
 
     // Use "Map.of" if available

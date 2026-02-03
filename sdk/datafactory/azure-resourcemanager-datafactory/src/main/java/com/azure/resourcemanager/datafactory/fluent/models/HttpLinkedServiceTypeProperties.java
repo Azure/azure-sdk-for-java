@@ -306,13 +306,23 @@ public final class HttpLinkedServiceTypeProperties implements JsonSerializable<H
         jsonWriter.writeUntypedField("url", this.url);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
-        jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
-        jsonWriter.writeUntypedField("embeddedCertData", this.embeddedCertData);
-        jsonWriter.writeUntypedField("certThumbprint", this.certThumbprint);
+        if (this.authHeaders != null) {
+            jsonWriter.writeUntypedField("authHeaders", this.authHeaders);
+        }
+        if (this.embeddedCertData != null) {
+            jsonWriter.writeUntypedField("embeddedCertData", this.embeddedCertData);
+        }
+        if (this.certThumbprint != null) {
+            jsonWriter.writeUntypedField("certThumbprint", this.certThumbprint);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        if (this.enableServerCertificateValidation != null) {
+            jsonWriter.writeUntypedField("enableServerCertificateValidation", this.enableServerCertificateValidation);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -23,9 +23,14 @@ public final class ConnectedEnvironmentStorageProperties
     private AzureFileProperties azureFile;
 
     /*
-     * SMB storage properties
+     * Provisioning state of the storage.
      */
-    private SmbStorage smb;
+    private ConnectedEnvironmentStorageProvisioningState provisioningState;
+
+    /*
+     * Any errors that occurred during deployment or deployment validation
+     */
+    private String deploymentErrors;
 
     /**
      * Creates an instance of ConnectedEnvironmentStorageProperties class.
@@ -54,23 +59,21 @@ public final class ConnectedEnvironmentStorageProperties
     }
 
     /**
-     * Get the smb property: SMB storage properties.
+     * Get the provisioningState property: Provisioning state of the storage.
      * 
-     * @return the smb value.
+     * @return the provisioningState value.
      */
-    public SmbStorage smb() {
-        return this.smb;
+    public ConnectedEnvironmentStorageProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
-     * Set the smb property: SMB storage properties.
+     * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
      * 
-     * @param smb the smb value to set.
-     * @return the ConnectedEnvironmentStorageProperties object itself.
+     * @return the deploymentErrors value.
      */
-    public ConnectedEnvironmentStorageProperties withSmb(SmbStorage smb) {
-        this.smb = smb;
-        return this;
+    public String deploymentErrors() {
+        return this.deploymentErrors;
     }
 
     /**
@@ -82,9 +85,6 @@ public final class ConnectedEnvironmentStorageProperties
         if (azureFile() != null) {
             azureFile().validate();
         }
-        if (smb() != null) {
-            smb().validate();
-        }
     }
 
     /**
@@ -94,7 +94,6 @@ public final class ConnectedEnvironmentStorageProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("azureFile", this.azureFile);
-        jsonWriter.writeJsonField("smb", this.smb);
         return jsonWriter.writeEndObject();
     }
 
@@ -116,8 +115,11 @@ public final class ConnectedEnvironmentStorageProperties
 
                 if ("azureFile".equals(fieldName)) {
                     deserializedConnectedEnvironmentStorageProperties.azureFile = AzureFileProperties.fromJson(reader);
-                } else if ("smb".equals(fieldName)) {
-                    deserializedConnectedEnvironmentStorageProperties.smb = SmbStorage.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.provisioningState
+                        = ConnectedEnvironmentStorageProvisioningState.fromString(reader.getString());
+                } else if ("deploymentErrors".equals(fieldName)) {
+                    deserializedConnectedEnvironmentStorageProperties.deploymentErrors = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

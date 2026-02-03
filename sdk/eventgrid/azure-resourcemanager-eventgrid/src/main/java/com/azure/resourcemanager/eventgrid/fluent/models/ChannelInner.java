@@ -29,7 +29,7 @@ public final class ChannelInner extends ProxyResource {
     private ChannelProperties innerProperties;
 
     /*
-     * The system metadata relating to Channel resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -64,7 +64,7 @@ public final class ChannelInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Channel resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

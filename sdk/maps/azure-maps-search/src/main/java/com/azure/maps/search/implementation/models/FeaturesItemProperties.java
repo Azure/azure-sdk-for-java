@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class FeaturesItemProperties implements JsonSerializable<FeaturesItemProperties> {
     /*
-     * One of: 
+     * One of:
      * * Address
      * * RoadBlock
      * * RoadIntersection
@@ -30,45 +31,64 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * * AdminDivision2
      * * CountryRegion
      */
+    @Generated
     private String type;
 
     /*
-     * The level of confidence that the geocoded location result is a match. Use this value with the match code to determine for more complete information about the match.
+     * The level of confidence that the geocoded location result is a match. Use this value with the match code to
+     * determine for more complete information about the match.
      * 
-     * The confidence of a geocoded location is based on many factors including the relative importance of the geocoded location and the user’s location, if specified.
+     * The confidence of a geocoded location is based on many factors including the relative importance of the geocoded
+     * location and the user’s location, if specified.
      */
+    @Generated
     private ConfidenceEnum confidence;
 
     /*
      * One or more match code values that represent the geocoding level for each location in the response.
      * 
-     * For example, a geocoded location with match codes of `Good` and `Ambiguous` means that more than one geocode location was found for the location information and that the geocode service did not have search up-hierarchy to find a match.
+     * For example, a geocoded location with match codes of `Good` and `Ambiguous` means that more than one geocode
+     * location was found for the location information and that the geocode service did not have search up-hierarchy to
+     * find a match.
      * 
-     * Similarly, a geocoded location with match codes of `Ambiguous` and `UpHierarchy` implies that a geocode location could not be found that matched all the provided location information, so the geocode service had to search up-hierarchy and found multiple matches at that level. An example of up an `Ambiguous` and `UpHierarchy` result is when you provide complete address information, but the geocode service cannot locate a match for the street address and instead returns information for more than one RoadBlock value.
+     * Similarly, a geocoded location with match codes of `Ambiguous` and `UpHierarchy` implies that a geocode location
+     * could not be found that matched all the provided location information, so the geocode service had to search
+     * up-hierarchy and found multiple matches at that level. An example of up an `Ambiguous` and `UpHierarchy` result
+     * is when you provide complete address information, but the geocode service cannot locate a match for the street
+     * address and instead returns information for more than one RoadBlock value.
      * 
      * The possible values are:
      * 
-     * `Good`: The location has only one match or all returned matches are considered strong matches. For example, a query for New York returns several Good matches.
+     * `Good`: The location has only one match or all returned matches are considered strong matches. For example, a
+     * query for New York returns several Good matches.
      * 
-     * `Ambiguous`: The location is one of a set of possible matches. For example, when you query for the street address 128 Main St., the response may return two locations for 128 North Main St. and 128 South Main St. because there is not enough information to determine which option to choose.
+     * `Ambiguous`: The location is one of a set of possible matches. For example, when you query for the street address
+     * 128 Main St., the response may return two locations for 128 North Main St. and 128 South Main St. because there
+     * is not enough information to determine which option to choose.
      * 
-     * `UpHierarchy`: The location represents a move up the geographic hierarchy. This occurs when a match for the location request was not found, so a less precise result is returned. For example, if a match for the requested address cannot be found, then a match code of `UpHierarchy` with a RoadBlock entity type may be returned.
+     * `UpHierarchy`: The location represents a move up the geographic hierarchy. This occurs when a match for the
+     * location request was not found, so a less precise result is returned. For example, if a match for the requested
+     * address cannot be found, then a match code of `UpHierarchy` with a RoadBlock entity type may be returned.
      */
+    @Generated
     private List<MatchCodesEnum> matchCodes;
 
     /*
      * The address of the result
      */
+    @Generated
     private MapsSearchAddress address;
 
     /*
      * A collection of geocode points that differ in how they were calculated and their suggested use.
      */
+    @Generated
     private List<GeocodePointsItem> geocodePoints;
 
     /**
      * Creates an instance of FeaturesItemProperties class.
      */
+    @Generated
     public FeaturesItemProperties() {
     }
 
@@ -86,6 +106,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -105,6 +126,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * @param type the type value to set.
      * @return the FeaturesItemProperties object itself.
      */
+    @Generated
     public FeaturesItemProperties setType(String type) {
         this.type = type;
         return this;
@@ -119,6 +141,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * 
      * @return the confidence value.
      */
+    @Generated
     public ConfidenceEnum getConfidence() {
         return this.confidence;
     }
@@ -133,6 +156,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * @param confidence the confidence value to set.
      * @return the FeaturesItemProperties object itself.
      */
+    @Generated
     public FeaturesItemProperties setConfidence(ConfidenceEnum confidence) {
         this.confidence = confidence;
         return this;
@@ -167,6 +191,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * 
      * @return the matchCodes value.
      */
+    @Generated
     public List<MatchCodesEnum> getMatchCodes() {
         return this.matchCodes;
     }
@@ -201,6 +226,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * @param matchCodes the matchCodes value to set.
      * @return the FeaturesItemProperties object itself.
      */
+    @Generated
     public FeaturesItemProperties setMatchCodes(List<MatchCodesEnum> matchCodes) {
         this.matchCodes = matchCodes;
         return this;
@@ -211,6 +237,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * 
      * @return the address value.
      */
+    @Generated
     public MapsSearchAddress getAddress() {
         return this.address;
     }
@@ -221,6 +248,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * @param address the address value to set.
      * @return the FeaturesItemProperties object itself.
      */
+    @Generated
     public FeaturesItemProperties setAddress(MapsSearchAddress address) {
         this.address = address;
         return this;
@@ -232,6 +260,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * 
      * @return the geocodePoints value.
      */
+    @Generated
     public List<GeocodePointsItem> getGeocodePoints() {
         return this.geocodePoints;
     }
@@ -243,6 +272,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * @param geocodePoints the geocodePoints value to set.
      * @return the FeaturesItemProperties object itself.
      */
+    @Generated
     public FeaturesItemProperties setGeocodePoints(List<GeocodePointsItem> geocodePoints) {
         this.geocodePoints = geocodePoints;
         return this;
@@ -251,6 +281,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -271,6 +302,7 @@ public final class FeaturesItemProperties implements JsonSerializable<FeaturesIt
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the FeaturesItemProperties.
      */
+    @Generated
     public static FeaturesItemProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             FeaturesItemProperties deserializedFeaturesItemProperties = new FeaturesItemProperties();

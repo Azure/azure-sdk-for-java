@@ -68,7 +68,7 @@ public final class TaskStatusImpl {
      * REST calls.
      */
     @Host("{endpoint}/workflow")
-    @ServiceInterface(name = "PurviewWorkflowTaskS")
+    @ServiceInterface(name = "PurviewWorkflowTaskStatus")
     public interface TaskStatusService {
         @Post("/workflowtasks/{taskId}/change-task-status")
         @ExpectedResponses({ 200 })

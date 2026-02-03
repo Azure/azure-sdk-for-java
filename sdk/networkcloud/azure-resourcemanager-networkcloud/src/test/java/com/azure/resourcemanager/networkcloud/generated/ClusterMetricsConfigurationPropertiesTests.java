@@ -13,19 +13,19 @@ public final class ClusterMetricsConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterMetricsConfigurationProperties model = BinaryData.fromString(
-            "{\"collectionInterval\":2386815230831470756,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ichdlpn\",\"disabledMetrics\":[\"b\",\"tnbatzvi\",\"sowsaael\",\"attcju\"],\"enabledMetrics\":[\"rvkmjcwmjvlgfggc\",\"kyylizr\"],\"provisioningState\":\"Provisioning\"}")
+            "{\"collectionInterval\":1984488233204809218,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"faymxbulpz\",\"disabledMetrics\":[\"b\"],\"enabledMetrics\":[\"yojwyvfkmbtsu\",\"hxsgxj\",\"mmzrrscub\"],\"provisioningState\":\"Canceled\"}")
             .toObject(ClusterMetricsConfigurationProperties.class);
-        Assertions.assertEquals(2386815230831470756L, model.collectionInterval());
-        Assertions.assertEquals("rvkmjcwmjvlgfggc", model.enabledMetrics().get(0));
+        Assertions.assertEquals(1984488233204809218L, model.collectionInterval());
+        Assertions.assertEquals("yojwyvfkmbtsu", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationProperties model
-            = new ClusterMetricsConfigurationProperties().withCollectionInterval(2386815230831470756L)
-                .withEnabledMetrics(Arrays.asList("rvkmjcwmjvlgfggc", "kyylizr"));
+            = new ClusterMetricsConfigurationProperties().withCollectionInterval(1984488233204809218L)
+                .withEnabledMetrics(Arrays.asList("yojwyvfkmbtsu", "hxsgxj", "mmzrrscub"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationProperties.class);
-        Assertions.assertEquals(2386815230831470756L, model.collectionInterval());
-        Assertions.assertEquals("rvkmjcwmjvlgfggc", model.enabledMetrics().get(0));
+        Assertions.assertEquals(1984488233204809218L, model.collectionInterval());
+        Assertions.assertEquals("yojwyvfkmbtsu", model.enabledMetrics().get(0));
     }
 }

@@ -16,28 +16,28 @@ public final class AzureWorkloadJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureWorkloadJobExtendedInfo model = BinaryData.fromString(
-            "{\"tasksList\":[{\"taskId\":\"aspavehhr\",\"status\":\"bunzozudh\"},{\"taskId\":\"gkmoyxcdyuibhmfd\",\"status\":\"zydvfvf\"},{\"taskId\":\"naeo\",\"status\":\"rvhmgor\"}],\"propertyBag\":{\"faxvxil\":\"kiscvwmzhwpl\",\"nzeyqxtjj\":\"btgn\",\"vodggxdbee\":\"zqlqhyc\"},\"dynamicErrorMessage\":\"ieknl\"}")
+            "{\"tasksList\":[{\"taskId\":\"frbbc\",\"status\":\"qagt\"},{\"taskId\":\"dhlfkqojpykvgt\",\"status\":\"cnifm\"},{\"taskId\":\"sdymbrn\",\"status\":\"u\"}],\"propertyBag\":{\"fwafqrouda\":\"rafwgckhocxvdf\",\"kbunzoz\":\"pavehhr\",\"cdyuibhmfdnbzyd\":\"dhcxgkmoy\"},\"dynamicErrorMessage\":\"vfcjnaeoisrvhmg\"}")
             .toObject(AzureWorkloadJobExtendedInfo.class);
-        Assertions.assertEquals("aspavehhr", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("bunzozudh", model.tasksList().get(0).status());
-        Assertions.assertEquals("kiscvwmzhwpl", model.propertyBag().get("faxvxil"));
-        Assertions.assertEquals("ieknl", model.dynamicErrorMessage());
+        Assertions.assertEquals("frbbc", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("qagt", model.tasksList().get(0).status());
+        Assertions.assertEquals("rafwgckhocxvdf", model.propertyBag().get("fwafqrouda"));
+        Assertions.assertEquals("vfcjnaeoisrvhmg", model.dynamicErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadJobExtendedInfo model = new AzureWorkloadJobExtendedInfo()
-            .withTasksList(
-                Arrays.asList(new AzureWorkloadJobTaskDetails().withTaskId("aspavehhr").withStatus("bunzozudh"),
-                    new AzureWorkloadJobTaskDetails().withTaskId("gkmoyxcdyuibhmfd").withStatus("zydvfvf"),
-                    new AzureWorkloadJobTaskDetails().withTaskId("naeo").withStatus("rvhmgor")))
-            .withPropertyBag(mapOf("faxvxil", "kiscvwmzhwpl", "nzeyqxtjj", "btgn", "vodggxdbee", "zqlqhyc"))
-            .withDynamicErrorMessage("ieknl");
+            .withTasksList(Arrays.asList(new AzureWorkloadJobTaskDetails().withTaskId("frbbc").withStatus("qagt"),
+                new AzureWorkloadJobTaskDetails().withTaskId("dhlfkqojpykvgt").withStatus("cnifm"),
+                new AzureWorkloadJobTaskDetails().withTaskId("sdymbrn").withStatus("u")))
+            .withPropertyBag(
+                mapOf("fwafqrouda", "rafwgckhocxvdf", "kbunzoz", "pavehhr", "cdyuibhmfdnbzyd", "dhcxgkmoy"))
+            .withDynamicErrorMessage("vfcjnaeoisrvhmg");
         model = BinaryData.fromObject(model).toObject(AzureWorkloadJobExtendedInfo.class);
-        Assertions.assertEquals("aspavehhr", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("bunzozudh", model.tasksList().get(0).status());
-        Assertions.assertEquals("kiscvwmzhwpl", model.propertyBag().get("faxvxil"));
-        Assertions.assertEquals("ieknl", model.dynamicErrorMessage());
+        Assertions.assertEquals("frbbc", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("qagt", model.tasksList().get(0).status());
+        Assertions.assertEquals("rafwgckhocxvdf", model.propertyBag().get("fwafqrouda"));
+        Assertions.assertEquals("vfcjnaeoisrvhmg", model.dynamicErrorMessage());
     }
 
     // Use "Map.of" if available

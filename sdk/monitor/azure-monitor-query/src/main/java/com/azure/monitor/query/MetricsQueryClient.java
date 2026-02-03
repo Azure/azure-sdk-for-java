@@ -13,12 +13,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
-import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImpl;
+import com.azure.monitor.query.implementation.metrics.AzureMonitorMetricsDataAPI;
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
 import com.azure.monitor.query.implementation.metrics.models.MetricsResponse;
 import com.azure.monitor.query.implementation.metrics.models.ResultType;
-import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImpl;
-import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImpl;
+import com.azure.monitor.query.implementation.metricsdefinitions.AzureMonitorMetricsDefinitionsAPI;
+import com.azure.monitor.query.implementation.metricsnamespaces.MonitorManagementClient;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
@@ -79,12 +79,12 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
 @ServiceClient(builder = MetricsQueryClientBuilder.class)
 public final class MetricsQueryClient {
 
-    private final MonitorManagementClientImpl metricsClient;
-    private final MetricsNamespacesClientImpl metricsNamespaceClient;
-    private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
+    private final AzureMonitorMetricsDataAPI metricsClient;
+    private final MonitorManagementClient metricsNamespaceClient;
+    private final AzureMonitorMetricsDefinitionsAPI metricsDefinitionsClient;
 
-    MetricsQueryClient(MonitorManagementClientImpl metricsClient, MetricsNamespacesClientImpl metricsNamespaceClient,
-        MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+    MetricsQueryClient(AzureMonitorMetricsDataAPI metricsClient, MonitorManagementClient metricsNamespaceClient,
+        AzureMonitorMetricsDefinitionsAPI metricsDefinitionsClients) {
         this.metricsClient = metricsClient;
         this.metricsNamespaceClient = metricsNamespaceClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;

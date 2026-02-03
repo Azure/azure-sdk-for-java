@@ -91,7 +91,9 @@ public final class AppendVariableActivityTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("variableName", this.variableName);
-        jsonWriter.writeUntypedField("value", this.value);
+        if (this.value != null) {
+            jsonWriter.writeUntypedField("value", this.value);
+        }
         return jsonWriter.writeEndObject();
     }
 

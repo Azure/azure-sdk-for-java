@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.implementation.util;
 
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
@@ -11,11 +12,15 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.implementation.models.DataLakeStorageExceptionInternal;
 import com.azure.storage.file.datalake.implementation.models.PathExpiryOptions;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
+import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesHeaders;
 import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
+import com.azure.storage.file.datalake.models.PathPermissions;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.Base64;
 import java.util.Map;
 import java.util.Objects;
@@ -201,12 +206,38 @@ public class ModelHelper {
      * <p>
      * The internal exception is required as the public exception was created using Object as the exception value. This
      * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
-     * added to handle this and we map that to the public exception, keeping the API the same.
+     * added to handle this, and we map that to the public exception, keeping the API the same.
      *
      * @param internal The internal exception.
      * @return The public exception.
      */
     public static DataLakeStorageException mapToDataLakeStorageException(DataLakeStorageExceptionInternal internal) {
-        return new DataLakeStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
+        return new DataLakeStorageException(
+            StorageImplUtils.convertStorageExceptionMessage(internal.getMessage(), internal.getResponse()),
+            internal.getResponse(), internal.getValue());
     }
+
+    public static PathSystemProperties
+        getSystemPropertiesResponse(final ResponseBase<PathsGetPropertiesHeaders, Void> response) {
+        PathsGetPropertiesHeaders headers = response.getDeserializedHeaders();
+
+        OffsetDateTime creationTime = headers.getXMsCreationTime();
+        OffsetDateTime lastModified = headers.getLastModified();
+        String eTag = headers.getETag();
+        Long fileSize = headers.getContentLength();
+        Boolean isDirectory = Objects.equals(headers.getXMsResourceType(), "directory");
+        Boolean isServerEncrypted = headers.isXMsServerEncrypted();
+        String encryptionKeySha256 = headers.getXMsEncryptionKeySha256();
+        OffsetDateTime expiresOn = headers.getXMsExpiryTime();
+        String encryptionScope = headers.getXMsEncryptionScope();
+        String encryptionContext = headers.getXMsEncryptionContext();
+        String owner = headers.getXMsOwner();
+        String group = headers.getXMsGroup();
+        String permissions = headers.getXMsPermissions();
+        PathPermissions parsedPermissions = permissions != null ? PathPermissions.parseSymbolic(permissions) : null;
+
+        return AccessorUtility.create(creationTime, lastModified, eTag, fileSize, isDirectory, isServerEncrypted,
+            encryptionKeySha256, expiresOn, encryptionScope, encryptionContext, owner, group, parsedPermissions);
+    }
+
 }

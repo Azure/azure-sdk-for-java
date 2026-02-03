@@ -17,10 +17,10 @@ public class SentSharesListInvitations {
             = new SentSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("accountName.purview.azure.com/share")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.sentshareslistsentshareinvitations.sentshareslistinvitations
+        // BEGIN:com.azure.analytics.purview.sharing.generated.sent-shares-list-sent-share-invitations.sent-shares-list-invitations
         RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
         PagedIterable<BinaryData> response
             = sentSharesClient.listSentShareInvitations("FF4A2AAE-8755-47BB-9C00-A774B5A7006E", requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.sentshareslistsentshareinvitations.sentshareslistinvitations
+        // END:com.azure.analytics.purview.sharing.generated.sent-shares-list-sent-share-invitations.sent-shares-list-invitations
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,294 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.4.0 (2025-12-12)
+
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.ImpactedMaintenanceResource` was added
+
+* `models.License` was added
+
+* `models.AvailableWindowForMaintenanceWhileScheduleOperation` was added
+
+* `models.MaintenanceStateName` was added
+
+* `models.MaintenanceSchedule` was added
+
+* `models.MaintenanceReadinessStatus` was added
+
+* `models.License$Update` was added
+
+* `models.BlockedDatesConstraintCategory` was added
+
+* `models.MaintenanceState` was added
+
+* `models.License$UpdateStages` was added
+
+* `models.SchedulingWindow` was added
+
+* `models.Licenses` was added
+
+* `models.MaintenanceType` was added
+
+* `models.LicenseKind` was added
+
+* `models.RescheduleOperationConstraint` was added
+
+* `models.MaintenanceProvisioningState` was added
+
+* `models.BlockedDatesConstraintTimeRange` was added
+
+* `models.RescheduleOperationConstraintKind` was added
+
+* `models.Vcf5License` was added
+
+* `models.MaintenanceReadinessRefreshOperationStatus` was added
+
+* `models.Maintenances` was added
+
+* `models.VmwareFirewallLicenseProperties` was added
+
+* `models.ScheduleOperationConstraintKind` was added
+
+* `models.ScheduleOperation` was added
+
+* `models.RescheduleOperation` was added
+
+* `models.VcfLicenseKind` was added
+
+* `models.LicenseName` was added
+
+* `models.License$DefinitionStages` was added
+
+* `models.Maintenance` was added
+
+* `models.MaintenanceCheckType` was added
+
+* `models.PrivateCloudProperties` was added
+
+* `models.MaintenanceReschedule` was added
+
+* `models.License$Definition` was added
+
+* `models.MaintenanceManagementOperationKind` was added
+
+* `models.BlockedWhileScheduleOperation` was added
+
+* `models.Label` was added
+
+* `models.MaintenanceManagementOperation` was added
+
+* `models.ScheduleOperationConstraint` was added
+
+* `models.VcfLicense` was added
+
+* `models.AvailableWindowForMaintenanceWhileRescheduleOperation` was added
+
+* `models.BlockedWhileRescheduleOperation` was added
+
+* `models.LicenseProperties` was added
+
+* `models.MaintenanceProperties` was added
+
+* `models.LicenseProvisioningState` was added
+
+* `models.MaintenanceReadinessRefreshOperation` was added
+
+* `models.MaintenanceStatusFilter` was added
+
+* `models.MaintenanceReadiness` was added
+
+* `models.MaintenanceFailedCheck` was added
+
+* `models.ImpactedMaintenanceResourceError` was added
+
+#### `models.PrivateClouds` was modified
+
+* `getVcfLicense(java.lang.String,java.lang.String)` was added
+* `getVcfLicenseWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `AvsManager` was modified
+
+* `maintenances()` was added
+* `licenses()` was added
+
+#### `models.PrivateCloud$Definition` was modified
+
+* `withVcfLicense(fluent.models.VcfLicenseInner)` was added
+
+#### `models.PrivateCloud` was modified
+
+* `getVcfLicenseWithResponse(com.azure.core.util.Context)` was added
+* `getVcfLicense()` was added
+* `vcfLicense()` was added
+
+## 1.3.0 (2025-07-08)
+
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package api-version 2024-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.DatastoreList` was removed
+
+#### `models.ClusterList` was removed
+
+#### `models.GlobalReachConnectionList` was removed
+
+#### `models.AddonList` was removed
+
+#### `models.VirtualMachinesList` was removed
+
+#### `models.WorkloadNetworkDhcpList` was removed
+
+#### `models.ScriptCmdletsList` was removed
+
+#### `models.CloudLinkList` was removed
+
+#### `models.WorkloadNetworkVMGroupsList` was removed
+
+#### `models.ScriptExecutionsList` was removed
+
+#### `models.HcxEnterpriseSiteList` was removed
+
+#### `models.WorkloadNetworkPortMirroringList` was removed
+
+#### `models.WorkloadNetworkVirtualMachinesList` was removed
+
+#### `models.WorkloadNetworkList` was removed
+
+#### `models.PlacementPoliciesList` was removed
+
+#### `models.WorkloadNetworkPublicIPsList` was removed
+
+#### `models.WorkloadNetworkSegmentsList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.WorkloadNetworkDnsServicesList` was removed
+
+#### `models.PrivateCloudList` was removed
+
+#### `models.ExpressRouteAuthorizationList` was removed
+
+#### `models.WorkloadNetworkDnsZonesList` was removed
+
+#### `models.WorkloadNetworkGatewayList` was removed
+
+#### `models.ScriptPackagesList` was removed
+
+#### `models.IscsiPathListResult` was removed
+
+#### `models.WorkloadNetworkSegmentPortVif` was modified
+
+* `withPortName(java.lang.String)` was removed
+
+#### `models.ScriptParameter` was modified
+
+* `withName(java.lang.String)` was removed
+
+### Features Added
+
+* `models.HostKind` was added
+
+* `models.ProvisionedNetwork` was added
+
+* `models.PureStoragePolicyProperties` was added
+
+* `models.ResourceSkuRestrictionInfo` was added
+
+* `models.PureStoragePolicies` was added
+
+* `models.SpecializedHostProperties` was added
+
+* `models.ResourceSkuLocationInfo` was added
+
+* `models.PureStoragePolicy$UpdateStages` was added
+
+* `models.HostProvisioningState` was added
+
+* `models.GeneralHostProperties` was added
+
+* `models.HostMaintenance` was added
+
+* `models.Skus` was added
+
+* `models.HostModel` was added
+
+* `models.HostProperties` was added
+
+* `models.ProvisionedNetworks` was added
+
+* `models.ResourceSku` was added
+
+* `models.ResourceSkuRestrictionsReasonCode` was added
+
+* `models.ResourceSkuZoneDetails` was added
+
+* `models.ResourceSkuRestrictionsType` was added
+
+* `models.PureStoragePolicy$DefinitionStages` was added
+
+* `models.ResourceSkuResourceType` was added
+
+* `models.ResourceSkuRestrictions` was added
+
+* `models.PureStoragePolicy` was added
+
+* `models.PureStoragePolicy$Definition` was added
+
+* `models.ProvisionedNetworkProvisioningState` was added
+
+* `models.PureStorageVolume` was added
+
+* `models.ResourceSkuCapabilities` was added
+
+* `models.Hosts` was added
+
+* `models.PureStoragePolicy$Update` was added
+
+* `models.ProvisionedNetworkProperties` was added
+
+* `models.PureStoragePolicyProvisioningState` was added
+
+* `models.ProvisionedNetworkTypes` was added
+
+#### `models.Datastore` was modified
+
+* `pureStorageVolume()` was added
+
+#### `models.Datastore$Definition` was modified
+
+* `withPureStorageVolume(models.PureStorageVolume)` was added
+
+#### `AvsManager` was modified
+
+* `provisionedNetworks()` was added
+* `pureStoragePolicies()` was added
+* `hosts()` was added
+* `skus()` was added
+
+#### `models.PrivateCloud$Definition` was modified
+
+* `withZones(java.util.List)` was added
+
+#### `models.AddonHcxProperties` was modified
+
+* `withUplinkNetwork(java.lang.String)` was added
+* `withManagementNetwork(java.lang.String)` was added
+* `managementNetwork()` was added
+* `uplinkNetwork()` was added
+
+#### `models.Datastore$Update` was modified
+
+* `withPureStorageVolume(models.PureStorageVolume)` was added
+
+#### `models.PrivateCloud` was modified
+
+* `zones()` was added
 
 ## 1.2.0 (2024-09-11)
 

@@ -88,6 +88,11 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     private BackupProperties backup;
 
     /*
+     * The Data API properties of the mongo cluster.
+     */
+    private DataApiProperties dataApi;
+
+    /*
      * List of private endpoint connections.
      */
     private List<PrivateEndpointConnection> privateEndpointConnections;
@@ -106,6 +111,16 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
      * The infrastructure version the cluster is provisioned on.
      */
     private String infrastructureVersion;
+
+    /*
+     * The authentication configuration for the cluster.
+     */
+    private AuthConfigProperties authConfig;
+
+    /*
+     * The encryption configuration for the cluster. Depends on identity being configured.
+     */
+    private EncryptionProperties encryption;
 
     /**
      * Creates an instance of MongoClusterProperties class.
@@ -363,6 +378,26 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
+     * Get the dataApi property: The Data API properties of the mongo cluster.
+     * 
+     * @return the dataApi value.
+     */
+    public DataApiProperties dataApi() {
+        return this.dataApi;
+    }
+
+    /**
+     * Set the dataApi property: The Data API properties of the mongo cluster.
+     * 
+     * @param dataApi the dataApi value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withDataApi(DataApiProperties dataApi) {
+        this.dataApi = dataApi;
+        return this;
+    }
+
+    /**
      * Get the privateEndpointConnections property: List of private endpoint connections.
      * 
      * @return the privateEndpointConnections value.
@@ -410,41 +445,43 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
     }
 
     /**
-     * Validates the instance.
+     * Get the authConfig property: The authentication configuration for the cluster.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the authConfig value.
      */
-    public void validate() {
-        if (restoreParameters() != null) {
-            restoreParameters().validate();
-        }
-        if (replicaParameters() != null) {
-            replicaParameters().validate();
-        }
-        if (administrator() != null) {
-            administrator().validate();
-        }
-        if (highAvailability() != null) {
-            highAvailability().validate();
-        }
-        if (storage() != null) {
-            storage().validate();
-        }
-        if (sharding() != null) {
-            sharding().validate();
-        }
-        if (compute() != null) {
-            compute().validate();
-        }
-        if (backup() != null) {
-            backup().validate();
-        }
-        if (privateEndpointConnections() != null) {
-            privateEndpointConnections().forEach(e -> e.validate());
-        }
-        if (replica() != null) {
-            replica().validate();
-        }
+    public AuthConfigProperties authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: The authentication configuration for the cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withAuthConfig(AuthConfigProperties authConfig) {
+        this.authConfig = authConfig;
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
+     * 
+     * @return the encryption value.
+     */
+    public EncryptionProperties encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption configuration for the cluster. Depends on identity being configured.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the MongoClusterProperties object itself.
+     */
+    public MongoClusterProperties withEncryption(EncryptionProperties encryption) {
+        this.encryption = encryption;
+        return this;
     }
 
     /**
@@ -465,8 +502,11 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
         jsonWriter.writeJsonField("sharding", this.sharding);
         jsonWriter.writeJsonField("compute", this.compute);
         jsonWriter.writeJsonField("backup", this.backup);
+        jsonWriter.writeJsonField("dataApi", this.dataApi);
         jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authConfig", this.authConfig);
+        jsonWriter.writeJsonField("encryption", this.encryption);
         return jsonWriter.writeEndObject();
     }
 
@@ -518,6 +558,8 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
                     deserializedMongoClusterProperties.compute = ComputeProperties.fromJson(reader);
                 } else if ("backup".equals(fieldName)) {
                     deserializedMongoClusterProperties.backup = BackupProperties.fromJson(reader);
+                } else if ("dataApi".equals(fieldName)) {
+                    deserializedMongoClusterProperties.dataApi = DataApiProperties.fromJson(reader);
                 } else if ("privateEndpointConnections".equals(fieldName)) {
                     List<PrivateEndpointConnection> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnection.fromJson(reader1));
@@ -530,6 +572,10 @@ public final class MongoClusterProperties implements JsonSerializable<MongoClust
                     deserializedMongoClusterProperties.replica = ReplicationProperties.fromJson(reader);
                 } else if ("infrastructureVersion".equals(fieldName)) {
                     deserializedMongoClusterProperties.infrastructureVersion = reader.getString();
+                } else if ("authConfig".equals(fieldName)) {
+                    deserializedMongoClusterProperties.authConfig = AuthConfigProperties.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedMongoClusterProperties.encryption = EncryptionProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

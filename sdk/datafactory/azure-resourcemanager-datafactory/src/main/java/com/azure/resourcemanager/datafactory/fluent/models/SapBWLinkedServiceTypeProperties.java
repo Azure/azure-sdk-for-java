@@ -222,7 +222,9 @@ public final class SapBWLinkedServiceTypeProperties implements JsonSerializable<
         jsonWriter.writeUntypedField("server", this.server);
         jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
         jsonWriter.writeUntypedField("clientId", this.clientId);
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();

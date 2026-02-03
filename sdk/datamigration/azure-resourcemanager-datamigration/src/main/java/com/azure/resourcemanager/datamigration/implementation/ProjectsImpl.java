@@ -27,13 +27,13 @@ public final class ProjectsImpl implements Projects {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Project> listByResourceGroup(String groupName, String serviceName) {
-        PagedIterable<ProjectInner> inner = this.serviceClient().listByResourceGroup(groupName, serviceName);
+    public PagedIterable<Project> list(String groupName, String serviceName) {
+        PagedIterable<ProjectInner> inner = this.serviceClient().list(groupName, serviceName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ProjectImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Project> listByResourceGroup(String groupName, String serviceName, Context context) {
-        PagedIterable<ProjectInner> inner = this.serviceClient().listByResourceGroup(groupName, serviceName, context);
+    public PagedIterable<Project> list(String groupName, String serviceName, Context context) {
+        PagedIterable<ProjectInner> inner = this.serviceClient().list(groupName, serviceName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ProjectImpl(inner1, this.manager()));
     }
 

@@ -12,24 +12,24 @@ public final class NamespaceJunctionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamespaceJunction model = BinaryData.fromString(
-            "{\"namespacePath\":\"qqaatjinrvgou\",\"targetPath\":\"fiibfggjioolvr\",\"nfsExport\":\"kvtkkg\",\"nfsAccessPolicy\":\"qwjygvja\"}")
+            "{\"namespacePath\":\"yvblmhvkzu\",\"targetPath\":\"xvvy\",\"nfsExport\":\"s\",\"nfsAccessPolicy\":\"byrqufeg\"}")
             .toObject(NamespaceJunction.class);
-        Assertions.assertEquals("qqaatjinrvgou", model.namespacePath());
-        Assertions.assertEquals("fiibfggjioolvr", model.targetPath());
-        Assertions.assertEquals("kvtkkg", model.nfsExport());
-        Assertions.assertEquals("qwjygvja", model.nfsAccessPolicy());
+        Assertions.assertEquals("yvblmhvkzu", model.namespacePath());
+        Assertions.assertEquals("xvvy", model.targetPath());
+        Assertions.assertEquals("s", model.nfsExport());
+        Assertions.assertEquals("byrqufeg", model.nfsAccessPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamespaceJunction model = new NamespaceJunction().withNamespacePath("qqaatjinrvgou")
-            .withTargetPath("fiibfggjioolvr")
-            .withNfsExport("kvtkkg")
-            .withNfsAccessPolicy("qwjygvja");
+        NamespaceJunction model = new NamespaceJunction().withNamespacePath("yvblmhvkzu")
+            .withTargetPath("xvvy")
+            .withNfsExport("s")
+            .withNfsAccessPolicy("byrqufeg");
         model = BinaryData.fromObject(model).toObject(NamespaceJunction.class);
-        Assertions.assertEquals("qqaatjinrvgou", model.namespacePath());
-        Assertions.assertEquals("fiibfggjioolvr", model.targetPath());
-        Assertions.assertEquals("kvtkkg", model.nfsExport());
-        Assertions.assertEquals("qwjygvja", model.nfsAccessPolicy());
+        Assertions.assertEquals("yvblmhvkzu", model.namespacePath());
+        Assertions.assertEquals("xvvy", model.targetPath());
+        Assertions.assertEquals("s", model.nfsExport());
+        Assertions.assertEquals("byrqufeg", model.nfsAccessPolicy());
     }
 }

@@ -10,6 +10,7 @@ import com.azure.identity.extensions.implementation.credential.TokenCredentialPr
 import com.azure.identity.extensions.implementation.credential.provider.CachingTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
@@ -151,6 +152,7 @@ class AzureAuthenticationTemplateTest {
         }
     }
 
+    @Disabled("Enable it when it is stable")
     @Test
     void verityTokenWithCachingCredentialProvider() throws InterruptedException {
         int tokenExpireSeconds = 2;

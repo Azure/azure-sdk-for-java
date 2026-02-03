@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -138,35 +137,6 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
         this.highAvailabilitySoftwareConfiguration = highAvailabilitySoftwareConfiguration;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        if (bomUrl() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property bomUrl in model SapInstallWithoutOSConfigSoftwareConfiguration"));
-        }
-        if (sapBitsStorageAccountId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property sapBitsStorageAccountId in model SapInstallWithoutOSConfigSoftwareConfiguration"));
-        }
-        if (softwareVersion() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property softwareVersion in model SapInstallWithoutOSConfigSoftwareConfiguration"));
-        }
-        if (highAvailabilitySoftwareConfiguration() != null) {
-            highAvailabilitySoftwareConfiguration().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(SapInstallWithoutOSConfigSoftwareConfiguration.class);
 
     /**
      * {@inheritDoc}

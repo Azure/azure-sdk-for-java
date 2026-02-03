@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartner;
@@ -24,30 +24,29 @@ public final class VerifiedPartnersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"af2fa737-b0d3-4dd5-85e1-53e8b6c10627\",\"organizationName\":\"epbntqq\",\"partnerDisplayName\":\"gfgsq\",\"partnerTopicDetails\":{\"description\":\"efejsewrznequqyn\",\"longDescription\":\"wknhajksbsyo\",\"setupUri\":\"mqjhgcydijnmc\"},\"partnerDestinationDetails\":{\"description\":\"ssfcriqxzixtd\",\"longDescription\":\"wmvcdkucpxpyafrw\",\"setupUri\":\"orogeuv\"},\"provisioningState\":\"Creating\"},\"id\":\"pnr\",\"name\":\"jseml\",\"type\":\"ofrsnq\"}]}";
+            = "{\"value\":[{\"properties\":{\"partnerRegistrationImmutableId\":\"31cf8465-6129-48b3-ae25-60d2d925abd0\",\"organizationName\":\"thtpqgfzdosi\",\"partnerDisplayName\":\"d\",\"partnerTopicDetails\":{\"description\":\"flgzh\",\"longDescription\":\"jg\",\"setupUri\":\"hcrx\"},\"partnerDestinationDetails\":{\"description\":\"rutvnpccxz\",\"longDescription\":\"xpmhzghhhk\",\"setupUri\":\"njdtujqzvhnj\"},\"provisioningState\":\"Updating\"},\"id\":\"n\",\"name\":\"tmzstql\",\"type\":\"xolrwvtlg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<VerifiedPartner> response
-            = manager.verifiedPartners().list("cwwsj", 1946015970, com.azure.core.util.Context.NONE);
+            = manager.verifiedPartners().list("lhbimyii", 832518528, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(UUID.fromString("af2fa737-b0d3-4dd5-85e1-53e8b6c10627"),
+        Assertions.assertEquals(UUID.fromString("31cf8465-6129-48b3-ae25-60d2d925abd0"),
             response.iterator().next().partnerRegistrationImmutableId());
-        Assertions.assertEquals("epbntqq", response.iterator().next().organizationName());
-        Assertions.assertEquals("gfgsq", response.iterator().next().partnerDisplayName());
-        Assertions.assertEquals("efejsewrznequqyn", response.iterator().next().partnerTopicDetails().description());
-        Assertions.assertEquals("wknhajksbsyo", response.iterator().next().partnerTopicDetails().longDescription());
-        Assertions.assertEquals("mqjhgcydijnmc", response.iterator().next().partnerTopicDetails().setupUri());
-        Assertions.assertEquals("ssfcriqxzixtd", response.iterator().next().partnerDestinationDetails().description());
-        Assertions.assertEquals("wmvcdkucpxpyafrw",
-            response.iterator().next().partnerDestinationDetails().longDescription());
-        Assertions.assertEquals("orogeuv", response.iterator().next().partnerDestinationDetails().setupUri());
-        Assertions.assertEquals(VerifiedPartnerProvisioningState.CREATING,
+        Assertions.assertEquals("thtpqgfzdosi", response.iterator().next().organizationName());
+        Assertions.assertEquals("d", response.iterator().next().partnerDisplayName());
+        Assertions.assertEquals("flgzh", response.iterator().next().partnerTopicDetails().description());
+        Assertions.assertEquals("jg", response.iterator().next().partnerTopicDetails().longDescription());
+        Assertions.assertEquals("hcrx", response.iterator().next().partnerTopicDetails().setupUri());
+        Assertions.assertEquals("rutvnpccxz", response.iterator().next().partnerDestinationDetails().description());
+        Assertions.assertEquals("xpmhzghhhk", response.iterator().next().partnerDestinationDetails().longDescription());
+        Assertions.assertEquals("njdtujqzvhnj", response.iterator().next().partnerDestinationDetails().setupUri());
+        Assertions.assertEquals(VerifiedPartnerProvisioningState.UPDATING,
             response.iterator().next().provisioningState());
     }
 }

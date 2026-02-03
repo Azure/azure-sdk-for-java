@@ -5,6 +5,7 @@
 package com.azure.maps.search.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
@@ -16,6 +17,7 @@ public final class SearchesGetGeocodingHeaders {
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     // HttpHeaders containing the raw property values.
@@ -33,6 +35,7 @@ public final class SearchesGetGeocodingHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -43,6 +46,7 @@ public final class SearchesGetGeocodingHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the SearchesGetGeocodingHeaders object itself.
      */
+    @Generated
     public SearchesGetGeocodingHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;

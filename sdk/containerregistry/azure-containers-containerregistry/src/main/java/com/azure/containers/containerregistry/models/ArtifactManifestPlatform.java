@@ -4,6 +4,7 @@
 
 package com.azure.containers.containerregistry.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -19,21 +20,25 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
     /*
      * Manifest digest
      */
+    @Generated
     private String digest;
 
     /*
      * CPU architecture
      */
+    @Generated
     private ArtifactArchitecture architecture;
 
     /*
      * Operating system
      */
+    @Generated
     private ArtifactOperatingSystem operatingSystem;
 
     /**
      * Creates an instance of ArtifactManifestPlatform class.
      */
+    @Generated
     public ArtifactManifestPlatform() {
     }
 
@@ -42,6 +47,7 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
      * 
      * @return the digest value.
      */
+    @Generated
     public String getDigest() {
         return this.digest;
     }
@@ -51,6 +57,7 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
      * 
      * @return the architecture value.
      */
+    @Generated
     public ArtifactArchitecture getArchitecture() {
         return this.architecture;
     }
@@ -60,6 +67,7 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
      * 
      * @return the operatingSystem value.
      */
+    @Generated
     public ArtifactOperatingSystem getOperatingSystem() {
         return this.operatingSystem;
     }
@@ -67,6 +75,7 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -82,6 +91,7 @@ public final class ArtifactManifestPlatform implements JsonSerializable<Artifact
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ArtifactManifestPlatform.
      */
+    @Generated
     public static ArtifactManifestPlatform fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ArtifactManifestPlatform deserializedArtifactManifestPlatform = new ArtifactManifestPlatform();

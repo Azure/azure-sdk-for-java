@@ -51,7 +51,7 @@ public final class HDInsightLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HDInsightLinkedServiceTypeProperties innerTypeProperties() {
+    HDInsightLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

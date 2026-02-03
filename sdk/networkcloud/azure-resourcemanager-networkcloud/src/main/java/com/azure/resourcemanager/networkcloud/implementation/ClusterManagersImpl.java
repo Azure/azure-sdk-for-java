@@ -34,8 +34,8 @@ public final class ClusterManagersImpl implements ClusterManagers {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ClusterManager> list(Context context) {
-        PagedIterable<ClusterManagerInner> inner = this.serviceClient().list(context);
+    public PagedIterable<ClusterManager> list(Integer top, String skipToken, Context context) {
+        PagedIterable<ClusterManagerInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class ClusterManagersImpl implements ClusterManagers {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ClusterManager> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ClusterManagerInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<ClusterManager> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<ClusterManagerInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
@@ -79,8 +81,10 @@ public final class ClusterManagersImpl implements ClusterManagers {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String clusterManagerName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, clusterManagerName, context);
+    public OperationStatusResult delete(String resourceGroupName, String clusterManagerName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -127,10 +131,13 @@ public final class ClusterManagersImpl implements ClusterManagers {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
         }
-        return this.delete(resourceGroupName, clusterManagerName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, clusterManagerName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -141,7 +148,7 @@ public final class ClusterManagersImpl implements ClusterManagers {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
         }
-        return this.delete(resourceGroupName, clusterManagerName, context);
+        return this.delete(resourceGroupName, clusterManagerName, ifMatch, ifNoneMatch, context);
     }
 
     private ClusterManagersClient serviceClient() {

@@ -278,12 +278,20 @@ public final class AzureMLLinkedServiceTypeProperties implements JsonSerializabl
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("mlEndpoint", this.mlEndpoint);
         jsonWriter.writeJsonField("apiKey", this.apiKey);
-        jsonWriter.writeUntypedField("updateResourceEndpoint", this.updateResourceEndpoint);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.updateResourceEndpoint != null) {
+            jsonWriter.writeUntypedField("updateResourceEndpoint", this.updateResourceEndpoint);
+        }
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("authentication", this.authentication);
+        if (this.authentication != null) {
+            jsonWriter.writeUntypedField("authentication", this.authentication);
+        }
         return jsonWriter.writeEndObject();
     }
 

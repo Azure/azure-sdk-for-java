@@ -15,7 +15,7 @@ import java.util.Map;
 public final class ResourceProviderMitigateSamples {
     /*
      * x-ms-original-file:
-     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobMitigate.json
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2025-02-01/examples/JobMitigate.json
      */
     /**
      * Sample code: Mitigate.

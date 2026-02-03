@@ -11,7 +11,7 @@ public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"lfktsths\",\"isDataAction\":true,\"display\":{\"provider\":\"nyyazttbtwwrqpue\",\"resource\":\"kzywbiex\",\"operation\":\"eyueaxibxujwb\",\"description\":\"walm\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"epdkzja\",\"isDataAction\":false,\"display\":{\"provider\":\"hdwbavxbniwdjs\",\"resource\":\"tsdbpgn\",\"operation\":\"txhp\",\"description\":\"bzpfzab\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"wtctyqi\",\"isDataAction\":true,\"display\":{\"provider\":\"vplwzbhv\",\"resource\":\"u\",\"operation\":\"osvmk\",\"description\":\"sxqu\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"mg\",\"isDataAction\":true,\"display\":{\"provider\":\"zkd\",\"resource\":\"lpvlopw\",\"operation\":\"ighxpk\",\"description\":\"zb\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"a\"}")
+            "{\"value\":[{\"name\":\"wbiexzfey\",\"isDataAction\":false,\"display\":{\"provider\":\"bxu\",\"resource\":\"bhqwalmuzyoxa\",\"operation\":\"dkzjancuxrh\",\"description\":\"bavxbniwdjswzt\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"xytxhpzxbz\",\"isDataAction\":true,\"display\":{\"provider\":\"glcuhxwtctyqi\",\"resource\":\"bbovplwzbhvgyugu\",\"operation\":\"vmkfssxqu\",\"description\":\"fpl\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"kjz\"}")
             .toObject(OperationListResult.class);
     }
 

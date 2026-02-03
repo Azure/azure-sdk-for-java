@@ -19,12 +19,12 @@ import java.util.List;
 public class CanaryTrafficRegionRolloutConfiguration
     implements JsonSerializable<CanaryTrafficRegionRolloutConfiguration> {
     /*
-     * The skipRegions property.
+     * The skip regions.
      */
     private List<String> skipRegions;
 
     /*
-     * The regions property.
+     * The regions.
      */
     private List<String> regions;
 
@@ -35,7 +35,7 @@ public class CanaryTrafficRegionRolloutConfiguration
     }
 
     /**
-     * Get the skipRegions property: The skipRegions property.
+     * Get the skipRegions property: The skip regions.
      * 
      * @return the skipRegions value.
      */
@@ -44,7 +44,7 @@ public class CanaryTrafficRegionRolloutConfiguration
     }
 
     /**
-     * Set the skipRegions property: The skipRegions property.
+     * Set the skipRegions property: The skip regions.
      * 
      * @param skipRegions the skipRegions value to set.
      * @return the CanaryTrafficRegionRolloutConfiguration object itself.
@@ -55,7 +55,7 @@ public class CanaryTrafficRegionRolloutConfiguration
     }
 
     /**
-     * Get the regions property: The regions property.
+     * Get the regions property: The regions.
      * 
      * @return the regions value.
      */
@@ -64,7 +64,7 @@ public class CanaryTrafficRegionRolloutConfiguration
     }
 
     /**
-     * Set the regions property: The regions property.
+     * Set the regions property: The regions.
      * 
      * @param regions the regions value to set.
      * @return the CanaryTrafficRegionRolloutConfiguration object itself.

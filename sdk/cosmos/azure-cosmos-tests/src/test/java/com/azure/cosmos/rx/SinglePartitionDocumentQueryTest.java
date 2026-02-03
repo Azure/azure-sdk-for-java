@@ -3,39 +3,40 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.RxStoreModel;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import com.azure.cosmos.implementation.guava25.collect.Lists;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TestUtils;
-import io.reactivex.subscribers.TestSubscriber;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.guava25.collect.Lists;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.test.StepVerifier;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -97,15 +98,19 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                                              .getContainer(createdCollection.getId());
         RxDocumentClientImpl asyncDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(client);
         RxStoreModel serverStoreModel = ReflectionUtils.getRxServerStoreModel(asyncDocumentClient);
-        RxStoreModel gatewayProxy = ReflectionUtils.getGatewayProxy(asyncDocumentClient);
-
-
+        RxStoreModel proxy = asyncDocumentClient.useThinClient() ?
+            ReflectionUtils.getThinProxy(asyncDocumentClient) :
+            ReflectionUtils.getGatewayProxy(asyncDocumentClient);
 
         RxStoreModel spyServerStoreModel = Mockito.spy(serverStoreModel);
-        RxStoreModel spyGatewayProxy = Mockito.spy(gatewayProxy);
+        RxStoreModel spyProxy = Mockito.spy(proxy);
 
         ReflectionUtils.setServerStoreModel(asyncDocumentClient, spyServerStoreModel);
-        ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyGatewayProxy);
+        if (asyncDocumentClient.useThinClient()) {
+            ReflectionUtils.setThinProxy(asyncDocumentClient, spyProxy);
+        } else {
+            ReflectionUtils.setGatewayProxy(asyncDocumentClient, spyProxy);
+        }
 
         CosmosPagedFlux<InternalObjectNode> queryFlux = container
                                                             .queryItems("select * from root", options,
@@ -115,12 +120,13 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         queryFlux.byPage().blockLast();
 
         // Validation:
-        // In gateway mode, serverstoremodel is GatewayStoreModel so below passes
+        // In gateway mode, serverstoremodel is GatewayStoreModel/ThinClientStoreModel so below passes
         // In direct mode, serverStoreModel is ServerStoreModel. So queryPlan goes through gatewayProxy and the query
         // goes through the serverStoreModel
-        Mockito.verify(spyGatewayProxy, Mockito.times(1)).processMessage(Mockito.any());
-        Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
-
+        Mockito.verify(spyProxy, Mockito.times(1)).processMessage(Mockito.any());
+        if (asyncDocumentClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+            Mockito.verify(spyServerStoreModel, Mockito.times(1)).processMessage(Mockito.any());
+        }
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
@@ -252,15 +258,12 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         int maxItemCount = 3;
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
-        TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>();
-        queryObservable.byPage(maxItemCount).take(1).subscribe(subscriber);
+        AtomicReference<FeedResponse<InternalObjectNode>> value = new AtomicReference<>();
+        StepVerifier.create(queryObservable.byPage(maxItemCount).take(1))
+            .consumeNextWith(value::set)
+            .verifyComplete();
 
-        subscriber.awaitTerminalEvent();
-        subscriber.assertComplete();
-        subscriber.assertNoErrors();
-        assertThat(subscriber.valueCount()).isEqualTo(1);
-        @SuppressWarnings("unchecked")
-        FeedResponse<InternalObjectNode> page = ((FeedResponse<InternalObjectNode>) subscriber.getEvents().get(0).get(0));
+        FeedResponse<InternalObjectNode> page = value.get();
         assertThat(page.getResults()).hasSize(3);
 
         assertThat(page.getContinuationToken()).isNotEmpty();

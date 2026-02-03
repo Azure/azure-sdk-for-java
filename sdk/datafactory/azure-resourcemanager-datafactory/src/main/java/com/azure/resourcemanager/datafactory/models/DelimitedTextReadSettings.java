@@ -110,7 +110,9 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
+        if (this.skipLineCount != null) {
+            jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
+        }
         jsonWriter.writeJsonField("compressionProperties", this.compressionProperties);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

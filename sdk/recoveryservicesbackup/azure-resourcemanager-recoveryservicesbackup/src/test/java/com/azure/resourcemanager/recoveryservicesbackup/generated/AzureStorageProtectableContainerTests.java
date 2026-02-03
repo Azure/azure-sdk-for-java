@@ -13,24 +13,24 @@ public final class AzureStorageProtectableContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStorageProtectableContainer model = BinaryData.fromString(
-            "{\"protectableContainerType\":\"StorageContainer\",\"friendlyName\":\"yqwcabvnuil\",\"backupManagementType\":\"DefaultBackup\",\"healthStatus\":\"swlpaugmrmfj\",\"containerId\":\"xwtoaukhfkvc\"}")
+            "{\"protectableContainerType\":\"StorageContainer\",\"friendlyName\":\"ybxc\",\"backupManagementType\":\"Invalid\",\"healthStatus\":\"cptsoqfyiase\",\"containerId\":\"hkrttzrazis\"}")
             .toObject(AzureStorageProtectableContainer.class);
-        Assertions.assertEquals("yqwcabvnuil", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("swlpaugmrmfj", model.healthStatus());
-        Assertions.assertEquals("xwtoaukhfkvc", model.containerId());
+        Assertions.assertEquals("ybxc", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("cptsoqfyiase", model.healthStatus());
+        Assertions.assertEquals("hkrttzrazis", model.containerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStorageProtectableContainer model = new AzureStorageProtectableContainer().withFriendlyName("yqwcabvnuil")
-            .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-            .withHealthStatus("swlpaugmrmfj")
-            .withContainerId("xwtoaukhfkvc");
+        AzureStorageProtectableContainer model = new AzureStorageProtectableContainer().withFriendlyName("ybxc")
+            .withBackupManagementType(BackupManagementType.INVALID)
+            .withHealthStatus("cptsoqfyiase")
+            .withContainerId("hkrttzrazis");
         model = BinaryData.fromObject(model).toObject(AzureStorageProtectableContainer.class);
-        Assertions.assertEquals("yqwcabvnuil", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("swlpaugmrmfj", model.healthStatus());
-        Assertions.assertEquals("xwtoaukhfkvc", model.containerId());
+        Assertions.assertEquals("ybxc", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID, model.backupManagementType());
+        Assertions.assertEquals("cptsoqfyiase", model.healthStatus());
+        Assertions.assertEquals("hkrttzrazis", model.containerId());
     }
 }

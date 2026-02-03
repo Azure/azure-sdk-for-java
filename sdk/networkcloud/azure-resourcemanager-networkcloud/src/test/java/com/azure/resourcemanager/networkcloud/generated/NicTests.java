@@ -11,7 +11,7 @@ public final class NicTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Nic model = BinaryData.fromString(
-            "{\"lldpNeighbor\":{\"portDescription\":\"jfeusnh\",\"portName\":\"je\",\"systemDescription\":\"mrldhu\",\"systemName\":\"zzd\"},\"macAddress\":\"qxhocdgeablgphut\",\"name\":\"ndv\"}")
+            "{\"lldpNeighbor\":{\"portDescription\":\"vmdajvnysou\",\"portName\":\"e\",\"systemDescription\":\"noae\",\"systemName\":\"fhyhltrpmopjmcma\"},\"macAddress\":\"okth\",\"name\":\"iuaod\"}")
             .toObject(Nic.class);
     }
 

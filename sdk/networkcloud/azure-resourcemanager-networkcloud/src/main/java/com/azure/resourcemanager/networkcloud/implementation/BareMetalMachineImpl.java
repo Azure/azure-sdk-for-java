@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.BareMetalMachineInner;
+import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachine;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineCordonParameters;
@@ -22,6 +23,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReplacePara
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunCommandParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunDataExtractsParameters;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineRunReadCommandsParameters;
+import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.HardwareInventory;
 import com.azure.resourcemanager.networkcloud.models.HardwareValidationStatus;
@@ -63,12 +65,25 @@ public final class BareMetalMachineImpl
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public ExtendedLocation extendedLocation() {
         return this.innerModel().extendedLocation();
     }
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public List<ActionState> actionStates() {
+        List<ActionState> inner = this.innerModel().actionStates();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public List<String> associatedResourceIds() {
@@ -94,6 +109,10 @@ public final class BareMetalMachineImpl
 
     public String bootMacAddress() {
         return this.innerModel().bootMacAddress();
+    }
+
+    public CertificateInfo caCertificate() {
+        return this.innerModel().caCertificate();
     }
 
     public String clusterId() {
@@ -248,6 +267,14 @@ public final class BareMetalMachineImpl
 
     private String bareMetalMachineName;
 
+    private String createIfMatch;
+
+    private String createIfNoneMatch;
+
+    private String updateIfMatch;
+
+    private String updateIfNoneMatch;
+
     private BareMetalMachinePatchParameters updateBareMetalMachineUpdateParameters;
 
     public BareMetalMachineImpl withExistingResourceGroup(String resourceGroupName) {
@@ -258,14 +285,16 @@ public final class BareMetalMachineImpl
     public BareMetalMachine create() {
         this.innerObject = serviceManager.serviceClient()
             .getBareMetalMachines()
-            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), Context.NONE);
+            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public BareMetalMachine create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBareMetalMachines()
-            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), context);
+            .createOrUpdate(resourceGroupName, bareMetalMachineName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context);
         return this;
     }
 
@@ -273,9 +302,13 @@ public final class BareMetalMachineImpl
         this.innerObject = new BareMetalMachineInner();
         this.serviceManager = serviceManager;
         this.bareMetalMachineName = name;
+        this.createIfMatch = null;
+        this.createIfNoneMatch = null;
     }
 
     public BareMetalMachineImpl update() {
+        this.updateIfMatch = null;
+        this.updateIfNoneMatch = null;
         this.updateBareMetalMachineUpdateParameters = new BareMetalMachinePatchParameters();
         return this;
     }
@@ -283,14 +316,16 @@ public final class BareMetalMachineImpl
     public BareMetalMachine apply() {
         this.innerObject = serviceManager.serviceClient()
             .getBareMetalMachines()
-            .update(resourceGroupName, bareMetalMachineName, updateBareMetalMachineUpdateParameters, Context.NONE);
+            .update(resourceGroupName, bareMetalMachineName, updateIfMatch, updateIfNoneMatch,
+                updateBareMetalMachineUpdateParameters, Context.NONE);
         return this;
     }
 
     public BareMetalMachine apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getBareMetalMachines()
-            .update(resourceGroupName, bareMetalMachineName, updateBareMetalMachineUpdateParameters, context);
+            .update(resourceGroupName, bareMetalMachineName, updateIfMatch, updateIfNoneMatch,
+                updateBareMetalMachineUpdateParameters, context);
         return this;
     }
 
@@ -386,6 +421,21 @@ public final class BareMetalMachineImpl
         return serviceManager.bareMetalMachines()
             .runDataExtracts(resourceGroupName, bareMetalMachineName, bareMetalMachineRunDataExtractsParameters,
                 context);
+    }
+
+    public OperationStatusResult runDataExtractsRestricted(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters) {
+        return serviceManager.bareMetalMachines()
+            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters);
+    }
+
+    public OperationStatusResult runDataExtractsRestricted(
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsRestrictedParameters,
+        Context context) {
+        return serviceManager.bareMetalMachines()
+            .runDataExtractsRestricted(resourceGroupName, bareMetalMachineName,
+                bareMetalMachineRunDataExtractsRestrictedParameters, context);
     }
 
     public OperationStatusResult
@@ -502,7 +552,27 @@ public final class BareMetalMachineImpl
         return this;
     }
 
+    public BareMetalMachineImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    public BareMetalMachineImpl withIfNoneMatch(String ifNoneMatch) {
+        if (isInCreateMode()) {
+            this.createIfNoneMatch = ifNoneMatch;
+            return this;
+        } else {
+            this.updateIfNoneMatch = ifNoneMatch;
+            return this;
+        }
+    }
+
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

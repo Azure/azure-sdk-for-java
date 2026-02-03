@@ -12,7 +12,7 @@ import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStatesReso
 public final class ComponentPolicyStatesListQueryResultsForResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceGroupScopeGroupByComponentTypeWithAggregate.json
      */
     /**
@@ -33,7 +33,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceGroupSamples 
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceGroupScope.json
      */
     /**

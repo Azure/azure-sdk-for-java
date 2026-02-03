@@ -12,24 +12,24 @@ public final class MetricDimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MetricDimension model = BinaryData.fromString(
-            "{\"name\":\"vawjvzunlu\",\"displayName\":\"nnprn\",\"internalName\":\"peilpjzuaejxdu\",\"toBeExportedForShoebox\":false}")
+            "{\"name\":\"wjue\",\"displayName\":\"twm\",\"internalName\":\"ytdxwit\",\"toBeExportedForShoebox\":false}")
             .toObject(MetricDimension.class);
-        Assertions.assertEquals("vawjvzunlu", model.name());
-        Assertions.assertEquals("nnprn", model.displayName());
-        Assertions.assertEquals("peilpjzuaejxdu", model.internalName());
-        Assertions.assertEquals(false, model.toBeExportedForShoebox());
+        Assertions.assertEquals("wjue", model.name());
+        Assertions.assertEquals("twm", model.displayName());
+        Assertions.assertEquals("ytdxwit", model.internalName());
+        Assertions.assertFalse(model.toBeExportedForShoebox());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricDimension model = new MetricDimension().withName("vawjvzunlu")
-            .withDisplayName("nnprn")
-            .withInternalName("peilpjzuaejxdu")
+        MetricDimension model = new MetricDimension().withName("wjue")
+            .withDisplayName("twm")
+            .withInternalName("ytdxwit")
             .withToBeExportedForShoebox(false);
         model = BinaryData.fromObject(model).toObject(MetricDimension.class);
-        Assertions.assertEquals("vawjvzunlu", model.name());
-        Assertions.assertEquals("nnprn", model.displayName());
-        Assertions.assertEquals("peilpjzuaejxdu", model.internalName());
-        Assertions.assertEquals(false, model.toBeExportedForShoebox());
+        Assertions.assertEquals("wjue", model.name());
+        Assertions.assertEquals("twm", model.displayName());
+        Assertions.assertEquals("ytdxwit", model.internalName());
+        Assertions.assertFalse(model.toBeExportedForShoebox());
     }
 }

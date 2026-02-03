@@ -15,28 +15,40 @@ public final class PermissionBindingsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PermissionBindingsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"hj\",\"topicSpaceName\":\"wgdnqzbr\",\"permission\":\"Subscriber\",\"clientGroupName\":\"zhzmtksjci\",\"provisioningState\":\"Updating\"},\"id\":\"sxcdgljplkeuach\",\"name\":\"omflrytswfp\",\"type\":\"mdgycxn\"}],\"nextLink\":\"kwhqj\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"ssqyzqedik\",\"topicSpaceName\":\"rdbiqmrjge\",\"permission\":\"Publisher\",\"clientGroupName\":\"lg\",\"provisioningState\":\"Updating\"},\"id\":\"wzcxmjpbyephmgt\",\"name\":\"ljvrcmyfqipgxhnp\",\"type\":\"myqwcab\"},{\"properties\":{\"description\":\"ilee\",\"topicSpaceName\":\"swlpaugmrmfj\",\"permission\":\"Subscriber\",\"clientGroupName\":\"toaukhfkvcisiz\",\"provisioningState\":\"Succeeded\"},\"id\":\"dsxjwuivedw\",\"name\":\"gyeewxeiq\",\"type\":\"psmgo\"},{\"properties\":{\"description\":\"amljdlrgmsplzgau\",\"topicSpaceName\":\"shhvnewgnxky\",\"permission\":\"Publisher\",\"clientGroupName\":\"nxrjkixtwbtaoy\",\"provisioningState\":\"Deleted\"},\"id\":\"hshxcylhkgmnsghp\",\"name\":\"ycphdrwjjkhvyo\",\"type\":\"ac\"},{\"properties\":{\"description\":\"vxnqmhrpqpd\",\"topicSpaceName\":\"mkoisqcssf\",\"permission\":\"Publisher\",\"clientGroupName\":\"fmcsypobkd\",\"provisioningState\":\"Succeeded\"},\"id\":\"zsylollgt\",\"name\":\"czzydmxzjij\",\"type\":\"vuaurk\"}],\"nextLink\":\"ci\"}")
             .toObject(PermissionBindingsListResult.class);
-        Assertions.assertEquals("hj", model.value().get(0).description());
-        Assertions.assertEquals("wgdnqzbr", model.value().get(0).topicSpaceName());
-        Assertions.assertEquals(PermissionType.SUBSCRIBER, model.value().get(0).permission());
-        Assertions.assertEquals("zhzmtksjci", model.value().get(0).clientGroupName());
-        Assertions.assertEquals("kwhqj", model.nextLink());
+        Assertions.assertEquals("ssqyzqedik", model.value().get(0).description());
+        Assertions.assertEquals("rdbiqmrjge", model.value().get(0).topicSpaceName());
+        Assertions.assertEquals(PermissionType.PUBLISHER, model.value().get(0).permission());
+        Assertions.assertEquals("lg", model.value().get(0).clientGroupName());
+        Assertions.assertEquals("ci", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PermissionBindingsListResult model = new PermissionBindingsListResult()
-            .withValue(Arrays.asList(new PermissionBindingInner().withDescription("hj")
-                .withTopicSpaceName("wgdnqzbr")
+        PermissionBindingsListResult model = new PermissionBindingsListResult().withValue(Arrays.asList(
+            new PermissionBindingInner().withDescription("ssqyzqedik")
+                .withTopicSpaceName("rdbiqmrjge")
+                .withPermission(PermissionType.PUBLISHER)
+                .withClientGroupName("lg"),
+            new PermissionBindingInner().withDescription("ilee")
+                .withTopicSpaceName("swlpaugmrmfj")
                 .withPermission(PermissionType.SUBSCRIBER)
-                .withClientGroupName("zhzmtksjci")))
-            .withNextLink("kwhqj");
+                .withClientGroupName("toaukhfkvcisiz"),
+            new PermissionBindingInner().withDescription("amljdlrgmsplzgau")
+                .withTopicSpaceName("shhvnewgnxky")
+                .withPermission(PermissionType.PUBLISHER)
+                .withClientGroupName("nxrjkixtwbtaoy"),
+            new PermissionBindingInner().withDescription("vxnqmhrpqpd")
+                .withTopicSpaceName("mkoisqcssf")
+                .withPermission(PermissionType.PUBLISHER)
+                .withClientGroupName("fmcsypobkd")))
+            .withNextLink("ci");
         model = BinaryData.fromObject(model).toObject(PermissionBindingsListResult.class);
-        Assertions.assertEquals("hj", model.value().get(0).description());
-        Assertions.assertEquals("wgdnqzbr", model.value().get(0).topicSpaceName());
-        Assertions.assertEquals(PermissionType.SUBSCRIBER, model.value().get(0).permission());
-        Assertions.assertEquals("zhzmtksjci", model.value().get(0).clientGroupName());
-        Assertions.assertEquals("kwhqj", model.nextLink());
+        Assertions.assertEquals("ssqyzqedik", model.value().get(0).description());
+        Assertions.assertEquals("rdbiqmrjge", model.value().get(0).topicSpaceName());
+        Assertions.assertEquals(PermissionType.PUBLISHER, model.value().get(0).permission());
+        Assertions.assertEquals("lg", model.value().get(0).clientGroupName());
+        Assertions.assertEquals("ci", model.nextLink());
     }
 }

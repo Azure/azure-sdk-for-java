@@ -28,6 +28,11 @@ public final class GetUserTablesSqlTaskInput implements JsonSerializable<GetUser
      */
     private List<String> selectedDatabases;
 
+    /*
+     * encrypted key for secure fields
+     */
+    private String encryptedKeyForSecureFields;
+
     /**
      * Creates an instance of GetUserTablesSqlTaskInput class.
      */
@@ -75,6 +80,26 @@ public final class GetUserTablesSqlTaskInput implements JsonSerializable<GetUser
     }
 
     /**
+     * Get the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @return the encryptedKeyForSecureFields value.
+     */
+    public String encryptedKeyForSecureFields() {
+        return this.encryptedKeyForSecureFields;
+    }
+
+    /**
+     * Set the encryptedKeyForSecureFields property: encrypted key for secure fields.
+     * 
+     * @param encryptedKeyForSecureFields the encryptedKeyForSecureFields value to set.
+     * @return the GetUserTablesSqlTaskInput object itself.
+     */
+    public GetUserTablesSqlTaskInput withEncryptedKeyForSecureFields(String encryptedKeyForSecureFields) {
+        this.encryptedKeyForSecureFields = encryptedKeyForSecureFields;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -105,6 +130,7 @@ public final class GetUserTablesSqlTaskInput implements JsonSerializable<GetUser
         jsonWriter.writeJsonField("connectionInfo", this.connectionInfo);
         jsonWriter.writeArrayField("selectedDatabases", this.selectedDatabases,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("encryptedKeyForSecureFields", this.encryptedKeyForSecureFields);
         return jsonWriter.writeEndObject();
     }
 
@@ -129,6 +155,8 @@ public final class GetUserTablesSqlTaskInput implements JsonSerializable<GetUser
                 } else if ("selectedDatabases".equals(fieldName)) {
                     List<String> selectedDatabases = reader.readArray(reader1 -> reader1.getString());
                     deserializedGetUserTablesSqlTaskInput.selectedDatabases = selectedDatabases;
+                } else if ("encryptedKeyForSecureFields".equals(fieldName)) {
+                    deserializedGetUserTablesSqlTaskInput.encryptedKeyForSecureFields = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

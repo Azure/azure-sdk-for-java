@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,11 +21,19 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
     /*
      * Settings for SMB Multichannel.
      */
+    @Generated
     private SmbMultichannel multichannel;
+
+    /*
+     * Enable or disable encryption in transit.
+     */
+    @Generated
+    private ShareSmbSettingsEncryptionInTransit encryptionInTransit;
 
     /**
      * Creates an instance of ShareSmbSettings class.
      */
+    @Generated
     public ShareSmbSettings() {
     }
 
@@ -34,6 +42,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
      * 
      * @return the multichannel value.
      */
+    @Generated
     public SmbMultichannel getMultichannel() {
         return this.multichannel;
     }
@@ -44,21 +53,47 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
      * @param multichannel the multichannel value to set.
      * @return the ShareSmbSettings object itself.
      */
+    @Generated
     public ShareSmbSettings setMultichannel(SmbMultichannel multichannel) {
         this.multichannel = multichannel;
         return this;
     }
 
+    /**
+     * Get the encryptionInTransit property: Enable or disable encryption in transit.
+     * 
+     * @return the encryptionInTransit value.
+     */
+    @Generated
+    public ShareSmbSettingsEncryptionInTransit getEncryptionInTransit() {
+        return this.encryptionInTransit;
+    }
+
+    /**
+     * Set the encryptionInTransit property: Enable or disable encryption in transit.
+     * 
+     * @param encryptionInTransit the encryptionInTransit value to set.
+     * @return the ShareSmbSettings object itself.
+     */
+    @Generated
+    public ShareSmbSettings setEncryptionInTransit(ShareSmbSettingsEncryptionInTransit encryptionInTransit) {
+        this.encryptionInTransit = encryptionInTransit;
+        return this;
+    }
+
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SMB" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "SMB" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeXml(this.multichannel, "Multichannel");
+        xmlWriter.writeXml(this.encryptionInTransit, "EncryptionInTransit");
         return xmlWriter.writeEndElement();
     }
 
@@ -70,6 +105,7 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareSmbSettings.
      */
+    @Generated
     public static ShareSmbSettings fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -84,8 +120,9 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareSmbSettings.
      */
+    @Generated
     public static ShareSmbSettings fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SMB" : rootElementName;
+        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "SMB" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareSmbSettings deserializedShareSmbSettings = new ShareSmbSettings();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {
@@ -93,6 +130,9 @@ public final class ShareSmbSettings implements XmlSerializable<ShareSmbSettings>
 
                 if ("Multichannel".equals(elementName.getLocalPart())) {
                     deserializedShareSmbSettings.multichannel = SmbMultichannel.fromXml(reader, "Multichannel");
+                } else if ("EncryptionInTransit".equals(elementName.getLocalPart())) {
+                    deserializedShareSmbSettings.encryptionInTransit
+                        = ShareSmbSettingsEncryptionInTransit.fromXml(reader, "EncryptionInTransit");
                 } else {
                     reader.skipElement();
                 }

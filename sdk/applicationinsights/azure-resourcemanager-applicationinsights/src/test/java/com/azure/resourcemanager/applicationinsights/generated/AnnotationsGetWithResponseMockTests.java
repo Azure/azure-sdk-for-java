@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.Annotation;
@@ -22,24 +22,24 @@ public final class AnnotationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "[{\"AnnotationName\":\"dxpgpqchiszepnnb\",\"Category\":\"rxgibbd\",\"EventTime\":\"2021-01-14T17:21:41Z\",\"Id\":\"nfo\",\"Properties\":\"uors\",\"RelatedAnnotation\":\"okwbqplh\"},{\"AnnotationName\":\"nuuepzlrp\",\"Category\":\"zsoldwey\",\"EventTime\":\"2021-03-15T18:22:51Z\",\"Id\":\"vmnnrw\",\"Properties\":\"i\",\"RelatedAnnotation\":\"ktalywjhhgdnhxms\"},{\"AnnotationName\":\"fomiloxgg\",\"Category\":\"fi\",\"EventTime\":\"2021-01-17T17:19:37Z\",\"Id\":\"euzaof\",\"Properties\":\"hvcyyysfg\",\"RelatedAnnotation\":\"tcubiipuipwoqonm\"}]";
+            = "[{\"AnnotationName\":\"ksbpimlqoljx\",\"Category\":\"gxxlxsffgcvizq\",\"EventTime\":\"2021-03-28T18:15:03Z\",\"Id\":\"vwlyoup\",\"Properties\":\"fbkjubdyhgkfmi\",\"RelatedAnnotation\":\"g\"},{\"AnnotationName\":\"zfttsttktlahb\",\"Category\":\"ctxtgzukxi\",\"EventTime\":\"2021-11-11T23:01:44Z\",\"Id\":\"tg\",\"Properties\":\"q\",\"RelatedAnnotation\":\"rnxrxcpj\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<Annotation> response = manager.annotations()
-            .getWithResponse("pjuohminyfl", "orwmduvwpklv", "w", com.azure.core.util.Context.NONE)
+            .getWithResponse("ytibyow", "blgyavutpthj", "xoi", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("dxpgpqchiszepnnb", response.get(0).annotationName());
-        Assertions.assertEquals("rxgibbd", response.get(0).category());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-14T17:21:41Z"), response.get(0).eventTime());
-        Assertions.assertEquals("nfo", response.get(0).id());
-        Assertions.assertEquals("uors", response.get(0).properties());
-        Assertions.assertEquals("okwbqplh", response.get(0).relatedAnnotation());
+        Assertions.assertEquals("ksbpimlqoljx", response.get(0).annotationName());
+        Assertions.assertEquals("gxxlxsffgcvizq", response.get(0).category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-28T18:15:03Z"), response.get(0).eventTime());
+        Assertions.assertEquals("vwlyoup", response.get(0).id());
+        Assertions.assertEquals("fbkjubdyhgkfmi", response.get(0).properties());
+        Assertions.assertEquals("g", response.get(0).relatedAnnotation());
     }
 }

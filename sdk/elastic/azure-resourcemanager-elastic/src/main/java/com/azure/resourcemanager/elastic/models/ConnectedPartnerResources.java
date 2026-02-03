@@ -12,7 +12,8 @@ import com.azure.core.util.Context;
  */
 public interface ConnectedPartnerResources {
     /**
-     * List of all active deployments that are associated with the marketplace subscription linked to the given monitor.
+     * List all active deployments associated with the marketplace subscription linked to the given Elastic monitor
+     * resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -24,7 +25,8 @@ public interface ConnectedPartnerResources {
     PagedIterable<ConnectedPartnerResourcesListFormat> list(String resourceGroupName, String monitorName);
 
     /**
-     * List of all active deployments that are associated with the marketplace subscription linked to the given monitor.
+     * List all active deployments associated with the marketplace subscription linked to the given Elastic monitor
+     * resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.

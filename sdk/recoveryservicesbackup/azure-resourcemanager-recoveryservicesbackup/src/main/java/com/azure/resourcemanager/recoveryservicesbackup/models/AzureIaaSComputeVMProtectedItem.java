@@ -400,6 +400,8 @@ public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedI
                 } else if ("extendedProperties".equals(fieldName)) {
                     deserializedAzureIaaSComputeVMProtectedItem
                         .withExtendedProperties(ExtendedProperties.fromJson(reader));
+                } else if ("policyType".equals(fieldName)) {
+                    deserializedAzureIaaSComputeVMProtectedItem.withPolicyType(reader.getString());
                 } else if ("protectedItemType".equals(fieldName)) {
                     deserializedAzureIaaSComputeVMProtectedItem.protectedItemType = reader.getString();
                 } else {

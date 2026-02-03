@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.ClientGroup;
@@ -21,23 +21,23 @@ public final class ClientGroupsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"hg\",\"query\":\"djuxdbdljzgd\",\"provisioningState\":\"Succeeded\"},\"id\":\"uqbsgzlrqhb\",\"name\":\"nq\",\"type\":\"gdxwbsfpyxx\"}";
+            = "{\"properties\":{\"description\":\"rmexznlwkb\",\"query\":\"kxkhupzerufgj\",\"provisioningState\":\"Succeeded\"},\"id\":\"rmyfcem\",\"name\":\"t\",\"type\":\"gyykyalug\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClientGroup response = manager.clientGroups()
-            .define("o")
-            .withExistingNamespace("kebhuhkslgw", "okhu")
-            .withDescription("zcqypzqzufgsyf")
-            .withQuery("y")
+            .define("pstauol")
+            .withExistingNamespace("caydbjzcqymlcfnz", "mhsurlgwqkpmm")
+            .withDescription("ubmomsgvvjh")
+            .withQuery("lrlohewjjmajnkdf")
             .create();
 
-        Assertions.assertEquals("hg", response.description());
-        Assertions.assertEquals("djuxdbdljzgd", response.query());
+        Assertions.assertEquals("rmexznlwkb", response.description());
+        Assertions.assertEquals("kxkhupzerufgj", response.query());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.storagecache.generated;
 public final class CachesUpgradeFirmwareSamples {
     /*
      * x-ms-original-file:
-     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2025-07-01/examples/
      * Caches_UpgradeFirmware.json
      */
     /**

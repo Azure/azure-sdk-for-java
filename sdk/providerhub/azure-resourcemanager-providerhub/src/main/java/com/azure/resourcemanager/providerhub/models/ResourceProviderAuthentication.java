@@ -19,7 +19,7 @@ import java.util.List;
 @Fluent
 public class ResourceProviderAuthentication implements JsonSerializable<ResourceProviderAuthentication> {
     /*
-     * The allowedAudiences property.
+     * The allowed audiences.
      */
     private List<String> allowedAudiences;
 
@@ -30,7 +30,7 @@ public class ResourceProviderAuthentication implements JsonSerializable<Resource
     }
 
     /**
-     * Get the allowedAudiences property: The allowedAudiences property.
+     * Get the allowedAudiences property: The allowed audiences.
      * 
      * @return the allowedAudiences value.
      */
@@ -39,7 +39,7 @@ public class ResourceProviderAuthentication implements JsonSerializable<Resource
     }
 
     /**
-     * Set the allowedAudiences property: The allowedAudiences property.
+     * Set the allowedAudiences property: The allowed audiences.
      * 
      * @param allowedAudiences the allowedAudiences value to set.
      * @return the ResourceProviderAuthentication object itself.

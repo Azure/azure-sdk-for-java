@@ -12,7 +12,7 @@ public final class ReplicationPropertiesTests {
     public void testDeserialize() throws Exception {
         ReplicationProperties model = BinaryData
             .fromString(
-                "{\"sourceResourceId\":\"heotusiv\",\"role\":\"Primary\",\"replicationState\":\"Provisioning\"}")
+                "{\"sourceResourceId\":\"fxxypininmayhuy\",\"role\":\"AsyncReplica\",\"replicationState\":\"Catchup\"}")
             .toObject(ReplicationProperties.class);
     }
 }

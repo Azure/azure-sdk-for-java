@@ -54,7 +54,7 @@ public final class GeolocationsImpl {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "GeolocationClientGeo")
+    @ServiceInterface(name = "GeolocationClientGeolocations")
     public interface GeolocationsService {
         @Get("/geolocation/ip/{format}")
         @ExpectedResponses({ 200 })
@@ -66,13 +66,13 @@ public final class GeolocationsImpl {
     }
 
     /**
-     * Use to get the ISO country code for a given IP address
+     * Use to get the ISO country/region code for a given IP address.
      * 
      * 
      * 
-     * The `Get IP To Location` API is an HTTP `GET` request that, given an IP address, returns the ISO country code
-     * from which that IP address is located. Developers can use this information to block or alter certain content
-     * based on geographical locations where the application is being viewed from.
+     * The `Get IP To Location` API is an HTTP `GET` request that returns the ISO country/region code for a given IP
+     * address. Developers can use this information to block or modify content based on the geographical location from
+     * which the application is accessed.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param ipAddress The IP address. Both IPv4 and IPv6 are allowed.
@@ -84,19 +84,17 @@ public final class GeolocationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IpAddressToLocationResult>> getLocationWithResponseAsync(JsonFormat format, String ipAddress) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getLocation(this.client.getHost(), this.client.getClientId(),
-            this.client.getApiVersion(), format, ipAddress, accept, context));
+        return FluxUtil.withContext(context -> getLocationWithResponseAsync(format, ipAddress, context));
     }
 
     /**
-     * Use to get the ISO country code for a given IP address
+     * Use to get the ISO country/region code for a given IP address.
      * 
      * 
      * 
-     * The `Get IP To Location` API is an HTTP `GET` request that, given an IP address, returns the ISO country code
-     * from which that IP address is located. Developers can use this information to block or alter certain content
-     * based on geographical locations where the application is being viewed from.
+     * The `Get IP To Location` API is an HTTP `GET` request that returns the ISO country/region code for a given IP
+     * address. Developers can use this information to block or modify content based on the geographical location from
+     * which the application is accessed.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param ipAddress The IP address. Both IPv4 and IPv6 are allowed.
@@ -116,13 +114,13 @@ public final class GeolocationsImpl {
     }
 
     /**
-     * Use to get the ISO country code for a given IP address
+     * Use to get the ISO country/region code for a given IP address.
      * 
      * 
      * 
-     * The `Get IP To Location` API is an HTTP `GET` request that, given an IP address, returns the ISO country code
-     * from which that IP address is located. Developers can use this information to block or alter certain content
-     * based on geographical locations where the application is being viewed from.
+     * The `Get IP To Location` API is an HTTP `GET` request that returns the ISO country/region code for a given IP
+     * address. Developers can use this information to block or modify content based on the geographical location from
+     * which the application is accessed.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param ipAddress The IP address. Both IPv4 and IPv6 are allowed.
@@ -138,13 +136,13 @@ public final class GeolocationsImpl {
     }
 
     /**
-     * Use to get the ISO country code for a given IP address
+     * Use to get the ISO country/region code for a given IP address.
      * 
      * 
      * 
-     * The `Get IP To Location` API is an HTTP `GET` request that, given an IP address, returns the ISO country code
-     * from which that IP address is located. Developers can use this information to block or alter certain content
-     * based on geographical locations where the application is being viewed from.
+     * The `Get IP To Location` API is an HTTP `GET` request that returns the ISO country/region code for a given IP
+     * address. Developers can use this information to block or modify content based on the geographical location from
+     * which the application is accessed.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param ipAddress The IP address. Both IPv4 and IPv6 are allowed.
@@ -162,13 +160,13 @@ public final class GeolocationsImpl {
     }
 
     /**
-     * Use to get the ISO country code for a given IP address
+     * Use to get the ISO country/region code for a given IP address.
      * 
      * 
      * 
-     * The `Get IP To Location` API is an HTTP `GET` request that, given an IP address, returns the ISO country code
-     * from which that IP address is located. Developers can use this information to block or alter certain content
-     * based on geographical locations where the application is being viewed from.
+     * The `Get IP To Location` API is an HTTP `GET` request that returns the ISO country/region code for a given IP
+     * address. Developers can use this information to block or modify content based on the geographical location from
+     * which the application is accessed.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param ipAddress The IP address. Both IPv4 and IPv6 are allowed.
@@ -186,13 +184,13 @@ public final class GeolocationsImpl {
     }
 
     /**
-     * Use to get the ISO country code for a given IP address
+     * Use to get the ISO country/region code for a given IP address.
      * 
      * 
      * 
-     * The `Get IP To Location` API is an HTTP `GET` request that, given an IP address, returns the ISO country code
-     * from which that IP address is located. Developers can use this information to block or alter certain content
-     * based on geographical locations where the application is being viewed from.
+     * The `Get IP To Location` API is an HTTP `GET` request that returns the ISO country/region code for a given IP
+     * address. Developers can use this information to block or modify content based on the geographical location from
+     * which the application is accessed.
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param ipAddress The IP address. Both IPv4 and IPv6 are allowed.

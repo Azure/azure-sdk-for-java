@@ -6,6 +6,7 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -22,6 +23,7 @@ public final class SynonymTokenFilter extends TokenFilter {
     /*
      * A URI fragment specifying the type of token filter.
      */
+    @Generated
     private String odataType = "#Microsoft.Azure.Search.SynonymTokenFilter";
 
     /*
@@ -30,11 +32,13 @@ public final class SynonymTokenFilter extends TokenFilter {
      * fabulous, amazing - comma separated list of equivalent words. Set the expand option to change how this list is
      * interpreted.
      */
+    @Generated
     private final List<String> synonyms;
 
     /*
      * A value indicating whether to case-fold input for matching. Default is false.
      */
+    @Generated
     private Boolean caseIgnored;
 
     /*
@@ -45,6 +49,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing => incredible. Default is
      * true.
      */
+    @Generated
     private Boolean expand;
 
     /**
@@ -53,6 +58,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @param name the name value to set.
      * @param synonyms the synonyms value to set.
      */
+    @Generated
     public SynonymTokenFilter(String name, List<String> synonyms) {
         super(name);
         this.synonyms = synonyms;
@@ -63,6 +69,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the odataType value.
      */
+    @Generated
     @Override
     public String getOdataType() {
         return this.odataType;
@@ -76,6 +83,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the synonyms value.
      */
+    @Generated
     public List<String> getSynonyms() {
         return this.synonyms;
     }
@@ -85,6 +93,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the caseIgnored value.
      */
+    @Generated
     public Boolean isCaseIgnored() {
         return this.caseIgnored;
     }
@@ -95,6 +104,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @param caseIgnored the caseIgnored value to set.
      * @return the SynonymTokenFilter object itself.
      */
+    @Generated
     public SynonymTokenFilter setCaseIgnored(Boolean caseIgnored) {
         this.caseIgnored = caseIgnored;
         return this;
@@ -110,6 +120,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @return the expand value.
      */
+    @Generated
     public Boolean getExpand() {
         return this.expand;
     }
@@ -125,6 +136,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @param expand the expand value to set.
      * @return the SynonymTokenFilter object itself.
      */
+    @Generated
     public SynonymTokenFilter setExpand(Boolean expand) {
         this.expand = expand;
         return this;
@@ -133,6 +145,7 @@ public final class SynonymTokenFilter extends TokenFilter {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -153,6 +166,7 @@ public final class SynonymTokenFilter extends TokenFilter {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SynonymTokenFilter.
      */
+    @Generated
     public static SynonymTokenFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean nameFound = false;

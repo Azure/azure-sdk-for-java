@@ -13,30 +13,6 @@ import java.util.Collection;
 public final class VectorStoreFileErrorCode extends ExpandableStringEnum<VectorStoreFileErrorCode> {
 
     /**
-     * An internal error occurred.
-     */
-    @Generated
-    public static final VectorStoreFileErrorCode INTERNAL_ERROR = fromString("internal_error");
-
-    /**
-     * The file was not found.
-     */
-    @Generated
-    public static final VectorStoreFileErrorCode FILE_NOT_FOUND = fromString("file_not_found");
-
-    /**
-     * The file could not be parsed.
-     */
-    @Generated
-    public static final VectorStoreFileErrorCode PARSING_ERROR = fromString("parsing_error");
-
-    /**
-     * The file has an unhandled mime type.
-     */
-    @Generated
-    public static final VectorStoreFileErrorCode UNHANDLED_MIME_TYPE = fromString("unhandled_mime_type");
-
-    /**
      * Creates a new instance of VectorStoreFileErrorCode value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -66,4 +42,22 @@ public final class VectorStoreFileErrorCode extends ExpandableStringEnum<VectorS
     public static Collection<VectorStoreFileErrorCode> values() {
         return values(VectorStoreFileErrorCode.class);
     }
+
+    /**
+     * The server encountered an error.
+     */
+    @Generated
+    public static final VectorStoreFileErrorCode SERVER_ERROR = fromString("server_error");
+
+    /**
+     * The file format is not supported.
+     */
+    @Generated
+    public static final VectorStoreFileErrorCode UNSUPPORTED_FILE = fromString("unsupported_file");
+
+    /**
+     * The file is invalid.
+     */
+    @Generated
+    public static final VectorStoreFileErrorCode INVALID_FILE = fromString("invalid_file");
 }

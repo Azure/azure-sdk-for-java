@@ -17,22 +17,22 @@ import java.io.IOException;
 @Fluent
 public final class MaintenanceWindow implements JsonSerializable<MaintenanceWindow> {
     /*
-     * indicates whether custom window is enabled or disabled
+     * Indicates whether custom window is enabled or disabled.
      */
     private String customWindow;
 
     /*
-     * start hour for maintenance window
+     * Start hour to be used for maintenance window.
      */
     private Integer startHour;
 
     /*
-     * start minute for maintenance window
+     * Start minute to be used for maintenance window.
      */
     private Integer startMinute;
 
     /*
-     * day of week for maintenance window
+     * Day of the week to be used for maintenance window.
      */
     private Integer dayOfWeek;
 
@@ -43,7 +43,7 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Get the customWindow property: indicates whether custom window is enabled or disabled.
+     * Get the customWindow property: Indicates whether custom window is enabled or disabled.
      * 
      * @return the customWindow value.
      */
@@ -52,7 +52,7 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Set the customWindow property: indicates whether custom window is enabled or disabled.
+     * Set the customWindow property: Indicates whether custom window is enabled or disabled.
      * 
      * @param customWindow the customWindow value to set.
      * @return the MaintenanceWindow object itself.
@@ -63,7 +63,7 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Get the startHour property: start hour for maintenance window.
+     * Get the startHour property: Start hour to be used for maintenance window.
      * 
      * @return the startHour value.
      */
@@ -72,7 +72,7 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Set the startHour property: start hour for maintenance window.
+     * Set the startHour property: Start hour to be used for maintenance window.
      * 
      * @param startHour the startHour value to set.
      * @return the MaintenanceWindow object itself.
@@ -83,7 +83,7 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Get the startMinute property: start minute for maintenance window.
+     * Get the startMinute property: Start minute to be used for maintenance window.
      * 
      * @return the startMinute value.
      */
@@ -92,7 +92,7 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Set the startMinute property: start minute for maintenance window.
+     * Set the startMinute property: Start minute to be used for maintenance window.
      * 
      * @param startMinute the startMinute value to set.
      * @return the MaintenanceWindow object itself.
@@ -103,7 +103,7 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Get the dayOfWeek property: day of week for maintenance window.
+     * Get the dayOfWeek property: Day of the week to be used for maintenance window.
      * 
      * @return the dayOfWeek value.
      */
@@ -112,7 +112,7 @@ public final class MaintenanceWindow implements JsonSerializable<MaintenanceWind
     }
 
     /**
-     * Set the dayOfWeek property: day of week for maintenance window.
+     * Set the dayOfWeek property: Day of the week to be used for maintenance window.
      * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the MaintenanceWindow object itself.

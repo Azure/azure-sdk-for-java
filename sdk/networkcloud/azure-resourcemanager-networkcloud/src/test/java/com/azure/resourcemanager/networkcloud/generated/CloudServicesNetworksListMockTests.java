@@ -7,12 +7,13 @@ package com.azure.resourcemanager.networkcloud.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetwork;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -23,26 +24,30 @@ public final class CloudServicesNetworksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"b\",\"type\":\"vnwsw\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"yctww\",\"endpoints\":[{\"domainName\":\"wxjlmec\"},{\"domainName\":\"og\"}]}],\"associatedResourceIds\":[\"yvneeza\",\"fg\",\"tmoqqtlffhzb\",\"rkjjjavfqnvhnq\"],\"clusterId\":\"wdogiyetesyp\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ztjhqtfbovnynkbw\",\"enableDefaultEgressEndpoints\":\"False\",\"enabledEgressEndpoints\":[{\"category\":\"hpsprkzyaupiac\",\"endpoints\":[{\"domainName\":\"n\"},{\"domainName\":\"fbwqrooht\"}]},{\"category\":\"ovmaonurjtum\",\"endpoints\":[{\"domainName\":\"ihpvecmslclblyj\"},{\"domainName\":\"lt\"},{\"domainName\":\"sjuscvsfxigctmg\"}]},{\"category\":\"uupb\",\"endpoints\":[{\"domainName\":\"qccydrtceukdq\"},{\"domainName\":\"ky\"},{\"domainName\":\"hztgeqmgqzgwld\"}]},{\"category\":\"ychillcecfe\",\"endpoints\":[{\"domainName\":\"waoaguhi\"},{\"domainName\":\"qllizstac\"},{\"domainName\":\"jvhrweft\"},{\"domainName\":\"wqejpmvsse\"}]}],\"hybridAksClustersAssociatedIds\":[\"pwamcxtczhupeuk\",\"ijdu\",\"yespydjfbocyv\"],\"interfaceName\":\"ulrtywikdmh\",\"provisioningState\":\"Failed\",\"virtualMachinesAssociatedIds\":[\"lgbhgauacdi\",\"mxu\"]},\"location\":\"sryjqgdkfno\",\"tags\":{\"hntasfaymx\":\"oqbvjhvefgwbmqj\",\"qkyojwyvf\":\"ulpzealb\",\"jcmmzrrscub\":\"mbtsuahxsg\",\"jxcjrmmuabwib\":\"wsdrnpxqwodif\"},\"id\":\"jogjonmc\",\"name\":\"e\",\"type\":\"oyzbamwineofvf\"}]}";
+            = "{\"value\":[{\"etag\":\"hyhxa\",\"extendedLocation\":{\"name\":\"ybxawoijpodtblx\",\"type\":\"kkwjdjodq\"},\"properties\":{\"additionalEgressEndpoints\":[{\"category\":\"ncn\",\"endpoints\":[{\"domainName\":\"mehllizhceu\"},{\"domainName\":\"oqodkadpp\"},{\"domainName\":\"ibngqladyw\"}]},{\"category\":\"xwhydtluvv\",\"endpoints\":[{\"domainName\":\"swzsnuyemlowuo\"}]}],\"associatedResourceIds\":[\"xlnwyrmouvblgmo\",\"zkltrfowtdvrfmv\",\"ih\"],\"clusterId\":\"jdrqcrjidhftu\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"xlwyoj\",\"enableDefaultEgressEndpoints\":\"True\",\"enabledEgressEndpoints\":[{\"category\":\"kfnjyixhafrat\",\"endpoints\":[{\"domainName\":\"mbjrou\"},{\"domainName\":\"zznval\"}]}],\"hybridAksClustersAssociatedIds\":[\"huzgfxo\",\"jtpusllywpvtiotz\",\"pdbollg\",\"yfqiuasig\"],\"interfaceName\":\"wsocnequygdjbo\",\"provisioningState\":\"Provisioning\",\"storageOptions\":{\"mode\":\"Standard\",\"sizeMiB\":1549338402690522493,\"storageApplianceId\":\"vadrmm\"},\"storageStatus\":{\"mode\":\"Standard\",\"sizeMiB\":8356210374499862798,\"status\":\"Available\",\"statusMessage\":\"kxiidisczskoswo\",\"volumeId\":\"qazu\"},\"virtualMachinesAssociatedIds\":[\"xzkrrcoi\",\"sbamnppcc\"]},\"location\":\"u\",\"tags\":{\"hnepkpeti\":\"sbezaxyfukzxuizh\",\"iubxdukec\":\"rx\",\"hctmmkosz\":\"xdazv\"},\"id\":\"dblnsntrp\",\"name\":\"aqkiofkb\",\"type\":\"fmhklbnld\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CloudServicesNetwork> response
-            = manager.cloudServicesNetworks().list(com.azure.core.util.Context.NONE);
+            = manager.cloudServicesNetworks().list(351715944, "vdsmaklixq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sryjqgdkfno", response.iterator().next().location());
-        Assertions.assertEquals("oqbvjhvefgwbmqj", response.iterator().next().tags().get("hntasfaymx"));
-        Assertions.assertEquals("b", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("vnwsw", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals("yctww", response.iterator().next().additionalEgressEndpoints().get(0).category());
-        Assertions.assertEquals("wxjlmec",
+        Assertions.assertEquals("u", response.iterator().next().location());
+        Assertions.assertEquals("sbezaxyfukzxuizh", response.iterator().next().tags().get("hnepkpeti"));
+        Assertions.assertEquals("ybxawoijpodtblx", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("kkwjdjodq", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("ncn", response.iterator().next().additionalEgressEndpoints().get(0).category());
+        Assertions.assertEquals("mehllizhceu",
             response.iterator().next().additionalEgressEndpoints().get(0).endpoints().get(0).domainName());
-        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.FALSE,
+        Assertions.assertEquals(CloudServicesNetworkEnableDefaultEgressEndpoints.TRUE,
             response.iterator().next().enableDefaultEgressEndpoints());
+        Assertions.assertEquals(CloudServicesNetworkStorageMode.STANDARD,
+            response.iterator().next().storageOptions().mode());
+        Assertions.assertEquals(1549338402690522493L, response.iterator().next().storageOptions().sizeMiB());
+        Assertions.assertEquals("vadrmm", response.iterator().next().storageOptions().storageApplianceId());
     }
 }

@@ -34,7 +34,7 @@ public interface PermissionBinding {
     String type();
 
     /**
-     * Gets the systemData property: The system metadata relating to the PermissionBinding resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.mongocluster.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mongocluster.MongoClusterManager;
 import com.azure.resourcemanager.mongocluster.models.FirewallRule;
@@ -22,19 +22,19 @@ public final class FirewallRulesListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"osvexcsonpclhoc\",\"endIpAddress\":\"hslkevleggzf\"},\"id\":\"hfmvfaxkffe\",\"name\":\"ithlvmezyvshxm\",\"type\":\"sbbzo\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"arbu\",\"endIpAddress\":\"rcvpnazzmhjrunmp\"},\"id\":\"tdbhrbnla\",\"name\":\"kx\",\"type\":\"yskpbhen\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MongoClusterManager manager = MongoClusterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<FirewallRule> response = manager.firewallRules()
-            .listByMongoCluster("ghsauuimjmvxied", "ugidyjrr", com.azure.core.util.Context.NONE);
+        PagedIterable<FirewallRule> response
+            = manager.firewallRules().listByMongoCluster("agnb", "ynhijggme", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("osvexcsonpclhoc", response.iterator().next().properties().startIpAddress());
-        Assertions.assertEquals("hslkevleggzf", response.iterator().next().properties().endIpAddress());
+        Assertions.assertEquals("arbu", response.iterator().next().properties().startIpAddress());
+        Assertions.assertEquals("rcvpnazzmhjrunmp", response.iterator().next().properties().endIpAddress());
     }
 }

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateDiskInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateDiskInput model = BinaryData.fromString("{\"diskId\":\"zamicb\",\"targetDiskName\":\"wcdgzsez\"}")
+        UpdateDiskInput model = BinaryData.fromString("{\"diskId\":\"ncdgmoqueq\",\"targetDiskName\":\"kkyo\"}")
             .toObject(UpdateDiskInput.class);
-        Assertions.assertEquals("zamicb", model.diskId());
-        Assertions.assertEquals("wcdgzsez", model.targetDiskName());
+        Assertions.assertEquals("ncdgmoqueq", model.diskId());
+        Assertions.assertEquals("kkyo", model.targetDiskName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateDiskInput model = new UpdateDiskInput().withDiskId("zamicb").withTargetDiskName("wcdgzsez");
+        UpdateDiskInput model = new UpdateDiskInput().withDiskId("ncdgmoqueq").withTargetDiskName("kkyo");
         model = BinaryData.fromObject(model).toObject(UpdateDiskInput.class);
-        Assertions.assertEquals("zamicb", model.diskId());
-        Assertions.assertEquals("wcdgzsez", model.targetDiskName());
+        Assertions.assertEquals("ncdgmoqueq", model.diskId());
+        Assertions.assertEquals("kkyo", model.targetDiskName());
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,64 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2025-04-21)
+
+- Azure Resource Manager Standby Pool client library for Java. This package contains Microsoft Azure SDK for Standby Pool Management SDK. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.PoolResourceStateCount` was removed
+
+#### `StandbyPoolManager` was modified
+
+* `fluent.StandbyPoolClient serviceClient()` -> `fluent.StandbyPoolManagementClient serviceClient()`
+
+### Features Added
+
+* `models.PoolVirtualMachineState` was added
+
+* `models.StandbyVirtualMachinePoolForecastValues` was added
+
+* `models.HealthStateCode` was added
+
+* `models.StandbyVirtualMachinePoolPrediction` was added
+
+* `models.PoolContainerGroupState` was added
+
+* `models.PoolContainerGroupStateCount` was added
+
+* `models.PoolStatus` was added
+
+* `models.PoolVirtualMachineStateCount` was added
+
+* `models.StandbyContainerGroupPoolForecastValues` was added
+
+* `models.StandbyContainerGroupPoolPrediction` was added
+
+#### `models.StandbyContainerGroupPoolResourceProperties` was modified
+
+* `zones()` was added
+* `withZones(java.util.List)` was added
+
+#### `models.StandbyVirtualMachinePoolRuntimeViewResourceProperties` was modified
+
+* `status()` was added
+* `prediction()` was added
+
+#### `models.ContainerGroupInstanceCountSummary` was modified
+
+* `zone()` was added
+
+#### `models.StandbyContainerGroupPoolResourceUpdateProperties` was modified
+
+* `withZones(java.util.List)` was added
+* `zones()` was added
+
+#### `models.StandbyContainerGroupPoolRuntimeViewResourceProperties` was modified
+
+* `status()` was added
+* `prediction()` was added
 
 ## 1.0.0 (2024-09-25)
 

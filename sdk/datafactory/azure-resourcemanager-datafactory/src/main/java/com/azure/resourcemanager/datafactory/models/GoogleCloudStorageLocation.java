@@ -125,11 +125,19 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", folderPath());
-        jsonWriter.writeUntypedField("fileName", fileName());
+        if (folderPath() != null) {
+            jsonWriter.writeUntypedField("folderPath", folderPath());
+        }
+        if (fileName() != null) {
+            jsonWriter.writeUntypedField("fileName", fileName());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("bucketName", this.bucketName);
-        jsonWriter.writeUntypedField("version", this.version);
+        if (this.bucketName != null) {
+            jsonWriter.writeUntypedField("bucketName", this.bucketName);
+        }
+        if (this.version != null) {
+            jsonWriter.writeUntypedField("version", this.version);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

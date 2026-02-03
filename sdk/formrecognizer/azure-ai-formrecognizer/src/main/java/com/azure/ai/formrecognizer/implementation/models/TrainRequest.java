@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
     /*
      * Source path containing the training documents.
      */
+    @Generated
     private String source;
 
     /*
      * Filter to apply to the documents in the source path for training.
      */
+    @Generated
     private TrainSourceFilter sourceFilter;
 
     /*
      * Use label file for training a model.
      */
+    @Generated
     private Boolean useLabelFile;
 
     /*
      * Optional user defined model name (max length: 1024).
      */
+    @Generated
     private String modelName;
 
     /**
      * Creates an instance of TrainRequest class.
      */
+    @Generated
     public TrainRequest() {
     }
 
@@ -47,6 +53,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * 
      * @return the source value.
      */
+    @Generated
     public String getSource() {
         return this.source;
     }
@@ -57,6 +64,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * @param source the source value to set.
      * @return the TrainRequest object itself.
      */
+    @Generated
     public TrainRequest setSource(String source) {
         this.source = source;
         return this;
@@ -67,6 +75,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * 
      * @return the sourceFilter value.
      */
+    @Generated
     public TrainSourceFilter getSourceFilter() {
         return this.sourceFilter;
     }
@@ -77,6 +86,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * @param sourceFilter the sourceFilter value to set.
      * @return the TrainRequest object itself.
      */
+    @Generated
     public TrainRequest setSourceFilter(TrainSourceFilter sourceFilter) {
         this.sourceFilter = sourceFilter;
         return this;
@@ -87,6 +97,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * 
      * @return the useLabelFile value.
      */
+    @Generated
     public Boolean isUseLabelFile() {
         return this.useLabelFile;
     }
@@ -97,6 +108,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * @param useLabelFile the useLabelFile value to set.
      * @return the TrainRequest object itself.
      */
+    @Generated
     public TrainRequest setUseLabelFile(Boolean useLabelFile) {
         this.useLabelFile = useLabelFile;
         return this;
@@ -107,6 +119,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * 
      * @return the modelName value.
      */
+    @Generated
     public String getModelName() {
         return this.modelName;
     }
@@ -117,6 +130,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * @param modelName the modelName value to set.
      * @return the TrainRequest object itself.
      */
+    @Generated
     public TrainRequest setModelName(String modelName) {
         this.modelName = modelName;
         return this;
@@ -125,6 +139,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -144,6 +159,7 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TrainRequest.
      */
+    @Generated
     public static TrainRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TrainRequest deserializedTrainRequest = new TrainRequest();

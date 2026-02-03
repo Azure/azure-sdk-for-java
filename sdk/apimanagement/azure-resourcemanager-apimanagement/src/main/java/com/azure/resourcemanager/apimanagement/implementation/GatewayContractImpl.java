@@ -8,11 +8,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayDebugCredentialsContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayKeyRegenerationRequestContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayKeysContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListDebugCredentialsContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListTraceContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenContract;
 import com.azure.resourcemanager.apimanagement.models.GatewayTokenRequestContract;
 import com.azure.resourcemanager.apimanagement.models.ResourceLocationDataContract;
+import java.util.Map;
 
 public final class GatewayContractImpl implements GatewayContract, GatewayContract.Definition, GatewayContract.Update {
     private GatewayContractInner innerObject;
@@ -164,6 +168,34 @@ public final class GatewayContractImpl implements GatewayContract, GatewayContra
 
     public GatewayTokenContract generateToken(GatewayTokenRequestContract parameters) {
         return serviceManager.gateways().generateToken(resourceGroupName, serviceName, gatewayId, parameters);
+    }
+
+    public Response<Void> invalidateDebugCredentialsWithResponse(Context context) {
+        return serviceManager.gateways()
+            .invalidateDebugCredentialsWithResponse(resourceGroupName, serviceName, gatewayId, context);
+    }
+
+    public void invalidateDebugCredentials() {
+        serviceManager.gateways().invalidateDebugCredentials(resourceGroupName, serviceName, gatewayId);
+    }
+
+    public Response<GatewayDebugCredentialsContract>
+        listDebugCredentialsWithResponse(GatewayListDebugCredentialsContract parameters, Context context) {
+        return serviceManager.gateways()
+            .listDebugCredentialsWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
+    }
+
+    public GatewayDebugCredentialsContract listDebugCredentials(GatewayListDebugCredentialsContract parameters) {
+        return serviceManager.gateways().listDebugCredentials(resourceGroupName, serviceName, gatewayId, parameters);
+    }
+
+    public Response<Map<String, Object>> listTraceWithResponse(GatewayListTraceContract parameters, Context context) {
+        return serviceManager.gateways()
+            .listTraceWithResponse(resourceGroupName, serviceName, gatewayId, parameters, context);
+    }
+
+    public Map<String, Object> listTrace(GatewayListTraceContract parameters) {
+        return serviceManager.gateways().listTrace(resourceGroupName, serviceName, gatewayId, parameters);
     }
 
     public GatewayContractImpl withLocationData(ResourceLocationDataContract locationData) {

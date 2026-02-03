@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import java.util.List;
 
 /**
  * Used internally. Constants in the Azure Cosmos DB database service Java SDK.
@@ -121,6 +120,7 @@ public final class Constants {
         public static final String ORDER = "order";
         public static final String SPATIAL_INDEXES = "spatialIndexes";
         public static final String TYPES = "types";
+        public static final String QUANTIZER_TYPE = "quantizerType";
 
         // Full text search
         public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
@@ -132,6 +132,7 @@ public final class Constants {
         // Hybrid Search Query
         public static final String GLOBAL_STATISTICS_QUERY = "globalStatisticsQuery";
         public static final String COMPONENT_QUERY_INFOS = "componentQueryInfos";
+        public static final String COMPONENT_WEIGHTS = "componentWeights";
         public static final String PROJECTION_QUERY_INFO = "projectionQueryInfo";
         public static final String SKIP = "skip";
         public static final String TAKE = "take";
@@ -153,6 +154,7 @@ public final class Constants {
         public static final String DISTANCE_FUNCTION = "distanceFunction";
         public static final String VECTOR_QUANTIZATION_SIZE_IN_BYTES = "quantizationByteSize";
         public static final String VECTOR_INDEXING_SEARCH_LIST_SIZE =  "indexingSearchListSize";
+        public static final String VECTOR_INDEX_SHARD_KEYS = "vectorIndexShardKeys";
 
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";
@@ -199,7 +201,10 @@ public final class Constants {
         public static final String Name = "name";
         public static final String WRITABLE_LOCATIONS = "writableLocations";
         public static final String READABLE_LOCATIONS = "readableLocations";
+        public static final String THINCLIENT_WRITABLE_LOCATIONS = "thinClientWritableLocations";
+        public static final String THINCLIENT_READABLE_LOCATIONS = "thinClientReadableLocations";
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
+        public static final String ENABLE_PER_PARTITION_FAILOVER_BEHAVIOR = "enablePerPartitionFailoverBehavior";
 
       //Authorization
         public static final String MASTER_TOKEN = "master";
@@ -287,4 +292,5 @@ public final class Constants {
     }
 
     public static final int QUERYPLAN_CACHE_SIZE = 5000;
+    public static final String AAD_DEFAULT_SCOPE = "https://cosmos.azure.com/.default";
 }

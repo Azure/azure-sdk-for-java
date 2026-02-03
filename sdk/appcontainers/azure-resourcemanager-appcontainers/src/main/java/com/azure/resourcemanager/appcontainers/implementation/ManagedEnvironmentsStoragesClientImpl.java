@@ -23,6 +23,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsStoragesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStorageInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStoragesCollectionInner;
@@ -59,13 +60,23 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerAppsApiClie")
+    @ServiceInterface(name = "ContainerAppsApiClientManagedEnvironmentsStorages")
     public interface ManagedEnvironmentsStoragesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ManagedEnvironmentStoragesCollectionInner>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ManagedEnvironmentStoragesCollectionInner> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
@@ -82,10 +93,32 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ManagedEnvironmentStorageInner> getSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("storageName") String storageName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<ManagedEnvironmentStorageInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("storageName") String storageName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ManagedEnvironmentStorageInner storageEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<ManagedEnvironmentStorageInner> createOrUpdateSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName, @PathParam("storageName") String storageName,
@@ -98,6 +131,16 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("environmentName") String environmentName, @PathParam("storageName") String storageName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/storages/{storageName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName, @PathParam("storageName") String storageName,
@@ -146,43 +189,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all storages for a managedEnvironment along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedEnvironmentStoragesCollectionInner>> listWithResponseAsync(String resourceGroupName,
-        String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get all storages for a managedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -209,7 +215,27 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedEnvironmentStoragesCollectionInner> listWithResponse(String resourceGroupName,
         String environmentName, Context context) {
-        return listWithResponseAsync(resourceGroupName, environmentName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -273,46 +299,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param storageName Name of the storage.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage for a managedEnvironment along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedEnvironmentStorageInner>> getWithResponseAsync(String resourceGroupName,
-        String environmentName, String storageName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (storageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, storageName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get storage for a managedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -340,7 +326,31 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedEnvironmentStorageInner> getWithResponse(String resourceGroupName, String environmentName,
         String storageName, Context context) {
-        return getWithResponseAsync(resourceGroupName, environmentName, storageName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (storageName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, storageName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -415,54 +425,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      * @param environmentName Name of the Environment.
      * @param storageName Name of the storage.
      * @param storageEnvelope Configuration details of storage.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return storage resource for managedEnvironment along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedEnvironmentStorageInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String environmentName, String storageName, ManagedEnvironmentStorageInner storageEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (storageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
-        }
-        if (storageEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter storageEnvelope is required and cannot be null."));
-        } else {
-            storageEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, storageName, this.client.getApiVersion(), storageEnvelope, accept, context);
-    }
-
-    /**
-     * Create or update storage for a managedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param storageName Name of the storage.
-     * @param storageEnvelope Configuration details of storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -491,8 +453,37 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagedEnvironmentStorageInner> createOrUpdateWithResponse(String resourceGroupName,
         String environmentName, String storageName, ManagedEnvironmentStorageInner storageEnvelope, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, storageName, storageEnvelope,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (storageName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
+        }
+        if (storageEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageEnvelope is required and cannot be null."));
+        } else {
+            storageEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, storageName, this.client.getApiVersion(), storageEnvelope, accept, context);
     }
 
     /**
@@ -560,46 +551,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Environment.
      * @param storageName Name of the storage.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
-        String storageName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (storageName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            environmentName, storageName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Delete storage for a managedEnvironment.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param environmentName Name of the Environment.
-     * @param storageName Name of the storage.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -626,7 +577,31 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String storageName,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, environmentName, storageName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (storageName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter storageName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, storageName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -643,4 +618,6 @@ public final class ManagedEnvironmentsStoragesClientImpl implements ManagedEnvir
     public void delete(String resourceGroupName, String environmentName, String storageName) {
         deleteWithResponse(resourceGroupName, environmentName, storageName, Context.NONE);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedEnvironmentsStoragesClientImpl.class);
 }

@@ -17,11 +17,11 @@ public class AccountsUpdateAccountProperties {
             = new AccountsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.accountsupdateaccountproperties.accountsupdateaccountproperties
+        // BEGIN:com.azure.analytics.purview.administration.generated.accounts-update-account-properties.accounts-update-account-properties
         BinaryData accountUpdateParameters = BinaryData.fromString("{\"friendlyName\":\"friendly-account1\"}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = accountsClient.updateAccountPropertiesWithResponse(accountUpdateParameters, requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.accountsupdateaccountproperties.accountsupdateaccountproperties
+        // END:com.azure.analytics.purview.administration.generated.accounts-update-account-properties.accounts-update-account-properties
     }
 }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.TargetComputeSize;
@@ -22,31 +22,31 @@ public final class TargetComputeSizesListByReplicationProteMockTests {
     @Test
     public void testListByReplicationProtectedItems() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"iulddgiqlnhcxw\",\"name\":\"vunknsgvxhxr\",\"type\":\"atrtcqyfjvifbmo\",\"properties\":{\"name\":\"hqyoyt\",\"friendlyName\":\"oufkqmbhukdfp\",\"cpuCoresCount\":944352295,\"vCPUsAvailable\":389781361,\"memoryInGB\":1.1306229007980284,\"maxDataDiskCount\":2003653023,\"maxNicsCount\":1903175,\"errors\":[{\"message\":\"odhzjlr\",\"severity\":\"ckkfxmuqe\"}],\"highIopsSupported\":\"wqphfvsftsst\",\"hyperVGenerations\":[\"xcachdtezgf\"]}}]}";
+            = "{\"value\":[{\"id\":\"zccqtwsrb\",\"name\":\"sdiicdzfbvexrv\",\"type\":\"hmfsnqp\",\"properties\":{\"name\":\"s\",\"friendlyName\":\"wvrsksdz\",\"cpuCoresCount\":1250940643,\"vCPUsAvailable\":156090234,\"memoryInGB\":31.726829231066333,\"maxDataDiskCount\":1979770044,\"maxNicsCount\":2106769110,\"errors\":[{\"message\":\"x\",\"severity\":\"rfwxhf\"},{\"message\":\"dun\",\"severity\":\"ypxsazbxsnx\"},{\"message\":\"sznfstmprvgra\",\"severity\":\"zktwomlpc\"},{\"message\":\"qboomzgmr\",\"severity\":\"hsfddkhxvevwxm\"}],\"highIopsSupported\":\"waxadxgn\",\"hyperVGenerations\":[\"tuhalpqildnaoke\",\"znpny\"]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TargetComputeSize> response = manager.targetComputeSizes()
-            .listByReplicationProtectedItems("rlb", "zlty", "lacbib", "keiec", "pmwxdsokrlnrpeyl",
+            .listByReplicationProtectedItems("nshgwakptbhmbgl", "nlbnatlnchzzcd", "xortd", "zvhbujk", "hophqwo",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iulddgiqlnhcxw", response.iterator().next().id());
-        Assertions.assertEquals("vunknsgvxhxr", response.iterator().next().name());
-        Assertions.assertEquals("atrtcqyfjvifbmo", response.iterator().next().type());
-        Assertions.assertEquals("hqyoyt", response.iterator().next().properties().name());
-        Assertions.assertEquals("oufkqmbhukdfp", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals(944352295, response.iterator().next().properties().cpuCoresCount());
-        Assertions.assertEquals(1.1306229007980284D, response.iterator().next().properties().memoryInGB());
-        Assertions.assertEquals(2003653023, response.iterator().next().properties().maxDataDiskCount());
-        Assertions.assertEquals(1903175, response.iterator().next().properties().maxNicsCount());
-        Assertions.assertEquals("odhzjlr", response.iterator().next().properties().errors().get(0).message());
-        Assertions.assertEquals("ckkfxmuqe", response.iterator().next().properties().errors().get(0).severity());
-        Assertions.assertEquals("wqphfvsftsst", response.iterator().next().properties().highIopsSupported());
-        Assertions.assertEquals("xcachdtezgf", response.iterator().next().properties().hyperVGenerations().get(0));
+        Assertions.assertEquals("zccqtwsrb", response.iterator().next().id());
+        Assertions.assertEquals("sdiicdzfbvexrv", response.iterator().next().name());
+        Assertions.assertEquals("hmfsnqp", response.iterator().next().type());
+        Assertions.assertEquals("s", response.iterator().next().properties().name());
+        Assertions.assertEquals("wvrsksdz", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals(1250940643, response.iterator().next().properties().cpuCoresCount());
+        Assertions.assertEquals(31.726829231066333D, response.iterator().next().properties().memoryInGB());
+        Assertions.assertEquals(1979770044, response.iterator().next().properties().maxDataDiskCount());
+        Assertions.assertEquals(2106769110, response.iterator().next().properties().maxNicsCount());
+        Assertions.assertEquals("x", response.iterator().next().properties().errors().get(0).message());
+        Assertions.assertEquals("rfwxhf", response.iterator().next().properties().errors().get(0).severity());
+        Assertions.assertEquals("waxadxgn", response.iterator().next().properties().highIopsSupported());
+        Assertions.assertEquals("tuhalpqildnaoke", response.iterator().next().properties().hyperVGenerations().get(0));
     }
 }

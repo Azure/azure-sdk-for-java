@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,41 +20,50 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past hour.
      */
+    @Generated
     private WeatherUnitDetails pastHour;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past three hours.
      */
-    private WeatherUnitDetails pastThreeHours;
+    @Generated
+    private WeatherUnitDetails past3Hours;
 
     /*
-     * The amount of precipitation (liquid equivalent) that has fallen in the past six hours. Contains Metric and Imperial Values.
+     * The amount of precipitation (liquid equivalent) that has fallen in the past six hours. Contains Metric and
+     * Imperial Values.
      */
-    private WeatherUnitDetails pastSixHours;
+    @Generated
+    private WeatherUnitDetails past6Hours;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past nine hours.
      */
-    private WeatherUnitDetails pastNineHours;
+    @Generated
+    private WeatherUnitDetails past9Hours;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past 12 hours.
      */
-    private WeatherUnitDetails pastTwelveHours;
+    @Generated
+    private WeatherUnitDetails past12Hours;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past 18 hours.
      */
-    private WeatherUnitDetails pastEighteenHours;
+    @Generated
+    private WeatherUnitDetails past18Hours;
 
     /*
      * The amount of precipitation (liquid equivalent) that has fallen in the past 24 hours.
      */
-    private WeatherUnitDetails pastTwentyFourHours;
+    @Generated
+    private WeatherUnitDetails past24Hours;
 
     /**
      * Set default PrecipitationSummary constructor to private
      */
+    @Generated
     private PrecipitationSummary() {
     }
 
@@ -62,83 +72,91 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      *
      * @return the pastHour value.
      */
+    @Generated
     public WeatherUnitDetails getPastHour() {
         return this.pastHour;
     }
 
     /**
-     * Get the pastThreeHours property: The amount of precipitation (liquid equivalent) that has fallen in the past
-     * three hours.
+     * Get the past3Hours property: The amount of precipitation (liquid equivalent) that has fallen in the past three
+     * hours.
      *
-     * @return the pastThreeHours value.
+     * @return the past3Hours value.
      */
-    public WeatherUnitDetails getPastThreeHours() {
-        return this.pastThreeHours;
+    @Generated
+    public WeatherUnitDetails getPast3Hours() {
+        return this.past3Hours;
     }
 
     /**
-     * Get the pastSixHours property: The amount of precipitation (liquid equivalent) that has fallen in the past six
+     * Get the past6Hours property: The amount of precipitation (liquid equivalent) that has fallen in the past six
      * hours. Contains Metric and Imperial Values.
      *
-     * @return the pastSixHours value.
+     * @return the past6Hours value.
      */
-    public WeatherUnitDetails getPastSixHours() {
-        return this.pastSixHours;
+    @Generated
+    public WeatherUnitDetails getPast6Hours() {
+        return this.past6Hours;
     }
 
     /**
-     * Get the pastNineHours property: The amount of precipitation (liquid equivalent) that has fallen in the past nine
+     * Get the past9Hours property: The amount of precipitation (liquid equivalent) that has fallen in the past nine
      * hours.
      *
-     * @return the pastNineHours value.
+     * @return the past9Hours value.
      */
-    public WeatherUnitDetails getPastNineHours() {
-        return this.pastNineHours;
+    @Generated
+    public WeatherUnitDetails getPast9Hours() {
+        return this.past9Hours;
     }
 
     /**
-     * Get the pastTwelveHours property: The amount of precipitation (liquid equivalent) that has fallen in the past 12
+     * Get the past12Hours property: The amount of precipitation (liquid equivalent) that has fallen in the past 12
      * hours.
      *
-     * @return the pastTwelveHours value.
+     * @return the past12Hours value.
      */
-    public WeatherUnitDetails getPastTwelveHours() {
-        return this.pastTwelveHours;
+    @Generated
+    public WeatherUnitDetails getPast12Hours() {
+        return this.past12Hours;
     }
 
     /**
-     * Get the pastEighteenHours property: The amount of precipitation (liquid equivalent) that has fallen in the past
-     * 18 hours.
+     * Get the past18Hours property: The amount of precipitation (liquid equivalent) that has fallen in the past 18
+     * hours.
      *
-     * @return the pastEighteenHours value.
+     * @return the past18Hours value.
      */
-    public WeatherUnitDetails getPastEighteenHours() {
-        return this.pastEighteenHours;
+    @Generated
+    public WeatherUnitDetails getPast18Hours() {
+        return this.past18Hours;
     }
 
     /**
-     * Get the pastTwentyFourHours property: The amount of precipitation (liquid equivalent) that has fallen in the past
-     * 24 hours.
+     * Get the past24Hours property: The amount of precipitation (liquid equivalent) that has fallen in the past 24
+     * hours.
      *
-     * @return the pastTwentyFourHours value.
+     * @return the past24Hours value.
      */
-    public WeatherUnitDetails getPastTwentyFourHours() {
-        return this.pastTwentyFourHours;
+    @Generated
+    public WeatherUnitDetails getPast24Hours() {
+        return this.past24Hours;
     }
 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("pastHour", this.pastHour);
-        jsonWriter.writeJsonField("pastThreeHours", this.pastThreeHours);
-        jsonWriter.writeJsonField("pastSixHours", this.pastSixHours);
-        jsonWriter.writeJsonField("pastNineHours", this.pastNineHours);
-        jsonWriter.writeJsonField("pastTwelveHours", this.pastTwelveHours);
-        jsonWriter.writeJsonField("pastEighteenHours", this.pastEighteenHours);
-        jsonWriter.writeJsonField("pastTwentyFourHours", this.pastTwentyFourHours);
+        jsonWriter.writeJsonField("past3Hours", this.past3Hours);
+        jsonWriter.writeJsonField("past6Hours", this.past6Hours);
+        jsonWriter.writeJsonField("past9Hours", this.past9Hours);
+        jsonWriter.writeJsonField("past12Hours", this.past12Hours);
+        jsonWriter.writeJsonField("past18Hours", this.past18Hours);
+        jsonWriter.writeJsonField("past24Hours", this.past24Hours);
         return jsonWriter.writeEndObject();
     }
 
@@ -150,6 +168,7 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PrecipitationSummary.
      */
+    @Generated
     public static PrecipitationSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PrecipitationSummary deserializedPrecipitationSummary = new PrecipitationSummary();
@@ -158,18 +177,18 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
                 reader.nextToken();
                 if ("pastHour".equals(fieldName)) {
                     deserializedPrecipitationSummary.pastHour = WeatherUnitDetails.fromJson(reader);
-                } else if ("pastThreeHours".equals(fieldName)) {
-                    deserializedPrecipitationSummary.pastThreeHours = WeatherUnitDetails.fromJson(reader);
-                } else if ("pastSixHours".equals(fieldName)) {
-                    deserializedPrecipitationSummary.pastSixHours = WeatherUnitDetails.fromJson(reader);
-                } else if ("pastNineHours".equals(fieldName)) {
-                    deserializedPrecipitationSummary.pastNineHours = WeatherUnitDetails.fromJson(reader);
-                } else if ("pastTwelveHours".equals(fieldName)) {
-                    deserializedPrecipitationSummary.pastTwelveHours = WeatherUnitDetails.fromJson(reader);
-                } else if ("pastEighteenHours".equals(fieldName)) {
-                    deserializedPrecipitationSummary.pastEighteenHours = WeatherUnitDetails.fromJson(reader);
-                } else if ("pastTwentyFourHours".equals(fieldName)) {
-                    deserializedPrecipitationSummary.pastTwentyFourHours = WeatherUnitDetails.fromJson(reader);
+                } else if ("past3Hours".equals(fieldName)) {
+                    deserializedPrecipitationSummary.past3Hours = WeatherUnitDetails.fromJson(reader);
+                } else if ("past6Hours".equals(fieldName)) {
+                    deserializedPrecipitationSummary.past6Hours = WeatherUnitDetails.fromJson(reader);
+                } else if ("past9Hours".equals(fieldName)) {
+                    deserializedPrecipitationSummary.past9Hours = WeatherUnitDetails.fromJson(reader);
+                } else if ("past12Hours".equals(fieldName)) {
+                    deserializedPrecipitationSummary.past12Hours = WeatherUnitDetails.fromJson(reader);
+                } else if ("past18Hours".equals(fieldName)) {
+                    deserializedPrecipitationSummary.past18Hours = WeatherUnitDetails.fromJson(reader);
+                } else if ("past24Hours".equals(fieldName)) {
+                    deserializedPrecipitationSummary.past24Hours = WeatherUnitDetails.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

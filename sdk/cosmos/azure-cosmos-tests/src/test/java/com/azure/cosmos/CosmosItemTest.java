@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -59,7 +60,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -140,7 +140,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         //Keep size as ~ 1.5MB to account for size of other props
         int size = (int) (ONE_MB * 1.5);
-        docDefinition.set("largeString", StringUtils.repeat("x", size), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        docDefinition.set("largeString", StringUtils.repeat("x", size));
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition, new CosmosItemRequestOptions());
 
@@ -154,7 +154,7 @@ public class CosmosItemTest extends TestSuiteBase {
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
         }
-        docDefinition.set("mypk", sb.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        docDefinition.set("mypk", sb.toString());
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition, new CosmosItemRequestOptions());
 
@@ -168,7 +168,7 @@ public class CosmosItemTest extends TestSuiteBase {
         for(int i = 0; i < 100; i++) {
             sb.append(i).append("x");
         }
-        docDefinition.set("mypk", sb.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        docDefinition.set("mypk", sb.toString());
 
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(docDefinition);
 
@@ -193,6 +193,76 @@ public class CosmosItemTest extends TestSuiteBase {
                                                                                     InternalObjectNode.class);
         validateItemResponse(properties, readResponse1);
 
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readItemWithTimeout() throws Exception {
+        String id = UUID.randomUUID().toString();
+        ObjectNode document = getDocumentDefinition(id, id);
+        container.createItem(document);
+
+        CosmosClientTelemetryConfig clientTelemetryConfig = new CosmosClientTelemetryConfig()
+            .diagnosticsThresholds(
+                new CosmosDiagnosticsThresholds()
+                    .setPointOperationLatencyThreshold(Duration.ofMillis(100))
+            );
+
+        FaultInjectionRule transitTimeout = null;
+        try (CosmosAsyncClient clientWithCustomDiagnosticThresholds = copyCosmosClientBuilder(getClientBuilder())
+            .clientTelemetryConfig(clientTelemetryConfig)
+            .buildAsyncClient()) {
+
+            CosmosAsyncContainer containerWithClientLevelThresholds = clientWithCustomDiagnosticThresholds
+                .getDatabase(container.asyncContainer.getDatabase().getId())
+                .getContainer(container.getId());
+
+            FaultInjectionRuleBuilder ruleBuilder = new FaultInjectionRuleBuilder("extremelyLongResponseDelayRead");
+            FaultInjectionConditionBuilder conditionBuilder = new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.READ_ITEM);
+
+            if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+                conditionBuilder = conditionBuilder.connectionType(FaultInjectionConnectionType.GATEWAY);
+            } else {
+                conditionBuilder = conditionBuilder.connectionType(FaultInjectionConnectionType.DIRECT);
+            }
+
+            conditionBuilder = conditionBuilder.endpoints(
+                new FaultInjectionEndpointBuilder(FeedRange.forLogicalPartition(new PartitionKey(id)))
+                    .replicaCount(4)
+                    .includePrimary(true)
+                    .build()
+            );
+            FaultInjectionCondition faultInjectionCondition = conditionBuilder.build();
+            FaultInjectionServerErrorResult retryWithResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                .times(1)
+                .delay(Duration.ofMillis(200))
+                .build();
+            transitTimeout = ruleBuilder
+                .condition(faultInjectionCondition)
+                .result(retryWithResult)
+                .duration(Duration.ofSeconds(240))
+                .build();
+
+            CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(containerWithClientLevelThresholds, Arrays.asList(transitTimeout))
+                .block();
+
+            CosmosItemResponse<ObjectNode> itemResponse = containerWithClientLevelThresholds
+                .readItem(id, new PartitionKey(id), ObjectNode.class)
+                .block();
+
+            assertThat(itemResponse.getStatusCode()).isEqualTo(200);
+            assertThat(itemResponse.getDiagnostics()).isNotNull();
+            assertThat(itemResponse.getDiagnostics().getDiagnosticsContext()).isNotNull();
+            assertThat(itemResponse.getDiagnostics().getDiagnosticsContext().isThresholdViolated())
+                .as("Threshold not met - " + itemResponse.getDiagnostics().getDiagnosticsContext().toJson())
+                .isEqualTo(true);
+        } finally {
+            if (transitTimeout != null) {
+                transitTimeout.disable();
+            }
+        }
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -313,7 +383,7 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = 100 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readManyWithTwoSecondariesNotReachable() throws Exception {
         if (client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Fault injection only targeting direct mode");
@@ -639,7 +709,9 @@ public class CosmosItemTest extends TestSuiteBase {
             }
 
         } finally {
-            readManyContainer.delete();
+            if (readManyContainer != null) {
+                readManyContainer.delete();
+            }
         }
     }
 
@@ -1069,7 +1141,7 @@ public class CosmosItemTest extends TestSuiteBase {
             });
     }
 
-    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    @Test(groups = { "fast" }, timeOut = TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void readItemWithEventualConsistency() throws Exception {
 
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
@@ -1079,18 +1151,25 @@ public class CosmosItemTest extends TestSuiteBase {
         ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
         CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
-        CosmosItemResponse<ObjectNode> readResponse1 = container.readItem(
+        CosmosItemResponse<ObjectNode> readResponse1 = verifyExists(
+            container,
             idAndPkValue,
             new PartitionKey(idAndPkValue),
             new CosmosItemRequestOptions()
                 // generate an invalid session token large enough to cause an error in Gateway
                 // due to header being too long
                 .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000))
-                .setConsistencyLevel(ConsistencyLevel.EVENTUAL),
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL),
             ObjectNode.class);
+
+        assertThat(readResponse1.getDiagnostics()).isNotNull();
+        assertThat(readResponse1.getDiagnostics().getDiagnosticsContext()).isNotNull();
 
         logger.info("REQUEST DIAGNOSTICS: {}", readResponse1.getDiagnostics().toString());
         validateIdOfItemResponse(idAndPkValue, readResponse1);
+
+        assertThat(readResponse1.getDiagnostics().getDiagnosticsContext().getEffectiveReadConsistencyStrategy())
+            .isEqualTo(ReadConsistencyStrategy.EVENTUAL);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -1100,7 +1179,7 @@ public class CosmosItemTest extends TestSuiteBase {
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        properties.set("newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document
@@ -1221,37 +1300,46 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
     public void queryItemsWithEventualConsistency() throws Exception{
 
-        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
-        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+        for (boolean useConsistencyLevel : Arrays.asList(true, false)) {
+            CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+            container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
 
-        String idAndPkValue = UUID.randomUUID().toString();
-        ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
-        CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
+            String idAndPkValue = UUID.randomUUID().toString();
+            ObjectNode properties = getDocumentDefinition(idAndPkValue, idAndPkValue);
+            CosmosItemResponse<ObjectNode> itemResponse = container.createItem(properties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", idAndPkValue);
-        CosmosQueryRequestOptions cosmosQueryRequestOptions =
-            new CosmosQueryRequestOptions()
-                // generate an invalid session token large enough to cause an error in Gateway
-                // due to header being too long
-                .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000))
-                .setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            String query = String.format("SELECT * from c where c.id = '%s'", idAndPkValue);
+            CosmosQueryRequestOptions cosmosQueryRequestOptions =
+                new CosmosQueryRequestOptions()
+                    // generate an invalid session token large enough to cause an error in Gateway
+                    // due to header being too long
+                    .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000));
 
-        CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
-            container.queryItems(query, cosmosQueryRequestOptions, ObjectNode.class);
-        feedResponseIterator1.handle(
-            (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
+            if (useConsistencyLevel) {
+                cosmosQueryRequestOptions = cosmosQueryRequestOptions
+                    .setConsistencyLevel(ConsistencyLevel.EVENTUAL);
+            } else {
+                cosmosQueryRequestOptions = cosmosQueryRequestOptions
+                    .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL);
+            }
 
-        // Very basic validation
-        assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
-        assertThat(feedResponseIterator1.stream().count() == 1);
+            CosmosPagedIterable<ObjectNode> feedResponseIterator1 =
+                container.queryItems(query, cosmosQueryRequestOptions, ObjectNode.class);
+            feedResponseIterator1.handle(
+                (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(query);
-        CosmosPagedIterable<ObjectNode> feedResponseIterator3 =
-            container.queryItems(querySpec, cosmosQueryRequestOptions, ObjectNode.class);
-        feedResponseIterator3.handle(
-            (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
-        assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
-        assertThat(feedResponseIterator3.stream().count() == 1);
+            // Very basic validation
+            assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
+            assertThat(feedResponseIterator1.stream().count() == 1);
+
+            SqlQuerySpec querySpec = new SqlQuerySpec(query);
+            CosmosPagedIterable<ObjectNode> feedResponseIterator3 =
+                container.queryItems(querySpec, cosmosQueryRequestOptions, ObjectNode.class);
+            feedResponseIterator3.handle(
+                (r) -> logger.info("Query RequestDiagnostics: {}", r.getCosmosDiagnostics().toString()));
+            assertThat(feedResponseIterator3.iterator().hasNext()).isTrue();
+            assertThat(feedResponseIterator3.stream().count() == 1);
+        }
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)

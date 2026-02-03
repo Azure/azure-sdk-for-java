@@ -7,6 +7,7 @@ package com.azure.resourcemanager.providerhub.generated;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutProperties;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutPropertiesSpecification;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationCanary;
+import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationExpeditedRollout;
 import com.azure.resourcemanager.providerhub.models.DefaultRolloutSpecificationRestOfTheWorldGroupTwo;
 import java.time.Duration;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ import java.util.Arrays;
  */
 public final class DefaultRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/
      * DefaultRollouts_CreateOrUpdate.json
      */
     /**
@@ -30,6 +31,7 @@ public final class DefaultRolloutsCreateOrUpdateSamples {
             .withExistingProviderRegistration("Microsoft.Contoso")
             .withProperties(
                 new DefaultRolloutProperties().withSpecification(new DefaultRolloutPropertiesSpecification()
+                    .withExpeditedRollout(new DefaultRolloutSpecificationExpeditedRollout().withEnabled(true))
                     .withCanary(new DefaultRolloutSpecificationCanary().withSkipRegions(Arrays.asList("eastus2euap")))
                     .withRestOfTheWorldGroupTwo(new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
                         .withWaitDuration(Duration.parse("PT4H")))))

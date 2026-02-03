@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class ParquetDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "Parquet";
 
     /*
      * The location of the parquet storage.
      */
+    @Generated
     private DatasetLocation location;
 
     /*
      * A string from ParquetCompressionCodecEnum or an expression
      */
+    @Generated
     private Object compressionCodec;
 
     /**
      * Creates an instance of ParquetDataset class.
      */
+    @Generated
     public ParquetDataset() {
     }
 
@@ -44,6 +49,7 @@ public class ParquetDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class ParquetDataset extends Dataset {
      * 
      * @return the location value.
      */
+    @Generated
     public DatasetLocation getLocation() {
         return this.location;
     }
@@ -64,6 +71,7 @@ public class ParquetDataset extends Dataset {
      * @param location the location value to set.
      * @return the ParquetDataset object itself.
      */
+    @Generated
     public ParquetDataset setLocation(DatasetLocation location) {
         this.location = location;
         return this;
@@ -74,6 +82,7 @@ public class ParquetDataset extends Dataset {
      * 
      * @return the compressionCodec value.
      */
+    @Generated
     public Object getCompressionCodec() {
         return this.compressionCodec;
     }
@@ -84,6 +93,7 @@ public class ParquetDataset extends Dataset {
      * @param compressionCodec the compressionCodec value to set.
      * @return the ParquetDataset object itself.
      */
+    @Generated
     public ParquetDataset setCompressionCodec(Object compressionCodec) {
         this.compressionCodec = compressionCodec;
         return this;
@@ -92,6 +102,7 @@ public class ParquetDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetDataset setDescription(String description) {
         super.setDescription(description);
@@ -101,6 +112,7 @@ public class ParquetDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -110,6 +122,7 @@ public class ParquetDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -119,6 +132,7 @@ public class ParquetDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -128,6 +142,7 @@ public class ParquetDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -137,6 +152,7 @@ public class ParquetDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -146,6 +162,7 @@ public class ParquetDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ParquetDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -155,13 +172,18 @@ public class ParquetDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -169,7 +191,9 @@ public class ParquetDataset extends Dataset {
         if (location != null || compressionCodec != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeJsonField("location", this.location);
-            jsonWriter.writeUntypedField("compressionCodec", this.compressionCodec);
+            if (this.compressionCodec != null) {
+                jsonWriter.writeUntypedField("compressionCodec", this.compressionCodec);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -189,6 +213,7 @@ public class ParquetDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ParquetDataset.
      */
+    @Generated
     public static ParquetDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ParquetDataset deserializedParquetDataset = new ParquetDataset();

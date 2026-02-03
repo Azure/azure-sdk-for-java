@@ -52,7 +52,7 @@ public final class SalesforceServiceCloudV2LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SalesforceServiceCloudV2LinkedServiceTypeProperties innerTypeProperties() {
+    SalesforceServiceCloudV2LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

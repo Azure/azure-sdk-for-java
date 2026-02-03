@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
     /*
      * A JSON web signature
      */
+    @Generated
     private JWK headerProperty;
 
     /*
      * A signature for the image manifest, signed by a libtrust private key
      */
+    @Generated
     private String signature;
 
     /*
      * The signed protected header
      */
+    @Generated
     private String protectedProperty;
 
     /**
      * Creates an instance of ImageSignature class.
      */
+    @Generated
     public ImageSignature() {
     }
 
@@ -42,6 +47,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      * 
      * @return the headerProperty value.
      */
+    @Generated
     public JWK getHeaderProperty() {
         return this.headerProperty;
     }
@@ -52,6 +58,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      * @param headerProperty the headerProperty value to set.
      * @return the ImageSignature object itself.
      */
+    @Generated
     public ImageSignature setHeaderProperty(JWK headerProperty) {
         this.headerProperty = headerProperty;
         return this;
@@ -62,6 +69,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      * 
      * @return the signature value.
      */
+    @Generated
     public String getSignature() {
         return this.signature;
     }
@@ -72,6 +80,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      * @param signature the signature value to set.
      * @return the ImageSignature object itself.
      */
+    @Generated
     public ImageSignature setSignature(String signature) {
         this.signature = signature;
         return this;
@@ -82,6 +91,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      * 
      * @return the protectedProperty value.
      */
+    @Generated
     public String getProtectedProperty() {
         return this.protectedProperty;
     }
@@ -92,6 +102,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      * @param protectedProperty the protectedProperty value to set.
      * @return the ImageSignature object itself.
      */
+    @Generated
     public ImageSignature setProtectedProperty(String protectedProperty) {
         this.protectedProperty = protectedProperty;
         return this;
@@ -100,6 +111,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class ImageSignature implements JsonSerializable<ImageSignature> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ImageSignature.
      */
+    @Generated
     public static ImageSignature fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ImageSignature deserializedImageSignature = new ImageSignature();

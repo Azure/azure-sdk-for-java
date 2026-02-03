@@ -119,7 +119,7 @@ public interface ImportJobsClient {
     ImportJobInner get(String resourceGroupName, String amlFilesystemName, String importJobName);
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -138,7 +138,7 @@ public interface ImportJobsClient {
         String amlFilesystemName, String importJobName, ImportJobInner importJob);
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -158,7 +158,7 @@ public interface ImportJobsClient {
         String amlFilesystemName, String importJobName, ImportJobInner importJob, Context context);
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and
@@ -177,7 +177,7 @@ public interface ImportJobsClient {
         ImportJobInner importJob);
 
     /**
-     * Create or update an import job. Import jobs are automatically deleted 72 hours after completion.
+     * Create or update an import job.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param amlFilesystemName Name for the AML file system. Allows alphanumerics, underscores, and hyphens. Start and

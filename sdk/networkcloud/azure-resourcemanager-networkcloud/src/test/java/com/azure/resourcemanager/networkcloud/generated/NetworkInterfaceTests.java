@@ -11,7 +11,7 @@ public final class NetworkInterfaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterface model = BinaryData.fromString(
-            "{\"address\":\"cojocqwogfnzjvus\",\"deviceConnectionType\":\"PCI\",\"model\":\"mozuxylfsb\",\"physicalSlot\":1611950859305469556,\"portCount\":3915146544894242968,\"portSpeed\":1856181923182418144,\"vendor\":\"tgkbugrjqctojc\"}")
+            "{\"address\":\"fcohdxbzlmcmu\",\"deviceConnectionType\":\"PCI\",\"model\":\"hdbevwqqxeyskon\",\"physicalSlot\":328893230492625152,\"portCount\":4259363860416490102,\"portSpeed\":1183436721296067733,\"vendor\":\"bowxe\"}")
             .toObject(NetworkInterface.class);
     }
 

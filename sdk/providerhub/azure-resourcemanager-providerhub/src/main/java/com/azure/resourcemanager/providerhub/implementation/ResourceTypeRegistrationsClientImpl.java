@@ -27,8 +27,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.providerhub.fluent.ResourceTypeRegistrationsClient;
@@ -68,13 +70,22 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ProviderHubResourceT")
+    @ServiceInterface(name = "ProviderHubResourceTypeRegistrations")
     public interface ResourceTypeRegistrationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceTypeRegistrationInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceTypeRegistrationInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -91,10 +102,30 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
-        @ExpectedResponses({ 200, 204 })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ResourceTypeRegistrationInner properties,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("providerNamespace") String providerNamespace, @PathParam("resourceType") String resourceType,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -109,10 +140,27 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceTypeRegistrationArrayResponseWithContinuation> listByProviderRegistrationSync(
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("providerNamespace") String providerNamespace, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceTypeRegistrationArrayResponseWithContinuation>> listByProviderRegistrationNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ResourceTypeRegistrationArrayResponseWithContinuation> listByProviderRegistrationNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -158,42 +206,6 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource type details in the given subscription and provider along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourceTypeRegistrationInner>> getWithResponseAsync(String providerNamespace,
-        String resourceType, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace, resourceType,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets a resource type details in the given subscription and provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,7 +230,27 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ResourceTypeRegistrationInner> getWithResponse(String providerNamespace, String resourceType,
         Context context) {
-        return getWithResponseAsync(providerNamespace, resourceType, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            resourceType, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -285,38 +317,85 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
      * operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String providerNamespace,
-        String resourceType, ResourceTypeRegistrationInner properties, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
         }
         if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
         } else {
             properties.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            resourceType, this.client.getApiVersion(), properties, accept, Context.NONE);
+    }
+
+    /**
+     * Creates or updates a resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        if (properties == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
             resourceType, this.client.getApiVersion(), properties, accept, context);
     }
 
@@ -350,31 +429,6 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
      * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
-        beginCreateOrUpdateAsync(String providerNamespace, String resourceType,
-            ResourceTypeRegistrationInner properties, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(providerNamespace, resourceType, properties, context);
-        return this.client.<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), ResourceTypeRegistrationInner.class, ResourceTypeRegistrationInner.class,
-            context);
-    }
-
-    /**
-     * Creates or updates a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -383,7 +437,9 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
         beginCreateOrUpdate(String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties) {
-        return this.beginCreateOrUpdateAsync(providerNamespace, resourceType, properties).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(providerNamespace, resourceType, properties);
+        return this.client.<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(response,
+            ResourceTypeRegistrationInner.class, ResourceTypeRegistrationInner.class, Context.NONE);
     }
 
     /**
@@ -402,7 +458,10 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner> beginCreateOrUpdate(
         String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties, Context context) {
-        return this.beginCreateOrUpdateAsync(providerNamespace, resourceType, properties, context).getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(providerNamespace, resourceType, properties, context);
+        return this.client.<ResourceTypeRegistrationInner, ResourceTypeRegistrationInner>getLroResult(response,
+            ResourceTypeRegistrationInner.class, ResourceTypeRegistrationInner.class, context);
     }
 
     /**
@@ -431,26 +490,6 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
      * operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ResourceTypeRegistrationInner> createOrUpdateAsync(String providerNamespace, String resourceType,
-        ResourceTypeRegistrationInner properties, Context context) {
-        return beginCreateOrUpdateAsync(providerNamespace, resourceType, properties, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,7 +498,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
         ResourceTypeRegistrationInner properties) {
-        return createOrUpdateAsync(providerNamespace, resourceType, properties).block();
+        return beginCreateOrUpdate(providerNamespace, resourceType, properties).getFinalResult();
     }
 
     /**
@@ -478,7 +517,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
         ResourceTypeRegistrationInner properties, Context context) {
-        return createOrUpdateAsync(providerNamespace, resourceType, properties, context).block();
+        return beginCreateOrUpdate(providerNamespace, resourceType, properties, context).getFinalResult();
     }
 
     /**
@@ -492,7 +531,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String resourceType) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String providerNamespace, String resourceType) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -520,34 +559,121 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String providerNamespace, String resourceType) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceType == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+            resourceType, this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String providerNamespace, String resourceType,
-        Context context) {
+    private Response<BinaryData> deleteWithResponse(String providerNamespace, String resourceType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
         }
         if (resourceType == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceType is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
             resourceType, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Deletes a resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String providerNamespace, String resourceType) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(providerNamespace, resourceType);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes a resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String providerNamespace, String resourceType) {
+        Response<BinaryData> response = deleteWithResponse(providerNamespace, resourceType);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Deletes a resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String providerNamespace, String resourceType,
+        Context context) {
+        Response<BinaryData> response = deleteWithResponse(providerNamespace, resourceType, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -562,23 +688,7 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String providerNamespace, String resourceType) {
-        return deleteWithResponseAsync(providerNamespace, resourceType).flatMap(ignored -> Mono.empty());
-    }
-
-    /**
-     * Deletes a resource type.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param resourceType The resource type.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String providerNamespace, String resourceType, Context context) {
-        return deleteWithResponseAsync(providerNamespace, resourceType, context).block();
+        return beginDeleteAsync(providerNamespace, resourceType).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -592,7 +702,22 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String providerNamespace, String resourceType) {
-        deleteWithResponse(providerNamespace, resourceType, Context.NONE);
+        beginDelete(providerNamespace, resourceType).getFinalResult();
+    }
+
+    /**
+     * Deletes a resource type.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @param resourceType The resource type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String providerNamespace, String resourceType, Context context) {
+        beginDelete(providerNamespace, resourceType, context).getFinalResult();
     }
 
     /**
@@ -633,41 +758,6 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * Gets the list of the resource types for the given provider.
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the resource types for the given provider along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceTypeRegistrationInner>>
-        listByProviderRegistrationSinglePageAsync(String providerNamespace, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByProviderRegistration(this.client.getEndpoint(), this.client.getSubscriptionId(), providerNamespace,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the list of the resource types for the given provider.
-     * 
-     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -683,17 +773,69 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * Gets the list of the resource types for the given provider.
      * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of the resource types for the given provider along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceTypeRegistrationInner>
+        listByProviderRegistrationSinglePage(String providerNamespace) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceTypeRegistrationArrayResponseWithContinuation> res
+            = service.listByProviderRegistrationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the list of the resource types for the given provider.
+     * 
+     * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the resource types for the given provider as paginated response with {@link PagedFlux}.
+     * @return the list of the resource types for the given provider along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceTypeRegistrationInner> listByProviderRegistrationAsync(String providerNamespace,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceTypeRegistrationInner> listByProviderRegistrationSinglePage(String providerNamespace,
         Context context) {
-        return new PagedFlux<>(() -> listByProviderRegistrationSinglePageAsync(providerNamespace, context),
-            nextLink -> listByProviderRegistrationNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceTypeRegistrationArrayResponseWithContinuation> res
+            = service.listByProviderRegistrationSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                providerNamespace, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -707,7 +849,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceTypeRegistrationInner> listByProviderRegistration(String providerNamespace) {
-        return new PagedIterable<>(listByProviderRegistrationAsync(providerNamespace));
+        return new PagedIterable<>(() -> listByProviderRegistrationSinglePage(providerNamespace),
+            nextLink -> listByProviderRegistrationNextSinglePage(nextLink));
     }
 
     /**
@@ -723,7 +866,8 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceTypeRegistrationInner> listByProviderRegistration(String providerNamespace,
         Context context) {
-        return new PagedIterable<>(listByProviderRegistrationAsync(providerNamespace, context));
+        return new PagedIterable<>(() -> listByProviderRegistrationSinglePage(providerNamespace, context),
+            nextLink -> listByProviderRegistrationNextSinglePage(nextLink, context));
     }
 
     /**
@@ -758,26 +902,57 @@ public final class ResourceTypeRegistrationsClientImpl implements ResourceTypeRe
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<ResourceTypeRegistrationInner> listByProviderRegistrationNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<ResourceTypeRegistrationArrayResponseWithContinuation> res
+            = service.listByProviderRegistrationNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceTypeRegistrationInner>>
-        listByProviderRegistrationNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<ResourceTypeRegistrationInner> listByProviderRegistrationNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByProviderRegistrationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<ResourceTypeRegistrationArrayResponseWithContinuation> res
+            = service.listByProviderRegistrationNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceTypeRegistrationsClientImpl.class);
 }

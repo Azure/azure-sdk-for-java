@@ -9,13 +9,16 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.ClusterSecretArchive;
 import com.azure.resourcemanager.networkcloud.models.ClusterUpdateStrategy;
 import com.azure.resourcemanager.networkcloud.models.CommandOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,12 +34,18 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     private RackDefinition aggregatorOrSingleRackDefinition;
 
     /*
+     * The settings for the log analytics workspace used for output of logs from this cluster.
+     */
+    private AnalyticsOutputSettings analyticsOutputSettings;
+
+    /*
      * The customer-provided location information to identify where the cluster resides.
      */
     private String clusterLocation;
 
     /*
-     * The service principal to be used by the cluster during Arc Appliance installation.
+     * Field Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the
+     * cluster during Arc Appliance installation.
      */
     private ServicePrincipalInformation clusterServicePrincipal;
 
@@ -53,8 +62,8 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     private ValidationThreshold computeDeploymentThreshold;
 
     /*
-     * The list of rack definitions for the compute racks in a multi-rack
-     * cluster, or an empty list in a single-rack cluster.
+     * The list of rack definitions for the compute racks in a multi-rack cluster, or an empty list in a single-rack
+     * cluster.
      */
     private List<RackDefinition> computeRackDefinitions;
 
@@ -69,9 +78,19 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     private ClusterSecretArchive secretArchive;
 
     /*
+     * The settings for the secret archive used to hold credentials for the cluster.
+     */
+    private SecretArchiveSettings secretArchiveSettings;
+
+    /*
      * The strategy for updating the cluster.
      */
     private ClusterUpdateStrategy updateStrategy;
+
+    /*
+     * The settings for how security vulnerability scanning is applied to the cluster.
+     */
+    private VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings;
 
     /**
      * Creates an instance of ClusterPatchProperties class.
@@ -103,6 +122,28 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     }
 
     /**
+     * Get the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @return the analyticsOutputSettings value.
+     */
+    public AnalyticsOutputSettings analyticsOutputSettings() {
+        return this.analyticsOutputSettings;
+    }
+
+    /**
+     * Set the analyticsOutputSettings property: The settings for the log analytics workspace used for output of logs
+     * from this cluster.
+     * 
+     * @param analyticsOutputSettings the analyticsOutputSettings value to set.
+     * @return the ClusterPatchProperties object itself.
+     */
+    public ClusterPatchProperties withAnalyticsOutputSettings(AnalyticsOutputSettings analyticsOutputSettings) {
+        this.analyticsOutputSettings = analyticsOutputSettings;
+        return this;
+    }
+
+    /**
      * Get the clusterLocation property: The customer-provided location information to identify where the cluster
      * resides.
      * 
@@ -125,8 +166,8 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     }
 
     /**
-     * Get the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
-     * installation.
+     * Get the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster privileges.
+     * The service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @return the clusterServicePrincipal value.
      */
@@ -135,8 +176,8 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     }
 
     /**
-     * Set the clusterServicePrincipal property: The service principal to be used by the cluster during Arc Appliance
-     * installation.
+     * Set the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster privileges.
+     * The service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterPatchProperties object itself.
@@ -256,6 +297,28 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     }
 
     /**
+     * Get the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @return the secretArchiveSettings value.
+     */
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.secretArchiveSettings;
+    }
+
+    /**
+     * Set the secretArchiveSettings property: The settings for the secret archive used to hold credentials for the
+     * cluster.
+     * 
+     * @param secretArchiveSettings the secretArchiveSettings value to set.
+     * @return the ClusterPatchProperties object itself.
+     */
+    public ClusterPatchProperties withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        this.secretArchiveSettings = secretArchiveSettings;
+        return this;
+    }
+
+    /**
      * Get the updateStrategy property: The strategy for updating the cluster.
      * 
      * @return the updateStrategy value.
@@ -276,6 +339,29 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     }
 
     /**
+     * Get the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @return the vulnerabilityScanningSettings value.
+     */
+    public VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings() {
+        return this.vulnerabilityScanningSettings;
+    }
+
+    /**
+     * Set the vulnerabilityScanningSettings property: The settings for how security vulnerability scanning is applied
+     * to the cluster.
+     * 
+     * @param vulnerabilityScanningSettings the vulnerabilityScanningSettings value to set.
+     * @return the ClusterPatchProperties object itself.
+     */
+    public ClusterPatchProperties
+        withVulnerabilityScanningSettings(VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings) {
+        this.vulnerabilityScanningSettings = vulnerabilityScanningSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -283,6 +369,9 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     public void validate() {
         if (aggregatorOrSingleRackDefinition() != null) {
             aggregatorOrSingleRackDefinition().validate();
+        }
+        if (analyticsOutputSettings() != null) {
+            analyticsOutputSettings().validate();
         }
         if (clusterServicePrincipal() != null) {
             clusterServicePrincipal().validate();
@@ -302,8 +391,14 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
         if (secretArchive() != null) {
             secretArchive().validate();
         }
+        if (secretArchiveSettings() != null) {
+            secretArchiveSettings().validate();
+        }
         if (updateStrategy() != null) {
             updateStrategy().validate();
+        }
+        if (vulnerabilityScanningSettings() != null) {
+            vulnerabilityScanningSettings().validate();
         }
     }
 
@@ -314,6 +409,7 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("aggregatorOrSingleRackDefinition", this.aggregatorOrSingleRackDefinition);
+        jsonWriter.writeJsonField("analyticsOutputSettings", this.analyticsOutputSettings);
         jsonWriter.writeStringField("clusterLocation", this.clusterLocation);
         jsonWriter.writeJsonField("clusterServicePrincipal", this.clusterServicePrincipal);
         jsonWriter.writeJsonField("commandOutputSettings", this.commandOutputSettings);
@@ -322,7 +418,9 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("runtimeProtectionConfiguration", this.runtimeProtectionConfiguration);
         jsonWriter.writeJsonField("secretArchive", this.secretArchive);
+        jsonWriter.writeJsonField("secretArchiveSettings", this.secretArchiveSettings);
         jsonWriter.writeJsonField("updateStrategy", this.updateStrategy);
+        jsonWriter.writeJsonField("vulnerabilityScanningSettings", this.vulnerabilityScanningSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -344,6 +442,9 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
                 if ("aggregatorOrSingleRackDefinition".equals(fieldName)) {
                     deserializedClusterPatchProperties.aggregatorOrSingleRackDefinition
                         = RackDefinition.fromJson(reader);
+                } else if ("analyticsOutputSettings".equals(fieldName)) {
+                    deserializedClusterPatchProperties.analyticsOutputSettings
+                        = AnalyticsOutputSettings.fromJson(reader);
                 } else if ("clusterLocation".equals(fieldName)) {
                     deserializedClusterPatchProperties.clusterLocation = reader.getString();
                 } else if ("clusterServicePrincipal".equals(fieldName)) {
@@ -363,8 +464,13 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
                         = RuntimeProtectionConfiguration.fromJson(reader);
                 } else if ("secretArchive".equals(fieldName)) {
                     deserializedClusterPatchProperties.secretArchive = ClusterSecretArchive.fromJson(reader);
+                } else if ("secretArchiveSettings".equals(fieldName)) {
+                    deserializedClusterPatchProperties.secretArchiveSettings = SecretArchiveSettings.fromJson(reader);
                 } else if ("updateStrategy".equals(fieldName)) {
                     deserializedClusterPatchProperties.updateStrategy = ClusterUpdateStrategy.fromJson(reader);
+                } else if ("vulnerabilityScanningSettings".equals(fieldName)) {
+                    deserializedClusterPatchProperties.vulnerabilityScanningSettings
+                        = VulnerabilityScanningSettingsPatch.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.CapabilityBase;
 public final class CapabilityBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapabilityBase model = BinaryData.fromString("{\"status\":\"Available\",\"reason\":\"tadehxnltyfsopp\"}")
+        CapabilityBase model = BinaryData.fromString("{\"status\":\"Disabled\",\"reason\":\"twrupqsxvnm\"}")
             .toObject(CapabilityBase.class);
     }
 

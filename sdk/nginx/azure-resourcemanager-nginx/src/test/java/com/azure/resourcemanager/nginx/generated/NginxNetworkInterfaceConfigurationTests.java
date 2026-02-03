@@ -12,14 +12,14 @@ public final class NginxNetworkInterfaceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxNetworkInterfaceConfiguration model
-            = BinaryData.fromString("{\"subnetId\":\"eh\"}").toObject(NginxNetworkInterfaceConfiguration.class);
-        Assertions.assertEquals("eh", model.subnetId());
+            = BinaryData.fromString("{\"subnetId\":\"zq\"}").toObject(NginxNetworkInterfaceConfiguration.class);
+        Assertions.assertEquals("zq", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxNetworkInterfaceConfiguration model = new NginxNetworkInterfaceConfiguration().withSubnetId("eh");
+        NginxNetworkInterfaceConfiguration model = new NginxNetworkInterfaceConfiguration().withSubnetId("zq");
         model = BinaryData.fromObject(model).toObject(NginxNetworkInterfaceConfiguration.class);
-        Assertions.assertEquals("eh", model.subnetId());
+        Assertions.assertEquals("zq", model.subnetId());
     }
 }

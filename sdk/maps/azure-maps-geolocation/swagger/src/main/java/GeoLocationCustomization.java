@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.github.javaparser.StaticJavaParser;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.azure.autorest.customization.ClassCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.javadoc.Javadoc;
+import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 public class GeoLocationCustomization extends Customization {
@@ -19,8 +20,6 @@ public class GeoLocationCustomization extends Customization {
 
         // customize IpAddressToLocationResult
         customizeIpAddressToLocationResult(models);
-
-        customizeIpAddressToLocationResultMethod(models);
     }
 
     // Customizes the CountryRegion class
@@ -32,48 +31,29 @@ public class GeoLocationCustomization extends Customization {
 
     // Customizes the IpAddressToLocationResult class
     private void customizeIpAddressToLocationResult(PackageCustomization models) {
-        models.getClass("IpAddressToLocationResult").customizeAst(ast -> ast.getClassByName("IpAddressToLocationResult")
-            .ifPresent(clazz -> clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
-                .setJavadocComment("Set default constructor to private")));
-    }
+        models.getClass("IpAddressToLocationResult").customizeAst(ast -> {
+            ast.addImport("java.net.InetAddress");
+            ast.addImport("java.net.UnknownHostException");
+            ast.addImport("com.azure.core.util.logging.ClientLogger");
 
-    private void customizeIpAddressToLocationResultMethod(PackageCustomization models) {
-        // Get the class customization for IpAddressToLocationResult
-        ClassCustomization ipAddressToLocationResult = models.getClass("IpAddressToLocationResult");
+            ast.getClassByName("IpAddressToLocationResult").ifPresent(clazz -> {
+                clazz.getConstructors().get(0).setModifiers(Modifier.Keyword.PRIVATE)
+                    .setJavadocComment("Set default constructor to private");
 
-        // Add the necessary imports
-        ipAddressToLocationResult.addImports(
-            "java.net.InetAddress",
-            "java.net.UnknownHostException",
-            "com.azure.core.util.logging.ClientLogger"
-        );
+                clazz.addFieldWithInitializer("ClientLogger", "LOGGER",
+                    StaticJavaParser.parseExpression("new ClientLogger(IpAddressToLocationResult.class)"),
+                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
 
-        // Use customizeAst to declare and initialize the logger field
-        ipAddressToLocationResult.customizeAst(ast -> ast.getClassByName("IpAddressToLocationResult").ifPresent(clazz -> {
-            clazz.addMember(
-                StaticJavaParser.parseBodyDeclaration(
-                    "private static final ClientLogger LOGGER = new ClientLogger(IpAddressToLocationResult.class);"
-                )
-            );
-        }));
-
-        // Remove the existing getIpAddress method
-        ipAddressToLocationResult.removeMethod("getIpAddress");
-
-        // Add the new getIpAddress method using ClientLogger
-        ipAddressToLocationResult.addMethod(
-            "/**\n" +
-                " * Get the IP address as an InetAddress.\n" +
-                " *\n" +
-                " * @return The IP address as an InetAddress.\n" +
-                " */\n" +
-                "public InetAddress getIpAddress() {\n" +
-                "    try {\n" +
-                "        return InetAddress.getByName(this.ipAddress);\n" +
-                "    } catch (UnknownHostException e) {\n" +
-                "        throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid IP address: \" + this.ipAddress, e));\n" +
-                "    }\n" +
-                "}\n"
-        );
+                // Replace the existing getIpAddress method
+                clazz.getMethodsByName("getIpAddress").forEach(method -> method.setType("InetAddress")
+                    .setModifiers(Modifier.Keyword.PUBLIC)
+                    .setBody(StaticJavaParser.parseBlock(
+                        "{ try { return InetAddress.getByName(this.ipAddress); } catch (UnknownHostException e) {"
+                            + "throw LOGGER.logExceptionAsError(new IllegalArgumentException(\"Invalid IP address: \" + this.ipAddress, e)); } }"))
+                    .setJavadocComment(new Javadoc(JavadocDescription.parseText("Get the IP address as an InetAddress."))
+                        .addBlockTag("return", "The IP address as an InetAddress.")
+                        .addBlockTag("throws", "IllegalArgumentException", "If the IP address isn't a valid InetAddress.")));
+            });
+        });
     }
 }

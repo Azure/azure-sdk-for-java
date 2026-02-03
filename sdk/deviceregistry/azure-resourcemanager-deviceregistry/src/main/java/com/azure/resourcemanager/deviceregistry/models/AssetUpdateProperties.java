@@ -461,23 +461,6 @@ public final class AssetUpdateProperties implements JsonSerializable<AssetUpdate
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (defaultTopic() != null) {
-            defaultTopic().validate();
-        }
-        if (datasets() != null) {
-            datasets().forEach(e -> e.validate());
-        }
-        if (events() != null) {
-            events().forEach(e -> e.validate());
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

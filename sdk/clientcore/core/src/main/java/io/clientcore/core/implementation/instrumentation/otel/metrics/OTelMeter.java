@@ -7,12 +7,13 @@ import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.LongCounter;
 import io.clientcore.core.instrumentation.metrics.Meter;
 
+import java.util.List;
 import java.util.Objects;
 
 import static io.clientcore.core.implementation.ReflectionUtils.getMethodInvoker;
@@ -64,13 +65,13 @@ public class OTelMeter implements Meter {
      * Creates a new instance of OTelMeter.
      *
      * @param otelMeterProvider The OpenTelemetry meter provider.
-     * @param libraryOptions The library options.
+     * @param sdkOptions The library options.
      */
-    public OTelMeter(Object otelMeterProvider, LibraryInstrumentationOptions libraryOptions) {
-        Object meterBuilder = GET_METER_BUILDER_INVOKER.invoke(otelMeterProvider, libraryOptions.getLibraryName());
+    public OTelMeter(Object otelMeterProvider, SdkInstrumentationOptions sdkOptions) {
+        Object meterBuilder = GET_METER_BUILDER_INVOKER.invoke(otelMeterProvider, sdkOptions.getSdkName());
         if (meterBuilder != null) {
-            SET_INSTRUMENTATION_VERSION_INVOKER.invoke(meterBuilder, libraryOptions.getLibraryVersion());
-            SET_SCHEMA_URL_INVOKER.invoke(meterBuilder, libraryOptions.getSchemaUrl());
+            SET_INSTRUMENTATION_VERSION_INVOKER.invoke(meterBuilder, sdkOptions.getSdkVersion());
+            SET_SCHEMA_URL_INVOKER.invoke(meterBuilder, sdkOptions.getSchemaUrl());
             this.otelMeter = BUILD_INVOKER.invoke(meterBuilder);
         } else {
             this.otelMeter = null;
@@ -81,11 +82,12 @@ public class OTelMeter implements Meter {
      * {@inheritDoc}
      */
     @Override
-    public DoubleHistogram createDoubleHistogram(String name, String description, String unit) {
+    public DoubleHistogram createDoubleHistogram(String name, String description, String unit,
+        List<Double> bucketBoundaries) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         Objects.requireNonNull(description, "'description' cannot be null.");
         Objects.requireNonNull(unit, "'unit' cannot be null.");
-        return OTelDoubleHistogram.create(otelMeter, name, description, unit);
+        return OTelDoubleHistogram.create(otelMeter, name, description, unit, bucketBoundaries);
     }
 
     /**
@@ -116,12 +118,5 @@ public class OTelMeter implements Meter {
     @Override
     public boolean isEnabled() {
         return otelMeter != null && OTelInitializer.isInitialized();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void close() {
     }
 }

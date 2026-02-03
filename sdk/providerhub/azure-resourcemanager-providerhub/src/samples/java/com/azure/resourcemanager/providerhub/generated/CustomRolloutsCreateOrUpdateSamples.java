@@ -6,6 +6,7 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.resourcemanager.providerhub.models.CustomRolloutProperties;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutPropertiesSpecification;
+import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationAutoProvisionConfig;
 import com.azure.resourcemanager.providerhub.models.CustomRolloutSpecificationCanary;
 import java.util.Arrays;
 
@@ -14,7 +15,7 @@ import java.util.Arrays;
  */
 public final class CustomRolloutsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2024-09-01/examples/
      * CustomRollouts_CreateOrUpdate.json
      */
     /**
@@ -27,7 +28,10 @@ public final class CustomRolloutsCreateOrUpdateSamples {
             .define("brazilUsShoeBoxTesting")
             .withExistingProviderRegistration("Microsoft.Contoso")
             .withProperties(new CustomRolloutProperties().withSpecification(new CustomRolloutPropertiesSpecification()
-                .withCanary(new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("brazilus")))))
+                .withAutoProvisionConfig(
+                    new CustomRolloutSpecificationAutoProvisionConfig().withStorage(true).withResourceGraph(true))
+                .withCanary(new CustomRolloutSpecificationCanary().withRegions(Arrays.asList("brazilus")))
+                .withRefreshSubscriptionRegistration(true)))
             .create();
     }
 }

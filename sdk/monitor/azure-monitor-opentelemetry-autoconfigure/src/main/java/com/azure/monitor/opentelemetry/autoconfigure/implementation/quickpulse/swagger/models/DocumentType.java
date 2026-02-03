@@ -4,6 +4,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,31 +15,37 @@ public final class DocumentType extends ExpandableStringEnum<DocumentType> {
     /**
      * Represents a request telemetry type.
      */
+    @Generated
     public static final DocumentType REQUEST = fromString("Request");
 
     /**
      * Represents a remote dependency telemetry type.
      */
+    @Generated
     public static final DocumentType REMOTE_DEPENDENCY = fromString("RemoteDependency");
 
     /**
      * Represents an exception telemetry type.
      */
+    @Generated
     public static final DocumentType EXCEPTION = fromString("Exception");
 
     /**
      * Represents an event telemetry type.
      */
+    @Generated
     public static final DocumentType EVENT = fromString("Event");
 
     /**
      * Represents a trace telemetry type.
      */
+    @Generated
     public static final DocumentType TRACE = fromString("Trace");
 
     /**
      * Represents an unknown telemetry type.
      */
+    @Generated
     public static final DocumentType UNKNOWN = fromString("Unknown");
 
     /**
@@ -46,6 +53,7 @@ public final class DocumentType extends ExpandableStringEnum<DocumentType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DocumentType() {
     }
@@ -56,6 +64,7 @@ public final class DocumentType extends ExpandableStringEnum<DocumentType> {
      * @param name a name to look for.
      * @return the corresponding DocumentType.
      */
+    @Generated
     public static DocumentType fromString(String name) {
         return fromString(name, DocumentType.class);
     }
@@ -65,6 +74,7 @@ public final class DocumentType extends ExpandableStringEnum<DocumentType> {
      * 
      * @return known DocumentType values.
      */
+    @Generated
     public static Collection<DocumentType> values() {
         return values(DocumentType.class);
     }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.PartnerDestination;
@@ -25,38 +25,38 @@ public final class PartnerDestinationsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"c3750bf6-e923-47ce-8663-4f4bf815b3d2\",\"endpointServiceContext\":\"glskakddi\",\"expirationTimeIfNotActivatedUtc\":\"2021-04-14T05:06:40Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"mtlpbyxro\",\"messageForActivation\":\"uyqyp\"},\"location\":\"mnoiicsudy\",\"tags\":{\"h\":\"jjtalxrdsj\",\"dp\":\"luqwgusxxhd\",\"bdmvsby\":\"wyblv\",\"kmkwjfbo\":\"daelqpv\"},\"id\":\"loggdusxursu\",\"name\":\"v\",\"type\":\"xcjkcoqwczsy\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"29b4c2a1-7594-4a99-b057-29cfd9070c5b\",\"endpointServiceContext\":\"hzrtd\",\"expirationTimeIfNotActivatedUtc\":\"2021-09-01T09:28:44Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"fvppkeqsifj\",\"messageForActivation\":\"lng\"},\"location\":\"nhr\",\"tags\":{\"ggorwjoqt\":\"bcdtajdo\",\"fyrlmwkptskwxj\":\"otpvclp\",\"bputmgvmuyakml\":\"vhxccbmkakmkoo\",\"flzqjimejtgzjxx\":\"ktfowzkroyrdur\"},\"id\":\"fejlzuqloiw\",\"name\":\"ayyzivrmitc\",\"type\":\"qlhchwhrktjle\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PartnerDestination response = manager.partnerDestinations()
-            .define("kluwz")
-            .withRegion("rdmvxyrxdhgv")
-            .withExistingResourceGroup("s")
-            .withTags(mapOf("gbzxmbtplefoioy", "bxaot", "gvdtmuuv", "doxzn", "erxrzutylcurza", "awsxmrszbknimxlp"))
-            .withPartnerRegistrationImmutableId(UUID.fromString("f698d12f-27dc-4285-aa96-73a985f9d33f"))
-            .withEndpointServiceContext("zvtyevjhubn")
-            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-10-07T07:25:43Z"))
+            .define("bgmusaictd")
+            .withRegion("me")
+            .withExistingResourceGroup("uymvecvzts")
+            .withTags(mapOf("s", "abcreuwz"))
+            .withPartnerRegistrationImmutableId(UUID.fromString("004d92ec-d982-4835-a320-7cbe242be1db"))
+            .withEndpointServiceContext("zzohn")
+            .withExpirationTimeIfNotActivatedUtc(OffsetDateTime.parse("2021-04-25T16:30:59Z"))
             .withActivationState(PartnerDestinationActivationState.ACTIVATED)
-            .withEndpointBaseUrl("sqkpdmioyjpnm")
-            .withMessageForActivation("iqcpszpmcvq")
+            .withEndpointBaseUrl("ozrehlbzqixbnjrq")
+            .withMessageForActivation("yuexozonyn")
             .create();
 
-        Assertions.assertEquals("mnoiicsudy", response.location());
-        Assertions.assertEquals("jjtalxrdsj", response.tags().get("h"));
-        Assertions.assertEquals(UUID.fromString("c3750bf6-e923-47ce-8663-4f4bf815b3d2"),
+        Assertions.assertEquals("nhr", response.location());
+        Assertions.assertEquals("bcdtajdo", response.tags().get("ggorwjoqt"));
+        Assertions.assertEquals(UUID.fromString("29b4c2a1-7594-4a99-b057-29cfd9070c5b"),
             response.partnerRegistrationImmutableId());
-        Assertions.assertEquals("glskakddi", response.endpointServiceContext());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T05:06:40Z"),
+        Assertions.assertEquals("hzrtd", response.endpointServiceContext());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T09:28:44Z"),
             response.expirationTimeIfNotActivatedUtc());
         Assertions.assertEquals(PartnerDestinationActivationState.NEVER_ACTIVATED, response.activationState());
-        Assertions.assertEquals("mtlpbyxro", response.endpointBaseUrl());
-        Assertions.assertEquals("uyqyp", response.messageForActivation());
+        Assertions.assertEquals("fvppkeqsifj", response.endpointBaseUrl());
+        Assertions.assertEquals("lng", response.messageForActivation());
     }
 
     // Use "Map.of" if available

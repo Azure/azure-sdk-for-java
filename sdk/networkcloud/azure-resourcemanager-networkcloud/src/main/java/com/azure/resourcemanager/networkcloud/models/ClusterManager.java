@@ -51,6 +51,13 @@ public interface ClusterManager {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the identity property: The identity of the cluster manager.
      * 
      * @return the identity value.
@@ -73,9 +80,8 @@ public interface ClusterManager {
     String analyticsWorkspaceId();
 
     /**
-     * Gets the availabilityZones property: Field deprecated, this value will no longer influence the cluster manager
-     * allocation process and will be removed in a future version. The Azure availability zones within the region that
-     * will be used to support the cluster manager resource.
+     * Gets the availabilityZones property: The Azure availability zones within the region that will be used to support
+     * the cluster manager resource.
      * 
      * @return the availabilityZones value.
      */
@@ -137,9 +143,7 @@ public interface ClusterManager {
     ClusterManagerProvisioningState provisioningState();
 
     /**
-     * Gets the vmSize property: Field deprecated, this value will no longer influence the cluster manager allocation
-     * process and will be removed in a future version. The size of the Azure virtual machines to use for hosting the
-     * cluster manager resource.
+     * Gets the vmSize property: The size of the Azure virtual machines to use for hosting the cluster manager resource.
      * 
      * @return the vmSize value.
      */
@@ -243,9 +247,10 @@ public interface ClusterManager {
          * The stage of the ClusterManager definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithAnalyticsWorkspaceId, DefinitionStages.WithAvailabilityZones,
-            DefinitionStages.WithManagedResourceGroupConfiguration, DefinitionStages.WithVmSize {
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithAnalyticsWorkspaceId,
+            DefinitionStages.WithAvailabilityZones, DefinitionStages.WithManagedResourceGroupConfiguration,
+            DefinitionStages.WithVmSize, DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -308,13 +313,11 @@ public interface ClusterManager {
          */
         interface WithAvailabilityZones {
             /**
-             * Specifies the availabilityZones property: Field deprecated, this value will no longer influence the
-             * cluster manager allocation process and will be removed in a future version. The Azure availability zones
-             * within the region that will be used to support the cluster manager resource..
+             * Specifies the availabilityZones property: The Azure availability zones within the region that will be
+             * used to support the cluster manager resource..
              * 
-             * @param availabilityZones Field deprecated, this value will no longer influence the cluster manager
-             * allocation process and will be removed in a future version. The Azure availability zones within the
-             * region that will be used to support the cluster manager resource.
+             * @param availabilityZones The Azure availability zones within the region that will be used to support the
+             * cluster manager resource.
              * @return the next definition stage.
              */
             WithCreate withAvailabilityZones(List<String> availabilityZones);
@@ -341,16 +344,44 @@ public interface ClusterManager {
          */
         interface WithVmSize {
             /**
-             * Specifies the vmSize property: Field deprecated, this value will no longer influence the cluster manager
-             * allocation process and will be removed in a future version. The size of the Azure virtual machines to use
-             * for hosting the cluster manager resource..
+             * Specifies the vmSize property: The size of the Azure virtual machines to use for hosting the cluster
+             * manager resource..
              * 
-             * @param vmSize Field deprecated, this value will no longer influence the cluster manager allocation
-             * process and will be removed in a future version. The size of the Azure virtual machines to use for
-             * hosting the cluster manager resource.
+             * @param vmSize The size of the Azure virtual machines to use for hosting the cluster manager resource.
              * @return the next definition stage.
              */
             WithCreate withVmSize(String vmSize);
+        }
+
+        /**
+         * The stage of the ClusterManager definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the ClusterManager definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
 
@@ -364,7 +395,8 @@ public interface ClusterManager {
     /**
      * The template for ClusterManager update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithIfMatch,
+        UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -409,6 +441,37 @@ public interface ClusterManager {
              * @return the next definition stage.
              */
             Update withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
+         * The stage of the ClusterManager update allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the ClusterManager update allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
 

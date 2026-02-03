@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TranscriptionResultTypeInternal extends ExpandableStringEnum<
     /**
      * Static value final for TranscriptionResultTypeInternal.
      */
+    @Generated
     public static final TranscriptionResultTypeInternal FINAL = fromString("final");
 
     /**
      * Static value intermediate for TranscriptionResultTypeInternal.
      */
+    @Generated
     public static final TranscriptionResultTypeInternal INTERMEDIATE = fromString("intermediate");
 
     /**
@@ -26,6 +29,7 @@ public final class TranscriptionResultTypeInternal extends ExpandableStringEnum<
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TranscriptionResultTypeInternal() {
     }
@@ -36,6 +40,7 @@ public final class TranscriptionResultTypeInternal extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding TranscriptionResultTypeInternal.
      */
+    @Generated
     public static TranscriptionResultTypeInternal fromString(String name) {
         return fromString(name, TranscriptionResultTypeInternal.class);
     }
@@ -45,6 +50,7 @@ public final class TranscriptionResultTypeInternal extends ExpandableStringEnum<
      * 
      * @return known TranscriptionResultTypeInternal values.
      */
+    @Generated
     public static Collection<TranscriptionResultTypeInternal> values() {
         return values(TranscriptionResultTypeInternal.class);
     }

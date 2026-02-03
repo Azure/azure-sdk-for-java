@@ -48,7 +48,7 @@ public final class MappingDataFlow extends DataFlow {
      * 
      * @return the innerTypeProperties value.
      */
-    private MappingDataFlowTypeProperties innerTypeProperties() {
+    MappingDataFlowTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -13,7 +13,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRe
 public final class ResourceProviderBmsPrepareDataMoveSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2025-02-01/examples/
      * BackupDataMove/PrepareDataMove_Post.json
      */
     /**

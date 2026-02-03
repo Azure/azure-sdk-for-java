@@ -30,6 +30,7 @@ public final class GsonJsonReader extends JsonReader {
 
     private JsonToken currentToken;
     private boolean consumed = false;
+    private Object value = null;
     private boolean complete = false;
     private int objectDepth = 0;
 
@@ -52,7 +53,7 @@ public final class GsonJsonReader extends JsonReader {
 
     @SuppressWarnings("deprecation")
     private static com.google.gson.stream.JsonReader createGsonReader(Reader reader, JsonOptions options) {
-        com.google.gson.stream.JsonReader gsonReader = new com.google.gson.stream.JsonReader(reader);
+        com.google.gson.stream.JsonReader gsonReader = new CustomGsonReader(reader, options);
         gsonReader.setLenient(options == null || options.isNonNumericNumbersSupported() || options.isJsoncSupported());
 
         return gsonReader;
@@ -133,12 +134,10 @@ public final class GsonJsonReader extends JsonReader {
             }
         }
 
-        com.google.gson.stream.JsonToken gsonToken = reader.peek();
-        if (gsonToken == com.google.gson.stream.JsonToken.END_DOCUMENT) {
+        currentToken = mapToken(reader.peek());
+        if (currentToken == JsonToken.END_DOCUMENT) {
             complete = true;
         }
-
-        currentToken = mapToken(reader.peek());
 
         // When within a type adapter context special handling needs to be performed.
         // GSON validates that the JSON sub-object stream is complete read when the value is returned from the
@@ -151,72 +150,102 @@ public final class GsonJsonReader extends JsonReader {
         }
 
         consumed = false;
+        value = null;
         return currentToken;
     }
 
     @Override
     public byte[] getBinary() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (byte[]) value;
+        }
 
+        consumed = true;
         if (currentToken == JsonToken.NULL) {
             reader.nextNull();
-            return null;
+            value = null;
         } else {
-            return Base64.getDecoder().decode(reader.nextString());
+            value = Base64.getDecoder().decode(reader.nextString());
         }
+
+        return (byte[]) value;
     }
 
     @Override
     public boolean getBoolean() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (boolean) value;
+        }
 
-        return reader.nextBoolean();
+        consumed = true;
+        value = reader.nextBoolean();
+        return (boolean) value;
     }
 
     @Override
     public double getDouble() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (double) value;
+        }
 
-        return reader.nextDouble();
+        consumed = true;
+        value = reader.nextDouble();
+        return (double) value;
     }
 
     @Override
     public float getFloat() throws IOException {
-        consumed = true;
-
-        return (float) reader.nextDouble();
+        return (float) getDouble();
     }
 
     @Override
     public int getInt() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (int) value;
+        }
 
-        return reader.nextInt();
+        consumed = true;
+        value = reader.nextInt();
+        return (int) value;
     }
 
     @Override
     public long getLong() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (long) value;
+        }
 
-        return reader.nextLong();
+        consumed = true;
+        value = reader.nextLong();
+        return (long) value;
     }
 
     @Override
     public String getString() throws IOException {
-        consumed = true;
-
-        if (currentToken == JsonToken.NULL) {
-            return null;
-        } else {
-            return reader.nextString();
+        if (consumed) {
+            return (String) value;
         }
+
+        consumed = true;
+        if (currentToken == JsonToken.NULL) {
+            reader.nextNull();
+            value = null;
+        } else {
+            value = reader.nextString();
+        }
+
+        return (String) value;
     }
 
     @Override
     public String getFieldName() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (String) value;
+        }
 
-        return reader.nextName();
+        consumed = true;
+        value = reader.nextName();
+        return (String) value;
     }
 
     @Override

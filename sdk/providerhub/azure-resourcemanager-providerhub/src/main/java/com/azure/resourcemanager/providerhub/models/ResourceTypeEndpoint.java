@@ -20,39 +20,85 @@ import java.util.List;
 @Fluent
 public final class ResourceTypeEndpoint implements JsonSerializable<ResourceTypeEndpoint> {
     /*
-     * The enabled property.
+     * Resource type endpoint kind. This Metadata is also used by portal/tooling/etc to render different UX experiences
+     * for resources of the same type.
+     */
+    private ResourceTypeEndpointKind kind;
+
+    /*
+     * Whether the endpoint is enabled.
      */
     private Boolean enabled;
 
     /*
-     * The apiVersions property.
+     * The api versions.
      */
     private List<String> apiVersions;
 
     /*
-     * The locations property.
+     * The locations.
      */
     private List<String> locations;
 
     /*
-     * The requiredFeatures property.
+     * The required features.
      */
     private List<String> requiredFeatures;
 
     /*
-     * The featuresRule property.
+     * The features rule.
      */
     private ResourceTypeEndpointFeaturesRule featuresRule;
 
     /*
-     * The extensions property.
+     * The extensions.
      */
     private List<ResourceTypeExtension> extensions;
 
     /*
-     * The timeout property.
+     * The timeout.
      */
     private Duration timeout;
+
+    /*
+     * The endpoint type.
+     */
+    private EndpointTypeResourceType endpointType;
+
+    /*
+     * The token auth configuration.
+     */
+    private TokenAuthConfiguration tokenAuthConfiguration;
+
+    /*
+     * The sku link.
+     */
+    private String skuLink;
+
+    /*
+     * The endpoint uri.
+     */
+    private String endpointUri;
+
+    /*
+     * Api version.
+     */
+    private String apiVersion;
+
+    /*
+     * List of zones.
+     */
+    private List<String> zones;
+
+    /*
+     * The dsts configuration.
+     */
+    private ResourceTypeEndpointDstsConfiguration dstsConfiguration;
+
+    /*
+     * The data boundary.
+     */
+    private DataBoundary dataBoundary;
 
     /**
      * Creates an instance of ResourceTypeEndpoint class.
@@ -61,7 +107,29 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Get the enabled property: The enabled property.
+     * Get the kind property: Resource type endpoint kind. This Metadata is also used by portal/tooling/etc to render
+     * different UX experiences for resources of the same type.
+     * 
+     * @return the kind value.
+     */
+    public ResourceTypeEndpointKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Resource type endpoint kind. This Metadata is also used by portal/tooling/etc to render
+     * different UX experiences for resources of the same type.
+     * 
+     * @param kind the kind value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withKind(ResourceTypeEndpointKind kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
+     * Get the enabled property: Whether the endpoint is enabled.
      * 
      * @return the enabled value.
      */
@@ -70,7 +138,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Set the enabled property: The enabled property.
+     * Set the enabled property: Whether the endpoint is enabled.
      * 
      * @param enabled the enabled value to set.
      * @return the ResourceTypeEndpoint object itself.
@@ -81,7 +149,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Get the apiVersions property: The apiVersions property.
+     * Get the apiVersions property: The api versions.
      * 
      * @return the apiVersions value.
      */
@@ -90,7 +158,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Set the apiVersions property: The apiVersions property.
+     * Set the apiVersions property: The api versions.
      * 
      * @param apiVersions the apiVersions value to set.
      * @return the ResourceTypeEndpoint object itself.
@@ -101,7 +169,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Get the locations property: The locations property.
+     * Get the locations property: The locations.
      * 
      * @return the locations value.
      */
@@ -110,7 +178,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Set the locations property: The locations property.
+     * Set the locations property: The locations.
      * 
      * @param locations the locations value to set.
      * @return the ResourceTypeEndpoint object itself.
@@ -121,7 +189,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Get the requiredFeatures property: The requiredFeatures property.
+     * Get the requiredFeatures property: The required features.
      * 
      * @return the requiredFeatures value.
      */
@@ -130,7 +198,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Set the requiredFeatures property: The requiredFeatures property.
+     * Set the requiredFeatures property: The required features.
      * 
      * @param requiredFeatures the requiredFeatures value to set.
      * @return the ResourceTypeEndpoint object itself.
@@ -141,7 +209,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Get the featuresRule property: The featuresRule property.
+     * Get the featuresRule property: The features rule.
      * 
      * @return the featuresRule value.
      */
@@ -150,7 +218,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Set the featuresRule property: The featuresRule property.
+     * Set the featuresRule property: The features rule.
      * 
      * @param featuresRule the featuresRule value to set.
      * @return the ResourceTypeEndpoint object itself.
@@ -161,7 +229,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Get the extensions property: The extensions property.
+     * Get the extensions property: The extensions.
      * 
      * @return the extensions value.
      */
@@ -170,7 +238,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Set the extensions property: The extensions property.
+     * Set the extensions property: The extensions.
      * 
      * @param extensions the extensions value to set.
      * @return the ResourceTypeEndpoint object itself.
@@ -181,7 +249,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Get the timeout property: The timeout property.
+     * Get the timeout property: The timeout.
      * 
      * @return the timeout value.
      */
@@ -190,13 +258,173 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     }
 
     /**
-     * Set the timeout property: The timeout property.
+     * Set the timeout property: The timeout.
      * 
      * @param timeout the timeout value to set.
      * @return the ResourceTypeEndpoint object itself.
      */
     public ResourceTypeEndpoint withTimeout(Duration timeout) {
         this.timeout = timeout;
+        return this;
+    }
+
+    /**
+     * Get the endpointType property: The endpoint type.
+     * 
+     * @return the endpointType value.
+     */
+    public EndpointTypeResourceType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
+     * Set the endpointType property: The endpoint type.
+     * 
+     * @param endpointType the endpointType value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withEndpointType(EndpointTypeResourceType endpointType) {
+        this.endpointType = endpointType;
+        return this;
+    }
+
+    /**
+     * Get the tokenAuthConfiguration property: The token auth configuration.
+     * 
+     * @return the tokenAuthConfiguration value.
+     */
+    public TokenAuthConfiguration tokenAuthConfiguration() {
+        return this.tokenAuthConfiguration;
+    }
+
+    /**
+     * Set the tokenAuthConfiguration property: The token auth configuration.
+     * 
+     * @param tokenAuthConfiguration the tokenAuthConfiguration value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withTokenAuthConfiguration(TokenAuthConfiguration tokenAuthConfiguration) {
+        this.tokenAuthConfiguration = tokenAuthConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the skuLink property: The sku link.
+     * 
+     * @return the skuLink value.
+     */
+    public String skuLink() {
+        return this.skuLink;
+    }
+
+    /**
+     * Set the skuLink property: The sku link.
+     * 
+     * @param skuLink the skuLink value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withSkuLink(String skuLink) {
+        this.skuLink = skuLink;
+        return this;
+    }
+
+    /**
+     * Get the endpointUri property: The endpoint uri.
+     * 
+     * @return the endpointUri value.
+     */
+    public String endpointUri() {
+        return this.endpointUri;
+    }
+
+    /**
+     * Set the endpointUri property: The endpoint uri.
+     * 
+     * @param endpointUri the endpointUri value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withEndpointUri(String endpointUri) {
+        this.endpointUri = endpointUri;
+        return this;
+    }
+
+    /**
+     * Get the apiVersion property: Api version.
+     * 
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Set the apiVersion property: Api version.
+     * 
+     * @param apiVersion the apiVersion value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
+    /**
+     * Get the zones property: List of zones.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: List of zones.
+     * 
+     * @param zones the zones value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
+     * Get the dstsConfiguration property: The dsts configuration.
+     * 
+     * @return the dstsConfiguration value.
+     */
+    public ResourceTypeEndpointDstsConfiguration dstsConfiguration() {
+        return this.dstsConfiguration;
+    }
+
+    /**
+     * Set the dstsConfiguration property: The dsts configuration.
+     * 
+     * @param dstsConfiguration the dstsConfiguration value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withDstsConfiguration(ResourceTypeEndpointDstsConfiguration dstsConfiguration) {
+        this.dstsConfiguration = dstsConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the dataBoundary property: The data boundary.
+     * 
+     * @return the dataBoundary value.
+     */
+    public DataBoundary dataBoundary() {
+        return this.dataBoundary;
+    }
+
+    /**
+     * Set the dataBoundary property: The data boundary.
+     * 
+     * @param dataBoundary the dataBoundary value to set.
+     * @return the ResourceTypeEndpoint object itself.
+     */
+    public ResourceTypeEndpoint withDataBoundary(DataBoundary dataBoundary) {
+        this.dataBoundary = dataBoundary;
         return this;
     }
 
@@ -212,6 +440,12 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
         if (extensions() != null) {
             extensions().forEach(e -> e.validate());
         }
+        if (tokenAuthConfiguration() != null) {
+            tokenAuthConfiguration().validate();
+        }
+        if (dstsConfiguration() != null) {
+            dstsConfiguration().validate();
+        }
     }
 
     /**
@@ -220,6 +454,7 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeArrayField("apiVersions", this.apiVersions, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
@@ -228,6 +463,14 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
         jsonWriter.writeJsonField("featuresRule", this.featuresRule);
         jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("timeout", CoreUtils.durationToStringWithDays(this.timeout));
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("tokenAuthConfiguration", this.tokenAuthConfiguration);
+        jsonWriter.writeStringField("skuLink", this.skuLink);
+        jsonWriter.writeStringField("endpointUri", this.endpointUri);
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("dstsConfiguration", this.dstsConfiguration);
+        jsonWriter.writeStringField("dataBoundary", this.dataBoundary == null ? null : this.dataBoundary.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -246,7 +489,9 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("enabled".equals(fieldName)) {
+                if ("kind".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.kind = ResourceTypeEndpointKind.fromString(reader.getString());
+                } else if ("enabled".equals(fieldName)) {
                     deserializedResourceTypeEndpoint.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("apiVersions".equals(fieldName)) {
                     List<String> apiVersions = reader.readArray(reader1 -> reader1.getString());
@@ -266,6 +511,25 @@ public final class ResourceTypeEndpoint implements JsonSerializable<ResourceType
                 } else if ("timeout".equals(fieldName)) {
                     deserializedResourceTypeEndpoint.timeout
                         = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.endpointType
+                        = EndpointTypeResourceType.fromString(reader.getString());
+                } else if ("tokenAuthConfiguration".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.tokenAuthConfiguration = TokenAuthConfiguration.fromJson(reader);
+                } else if ("skuLink".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.skuLink = reader.getString();
+                } else if ("endpointUri".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.endpointUri = reader.getString();
+                } else if ("apiVersion".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.apiVersion = reader.getString();
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeEndpoint.zones = zones;
+                } else if ("dstsConfiguration".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.dstsConfiguration
+                        = ResourceTypeEndpointDstsConfiguration.fromJson(reader);
+                } else if ("dataBoundary".equals(fieldName)) {
+                    deserializedResourceTypeEndpoint.dataBoundary = DataBoundary.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.ContentLevel;
@@ -24,31 +24,35 @@ public final class RaiPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"srhkhgsnxuwwkpph\",\"tags\":{\"wzacnmw\":\"bzxlbzxomeikjc\",\"oyfpuq\":\"fsuqtaazyqbxy\"},\"properties\":{\"type\":\"SystemManaged\",\"mode\":\"Deferred\",\"basePolicyName\":\"hdjzqdcadwvpsoz\",\"contentFilters\":[{\"name\":\"jriyb\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":true,\"source\":\"Completion\"}],\"customBlocklists\":[{\"source\":\"Completion\",\"blocklistName\":\"kgvfnmxaursqf\",\"blocking\":false}]},\"id\":\"tyibuyvpirfqjpnq\",\"name\":\"oowsbe\",\"type\":\"e\"}";
+            = "{\"etag\":\"aydb\",\"tags\":{\"lcfn\":\"qy\"},\"properties\":{\"type\":\"UserManaged\",\"mode\":\"Asynchronous_filter\",\"basePolicyName\":\"lgwqkpm\",\"contentFilters\":[{\"name\":\"tauolawiubmom\",\"enabled\":true,\"severityThreshold\":\"Low\",\"blocking\":true,\"source\":\"Completion\"},{\"name\":\"lohewjjmajnkdflq\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Completion\"}],\"customBlocklists\":[{\"source\":\"Completion\",\"blocklistName\":\"jo\",\"blocking\":true},{\"source\":\"Completion\",\"blocklistName\":\"tryegpkh\",\"blocking\":true}],\"customTopics\":[{\"source\":\"Completion\",\"topicName\":\"wkbfokxkhupzer\",\"blocking\":false},{\"source\":\"Prompt\",\"topicName\":\"cdr\",\"blocking\":true},{\"source\":\"Completion\",\"topicName\":\"ftzgy\",\"blocking\":false}]},\"id\":\"lugekdfqnhtt\",\"name\":\"do\",\"type\":\"rczfjjnnuxxr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiPolicy response = manager.raiPolicies()
-            .getWithResponse("uiyqvldaswvppi", "qqzlgcndhz", "rr", com.azure.core.util.Context.NONE)
+            .getWithResponse("knsjulugd", "bnhrxlelfjhkeiz", "pihtdmiwjekpt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bzxlbzxomeikjc", response.tags().get("wzacnmw"));
-        Assertions.assertEquals(RaiPolicyMode.DEFERRED, response.properties().mode());
-        Assertions.assertEquals("hdjzqdcadwvpsoz", response.properties().basePolicyName());
-        Assertions.assertEquals("jriyb", response.properties().contentFilters().get(0).name());
-        Assertions.assertEquals(false, response.properties().contentFilters().get(0).enabled());
-        Assertions.assertEquals(ContentLevel.MEDIUM, response.properties().contentFilters().get(0).severityThreshold());
-        Assertions.assertEquals(true, response.properties().contentFilters().get(0).blocking());
+        Assertions.assertEquals("qy", response.tags().get("lcfn"));
+        Assertions.assertEquals(RaiPolicyMode.ASYNCHRONOUS_FILTER, response.properties().mode());
+        Assertions.assertEquals("lgwqkpm", response.properties().basePolicyName());
+        Assertions.assertEquals("tauolawiubmom", response.properties().contentFilters().get(0).name());
+        Assertions.assertTrue(response.properties().contentFilters().get(0).enabled());
+        Assertions.assertEquals(ContentLevel.LOW, response.properties().contentFilters().get(0).severityThreshold());
+        Assertions.assertTrue(response.properties().contentFilters().get(0).blocking());
         Assertions.assertEquals(RaiPolicyContentSource.COMPLETION,
             response.properties().contentFilters().get(0).source());
-        Assertions.assertEquals("kgvfnmxaursqf", response.properties().customBlocklists().get(0).blocklistName());
-        Assertions.assertEquals(false, response.properties().customBlocklists().get(0).blocking());
+        Assertions.assertEquals("jo", response.properties().customBlocklists().get(0).blocklistName());
+        Assertions.assertTrue(response.properties().customBlocklists().get(0).blocking());
         Assertions.assertEquals(RaiPolicyContentSource.COMPLETION,
             response.properties().customBlocklists().get(0).source());
+        Assertions.assertEquals("wkbfokxkhupzer", response.properties().customTopics().get(0).topicName());
+        Assertions.assertFalse(response.properties().customTopics().get(0).blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION,
+            response.properties().customTopics().get(0).source());
     }
 }

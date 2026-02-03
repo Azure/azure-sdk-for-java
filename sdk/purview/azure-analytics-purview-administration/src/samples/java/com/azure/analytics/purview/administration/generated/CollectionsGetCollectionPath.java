@@ -17,10 +17,10 @@ public class CollectionsGetCollectionPath {
             = new CollectionsClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{endpoint}")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.administration.generated.collectionsgetcollectionpath.collectionsgetcollectionpath
+        // BEGIN:com.azure.analytics.purview.administration.generated.collections-get-collection-path.collections-get-collection-path
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = collectionsClient.getCollectionPathWithResponse("myCollection1", requestOptions);
-        // END:com.azure.analytics.purview.administration.generated.collectionsgetcollectionpath.collectionsgetcollectionpath
+        // END:com.azure.analytics.purview.administration.generated.collections-get-collection-path.collections-get-collection-path
     }
 }

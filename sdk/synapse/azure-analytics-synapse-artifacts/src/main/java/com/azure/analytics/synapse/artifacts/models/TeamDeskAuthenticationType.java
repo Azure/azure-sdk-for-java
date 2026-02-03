@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamD
     /**
      * Static value Basic for TeamDeskAuthenticationType.
      */
+    @Generated
     public static final TeamDeskAuthenticationType BASIC = fromString("Basic");
 
     /**
      * Static value Token for TeamDeskAuthenticationType.
      */
+    @Generated
     public static final TeamDeskAuthenticationType TOKEN = fromString("Token");
 
     /**
@@ -26,6 +29,7 @@ public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamD
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public TeamDeskAuthenticationType() {
     }
@@ -36,6 +40,7 @@ public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamD
      * @param name a name to look for.
      * @return the corresponding TeamDeskAuthenticationType.
      */
+    @Generated
     public static TeamDeskAuthenticationType fromString(String name) {
         return fromString(name, TeamDeskAuthenticationType.class);
     }
@@ -45,6 +50,7 @@ public final class TeamDeskAuthenticationType extends ExpandableStringEnum<TeamD
      * 
      * @return known TeamDeskAuthenticationType values.
      */
+    @Generated
     public static Collection<TeamDeskAuthenticationType> values() {
         return values(TeamDeskAuthenticationType.class);
     }

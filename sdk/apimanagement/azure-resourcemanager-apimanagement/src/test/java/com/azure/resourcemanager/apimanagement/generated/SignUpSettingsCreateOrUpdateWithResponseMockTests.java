@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSignupSettingsInner;
@@ -23,25 +23,27 @@ public final class SignUpSettingsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"enabled\":false,\"termsOfService\":{\"text\":\"bthutctcabc\",\"enabled\":false,\"consentRequired\":true}},\"id\":\"fihszfkpoidfz\",\"name\":\"egvuojuwgweccvuf\",\"type\":\"qvfcfsssmyaemk\"}";
+            = "{\"properties\":{\"enabled\":true,\"termsOfService\":{\"text\":\"iyikqlyoorm\",\"enabled\":true,\"consentRequired\":false}},\"id\":\"qijykck\",\"name\":\"hxuznbcpiadj\",\"type\":\"lvxsulcdwbib\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PortalSignupSettings response = manager.signUpSettings()
-            .createOrUpdateWithResponse("megjkfisz", "exumfavweslo", new PortalSignupSettingsInner().withEnabled(true)
-                .withTermsOfService(
-                    new TermsOfServiceProperties().withText("rsjscos").withEnabled(false).withConsentRequired(true)),
-                "tpzu", com.azure.core.util.Context.NONE)
+            .createOrUpdateWithResponse("yuhdqhqgrksypoo", "fxzobovsvhbtdgxg",
+                new PortalSignupSettingsInner().withEnabled(false)
+                    .withTermsOfService(new TermsOfServiceProperties().withText("ubvfxisw")
+                        .withEnabled(false)
+                        .withConsentRequired(false)),
+                "i", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(false, response.enabled());
-        Assertions.assertEquals("bthutctcabc", response.termsOfService().text());
-        Assertions.assertEquals(false, response.termsOfService().enabled());
-        Assertions.assertEquals(true, response.termsOfService().consentRequired());
+        Assertions.assertTrue(response.enabled());
+        Assertions.assertEquals("iyikqlyoorm", response.termsOfService().text());
+        Assertions.assertTrue(response.termsOfService().enabled());
+        Assertions.assertFalse(response.termsOfService().consentRequired());
     }
 }

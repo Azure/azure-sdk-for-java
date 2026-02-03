@@ -17,24 +17,28 @@ public class SearchTropicalStorm {
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
-        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET
+        // env variables
+        // DefaultAzureCredential tokenCredential = new
+        // DefaultAzureCredentialBuilder().build();
 
         WeatherClient client = new WeatherClientBuilder()
-            .credential(keyCredential)
-            .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
-            .buildClient();
+                .credential(keyCredential)
+                .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
+                .buildClient();
 
         // Get Tropical Storm Search -
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-tropical-storm-search
-        // Search government-issued tropical storms by year, basin ID, and government ID.
-        // Information about the tropical storms includes, government ID, basin ID, status, year, name and if it is subtropical.
+        // Search government-issued tropical storms by year, basin ID, and government
+        // ID.
+        // Information about the tropical storms includes, government ID, basin ID,
+        // status, year, name and if it is subtropical.
         System.out.println("Get Tropical Storm Search Sync Client");
         // BEGIN: com.azure.maps.weather.sync.get_tropical_storm_search
         ActiveStormResult result = client.getTropicalStormActive();
         if (result.getActiveStorms().size() > 0) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId());
+            client.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
         }
         // END: com.azure.maps.weather.sync.get_tropical_storm_search
 
@@ -43,24 +47,28 @@ public class SearchTropicalStorm {
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
-        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        // DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET
+        // env variables
+        // DefaultAzureCredential asyncClientTokenCredential = new
+        // DefaultAzureCredentialBuilder().build();
 
         WeatherAsyncClient asyncClient = new WeatherClientBuilder()
-            .credential(asyncClientKeyCredential)
-            .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
-            .buildAsyncClient();
+                .credential(asyncClientKeyCredential)
+                .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
+                .buildAsyncClient();
 
         // Get Tropical Storm Search -
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-tropical-storm-search
-        // Search government-issued tropical storms by year, basin ID, and government ID.
-        // Information about the tropical storms includes, government ID, basin ID, status, year, name and if it is subtropical.
+        // Search government-issued tropical storms by year, basin ID, and government
+        // ID.
+        // Information about the tropical storms includes, government ID, basin ID,
+        // status, year, name and if it is subtropical.
         System.out.println("Get Tropical Storm Search Async Client");
         // BEGIN: com.azure.maps.weather.async.get_tropical_storm_search
         ActiveStormResult activeStormResult = asyncClient.getTropicalStormActive().block();
         if (activeStormResult.getActiveStorms().size() > 0) {
             ActiveStorm storm = result.getActiveStorms().get(0);
-            asyncClient.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovId());
+            asyncClient.searchTropicalStorm(storm.getYear(), storm.getBasinId(), storm.getGovernmentId());
         }
         // END: com.azure.maps.weather.async.get_tropical_storm_search
     }

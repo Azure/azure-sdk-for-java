@@ -1,0 +1,6 @@
+directory: specification/keyvault/Security.KeyVault.Keys
+commit: 396ab529763b7195ab089f58e2eefb011e1b290d
+repo: Azure/azure-rest-api-specs
+cleanup: true
+additionalDirectories:
+- specification/keyvault/Security.KeyVault.Common/

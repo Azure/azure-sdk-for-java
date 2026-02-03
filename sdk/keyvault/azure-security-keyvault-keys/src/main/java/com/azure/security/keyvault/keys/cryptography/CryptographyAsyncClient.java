@@ -553,7 +553,9 @@ public class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
+     * {@link SignatureAlgorithm#HS256 HS256}, {@link SignatureAlgorithm#HS384 HS384}, and
+     * {@link SignatureAlgorithm#HS512 HS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -611,7 +613,9 @@ public class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
+     * {@link SignatureAlgorithm#HS256 HS256}, {@link SignatureAlgorithm#HS384 HS384}, and
+     * {@link SignatureAlgorithm#HS512 HS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -669,8 +673,9 @@ public class CryptographyAsyncClient {
      * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * <p>
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
+     * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
+     * {@link KeyWrapAlgorithm#A192KW A192KW}, {@link KeyWrapAlgorithm#A256KW A256KW},
+     * {@link KeyWrapAlgorithm#CKM_AES_KEY_WRAP}, and {@link KeyWrapAlgorithm#CKM_AES_KEY_WRAP_PAD}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
@@ -726,7 +731,8 @@ public class CryptographyAsyncClient {
      * {@link KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      * <p>
      * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW},
-     * {@link KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}.</p>
+     * {@link KeyWrapAlgorithm#A192KW A192KW}, {@link KeyWrapAlgorithm#A256KW A256KW},
+     * {@link KeyWrapAlgorithm#CKM_AES_KEY_WRAP}, and {@link KeyWrapAlgorithm#CKM_AES_KEY_WRAP_PAD}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when
@@ -781,7 +787,9 @@ public class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
+     * {@link SignatureAlgorithm#HS256 HS256}, {@link SignatureAlgorithm#HS384 HS384}, and
+     * {@link SignatureAlgorithm#HS512 HS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -836,7 +844,9 @@ public class CryptographyAsyncClient {
      * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, and {@link SignatureAlgorithm#RS512 RS512}.</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
+     * {@link SignatureAlgorithm#HS256 HS256}, {@link SignatureAlgorithm#HS384 HS384}, and
+     * {@link SignatureAlgorithm#HS512 HS512}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the

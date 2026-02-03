@@ -137,7 +137,6 @@
     "com.azure.analytics.defender.easm.models.HostAsset": "Easm.HostAsset",
     "com.azure.analytics.defender.easm.models.HostAssetResource": "Easm.HostAssetResource",
     "com.azure.analytics.defender.easm.models.HostCore": "Easm.HostCore",
-    "com.azure.analytics.defender.easm.models.InnerError": "Easm.InnerError",
     "com.azure.analytics.defender.easm.models.InventoryAsset": "Easm.InventoryAsset",
     "com.azure.analytics.defender.easm.models.IpAddressAsset": "Easm.IpAddressAsset",
     "com.azure.analytics.defender.easm.models.IpAddressAssetResource": "Easm.IpAddressAssetResource",

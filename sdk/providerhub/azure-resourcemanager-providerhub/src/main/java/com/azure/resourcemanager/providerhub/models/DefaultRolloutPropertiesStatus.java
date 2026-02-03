@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The DefaultRolloutPropertiesStatus model.
+ * The default rollout status.
  */
 @Fluent
 public final class DefaultRolloutPropertiesStatus extends DefaultRolloutStatus {
@@ -59,6 +59,16 @@ public final class DefaultRolloutPropertiesStatus extends DefaultRolloutStatus {
      * {@inheritDoc}
      */
     @Override
+    public DefaultRolloutPropertiesStatus
+        withManifestCheckinStatus(DefaultRolloutStatusManifestCheckinStatus manifestCheckinStatus) {
+        super.withManifestCheckinStatus(manifestCheckinStatus);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DefaultRolloutPropertiesStatus withCompletedRegions(List<String> completedRegions) {
         super.withCompletedRegions(completedRegions);
         return this;
@@ -88,6 +98,9 @@ public final class DefaultRolloutPropertiesStatus extends DefaultRolloutStatus {
                 }
             });
         }
+        if (manifestCheckinStatus() != null) {
+            manifestCheckinStatus().validate();
+        }
     }
 
     /**
@@ -108,6 +121,7 @@ public final class DefaultRolloutPropertiesStatus extends DefaultRolloutStatus {
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(nextTrafficRegionScheduledTime()));
         jsonWriter.writeStringField("subscriptionReregistrationResult",
             subscriptionReregistrationResult() == null ? null : subscriptionReregistrationResult().toString());
+        jsonWriter.writeJsonField("manifestCheckinStatus", manifestCheckinStatus());
         return jsonWriter.writeEndObject();
     }
 
@@ -143,6 +157,9 @@ public final class DefaultRolloutPropertiesStatus extends DefaultRolloutStatus {
                 } else if ("subscriptionReregistrationResult".equals(fieldName)) {
                     deserializedDefaultRolloutPropertiesStatus.withSubscriptionReregistrationResult(
                         SubscriptionReregistrationResult.fromString(reader.getString()));
+                } else if ("manifestCheckinStatus".equals(fieldName)) {
+                    deserializedDefaultRolloutPropertiesStatus
+                        .withManifestCheckinStatus(DefaultRolloutStatusManifestCheckinStatus.fromJson(reader));
                 } else {
                     reader.skipChildren();
                 }

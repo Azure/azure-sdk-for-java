@@ -14,17 +14,17 @@ public final class JobDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"jwpfilkm\":\"qlafcbahhpzpofoi\",\"dviauogp\":\"kholvd\",\"kyefchnmnahmnxhk\":\"uartvti\",\"ooxf\":\"jqirwrw\"}}")
+            "{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"owlkjxnqpv\":\"fs\",\"tmhqykiz\":\"gf\",\"saoafcluqvox\":\"d\"}}")
             .toObject(JobDetails.class);
-        Assertions.assertEquals("qlafcbahhpzpofoi", model.affectedObjectDetails().get("jwpfilkm"));
+        Assertions.assertEquals("fs", model.affectedObjectDetails().get("owlkjxnqpv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobDetails model = new JobDetails().withAffectedObjectDetails(mapOf("jwpfilkm", "qlafcbahhpzpofoi", "dviauogp",
-            "kholvd", "kyefchnmnahmnxhk", "uartvti", "ooxf", "jqirwrw"));
+        JobDetails model = new JobDetails()
+            .withAffectedObjectDetails(mapOf("owlkjxnqpv", "fs", "tmhqykiz", "gf", "saoafcluqvox", "d"));
         model = BinaryData.fromObject(model).toObject(JobDetails.class);
-        Assertions.assertEquals("qlafcbahhpzpofoi", model.affectedObjectDetails().get("jwpfilkm"));
+        Assertions.assertEquals("fs", model.affectedObjectDetails().get("owlkjxnqpv"));
     }
 
     // Use "Map.of" if available

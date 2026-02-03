@@ -18,60 +18,72 @@ public final class JavaComponentsCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JavaComponentsCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"qroohtu\",\"value\":\"maonurj\"},{\"propertyName\":\"mghihp\",\"value\":\"cmslclblyjxltbs\"},{\"propertyName\":\"scvsfxigctm\",\"value\":\"uupb\"}],\"scale\":{\"minReplicas\":922272916,\"maxReplicas\":1106041304},\"serviceBinds\":[{\"name\":\"ceukdqkkyihztg\",\"serviceId\":\"mgqzgwldoyc\"},{\"name\":\"llcecfehuwaoa\",\"serviceId\":\"h\"},{\"name\":\"qllizstac\",\"serviceId\":\"vhrweftkwqejpmv\"},{\"name\":\"ehaepwamcxtc\",\"serviceId\":\"upeuknijduyye\"}]},\"id\":\"ydjfb\",\"name\":\"c\",\"type\":\"v\"},{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"wikdmh\",\"value\":\"kuflgbh\"},{\"propertyName\":\"uacdixmxuf\",\"value\":\"ryjqgdkf\"}],\"scale\":{\"minReplicas\":1021158786,\"maxReplicas\":1850515821},\"serviceBinds\":[{\"name\":\"jhvefgwbmqjchnt\",\"serviceId\":\"faymxbulpz\"},{\"name\":\"lbm\",\"serviceId\":\"yojwyvfkmbtsu\"},{\"name\":\"xsgxjcmmzrrs\",\"serviceId\":\"biwsd\"},{\"name\":\"pxqwo\",\"serviceId\":\"ffjxcjrmmuabwib\"}]},\"id\":\"ogjo\",\"name\":\"mcyefoyzbam\",\"type\":\"in\"},{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"kpoldtvevboc\",\"value\":\"hzjkn\"}],\"scale\":{\"minReplicas\":1180422043,\"maxReplicas\":483249279},\"serviceBinds\":[{\"name\":\"nrup\",\"serviceId\":\"amrdixtrekidswys\"}]},\"id\":\"ruffgllukk\",\"name\":\"tvlxhrpqh\",\"type\":\"mblcouqehbhbcds\"}],\"nextLink\":\"ryrando\"}")
+            "{\"value\":[{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Deleting\",\"configurations\":[{\"propertyName\":\"ezkgi\",\"value\":\"idxas\"},{\"propertyName\":\"ddyvvjskgfmo\",\"value\":\"ah\"},{\"propertyName\":\"gat\",\"value\":\"a\"},{\"propertyName\":\"hvjhhnakzyb\",\"value\":\"jid\"}],\"scale\":{\"minReplicas\":1763110580,\"maxReplicas\":1374695683},\"serviceBinds\":[{\"name\":\"xevbl\",\"serviceId\":\"ednljl\"},{\"name\":\"euaulxu\",\"serviceId\":\"mjbnk\"},{\"name\":\"xynenl\",\"serviceId\":\"xeizzg\"},{\"name\":\"lnsrmffe\",\"serviceId\":\"xcktpiymerteeamm\"}]},\"id\":\"iekkkzddrtkgdojb\",\"name\":\"xv\",\"type\":\"vrefdeesv\"},{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Failed\",\"configurations\":[{\"propertyName\":\"txsu\",\"value\":\"rtujwsawddjibab\"},{\"propertyName\":\"ititvtzeexavoxt\",\"value\":\"lecdmdqbw\"}],\"scale\":{\"minReplicas\":146518611,\"maxReplicas\":1413070711},\"serviceBinds\":[{\"name\":\"acbslhhxu\",\"serviceId\":\"xvodhtnsir\"},{\"name\":\"hzmme\",\"serviceId\":\"kdlpa\"},{\"name\":\"rcxfailcfxwmdb\",\"serviceId\":\"dfgsftufqobrj\"},{\"name\":\"acgcckknhx\",\"serviceId\":\"zvytnrzvuljraaer\"}]},\"id\":\"okqgukkjq\",\"name\":\"vbroylaxxu\",\"type\":\"cdisd\"},{\"properties\":{\"componentType\":\"JavaComponentProperties\",\"provisioningState\":\"Succeeded\",\"configurations\":[{\"propertyName\":\"vgjrwhr\",\"value\":\"ycy\"}],\"scale\":{\"minReplicas\":1491139189,\"maxReplicas\":513530726},\"serviceBinds\":[{\"name\":\"nfnw\",\"serviceId\":\"tmvpdvjdhtt\"},{\"name\":\"efedxihchrphkm\",\"serviceId\":\"jdqnsdfzpbgt\"},{\"name\":\"ylkdghrje\",\"serviceId\":\"tl\"},{\"name\":\"ez\",\"serviceId\":\"hokvbwnh\"}]},\"id\":\"qlgehg\",\"name\":\"pipifh\",\"type\":\"f\"}],\"nextLink\":\"ajvgcxtxjcsheafi\"}")
             .toObject(JavaComponentsCollection.class);
-        Assertions.assertEquals("qroohtu", model.value().get(0).properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("maonurj", model.value().get(0).properties().configurations().get(0).value());
-        Assertions.assertEquals(922272916, model.value().get(0).properties().scale().minReplicas());
-        Assertions.assertEquals(1106041304, model.value().get(0).properties().scale().maxReplicas());
-        Assertions.assertEquals("ceukdqkkyihztg", model.value().get(0).properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("mgqzgwldoyc", model.value().get(0).properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("ezkgi", model.value().get(0).properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("idxas", model.value().get(0).properties().configurations().get(0).value());
+        Assertions.assertEquals(1763110580, model.value().get(0).properties().scale().minReplicas());
+        Assertions.assertEquals(1374695683, model.value().get(0).properties().scale().maxReplicas());
+        Assertions.assertEquals("xevbl", model.value().get(0).properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("ednljl", model.value().get(0).properties().serviceBinds().get(0).serviceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JavaComponentsCollection model
-            = new JavaComponentsCollection().withValue(Arrays.asList(
-                new JavaComponentInner()
-                    .withProperties(new JavaComponentProperties()
-                        .withConfigurations(Arrays.asList(
-                            new JavaComponentConfigurationProperty().withPropertyName("qroohtu").withValue("maonurj"),
-                            new JavaComponentConfigurationProperty().withPropertyName("mghihp")
-                                .withValue("cmslclblyjxltbs"),
-                            new JavaComponentConfigurationProperty().withPropertyName("scvsfxigctm").withValue("uupb")))
-                        .withScale(
-                            new JavaComponentPropertiesScale().withMinReplicas(922272916).withMaxReplicas(1106041304))
-                        .withServiceBinds(Arrays.asList(
-                            new JavaComponentServiceBind().withName("ceukdqkkyihztg").withServiceId("mgqzgwldoyc"),
-                            new JavaComponentServiceBind().withName("llcecfehuwaoa").withServiceId("h"),
-                            new JavaComponentServiceBind().withName("qllizstac").withServiceId("vhrweftkwqejpmv"),
-                            new JavaComponentServiceBind().withName("ehaepwamcxtc").withServiceId("upeuknijduyye")))),
-                new JavaComponentInner()
-                    .withProperties(new JavaComponentProperties()
-                        .withConfigurations(Arrays.asList(
-                            new JavaComponentConfigurationProperty().withPropertyName("wikdmh").withValue("kuflgbh"),
-                            new JavaComponentConfigurationProperty().withPropertyName("uacdixmxuf")
-                                .withValue("ryjqgdkf")))
-                        .withScale(
-                            new JavaComponentPropertiesScale().withMinReplicas(1021158786).withMaxReplicas(1850515821))
-                        .withServiceBinds(Arrays.asList(
-                            new JavaComponentServiceBind().withName("jhvefgwbmqjchnt").withServiceId("faymxbulpz"),
-                            new JavaComponentServiceBind().withName("lbm").withServiceId("yojwyvfkmbtsu"),
-                            new JavaComponentServiceBind().withName("xsgxjcmmzrrs").withServiceId("biwsd"),
-                            new JavaComponentServiceBind().withName("pxqwo").withServiceId("ffjxcjrmmuabwib")))),
-                new JavaComponentInner().withProperties(new JavaComponentProperties()
-                    .withConfigurations(Arrays.asList(
-                        new JavaComponentConfigurationProperty().withPropertyName("kpoldtvevboc").withValue("hzjkn")))
-                    .withScale(
-                        new JavaComponentPropertiesScale().withMinReplicas(1180422043).withMaxReplicas(483249279))
-                    .withServiceBinds(Arrays
-                        .asList(new JavaComponentServiceBind().withName("nrup").withServiceId("amrdixtrekidswys"))))));
+            = new JavaComponentsCollection()
+                .withValue(
+                    Arrays.asList(
+                        new JavaComponentInner().withProperties(new JavaComponentProperties()
+                            .withConfigurations(Arrays.asList(
+                                new JavaComponentConfigurationProperty().withPropertyName("ezkgi").withValue("idxas"),
+                                new JavaComponentConfigurationProperty().withPropertyName("ddyvvjskgfmo")
+                                    .withValue("ah"),
+                                new JavaComponentConfigurationProperty().withPropertyName("gat").withValue("a"),
+                                new JavaComponentConfigurationProperty().withPropertyName("hvjhhnakzyb")
+                                    .withValue("jid")))
+                            .withScale(new JavaComponentPropertiesScale().withMinReplicas(1763110580)
+                                .withMaxReplicas(1374695683))
+                            .withServiceBinds(
+                                Arrays.asList(new JavaComponentServiceBind().withName("xevbl").withServiceId("ednljl"),
+                                    new JavaComponentServiceBind().withName("euaulxu").withServiceId("mjbnk"),
+                                    new JavaComponentServiceBind().withName("xynenl").withServiceId("xeizzg"),
+                                    new JavaComponentServiceBind()
+                                        .withName("lnsrmffe")
+                                        .withServiceId("xcktpiymerteeamm")))),
+                        new JavaComponentInner().withProperties(new JavaComponentProperties()
+                            .withConfigurations(Arrays.asList(
+                                new JavaComponentConfigurationProperty().withPropertyName("txsu")
+                                    .withValue("rtujwsawddjibab"),
+                                new JavaComponentConfigurationProperty().withPropertyName("ititvtzeexavoxt")
+                                    .withValue("lecdmdqbw")))
+                            .withScale(new JavaComponentPropertiesScale().withMinReplicas(146518611)
+                                .withMaxReplicas(1413070711))
+                            .withServiceBinds(Arrays.asList(
+                                new JavaComponentServiceBind().withName("acbslhhxu").withServiceId("xvodhtnsir"),
+                                new JavaComponentServiceBind().withName("hzmme").withServiceId("kdlpa"),
+                                new JavaComponentServiceBind()
+                                    .withName("rcxfailcfxwmdb")
+                                    .withServiceId("dfgsftufqobrj"),
+                                new JavaComponentServiceBind()
+                                    .withName("acgcckknhx")
+                                    .withServiceId("zvytnrzvuljraaer")))),
+                        new JavaComponentInner().withProperties(new JavaComponentProperties()
+                            .withConfigurations(Arrays.asList(
+                                new JavaComponentConfigurationProperty().withPropertyName("vgjrwhr").withValue("ycy")))
+                            .withScale(new JavaComponentPropertiesScale().withMinReplicas(1491139189)
+                                .withMaxReplicas(513530726))
+                            .withServiceBinds(Arrays.asList(
+                                new JavaComponentServiceBind().withName("nfnw").withServiceId("tmvpdvjdhtt"),
+                                new JavaComponentServiceBind().withName("efedxihchrphkm").withServiceId("jdqnsdfzpbgt"),
+                                new JavaComponentServiceBind().withName("ylkdghrje").withServiceId("tl"),
+                                new JavaComponentServiceBind().withName("ez").withServiceId("hokvbwnh"))))));
         model = BinaryData.fromObject(model).toObject(JavaComponentsCollection.class);
-        Assertions.assertEquals("qroohtu", model.value().get(0).properties().configurations().get(0).propertyName());
-        Assertions.assertEquals("maonurj", model.value().get(0).properties().configurations().get(0).value());
-        Assertions.assertEquals(922272916, model.value().get(0).properties().scale().minReplicas());
-        Assertions.assertEquals(1106041304, model.value().get(0).properties().scale().maxReplicas());
-        Assertions.assertEquals("ceukdqkkyihztg", model.value().get(0).properties().serviceBinds().get(0).name());
-        Assertions.assertEquals("mgqzgwldoyc", model.value().get(0).properties().serviceBinds().get(0).serviceId());
+        Assertions.assertEquals("ezkgi", model.value().get(0).properties().configurations().get(0).propertyName());
+        Assertions.assertEquals("idxas", model.value().get(0).properties().configurations().get(0).value());
+        Assertions.assertEquals(1763110580, model.value().get(0).properties().scale().minReplicas());
+        Assertions.assertEquals(1374695683, model.value().get(0).properties().scale().maxReplicas());
+        Assertions.assertEquals("xevbl", model.value().get(0).properties().serviceBinds().get(0).name());
+        Assertions.assertEquals("ednljl", model.value().get(0).properties().serviceBinds().get(0).serviceId());
     }
 }

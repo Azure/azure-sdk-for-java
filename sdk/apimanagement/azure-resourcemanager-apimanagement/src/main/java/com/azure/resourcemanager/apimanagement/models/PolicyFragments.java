@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -11,6 +12,18 @@ import com.azure.core.util.Context;
  * Resource collection API of PolicyFragments.
  */
 public interface PolicyFragments {
+    /**
+     * Gets all policy fragments.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all policy fragments as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<PolicyFragmentContract> listByService(String resourceGroupName, String serviceName);
+
     /**
      * Gets all policy fragments.
      * 
@@ -28,22 +41,10 @@ public interface PolicyFragments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments along with {@link Response}.
+     * @return all policy fragments as paginated response with {@link PagedIterable}.
      */
-    Response<PolicyFragmentCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
-        String filter, String orderby, Integer top, Integer skip, Context context);
-
-    /**
-     * Gets all policy fragments.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all policy fragments.
-     */
-    PolicyFragmentCollection listByService(String resourceGroupName, String serviceName);
+    PagedIterable<PolicyFragmentContract> listByService(String resourceGroupName, String serviceName, String filter,
+        String orderby, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.

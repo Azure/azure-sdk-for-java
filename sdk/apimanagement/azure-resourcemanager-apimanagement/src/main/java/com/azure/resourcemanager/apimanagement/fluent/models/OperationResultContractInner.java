@@ -6,11 +6,11 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AsyncOperationStatus;
+import com.azure.resourcemanager.apimanagement.models.ErrorResponseBody;
 import com.azure.resourcemanager.apimanagement.models.OperationResultLogItemContract;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -210,7 +210,7 @@ public final class OperationResultContractInner extends ProxyResource {
      * 
      * @return the error value.
      */
-    public ManagementError error() {
+    public ErrorResponseBody error() {
         return this.innerProperties() == null ? null : this.innerProperties().error();
     }
 
@@ -220,7 +220,7 @@ public final class OperationResultContractInner extends ProxyResource {
      * @param error the error value to set.
      * @return the OperationResultContractInner object itself.
      */
-    public OperationResultContractInner withError(ManagementError error) {
+    public OperationResultContractInner withError(ErrorResponseBody error) {
         if (this.innerProperties() == null) {
             this.innerProperties = new OperationResultContractProperties();
         }

@@ -5,6 +5,7 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.data.appconfiguration.models.SettingLabel;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
     /*
      * The collection value.
      */
+    @Generated
     private List<SettingLabel> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of LabelListResult class.
      */
+    @Generated
     public LabelListResult() {
     }
 
@@ -39,6 +43,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * 
      * @return the items value.
      */
+    @Generated
     public List<SettingLabel> getItems() {
         return this.items;
     }
@@ -49,6 +54,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * @param items the items value to set.
      * @return the LabelListResult object itself.
      */
+    @Generated
     public LabelListResult setItems(List<SettingLabel> items) {
         this.items = items;
         return this;
@@ -59,6 +65,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -69,6 +76,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * @param nextLink the nextLink value to set.
      * @return the LabelListResult object itself.
      */
+    @Generated
     public LabelListResult setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
@@ -77,6 +85,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LabelListResult.
      */
+    @Generated
     public static LabelListResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LabelListResult deserializedLabelListResult = new LabelListResult();

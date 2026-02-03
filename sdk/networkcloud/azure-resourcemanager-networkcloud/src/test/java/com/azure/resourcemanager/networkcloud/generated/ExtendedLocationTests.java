@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ExtendedLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExtendedLocation model = BinaryData.fromString("{\"name\":\"uuvmkjozkrwfnd\",\"type\":\"odjpslwejd\"}")
+        ExtendedLocation model = BinaryData.fromString("{\"name\":\"gjzzdatqxhocdg\",\"type\":\"ablgphuticndvk\"}")
             .toObject(ExtendedLocation.class);
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.name());
-        Assertions.assertEquals("odjpslwejd", model.type());
+        Assertions.assertEquals("gjzzdatqxhocdg", model.name());
+        Assertions.assertEquals("ablgphuticndvk", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExtendedLocation model = new ExtendedLocation().withName("uuvmkjozkrwfnd").withType("odjpslwejd");
+        ExtendedLocation model = new ExtendedLocation().withName("gjzzdatqxhocdg").withType("ablgphuticndvk");
         model = BinaryData.fromObject(model).toObject(ExtendedLocation.class);
-        Assertions.assertEquals("uuvmkjozkrwfnd", model.name());
-        Assertions.assertEquals("odjpslwejd", model.type());
+        Assertions.assertEquals("gjzzdatqxhocdg", model.name());
+        Assertions.assertEquals("ablgphuticndvk", model.type());
     }
 }

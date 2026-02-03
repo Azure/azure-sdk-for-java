@@ -4,164 +4,39 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.util.List;
 
 /**
- * Base class for all types of DMS command properties. If command is not supported by current client, this object is
- * returned.
+ * An immutable client-side representation of CommandProperties.
  */
-@Immutable
-public class CommandProperties implements JsonSerializable<CommandProperties> {
-    /*
-     * Command type.
-     */
-    private String commandType = "CommandProperties";
-
-    /*
-     * Array of errors. This is ignored if submitted.
-     */
-    private List<ManagementError> errors;
-
-    /*
-     * The state of the command. This is ignored if submitted.
-     */
-    private CommandState state;
-
+public interface CommandProperties {
     /**
-     * Creates an instance of CommandProperties class.
-     */
-    public CommandProperties() {
-    }
-
-    /**
-     * Get the commandType property: Command type.
+     * Gets the commandType property: Command type.
      * 
      * @return the commandType value.
      */
-    public String commandType() {
-        return this.commandType;
-    }
+    CommandType commandType();
 
     /**
-     * Get the errors property: Array of errors. This is ignored if submitted.
+     * Gets the errors property: Array of errors. This is ignored if submitted.
      * 
      * @return the errors value.
      */
-    public List<ManagementError> errors() {
-        return this.errors;
-    }
+    List<ManagementError> errors();
 
     /**
-     * Set the errors property: Array of errors. This is ignored if submitted.
-     * 
-     * @param errors the errors value to set.
-     * @return the CommandProperties object itself.
-     */
-    CommandProperties withErrors(List<ManagementError> errors) {
-        this.errors = errors;
-        return this;
-    }
-
-    /**
-     * Get the state property: The state of the command. This is ignored if submitted.
+     * Gets the state property: The state of the command. This is ignored if submitted.
      * 
      * @return the state value.
      */
-    public CommandState state() {
-        return this.state;
-    }
+    CommandState state();
 
     /**
-     * Set the state property: The state of the command. This is ignored if submitted.
+     * Gets the inner com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner object.
      * 
-     * @param state the state value to set.
-     * @return the CommandProperties object itself.
+     * @return the inner object.
      */
-    CommandProperties withState(CommandState state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("commandType", this.commandType);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CommandProperties from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CommandProperties if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CommandProperties.
-     */
-    public static CommandProperties fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            try (JsonReader readerToUse = reader.bufferObject()) {
-                readerToUse.nextToken(); // Prepare for reading
-                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                    String fieldName = readerToUse.getFieldName();
-                    readerToUse.nextToken();
-                    if ("commandType".equals(fieldName)) {
-                        discriminatorValue = readerToUse.getString();
-                        break;
-                    } else {
-                        readerToUse.skipChildren();
-                    }
-                }
-                // Use the discriminator value to determine which subtype should be deserialized.
-                if ("Migrate.Sync.Complete.Database".equals(discriminatorValue)) {
-                    return MigrateSyncCompleteCommandProperties.fromJson(readerToUse.reset());
-                } else if ("Migrate.SqlServer.AzureDbSqlMi.Complete".equals(discriminatorValue)) {
-                    return MigrateMISyncCompleteCommandProperties.fromJson(readerToUse.reset());
-                } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
-                }
-            }
-        });
-    }
-
-    static CommandProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CommandProperties deserializedCommandProperties = new CommandProperties();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("commandType".equals(fieldName)) {
-                    deserializedCommandProperties.commandType = reader.getString();
-                } else if ("errors".equals(fieldName)) {
-                    List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
-                    deserializedCommandProperties.errors = errors;
-                } else if ("state".equals(fieldName)) {
-                    deserializedCommandProperties.state = CommandState.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCommandProperties;
-        });
-    }
+    CommandPropertiesInner innerModel();
 }

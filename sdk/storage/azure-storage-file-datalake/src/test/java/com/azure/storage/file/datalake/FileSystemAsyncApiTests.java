@@ -2551,4 +2551,58 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(aadFsClient.exists()).expectNext(true).verifyComplete();
     }
+
+    @Test
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2025-07-05")
+    public void getSetAccessPolicyOAuth() {
+        // Arrange
+        DataLakeServiceAsyncClient serviceClient = getOAuthServiceAsyncClient();
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = serviceClient.getFileSystemAsyncClient(generateFileSystemName());
+
+        // Act
+        StepVerifier
+            .create(fileSystemClient.create()
+                .then(fileSystemClient.getAccessPolicy())
+                .flatMap(response -> fileSystemClient.setAccessPolicy(null, response.getIdentifiers())))
+            .verifyComplete();
+    }
+
+    @Test
+    public void fileSystemNameEncodingOnGetFileSystemUrl() {
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        assertTrue(fileSystemClient.getFileSystemUrl().contains(expectedName));
+    }
+
+    @Test
+    public void fileSystemNameEncodingOnGetPathUrl() {
+        DataLakeFileSystemAsyncClient fileSystemClient
+            = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient("my filesystem");
+        String expectedName = "my%20filesystem";
+        DataLakeDirectoryAsyncClient directoryClient = fileSystemClient.getDirectoryAsyncClient(generatePathName());
+        assertTrue(directoryClient.getPathUrl().contains(expectedName));
+    }
+
+    @Test
+    public void listPathsStartFrom() {
+        String dirName = generatePathName();
+        DataLakeDirectoryAsyncClient dir = dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(dirName);
+
+        StepVerifier.create(dir.create()
+            .then(setupDirectoryForListing(dir)) // properly chained
+            .thenMany(dir.listPaths(new ListPathsOptions().setRecursive(true).setStartFrom("foo")))
+            .collectList()).assertNext(pathsNames -> assertEquals(3, pathsNames.size())).verifyComplete();
+    }
+
+    private Mono<DataLakeDirectoryAsyncClient> setupDirectoryForListing(DataLakeDirectoryAsyncClient client) {
+        return client.createSubdirectory("foo")
+            .flatMap(foo -> foo.createSubdirectory("foo").then(foo.createSubdirectory("bar")))
+            .then(client.createSubdirectory("bar"))
+            .then(client.createSubdirectory("baz"))
+            .flatMap(baz -> baz.createSubdirectory("foo")
+                .flatMap(foo2 -> foo2.createSubdirectory("bar"))
+                .then(baz.createSubdirectory("bar/foo")));
+    }
 }

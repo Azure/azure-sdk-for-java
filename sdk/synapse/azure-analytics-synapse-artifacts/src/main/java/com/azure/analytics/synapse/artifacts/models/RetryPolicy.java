@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     /*
      * Maximum ordinary retry attempts. Default is 0. Type: integer (or Expression with resultType integer), minimum: 0.
      */
+    @Generated
     private Object count;
 
     /*
      * Interval between retries in seconds. Default is 30.
      */
+    @Generated
     private Integer intervalInSeconds;
 
     /**
      * Creates an instance of RetryPolicy class.
      */
+    @Generated
     public RetryPolicy() {
     }
 
@@ -38,6 +42,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * 
      * @return the count value.
      */
+    @Generated
     public Object getCount() {
         return this.count;
     }
@@ -49,6 +54,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * @param count the count value to set.
      * @return the RetryPolicy object itself.
      */
+    @Generated
     public RetryPolicy setCount(Object count) {
         this.count = count;
         return this;
@@ -59,6 +65,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * 
      * @return the intervalInSeconds value.
      */
+    @Generated
     public Integer getIntervalInSeconds() {
         return this.intervalInSeconds;
     }
@@ -69,6 +76,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the RetryPolicy object itself.
      */
+    @Generated
     public RetryPolicy setIntervalInSeconds(Integer intervalInSeconds) {
         this.intervalInSeconds = intervalInSeconds;
         return this;
@@ -77,10 +85,13 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("count", this.count);
+        if (this.count != null) {
+            jsonWriter.writeUntypedField("count", this.count);
+        }
         jsonWriter.writeNumberField("intervalInSeconds", this.intervalInSeconds);
         return jsonWriter.writeEndObject();
     }
@@ -93,6 +104,7 @@ public final class RetryPolicy implements JsonSerializable<RetryPolicy> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the RetryPolicy.
      */
+    @Generated
     public static RetryPolicy fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RetryPolicy deserializedRetryPolicy = new RetryPolicy();

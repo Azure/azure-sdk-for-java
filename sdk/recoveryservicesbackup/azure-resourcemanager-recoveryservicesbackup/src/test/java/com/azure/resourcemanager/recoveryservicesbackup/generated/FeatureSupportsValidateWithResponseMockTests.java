@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFeatureSupportResponse;
@@ -22,19 +22,19 @@ import reactor.core.publisher.Mono;
 public final class FeatureSupportsValidateWithResponseMockTests {
     @Test
     public void testValidateWithResponse() throws Exception {
-        String responseStr = "{\"supportStatus\":\"DefaultOFF\"}";
+        String responseStr = "{\"supportStatus\":\"Invalid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AzureVMResourceFeatureSupportResponse response = manager.featureSupports()
-            .validateWithResponse("onhpcz", new FeatureSupportRequest(), com.azure.core.util.Context.NONE)
+            .validateWithResponse("ueqfrojsyd", new FeatureSupportRequest(), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(SupportStatus.DEFAULT_OFF, response.supportStatus());
+        Assertions.assertEquals(SupportStatus.INVALID, response.supportStatus());
     }
 }

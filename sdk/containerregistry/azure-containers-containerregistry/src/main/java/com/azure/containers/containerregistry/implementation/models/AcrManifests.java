@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
     /*
      * Registry login server name. This is likely to be similar to {registry-name}.azurecr.io.
      */
+    @Generated
     private String registryLoginServer;
 
     /*
      * Image name
      */
+    @Generated
     private String repository;
 
     /*
      * List of manifests
      */
+    @Generated
     private List<ManifestAttributesBase> manifests;
 
     /*
      * The link property.
      */
+    @Generated
     private String link;
 
     /**
      * Creates an instance of AcrManifests class.
      */
+    @Generated
     public AcrManifests() {
     }
 
@@ -49,6 +55,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * 
      * @return the registryLoginServer value.
      */
+    @Generated
     public String getRegistryLoginServer() {
         return this.registryLoginServer;
     }
@@ -60,6 +67,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * @param registryLoginServer the registryLoginServer value to set.
      * @return the AcrManifests object itself.
      */
+    @Generated
     public AcrManifests setRegistryLoginServer(String registryLoginServer) {
         this.registryLoginServer = registryLoginServer;
         return this;
@@ -70,6 +78,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * 
      * @return the repository value.
      */
+    @Generated
     public String getRepository() {
         return this.repository;
     }
@@ -80,6 +89,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * @param repository the repository value to set.
      * @return the AcrManifests object itself.
      */
+    @Generated
     public AcrManifests setRepository(String repository) {
         this.repository = repository;
         return this;
@@ -90,6 +100,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * 
      * @return the manifests value.
      */
+    @Generated
     public List<ManifestAttributesBase> getManifests() {
         return this.manifests;
     }
@@ -100,6 +111,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * @param manifests the manifests value to set.
      * @return the AcrManifests object itself.
      */
+    @Generated
     public AcrManifests setManifests(List<ManifestAttributesBase> manifests) {
         this.manifests = manifests;
         return this;
@@ -110,6 +122,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * 
      * @return the link value.
      */
+    @Generated
     public String getLink() {
         return this.link;
     }
@@ -120,6 +133,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * @param link the link value to set.
      * @return the AcrManifests object itself.
      */
+    @Generated
     public AcrManifests setLink(String link) {
         this.link = link;
         return this;
@@ -128,6 +142,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -146,6 +161,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcrManifests.
      */
+    @Generated
     public static AcrManifests fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcrManifests deserializedAcrManifests = new AcrManifests();

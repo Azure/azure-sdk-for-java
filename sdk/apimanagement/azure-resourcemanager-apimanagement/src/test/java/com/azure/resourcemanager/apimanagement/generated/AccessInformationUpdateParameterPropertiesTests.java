@@ -12,15 +12,15 @@ public final class AccessInformationUpdateParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessInformationUpdateParameterProperties model
-            = BinaryData.fromString("{\"enabled\":true}").toObject(AccessInformationUpdateParameterProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+            = BinaryData.fromString("{\"enabled\":false}").toObject(AccessInformationUpdateParameterProperties.class);
+        Assertions.assertFalse(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AccessInformationUpdateParameterProperties model
-            = new AccessInformationUpdateParameterProperties().withEnabled(true);
+            = new AccessInformationUpdateParameterProperties().withEnabled(false);
         model = BinaryData.fromObject(model).toObject(AccessInformationUpdateParameterProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertFalse(model.enabled());
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,26 +15,31 @@ public final class AvroCompressionCodec extends ExpandableStringEnum<AvroCompres
     /**
      * Static value none for AvroCompressionCodec.
      */
+    @Generated
     public static final AvroCompressionCodec NONE = fromString("none");
 
     /**
      * Static value deflate for AvroCompressionCodec.
      */
+    @Generated
     public static final AvroCompressionCodec DEFLATE = fromString("deflate");
 
     /**
      * Static value snappy for AvroCompressionCodec.
      */
+    @Generated
     public static final AvroCompressionCodec SNAPPY = fromString("snappy");
 
     /**
      * Static value xz for AvroCompressionCodec.
      */
+    @Generated
     public static final AvroCompressionCodec XZ = fromString("xz");
 
     /**
      * Static value bzip2 for AvroCompressionCodec.
      */
+    @Generated
     public static final AvroCompressionCodec BZIP2 = fromString("bzip2");
 
     /**
@@ -41,6 +47,7 @@ public final class AvroCompressionCodec extends ExpandableStringEnum<AvroCompres
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AvroCompressionCodec() {
     }
@@ -51,6 +58,7 @@ public final class AvroCompressionCodec extends ExpandableStringEnum<AvroCompres
      * @param name a name to look for.
      * @return the corresponding AvroCompressionCodec.
      */
+    @Generated
     public static AvroCompressionCodec fromString(String name) {
         return fromString(name, AvroCompressionCodec.class);
     }
@@ -60,6 +68,7 @@ public final class AvroCompressionCodec extends ExpandableStringEnum<AvroCompres
      * 
      * @return known AvroCompressionCodec values.
      */
+    @Generated
     public static Collection<AvroCompressionCodec> values() {
         return values(AvroCompressionCodec.class);
     }

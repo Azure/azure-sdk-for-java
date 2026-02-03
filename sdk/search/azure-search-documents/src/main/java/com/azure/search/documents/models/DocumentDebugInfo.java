@@ -6,12 +6,15 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Contains debugging information that can be used to further explore your search results.
@@ -21,16 +24,25 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
     /*
      * Contains debugging information specific to semantic ranking requests.
      */
+    @Generated
     private SemanticDebugInfo semantic;
 
     /*
      * Contains debugging information specific to vector and hybrid search.
      */
+    @Generated
     private VectorsDebugInfo vectors;
+
+    /*
+     * Contains debugging information specific to vectors matched within a collection of complex types.
+     */
+    @Generated
+    private Map<String, List<QueryResultDocumentInnerHit>> innerHits;
 
     /**
      * Creates an instance of DocumentDebugInfo class.
      */
+    @Generated
     public DocumentDebugInfo() {
     }
 
@@ -39,6 +51,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
      * 
      * @return the semantic value.
      */
+    @Generated
     public SemanticDebugInfo getSemantic() {
         return this.semantic;
     }
@@ -48,13 +61,26 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
      * 
      * @return the vectors value.
      */
+    @Generated
     public VectorsDebugInfo getVectors() {
         return this.vectors;
     }
 
     /**
+     * Get the innerHits property: Contains debugging information specific to vectors matched within a collection of
+     * complex types.
+     * 
+     * @return the innerHits value.
+     */
+    @Generated
+    public Map<String, List<QueryResultDocumentInnerHit>> getInnerHits() {
+        return this.innerHits;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +95,7 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DocumentDebugInfo.
      */
+    @Generated
     public static DocumentDebugInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentDebugInfo deserializedDocumentDebugInfo = new DocumentDebugInfo();
@@ -80,6 +107,10 @@ public final class DocumentDebugInfo implements JsonSerializable<DocumentDebugIn
                     deserializedDocumentDebugInfo.semantic = SemanticDebugInfo.fromJson(reader);
                 } else if ("vectors".equals(fieldName)) {
                     deserializedDocumentDebugInfo.vectors = VectorsDebugInfo.fromJson(reader);
+                } else if ("innerHits".equals(fieldName)) {
+                    Map<String, List<QueryResultDocumentInnerHit>> innerHits = reader.readMap(
+                        reader1 -> reader1.readArray(reader2 -> QueryResultDocumentInnerHit.fromJson(reader2)));
+                    deserializedDocumentDebugInfo.innerHits = innerHits;
                 } else {
                     reader.skipChildren();
                 }

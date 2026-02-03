@@ -12,11 +12,12 @@ import com.azure.spring.cloud.autoconfigure.implementation.aad.security.properti
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.security.ConditionalOnDefaultWebSecurity;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.security.autoconfigure.web.servlet.ConditionalOnDefaultWebSecurity;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -83,11 +84,10 @@ class AadResourceServerConfiguration {
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadResourceServerConfiguration {
 
-        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         @ConditionalOnBean(AadResourceServerProperties.class)
         SecurityFilterChain defaultAadResourceServerFilterChain(HttpSecurity http) throws Exception {
-            http.apply(aadResourceServer());
+            http.with(aadResourceServer(), Customizer.withDefaults());
             return http.build();
         }
     }

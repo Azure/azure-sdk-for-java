@@ -6,12 +6,13 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagecache.StorageCacheManager;
 import com.azure.resourcemanager.storagecache.models.ConflictResolutionMode;
 import com.azure.resourcemanager.storagecache.models.ImportJob;
+import com.azure.resourcemanager.storagecache.models.ImportJobAdminStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -25,30 +26,32 @@ public final class ImportJobsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"importPrefixes\":[\"uiqtqzfavy\",\"nqqyba\",\"yeua\",\"jkqa\"],\"conflictResolutionMode\":\"OverwriteAlways\",\"maximumErrors\":1085196762,\"status\":{\"state\":\"Canceled\",\"statusMessage\":\"cbhernntiewdj\",\"totalBlobsWalked\":994473261476719427,\"blobsWalkedPerSecond\":1890578534801366213,\"totalBlobsImported\":7210776053915624844,\"blobsImportedPerSecond\":8622823251017389633,\"lastCompletionTime\":\"2021-09-18T09:21:14Z\",\"lastStartedTime\":\"2021-09-08T01:13:47Z\",\"totalErrors\":961183610,\"totalConflicts\":519813577}},\"location\":\"qem\",\"tags\":{\"jfutacoebj\":\"mxtd\",\"guaadraufactkahz\":\"ewzcjznmwcp\"},\"id\":\"v\",\"name\":\"jjziuxxpsh\",\"type\":\"eekulfgslqubkwd\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"adminStatus\":\"Cancel\",\"importPrefixes\":[\"cgxxlxs\",\"fgcviz\",\"zdwlvwlyoupfgfb\",\"jub\"],\"conflictResolutionMode\":\"Skip\",\"maximumErrors\":641782608,\"status\":{\"state\":\"InProgress\",\"statusMessage\":\"sgow\",\"totalBlobsWalked\":7972724077673531011,\"blobsWalkedPerSecond\":295373443738405642,\"totalBlobsImported\":6054514895875943598,\"importedFiles\":2710800768496556807,\"importedDirectories\":4664982115652141525,\"importedSymlinks\":8616212085400187990,\"preexistingFiles\":5269080860796174079,\"preexistingDirectories\":2418220883067284526,\"preexistingSymlinks\":3428475674484240816,\"blobsImportedPerSecond\":1236442505183126450,\"lastCompletionTime\":\"2021-01-22T04:30Z\",\"lastStartedTime\":\"2021-08-20T15:38:34Z\",\"totalErrors\":2013453223,\"totalConflicts\":848186431}},\"location\":\"xcpjuisavokqdzf\",\"tags\":{\"nwxyiop\":\"ivjlfrqttbajlka\"},\"id\":\"dkqqfkuvscxkd\",\"name\":\"ligovibrxkpm\",\"type\":\"oaz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageCacheManager manager = StorageCacheManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ImportJob response = manager.importJobs()
-            .define("kpyklyhp")
-            .withRegion("odqkdlwwqfb")
-            .withExistingAmlFilesystem("uripltfnhtba", "kgxywr")
-            .withTags(mapOf("fsmlmbtxhwgfw", "kxtrq"))
-            .withImportPrefixes(Arrays.asList("ruud"))
+            .define("gdotcubiipuipwo")
+            .withRegion("dvoqyt")
+            .withExistingAmlFilesystem("zaofjchvcyy", "s")
+            .withTags(mapOf("gyavu", "owbb"))
+            .withAdminStatus(ImportJobAdminStatus.ACTIVE)
+            .withImportPrefixes(Arrays.asList("k"))
             .withConflictResolutionMode(ConflictResolutionMode.FAIL)
-            .withMaximumErrors(766813389)
+            .withMaximumErrors(1720447469)
             .create();
 
-        Assertions.assertEquals("qem", response.location());
-        Assertions.assertEquals("mxtd", response.tags().get("jfutacoebj"));
-        Assertions.assertEquals("uiqtqzfavy", response.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_ALWAYS, response.conflictResolutionMode());
-        Assertions.assertEquals(1085196762, response.maximumErrors());
+        Assertions.assertEquals("xcpjuisavokqdzf", response.location());
+        Assertions.assertEquals("ivjlfrqttbajlka", response.tags().get("nwxyiop"));
+        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, response.adminStatus());
+        Assertions.assertEquals("cgxxlxs", response.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.SKIP, response.conflictResolutionMode());
+        Assertions.assertEquals(641782608, response.maximumErrors());
     }
 
     // Use "Map.of" if available

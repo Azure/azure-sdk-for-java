@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.CustomDomainIdentityType;
@@ -23,43 +23,43 @@ public final class NamespacesValidateCustomDomainOwnershipMockTests {
     @Test
     public void testValidateCustomDomainOwnership() throws Exception {
         String responseStr
-            = "{\"customDomainsForTopicsConfiguration\":[{\"fullyQualifiedDomainName\":\"aqotnndxolousdv\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"wz\"},\"certificateUrl\":\"rp\",\"expectedTxtRecordName\":\"fu\",\"expectedTxtRecordValue\":\"yctsdbtqgkuj\"},{\"fullyQualifiedDomainName\":\"sooxrqw\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"gapdyarikeej\"},\"certificateUrl\":\"dfhtwmmkfqbriqul\",\"expectedTxtRecordName\":\"trj\",\"expectedTxtRecordValue\":\"qkvyhzokpoyuohu\"}],\"customDomainsForTopicSpacesConfiguration\":[{\"fullyQualifiedDomainName\":\"na\",\"validationState\":\"ErrorRetrievingDnsRecord\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"ejnglpwsadaxjsum\"},\"certificateUrl\":\"ezcoioyj\",\"expectedTxtRecordName\":\"fqzwqdnxkeed\",\"expectedTxtRecordValue\":\"wmywxfqzkvemy\"},{\"fullyQualifiedDomainName\":\"dpczaqpqifd\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"xzuisamona\"},\"certificateUrl\":\"izexroqsqj\",\"expectedTxtRecordName\":\"rmthsplwst\",\"expectedTxtRecordValue\":\"srgxfq\"}]}";
+            = "{\"customDomainsForTopicsConfiguration\":[{\"fullyQualifiedDomainName\":\"cgnwplrrbphcts\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"uhqvums\"},\"certificateUrl\":\"fsfeqbbe\",\"expectedTxtRecordName\":\"cuq\",\"expectedTxtRecordValue\":\"yyxmzrmtmvwituw\"},{\"fullyQualifiedDomainName\":\"yyjshcybwfuppo\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"uujxdii\"},\"certificateUrl\":\"oxrezsvavlrxik\",\"expectedTxtRecordName\":\"oywlunpipcwyb\",\"expectedTxtRecordValue\":\"fncn\"},{\"fullyQualifiedDomainName\":\"atpf\",\"validationState\":\"Approved\",\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"whxorpwaltz\"},\"certificateUrl\":\"gexojfccylhtrht\",\"expectedTxtRecordName\":\"azjpwexcdrzpro\",\"expectedTxtRecordValue\":\"zxezmnr\"},{\"fullyQualifiedDomainName\":\"jgpjeuxs\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"mijpdvzvfbhwbdq\"},\"certificateUrl\":\"vcgnrgla\",\"expectedTxtRecordName\":\"wyambhba\",\"expectedTxtRecordValue\":\"bz\"}],\"customDomainsForTopicSpacesConfiguration\":[{\"fullyQualifiedDomainName\":\"jqut\",\"validationState\":\"Pending\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"trvrkpsab\"},\"certificateUrl\":\"xvzmlghny\",\"expectedTxtRecordName\":\"lpyeu\",\"expectedTxtRecordValue\":\"p\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        CustomDomainOwnershipValidationResult response = manager.namespaces()
-            .validateCustomDomainOwnership("znsvlrd", "movpimyndnoxax", com.azure.core.util.Context.NONE);
+        CustomDomainOwnershipValidationResult response
+            = manager.namespaces().validateCustomDomainOwnership("qgpwbmwhr", "ali", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("aqotnndxolousdv",
+        Assertions.assertEquals("cgnwplrrbphcts",
             response.customDomainsForTopicsConfiguration().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.PENDING,
+        Assertions.assertEquals(CustomDomainValidationState.APPROVED,
             response.customDomainsForTopicsConfiguration().get(0).validationState());
-        Assertions.assertEquals(CustomDomainIdentityType.SYSTEM_ASSIGNED,
+        Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED,
             response.customDomainsForTopicsConfiguration().get(0).identity().type());
-        Assertions.assertEquals("wz",
+        Assertions.assertEquals("uhqvums",
             response.customDomainsForTopicsConfiguration().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("rp", response.customDomainsForTopicsConfiguration().get(0).certificateUrl());
-        Assertions.assertEquals("fu", response.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("yctsdbtqgkuj",
+        Assertions.assertEquals("fsfeqbbe", response.customDomainsForTopicsConfiguration().get(0).certificateUrl());
+        Assertions.assertEquals("cuq", response.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordName());
+        Assertions.assertEquals("yyxmzrmtmvwituw",
             response.customDomainsForTopicsConfiguration().get(0).expectedTxtRecordValue());
-        Assertions.assertEquals("na",
+        Assertions.assertEquals("jqut",
             response.customDomainsForTopicSpacesConfiguration().get(0).fullyQualifiedDomainName());
-        Assertions.assertEquals(CustomDomainValidationState.ERROR_RETRIEVING_DNS_RECORD,
+        Assertions.assertEquals(CustomDomainValidationState.PENDING,
             response.customDomainsForTopicSpacesConfiguration().get(0).validationState());
         Assertions.assertEquals(CustomDomainIdentityType.USER_ASSIGNED,
             response.customDomainsForTopicSpacesConfiguration().get(0).identity().type());
-        Assertions.assertEquals("ejnglpwsadaxjsum",
+        Assertions.assertEquals("trvrkpsab",
             response.customDomainsForTopicSpacesConfiguration().get(0).identity().userAssignedIdentity());
-        Assertions.assertEquals("ezcoioyj",
+        Assertions.assertEquals("xvzmlghny",
             response.customDomainsForTopicSpacesConfiguration().get(0).certificateUrl());
-        Assertions.assertEquals("fqzwqdnxkeed",
+        Assertions.assertEquals("lpyeu",
             response.customDomainsForTopicSpacesConfiguration().get(0).expectedTxtRecordName());
-        Assertions.assertEquals("wmywxfqzkvemy",
+        Assertions.assertEquals("p",
             response.customDomainsForTopicSpacesConfiguration().get(0).expectedTxtRecordValue());
     }
 }

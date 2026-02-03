@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,46 +24,55 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
     /*
      * The series property.
      */
+    @Generated
     private SeriesIdentity series;
 
     /*
      * timestamps of the series
      */
+    @Generated
     private List<OffsetDateTime> timestampList;
 
     /*
      * values of the series
      */
+    @Generated
     private List<Double> valueList;
 
     /*
      * whether points of the series are anomalies
      */
+    @Generated
     private List<Boolean> isAnomalyList;
 
     /*
      * period calculated on each point of the series
      */
+    @Generated
     private List<Integer> periodList;
 
     /*
      * expected values of the series given by smart detector
      */
+    @Generated
     private List<Double> expectedValueList;
 
     /*
      * lower boundary list of the series given by smart detector
      */
+    @Generated
     private List<Double> lowerBoundaryList;
 
     /*
      * upper boundary list of the series given by smart detector
      */
+    @Generated
     private List<Double> upperBoundaryList;
 
     /**
      * Creates an instance of SeriesResult class.
      */
+    @Generated
     public SeriesResult() {
     }
 
@@ -71,6 +81,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * 
      * @return the series value.
      */
+    @Generated
     public SeriesIdentity getSeries() {
         return this.series;
     }
@@ -81,6 +92,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @param series the series value to set.
      * @return the SeriesResult object itself.
      */
+    @Generated
     public SeriesResult setSeries(SeriesIdentity series) {
         this.series = series;
         return this;
@@ -91,6 +103,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * 
      * @return the timestampList value.
      */
+    @Generated
     public List<OffsetDateTime> getTimestampList() {
         return this.timestampList;
     }
@@ -101,6 +114,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @param timestampList the timestampList value to set.
      * @return the SeriesResult object itself.
      */
+    @Generated
     public SeriesResult setTimestampList(List<OffsetDateTime> timestampList) {
         this.timestampList = timestampList;
         return this;
@@ -111,6 +125,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * 
      * @return the valueList value.
      */
+    @Generated
     public List<Double> getValueList() {
         return this.valueList;
     }
@@ -121,6 +136,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @param valueList the valueList value to set.
      * @return the SeriesResult object itself.
      */
+    @Generated
     public SeriesResult setValueList(List<Double> valueList) {
         this.valueList = valueList;
         return this;
@@ -131,6 +147,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * 
      * @return the isAnomalyList value.
      */
+    @Generated
     public List<Boolean> getIsAnomalyList() {
         return this.isAnomalyList;
     }
@@ -141,6 +158,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @param isAnomalyList the isAnomalyList value to set.
      * @return the SeriesResult object itself.
      */
+    @Generated
     public SeriesResult setIsAnomalyList(List<Boolean> isAnomalyList) {
         this.isAnomalyList = isAnomalyList;
         return this;
@@ -151,6 +169,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * 
      * @return the periodList value.
      */
+    @Generated
     public List<Integer> getPeriodList() {
         return this.periodList;
     }
@@ -161,6 +180,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @param periodList the periodList value to set.
      * @return the SeriesResult object itself.
      */
+    @Generated
     public SeriesResult setPeriodList(List<Integer> periodList) {
         this.periodList = periodList;
         return this;
@@ -171,6 +191,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * 
      * @return the expectedValueList value.
      */
+    @Generated
     public List<Double> getExpectedValueList() {
         return this.expectedValueList;
     }
@@ -181,6 +202,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @param expectedValueList the expectedValueList value to set.
      * @return the SeriesResult object itself.
      */
+    @Generated
     public SeriesResult setExpectedValueList(List<Double> expectedValueList) {
         this.expectedValueList = expectedValueList;
         return this;
@@ -191,6 +213,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * 
      * @return the lowerBoundaryList value.
      */
+    @Generated
     public List<Double> getLowerBoundaryList() {
         return this.lowerBoundaryList;
     }
@@ -201,6 +224,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @param lowerBoundaryList the lowerBoundaryList value to set.
      * @return the SeriesResult object itself.
      */
+    @Generated
     public SeriesResult setLowerBoundaryList(List<Double> lowerBoundaryList) {
         this.lowerBoundaryList = lowerBoundaryList;
         return this;
@@ -211,6 +235,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * 
      * @return the upperBoundaryList value.
      */
+    @Generated
     public List<Double> getUpperBoundaryList() {
         return this.upperBoundaryList;
     }
@@ -221,6 +246,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @param upperBoundaryList the upperBoundaryList value to set.
      * @return the SeriesResult object itself.
      */
+    @Generated
     public SeriesResult setUpperBoundaryList(List<Double> upperBoundaryList) {
         this.upperBoundaryList = upperBoundaryList;
         return this;
@@ -229,6 +255,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -257,6 +284,7 @@ public final class SeriesResult implements JsonSerializable<SeriesResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SeriesResult.
      */
+    @Generated
     public static SeriesResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SeriesResult deserializedSeriesResult = new SeriesResult();

@@ -15,7 +15,7 @@ import java.io.IOException;
  * Describes Extension Metadata properties.
  */
 @Immutable
-public final class ExtensionValueProperties implements JsonSerializable<ExtensionValueProperties> {
+public class ExtensionValueProperties implements JsonSerializable<ExtensionValueProperties> {
     /*
      * The version of the Extension being received.
      */
@@ -47,6 +47,17 @@ public final class ExtensionValueProperties implements JsonSerializable<Extensio
     }
 
     /**
+     * Set the version property: The version of the Extension being received.
+     * 
+     * @param version the version value to set.
+     * @return the ExtensionValueProperties object itself.
+     */
+    ExtensionValueProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
      * Get the extensionType property: The type of the Extension being received.
      * 
      * @return the extensionType value.
@@ -56,12 +67,34 @@ public final class ExtensionValueProperties implements JsonSerializable<Extensio
     }
 
     /**
+     * Set the extensionType property: The type of the Extension being received.
+     * 
+     * @param extensionType the extensionType value to set.
+     * @return the ExtensionValueProperties object itself.
+     */
+    ExtensionValueProperties withExtensionType(String extensionType) {
+        this.extensionType = extensionType;
+        return this;
+    }
+
+    /**
      * Get the publisher property: The publisher of the Extension being received.
      * 
      * @return the publisher value.
      */
     public String publisher() {
         return this.publisher;
+    }
+
+    /**
+     * Set the publisher property: The publisher of the Extension being received.
+     * 
+     * @param publisher the publisher value to set.
+     * @return the ExtensionValueProperties object itself.
+     */
+    ExtensionValueProperties withPublisher(String publisher) {
+        this.publisher = publisher;
+        return this;
     }
 
     /**

@@ -5,7 +5,7 @@ package io.clientcore.core.implementation.instrumentation.fallback;
 
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
@@ -19,24 +19,24 @@ final class FallbackTracer implements Tracer {
     private final boolean isEnabled;
     private final ClientLogger logger;
 
-    FallbackTracer(InstrumentationOptions instrumentationOptions, LibraryInstrumentationOptions libraryOptions) {
+    FallbackTracer(InstrumentationOptions instrumentationOptions, SdkInstrumentationOptions sdkOptions) {
         // TODO (limolkova): do we need additional config to enable fallback tracing? Or maybe we enable it only if logs are enabled?
         this.isEnabled = instrumentationOptions == null || instrumentationOptions.isTracingEnabled();
-        this.logger = isEnabled ? getLogger(instrumentationOptions, libraryOptions) : LOGGER;
+        this.logger = isEnabled ? getLogger(instrumentationOptions, sdkOptions) : LOGGER;
     }
 
     private static ClientLogger getLogger(InstrumentationOptions instrumentationOptions,
-        LibraryInstrumentationOptions libraryOptions) {
+        SdkInstrumentationOptions sdkOptions) {
         Object providedLogger = instrumentationOptions == null ? null : instrumentationOptions.getTelemetryProvider();
         if (providedLogger instanceof ClientLogger) {
             return (ClientLogger) providedLogger;
         }
 
         Map<String, Object> libraryContext = new HashMap<>(2);
-        libraryContext.put("library.name", libraryOptions.getLibraryName());
-        libraryContext.put("library.version", libraryOptions.getLibraryVersion());
+        libraryContext.put("sdk.name", sdkOptions.getSdkName());
+        libraryContext.put("sdk.version", sdkOptions.getSdkVersion());
 
-        return new ClientLogger(libraryOptions.getLibraryName() + ".tracing", libraryContext);
+        return new ClientLogger(sdkOptions.getSdkName() + ".tracing", libraryContext);
     }
 
     /**

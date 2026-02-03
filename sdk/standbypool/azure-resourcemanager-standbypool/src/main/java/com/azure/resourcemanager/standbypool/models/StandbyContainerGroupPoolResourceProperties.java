@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.standbypool.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Details of the StandbyContainerGroupPool.
@@ -27,6 +27,11 @@ public final class StandbyContainerGroupPoolResourceProperties
      * Specifies container group properties of standby container group pools.
      */
     private ContainerGroupProperties containerGroupProperties;
+
+    /*
+     * Specifies zones of standby container group pools.
+     */
+    private List<String> zones;
 
     /*
      * The status of the last operation.
@@ -82,6 +87,26 @@ public final class StandbyContainerGroupPoolResourceProperties
     }
 
     /**
+     * Get the zones property: Specifies zones of standby container group pools.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: Specifies zones of standby container group pools.
+     * 
+     * @param zones the zones value to set.
+     * @return the StandbyContainerGroupPoolResourceProperties object itself.
+     */
+    public StandbyContainerGroupPoolResourceProperties withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The status of the last operation.
      * 
      * @return the provisioningState value.
@@ -91,30 +116,6 @@ public final class StandbyContainerGroupPoolResourceProperties
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (elasticityProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property elasticityProfile in model StandbyContainerGroupPoolResourceProperties"));
-        } else {
-            elasticityProfile().validate();
-        }
-        if (containerGroupProperties() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property containerGroupProperties in model StandbyContainerGroupPoolResourceProperties"));
-        } else {
-            containerGroupProperties().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(StandbyContainerGroupPoolResourceProperties.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -122,6 +123,7 @@ public final class StandbyContainerGroupPoolResourceProperties
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("elasticityProfile", this.elasticityProfile);
         jsonWriter.writeJsonField("containerGroupProperties", this.containerGroupProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -148,6 +150,9 @@ public final class StandbyContainerGroupPoolResourceProperties
                 } else if ("containerGroupProperties".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolResourceProperties.containerGroupProperties
                         = ContainerGroupProperties.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedStandbyContainerGroupPoolResourceProperties.zones = zones;
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedStandbyContainerGroupPoolResourceProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());

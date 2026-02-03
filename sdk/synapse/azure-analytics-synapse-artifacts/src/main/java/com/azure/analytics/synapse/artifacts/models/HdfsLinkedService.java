@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,39 +22,46 @@ public class HdfsLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Hdfs";
 
     /*
      * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
      * resultType string).
      */
+    @Generated
     private Object url;
 
     /*
      * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or
      * Expression with resultType string).
      */
+    @Generated
     private Object authenticationType;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /*
      * User name for Windows authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object userName;
 
     /*
      * Password for Windows authentication.
      */
+    @Generated
     private SecretBase password;
 
     /**
      * Creates an instance of HdfsLinkedService class.
      */
+    @Generated
     public HdfsLinkedService() {
     }
 
@@ -62,6 +70,7 @@ public class HdfsLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -73,6 +82,7 @@ public class HdfsLinkedService extends LinkedService {
      * 
      * @return the url value.
      */
+    @Generated
     public Object getUrl() {
         return this.url;
     }
@@ -84,6 +94,7 @@ public class HdfsLinkedService extends LinkedService {
      * @param url the url value to set.
      * @return the HdfsLinkedService object itself.
      */
+    @Generated
     public HdfsLinkedService setUrl(Object url) {
         this.url = url;
         return this;
@@ -95,6 +106,7 @@ public class HdfsLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public Object getAuthenticationType() {
         return this.authenticationType;
     }
@@ -106,6 +118,7 @@ public class HdfsLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the HdfsLinkedService object itself.
      */
+    @Generated
     public HdfsLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -117,6 +130,7 @@ public class HdfsLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -128,6 +142,7 @@ public class HdfsLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HdfsLinkedService object itself.
      */
+    @Generated
     public HdfsLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -139,6 +154,7 @@ public class HdfsLinkedService extends LinkedService {
      * 
      * @return the userName value.
      */
+    @Generated
     public Object getUserName() {
         return this.userName;
     }
@@ -150,6 +166,7 @@ public class HdfsLinkedService extends LinkedService {
      * @param userName the userName value to set.
      * @return the HdfsLinkedService object itself.
      */
+    @Generated
     public HdfsLinkedService setUserName(Object userName) {
         this.userName = userName;
         return this;
@@ -160,6 +177,7 @@ public class HdfsLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -170,6 +188,7 @@ public class HdfsLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the HdfsLinkedService object itself.
      */
+    @Generated
     public HdfsLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -178,6 +197,17 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public HdfsLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public HdfsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -187,6 +217,7 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HdfsLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -196,6 +227,7 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HdfsLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -205,6 +237,7 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public HdfsLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -214,9 +247,11 @@ public class HdfsLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -229,9 +264,15 @@ public class HdfsLinkedService extends LinkedService {
             || password != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("url", this.url);
-            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
-            jsonWriter.writeUntypedField("userName", this.userName);
+            if (this.authenticationType != null) {
+                jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
+            if (this.userName != null) {
+                jsonWriter.writeUntypedField("userName", this.userName);
+            }
             jsonWriter.writeJsonField("password", this.password);
             jsonWriter.writeEndObject();
         }
@@ -252,6 +293,7 @@ public class HdfsLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HdfsLinkedService.
      */
+    @Generated
     public static HdfsLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HdfsLinkedService deserializedHdfsLinkedService = new HdfsLinkedService();
@@ -260,7 +302,9 @@ public class HdfsLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedHdfsLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedHdfsLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedHdfsLinkedService.setDescription(reader.getString());

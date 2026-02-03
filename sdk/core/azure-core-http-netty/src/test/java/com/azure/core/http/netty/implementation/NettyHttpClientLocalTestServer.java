@@ -37,12 +37,14 @@ public final class NettyHttpClientLocalTestServer {
     public static final String RETURN_HEADERS_AS_IS_PATH = "/returnHeadersAsIs";
     public static final String PROXY_TO_ADDRESS = "/proxyToAddress";
     public static final String TIMEOUT = "/timeout";
+    public static final String STRESS = "/stress";
 
     public static final byte[] SHORT_BODY = "hi there".getBytes(StandardCharsets.UTF_8);
     public static final byte[] LONG_BODY = createLongBody();
 
     public static final HttpHeaderName TEST_HEADER = HttpHeaderName.fromString("testHeader");
     public static final String NULL_REPLACEMENT = "null";
+    public static final HttpHeaderName SHOULD_THROTTLE = HttpHeaderName.fromString("shouldThrottle");
 
     /**
      * Gets the {@link LocalTestServer} instance.
@@ -144,6 +146,17 @@ public final class NettyHttpClientLocalTestServer {
                     resp.getHttpOutput().complete(Callback.NOOP);
                 } catch (InterruptedException e) {
                     throw new ServletException(e);
+                }
+            } else if (get && STRESS.equals(path)) {
+                if (Boolean.parseBoolean(req.getHeader(SHOULD_THROTTLE.getCaseInsensitiveName()))) {
+                    resp.setStatus(429);
+                } else {
+                    resp.setStatus(200);
+                    resp.setContentLength(LONG_BODY.length);
+                    resp.setContentType("application/octet-stream");
+                    resp.getHttpOutput().write(LONG_BODY);
+                    resp.getHttpOutput().flush();
+                    resp.getHttpOutput().complete(Callback.NOOP);
                 }
             } else {
                 throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);

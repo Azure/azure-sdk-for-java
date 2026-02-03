@@ -13,19 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class PartnerDestinationUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartnerDestinationUpdateParameters model = BinaryData
-            .fromString(
-                "{\"tags\":{\"hwwn\":\"cse\",\"ousnfepgfewe\":\"jhlfzswpchwahf\",\"hdjhlimmbcx\":\"wlyxgncxyk\"}}")
-            .toObject(PartnerDestinationUpdateParameters.class);
-        Assertions.assertEquals("cse", model.tags().get("hwwn"));
+        PartnerDestinationUpdateParameters model
+            = BinaryData.fromString("{\"tags\":{\"wf\":\"yzriykhy\",\"xqvkjlmxhomdyn\":\"jlb\"}}")
+                .toObject(PartnerDestinationUpdateParameters.class);
+        Assertions.assertEquals("yzriykhy", model.tags().get("wf"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PartnerDestinationUpdateParameters model = new PartnerDestinationUpdateParameters()
-            .withTags(mapOf("hwwn", "cse", "ousnfepgfewe", "jhlfzswpchwahf", "hdjhlimmbcx", "wlyxgncxyk"));
+        PartnerDestinationUpdateParameters model
+            = new PartnerDestinationUpdateParameters().withTags(mapOf("wf", "yzriykhy", "xqvkjlmxhomdyn", "jlb"));
         model = BinaryData.fromObject(model).toObject(PartnerDestinationUpdateParameters.class);
-        Assertions.assertEquals("cse", model.tags().get("hwwn"));
+        Assertions.assertEquals("yzriykhy", model.tags().get("wf"));
     }
 
     // Use "Map.of" if available

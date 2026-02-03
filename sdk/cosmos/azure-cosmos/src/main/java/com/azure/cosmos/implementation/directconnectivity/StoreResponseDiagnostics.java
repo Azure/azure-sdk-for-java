@@ -25,6 +25,12 @@ import java.util.Set;
  */
 public class StoreResponseDiagnostics {
     final static Logger logger = LoggerFactory.getLogger(StoreResponseDiagnostics.class);
+    private final static ImplementationBridgeHelpers
+        .CosmosExceptionHelper
+        .CosmosExceptionAccessor cosmosExceptionAccessor = ImplementationBridgeHelpers
+        .CosmosExceptionHelper
+        .getCosmosExceptionAccessor();
+
     private final String partitionKeyRangeId;
     private final String sessionTokenAsString;
     private final double requestCharge;
@@ -45,6 +51,9 @@ public class StoreResponseDiagnostics {
     private final Map<String, Set<String>> replicaStatusList;
     private final String faultInjectionRuleId;
     private final List<String> faultInjectionEvaluationResults;
+    private final String endpoint;
+    private final String requestThroughputControlGroupName;
+    private final String requestThroughputControlGroupConfig;
 
     public static StoreResponseDiagnostics createStoreResponseDiagnostics(
         StoreResponse storeResponse,
@@ -83,6 +92,10 @@ public class StoreResponseDiagnostics {
         this.replicaStatusList = storeResponse.getReplicaStatusList();
         this.faultInjectionRuleId = storeResponse.getFaultInjectionRuleId();
         this.faultInjectionEvaluationResults = storeResponse.getFaultInjectionRuleEvaluationResults();
+        this.endpoint = storeResponse.getEndpoint();
+        this.requestThroughputControlGroupName = rxDocumentServiceRequest.throughputControlGroupName;
+        this.requestThroughputControlGroupConfig =
+            rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
     }
 
     private StoreResponseDiagnostics(CosmosException e, RxDocumentServiceRequest rxDocumentServiceRequest) {
@@ -100,26 +113,23 @@ public class StoreResponseDiagnostics {
         this.requestTimeline = BridgeInternal.getRequestTimeline(e);
         this.channelAcquisitionTimeline = BridgeInternal.getChannelAcqusitionTimeline(e);
         this.rntbdEndpointStatistics = BridgeInternal.getServiceEndpointStatistics(e);
-        this.rntbdChannelStatistics =
-            ImplementationBridgeHelpers
-                .CosmosExceptionHelper
-                .getCosmosExceptionAccessor()
-                .getRntbdChannelStatistics(e);
+        this.rntbdChannelStatistics = cosmosExceptionAccessor.getRntbdChannelStatistics(e);
         this.rntbdRequestLength = BridgeInternal.getRntbdRequestLength(e);
         this.rntbdResponseLength = BridgeInternal.getRntbdResponseLength(e);
         this.exceptionMessage = BridgeInternal.getInnerErrorMessage(e);
         this.exceptionResponseHeaders = e.getResponseHeaders() != null ? e.getResponseHeaders().toString() : null;
-        this.replicaStatusList = ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor().getReplicaStatusList(e);
-        this.faultInjectionRuleId =
-            ImplementationBridgeHelpers
-                .CosmosExceptionHelper
-                .getCosmosExceptionAccessor()
-                .getFaultInjectionRuleId(e);
-        this.faultInjectionEvaluationResults =
-            ImplementationBridgeHelpers
-                .CosmosExceptionHelper
-                .getCosmosExceptionAccessor()
-                .getFaultInjectionEvaluationResults(e);
+        this.replicaStatusList = cosmosExceptionAccessor.getReplicaStatusList(e);
+        this.faultInjectionRuleId = cosmosExceptionAccessor.getFaultInjectionRuleId(e);
+        this.faultInjectionEvaluationResults = cosmosExceptionAccessor.getFaultInjectionEvaluationResults(e);
+        Uri requestUri = cosmosExceptionAccessor.getRequestUri(e);
+        if (requestUri != null) {
+            this.endpoint = requestUri.getURIAsString();
+        } else {
+            this.endpoint = "";
+        }
+        this.requestThroughputControlGroupName = rxDocumentServiceRequest.throughputControlGroupName;
+        this.requestThroughputControlGroupConfig =
+            rxDocumentServiceRequest.requestContext.throughputControlRequestContext != null ? rxDocumentServiceRequest.requestContext.throughputControlRequestContext.getConfigString() : null;
     }
 
     public int getStatusCode() {
@@ -199,4 +209,16 @@ public class StoreResponseDiagnostics {
     }
 
     public Map<String, Set<String>> getReplicaStatusList() { return this.replicaStatusList; }
+
+    public String getEndpoint() {
+        return this.endpoint;
+    }
+
+    public String getRequestThroughputControlGroupName() {
+        return this.requestThroughputControlGroupName;
+    }
+
+    public String getRequestThroughputControlGroupConfig() {
+        return this.requestThroughputControlGroupConfig;
+    }
 }

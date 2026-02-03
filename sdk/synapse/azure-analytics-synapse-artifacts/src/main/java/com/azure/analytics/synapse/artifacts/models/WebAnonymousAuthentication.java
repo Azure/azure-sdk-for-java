@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,11 +19,13 @@ public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProper
     /*
      * Type of authentication used to connect to the web table source.
      */
+    @Generated
     private WebAuthenticationType authenticationType = WebAuthenticationType.ANONYMOUS;
 
     /**
      * Creates an instance of WebAnonymousAuthentication class.
      */
+    @Generated
     public WebAnonymousAuthentication() {
     }
 
@@ -31,6 +34,7 @@ public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProper
      * 
      * @return the authenticationType value.
      */
+    @Generated
     @Override
     public WebAuthenticationType getAuthenticationType() {
         return this.authenticationType;
@@ -39,6 +43,7 @@ public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProper
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WebAnonymousAuthentication setUrl(Object url) {
         super.setUrl(url);
@@ -48,6 +53,7 @@ public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProper
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProper
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WebAnonymousAuthentication.
      */
+    @Generated
     public static WebAnonymousAuthentication fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WebAnonymousAuthentication deserializedWebAnonymousAuthentication = new WebAnonymousAuthentication();

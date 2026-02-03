@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,21 +21,25 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "AzureDatabricksDeltaLakeSource";
 
     /*
      * Azure Databricks Delta Lake Sql query. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object query;
 
     /*
      * Azure Databricks Delta Lake export settings.
      */
+    @Generated
     private AzureDatabricksDeltaLakeExportCommand exportSettings;
 
     /**
      * Creates an instance of AzureDatabricksDeltaLakeSource class.
      */
+    @Generated
     public AzureDatabricksDeltaLakeSource() {
     }
 
@@ -43,6 +48,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -65,6 +72,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      * @param query the query value to set.
      * @return the AzureDatabricksDeltaLakeSource object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeSource setQuery(Object query) {
         this.query = query;
         return this;
@@ -75,6 +83,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      * 
      * @return the exportSettings value.
      */
+    @Generated
     public AzureDatabricksDeltaLakeExportCommand getExportSettings() {
         return this.exportSettings;
     }
@@ -85,6 +94,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      * @param exportSettings the exportSettings value to set.
      * @return the AzureDatabricksDeltaLakeSource object itself.
      */
+    @Generated
     public AzureDatabricksDeltaLakeSource setExportSettings(AzureDatabricksDeltaLakeExportCommand exportSettings) {
         this.exportSettings = exportSettings;
         return this;
@@ -93,6 +103,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksDeltaLakeSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -102,6 +113,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksDeltaLakeSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -111,6 +123,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzureDatabricksDeltaLakeSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -120,14 +133,23 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("query", this.query);
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
         jsonWriter.writeJsonField("exportSettings", this.exportSettings);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -145,6 +167,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureDatabricksDeltaLakeSource.
      */
+    @Generated
     public static AzureDatabricksDeltaLakeSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureDatabricksDeltaLakeSource deserializedAzureDatabricksDeltaLakeSource

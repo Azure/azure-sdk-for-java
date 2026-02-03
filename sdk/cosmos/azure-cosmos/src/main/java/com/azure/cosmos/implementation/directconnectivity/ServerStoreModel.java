@@ -7,15 +7,18 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Flux;
@@ -31,9 +34,13 @@ public class ServerStoreModel implements RxStoreModel {
     }
 
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        String requestConsistencyLevelHeaderValue = request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        String requestConsistencyLevelHeaderValue =
+            request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+        String requestReadConsistencyStrategyHeaderValue =
+            request.getHeaders().get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
 
         request.requestContext.originalRequestConsistencyLevel = null;
+        request.requestContext.readConsistencyStrategy = ReadConsistencyStrategy.DEFAULT;
 
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
             ConsistencyLevel requestConsistencyLevel;
@@ -46,6 +53,23 @@ public class ServerStoreModel implements RxStoreModel {
             }
 
             request.requestContext.originalRequestConsistencyLevel = requestConsistencyLevel;
+        }
+
+        if (!Strings.isNullOrEmpty(requestReadConsistencyStrategyHeaderValue)) {
+            ReadConsistencyStrategy requestReadConsistencyStrategy;
+            if ((requestReadConsistencyStrategy = ImplementationBridgeHelpers
+                .ReadConsistencyStrategyHelper
+                .getReadConsistencyStrategyAccessor()
+                .createFromServiceSerializedFormat(requestReadConsistencyStrategyHeaderValue)) == null) {
+
+                return Mono.error(new BadRequestException(
+                    String.format(
+                        RMResources.InvalidHeaderValue,
+                        requestConsistencyLevelHeaderValue,
+                        HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY)));
+            }
+
+            request.requestContext.readConsistencyStrategy = requestReadConsistencyStrategy;
         }
 
         if (ReplicatedResourceClient.isMasterResource(request.getResourceType())) {
@@ -77,5 +101,10 @@ public class ServerStoreModel implements RxStoreModel {
 
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.storeClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
+    }
+
+    @Override
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.storeClient.registerTransportClientInterceptor(transportClientInterceptor);
     }
 }

@@ -52,7 +52,7 @@ public final class AzureDatabricksLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDatabricksLinkedServiceTypeProperties innerTypeProperties() {
+    AzureDatabricksLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -583,6 +583,31 @@ public final class AzureDatabricksLinkedService extends LinkedService {
             this.innerTypeProperties = new AzureDatabricksLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
+     * Get the dataSecurityMode property: The data security mode for the Databricks Cluster. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @return the dataSecurityMode value.
+     */
+    public Object dataSecurityMode() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().dataSecurityMode();
+    }
+
+    /**
+     * Set the dataSecurityMode property: The data security mode for the Databricks Cluster. Type: string (or Expression
+     * with resultType string).
+     * 
+     * @param dataSecurityMode the dataSecurityMode value to set.
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withDataSecurityMode(Object dataSecurityMode) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureDatabricksLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDataSecurityMode(dataSecurityMode);
         return this;
     }
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.ContainerAppJobExecutions;
@@ -21,22 +21,22 @@ public final class JobsStopMultipleExecutionsMockTests {
     @Test
     public void testStopMultipleExecutions() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"nxhtf\",\"id\":\"qbsudzpgchzpg\",\"type\":\"umjdjxhzghg\",\"properties\":{\"status\":\"Failed\",\"startTime\":\"2021-01-05T00:02:43Z\",\"endTime\":\"2021-01-05T16:16:30Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{}]},\"detailedStatus\":{\"replicas\":[{}]}}}],\"nextLink\":\"mxjdnaju\"}";
+            = "{\"value\":[{\"name\":\"owzafczu\",\"id\":\"ljcirvpefycdvei\",\"type\":\"tjnsx\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-09-01T14:25:33Z\",\"endTime\":\"2021-10-08T22:15:33Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{}]}}},{\"name\":\"bxqvmvuayt\",\"id\":\"dxk\",\"type\":\"qbwpntghyk\",\"properties\":{\"status\":\"Running\",\"startTime\":\"2021-07-12T18:58:47Z\",\"endTime\":\"2021-10-22T05:34:35Z\",\"template\":{\"containers\":[{}],\"initContainers\":[{},{},{},{}]}}}],\"nextLink\":\"ladltxkpbqhvfd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ContainerAppJobExecutions response
-            = manager.jobs().stopMultipleExecutions("swqi", "wepwoggg", com.azure.core.util.Context.NONE);
+        ContainerAppJobExecutions response = manager.jobs()
+            .stopMultipleExecutions("lkndrndpgfjodh", "aqotwfhipxwgsabv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nxhtf", response.value().get(0).name());
-        Assertions.assertEquals("qbsudzpgchzpg", response.value().get(0).id());
-        Assertions.assertEquals("umjdjxhzghg", response.value().get(0).type());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T00:02:43Z"), response.value().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T16:16:30Z"), response.value().get(0).endTime());
+        Assertions.assertEquals("owzafczu", response.value().get(0).name());
+        Assertions.assertEquals("ljcirvpefycdvei", response.value().get(0).id());
+        Assertions.assertEquals("tjnsx", response.value().get(0).type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T14:25:33Z"), response.value().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-08T22:15:33Z"), response.value().get(0).endTime());
     }
 }

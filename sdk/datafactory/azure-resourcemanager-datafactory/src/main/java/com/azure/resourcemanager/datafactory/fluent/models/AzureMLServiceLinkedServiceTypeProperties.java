@@ -283,10 +283,16 @@ public final class AzureMLServiceLinkedServiceTypeProperties
         jsonWriter.writeUntypedField("subscriptionId", this.subscriptionId);
         jsonWriter.writeUntypedField("resourceGroupName", this.resourceGroupName);
         jsonWriter.writeUntypedField("mlWorkspaceName", this.mlWorkspaceName);
-        jsonWriter.writeUntypedField("authentication", this.authentication);
-        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        if (this.authentication != null) {
+            jsonWriter.writeUntypedField("authentication", this.authentication);
+        }
+        if (this.servicePrincipalId != null) {
+            jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        }
         jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
-        jsonWriter.writeUntypedField("tenant", this.tenant);
+        if (this.tenant != null) {
+            jsonWriter.writeUntypedField("tenant", this.tenant);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }

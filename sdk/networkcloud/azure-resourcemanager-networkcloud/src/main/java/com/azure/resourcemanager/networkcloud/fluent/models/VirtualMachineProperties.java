@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.ImageRepositoryCredentials;
 import com.azure.resourcemanager.networkcloud.models.NetworkAttachment;
 import com.azure.resourcemanager.networkcloud.models.SshPublicKey;
@@ -61,6 +62,11 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     private String clusterId;
 
     /*
+     * The extended location to use for creation of a VM console resource.
+     */
+    private ExtendedLocation consoleExtendedLocation;
+
+    /*
      * The number of CPU cores in the virtual machine.
      */
     private long cpuCores;
@@ -92,9 +98,15 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     private List<NetworkAttachment> networkAttachments;
 
     /*
-     * The Base64 encoded cloud-init network data.
+     * Field Deprecated: The Base64 encoded cloud-init network data. The networkDataContent property will be used in
+     * preference to this property.
      */
     private String networkData;
+
+    /*
+     * The Base64 encoded cloud-init network data.
+     */
+    private String networkDataContent;
 
     /*
      * The scheduling hints for the virtual machine.
@@ -123,9 +135,15 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     private StorageProfile storageProfile;
 
     /*
-     * The Base64 encoded cloud-init user data.
+     * Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will be used in
+     * preference to this property.
      */
     private String userData;
+
+    /*
+     * The Base64 encoded cloud-init user data.
+     */
+    private String userDataContent;
 
     /*
      * Field Deprecated, use virtualizationModel instead. The type of the virtio interface.
@@ -252,6 +270,26 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
+     * Get the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @return the consoleExtendedLocation value.
+     */
+    public ExtendedLocation consoleExtendedLocation() {
+        return this.consoleExtendedLocation;
+    }
+
+    /**
+     * Set the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @param consoleExtendedLocation the consoleExtendedLocation value to set.
+     * @return the VirtualMachineProperties object itself.
+     */
+    public VirtualMachineProperties withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation) {
+        this.consoleExtendedLocation = consoleExtendedLocation;
+        return this;
+    }
+
+    /**
      * Get the cpuCores property: The number of CPU cores in the virtual machine.
      * 
      * @return the cpuCores value.
@@ -353,7 +391,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Get the networkData property: The Base64 encoded cloud-init network data.
+     * Get the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+     * networkDataContent property will be used in preference to this property.
      * 
      * @return the networkData value.
      */
@@ -362,13 +401,34 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Set the networkData property: The Base64 encoded cloud-init network data.
+     * Set the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+     * networkDataContent property will be used in preference to this property.
      * 
      * @param networkData the networkData value to set.
      * @return the VirtualMachineProperties object itself.
      */
     public VirtualMachineProperties withNetworkData(String networkData) {
         this.networkData = networkData;
+        return this;
+    }
+
+    /**
+     * Get the networkDataContent property: The Base64 encoded cloud-init network data.
+     * 
+     * @return the networkDataContent value.
+     */
+    public String networkDataContent() {
+        return this.networkDataContent;
+    }
+
+    /**
+     * Set the networkDataContent property: The Base64 encoded cloud-init network data.
+     * 
+     * @param networkDataContent the networkDataContent value to set.
+     * @return the VirtualMachineProperties object itself.
+     */
+    public VirtualMachineProperties withNetworkDataContent(String networkDataContent) {
+        this.networkDataContent = networkDataContent;
         return this;
     }
 
@@ -455,7 +515,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Get the userData property: The Base64 encoded cloud-init user data.
+     * Get the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent
+     * property will be used in preference to this property.
      * 
      * @return the userData value.
      */
@@ -464,13 +525,34 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
     }
 
     /**
-     * Set the userData property: The Base64 encoded cloud-init user data.
+     * Set the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent
+     * property will be used in preference to this property.
      * 
      * @param userData the userData value to set.
      * @return the VirtualMachineProperties object itself.
      */
     public VirtualMachineProperties withUserData(String userData) {
         this.userData = userData;
+        return this;
+    }
+
+    /**
+     * Get the userDataContent property: The Base64 encoded cloud-init user data.
+     * 
+     * @return the userDataContent value.
+     */
+    public String userDataContent() {
+        return this.userDataContent;
+    }
+
+    /**
+     * Set the userDataContent property: The Base64 encoded cloud-init user data.
+     * 
+     * @param userDataContent the userDataContent value to set.
+     * @return the VirtualMachineProperties object itself.
+     */
+    public VirtualMachineProperties withUserDataContent(String userDataContent) {
+        this.userDataContent = userDataContent;
         return this;
     }
 
@@ -588,6 +670,9 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
         } else {
             cloudServicesNetworkAttachment().validate();
         }
+        if (consoleExtendedLocation() != null) {
+            consoleExtendedLocation().validate();
+        }
         if (networkAttachments() != null) {
             networkAttachments().forEach(e -> e.validate());
         }
@@ -629,15 +714,18 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
         jsonWriter.writeJsonField("storageProfile", this.storageProfile);
         jsonWriter.writeStringField("vmImage", this.vmImage);
         jsonWriter.writeStringField("bootMethod", this.bootMethod == null ? null : this.bootMethod.toString());
+        jsonWriter.writeJsonField("consoleExtendedLocation", this.consoleExtendedLocation);
         jsonWriter.writeStringField("isolateEmulatorThread",
             this.isolateEmulatorThread == null ? null : this.isolateEmulatorThread.toString());
         jsonWriter.writeArrayField("networkAttachments", this.networkAttachments,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("networkData", this.networkData);
+        jsonWriter.writeStringField("networkDataContent", this.networkDataContent);
         jsonWriter.writeArrayField("placementHints", this.placementHints,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("sshPublicKeys", this.sshPublicKeys, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("userData", this.userData);
+        jsonWriter.writeStringField("userDataContent", this.userDataContent);
         jsonWriter.writeStringField("virtioInterface",
             this.virtioInterface == null ? null : this.virtioInterface.toString());
         jsonWriter.writeStringField("vmDeviceModel", this.vmDeviceModel == null ? null : this.vmDeviceModel.toString());
@@ -683,6 +771,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
                         = VirtualMachineBootMethod.fromString(reader.getString());
                 } else if ("clusterId".equals(fieldName)) {
                     deserializedVirtualMachineProperties.clusterId = reader.getString();
+                } else if ("consoleExtendedLocation".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.consoleExtendedLocation = ExtendedLocation.fromJson(reader);
                 } else if ("detailedStatus".equals(fieldName)) {
                     deserializedVirtualMachineProperties.detailedStatus
                         = VirtualMachineDetailedStatus.fromString(reader.getString());
@@ -697,6 +787,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
                     deserializedVirtualMachineProperties.networkAttachments = networkAttachments;
                 } else if ("networkData".equals(fieldName)) {
                     deserializedVirtualMachineProperties.networkData = reader.getString();
+                } else if ("networkDataContent".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.networkDataContent = reader.getString();
                 } else if ("placementHints".equals(fieldName)) {
                     List<VirtualMachinePlacementHint> placementHints
                         = reader.readArray(reader1 -> VirtualMachinePlacementHint.fromJson(reader1));
@@ -712,6 +804,8 @@ public final class VirtualMachineProperties implements JsonSerializable<VirtualM
                     deserializedVirtualMachineProperties.sshPublicKeys = sshPublicKeys;
                 } else if ("userData".equals(fieldName)) {
                     deserializedVirtualMachineProperties.userData = reader.getString();
+                } else if ("userDataContent".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.userDataContent = reader.getString();
                 } else if ("virtioInterface".equals(fieldName)) {
                     deserializedVirtualMachineProperties.virtioInterface
                         = VirtualMachineVirtioInterfaceType.fromString(reader.getString());

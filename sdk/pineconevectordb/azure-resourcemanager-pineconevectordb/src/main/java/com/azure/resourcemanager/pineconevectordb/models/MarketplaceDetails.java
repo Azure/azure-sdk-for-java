@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.pineconevectordb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -88,35 +87,13 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (subscriptionId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property subscriptionId in model MarketplaceDetails"));
-        }
-        if (offerDetails() == null) {
-            throw LOGGER.atError()
-                .log(
-                    new IllegalArgumentException("Missing required property offerDetails in model MarketplaceDetails"));
-        } else {
-            offerDetails().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(MarketplaceDetails.class);
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
         jsonWriter.writeJsonField("offerDetails", this.offerDetails);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
         return jsonWriter.writeEndObject();
     }
 
@@ -136,10 +113,10 @@ public final class MarketplaceDetails implements JsonSerializable<MarketplaceDet
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("subscriptionId".equals(fieldName)) {
-                    deserializedMarketplaceDetails.subscriptionId = reader.getString();
-                } else if ("offerDetails".equals(fieldName)) {
+                if ("offerDetails".equals(fieldName)) {
                     deserializedMarketplaceDetails.offerDetails = OfferDetails.fromJson(reader);
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedMarketplaceDetails.subscriptionId = reader.getString();
                 } else if ("subscriptionStatus".equals(fieldName)) {
                     deserializedMarketplaceDetails.subscriptionStatus
                         = MarketplaceSubscriptionStatus.fromString(reader.getString());

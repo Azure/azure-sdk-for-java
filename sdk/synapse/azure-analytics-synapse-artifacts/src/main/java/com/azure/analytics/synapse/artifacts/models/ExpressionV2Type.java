@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,28 +15,39 @@ public final class ExpressionV2Type extends ExpandableStringEnum<ExpressionV2Typ
     /**
      * Static value Constant for ExpressionV2Type.
      */
+    @Generated
     public static final ExpressionV2Type CONSTANT = fromString("Constant");
 
     /**
      * Static value Field for ExpressionV2Type.
      */
+    @Generated
     public static final ExpressionV2Type FIELD = fromString("Field");
 
     /**
      * Static value Unary for ExpressionV2Type.
      */
+    @Generated
     public static final ExpressionV2Type UNARY = fromString("Unary");
 
     /**
      * Static value Binary for ExpressionV2Type.
      */
+    @Generated
     public static final ExpressionV2Type BINARY = fromString("Binary");
+
+    /**
+     * Static value NAry for ExpressionV2Type.
+     */
+    @Generated
+    public static final ExpressionV2Type NARY = fromString("NAry");
 
     /**
      * Creates a new instance of ExpressionV2Type value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public ExpressionV2Type() {
     }
@@ -46,6 +58,7 @@ public final class ExpressionV2Type extends ExpandableStringEnum<ExpressionV2Typ
      * @param name a name to look for.
      * @return the corresponding ExpressionV2Type.
      */
+    @Generated
     public static ExpressionV2Type fromString(String name) {
         return fromString(name, ExpressionV2Type.class);
     }
@@ -55,6 +68,7 @@ public final class ExpressionV2Type extends ExpandableStringEnum<ExpressionV2Typ
      * 
      * @return known ExpressionV2Type values.
      */
+    @Generated
     public static Collection<ExpressionV2Type> values() {
         return values(ExpressionV2Type.class);
     }

@@ -1,0 +1,80 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.exception
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipe.azure.core.exception
+displayName: Migrate from azure.core.exception to next generation stack
+description: This recipe migrates the azure.core.exception package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # AzureException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ClientAuthenticationException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # DecodeException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpRequestException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HttpResponseException
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.exception.HttpResponseException
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpResponseException
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ResourceExistsException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ResourceModifiedException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ResourceNotFoundException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ServiceResponseException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # TooManyRedirectsException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UnexpectedLengthException
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement

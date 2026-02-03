@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.spark.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class SparkStatementCollection implements JsonSerializable<SparkSta
     /*
      * The total_statements property.
      */
+    @Generated
     private int total;
 
     /*
      * The statements property.
      */
+    @Generated
     private List<SparkStatement> statements;
 
     /**
      * Creates an instance of SparkStatementCollection class.
      */
+    @Generated
     public SparkStatementCollection() {
     }
 
@@ -38,6 +42,7 @@ public final class SparkStatementCollection implements JsonSerializable<SparkSta
      * 
      * @return the total value.
      */
+    @Generated
     public int getTotal() {
         return this.total;
     }
@@ -48,6 +53,7 @@ public final class SparkStatementCollection implements JsonSerializable<SparkSta
      * @param total the total value to set.
      * @return the SparkStatementCollection object itself.
      */
+    @Generated
     public SparkStatementCollection setTotal(int total) {
         this.total = total;
         return this;
@@ -58,6 +64,7 @@ public final class SparkStatementCollection implements JsonSerializable<SparkSta
      * 
      * @return the statements value.
      */
+    @Generated
     public List<SparkStatement> getStatements() {
         return this.statements;
     }
@@ -68,6 +75,7 @@ public final class SparkStatementCollection implements JsonSerializable<SparkSta
      * @param statements the statements value to set.
      * @return the SparkStatementCollection object itself.
      */
+    @Generated
     public SparkStatementCollection setStatements(List<SparkStatement> statements) {
         this.statements = statements;
         return this;
@@ -76,6 +84,7 @@ public final class SparkStatementCollection implements JsonSerializable<SparkSta
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -93,6 +102,7 @@ public final class SparkStatementCollection implements JsonSerializable<SparkSta
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkStatementCollection.
      */
+    @Generated
     public static SparkStatementCollection fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkStatementCollection deserializedSparkStatementCollection = new SparkStatementCollection();

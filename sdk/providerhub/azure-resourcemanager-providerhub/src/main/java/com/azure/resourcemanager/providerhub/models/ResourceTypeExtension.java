@@ -20,17 +20,17 @@ import java.util.List;
 @Fluent
 public final class ResourceTypeExtension implements JsonSerializable<ResourceTypeExtension> {
     /*
-     * The endpointUri property.
+     * The endpoint uri.
      */
     private String endpointUri;
 
     /*
-     * The extensionCategories property.
+     * The extension categories.
      */
     private List<ExtensionCategory> extensionCategories;
 
     /*
-     * The timeout property.
+     * The timeout.
      */
     private Duration timeout;
 
@@ -41,7 +41,7 @@ public final class ResourceTypeExtension implements JsonSerializable<ResourceTyp
     }
 
     /**
-     * Get the endpointUri property: The endpointUri property.
+     * Get the endpointUri property: The endpoint uri.
      * 
      * @return the endpointUri value.
      */
@@ -50,7 +50,7 @@ public final class ResourceTypeExtension implements JsonSerializable<ResourceTyp
     }
 
     /**
-     * Set the endpointUri property: The endpointUri property.
+     * Set the endpointUri property: The endpoint uri.
      * 
      * @param endpointUri the endpointUri value to set.
      * @return the ResourceTypeExtension object itself.
@@ -61,7 +61,7 @@ public final class ResourceTypeExtension implements JsonSerializable<ResourceTyp
     }
 
     /**
-     * Get the extensionCategories property: The extensionCategories property.
+     * Get the extensionCategories property: The extension categories.
      * 
      * @return the extensionCategories value.
      */
@@ -70,7 +70,7 @@ public final class ResourceTypeExtension implements JsonSerializable<ResourceTyp
     }
 
     /**
-     * Set the extensionCategories property: The extensionCategories property.
+     * Set the extensionCategories property: The extension categories.
      * 
      * @param extensionCategories the extensionCategories value to set.
      * @return the ResourceTypeExtension object itself.
@@ -81,7 +81,7 @@ public final class ResourceTypeExtension implements JsonSerializable<ResourceTyp
     }
 
     /**
-     * Get the timeout property: The timeout property.
+     * Get the timeout property: The timeout.
      * 
      * @return the timeout value.
      */
@@ -90,7 +90,7 @@ public final class ResourceTypeExtension implements JsonSerializable<ResourceTyp
     }
 
     /**
-     * Set the timeout property: The timeout property.
+     * Set the timeout property: The timeout.
      * 
      * @param timeout the timeout value to set.
      * @return the ResourceTypeExtension object itself.

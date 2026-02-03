@@ -13,19 +13,19 @@ public final class CustomJwtAuthenticationManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomJwtAuthenticationManagedIdentity model
-            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"gz\"}")
+            = BinaryData.fromString("{\"type\":\"SystemAssigned\",\"userAssignedIdentity\":\"vhixbjxy\"}")
                 .toObject(CustomJwtAuthenticationManagedIdentity.class);
-        Assertions.assertEquals(CustomJwtAuthenticationManagedIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("gz", model.userAssignedIdentity());
+        Assertions.assertEquals(CustomJwtAuthenticationManagedIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals("vhixbjxy", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomJwtAuthenticationManagedIdentity model = new CustomJwtAuthenticationManagedIdentity()
-            .withType(CustomJwtAuthenticationManagedIdentityType.USER_ASSIGNED)
-            .withUserAssignedIdentity("gz");
+            .withType(CustomJwtAuthenticationManagedIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentity("vhixbjxy");
         model = BinaryData.fromObject(model).toObject(CustomJwtAuthenticationManagedIdentity.class);
-        Assertions.assertEquals(CustomJwtAuthenticationManagedIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("gz", model.userAssignedIdentity());
+        Assertions.assertEquals(CustomJwtAuthenticationManagedIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals("vhixbjxy", model.userAssignedIdentity());
     }
 }

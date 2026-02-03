@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/secretsstoreextension/ci.yml
+      - sdk/secretsstoreextension/azure-resourcemanager-secretsstoreextension/
+    exclude:
+      - sdk/secretsstoreextension/pom.xml
+      - sdk/secretsstoreextension/azure-resourcemanager-secretsstoreextension/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/secretsstoreextension/ci.yml
+      - sdk/secretsstoreextension/azure-resourcemanager-secretsstoreextension/
+    exclude:
+      - sdk/secretsstoreextension/pom.xml
+      - sdk/secretsstoreextension/azure-resourcemanager-secretsstoreextension/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagersecretsstoreextension
+    displayName: azure-resourcemanager-secretsstoreextension
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: secretsstoreextension
+    Artifacts:
+      - name: azure-resourcemanager-secretsstoreextension
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersecretsstoreextension
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersecretsstoreextension }}

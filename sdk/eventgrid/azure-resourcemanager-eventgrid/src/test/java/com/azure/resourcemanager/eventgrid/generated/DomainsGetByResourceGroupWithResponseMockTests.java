@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.DataResidencyBoundary;
@@ -29,45 +29,41 @@ public final class DomainsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"ezslp\",\"xgcbdsvalpnpt\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Updating\"},\"id\":\"xgpazwugxyqv\",\"name\":\"jo\",\"type\":\"felhldiuhzzgqlm\"},{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"giudjpxpq\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"hnmhkrezsdsux\",\"name\":\"eqdgcruxsp\",\"type\":\"nymmqgwokmikpa\"}],\"provisioningState\":\"Failed\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"uvjipfd\",\"inputSchema\":\"CustomEventSchema\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"cihmbfntumeezbxv\":{\"description\":\"ehpphthdklmveta\",\"displayName\":\"akfqoixwgiksb\",\"documentationUrl\":\"tooxrpog\",\"dataSchemaUrl\":\"hchgjtnhtukf\"},\"pwwztjfmkkhtgf\":{\"description\":\"bnuvwcg\",\"displayName\":\"gomtm\",\"documentationUrl\":\"wxuq\",\"dataSchemaUrl\":\"vs\"},\"comlyotgkwsx\":{\"description\":\"dmlsc\",\"displayName\":\"ll\",\"documentationUrl\":\"na\",\"dataSchemaUrl\":\"jowazhpab\"}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"InputSchemaMapping\"},\"metricResourceId\":\"qor\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"inboundIpRules\":[{\"ipMask\":\"c\",\"action\":\"Allow\"}],\"disableLocalAuth\":true,\"autoCreateTopicWithFirstSubscription\":false,\"autoDeleteTopicWithLastSubscription\":false,\"dataResidencyBoundary\":\"WithinGeopair\"},\"sku\":{\"name\":\"Basic\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"jkedwqurcgojmrv\",\"tenantId\":\"wjongzs\",\"userAssignedIdentities\":{\"gv\":{\"principalId\":\"rsilcchskxxkansb\",\"clientId\":\"ia\"},\"hxlyubqjrostvrje\":{\"principalId\":\"jrulfucte\",\"clientId\":\"thcfj\"}}},\"location\":\"tzzbeq\",\"tags\":{\"srwrsnrhpqati\":\"rxalxrdha\"},\"id\":\"kkvyanxk\",\"name\":\"vcsemsvuvdj\",\"type\":\"qxetqmmlivrjjx\"}";
+            = "{\"properties\":{\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"groupIds\":[\"qady\"],\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"Succeeded\"},\"id\":\"hwriuo\",\"name\":\"zczfkiceevs\",\"type\":\"axwspcaxikhfjqeb\"}],\"provisioningState\":\"Failed\",\"minimumTlsVersionAllowed\":\"1.1\",\"endpoint\":\"gzzromv\",\"inputSchema\":\"CloudEventSchemaV1_0\",\"eventTypeInfo\":{\"kind\":\"Inline\",\"inlineEventTypes\":{\"lyt\":{\"description\":\"srfsvpinkzpatqt\",\"displayName\":\"swxspvckojaz\",\"documentationUrl\":\"gspftesu\",\"dataSchemaUrl\":\"pvpvd\"},\"kjmdihdcyy\":{\"description\":\"vqseus\",\"displayName\":\"j\",\"documentationUrl\":\"xzfxn\",\"dataSchemaUrl\":\"lbmuos\"},\"wobtdphti\":{\"description\":\"lwhbwzjnu\",\"displayName\":\"rfgmdqgnnbzrtfte\",\"documentationUrl\":\"uubjtvgjsxmty\",\"dataSchemaUrl\":\"vavdp\"}}},\"inputSchemaMapping\":{\"inputSchemaMappingType\":\"InputSchemaMapping\"},\"metricResourceId\":\"fofwan\",\"publicNetworkAccess\":\"Enabled\",\"inboundIpRules\":[{\"ipMask\":\"uwazcgwdfriwg\",\"action\":\"Allow\"},{\"ipMask\":\"ozokscvglli\",\"action\":\"Allow\"},{\"ipMask\":\"yfgwewqkj\",\"action\":\"Allow\"},{\"ipMask\":\"wpxsoo\",\"action\":\"Allow\"}],\"disableLocalAuth\":false,\"autoCreateTopicWithFirstSubscription\":false,\"autoDeleteTopicWithLastSubscription\":false,\"dataResidencyBoundary\":\"WithinGeopair\"},\"sku\":{\"name\":\"Premium\"},\"identity\":{\"type\":\"None\",\"principalId\":\"lfb\",\"tenantId\":\"dc\",\"userAssignedIdentities\":{\"fcm\":{\"principalId\":\"rtmdylperpil\",\"clientId\":\"jzgc\"}}},\"location\":\"fbodetresrgvts\",\"tags\":{\"ai\":\"ft\",\"pdxxzetwwz\":\"muqkevzgjypanhx\"},\"id\":\"wot\",\"name\":\"xl\",\"type\":\"fhglhrfo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Domain response = manager.domains()
-            .getByResourceGroupWithResponse("jcvbxqlapsns", "ovyxpavidnie", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("clrvtzqnrbctbh", "jhxpcvrd", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tzzbeq", response.location());
-        Assertions.assertEquals("rxalxrdha", response.tags().get("srwrsnrhpqati"));
-        Assertions.assertEquals(Sku.BASIC, response.sku().name());
-        Assertions.assertEquals(IdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("jkedwqurcgojmrv", response.identity().principalId());
-        Assertions.assertEquals("wjongzs", response.identity().tenantId());
-        Assertions.assertEquals("rsilcchskxxkansb",
-            response.identity().userAssignedIdentities().get("gv").principalId());
-        Assertions.assertEquals("ia", response.identity().userAssignedIdentities().get("gv").clientId());
+        Assertions.assertEquals("fbodetresrgvts", response.location());
+        Assertions.assertEquals("ft", response.tags().get("ai"));
+        Assertions.assertEquals(Sku.PREMIUM, response.sku().name());
+        Assertions.assertEquals(IdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("lfb", response.identity().principalId());
+        Assertions.assertEquals("dc", response.identity().tenantId());
+        Assertions.assertEquals("rtmdylperpil", response.identity().userAssignedIdentities().get("fcm").principalId());
+        Assertions.assertEquals("jzgc", response.identity().userAssignedIdentities().get("fcm").clientId());
         Assertions.assertEquals(TlsVersion.ONE_ONE, response.minimumTlsVersionAllowed());
-        Assertions.assertEquals(InputSchema.CUSTOM_EVENT_SCHEMA, response.inputSchema());
+        Assertions.assertEquals(InputSchema.CLOUD_EVENT_SCHEMA_V1_0, response.inputSchema());
         Assertions.assertEquals(EventDefinitionKind.INLINE, response.eventTypeInfo().kind());
-        Assertions.assertEquals("ehpphthdklmveta",
-            response.eventTypeInfo().inlineEventTypes().get("cihmbfntumeezbxv").description());
-        Assertions.assertEquals("akfqoixwgiksb",
-            response.eventTypeInfo().inlineEventTypes().get("cihmbfntumeezbxv").displayName());
-        Assertions.assertEquals("tooxrpog",
-            response.eventTypeInfo().inlineEventTypes().get("cihmbfntumeezbxv").documentationUrl());
-        Assertions.assertEquals("hchgjtnhtukf",
-            response.eventTypeInfo().inlineEventTypes().get("cihmbfntumeezbxv").dataSchemaUrl());
-        Assertions.assertEquals(PublicNetworkAccess.SECURED_BY_PERIMETER, response.publicNetworkAccess());
-        Assertions.assertEquals("c", response.inboundIpRules().get(0).ipMask());
+        Assertions.assertEquals("srfsvpinkzpatqt",
+            response.eventTypeInfo().inlineEventTypes().get("lyt").description());
+        Assertions.assertEquals("swxspvckojaz", response.eventTypeInfo().inlineEventTypes().get("lyt").displayName());
+        Assertions.assertEquals("gspftesu", response.eventTypeInfo().inlineEventTypes().get("lyt").documentationUrl());
+        Assertions.assertEquals("pvpvd", response.eventTypeInfo().inlineEventTypes().get("lyt").dataSchemaUrl());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
+        Assertions.assertEquals("uwazcgwdfriwg", response.inboundIpRules().get(0).ipMask());
         Assertions.assertEquals(IpActionType.ALLOW, response.inboundIpRules().get(0).action());
-        Assertions.assertEquals(true, response.disableLocalAuth());
-        Assertions.assertEquals(false, response.autoCreateTopicWithFirstSubscription());
-        Assertions.assertEquals(false, response.autoDeleteTopicWithLastSubscription());
+        Assertions.assertFalse(response.disableLocalAuth());
+        Assertions.assertFalse(response.autoCreateTopicWithFirstSubscription());
+        Assertions.assertFalse(response.autoDeleteTopicWithLastSubscription());
         Assertions.assertEquals(DataResidencyBoundary.WITHIN_GEOPAIR, response.dataResidencyBoundary());
     }
 }

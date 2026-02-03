@@ -12,18 +12,17 @@ public final class CommitmentCostTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentCost model
-            = BinaryData.fromString("{\"commitmentMeterId\":\"zuaejxd\",\"overageMeterId\":\"tskzbbtdzumveek\"}")
+            = BinaryData.fromString("{\"commitmentMeterId\":\"alupjm\",\"overageMeterId\":\"fxobbcsws\"}")
                 .toObject(CommitmentCost.class);
-        Assertions.assertEquals("zuaejxd", model.commitmentMeterId());
-        Assertions.assertEquals("tskzbbtdzumveek", model.overageMeterId());
+        Assertions.assertEquals("alupjm", model.commitmentMeterId());
+        Assertions.assertEquals("fxobbcsws", model.overageMeterId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentCost model
-            = new CommitmentCost().withCommitmentMeterId("zuaejxd").withOverageMeterId("tskzbbtdzumveek");
+        CommitmentCost model = new CommitmentCost().withCommitmentMeterId("alupjm").withOverageMeterId("fxobbcsws");
         model = BinaryData.fromObject(model).toObject(CommitmentCost.class);
-        Assertions.assertEquals("zuaejxd", model.commitmentMeterId());
-        Assertions.assertEquals("tskzbbtdzumveek", model.overageMeterId());
+        Assertions.assertEquals("alupjm", model.commitmentMeterId());
+        Assertions.assertEquals("fxobbcsws", model.overageMeterId());
     }
 }

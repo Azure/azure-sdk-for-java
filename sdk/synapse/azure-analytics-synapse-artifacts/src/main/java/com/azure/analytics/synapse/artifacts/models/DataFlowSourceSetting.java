@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,21 +22,25 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
     /*
      * The data flow source name.
      */
+    @Generated
     private String sourceName;
 
     /*
      * Defines the row limit of data flow source in debug.
      */
+    @Generated
     private Integer rowLimit;
 
     /*
      * Definition of data flow source setting for debug.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of DataFlowSourceSetting class.
      */
+    @Generated
     public DataFlowSourceSetting() {
     }
 
@@ -44,6 +49,7 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
      * 
      * @return the sourceName value.
      */
+    @Generated
     public String getSourceName() {
         return this.sourceName;
     }
@@ -54,6 +60,7 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
      * @param sourceName the sourceName value to set.
      * @return the DataFlowSourceSetting object itself.
      */
+    @Generated
     public DataFlowSourceSetting setSourceName(String sourceName) {
         this.sourceName = sourceName;
         return this;
@@ -64,6 +71,7 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
      * 
      * @return the rowLimit value.
      */
+    @Generated
     public Integer getRowLimit() {
         return this.rowLimit;
     }
@@ -74,6 +82,7 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
      * @param rowLimit the rowLimit value to set.
      * @return the DataFlowSourceSetting object itself.
      */
+    @Generated
     public DataFlowSourceSetting setRowLimit(Integer rowLimit) {
         this.rowLimit = rowLimit;
         return this;
@@ -84,6 +93,7 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -94,6 +104,7 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowSourceSetting object itself.
      */
+    @Generated
     public DataFlowSourceSetting setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -102,6 +113,7 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -123,6 +135,7 @@ public final class DataFlowSourceSetting implements JsonSerializable<DataFlowSou
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowSourceSetting.
      */
+    @Generated
     public static DataFlowSourceSetting fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowSourceSetting deserializedDataFlowSourceSetting = new DataFlowSourceSetting();

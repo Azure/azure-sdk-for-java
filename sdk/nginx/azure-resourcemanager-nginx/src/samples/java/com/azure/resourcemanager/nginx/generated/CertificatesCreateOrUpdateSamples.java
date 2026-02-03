@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.nginx.generated;
 
-import com.azure.resourcemanager.nginx.models.NginxCertificateProperties;
-
 /**
  * Samples for Certificates CreateOrUpdate.
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
      * Certificates_CreateOrUpdate.json
      */
     /**
@@ -23,9 +21,6 @@ public final class CertificatesCreateOrUpdateSamples {
         manager.certificates()
             .define("default")
             .withExistingNginxDeployment("myResourceGroup", "myDeployment")
-            .withProperties(new NginxCertificateProperties().withKeyVirtualPath("fakeTokenPlaceholder")
-                .withCertificateVirtualPath("/src/cert/somePath.cert")
-                .withKeyVaultSecretId("fakeTokenPlaceholder"))
             .create();
     }
 }

@@ -6,6 +6,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,6 +24,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
     /*
      * An OData expression that filters the documents considered for suggestions.
      */
+    @Generated
     private String filter;
 
     /*
@@ -31,18 +33,21 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * provides a better experience in some scenarios, it comes at a performance cost as fuzzy suggestions queries are
      * slower and consume more resources.
      */
+    @Generated
     private Boolean useFuzzyMatching;
 
     /*
      * A string tag that is appended to hit highlights. Must be set with highlightPreTag. If omitted, hit highlighting
      * of suggestions is disabled.
      */
+    @Generated
     private String highlightPostTag;
 
     /*
      * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. If omitted, hit highlighting
      * of suggestions is disabled.
      */
+    @Generated
     private String highlightPreTag;
 
     /*
@@ -50,6 +55,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * order for the query to be reported as a success. This parameter can be useful for ensuring search availability
      * even for services with only one replica. The default is 80.
      */
+    @Generated
     private Double minimumCoverage;
 
     /*
@@ -59,27 +65,32 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * match scores of documents. If no $orderby is specified, the default sort order is descending by document match
      * score. There can be at most 32 $orderby clauses.
      */
+    @Generated
     private List<String> orderBy;
 
     /*
      * The list of field names to search for the specified search text. Target fields must be included in the specified
      * suggester.
      */
+    @Generated
     private List<String> searchFields;
 
     /*
      * The list of fields to retrieve. If unspecified, only the key field will be included in the results.
      */
+    @Generated
     private List<String> select;
 
     /*
      * The number of suggestions to retrieve. The value must be a number between 1 and 100. The default is 5.
      */
+    @Generated
     private Integer top;
 
     /**
      * Creates an instance of SuggestOptions class.
      */
+    @Generated
     public SuggestOptions() {
     }
 
@@ -88,6 +99,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the filter value.
      */
+    @Generated
     public String getFilter() {
         return this.filter;
     }
@@ -98,6 +110,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param filter the filter value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setFilter(String filter) {
         this.filter = filter;
         return this;
@@ -111,6 +124,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the useFuzzyMatching value.
      */
+    @Generated
     public Boolean useFuzzyMatching() {
         return this.useFuzzyMatching;
     }
@@ -124,6 +138,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param useFuzzyMatching the useFuzzyMatching value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setUseFuzzyMatching(Boolean useFuzzyMatching) {
         this.useFuzzyMatching = useFuzzyMatching;
         return this;
@@ -135,6 +150,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the highlightPostTag value.
      */
+    @Generated
     public String getHighlightPostTag() {
         return this.highlightPostTag;
     }
@@ -146,6 +162,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param highlightPostTag the highlightPostTag value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setHighlightPostTag(String highlightPostTag) {
         this.highlightPostTag = highlightPostTag;
         return this;
@@ -157,6 +174,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the highlightPreTag value.
      */
+    @Generated
     public String getHighlightPreTag() {
         return this.highlightPreTag;
     }
@@ -168,6 +186,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param highlightPreTag the highlightPreTag value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setHighlightPreTag(String highlightPreTag) {
         this.highlightPreTag = highlightPreTag;
         return this;
@@ -180,6 +199,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the minimumCoverage value.
      */
+    @Generated
     public Double getMinimumCoverage() {
         return this.minimumCoverage;
     }
@@ -192,6 +212,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param minimumCoverage the minimumCoverage value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setMinimumCoverage(Double minimumCoverage) {
         this.minimumCoverage = minimumCoverage;
         return this;
@@ -206,6 +227,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the orderBy value.
      */
+    @Generated
     public List<String> getOrderBy() {
         return this.orderBy;
     }
@@ -220,6 +242,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param orderBy the orderBy value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setOrderBy(List<String> orderBy) {
         this.orderBy = orderBy;
         return this;
@@ -231,6 +254,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the searchFields value.
      */
+    @Generated
     public List<String> getSearchFields() {
         return this.searchFields;
     }
@@ -242,6 +266,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param searchFields the searchFields value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setSearchFields(List<String> searchFields) {
         this.searchFields = searchFields;
         return this;
@@ -253,6 +278,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the select value.
      */
+    @Generated
     public List<String> getSelect() {
         return this.select;
     }
@@ -264,6 +290,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param select the select value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setSelect(List<String> select) {
         this.select = select;
         return this;
@@ -275,6 +302,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      *
      * @return the top value.
      */
+    @Generated
     public Integer getTop() {
         return this.top;
     }
@@ -286,6 +314,7 @@ public final class SuggestOptions implements JsonSerializable<SuggestOptions> {
      * @param top the top value to set.
      * @return the SuggestOptions object itself.
      */
+    @Generated
     public SuggestOptions setTop(Integer top) {
         this.top = top;
         return this;

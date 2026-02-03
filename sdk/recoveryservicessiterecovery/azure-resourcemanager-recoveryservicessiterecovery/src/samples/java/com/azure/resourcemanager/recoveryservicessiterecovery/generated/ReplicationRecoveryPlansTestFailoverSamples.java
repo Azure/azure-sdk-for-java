@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class ReplicationRecoveryPlansTestFailoverSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationRecoveryPlans_TestFailover.json
      */
     /**
@@ -27,7 +27,7 @@ public final class ReplicationRecoveryPlansTestFailoverSamples {
     public static void executeTestFailoverOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationRecoveryPlans()
-            .testFailover("vault1", "resourceGroupPS1", "RPtest1",
+            .testFailover("resourceGroupPS1", "vault1", "RPtest1",
                 new RecoveryPlanTestFailoverInput().withProperties(new RecoveryPlanTestFailoverInputProperties()
                     .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
                     .withNetworkType("VmNetworkAsInput")

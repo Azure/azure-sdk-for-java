@@ -4,13 +4,16 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract;
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Mode;
+
 /**
  * Samples for ApiManagementService MigrateToStv2.
  */
 public final class ApiManagementServiceMigrateToStv2Samples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceMigrateToStv2.json
      */
     /**
@@ -20,6 +23,8 @@ public final class ApiManagementServiceMigrateToStv2Samples {
      */
     public static void
         apiManagementMigrateService(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices().migrateToStv2("rg1", "apimService1", com.azure.core.util.Context.NONE);
+        manager.apiManagementServices()
+            .migrateToStv2("rg1", "apimService1", new MigrateToStv2Contract().withMode(MigrateToStv2Mode.PRESERVE_IP),
+                com.azure.core.util.Context.NONE);
     }
 }

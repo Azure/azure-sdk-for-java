@@ -13,7 +13,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponent;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationType;
 import com.azure.resourcemanager.applicationinsights.models.IngestionMode;
@@ -37,7 +37,7 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = TestUtilities.getTokenCredentialForTest(getTestMode());
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()

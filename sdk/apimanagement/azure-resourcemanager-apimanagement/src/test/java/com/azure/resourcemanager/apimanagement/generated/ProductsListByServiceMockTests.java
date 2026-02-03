@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ProductContract;
@@ -23,25 +23,25 @@ public final class ProductsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"rbi\",\"description\":\"jlgrwjb\",\"terms\":\"cukboc\",\"subscriptionRequired\":false,\"approvalRequired\":false,\"subscriptionsLimit\":681367402,\"state\":\"published\"},\"id\":\"zp\",\"name\":\"qi\",\"type\":\"yxjkctyq\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"lonalpwaulkwuy\",\"description\":\"j\",\"terms\":\"wnjdrnfgtmupbl\",\"subscriptionRequired\":true,\"approvalRequired\":false,\"subscriptionsLimit\":2027369838,\"state\":\"notPublished\"},\"id\":\"xufuwcajyezlk\",\"name\":\"iveftugiwsvlfp\",\"type\":\"bpnrgnxwrfu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProductContract> response = manager.products()
-            .listByService("dusebkcfetxp", "nterma", "uiqr", 150990617, 1183893831, true, "tubqwxv",
+            .listByService("fxlrxixymfqmvnh", "fjxtus", "jxpuokkd", 1535635275, 187284174, false, "pg",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rbi", response.iterator().next().displayName());
-        Assertions.assertEquals("jlgrwjb", response.iterator().next().description());
-        Assertions.assertEquals("cukboc", response.iterator().next().terms());
-        Assertions.assertEquals(false, response.iterator().next().subscriptionRequired());
-        Assertions.assertEquals(false, response.iterator().next().approvalRequired());
-        Assertions.assertEquals(681367402, response.iterator().next().subscriptionsLimit());
-        Assertions.assertEquals(ProductState.PUBLISHED, response.iterator().next().state());
+        Assertions.assertEquals("lonalpwaulkwuy", response.iterator().next().displayName());
+        Assertions.assertEquals("j", response.iterator().next().description());
+        Assertions.assertEquals("wnjdrnfgtmupbl", response.iterator().next().terms());
+        Assertions.assertTrue(response.iterator().next().subscriptionRequired());
+        Assertions.assertFalse(response.iterator().next().approvalRequired());
+        Assertions.assertEquals(2027369838, response.iterator().next().subscriptionsLimit());
+        Assertions.assertEquals(ProductState.NOT_PUBLISHED, response.iterator().next().state());
     }
 }

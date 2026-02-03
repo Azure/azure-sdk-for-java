@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicyAssignmentsListForResourceSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * listPolicyAssignmentsForResource.json
      */
     /**
@@ -24,6 +24,6 @@ public final class PolicyAssignmentsListForResourceSamples {
             .policyClient()
             .getPolicyAssignments()
             .listForResource("TestResourceGroup", "Microsoft.Compute", "virtualMachines/MyTestVm", "domainNames",
-                "MyTestComputer.cloudapp.net", null, null, com.azure.core.util.Context.NONE);
+                "MyTestComputer.cloudapp.net", null, null, null, com.azure.core.util.Context.NONE);
     }
 }

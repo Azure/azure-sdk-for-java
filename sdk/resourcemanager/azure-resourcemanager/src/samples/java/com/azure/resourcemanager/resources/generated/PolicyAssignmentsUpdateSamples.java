@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * updatePolicyAssignmentWithResourceSelectors.json
      */
     /**
@@ -45,7 +45,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * updatePolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
@@ -69,7 +69,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * updatePolicyAssignmentWithOverrides.json
      */
     /**
@@ -92,7 +92,7 @@ public final class PolicyAssignmentsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * updatePolicyAssignmentWithIdentity.json
      */
     /**

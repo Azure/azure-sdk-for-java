@@ -5,6 +5,7 @@
 package com.azure.communication.rooms.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
      * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#
      * raw-id-representation
      */
+    @Generated
     private String rawId;
 
     /*
      * The role of a room participant. The default value is Attendee.
      */
+    @Generated
     private ParticipantRole role;
 
     /**
      * Creates an instance of RoomParticipant class.
      */
+    @Generated
     public RoomParticipant() {
     }
 
@@ -42,6 +46,7 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
      * 
      * @return the rawId value.
      */
+    @Generated
     public String getRawId() {
         return this.rawId;
     }
@@ -54,6 +59,7 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
      * @param rawId the rawId value to set.
      * @return the RoomParticipant object itself.
      */
+    @Generated
     public RoomParticipant setRawId(String rawId) {
         this.rawId = rawId;
         return this;
@@ -64,6 +70,7 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
      * 
      * @return the role value.
      */
+    @Generated
     public ParticipantRole getRole() {
         return this.role;
     }
@@ -74,11 +81,16 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
      * @param role the role value to set.
      * @return the RoomParticipant object itself.
      */
+    @Generated
     public RoomParticipant setRole(ParticipantRole role) {
         this.role = role;
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +108,7 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the RoomParticipant.
      */
+    @Generated
     public static RoomParticipant fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             RoomParticipant deserializedRoomParticipant = new RoomParticipant();

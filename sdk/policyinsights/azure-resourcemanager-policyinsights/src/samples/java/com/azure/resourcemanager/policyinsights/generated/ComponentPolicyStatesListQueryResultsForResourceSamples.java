@@ -12,7 +12,7 @@ import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStatesReso
 public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceScopeFilterByComponentId.json
      */
     /**
@@ -31,7 +31,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryNestedResourceScope.json
      */
     /**
@@ -50,7 +50,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceScopeGroupByComponentTypeWithAggregate.json
      */
     /**
@@ -73,7 +73,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceScope.json
      */
     /**
@@ -92,7 +92,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceScopeExpandPolicyEvaluationDetails.json
      */
     /**

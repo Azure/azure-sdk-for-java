@@ -26,14 +26,27 @@ public interface MachinesClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the hybrid machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName);
+
+    /**
+     * The operation to delete a hybrid machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String machineName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String machineName, Context context);
 
     /**
      * The operation to delete a hybrid machine.
@@ -46,6 +59,19 @@ public interface MachinesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String machineName);
+
+    /**
+     * The operation to delete a hybrid machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the hybrid machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String machineName, Context context);
 
     /**
      * Retrieves information about the model view or the instance view of a hybrid machine.

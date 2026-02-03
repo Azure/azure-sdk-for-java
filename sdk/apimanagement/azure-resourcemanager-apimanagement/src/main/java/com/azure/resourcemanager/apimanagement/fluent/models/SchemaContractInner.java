@@ -87,7 +87,8 @@ public final class SchemaContractInner extends ProxyResource {
      * use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
      * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
      * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-     * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+     * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+     * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`.
      * 
      * @return the contentType value.
      */
@@ -101,7 +102,8 @@ public final class SchemaContractInner extends ProxyResource {
      * use `application/vnd.ms-azure-apim.swagger.definitions+json` &lt;/br&gt; - `WSDL` Schema use
      * `application/vnd.ms-azure-apim.xsd+xml` &lt;/br&gt; - `OpenApi` Schema use
      * `application/vnd.oai.openapi.components+json` &lt;/br&gt; - `WADL Schema` use
-     * `application/vnd.ms-azure-apim.wadl.grammars+xml`.
+     * `application/vnd.ms-azure-apim.wadl.grammars+xml` &lt;/br&gt; - `OData Schema` use
+     * `application/vnd.ms-azure-apim.odata.schema` &lt;/br&gt; - `gRPC Schema` use `text/protobuf`.
      * 
      * @param contentType the contentType value to set.
      * @return the SchemaContractInner object itself.
@@ -112,6 +114,15 @@ public final class SchemaContractInner extends ProxyResource {
         }
         this.innerProperties().withContentType(contentType);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**

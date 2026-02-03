@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,16 +21,19 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
     /*
      * The date-time the key is active in ISO 8601 UTC time
      */
+    @Generated
     private String start;
 
     /*
      * The date-time the key expires in ISO 8601 UTC time
      */
+    @Generated
     private String expiry;
 
     /**
      * Creates an instance of KeyInfo class.
      */
+    @Generated
     public KeyInfo() {
     }
 
@@ -39,6 +42,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * 
      * @return the start value.
      */
+    @Generated
     public String getStart() {
         return this.start;
     }
@@ -49,6 +53,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * @param start the start value to set.
      * @return the KeyInfo object itself.
      */
+    @Generated
     public KeyInfo setStart(String start) {
         this.start = start;
         return this;
@@ -59,6 +64,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * 
      * @return the expiry value.
      */
+    @Generated
     public String getExpiry() {
         return this.expiry;
     }
@@ -69,19 +75,22 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * @param expiry the expiry value to set.
      * @return the KeyInfo object itself.
      */
+    @Generated
     public KeyInfo setExpiry(String expiry) {
         this.expiry = expiry;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "KeyInfo" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "KeyInfo" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Start", this.start);
         xmlWriter.writeStringElement("Expiry", this.expiry);
@@ -96,6 +105,7 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * XML null.
      * @throws XMLStreamException If an error occurs while reading the KeyInfo.
      */
+    @Generated
     public static KeyInfo fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -110,8 +120,10 @@ public final class KeyInfo implements XmlSerializable<KeyInfo> {
      * XML null.
      * @throws XMLStreamException If an error occurs while reading the KeyInfo.
      */
+    @Generated
     public static KeyInfo fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "KeyInfo" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "KeyInfo" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             KeyInfo deserializedKeyInfo = new KeyInfo();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

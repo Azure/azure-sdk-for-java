@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
     /*
      * The authorization type for integration runtime sharing.
      */
+    @Generated
     private String authorizationType = "Key";
 
     /*
      * The key used for authorization.
      */
+    @Generated
     private SecureString key;
 
     /**
      * Creates an instance of LinkedIntegrationRuntimeKeyAuthorization class.
      */
+    @Generated
     public LinkedIntegrationRuntimeKeyAuthorization() {
     }
 
@@ -36,6 +40,7 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
      * 
      * @return the authorizationType value.
      */
+    @Generated
     @Override
     public String getAuthorizationType() {
         return this.authorizationType;
@@ -46,6 +51,7 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
      * 
      * @return the key value.
      */
+    @Generated
     public SecureString getKey() {
         return this.key;
     }
@@ -56,6 +62,7 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
      * @param key the key value to set.
      * @return the LinkedIntegrationRuntimeKeyAuthorization object itself.
      */
+    @Generated
     public LinkedIntegrationRuntimeKeyAuthorization setKey(SecureString key) {
         this.key = key;
         return this;
@@ -64,6 +71,7 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +89,7 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the LinkedIntegrationRuntimeKeyAuthorization.
      */
+    @Generated
     public static LinkedIntegrationRuntimeKeyAuthorization fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkedIntegrationRuntimeKeyAuthorization deserializedLinkedIntegrationRuntimeKeyAuthorization

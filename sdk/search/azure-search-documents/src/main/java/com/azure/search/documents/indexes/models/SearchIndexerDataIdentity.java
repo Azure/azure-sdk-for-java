@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,11 +22,13 @@ public class SearchIndexerDataIdentity implements JsonSerializable<SearchIndexer
     /*
      * A URI fragment specifying the type of identity.
      */
+    @Generated
     private String odataType = "SearchIndexerDataIdentity";
 
     /**
      * Creates an instance of SearchIndexerDataIdentity class.
      */
+    @Generated
     public SearchIndexerDataIdentity() {
     }
 
@@ -34,6 +37,7 @@ public class SearchIndexerDataIdentity implements JsonSerializable<SearchIndexer
      * 
      * @return the odataType value.
      */
+    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -41,6 +45,7 @@ public class SearchIndexerDataIdentity implements JsonSerializable<SearchIndexer
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -56,6 +61,7 @@ public class SearchIndexerDataIdentity implements JsonSerializable<SearchIndexer
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerDataIdentity.
      */
+    @Generated
     public static SearchIndexerDataIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -83,6 +89,7 @@ public class SearchIndexerDataIdentity implements JsonSerializable<SearchIndexer
         });
     }
 
+    @Generated
     static SearchIndexerDataIdentity fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SearchIndexerDataIdentity deserializedSearchIndexerDataIdentity = new SearchIndexerDataIdentity();

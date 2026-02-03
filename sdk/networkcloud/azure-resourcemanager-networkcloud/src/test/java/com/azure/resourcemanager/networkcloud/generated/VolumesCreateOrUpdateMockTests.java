@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
@@ -24,29 +24,33 @@ public final class VolumesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"ypdvrbkerdkdkga\",\"type\":\"qwjxi\"},\"properties\":{\"attachedTo\":[\"kc\",\"feygzqp\",\"oisfmnaybdjn\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ntqontwhym\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"lwivqt\",\"sizeMiB\":7032795320572505561},\"location\":\"lsycoyb\",\"tags\":{\"qwmchqohtfxc\":\"squbfajcywh\"},\"id\":\"up\",\"name\":\"kiymjzpwd\",\"type\":\"vwtiwsmosa\"}";
+            = "{\"etag\":\"sozjvxdzciggbnv\",\"extendedLocation\":{\"name\":\"xofwalzy\",\"type\":\"whoea\"},\"properties\":{\"allocatedSizeMiB\":1090560148574517969,\"attachedTo\":[\"oeysfp\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"wuuhauegnkwmnfe\",\"provisioningState\":\"Succeeded\",\"serialNumber\":\"jyrkwfug\",\"sizeMiB\":9221982839205722630,\"storageApplianceId\":\"rkuumn\"},\"location\":\"urhzzf\",\"tags\":{\"svwlujop\":\"eoq\",\"fmwc\":\"nibittoztjdqumq\",\"rbelfnzz\":\"ddtgctxegtvgwy\"},\"id\":\"yizwbxgdebxla\",\"name\":\"unomir\",\"type\":\"p\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .define("h")
-            .withRegion("ftr")
-            .withExistingResourceGroup("eqfky")
-            .withExtendedLocation(new ExtendedLocation().withName("wvjaq").withType("pbyynvskpajbm"))
-            .withSizeMiB(2532382634180545589L)
-            .withTags(mapOf("muifmuadjnfsn", "jdaahuqimldahlfx", "gztlcgc", "skiioshjgczetybn", "hfjv", "j"))
+            .define("hnxlzbuwodmachb")
+            .withRegion("jwayhi")
+            .withExistingResourceGroup("sqc")
+            .withExtendedLocation(new ExtendedLocation().withName("rmvgoqplehmumkz").withType("llcz"))
+            .withSizeMiB(8672131710381210963L)
+            .withTags(mapOf("kslvlizedvb", "wwvg", "srgekzyqxadyfhb", "abv", "aqjsgyzstujr", "wkhojqttbspvkhg"))
+            .withStorageApplianceId("nhczbutoucgjt")
+            .withIfMatch("qwrldaxur")
+            .withIfNoneMatch("qa")
             .create();
 
-        Assertions.assertEquals("lsycoyb", response.location());
-        Assertions.assertEquals("squbfajcywh", response.tags().get("qwmchqohtfxc"));
-        Assertions.assertEquals("ypdvrbkerdkdkga", response.extendedLocation().name());
-        Assertions.assertEquals("qwjxi", response.extendedLocation().type());
-        Assertions.assertEquals(7032795320572505561L, response.sizeMiB());
+        Assertions.assertEquals("urhzzf", response.location());
+        Assertions.assertEquals("eoq", response.tags().get("svwlujop"));
+        Assertions.assertEquals("xofwalzy", response.extendedLocation().name());
+        Assertions.assertEquals("whoea", response.extendedLocation().type());
+        Assertions.assertEquals(9221982839205722630L, response.sizeMiB());
+        Assertions.assertEquals("rkuumn", response.storageApplianceId());
     }
 
     // Use "Map.of" if available

@@ -13,15 +13,15 @@ public final class ResourceTypeIdentityManagementTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceTypeIdentityManagement model
-            = BinaryData.fromString("{\"type\":\"Actor\"}").toObject(ResourceTypeIdentityManagement.class);
-        Assertions.assertEquals(IdentityManagementTypes.ACTOR, model.type());
+            = BinaryData.fromString("{\"type\":\"UserAssigned\"}").toObject(ResourceTypeIdentityManagement.class);
+        Assertions.assertEquals(IdentityManagementTypes.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceTypeIdentityManagement model
-            = new ResourceTypeIdentityManagement().withType(IdentityManagementTypes.ACTOR);
+            = new ResourceTypeIdentityManagement().withType(IdentityManagementTypes.USER_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(ResourceTypeIdentityManagement.class);
-        Assertions.assertEquals(IdentityManagementTypes.ACTOR, model.type());
+        Assertions.assertEquals(IdentityManagementTypes.USER_ASSIGNED, model.type());
     }
 }

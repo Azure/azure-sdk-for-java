@@ -34,8 +34,8 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CloudServicesNetwork> list(Context context) {
-        PagedIterable<CloudServicesNetworkInner> inner = this.serviceClient().list(context);
+    public PagedIterable<CloudServicesNetwork> list(Integer top, String skipToken, Context context) {
+        PagedIterable<CloudServicesNetworkInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 
@@ -44,9 +44,10 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CloudServicesNetwork> listByResourceGroup(String resourceGroupName, Context context) {
+    public PagedIterable<CloudServicesNetwork> listByResourceGroup(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
         PagedIterable<CloudServicesNetworkInner> inner
-            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 
@@ -81,9 +82,10 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String cloudServicesNetworkName, Context context) {
+    public OperationStatusResult delete(String resourceGroupName, String cloudServicesNetworkName, String ifMatch,
+        String ifNoneMatch, Context context) {
         OperationStatusResultInner inner
-            = this.serviceClient().delete(resourceGroupName, cloudServicesNetworkName, context);
+            = this.serviceClient().delete(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -131,10 +133,13 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.", id)));
         }
-        return this.delete(resourceGroupName, cloudServicesNetworkName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, cloudServicesNetworkName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -145,7 +150,7 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.", id)));
         }
-        return this.delete(resourceGroupName, cloudServicesNetworkName, context);
+        return this.delete(resourceGroupName, cloudServicesNetworkName, ifMatch, ifNoneMatch, context);
     }
 
     private CloudServicesNetworksClient serviceClient() {

@@ -141,12 +141,21 @@ public class BlobCheckpointStore implements CheckpointStore {
 
             Long sequenceNumber = null;
             Long offset = null;
+            String offsetString = null;
+
             if (!CoreUtils.isNullOrEmpty(metadata.get(SEQUENCE_NUMBER))) {
                 sequenceNumber = Long.parseLong(metadata.get(SEQUENCE_NUMBER));
             }
 
-            if (!CoreUtils.isNullOrEmpty(metadata.get(OFFSET))) {
-                offset = Long.parseLong(metadata.get(OFFSET));
+            final String offsetMetadataValue = metadata.get(OFFSET);
+            if (!CoreUtils.isNullOrEmpty(offsetMetadataValue)) {
+                offsetString = offsetMetadataValue;
+
+                try {
+                    offset = Long.parseLong(offsetMetadataValue);
+                } catch (NumberFormatException e) {
+                    offset = null;
+                }
             }
 
             Checkpoint checkpoint = new Checkpoint().setFullyQualifiedNamespace(names[0])
@@ -155,7 +164,8 @@ public class BlobCheckpointStore implements CheckpointStore {
                 // names[3] is "checkpoint"
                 .setPartitionId(names[4])
                 .setSequenceNumber(sequenceNumber)
-                .setOffset(offset);
+                .setOffset(offset)
+                .setOffsetString(offsetString);
 
             return Mono.just(checkpoint);
         }
@@ -249,9 +259,8 @@ public class BlobCheckpointStore implements CheckpointStore {
         String sequenceNumber
             = checkpoint.getSequenceNumber() == null ? null : String.valueOf(checkpoint.getSequenceNumber());
 
-        String offset = checkpoint.getOffset() == null ? null : String.valueOf(checkpoint.getOffset());
         metadata.put(SEQUENCE_NUMBER, sequenceNumber);
-        metadata.put(OFFSET, offset);
+        metadata.put(OFFSET, checkpoint.getOffsetString());
         BlobAsyncClient blobAsyncClient = blobClients.get(blobName);
 
         return blobAsyncClient.exists().flatMap(exists -> {

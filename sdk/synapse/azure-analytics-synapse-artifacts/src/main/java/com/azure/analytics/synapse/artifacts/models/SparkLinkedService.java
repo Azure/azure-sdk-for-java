@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,86 +22,109 @@ public class SparkLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Spark";
 
     /*
      * IP address or host name of the Spark server
      */
+    @Generated
     private Object host;
 
     /*
      * The TCP port that the Spark server uses to listen for client connections.
      */
+    @Generated
     private Object port;
 
     /*
      * The type of Spark server.
      */
+    @Generated
     private SparkServerType serverType;
 
     /*
      * The transport protocol to use in the Thrift layer.
      */
+    @Generated
     private SparkThriftTransportProtocol thriftTransportProtocol;
 
     /*
      * The authentication method used to access the Spark server.
      */
+    @Generated
     private SparkAuthenticationType authenticationType;
 
     /*
      * The user name that you use to access Spark Server.
      */
+    @Generated
     private Object username;
 
     /*
      * The password corresponding to the user name that you provided in the Username field
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The partial URL corresponding to the Spark server.
      */
+    @Generated
     private Object httpPath;
 
     /*
      * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
+    @Generated
     private Object enableSsl;
+
+    /*
+     * Specifies whether the connections to the server will validate server certificate, the default value is True. Only
+     * used for Version 2.0
+     */
+    @Generated
+    private Object enableServerCertificateValidation;
 
     /*
      * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
      * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
      * installed with the IR.
      */
+    @Generated
     private Object trustedCertPath;
 
     /*
      * Specifies whether to use a CA certificate from the system trust store or from a specified PEM file. The default
      * value is false.
      */
+    @Generated
     private Object useSystemTrustStore;
 
     /*
      * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
      * connecting over SSL. The default value is false.
      */
+    @Generated
     private Object allowHostNameCNMismatch;
 
     /*
      * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
+    @Generated
     private Object allowSelfSignedServerCert;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of SparkLinkedService class.
      */
+    @Generated
     public SparkLinkedService() {
     }
 
@@ -109,6 +133,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -119,6 +144,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -129,6 +155,7 @@ public class SparkLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setHost(Object host) {
         this.host = host;
         return this;
@@ -139,6 +166,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -149,6 +177,7 @@ public class SparkLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -159,6 +188,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the serverType value.
      */
+    @Generated
     public SparkServerType getServerType() {
         return this.serverType;
     }
@@ -169,6 +199,7 @@ public class SparkLinkedService extends LinkedService {
      * @param serverType the serverType value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setServerType(SparkServerType serverType) {
         this.serverType = serverType;
         return this;
@@ -179,6 +210,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the thriftTransportProtocol value.
      */
+    @Generated
     public SparkThriftTransportProtocol getThriftTransportProtocol() {
         return this.thriftTransportProtocol;
     }
@@ -189,6 +221,7 @@ public class SparkLinkedService extends LinkedService {
      * @param thriftTransportProtocol the thriftTransportProtocol value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setThriftTransportProtocol(SparkThriftTransportProtocol thriftTransportProtocol) {
         this.thriftTransportProtocol = thriftTransportProtocol;
         return this;
@@ -199,6 +232,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public SparkAuthenticationType getAuthenticationType() {
         return this.authenticationType;
     }
@@ -209,6 +243,7 @@ public class SparkLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setAuthenticationType(SparkAuthenticationType authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -219,6 +254,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -229,6 +265,7 @@ public class SparkLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -239,6 +276,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -249,6 +287,7 @@ public class SparkLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -259,6 +298,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the httpPath value.
      */
+    @Generated
     public Object getHttpPath() {
         return this.httpPath;
     }
@@ -269,6 +309,7 @@ public class SparkLinkedService extends LinkedService {
      * @param httpPath the httpPath value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setHttpPath(Object httpPath) {
         this.httpPath = httpPath;
         return this;
@@ -280,6 +321,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the enableSsl value.
      */
+    @Generated
     public Object getEnableSsl() {
         return this.enableSsl;
     }
@@ -291,8 +333,33 @@ public class SparkLinkedService extends LinkedService {
      * @param enableSsl the enableSsl value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setEnableSsl(Object enableSsl) {
         this.enableSsl = enableSsl;
+        return this;
+    }
+
+    /**
+     * Get the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @return the enableServerCertificateValidation value.
+     */
+    @Generated
+    public Object getEnableServerCertificateValidation() {
+        return this.enableServerCertificateValidation;
+    }
+
+    /**
+     * Set the enableServerCertificateValidation property: Specifies whether the connections to the server will validate
+     * server certificate, the default value is True. Only used for Version 2.0.
+     * 
+     * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
+     * @return the SparkLinkedService object itself.
+     */
+    @Generated
+    public SparkLinkedService setEnableServerCertificateValidation(Object enableServerCertificateValidation) {
+        this.enableServerCertificateValidation = enableServerCertificateValidation;
         return this;
     }
 
@@ -303,6 +370,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the trustedCertPath value.
      */
+    @Generated
     public Object getTrustedCertPath() {
         return this.trustedCertPath;
     }
@@ -315,6 +383,7 @@ public class SparkLinkedService extends LinkedService {
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setTrustedCertPath(Object trustedCertPath) {
         this.trustedCertPath = trustedCertPath;
         return this;
@@ -326,6 +395,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the useSystemTrustStore value.
      */
+    @Generated
     public Object getUseSystemTrustStore() {
         return this.useSystemTrustStore;
     }
@@ -337,6 +407,7 @@ public class SparkLinkedService extends LinkedService {
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setUseSystemTrustStore(Object useSystemTrustStore) {
         this.useSystemTrustStore = useSystemTrustStore;
         return this;
@@ -348,6 +419,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the allowHostNameCNMismatch value.
      */
+    @Generated
     public Object getAllowHostNameCNMismatch() {
         return this.allowHostNameCNMismatch;
     }
@@ -359,6 +431,7 @@ public class SparkLinkedService extends LinkedService {
      * @param allowHostNameCNMismatch the allowHostNameCNMismatch value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setAllowHostNameCNMismatch(Object allowHostNameCNMismatch) {
         this.allowHostNameCNMismatch = allowHostNameCNMismatch;
         return this;
@@ -370,6 +443,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the allowSelfSignedServerCert value.
      */
+    @Generated
     public Object getAllowSelfSignedServerCert() {
         return this.allowSelfSignedServerCert;
     }
@@ -381,6 +455,7 @@ public class SparkLinkedService extends LinkedService {
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setAllowSelfSignedServerCert(Object allowSelfSignedServerCert) {
         this.allowSelfSignedServerCert = allowSelfSignedServerCert;
         return this;
@@ -392,6 +467,7 @@ public class SparkLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -403,6 +479,7 @@ public class SparkLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SparkLinkedService object itself.
      */
+    @Generated
     public SparkLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -411,6 +488,17 @@ public class SparkLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public SparkLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public SparkLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -420,6 +508,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SparkLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -429,6 +518,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SparkLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -438,6 +528,7 @@ public class SparkLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SparkLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -447,9 +538,11 @@ public class SparkLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -464,6 +557,7 @@ public class SparkLinkedService extends LinkedService {
             || password != null
             || httpPath != null
             || enableSsl != null
+            || enableServerCertificateValidation != null
             || trustedCertPath != null
             || useSystemTrustStore != null
             || allowHostNameCNMismatch != null
@@ -477,15 +571,35 @@ public class SparkLinkedService extends LinkedService {
                 this.thriftTransportProtocol == null ? null : this.thriftTransportProtocol.toString());
             jsonWriter.writeStringField("authenticationType",
                 this.authenticationType == null ? null : this.authenticationType.toString());
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("httpPath", this.httpPath);
-            jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
-            jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
-            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
-            jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
-            jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.httpPath != null) {
+                jsonWriter.writeUntypedField("httpPath", this.httpPath);
+            }
+            if (this.enableSsl != null) {
+                jsonWriter.writeUntypedField("enableSsl", this.enableSsl);
+            }
+            if (this.enableServerCertificateValidation != null) {
+                jsonWriter.writeUntypedField("enableServerCertificateValidation",
+                    this.enableServerCertificateValidation);
+            }
+            if (this.trustedCertPath != null) {
+                jsonWriter.writeUntypedField("trustedCertPath", this.trustedCertPath);
+            }
+            if (this.useSystemTrustStore != null) {
+                jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+            }
+            if (this.allowHostNameCNMismatch != null) {
+                jsonWriter.writeUntypedField("allowHostNameCNMismatch", this.allowHostNameCNMismatch);
+            }
+            if (this.allowSelfSignedServerCert != null) {
+                jsonWriter.writeUntypedField("allowSelfSignedServerCert", this.allowSelfSignedServerCert);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -505,6 +619,7 @@ public class SparkLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SparkLinkedService.
      */
+    @Generated
     public static SparkLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkLinkedService deserializedSparkLinkedService = new SparkLinkedService();
@@ -513,7 +628,9 @@ public class SparkLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedSparkLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedSparkLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedSparkLinkedService.setDescription(reader.getString());
@@ -551,6 +668,8 @@ public class SparkLinkedService extends LinkedService {
                             deserializedSparkLinkedService.httpPath = reader.readUntyped();
                         } else if ("enableSsl".equals(fieldName)) {
                             deserializedSparkLinkedService.enableSsl = reader.readUntyped();
+                        } else if ("enableServerCertificateValidation".equals(fieldName)) {
+                            deserializedSparkLinkedService.enableServerCertificateValidation = reader.readUntyped();
                         } else if ("trustedCertPath".equals(fieldName)) {
                             deserializedSparkLinkedService.trustedCertPath = reader.readUntyped();
                         } else if ("useSystemTrustStore".equals(fieldName)) {

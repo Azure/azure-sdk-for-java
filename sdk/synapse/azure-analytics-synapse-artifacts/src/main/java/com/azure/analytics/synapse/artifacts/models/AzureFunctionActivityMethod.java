@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
     /**
      * Static value GET for AzureFunctionActivityMethod.
      */
+    @Generated
     public static final AzureFunctionActivityMethod GET = fromString("GET");
 
     /**
      * Static value POST for AzureFunctionActivityMethod.
      */
+    @Generated
     public static final AzureFunctionActivityMethod POST = fromString("POST");
 
     /**
      * Static value PUT for AzureFunctionActivityMethod.
      */
+    @Generated
     public static final AzureFunctionActivityMethod PUT = fromString("PUT");
 
     /**
      * Static value DELETE for AzureFunctionActivityMethod.
      */
+    @Generated
     public static final AzureFunctionActivityMethod DELETE = fromString("DELETE");
 
     /**
      * Static value OPTIONS for AzureFunctionActivityMethod.
      */
+    @Generated
     public static final AzureFunctionActivityMethod OPTIONS = fromString("OPTIONS");
 
     /**
      * Static value HEAD for AzureFunctionActivityMethod.
      */
+    @Generated
     public static final AzureFunctionActivityMethod HEAD = fromString("HEAD");
 
     /**
      * Static value TRACE for AzureFunctionActivityMethod.
      */
+    @Generated
     public static final AzureFunctionActivityMethod TRACE = fromString("TRACE");
 
     /**
@@ -51,6 +59,7 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public AzureFunctionActivityMethod() {
     }
@@ -61,6 +70,7 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
      * @param name a name to look for.
      * @return the corresponding AzureFunctionActivityMethod.
      */
+    @Generated
     public static AzureFunctionActivityMethod fromString(String name) {
         return fromString(name, AzureFunctionActivityMethod.class);
     }
@@ -70,6 +80,7 @@ public final class AzureFunctionActivityMethod extends ExpandableStringEnum<Azur
      * 
      * @return known AzureFunctionActivityMethod values.
      */
+    @Generated
     public static Collection<AzureFunctionActivityMethod> values() {
         return values(AzureFunctionActivityMethod.class);
     }

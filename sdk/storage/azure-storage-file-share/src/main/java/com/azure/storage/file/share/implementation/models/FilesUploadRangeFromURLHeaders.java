@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
@@ -20,41 +21,49 @@ public final class FilesUploadRangeFromURLHeaders {
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
 
     /*
      * The x-ms-content-crc64 property.
      */
+    @Generated
     private byte[] xMsContentCrc64;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
 
     /*
      * The x-ms-request-server-encrypted property.
      */
+    @Generated
     private Boolean xMsRequestServerEncrypted;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The x-ms-file-last-write-time property.
      */
+    @Generated
     private OffsetDateTime xMsFileLastWriteTime;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
@@ -79,23 +88,33 @@ public final class FilesUploadRangeFromURLHeaders {
         String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
+        } else {
+            this.xMsContentCrc64 = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
+        } else {
+            this.xMsRequestServerEncrypted = null;
         }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
+        } else {
+            this.xMsFileLastWriteTime = null;
         }
     }
 
@@ -104,6 +123,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -114,6 +134,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
+    @Generated
     public FilesUploadRangeFromURLHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -124,6 +145,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -134,6 +156,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param eTag the eTag value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
+    @Generated
     public FilesUploadRangeFromURLHeaders setETag(String eTag) {
         this.eTag = eTag;
         return this;
@@ -144,6 +167,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * 
      * @return the xMsContentCrc64 value.
      */
+    @Generated
     public byte[] getXMsContentCrc64() {
         return CoreUtils.clone(this.xMsContentCrc64);
     }
@@ -154,6 +178,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param xMsContentCrc64 the xMsContentCrc64 value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
+    @Generated
     public FilesUploadRangeFromURLHeaders setXMsContentCrc64(byte[] xMsContentCrc64) {
         this.xMsContentCrc64 = CoreUtils.clone(xMsContentCrc64);
         return this;
@@ -164,6 +189,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -177,6 +203,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
+    @Generated
     public FilesUploadRangeFromURLHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -191,6 +218,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -201,6 +229,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
+    @Generated
     public FilesUploadRangeFromURLHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
@@ -211,6 +240,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * 
      * @return the xMsRequestServerEncrypted value.
      */
+    @Generated
     public Boolean isXMsRequestServerEncrypted() {
         return this.xMsRequestServerEncrypted;
     }
@@ -221,6 +251,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param xMsRequestServerEncrypted the xMsRequestServerEncrypted value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
+    @Generated
     public FilesUploadRangeFromURLHeaders setXMsRequestServerEncrypted(Boolean xMsRequestServerEncrypted) {
         this.xMsRequestServerEncrypted = xMsRequestServerEncrypted;
         return this;
@@ -231,6 +262,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -244,6 +276,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param date the date value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
+    @Generated
     public FilesUploadRangeFromURLHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -258,6 +291,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * 
      * @return the xMsFileLastWriteTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileLastWriteTime() {
         return this.xMsFileLastWriteTime;
     }
@@ -268,6 +302,7 @@ public final class FilesUploadRangeFromURLHeaders {
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
      * @return the FilesUploadRangeFromURLHeaders object itself.
      */
+    @Generated
     public FilesUploadRangeFromURLHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
         this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;

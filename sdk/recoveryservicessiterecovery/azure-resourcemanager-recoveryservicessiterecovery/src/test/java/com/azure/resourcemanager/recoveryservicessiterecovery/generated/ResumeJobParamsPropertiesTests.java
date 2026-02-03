@@ -12,14 +12,14 @@ public final class ResumeJobParamsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResumeJobParamsProperties model
-            = BinaryData.fromString("{\"comments\":\"snewmozqvbub\"}").toObject(ResumeJobParamsProperties.class);
-        Assertions.assertEquals("snewmozqvbub", model.comments());
+            = BinaryData.fromString("{\"comments\":\"esyds\"}").toObject(ResumeJobParamsProperties.class);
+        Assertions.assertEquals("esyds", model.comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResumeJobParamsProperties model = new ResumeJobParamsProperties().withComments("snewmozqvbub");
+        ResumeJobParamsProperties model = new ResumeJobParamsProperties().withComments("esyds");
         model = BinaryData.fromObject(model).toObject(ResumeJobParamsProperties.class);
-        Assertions.assertEquals("snewmozqvbub", model.comments());
+        Assertions.assertEquals("esyds", model.comments());
     }
 }

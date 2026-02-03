@@ -5,6 +5,7 @@
 package com.azure.security.keyvault.certificates.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /**
@@ -23,7 +24,7 @@ public final class CertificatePolicyAction extends ExpandableStringEnum<Certific
 
     /**
      * Creates a new instance of CertificatePolicyAction value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +33,7 @@ public final class CertificatePolicyAction extends ExpandableStringEnum<Certific
 
     /**
      * Creates or finds a CertificatePolicyAction from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding CertificatePolicyAction.
      */
@@ -42,7 +43,7 @@ public final class CertificatePolicyAction extends ExpandableStringEnum<Certific
 
     /**
      * Gets known CertificatePolicyAction values.
-     * 
+     *
      * @return known CertificatePolicyAction values.
      */
     public static Collection<CertificatePolicyAction> values() {

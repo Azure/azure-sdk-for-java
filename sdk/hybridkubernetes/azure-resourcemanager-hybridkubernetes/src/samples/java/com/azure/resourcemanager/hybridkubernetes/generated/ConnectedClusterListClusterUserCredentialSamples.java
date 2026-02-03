@@ -13,7 +13,7 @@ import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredenti
 public final class ConnectedClusterListClusterUserCredentialSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/
+     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
      * ConnectedClustersListClusterCredentialResultCSPAAD.json
      */
     /**
@@ -32,7 +32,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/
+     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
      * ConnectedClustersListClusterCredentialResultHPAAD.json
      */
     /**
@@ -51,7 +51,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/
+     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
      * ConnectedClustersListClusterCredentialResultCSPToken.json
      */
     /**
@@ -70,7 +70,7 @@ public final class ConnectedClusterListClusterUserCredentialSamples {
 
     /*
      * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/
+     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
      * ConnectedClustersListClusterCredentialResultHPToken.json
      */
     /**

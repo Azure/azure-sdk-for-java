@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,11 +24,13 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
     /*
      * The @odata.type property.
      */
+    @Generated
     private String odataType = "SimilarityAlgorithm";
 
     /**
      * Creates an instance of SimilarityAlgorithm class.
      */
+    @Generated
     public SimilarityAlgorithm() {
     }
 
@@ -36,6 +39,7 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
      * 
      * @return the odataType value.
      */
+    @Generated
     public String getOdataType() {
         return this.odataType;
     }
@@ -43,6 +47,7 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -58,6 +63,7 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SimilarityAlgorithm.
      */
+    @Generated
     public static SimilarityAlgorithm fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -85,6 +91,7 @@ public class SimilarityAlgorithm implements JsonSerializable<SimilarityAlgorithm
         });
     }
 
+    @Generated
     static SimilarityAlgorithm fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SimilarityAlgorithm deserializedSimilarityAlgorithm = new SimilarityAlgorithm();

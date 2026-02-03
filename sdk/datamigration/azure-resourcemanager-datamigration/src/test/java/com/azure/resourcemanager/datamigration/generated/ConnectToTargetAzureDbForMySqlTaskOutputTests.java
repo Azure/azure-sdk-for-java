@@ -11,7 +11,7 @@ public final class ConnectToTargetAzureDbForMySqlTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectToTargetAzureDbForMySqlTaskOutput model = BinaryData.fromString(
-            "{\"id\":\"txon\",\"serverVersion\":\"ts\",\"databases\":[\"cbpwxqpsrknft\",\"uvriuhprwm\",\"yvxqtayriwwroy\",\"bexrmcq\"],\"targetServerBrandVersion\":\"ycnojvknmefqsg\",\"validationErrors\":[{\"message\":\"apj\",\"actionableMessage\":\"hpvgqz\",\"filePath\":\"rvxdjzlmw\",\"lineNumber\":\"kvugfhzovawjvzun\",\"hResult\":1486439488,\"stackTrace\":\"nnprn\"}]}")
+            "{\"id\":\"x\",\"serverVersion\":\"bcporxvxcjzhqizx\",\"databases\":[\"tgqscjavftjuh\",\"qaz\",\"mtggu\",\"pijrajcivmmghf\"],\"targetServerBrandVersion\":\"iwrxgkn\",\"validationErrors\":[{\"message\":\"inzqodfvpgs\",\"actionableMessage\":\"xgsg\",\"filePath\":\"fgzdjtxvz\",\"lineNumber\":\"bqvgaqv\",\"hResult\":247476852,\"stackTrace\":\"cqusr\"}]}")
             .toObject(ConnectToTargetAzureDbForMySqlTaskOutput.class);
     }
 

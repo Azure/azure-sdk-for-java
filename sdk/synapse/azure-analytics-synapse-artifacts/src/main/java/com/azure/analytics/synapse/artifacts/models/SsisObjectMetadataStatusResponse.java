@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
     /*
      * The status of the operation.
      */
+    @Generated
     private String status;
 
     /*
      * The operation name.
      */
+    @Generated
     private String name;
 
     /*
      * The operation properties.
      */
+    @Generated
     private String properties;
 
     /*
      * The operation error message.
      */
+    @Generated
     private String error;
 
     /**
      * Creates an instance of SsisObjectMetadataStatusResponse class.
      */
+    @Generated
     public SsisObjectMetadataStatusResponse() {
     }
 
@@ -47,6 +53,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * 
      * @return the status value.
      */
+    @Generated
     public String getStatus() {
         return this.status;
     }
@@ -57,6 +64,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * @param status the status value to set.
      * @return the SsisObjectMetadataStatusResponse object itself.
      */
+    @Generated
     public SsisObjectMetadataStatusResponse setStatus(String status) {
         this.status = status;
         return this;
@@ -67,6 +75,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -77,6 +86,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * @param name the name value to set.
      * @return the SsisObjectMetadataStatusResponse object itself.
      */
+    @Generated
     public SsisObjectMetadataStatusResponse setName(String name) {
         this.name = name;
         return this;
@@ -87,6 +97,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * 
      * @return the properties value.
      */
+    @Generated
     public String getProperties() {
         return this.properties;
     }
@@ -97,6 +108,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * @param properties the properties value to set.
      * @return the SsisObjectMetadataStatusResponse object itself.
      */
+    @Generated
     public SsisObjectMetadataStatusResponse setProperties(String properties) {
         this.properties = properties;
         return this;
@@ -107,6 +119,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * 
      * @return the error value.
      */
+    @Generated
     public String getError() {
         return this.error;
     }
@@ -117,6 +130,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * @param error the error value to set.
      * @return the SsisObjectMetadataStatusResponse object itself.
      */
+    @Generated
     public SsisObjectMetadataStatusResponse setError(String error) {
         this.error = error;
         return this;
@@ -125,6 +139,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -143,6 +158,7 @@ public final class SsisObjectMetadataStatusResponse implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SsisObjectMetadataStatusResponse.
      */
+    @Generated
     public static SsisObjectMetadataStatusResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SsisObjectMetadataStatusResponse deserializedSsisObjectMetadataStatusResponse

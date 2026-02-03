@@ -10,7 +10,7 @@ package com.azure.resourcemanager.applicationinsights.generated;
 public final class WorkbooksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookDelete.
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookDelete.
      * json
      */
     /**

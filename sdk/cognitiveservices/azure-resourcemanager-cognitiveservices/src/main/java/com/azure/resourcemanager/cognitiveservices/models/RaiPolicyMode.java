@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  * Rai policy mode. The enum value mapping is as below: Default = 0, Deferred=1, Blocking=2, Asynchronous_filter =3.
- * Please use 'Asynchronous_filter' after 2024-10-01. It is the same as 'Deferred' in previous version.
+ * Please use 'Asynchronous_filter' after 2025-06-01. It is the same as 'Deferred' in previous version.
  */
 public final class RaiPolicyMode extends ExpandableStringEnum<RaiPolicyMode> {
     /**

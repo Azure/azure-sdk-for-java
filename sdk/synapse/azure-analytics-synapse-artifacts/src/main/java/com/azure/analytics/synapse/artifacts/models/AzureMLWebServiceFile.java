@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class AzureMLWebServiceFile implements JsonSerializable<AzureMLWebS
      * The relative file path, including container name, in the Azure Blob Storage specified by the LinkedService. Type:
      * string (or Expression with resultType string).
      */
+    @Generated
     private Object filePath;
 
     /*
      * Reference to an Azure Storage LinkedService, where Azure ML WebService Input/Output file located.
      */
+    @Generated
     private LinkedServiceReference linkedServiceName;
 
     /**
      * Creates an instance of AzureMLWebServiceFile class.
      */
+    @Generated
     public AzureMLWebServiceFile() {
     }
 
@@ -39,6 +43,7 @@ public final class AzureMLWebServiceFile implements JsonSerializable<AzureMLWebS
      * 
      * @return the filePath value.
      */
+    @Generated
     public Object getFilePath() {
         return this.filePath;
     }
@@ -50,6 +55,7 @@ public final class AzureMLWebServiceFile implements JsonSerializable<AzureMLWebS
      * @param filePath the filePath value to set.
      * @return the AzureMLWebServiceFile object itself.
      */
+    @Generated
     public AzureMLWebServiceFile setFilePath(Object filePath) {
         this.filePath = filePath;
         return this;
@@ -61,6 +67,7 @@ public final class AzureMLWebServiceFile implements JsonSerializable<AzureMLWebS
      * 
      * @return the linkedServiceName value.
      */
+    @Generated
     public LinkedServiceReference getLinkedServiceName() {
         return this.linkedServiceName;
     }
@@ -72,6 +79,7 @@ public final class AzureMLWebServiceFile implements JsonSerializable<AzureMLWebS
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the AzureMLWebServiceFile object itself.
      */
+    @Generated
     public AzureMLWebServiceFile setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         this.linkedServiceName = linkedServiceName;
         return this;
@@ -80,6 +88,7 @@ public final class AzureMLWebServiceFile implements JsonSerializable<AzureMLWebS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -97,6 +106,7 @@ public final class AzureMLWebServiceFile implements JsonSerializable<AzureMLWebS
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AzureMLWebServiceFile.
      */
+    @Generated
     public static AzureMLWebServiceFile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzureMLWebServiceFile deserializedAzureMLWebServiceFile = new AzureMLWebServiceFile();

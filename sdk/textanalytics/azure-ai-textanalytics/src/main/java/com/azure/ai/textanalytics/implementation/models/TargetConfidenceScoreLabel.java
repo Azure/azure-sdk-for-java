@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class TargetConfidenceScoreLabel implements JsonSerializable<Target
     /*
      * Confidence score for positive sentiment
      */
+    @Generated
     private double positive;
 
     /*
      * Confidence score for negative sentiment
      */
+    @Generated
     private double negative;
 
     /**
      * Creates an instance of TargetConfidenceScoreLabel class.
      */
+    @Generated
     public TargetConfidenceScoreLabel() {
     }
 
@@ -37,6 +41,7 @@ public final class TargetConfidenceScoreLabel implements JsonSerializable<Target
      * 
      * @return the positive value.
      */
+    @Generated
     public double getPositive() {
         return this.positive;
     }
@@ -47,6 +52,7 @@ public final class TargetConfidenceScoreLabel implements JsonSerializable<Target
      * @param positive the positive value to set.
      * @return the TargetConfidenceScoreLabel object itself.
      */
+    @Generated
     public TargetConfidenceScoreLabel setPositive(double positive) {
         this.positive = positive;
         return this;
@@ -57,6 +63,7 @@ public final class TargetConfidenceScoreLabel implements JsonSerializable<Target
      * 
      * @return the negative value.
      */
+    @Generated
     public double getNegative() {
         return this.negative;
     }
@@ -67,6 +74,7 @@ public final class TargetConfidenceScoreLabel implements JsonSerializable<Target
      * @param negative the negative value to set.
      * @return the TargetConfidenceScoreLabel object itself.
      */
+    @Generated
     public TargetConfidenceScoreLabel setNegative(double negative) {
         this.negative = negative;
         return this;
@@ -75,6 +83,7 @@ public final class TargetConfidenceScoreLabel implements JsonSerializable<Target
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class TargetConfidenceScoreLabel implements JsonSerializable<Target
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TargetConfidenceScoreLabel.
      */
+    @Generated
     public static TargetConfidenceScoreLabel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TargetConfidenceScoreLabel deserializedTargetConfidenceScoreLabel = new TargetConfidenceScoreLabel();

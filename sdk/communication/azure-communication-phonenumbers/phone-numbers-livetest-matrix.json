@@ -4,7 +4,7 @@
     },
     "matrix": {
         "Agent": {
-            "ubuntu-20.04": {
+            "ubuntu-24.04": {
                 "OSVmImage": "env:LINUXVMIMAGE",
                 "Pool": "env:LINUXPOOL",
                 "JavaTestVersion": "1.8",
@@ -14,7 +14,7 @@
             "macos-latest": {
                 "OSVmImage": "env:MACVMIMAGE",
                 "Pool": "env:MACPOOL",
-                "JavaTestVersion": "1.21",
+                "JavaTestVersion": "1.25",
                 "AZURE_TEST_HTTP_CLIENTS": "netty",
                 "AZURE_TEST_AGENT": "MACOS_1015_JAVA11"
             }
@@ -29,12 +29,12 @@
     "include": [
         {
             "Agent": {
-                "ubuntu-20.04": {
+                "ubuntu-24.04": {
                     "OSVmImage": "env:LINUXVMIMAGE",
                     "Pool": "env:LINUXPOOL"
                 }
             },
-            "JavaTestVersion": "1.21",
+            "JavaTestVersion": "1.25",
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": true,
             "TestGoals": "verify",
@@ -51,7 +51,7 @@
                     "Pool": "env:WINDOWSPOOL"
                 }
             },
-            "JavaTestVersion": "1.21",
+            "JavaTestVersion": "1.25",
             "RunAggregateReports": true,
             "AZURE_TEST_HTTP_CLIENTS": "netty",
             "TestFromSource": false,

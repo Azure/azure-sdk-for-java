@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.devopsinfrastructure.generated;
 
 import com.azure.resourcemanager.devopsinfrastructure.models.AzureDevOpsOrganizationProfile;
+import com.azure.resourcemanager.devopsinfrastructure.models.CertificateStoreNameOption;
 import com.azure.resourcemanager.devopsinfrastructure.models.DevOpsAzureSku;
+import com.azure.resourcemanager.devopsinfrastructure.models.EphemeralType;
 import com.azure.resourcemanager.devopsinfrastructure.models.Organization;
+import com.azure.resourcemanager.devopsinfrastructure.models.OsProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolImage;
 import com.azure.resourcemanager.devopsinfrastructure.models.PoolProperties;
 import com.azure.resourcemanager.devopsinfrastructure.models.ProvisioningState;
+import com.azure.resourcemanager.devopsinfrastructure.models.SecretsManagementSettings;
 import com.azure.resourcemanager.devopsinfrastructure.models.StatelessAgentProfile;
 import com.azure.resourcemanager.devopsinfrastructure.models.VmssFabricProfile;
 import java.util.Arrays;
@@ -19,7 +23,7 @@ import java.util.Arrays;
  */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-10-19/CreateOrUpdatePool.json
+     * x-ms-original-file: 2025-01-21/CreateOrUpdatePool.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.
@@ -34,12 +38,19 @@ public final class PoolsCreateOrUpdateSamples {
             .withExistingResourceGroup("rg")
             .withProperties(new PoolProperties().withProvisioningState(ProvisioningState.SUCCEEDED)
                 .withMaximumConcurrency(10)
-                .withOrganizationProfile(new AzureDevOpsOrganizationProfile()
-                    .withOrganizations(Arrays.asList(new Organization().withUrl("https://mseng.visualstudio.com"))))
+                .withOrganizationProfile(new AzureDevOpsOrganizationProfile().withOrganizations(
+                    Arrays.asList(new Organization().withUrl("https://mseng.visualstudio.com").withOpenAccess(true))))
                 .withAgentProfile(new StatelessAgentProfile())
-                .withFabricProfile(new VmssFabricProfile().withSku(new DevOpsAzureSku().withName("Standard_D4ads_v5"))
-                    .withImages(Arrays.asList(new PoolImage()
-                        .withResourceId("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest"))))
+                .withFabricProfile(
+                    new VmssFabricProfile().withSku(new DevOpsAzureSku().withName("Standard_D4ads_v5"))
+                        .withImages(Arrays.asList(new PoolImage()
+                            .withResourceId("/MicrosoftWindowsServer/WindowsServer/2019-Datacenter/latest")
+                            .withEphemeralType(EphemeralType.AUTOMATIC)))
+                        .withOsProfile(
+                            new OsProfile().withSecretsManagementSettings(new SecretsManagementSettings()
+                                .withCertificateStoreName(CertificateStoreNameOption.ROOT)
+                                .withObservedCertificates(Arrays.asList("https://abc.vault.azure.net/secrets/one"))
+                                .withKeyExportable(false))))
                 .withDevCenterProjectResourceId(
                     "/subscriptions/222e81d0-cf38-4dab-baa5-289bf16baaa4/resourceGroups/rg-1es-devcenter/providers/Microsoft.DevCenter/projects/1ES"))
             .create();

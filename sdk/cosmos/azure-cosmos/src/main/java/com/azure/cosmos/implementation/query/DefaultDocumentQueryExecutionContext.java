@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneRetryPolicy;
@@ -37,7 +36,6 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -164,18 +162,13 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         IPartitionKeyRangeCache partitionKeyRangeCache =  this.client.getPartitionKeyRangeCache();
         DocumentClientRetryPolicy retryPolicyInstance = this.client.getResetSessionTokenRetryPolicy().getRequestPolicy(this.diagnosticsClientContext);
 
-        retryPolicyInstance = new InvalidPartitionExceptionRetryPolicy(
-            collectionCache,
-            retryPolicyInstance,
-            resourceLink,
-            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
         if (super.resourceTypeEnum.isPartitioned()) {
             retryPolicyInstance = new PartitionKeyRangeGoneRetryPolicy(this.diagnosticsClientContext,
                 collectionCache,
                 partitionKeyRangeCache,
                 PathsHelper.getCollectionPath(super.resourceLink),
                 retryPolicyInstance,
-                ModelBridgeInternal.getPropertiesFromQueryRequestOptions(this.cosmosQueryRequestOptions));
+                queryRequestOptionsAccessor.getProperties(this.cosmosQueryRequestOptions));
         }
 
         return retryPolicyInstance;

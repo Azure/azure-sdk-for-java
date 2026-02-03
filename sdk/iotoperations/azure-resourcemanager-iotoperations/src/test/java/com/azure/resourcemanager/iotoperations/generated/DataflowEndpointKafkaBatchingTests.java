@@ -14,24 +14,24 @@ public final class DataflowEndpointKafkaBatchingTests {
     public void testDeserialize() throws Exception {
         DataflowEndpointKafkaBatching model = BinaryData
             .fromString(
-                "{\"mode\":\"Enabled\",\"latencyMs\":1165613569,\"maxBytes\":577659304,\"maxMessages\":1292575401}")
+                "{\"mode\":\"Enabled\",\"latencyMs\":457558251,\"maxBytes\":1821555350,\"maxMessages\":456914071}")
             .toObject(DataflowEndpointKafkaBatching.class);
         Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
-        Assertions.assertEquals(1165613569, model.latencyMs());
-        Assertions.assertEquals(577659304, model.maxBytes());
-        Assertions.assertEquals(1292575401, model.maxMessages());
+        Assertions.assertEquals(457558251, model.latencyMs());
+        Assertions.assertEquals(1821555350, model.maxBytes());
+        Assertions.assertEquals(456914071, model.maxMessages());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataflowEndpointKafkaBatching model = new DataflowEndpointKafkaBatching().withMode(OperationalMode.ENABLED)
-            .withLatencyMs(1165613569)
-            .withMaxBytes(577659304)
-            .withMaxMessages(1292575401);
+            .withLatencyMs(457558251)
+            .withMaxBytes(1821555350)
+            .withMaxMessages(456914071);
         model = BinaryData.fromObject(model).toObject(DataflowEndpointKafkaBatching.class);
         Assertions.assertEquals(OperationalMode.ENABLED, model.mode());
-        Assertions.assertEquals(1165613569, model.latencyMs());
-        Assertions.assertEquals(577659304, model.maxBytes());
-        Assertions.assertEquals(1292575401, model.maxMessages());
+        Assertions.assertEquals(457558251, model.latencyMs());
+        Assertions.assertEquals(1821555350, model.maxBytes());
+        Assertions.assertEquals(456914071, model.maxMessages());
     }
 }

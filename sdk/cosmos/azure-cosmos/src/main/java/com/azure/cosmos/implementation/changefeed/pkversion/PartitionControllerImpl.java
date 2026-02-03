@@ -84,7 +84,7 @@ class PartitionControllerImpl implements PartitionController {
                 return updatedLease;
             })
             .onErrorResume(throwable -> {
-                logger.warn("Partition {}: unexpected error; removing lease from current cache.", lease.getLeaseToken());
+                logger.warn("Partition " + lease.getLeaseToken() + ": unexpected error; removing lease from current cache.", throwable);
                 return this.removeLease(lease).then(Mono.error(throwable));
             });
     }
@@ -123,7 +123,7 @@ class PartitionControllerImpl implements PartitionController {
                 if (e instanceof LeaseLostException) {
                     logger.warn("Partition {}: lease already removed.", lease.getLeaseToken());
                 } else {
-                    logger.warn("Partition {}: failed to remove lease.", lease.getLeaseToken(), e);
+                    logger.warn("Partition " + lease.getLeaseToken() + ": failed to remove lease.", e);
                 }
 
                 return Mono.empty();
@@ -159,7 +159,7 @@ class PartitionControllerImpl implements PartitionController {
                 } else if (throwable instanceof TaskCancelledException) {
                     logger.debug("Partition {}: processing canceled.", lease.getLeaseToken());
                 } else {
-                    logger.warn("Partition {}: processing failed.", lease.getLeaseToken(), throwable);
+                    logger.warn("Partition " + lease.getLeaseToken() + ": processing failed.", throwable);
                 }
 
                 return Mono.empty();
@@ -168,7 +168,17 @@ class PartitionControllerImpl implements PartitionController {
     }
 
     private Mono<Void> handleSplit(Lease lease, String lastContinuationToken) {
-        lease.setContinuationToken(lastContinuationToken);
+        if (lastContinuationToken != null) {
+            logger.warn("Partition {}, with owner: {}, updated with last continuation token: {}",
+                lease.getLeaseToken(),
+                lease.getOwner(),
+                lastContinuationToken);
+            lease.setContinuationToken(lastContinuationToken);
+        } else {
+            logger.warn("Continuation token not found for split for partition: {}, with owner: {}",
+                lease.getLeaseToken(),
+                lease.getOwner());
+        }
         return this.synchronizer.splitPartition(lease)
             .flatMap(l -> {
                 if (this.shouldSkipDirectLeaseAssignment) {
@@ -179,7 +189,7 @@ class PartitionControllerImpl implements PartitionController {
                 }
             }).then(this.leaseManager.delete(lease))
             .onErrorResume(throwable -> {
-                logger.warn("Partition {}: failed to split", lease.getLeaseToken(), throwable);
+                logger.warn("Partition " + lease.getLeaseToken() + ": failed to split", throwable);
                 return  Mono.empty();
             });
     }

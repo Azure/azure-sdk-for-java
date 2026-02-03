@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -71,7 +70,7 @@ public final class SpatialIndex extends Index {
      * @return the SpatialIndex.
      */
     public SpatialIndex setDataType(DataType dataType) {
-        super.set(Constants.Properties.DATA_TYPE, dataType.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        super.set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }
 }

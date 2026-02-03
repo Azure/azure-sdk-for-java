@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.ConflictResolutionMode;
+import com.azure.resourcemanager.storagecache.models.ImportJobAdminStatus;
 import com.azure.resourcemanager.storagecache.models.ImportJobProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.ImportStatusType;
 import java.io.IOException;
@@ -131,6 +132,31 @@ public final class ImportJobInner extends Resource {
     }
 
     /**
+     * Get the adminStatus property: The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+     * Passing in a value of 'Cancel' will cancel the current active import job. By default it is set to 'Active'.
+     * 
+     * @return the adminStatus value.
+     */
+    public ImportJobAdminStatus adminStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().adminStatus();
+    }
+
+    /**
+     * Set the adminStatus property: The administrative status of the import job. Possible values: 'Active', 'Cancel'.
+     * Passing in a value of 'Cancel' will cancel the current active import job. By default it is set to 'Active'.
+     * 
+     * @param adminStatus the adminStatus value to set.
+     * @return the ImportJobInner object itself.
+     */
+    public ImportJobInner withAdminStatus(ImportJobAdminStatus adminStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImportJobProperties();
+        }
+        this.innerProperties().withAdminStatus(adminStatus);
+        return this;
+    }
+
+    /**
      * Get the importPrefixes property: An array of blob paths/prefixes that get imported into the cluster namespace. It
      * has '/' as the default value.
      * 
@@ -218,11 +244,11 @@ public final class ImportJobInner extends Resource {
     }
 
     /**
-     * Get the state property: The state of the import job. InProgress indicates the import is still running. Canceled
-     * indicates it has been canceled by the user. Completed indicates import finished, successfully importing all
-     * discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some blobs either
-     * were found to be conflicting and could not be imported or other errors were encountered. Failed means the import
-     * was unable to complete due to a fatal error.
+     * Get the state property: The operational state of the import job. InProgress indicates the import is still
+     * running. Canceled indicates it has been canceled by the user. Completed indicates import finished, successfully
+     * importing all discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some
+     * blobs either were found to be conflicting and could not be imported or other errors were encountered. Failed
+     * means the import was unable to complete due to a fatal error.
      * 
      * @return the state value.
      */
@@ -267,6 +293,62 @@ public final class ImportJobInner extends Resource {
     }
 
     /**
+     * Get the importedFiles property: New or modified files that have been imported into the filesystem.
+     * 
+     * @return the importedFiles value.
+     */
+    public Long importedFiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().importedFiles();
+    }
+
+    /**
+     * Get the importedDirectories property: New or modified directories that have been imported into the filesystem.
+     * 
+     * @return the importedDirectories value.
+     */
+    public Long importedDirectories() {
+        return this.innerProperties() == null ? null : this.innerProperties().importedDirectories();
+    }
+
+    /**
+     * Get the importedSymlinks property: Newly added symbolic links into the filesystem.
+     * 
+     * @return the importedSymlinks value.
+     */
+    public Long importedSymlinks() {
+        return this.innerProperties() == null ? null : this.innerProperties().importedSymlinks();
+    }
+
+    /**
+     * Get the preexistingFiles property: Files that already exist in the filesystem and have not been modified.
+     * 
+     * @return the preexistingFiles value.
+     */
+    public Long preexistingFiles() {
+        return this.innerProperties() == null ? null : this.innerProperties().preexistingFiles();
+    }
+
+    /**
+     * Get the preexistingDirectories property: Directories that already exist in the filesystem and have not been
+     * modified.
+     * 
+     * @return the preexistingDirectories value.
+     */
+    public Long preexistingDirectories() {
+        return this.innerProperties() == null ? null : this.innerProperties().preexistingDirectories();
+    }
+
+    /**
+     * Get the preexistingSymlinks property: Symbolic links that already exist in the filesystem and have not been
+     * modified.
+     * 
+     * @return the preexistingSymlinks value.
+     */
+    public Long preexistingSymlinks() {
+        return this.innerProperties() == null ? null : this.innerProperties().preexistingSymlinks();
+    }
+
+    /**
      * Get the blobsImportedPerSecond property: A recent and frequently updated rate of total files, directories, and
      * symlinks imported per second.
      * 
@@ -277,7 +359,7 @@ public final class ImportJobInner extends Resource {
     }
 
     /**
-     * Get the lastCompletionTime property: The time of the last completed archive operation.
+     * Get the lastCompletionTime property: The time (in UTC) of the last completed import job.
      * 
      * @return the lastCompletionTime value.
      */
@@ -286,7 +368,7 @@ public final class ImportJobInner extends Resource {
     }
 
     /**
-     * Get the lastStartedTime property: The time the latest archive operation started.
+     * Get the lastStartedTime property: The time (in UTC) the latest import job started.
      * 
      * @return the lastStartedTime value.
      */

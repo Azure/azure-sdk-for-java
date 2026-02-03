@@ -14,63 +14,63 @@ public final class OrganizationResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrganizationResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"marketplaceDetails\":{\"subscriptionId\":\"uckyf\",\"subscriptionStatus\":\"Suspended\",\"offerDetails\":{\"publisherId\":\"fidfvzw\",\"offerId\":\"zuhtymwisdkfthwx\",\"planId\":\"nteiwaopv\",\"planName\":\"ijcmmx\",\"termUnit\":\"ufufsrp\",\"termId\":\"zidnsezcxtbzsgfy\"}},\"userDetails\":{\"firstName\":\"sne\",\"lastName\":\"dwzjeiach\",\"emailAddress\":\"osfln\",\"upn\":\"sfqpteehz\",\"phoneNumber\":\"ypyqrimzinp\"},\"companyDetails\":{\"companyName\":\"wjdk\",\"country\":\"soodqxhcrmnoh\",\"officeAddress\":\"ckwhds\",\"businessPhone\":\"fiyipjxsqwpgrj\",\"domain\":\"norcjxvsnbyxqab\",\"numberOfEmployees\":5579765806559342253},\"provisioningState\":\"Canceled\",\"partnerOrganizationProperties\":{\"organizationId\":\"hurzafblj\",\"organizationName\":\"gpbtoqcjmklj\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"dtqajzyulpkudj\",\"singleSignOnUrl\":\"lkhbz\",\"aadDomains\":[\"pgzgq\",\"xzlocxscp\",\"ierhhbcsglummaj\"]}}},\"location\":\"aodxo\",\"tags\":{\"kajionpim\":\"dxkqpx\",\"txgcpodgmaajr\":\"xg\",\"lwhijcoejctbzaq\":\"vdjwzrlovm\"},\"id\":\"qsycbkbfkgu\",\"name\":\"dkexxppofm\",\"type\":\"axcfjpgddtocjjx\"},{\"properties\":{\"marketplaceDetails\":{\"subscriptionId\":\"mouexhdzx\",\"subscriptionStatus\":\"Unsubscribed\",\"offerDetails\":{\"publisherId\":\"eojnxqbzvddn\",\"offerId\":\"wndeicbtwnp\",\"planId\":\"aoqvuh\",\"planName\":\"cffcyddglmj\",\"termUnit\":\"jqkwpyeicx\",\"termId\":\"ciwqvhk\"}},\"userDetails\":{\"firstName\":\"xuigdtopbobj\",\"lastName\":\"hm\",\"emailAddress\":\"u\",\"upn\":\"a\",\"phoneNumber\":\"rzayv\"},\"companyDetails\":{\"companyName\":\"pgvdf\",\"country\":\"otkftutqxlngx\",\"officeAddress\":\"fgugnxkrxdqmid\",\"businessPhone\":\"hzrvqd\",\"domain\":\"bhj\",\"numberOfEmployees\":5747455475870926752},\"provisioningState\":\"Succeeded\",\"partnerOrganizationProperties\":{\"organizationId\":\"fbowskanyk\",\"organizationName\":\"zlcuiywgqywgndrv\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"pphrcgynco\",\"singleSignOnUrl\":\"ecfvmm\",\"aadDomains\":[\"fsxlzevgbmqjqa\"]}}},\"location\":\"y\",\"tags\":{\"bacfionlebxetq\":\"vkwlzuvccfwnf\",\"jfeallnwsub\":\"tzxdpnqbqqwx\",\"zscxaqwo\":\"snjampmng\",\"ase\":\"chcbonqvpkvlrxnj\"},\"id\":\"pheoflokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"}],\"nextLink\":\"masxazjpqyegu\"}")
+            "{\"value\":[{\"properties\":{\"marketplaceDetails\":{\"subscriptionId\":\"dh\",\"subscriptionStatus\":\"Suspended\",\"offerDetails\":{\"publisherId\":\"lcplc\",\"offerId\":\"khihihlhzds\",\"planId\":\"tzbsrgnowcjhf\",\"planName\":\"vecactx\",\"termUnit\":\"oteyowc\",\"termId\":\"qovekqvgqou\"}},\"userDetails\":{\"firstName\":\"fzmpjwyivq\",\"lastName\":\"f\",\"emailAddress\":\"vhrfsphuagrt\",\"upn\":\"kteusqczk\",\"phoneNumber\":\"klxubyja\"},\"companyDetails\":{\"companyName\":\"mmfblcqcuubgqib\",\"country\":\"a\",\"officeAddress\":\"etttwgdslqxihhr\",\"businessPhone\":\"oi\",\"domain\":\"seypxiutcxapz\",\"numberOfEmployees\":5661325828511806950},\"provisioningState\":\"Succeeded\",\"partnerOrganizationProperties\":{\"organizationId\":\"e\",\"organizationName\":\"joxslhvnhla\",\"singleSignOnProperties\":{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"kzjcjbtrgae\",\"singleSignOnUrl\":\"vibr\",\"aadDomains\":[\"s\"]}},\"projectProperties\":{\"entityId\":\"beitpkx\",\"entityName\":\"moob\",\"createdAt\":\"ft\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"wqmpimaqxzhemjyh\",\"value\":\"hujswtwkozzwcul\"}],\"regionId\":\"awpfajnjwltlwtjj\",\"storage\":5952236879587668656,\"pgVersion\":434289365,\"historyRetention\":663696450,\"defaultEndpointSettings\":{\"autoscalingLimitMinCu\":47.96663798742094,\"autoscalingLimitMaxCu\":73.03725227486856},\"branch\":{\"entityId\":\"zrp\",\"entityName\":\"imlnwiaaomylw\",\"createdAt\":\"z\",\"provisioningState\":\"Failed\",\"attributes\":[{\"name\":\"thwwn\",\"value\":\"jhlfzswpchwahf\"},{\"name\":\"ousnfepgfewe\",\"value\":\"wlyxgncxyk\"},{\"name\":\"hdjhlimmbcx\",\"value\":\"h\"}],\"projectId\":\"po\",\"parentId\":\"vxcjzhqizxfpxtgq\",\"roleName\":\"javftjuhdqa\",\"databaseName\":\"mtggu\",\"roles\":[{}],\"databases\":[{}],\"endpoints\":[{},{}],\"branchId\":\"ivmmghfcfiwrxgk\",\"branch\":\"uvyinzqodfvpgs\",\"dataSize\":\"xgsg\",\"lastActive\":\"fgzdjtxvz\",\"computeHours\":\"bqvgaqv\",\"protected\":false,\"isDefault\":false},\"roles\":[{}],\"databases\":[{}],\"endpoints\":[{},{},{}]}},\"location\":\"t\",\"tags\":{\"cvuzhyrmewipmve\":\"dtutnwldu\",\"etw\":\"dxukuqgsjjxundxg\",\"hvvmuvgpmun\":\"hhzjhfj\"},\"id\":\"qsxvmhf\",\"name\":\"uzjyihsasbhudypo\",\"type\":\"yue\"}],\"nextLink\":\"lynsqyrpf\"}")
             .toObject(OrganizationResourceListResult.class);
-        Assertions.assertEquals("aodxo", model.value().get(0).location());
-        Assertions.assertEquals("dxkqpx", model.value().get(0).tags().get("kajionpim"));
-        Assertions.assertEquals("uckyf", model.value().get(0).properties().marketplaceDetails().subscriptionId());
+        Assertions.assertEquals("t", model.value().get(0).location());
+        Assertions.assertEquals("dtutnwldu", model.value().get(0).tags().get("cvuzhyrmewipmve"));
+        Assertions.assertEquals("dh", model.value().get(0).properties().marketplaceDetails().subscriptionId());
         Assertions.assertEquals(MarketplaceSubscriptionStatus.SUSPENDED,
             model.value().get(0).properties().marketplaceDetails().subscriptionStatus());
-        Assertions.assertEquals("fidfvzw",
+        Assertions.assertEquals("lcplc",
             model.value().get(0).properties().marketplaceDetails().offerDetails().publisherId());
-        Assertions.assertEquals("zuhtymwisdkfthwx",
+        Assertions.assertEquals("khihihlhzds",
             model.value().get(0).properties().marketplaceDetails().offerDetails().offerId());
-        Assertions.assertEquals("nteiwaopv",
+        Assertions.assertEquals("tzbsrgnowcjhf",
             model.value().get(0).properties().marketplaceDetails().offerDetails().planId());
-        Assertions.assertEquals("ijcmmx",
+        Assertions.assertEquals("vecactx",
             model.value().get(0).properties().marketplaceDetails().offerDetails().planName());
-        Assertions.assertEquals("ufufsrp",
+        Assertions.assertEquals("oteyowc",
             model.value().get(0).properties().marketplaceDetails().offerDetails().termUnit());
-        Assertions.assertEquals("zidnsezcxtbzsgfy",
+        Assertions.assertEquals("qovekqvgqou",
             model.value().get(0).properties().marketplaceDetails().offerDetails().termId());
-        Assertions.assertEquals("sne", model.value().get(0).properties().userDetails().firstName());
-        Assertions.assertEquals("dwzjeiach", model.value().get(0).properties().userDetails().lastName());
-        Assertions.assertEquals("osfln", model.value().get(0).properties().userDetails().emailAddress());
-        Assertions.assertEquals("sfqpteehz", model.value().get(0).properties().userDetails().upn());
-        Assertions.assertEquals("ypyqrimzinp", model.value().get(0).properties().userDetails().phoneNumber());
-        Assertions.assertEquals("wjdk", model.value().get(0).properties().companyDetails().companyName());
-        Assertions.assertEquals("soodqxhcrmnoh", model.value().get(0).properties().companyDetails().country());
-        Assertions.assertEquals("ckwhds", model.value().get(0).properties().companyDetails().officeAddress());
-        Assertions.assertEquals("fiyipjxsqwpgrj", model.value().get(0).properties().companyDetails().businessPhone());
-        Assertions.assertEquals("norcjxvsnbyxqab", model.value().get(0).properties().companyDetails().domain());
-        Assertions.assertEquals(5579765806559342253L,
+        Assertions.assertEquals("fzmpjwyivq", model.value().get(0).properties().userDetails().firstName());
+        Assertions.assertEquals("f", model.value().get(0).properties().userDetails().lastName());
+        Assertions.assertEquals("vhrfsphuagrt", model.value().get(0).properties().userDetails().emailAddress());
+        Assertions.assertEquals("kteusqczk", model.value().get(0).properties().userDetails().upn());
+        Assertions.assertEquals("klxubyja", model.value().get(0).properties().userDetails().phoneNumber());
+        Assertions.assertEquals("mmfblcqcuubgqib", model.value().get(0).properties().companyDetails().companyName());
+        Assertions.assertEquals("a", model.value().get(0).properties().companyDetails().country());
+        Assertions.assertEquals("etttwgdslqxihhr", model.value().get(0).properties().companyDetails().officeAddress());
+        Assertions.assertEquals("oi", model.value().get(0).properties().companyDetails().businessPhone());
+        Assertions.assertEquals("seypxiutcxapz", model.value().get(0).properties().companyDetails().domain());
+        Assertions.assertEquals(5661325828511806950L,
             model.value().get(0).properties().companyDetails().numberOfEmployees());
-        Assertions.assertEquals("hurzafblj",
+        Assertions.assertEquals("e",
             model.value().get(0).properties().partnerOrganizationProperties().organizationId());
-        Assertions.assertEquals("gpbtoqcjmklj",
+        Assertions.assertEquals("joxslhvnhla",
             model.value().get(0).properties().partnerOrganizationProperties().organizationName());
-        Assertions.assertEquals(SingleSignOnStates.DISABLE,
+        Assertions.assertEquals(SingleSignOnStates.ENABLE,
             model.value()
                 .get(0)
                 .properties()
                 .partnerOrganizationProperties()
                 .singleSignOnProperties()
                 .singleSignOnState());
-        Assertions.assertEquals("dtqajzyulpkudj",
+        Assertions.assertEquals("kzjcjbtrgae",
             model.value()
                 .get(0)
                 .properties()
                 .partnerOrganizationProperties()
                 .singleSignOnProperties()
                 .enterpriseAppId());
-        Assertions.assertEquals("lkhbz",
+        Assertions.assertEquals("vibr",
             model.value()
                 .get(0)
                 .properties()
                 .partnerOrganizationProperties()
                 .singleSignOnProperties()
                 .singleSignOnUrl());
-        Assertions.assertEquals("pgzgq",
+        Assertions.assertEquals("s",
             model.value()
                 .get(0)
                 .properties()
@@ -78,6 +78,35 @@ public final class OrganizationResourceListResultTests {
                 .singleSignOnProperties()
                 .aadDomains()
                 .get(0));
-        Assertions.assertEquals("masxazjpqyegu", model.nextLink());
+        Assertions.assertEquals("moob", model.value().get(0).properties().projectProperties().entityName());
+        Assertions.assertEquals("wqmpimaqxzhemjyh",
+            model.value().get(0).properties().projectProperties().attributes().get(0).name());
+        Assertions.assertEquals("hujswtwkozzwcul",
+            model.value().get(0).properties().projectProperties().attributes().get(0).value());
+        Assertions.assertEquals("awpfajnjwltlwtjj", model.value().get(0).properties().projectProperties().regionId());
+        Assertions.assertEquals(5952236879587668656L, model.value().get(0).properties().projectProperties().storage());
+        Assertions.assertEquals(434289365, model.value().get(0).properties().projectProperties().pgVersion());
+        Assertions.assertEquals(663696450, model.value().get(0).properties().projectProperties().historyRetention());
+        Assertions.assertEquals(47.96663798742094,
+            model.value().get(0).properties().projectProperties().defaultEndpointSettings().autoscalingLimitMinCu());
+        Assertions.assertEquals(73.03725227486856,
+            model.value().get(0).properties().projectProperties().defaultEndpointSettings().autoscalingLimitMaxCu());
+        Assertions.assertEquals("imlnwiaaomylw",
+            model.value().get(0).properties().projectProperties().branch().entityName());
+        Assertions.assertEquals("thwwn",
+            model.value().get(0).properties().projectProperties().branch().attributes().get(0).name());
+        Assertions.assertEquals("jhlfzswpchwahf",
+            model.value().get(0).properties().projectProperties().branch().attributes().get(0).value());
+        Assertions.assertEquals("po", model.value().get(0).properties().projectProperties().branch().projectId());
+        Assertions.assertEquals("vxcjzhqizxfpxtgq",
+            model.value().get(0).properties().projectProperties().branch().parentId());
+        Assertions.assertEquals("javftjuhdqa",
+            model.value().get(0).properties().projectProperties().branch().roleName());
+        Assertions.assertEquals("mtggu", model.value().get(0).properties().projectProperties().branch().databaseName());
+        Assertions.assertEquals("ivmmghfcfiwrxgk",
+            model.value().get(0).properties().projectProperties().branch().branchId());
+        Assertions.assertEquals("uvyinzqodfvpgs",
+            model.value().get(0).properties().projectProperties().branch().branch());
+        Assertions.assertEquals("lynsqyrpf", model.nextLink());
     }
 }

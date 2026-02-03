@@ -123,26 +123,6 @@ public final class BrokerDiagnostics implements JsonSerializable<BrokerDiagnosti
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (logs() != null) {
-            logs().validate();
-        }
-        if (metrics() != null) {
-            metrics().validate();
-        }
-        if (selfCheck() != null) {
-            selfCheck().validate();
-        }
-        if (traces() != null) {
-            traces().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

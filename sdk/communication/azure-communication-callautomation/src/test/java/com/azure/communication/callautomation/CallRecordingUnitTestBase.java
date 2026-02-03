@@ -3,13 +3,10 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.RecordingStateInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingKindInternal;
+import com.azure.communication.callautomation.implementation.models.RecordingStateInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStateResponseInternal;
 
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ public class CallRecordingUnitTestBase {
         = "aHR0cHM6Ly9jb252LXVzd2UtMDguY29udi5za3lwZS5jb20vY29udi8tby1FWjVpMHJrS3RFTDBNd0FST1J3P2k9ODgmZT02Mzc1Nzc0MTY4MDc4MjQyOTM";
 
     static final String RECORDING_ID = "recordingId";
+    static final String CALL_CONNECTION_ID = "callConnectionId";
 
     private final RecordingStateResponseInternal recordingState
         = new RecordingStateResponseInternal().setRecordingId(RECORDING_ID);
@@ -40,11 +38,8 @@ public class CallRecordingUnitTestBase {
         ));
 
     private String serializeObject(RecordingStateResponseInternal o) {
-        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
-            o.toJson(writer);
-            writer.flush();
-            return outputStream.toString();
+        try {
+            return o.toJsonString();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

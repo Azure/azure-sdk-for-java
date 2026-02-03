@@ -5,6 +5,7 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,16 +20,19 @@ public final class ManifestList extends Manifest {
     /*
      * Media type for this Manifest
      */
+    @Generated
     private String mediaType;
 
     /*
      * List of V2 image layer information
      */
+    @Generated
     private List<ManifestListAttributes> manifests;
 
     /**
      * Creates an instance of ManifestList class.
      */
+    @Generated
     public ManifestList() {
     }
 
@@ -37,6 +41,7 @@ public final class ManifestList extends Manifest {
      * 
      * @return the mediaType value.
      */
+    @Generated
     public String getMediaType() {
         return this.mediaType;
     }
@@ -47,6 +52,7 @@ public final class ManifestList extends Manifest {
      * @param mediaType the mediaType value to set.
      * @return the ManifestList object itself.
      */
+    @Generated
     public ManifestList setMediaType(String mediaType) {
         this.mediaType = mediaType;
         return this;
@@ -57,6 +63,7 @@ public final class ManifestList extends Manifest {
      * 
      * @return the manifests value.
      */
+    @Generated
     public List<ManifestListAttributes> getManifests() {
         return this.manifests;
     }
@@ -67,6 +74,7 @@ public final class ManifestList extends Manifest {
      * @param manifests the manifests value to set.
      * @return the ManifestList object itself.
      */
+    @Generated
     public ManifestList setManifests(List<ManifestListAttributes> manifests) {
         this.manifests = manifests;
         return this;
@@ -75,6 +83,7 @@ public final class ManifestList extends Manifest {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ManifestList setSchemaVersion(Integer schemaVersion) {
         super.setSchemaVersion(schemaVersion);
@@ -84,6 +93,7 @@ public final class ManifestList extends Manifest {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -101,6 +111,7 @@ public final class ManifestList extends Manifest {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManifestList.
      */
+    @Generated
     public static ManifestList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManifestList deserializedManifestList = new ManifestList();

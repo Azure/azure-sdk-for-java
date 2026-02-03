@@ -20,7 +20,7 @@ public class CopyDocumentClassifierTo {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://myendpoint.cognitiveservices.azure.com")
                 .buildClient();
-        // BEGIN:com.azure.ai.documentintelligence.generated.copyclassifierto.copydocumentclassifierto
+        // BEGIN:com.azure.ai.documentintelligence.generated.copy-classifier-to.copy-document-classifier-to
         SyncPoller<DocumentClassifierCopyToOperationDetails, DocumentClassifierDetails> response
             = documentIntelligenceAdministrationClient.beginCopyClassifierTo("sourceClassifier",
                 new ClassifierCopyAuthorization(
@@ -28,6 +28,6 @@ public class CopyDocumentClassifierTo {
                     "targetResourceRegion", "targetClassifier",
                     "https://targetEndpoint.cognitiveservices.azure.com/documentintelligence/documentClassifiers/targetClassifier",
                     "fakeTokenPlaceholder", OffsetDateTime.parse("2021-09-23T09:12:54.552Z")));
-        // END:com.azure.ai.documentintelligence.generated.copyclassifierto.copydocumentclassifierto
+        // END:com.azure.ai.documentintelligence.generated.copy-classifier-to.copy-document-classifier-to
     }
 }

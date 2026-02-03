@@ -122,10 +122,10 @@ You may learn more about partitioning [here](https://learn.microsoft.com/azure/c
 ## Examples
 
 The following section provides several code snippets covering some of the most common Cosmos DB SQL API tasks, including:
-* [Create Cosmos Client](#create-cosmos-client "Create Cosmos Client")
-* [Create Database](#create-database "Create Database")
-* [Create Container](#create-container "Create Container")
-* [CRUD operation on Items](#crud-operation-on-items "CRUD operation on Items")
+* [Create Cosmos Client](#create-cosmos-client)
+* [Create Database](#create-database)
+* [Create Container](#create-container)
+* [CRUD operation on Items](#crud-operation-on-items)
 
 ### Create Cosmos Client
 ```java readme-sample-createCosmosClient2
@@ -286,7 +286,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos/src
 [cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
-[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
+[api_documentation]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-cosmos/latest/index.html
 [cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [slf4j]: http://www.slf4j.org/
@@ -306,5 +306,3 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [getting_started]: https://github.com/Azure-Samples/azure-cosmos-java-getting-started
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 [project_reactor_schedulers]: https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos%2FREADME.png)

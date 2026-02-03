@@ -156,7 +156,7 @@ public final class JobRouterAdministrationClientImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "JobRouterAdministrat")
+    @ServiceInterface(name = "JobRouterAdministrationClient")
     public interface JobRouterAdministrationClientService {
         @Patch("/routing/distributionPolicies/{distributionPolicyId}")
         @ExpectedResponses({ 200, 201 })

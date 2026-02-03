@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.ExtensionTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.ExtensionTopicInner;
 import reactor.core.publisher.Mono;
@@ -55,13 +56,20 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "EventGridManagementC")
+    @ServiceInterface(name = "EventGridManagementClientExtensionTopics")
     public interface ExtensionTopicsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.EventGrid/extensionTopics/default")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtensionTopicInner>> get(@HostParam("$host") String endpoint, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{scope}/providers/Microsoft.EventGrid/extensionTopics/default")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<ExtensionTopicInner> getSync(@HostParam("$host") String endpoint, @PathParam("scope") String scope,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -109,38 +117,6 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
      * for Azure resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionTopicInner>> getWithResponseAsync(String scope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (scope == null) {
-            return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get properties of an extension topic.
-     * 
-     * Get the properties of an extension topic.
-     * 
-     * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
-     * or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
-     * '/subscriptions/{subscriptionId}/' for a subscription,
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     * for Azure resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -170,7 +146,16 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ExtensionTopicInner> getWithResponse(String scope, Context context) {
-        return getWithResponseAsync(scope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (scope == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter scope is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), scope, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -193,4 +178,6 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
     public ExtensionTopicInner get(String scope) {
         return getWithResponse(scope, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExtensionTopicsClientImpl.class);
 }

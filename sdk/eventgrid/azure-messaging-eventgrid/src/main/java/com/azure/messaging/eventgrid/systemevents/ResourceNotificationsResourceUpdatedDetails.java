@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.json.JsonReader;
@@ -15,44 +16,55 @@ import java.util.Map;
 
 /**
  * Describes the schema of the properties under resource info which are common across all ARN system topic events.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class ResourceNotificationsResourceUpdatedDetails
     implements JsonSerializable<ResourceNotificationsResourceUpdatedDetails> {
 
     /*
      * id of the resource for which the event is being emitted
      */
+    @Generated
     private String id;
 
     /*
      * name of the resource for which the event is being emitted
      */
+    @Generated
     private String name;
 
     /*
      * the type of the resource for which the event is being emitted
      */
+    @Generated
     private String type;
 
     /*
      * the location of the resource for which the event is being emitted
      */
+    @Generated
     private String location;
 
     /*
      * the tags on the resource for which the event is being emitted
      */
+    @Generated
     private Map<String, String> tags;
 
     /*
      * properties in the payload of the resource for which the event is being emitted
      */
+    @Generated
     private Map<String, Object> properties;
 
     /**
      * Creates an instance of ResourceNotificationsResourceUpdatedDetails class.
      */
+    @Generated
     public ResourceNotificationsResourceUpdatedDetails() {
     }
 
@@ -61,6 +73,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -71,6 +84,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @param id the id value to set.
      * @return the ResourceNotificationsResourceUpdatedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceUpdatedDetails setId(String id) {
         this.id = id;
         return this;
@@ -81,6 +95,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      *
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -91,6 +106,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @param name the name value to set.
      * @return the ResourceNotificationsResourceUpdatedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceUpdatedDetails setName(String name) {
         this.name = name;
         return this;
@@ -101,6 +117,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      *
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
     }
@@ -111,6 +128,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @param type the type value to set.
      * @return the ResourceNotificationsResourceUpdatedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceUpdatedDetails setType(String type) {
         this.type = type;
         return this;
@@ -121,6 +139,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      *
      * @return the location value.
      */
+    @Generated
     public String getLocation() {
         return this.location;
     }
@@ -131,6 +150,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @param location the location value to set.
      * @return the ResourceNotificationsResourceUpdatedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceUpdatedDetails setLocation(String location) {
         this.location = location;
         return this;
@@ -141,6 +161,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      *
      * @return the tags value.
      */
+    @Generated
     public Map<String, String> getResourceTags() {
         return this.tags;
     }
@@ -151,6 +172,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @param tags the tags value to set.
      * @return the ResourceNotificationsResourceUpdatedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceUpdatedDetails setResourceTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
@@ -161,6 +183,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      *
      * @return the properties value.
      */
+    @Generated
     public Map<String, Object> getProperties() {
         return this.properties;
     }
@@ -171,6 +194,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @param properties the properties value to set.
      * @return the ResourceNotificationsResourceUpdatedDetails object itself.
      */
+    @Generated
     public ResourceNotificationsResourceUpdatedDetails setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return this;
@@ -179,6 +203,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -199,6 +224,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * of it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ResourceNotificationsResourceUpdatedDetails.
      */
+    @Generated
     public static ResourceNotificationsResourceUpdatedDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ResourceNotificationsResourceUpdatedDetails deserializedResourceNotificationsResourceUpdatedDetails
@@ -249,7 +275,7 @@ public final class ResourceNotificationsResourceUpdatedDetails
      * @return the ResourceNotificationsResourceUpdatedDetails object itself.
      * @deprecated This property has been replaced with {@link #setResourceTags(Map)}.
      */
-    @Deprecated()
+    @Deprecated
     public ResourceNotificationsResourceUpdatedDetails setTags(String tags) {
         LOGGER.log(LogLevel.INFORMATIONAL, () -> "This method has been replaced with setResourceTags(Map).");
         return this;

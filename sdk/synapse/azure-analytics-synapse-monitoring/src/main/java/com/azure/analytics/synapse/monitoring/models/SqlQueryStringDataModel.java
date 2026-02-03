@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.monitoring.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class SqlQueryStringDataModel implements JsonSerializable<SqlQueryS
     /*
      * The query property.
      */
+    @Generated
     private String query;
 
     /**
      * Creates an instance of SqlQueryStringDataModel class.
      */
+    @Generated
     public SqlQueryStringDataModel() {
     }
 
@@ -32,6 +35,7 @@ public final class SqlQueryStringDataModel implements JsonSerializable<SqlQueryS
      * 
      * @return the query value.
      */
+    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -42,6 +46,7 @@ public final class SqlQueryStringDataModel implements JsonSerializable<SqlQueryS
      * @param query the query value to set.
      * @return the SqlQueryStringDataModel object itself.
      */
+    @Generated
     public SqlQueryStringDataModel setQuery(String query) {
         this.query = query;
         return this;
@@ -50,6 +55,7 @@ public final class SqlQueryStringDataModel implements JsonSerializable<SqlQueryS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class SqlQueryStringDataModel implements JsonSerializable<SqlQueryS
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SqlQueryStringDataModel.
      */
+    @Generated
     public static SqlQueryStringDataModel fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SqlQueryStringDataModel deserializedSqlQueryStringDataModel = new SqlQueryStringDataModel();

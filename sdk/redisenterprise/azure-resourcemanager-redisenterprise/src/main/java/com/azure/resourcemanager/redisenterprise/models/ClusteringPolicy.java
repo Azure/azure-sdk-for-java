@@ -8,8 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Clustering policy - default is OSSCluster. This property must be chosen at create time, and cannot be changed without
- * deleting the database.
+ * Clustering policy - default is OSSCluster. This property can be updated only if the current value is NoCluster. If
+ * the value is OSSCluster or EnterpriseCluster, it cannot be updated without deleting the database.
  */
 public final class ClusteringPolicy extends ExpandableStringEnum<ClusteringPolicy> {
     /**
@@ -21,6 +21,11 @@ public final class ClusteringPolicy extends ExpandableStringEnum<ClusteringPolic
      * Static value OSSCluster for ClusteringPolicy.
      */
     public static final ClusteringPolicy OSSCLUSTER = fromString("OSSCluster");
+
+    /**
+     * Static value NoCluster for ClusteringPolicy.
+     */
+    public static final ClusteringPolicy NO_CLUSTER = fromString("NoCluster");
 
     /**
      * Creates a new instance of ClusteringPolicy value.

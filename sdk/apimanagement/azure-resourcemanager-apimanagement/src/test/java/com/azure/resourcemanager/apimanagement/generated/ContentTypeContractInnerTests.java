@@ -12,25 +12,25 @@ public final class ContentTypeContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContentTypeContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"id\":\"qgo\",\"name\":\"xpwwzt\",\"description\":\"mkkhtgfredml\",\"schema\":\"datagrllcc\",\"version\":\"ovjowazhpabacom\"},\"id\":\"yotgkwsxnsrqorc\",\"name\":\"enmvcebxeetq\",\"type\":\"jxcxxq\"}")
+            "{\"properties\":{\"id\":\"djhunhghcgawnr\",\"name\":\"quox\",\"description\":\"tireimse\",\"schema\":\"datafsxstcyil\",\"version\":\"zmmx\"},\"id\":\"jzlquz\",\"name\":\"xokjxebj\",\"type\":\"b\"}")
             .toObject(ContentTypeContractInner.class);
-        Assertions.assertEquals("qgo", model.idPropertiesId());
-        Assertions.assertEquals("xpwwzt", model.namePropertiesName());
-        Assertions.assertEquals("mkkhtgfredml", model.description());
-        Assertions.assertEquals("ovjowazhpabacom", model.version());
+        Assertions.assertEquals("djhunhghcgawnr", model.idPropertiesId());
+        Assertions.assertEquals("quox", model.namePropertiesName());
+        Assertions.assertEquals("tireimse", model.description());
+        Assertions.assertEquals("zmmx", model.version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentTypeContractInner model = new ContentTypeContractInner().withIdPropertiesId("qgo")
-            .withNamePropertiesName("xpwwzt")
-            .withDescription("mkkhtgfredml")
-            .withSchema("datagrllcc")
-            .withVersion("ovjowazhpabacom");
+        ContentTypeContractInner model = new ContentTypeContractInner().withIdPropertiesId("djhunhghcgawnr")
+            .withNamePropertiesName("quox")
+            .withDescription("tireimse")
+            .withSchema("datafsxstcyil")
+            .withVersion("zmmx");
         model = BinaryData.fromObject(model).toObject(ContentTypeContractInner.class);
-        Assertions.assertEquals("qgo", model.idPropertiesId());
-        Assertions.assertEquals("xpwwzt", model.namePropertiesName());
-        Assertions.assertEquals("mkkhtgfredml", model.description());
-        Assertions.assertEquals("ovjowazhpabacom", model.version());
+        Assertions.assertEquals("djhunhghcgawnr", model.idPropertiesId());
+        Assertions.assertEquals("quox", model.namePropertiesName());
+        Assertions.assertEquals("tireimse", model.description());
+        Assertions.assertEquals("zmmx", model.version());
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
@@ -33,76 +33,75 @@ public final class ApiDiagnosticsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"aeeekfztvna\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":9.119012175041675},\"frontend\":{\"request\":{\"headers\":[\"dkxhmewyaolclzx\",\"rdpuyytbpkrp\"],\"body\":{\"bytes\":885532680},\"dataMasking\":{\"queryParams\":[{},{},{},{}],\"headers\":[{},{}]}},\"response\":{\"headers\":[\"oaf\",\"cnr\",\"iyrxowvhufcmu\",\"jwblxphtoz\"],\"body\":{\"bytes\":1368612842},\"dataMasking\":{\"queryParams\":[{},{},{},{}],\"headers\":[{}]}}},\"backend\":{\"request\":{\"headers\":[\"jynihtibu\",\"gzqzhluc\",\"blfehbgc\"],\"body\":{\"bytes\":1609493577},\"dataMasking\":{\"queryParams\":[{},{},{},{}],\"headers\":[{},{},{},{}]}},\"response\":{\"headers\":[\"dumh\"],\"body\":{\"bytes\":1946660814},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{},{},{}]}}},\"logClientIp\":false,\"httpCorrelationProtocol\":\"Legacy\",\"verbosity\":\"error\",\"operationNameFormat\":\"Name\",\"metrics\":false},\"id\":\"gkwxjsjquvohufzd\",\"name\":\"srpjuv\",\"type\":\"zacrzhnsbylgmgbh\"}";
+            = "{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"ukxgoyxontbwdq\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":17.576076875066683},\"frontend\":{\"request\":{\"headers\":[\"xfuaefewx\"],\"body\":{\"bytes\":1717146856},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{},{}]}},\"response\":{\"headers\":[\"yrqvelrmd\",\"izhvks\"],\"body\":{\"bytes\":1497510110},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{},{}]}}},\"backend\":{\"request\":{\"headers\":[\"wksmpyeyzolb\"],\"body\":{\"bytes\":60619194},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{}]}},\"response\":{\"headers\":[\"qoomis\",\"kqwopws\",\"liyznghuqzgp\"],\"body\":{\"bytes\":673026350},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{},{}]}}},\"logClientIp\":false,\"httpCorrelationProtocol\":\"Legacy\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Name\",\"metrics\":true},\"id\":\"f\",\"name\":\"zukryxpijvapea\",\"type\":\"fdmc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DiagnosticContract response
             = manager.apiDiagnostics()
-                .define("vsl")
-                .withExistingApi("cxlngoufpi", "p", "mfxzspf")
+                .define("hvchvv")
+                .withExistingApi("volxtqmricdsflzb", "i", "mjfgoxedrmra")
                 .withAlwaysLog(AlwaysLog.ALL_ERRORS)
-                .withLoggerId("plxg")
+                .withLoggerId("gbntnwzruzsoow")
                 .withSampling(
-                    new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(10.592726548496357D))
+                    new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.83365267454302D))
                 .withFrontend(new PipelineDiagnosticSettings()
-                    .withRequest(new HttpMessageDiagnostic()
-                        .withHeaders(Arrays.asList("rznlaxo", "qthkwxfugfz", "zy", "duyjnqzbr"))
-                        .withBody(new BodyDiagnosticSettings().withBytes(83992792))
+                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("nvcebspci", "yomhkdwuwedupb"))
+                        .withBody(new BodyDiagnosticSettings().withBytes(661629798))
                         .withDataMasking(new DataMasking()
                             .withQueryParams(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity(),
                                 new DataMaskingEntity()))
-                            .withHeaders(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity()))))
-                    .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("uca", "nsbqoitwhmuc"))
-                        .withBody(new BodyDiagnosticSettings().withBytes(2103572732))
-                        .withDataMasking(new DataMasking()
-                            .withQueryParams(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity()))
-                            .withHeaders(
-                                Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity(), new DataMaskingEntity(),
-                                    new DataMaskingEntity())))))
-                .withBackend(new PipelineDiagnosticSettings()
-                    .withRequest(new HttpMessageDiagnostic()
-                        .withHeaders(Arrays.asList("elyqdvpqfbxg", "cudusdmtxqlefn", "heywvfopkyllrey"))
-                        .withBody(new BodyDiagnosticSettings().withBytes(975893875))
+                            .withHeaders(Arrays.asList(new DataMaskingEntity()))))
+                    .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("aefe", "vvkxdbnmc", "a"))
+                        .withBody(new BodyDiagnosticSettings().withBytes(510883704))
                         .withDataMasking(new DataMasking()
                             .withQueryParams(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity(),
-                                new DataMaskingEntity(), new DataMaskingEntity()))
-                            .withHeaders(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity(),
-                                new DataMaskingEntity()))))
-                    .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("rsvevcneqswxhqh", "kh"))
-                        .withBody(new BodyDiagnosticSettings().withBytes(801862254))
-                        .withDataMasking(new DataMasking().withQueryParams(Arrays.asList(new DataMaskingEntity()))
-                            .withHeaders(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity(),
-                                new DataMaskingEntity(), new DataMaskingEntity())))))
+                                new DataMaskingEntity()))
+                            .withHeaders(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity())))))
+                .withBackend(new PipelineDiagnosticSettings()
+                    .withRequest(new HttpMessageDiagnostic()
+                        .withHeaders(Arrays.asList("vfxnzpf", "fupktw", "dpsegivytabvbbk", "lewgsltut"))
+                        .withBody(new BodyDiagnosticSettings().withBytes(867611567))
+                        .withDataMasking(new DataMasking()
+                            .withQueryParams(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity()))
+                            .withHeaders(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity()))))
+                    .withResponse(
+                        new HttpMessageDiagnostic().withHeaders(Arrays.asList("nx", "q", "xwclykcru", "ekkbnj"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(1180758143))
+                            .withDataMasking(new DataMasking()
+                                .withQueryParams(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity(),
+                                    new DataMaskingEntity()))
+                                .withHeaders(Arrays.asList(new DataMaskingEntity(), new DataMaskingEntity(),
+                                    new DataMaskingEntity(), new DataMaskingEntity())))))
                 .withLogClientIp(false)
-                .withHttpCorrelationProtocol(HttpCorrelationProtocol.LEGACY)
-                .withVerbosity(Verbosity.VERBOSE)
-                .withOperationNameFormat(OperationNameFormat.NAME)
-                .withMetrics(true)
-                .withIfMatch("sgoihlqwbyw")
+                .withHttpCorrelationProtocol(HttpCorrelationProtocol.W3C)
+                .withVerbosity(Verbosity.INFORMATION)
+                .withOperationNameFormat(OperationNameFormat.URL)
+                .withMetrics(false)
+                .withIfMatch("hyfivxdifbwbli")
                 .create();
 
         Assertions.assertEquals(AlwaysLog.ALL_ERRORS, response.alwaysLog());
-        Assertions.assertEquals("aeeekfztvna", response.loggerId());
+        Assertions.assertEquals("ukxgoyxontbwdq", response.loggerId());
         Assertions.assertEquals(SamplingType.FIXED, response.sampling().samplingType());
-        Assertions.assertEquals(9.119012175041675D, response.sampling().percentage());
-        Assertions.assertEquals("dkxhmewyaolclzx", response.frontend().request().headers().get(0));
-        Assertions.assertEquals(885532680, response.frontend().request().body().bytes());
-        Assertions.assertEquals("oaf", response.frontend().response().headers().get(0));
-        Assertions.assertEquals(1368612842, response.frontend().response().body().bytes());
-        Assertions.assertEquals("jynihtibu", response.backend().request().headers().get(0));
-        Assertions.assertEquals(1609493577, response.backend().request().body().bytes());
-        Assertions.assertEquals("dumh", response.backend().response().headers().get(0));
-        Assertions.assertEquals(1946660814, response.backend().response().body().bytes());
-        Assertions.assertEquals(false, response.logClientIp());
+        Assertions.assertEquals(17.576076875066683D, response.sampling().percentage());
+        Assertions.assertEquals("xfuaefewx", response.frontend().request().headers().get(0));
+        Assertions.assertEquals(1717146856, response.frontend().request().body().bytes());
+        Assertions.assertEquals("yrqvelrmd", response.frontend().response().headers().get(0));
+        Assertions.assertEquals(1497510110, response.frontend().response().body().bytes());
+        Assertions.assertEquals("wksmpyeyzolb", response.backend().request().headers().get(0));
+        Assertions.assertEquals(60619194, response.backend().request().body().bytes());
+        Assertions.assertEquals("qoomis", response.backend().response().headers().get(0));
+        Assertions.assertEquals(673026350, response.backend().response().body().bytes());
+        Assertions.assertFalse(response.logClientIp());
         Assertions.assertEquals(HttpCorrelationProtocol.LEGACY, response.httpCorrelationProtocol());
-        Assertions.assertEquals(Verbosity.ERROR, response.verbosity());
+        Assertions.assertEquals(Verbosity.VERBOSE, response.verbosity());
         Assertions.assertEquals(OperationNameFormat.NAME, response.operationNameFormat());
-        Assertions.assertEquals(false, response.metrics());
+        Assertions.assertTrue(response.metrics());
     }
 }

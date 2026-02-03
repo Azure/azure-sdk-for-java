@@ -92,11 +92,9 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /*
      * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about
-     * available VM sizes, see Sizes for Virtual Machines (Linux)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
-     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
-     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
-     * series).
+     * available VM sizes, see Sizes for Virtual Machines in Azure
+     * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes except
+     * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
     @Generated
     private String vmSize;
@@ -120,6 +118,15 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      */
     @Generated
     private List<ResizeError> resizeErrors;
+
+    /*
+     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @Generated
+    private Map<String, String> resourceTags;
 
     /*
      * The number of dedicated Compute Nodes currently in the Pool.
@@ -196,6 +203,18 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     private BatchStartTask startTask;
 
     /*
+     * For Windows Nodes, the Batch service installs the Certificates to the specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     */
+    @Generated
+    private List<BatchCertificateReference> certificateReferences;
+
+    /*
      * The list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all
      * new Nodes joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted
      * or reimaged. There is a maximum of 10 Package references on any given Pool.
@@ -227,16 +246,7 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      * A list of name-value pairs associated with the Pool as metadata.
      */
     @Generated
-    private List<MetadataItem> metadata;
-
-    /*
-     * Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only if
-     * the BatchPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The
-     * statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
-     * typical delay is about 30 minutes.
-     */
-    @Generated
-    private BatchPoolStatistics stats;
+    private List<BatchMetadataItem> metadata;
 
     /*
      * A list of file systems to mount on each node in the pool. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.
@@ -264,6 +274,12 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      */
     @Generated
     private BatchNodeCommunicationMode currentNodeCommunicationMode;
+
+    /*
+     * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
+     */
+    @Generated
+    private UpgradePolicy upgradePolicy;
 
     /**
      * Creates an instance of BatchPool class.
@@ -382,11 +398,9 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
 
     /**
      * Get the vmSize property: The size of virtual machines in the Pool. All virtual machines in a Pool are the same
-     * size. For information about available VM sizes, see Sizes for Virtual Machines (Linux)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
-     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
-     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
-     * series).
+     * size. For information about available VM sizes, see Sizes for Virtual Machines in Azure
+     * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes except
+     * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @return the vmSize value.
      */
@@ -428,6 +442,19 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     @Generated
     public List<ResizeError> getResizeErrors() {
         return this.resizeErrors;
+    }
+
+    /**
+     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value.
+     */
+    @Generated
+    public Map<String, String> getResourceTags() {
+        return this.resourceTags;
     }
 
     /**
@@ -550,6 +577,23 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     }
 
     /**
+     * Get the certificateReferences property: For Windows Nodes, the Batch service installs the Certificates to the
+     * specified Certificate store and location.
+     * For Linux Compute Nodes, the Certificates are stored in a directory inside the Task working directory and an
+     * environment variable AZ_BATCH_CERTIFICATES_DIR is supplied to the Task to query for this location.
+     * For Certificates with visibility of 'remoteUser', a 'certs' directory is created in the user's home directory
+     * (e.g., /home/{user-name}/certs) and Certificates are placed in that directory.
+     * Warning: This property is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault
+     * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+     *
+     * @return the certificateReferences value.
+     */
+    @Generated
+    public List<BatchCertificateReference> getCertificateReferences() {
+        return this.certificateReferences;
+    }
+
+    /**
      * Get the applicationPackageReferences property: The list of Packages to be installed on each Compute Node in the
      * Pool. Changes to Package references affect all new Nodes joining the Pool, but do not affect Compute Nodes that
      * are already in the Pool until they are rebooted or reimaged. There is a maximum of 10 Package references on any
@@ -601,21 +645,8 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
-    }
-
-    /**
-     * Get the stats property: Utilization and resource usage statistics for the entire lifetime of the Pool. This
-     * property is populated only if the BatchPool was retrieved with an expand clause including the 'stats' attribute;
-     * otherwise it is null. The statistics may not be immediately available. The Batch service performs periodic
-     * roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchPoolStatistics getStats() {
-        return this.stats;
     }
 
     /**
@@ -661,34 +692,6 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
     public BatchNodeCommunicationMode getCurrentNodeCommunicationMode() {
         return this.currentNodeCommunicationMode;
     }
-
-    /*
-     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
-     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
-     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
-     * 'UserSubscription'.
-     */
-    @Generated
-    private Map<String, String> resourceTags;
-
-    /**
-     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.
-     *
-     * @return the resourceTags value.
-     */
-    @Generated
-    public Map<String, String> getResourceTags() {
-        return this.resourceTags;
-    }
-
-    /*
-     * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
-     */
-    @Generated
-    private UpgradePolicy upgradePolicy;
 
     /**
      * Get the upgradePolicy property: The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual,
@@ -790,6 +793,10 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                     deserializedBatchPool.networkConfiguration = NetworkConfiguration.fromJson(reader);
                 } else if ("startTask".equals(fieldName)) {
                     deserializedBatchPool.startTask = BatchStartTask.fromJson(reader);
+                } else if ("certificateReferences".equals(fieldName)) {
+                    List<BatchCertificateReference> certificateReferences
+                        = reader.readArray(reader1 -> BatchCertificateReference.fromJson(reader1));
+                    deserializedBatchPool.certificateReferences = certificateReferences;
                 } else if ("applicationPackageReferences".equals(fieldName)) {
                     List<BatchApplicationPackageReference> applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
@@ -802,10 +809,10 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
                     List<UserAccount> userAccounts = reader.readArray(reader1 -> UserAccount.fromJson(reader1));
                     deserializedBatchPool.userAccounts = userAccounts;
                 } else if ("metadata".equals(fieldName)) {
-                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    List<BatchMetadataItem> metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                     deserializedBatchPool.metadata = metadata;
                 } else if ("stats".equals(fieldName)) {
-                    deserializedBatchPool.stats = BatchPoolStatistics.fromJson(reader);
+                    deserializedBatchPool.poolStatistics = BatchPoolStatistics.fromJson(reader);
                 } else if ("mountConfiguration".equals(fieldName)) {
                     List<MountConfiguration> mountConfiguration
                         = reader.readArray(reader1 -> MountConfiguration.fromJson(reader1));
@@ -826,5 +833,27 @@ public final class BatchPool implements JsonSerializable<BatchPool> {
             }
             return deserializedBatchPool;
         });
+    }
+
+    /*
+     * Utilization and resource usage statistics for the entire lifetime of the Pool. This property is populated only if
+     * the BatchPool was retrieved with an expand clause including the 'stats' attribute; otherwise it is null. The
+     * statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The
+     * typical delay is about 30 minutes.
+     */
+    @Generated
+    private BatchPoolStatistics poolStatistics;
+
+    /**
+     * Get the poolStatistics property: Utilization and resource usage statistics for the entire lifetime of the Pool.
+     * This property is populated only if the BatchPool was retrieved with an expand clause including the 'stats'
+     * attribute; otherwise it is null. The statistics may not be immediately available. The Batch service performs
+     * periodic roll-up of statistics. The typical delay is about 30 minutes.
+     *
+     * @return the poolStatistics value.
+     */
+    @Generated
+    public BatchPoolStatistics getPoolStatistics() {
+        return this.poolStatistics;
     }
 }

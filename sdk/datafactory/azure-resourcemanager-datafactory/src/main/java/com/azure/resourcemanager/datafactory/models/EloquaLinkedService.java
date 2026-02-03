@@ -51,7 +51,7 @@ public final class EloquaLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private EloquaLinkedServiceTypeProperties innerTypeProperties() {
+    EloquaLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

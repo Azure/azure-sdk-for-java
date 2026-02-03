@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,42 +22,50 @@ public class CassandraLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Cassandra";
 
     /*
      * Host name for connection. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object host;
 
     /*
      * AuthenticationType to be used for connection. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object authenticationType;
 
     /*
      * The port for the connection. Type: integer (or Expression with resultType integer).
      */
+    @Generated
     private Object port;
 
     /*
      * Username for authentication. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object username;
 
     /*
      * Password for authentication.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of CassandraLinkedService class.
      */
+    @Generated
     public CassandraLinkedService() {
     }
 
@@ -65,6 +74,7 @@ public class CassandraLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -75,6 +85,7 @@ public class CassandraLinkedService extends LinkedService {
      * 
      * @return the host value.
      */
+    @Generated
     public Object getHost() {
         return this.host;
     }
@@ -85,6 +96,7 @@ public class CassandraLinkedService extends LinkedService {
      * @param host the host value to set.
      * @return the CassandraLinkedService object itself.
      */
+    @Generated
     public CassandraLinkedService setHost(Object host) {
         this.host = host;
         return this;
@@ -96,6 +108,7 @@ public class CassandraLinkedService extends LinkedService {
      * 
      * @return the authenticationType value.
      */
+    @Generated
     public Object getAuthenticationType() {
         return this.authenticationType;
     }
@@ -107,6 +120,7 @@ public class CassandraLinkedService extends LinkedService {
      * @param authenticationType the authenticationType value to set.
      * @return the CassandraLinkedService object itself.
      */
+    @Generated
     public CassandraLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
         return this;
@@ -117,6 +131,7 @@ public class CassandraLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -127,6 +142,7 @@ public class CassandraLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the CassandraLinkedService object itself.
      */
+    @Generated
     public CassandraLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -137,6 +153,7 @@ public class CassandraLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -147,6 +164,7 @@ public class CassandraLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the CassandraLinkedService object itself.
      */
+    @Generated
     public CassandraLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -157,6 +175,7 @@ public class CassandraLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -167,6 +186,7 @@ public class CassandraLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the CassandraLinkedService object itself.
      */
+    @Generated
     public CassandraLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -178,6 +198,7 @@ public class CassandraLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -189,6 +210,7 @@ public class CassandraLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CassandraLinkedService object itself.
      */
+    @Generated
     public CassandraLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -197,6 +219,17 @@ public class CassandraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public CassandraLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public CassandraLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -206,6 +239,7 @@ public class CassandraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -215,6 +249,7 @@ public class CassandraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -224,6 +259,7 @@ public class CassandraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CassandraLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -233,9 +269,11 @@ public class CassandraLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -249,11 +287,19 @@ public class CassandraLinkedService extends LinkedService {
             || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("host", this.host);
-            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
-            jsonWriter.writeUntypedField("port", this.port);
-            jsonWriter.writeUntypedField("username", this.username);
+            if (this.authenticationType != null) {
+                jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            }
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -273,6 +319,7 @@ public class CassandraLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CassandraLinkedService.
      */
+    @Generated
     public static CassandraLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CassandraLinkedService deserializedCassandraLinkedService = new CassandraLinkedService();
@@ -281,7 +328,9 @@ public class CassandraLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedCassandraLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedCassandraLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedCassandraLinkedService.setDescription(reader.getString());

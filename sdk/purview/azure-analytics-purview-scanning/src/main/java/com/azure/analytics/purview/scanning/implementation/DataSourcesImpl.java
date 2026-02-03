@@ -77,7 +77,7 @@ public final class DataSourcesImpl {
      * perform REST calls.
      */
     @Host("{Endpoint}")
-    @ServiceInterface(name = "PurviewScanningClien")
+    @ServiceInterface(name = "PurviewScanningClientDataSources")
     public interface DataSourcesService {
         @Put("/datasources/{dataSourceName}")
         @ExpectedResponses({ 200, 201 })

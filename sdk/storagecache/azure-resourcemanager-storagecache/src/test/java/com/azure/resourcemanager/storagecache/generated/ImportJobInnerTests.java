@@ -7,6 +7,7 @@ package com.azure.resourcemanager.storagecache.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.storagecache.fluent.models.ImportJobInner;
 import com.azure.resourcemanager.storagecache.models.ConflictResolutionMode;
+import com.azure.resourcemanager.storagecache.models.ImportJobAdminStatus;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,28 +17,31 @@ public final class ImportJobInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ImportJobInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"importPrefixes\":[\"gxsabkyq\",\"uujitcjc\"],\"conflictResolutionMode\":\"OverwriteAlways\",\"maximumErrors\":1003107077,\"status\":{\"state\":\"Cancelling\",\"statusMessage\":\"rwpdappdsbdkvwrw\",\"totalBlobsWalked\":8907363253188424560,\"blobsWalkedPerSecond\":8087000369487039234,\"totalBlobsImported\":5558562364469410639,\"blobsImportedPerSecond\":7488631932267615574,\"lastCompletionTime\":\"2021-04-28T11:05:16Z\",\"lastStartedTime\":\"2021-11-14T20:48:19Z\",\"totalErrors\":2022069390,\"totalConflicts\":885785432}},\"location\":\"zdatqxhocdg\",\"tags\":{\"icndvkaozwyifty\":\"lgphu\",\"tyxolniwpwc\":\"xhurok\",\"awxklr\":\"kjfkg\"},\"id\":\"plwckbas\",\"name\":\"ypnddhsgcb\",\"type\":\"cph\"}")
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"adminStatus\":\"Cancel\",\"importPrefixes\":[\"mutduqktaps\"],\"conflictResolutionMode\":\"Fail\",\"maximumErrors\":1678823592,\"status\":{\"state\":\"Completed\",\"statusMessage\":\"mkdo\",\"totalBlobsWalked\":1712101311057870325,\"blobsWalkedPerSecond\":4117897998779209947,\"totalBlobsImported\":5019338814293008537,\"importedFiles\":1710601318408295978,\"importedDirectories\":3928713228305379526,\"importedSymlinks\":5837880679371880466,\"preexistingFiles\":1856769189997808740,\"preexistingDirectories\":7633674292030416558,\"preexistingSymlinks\":1668583945619936419,\"blobsImportedPerSecond\":7621174825781950014,\"lastCompletionTime\":\"2021-07-13T21:02:19Z\",\"lastStartedTime\":\"2021-08-14T01:11:33Z\",\"totalErrors\":68812306,\"totalConflicts\":2108030600}},\"location\":\"bquxigjy\",\"tags\":{\"lnerkujysvleju\":\"jaoyfhrtx\",\"kcprbnw\":\"fqawrlyxw\",\"ysszdnrujqguh\":\"xgjvtbv\"},\"id\":\"uouq\",\"name\":\"prwzwbnguitnwui\",\"type\":\"gazxuf\"}")
             .toObject(ImportJobInner.class);
-        Assertions.assertEquals("zdatqxhocdg", model.location());
-        Assertions.assertEquals("lgphu", model.tags().get("icndvkaozwyifty"));
-        Assertions.assertEquals("gxsabkyq", model.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_ALWAYS, model.conflictResolutionMode());
-        Assertions.assertEquals(1003107077, model.maximumErrors());
+        Assertions.assertEquals("bquxigjy", model.location());
+        Assertions.assertEquals("jaoyfhrtx", model.tags().get("lnerkujysvleju"));
+        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
+        Assertions.assertEquals("mutduqktaps", model.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.FAIL, model.conflictResolutionMode());
+        Assertions.assertEquals(1678823592, model.maximumErrors());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportJobInner model = new ImportJobInner().withLocation("zdatqxhocdg")
-            .withTags(mapOf("icndvkaozwyifty", "lgphu", "tyxolniwpwc", "xhurok", "awxklr", "kjfkg"))
-            .withImportPrefixes(Arrays.asList("gxsabkyq", "uujitcjc"))
-            .withConflictResolutionMode(ConflictResolutionMode.OVERWRITE_ALWAYS)
-            .withMaximumErrors(1003107077);
+        ImportJobInner model = new ImportJobInner().withLocation("bquxigjy")
+            .withTags(mapOf("lnerkujysvleju", "jaoyfhrtx", "kcprbnw", "fqawrlyxw", "ysszdnrujqguh", "xgjvtbv"))
+            .withAdminStatus(ImportJobAdminStatus.CANCEL)
+            .withImportPrefixes(Arrays.asList("mutduqktaps"))
+            .withConflictResolutionMode(ConflictResolutionMode.FAIL)
+            .withMaximumErrors(1678823592);
         model = BinaryData.fromObject(model).toObject(ImportJobInner.class);
-        Assertions.assertEquals("zdatqxhocdg", model.location());
-        Assertions.assertEquals("lgphu", model.tags().get("icndvkaozwyifty"));
-        Assertions.assertEquals("gxsabkyq", model.importPrefixes().get(0));
-        Assertions.assertEquals(ConflictResolutionMode.OVERWRITE_ALWAYS, model.conflictResolutionMode());
-        Assertions.assertEquals(1003107077, model.maximumErrors());
+        Assertions.assertEquals("bquxigjy", model.location());
+        Assertions.assertEquals("jaoyfhrtx", model.tags().get("lnerkujysvleju"));
+        Assertions.assertEquals(ImportJobAdminStatus.CANCEL, model.adminStatus());
+        Assertions.assertEquals("mutduqktaps", model.importPrefixes().get(0));
+        Assertions.assertEquals(ConflictResolutionMode.FAIL, model.conflictResolutionMode());
+        Assertions.assertEquals(1678823592, model.maximumErrors());
     }
 
     // Use "Map.of" if available

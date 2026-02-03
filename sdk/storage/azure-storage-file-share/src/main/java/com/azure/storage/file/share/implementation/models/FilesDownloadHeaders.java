@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.http.HttpHeader;
+import com.azure.core.annotation.Generated;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
@@ -27,176 +27,235 @@ public final class FilesDownloadHeaders {
     /*
      * The x-ms-file-id property.
      */
+    @Generated
     private String xMsFileId;
 
     /*
      * The x-ms-lease-status property.
      */
+    @Generated
     private LeaseStatusType xMsLeaseStatus;
 
     /*
      * The x-ms-file-creation-time property.
      */
+    @Generated
     private OffsetDateTime xMsFileCreationTime;
 
     /*
      * The Content-Range property.
      */
+    @Generated
     private String contentRange;
 
     /*
      * The x-ms-lease-state property.
      */
+    @Generated
     private LeaseStateType xMsLeaseState;
 
     /*
      * The x-ms-content-md5 property.
      */
+    @Generated
     private byte[] xMsContentMd5;
 
     /*
      * The Last-Modified property.
      */
+    @Generated
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-structured-body property.
      */
+    @Generated
     private String xMsStructuredBody;
+
+    /*
+     * The x-ms-mode property.
+     */
+    @Generated
+    private String xMsMode;
 
     /*
      * The x-ms-file-attributes property.
      */
+    @Generated
     private String xMsFileAttributes;
 
     /*
      * The x-ms-structured-content-length property.
      */
+    @Generated
     private Long xMsStructuredContentLength;
 
     /*
      * The Content-Encoding property.
      */
+    @Generated
     private String contentEncoding;
 
     /*
      * The x-ms-copy-status-description property.
      */
+    @Generated
     private String xMsCopyStatusDescription;
 
     /*
      * The x-ms-lease-duration property.
      */
+    @Generated
     private LeaseDurationType xMsLeaseDuration;
 
     /*
      * The Content-Length property.
      */
+    @Generated
     private Long contentLength;
 
     /*
      * The x-ms-request-id property.
      */
+    @Generated
     private String xMsRequestId;
+
+    /*
+     * The x-ms-owner property.
+     */
+    @Generated
+    private String xMsOwner;
 
     /*
      * The Content-Type property.
      */
+    @Generated
     private String contentType;
+
+    /*
+     * The x-ms-group property.
+     */
+    @Generated
+    private String xMsGroup;
 
     /*
      * The x-ms-version property.
      */
+    @Generated
     private String xMsVersion;
 
     /*
      * The x-ms-file-permission-key property.
      */
+    @Generated
     private String xMsFilePermissionKey;
 
     /*
      * The x-ms-copy-id property.
      */
+    @Generated
     private String xMsCopyId;
 
     /*
      * The x-ms-copy-source property.
      */
+    @Generated
     private String xMsCopySource;
 
     /*
      * The x-ms-copy-progress property.
      */
+    @Generated
     private String xMsCopyProgress;
 
     /*
      * The x-ms-meta- property.
      */
+    @Generated
     private Map<String, String> xMsMeta;
 
     /*
      * The Date property.
      */
+    @Generated
     private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
      */
+    @Generated
     private byte[] contentMD5;
 
     /*
      * The Accept-Ranges property.
      */
+    @Generated
     private String acceptRanges;
 
     /*
      * The x-ms-copy-completion-time property.
      */
+    @Generated
     private DateTimeRfc1123 xMsCopyCompletionTime;
 
     /*
      * The x-ms-server-encrypted property.
      */
+    @Generated
     private Boolean xMsServerEncrypted;
 
     /*
      * The Cache-Control property.
      */
+    @Generated
     private String cacheControl;
 
     /*
      * The ETag property.
      */
+    @Generated
     private String eTag;
+
+    /*
+     * The x-ms-link-count property.
+     */
+    @Generated
+    private Long xMsLinkCount;
 
     /*
      * The Content-Disposition property.
      */
+    @Generated
     private String contentDisposition;
 
     /*
      * The x-ms-file-change-time property.
      */
+    @Generated
     private OffsetDateTime xMsFileChangeTime;
 
     /*
      * The x-ms-file-parent-id property.
      */
+    @Generated
     private String xMsFileParentId;
 
     /*
      * The x-ms-copy-status property.
      */
+    @Generated
     private CopyStatusType xMsCopyStatus;
 
     /*
      * The Content-Language property.
      */
+    @Generated
     private String contentLanguage;
 
     /*
      * The x-ms-file-last-write-time property.
      */
+    @Generated
     private OffsetDateTime xMsFileLastWriteTime;
 
     private static final HttpHeaderName X_MS_FILE_ID = HttpHeaderName.fromString("x-ms-file-id");
@@ -211,6 +270,8 @@ public final class FilesDownloadHeaders {
 
     private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
 
+    private static final HttpHeaderName X_MS_MODE = HttpHeaderName.fromString("x-ms-mode");
+
     private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
 
     private static final HttpHeaderName X_MS_STRUCTURED_CONTENT_LENGTH
@@ -220,6 +281,10 @@ public final class FilesDownloadHeaders {
         = HttpHeaderName.fromString("x-ms-copy-status-description");
 
     private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+
+    private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -236,6 +301,8 @@ public final class FilesDownloadHeaders {
         = HttpHeaderName.fromString("x-ms-copy-completion-time");
 
     private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
+
+    private static final HttpHeaderName X_MS_LINK_COUNT = HttpHeaderName.fromString("x-ms-link-count");
 
     private static final HttpHeaderName X_MS_FILE_CHANGE_TIME = HttpHeaderName.fromString("x-ms-file-change-time");
 
@@ -257,42 +324,61 @@ public final class FilesDownloadHeaders {
         String xMsLeaseStatus = rawHeaders.getValue(X_MS_LEASE_STATUS);
         if (xMsLeaseStatus != null) {
             this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
+        } else {
+            this.xMsLeaseStatus = null;
         }
         String xMsFileCreationTime = rawHeaders.getValue(X_MS_FILE_CREATION_TIME);
         if (xMsFileCreationTime != null) {
             this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
+        } else {
+            this.xMsFileCreationTime = null;
         }
         this.contentRange = rawHeaders.getValue(HttpHeaderName.CONTENT_RANGE);
         String xMsLeaseState = rawHeaders.getValue(X_MS_LEASE_STATE);
         if (xMsLeaseState != null) {
             this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
+        } else {
+            this.xMsLeaseState = null;
         }
         String xMsContentMd5 = rawHeaders.getValue(X_MS_CONTENT_MD5);
         if (xMsContentMd5 != null) {
             this.xMsContentMd5 = Base64.getDecoder().decode(xMsContentMd5);
+        } else {
+            this.xMsContentMd5 = null;
         }
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        } else {
+            this.lastModified = null;
         }
         this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
+        this.xMsMode = rawHeaders.getValue(X_MS_MODE);
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
         String xMsStructuredContentLength = rawHeaders.getValue(X_MS_STRUCTURED_CONTENT_LENGTH);
         if (xMsStructuredContentLength != null) {
             this.xMsStructuredContentLength = Long.parseLong(xMsStructuredContentLength);
+        } else {
+            this.xMsStructuredContentLength = null;
         }
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
         this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
         String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
         if (xMsLeaseDuration != null) {
             this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
+        } else {
+            this.xMsLeaseDuration = null;
         }
         String contentLength = rawHeaders.getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
+        } else {
+            this.contentLength = null;
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
         this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
@@ -301,46 +387,65 @@ public final class FilesDownloadHeaders {
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
+        } else {
+            this.date = null;
         }
         String contentMD5 = rawHeaders.getValue(HttpHeaderName.CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
+        } else {
+            this.contentMD5 = null;
         }
         this.acceptRanges = rawHeaders.getValue(HttpHeaderName.ACCEPT_RANGES);
         String xMsCopyCompletionTime = rawHeaders.getValue(X_MS_COPY_COMPLETION_TIME);
         if (xMsCopyCompletionTime != null) {
             this.xMsCopyCompletionTime = new DateTimeRfc1123(xMsCopyCompletionTime);
+        } else {
+            this.xMsCopyCompletionTime = null;
         }
         String xMsServerEncrypted = rawHeaders.getValue(X_MS_SERVER_ENCRYPTED);
         if (xMsServerEncrypted != null) {
             this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
+        } else {
+            this.xMsServerEncrypted = null;
         }
         this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsLinkCount = rawHeaders.getValue(X_MS_LINK_COUNT);
+        if (xMsLinkCount != null) {
+            this.xMsLinkCount = Long.parseLong(xMsLinkCount);
+        } else {
+            this.xMsLinkCount = null;
+        }
         this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
             this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
+        } else {
+            this.xMsFileChangeTime = null;
         }
         this.xMsFileParentId = rawHeaders.getValue(X_MS_FILE_PARENT_ID);
         String xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
         if (xMsCopyStatus != null) {
             this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
+        } else {
+            this.xMsCopyStatus = null;
         }
         this.contentLanguage = rawHeaders.getValue(HttpHeaderName.CONTENT_LANGUAGE);
         String xMsFileLastWriteTime = rawHeaders.getValue(X_MS_FILE_LAST_WRITE_TIME);
         if (xMsFileLastWriteTime != null) {
             this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
+        } else {
+            this.xMsFileLastWriteTime = null;
         }
         Map<String, String> xMsMetaHeaderCollection = new LinkedHashMap<>();
 
-        for (HttpHeader header : rawHeaders) {
+        rawHeaders.stream().forEach(header -> {
             String headerName = header.getName();
             if (headerName.startsWith("x-ms-meta-")) {
                 xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
             }
-        }
-
+        });
         this.xMsMeta = xMsMetaHeaderCollection;
     }
 
@@ -349,6 +454,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsFileId value.
      */
+    @Generated
     public String getXMsFileId() {
         return this.xMsFileId;
     }
@@ -359,6 +465,7 @@ public final class FilesDownloadHeaders {
      * @param xMsFileId the xMsFileId value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsFileId(String xMsFileId) {
         this.xMsFileId = xMsFileId;
         return this;
@@ -369,6 +476,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsLeaseStatus value.
      */
+    @Generated
     public LeaseStatusType getXMsLeaseStatus() {
         return this.xMsLeaseStatus;
     }
@@ -379,6 +487,7 @@ public final class FilesDownloadHeaders {
      * @param xMsLeaseStatus the xMsLeaseStatus value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsLeaseStatus(LeaseStatusType xMsLeaseStatus) {
         this.xMsLeaseStatus = xMsLeaseStatus;
         return this;
@@ -389,6 +498,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsFileCreationTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileCreationTime() {
         return this.xMsFileCreationTime;
     }
@@ -399,6 +509,7 @@ public final class FilesDownloadHeaders {
      * @param xMsFileCreationTime the xMsFileCreationTime value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsFileCreationTime(OffsetDateTime xMsFileCreationTime) {
         this.xMsFileCreationTime = xMsFileCreationTime;
         return this;
@@ -409,6 +520,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the contentRange value.
      */
+    @Generated
     public String getContentRange() {
         return this.contentRange;
     }
@@ -419,6 +531,7 @@ public final class FilesDownloadHeaders {
      * @param contentRange the contentRange value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setContentRange(String contentRange) {
         this.contentRange = contentRange;
         return this;
@@ -429,6 +542,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsLeaseState value.
      */
+    @Generated
     public LeaseStateType getXMsLeaseState() {
         return this.xMsLeaseState;
     }
@@ -439,6 +553,7 @@ public final class FilesDownloadHeaders {
      * @param xMsLeaseState the xMsLeaseState value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsLeaseState(LeaseStateType xMsLeaseState) {
         this.xMsLeaseState = xMsLeaseState;
         return this;
@@ -449,6 +564,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsContentMd5 value.
      */
+    @Generated
     public byte[] getXMsContentMd5() {
         return CoreUtils.clone(this.xMsContentMd5);
     }
@@ -459,6 +575,7 @@ public final class FilesDownloadHeaders {
      * @param xMsContentMd5 the xMsContentMd5 value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsContentMd5(byte[] xMsContentMd5) {
         this.xMsContentMd5 = CoreUtils.clone(xMsContentMd5);
         return this;
@@ -469,6 +586,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the lastModified value.
      */
+    @Generated
     public OffsetDateTime getLastModified() {
         if (this.lastModified == null) {
             return null;
@@ -482,6 +600,7 @@ public final class FilesDownloadHeaders {
      * @param lastModified the lastModified value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
@@ -496,6 +615,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsStructuredBody value.
      */
+    @Generated
     public String getXMsStructuredBody() {
         return this.xMsStructuredBody;
     }
@@ -506,8 +626,31 @@ public final class FilesDownloadHeaders {
      * @param xMsStructuredBody the xMsStructuredBody value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsStructuredBody(String xMsStructuredBody) {
         this.xMsStructuredBody = xMsStructuredBody;
+        return this;
+    }
+
+    /**
+     * Get the xMsMode property: The x-ms-mode property.
+     * 
+     * @return the xMsMode value.
+     */
+    @Generated
+    public String getXMsMode() {
+        return this.xMsMode;
+    }
+
+    /**
+     * Set the xMsMode property: The x-ms-mode property.
+     * 
+     * @param xMsMode the xMsMode value to set.
+     * @return the FilesDownloadHeaders object itself.
+     */
+    @Generated
+    public FilesDownloadHeaders setXMsMode(String xMsMode) {
+        this.xMsMode = xMsMode;
         return this;
     }
 
@@ -516,6 +659,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsFileAttributes value.
      */
+    @Generated
     public String getXMsFileAttributes() {
         return this.xMsFileAttributes;
     }
@@ -526,6 +670,7 @@ public final class FilesDownloadHeaders {
      * @param xMsFileAttributes the xMsFileAttributes value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsFileAttributes(String xMsFileAttributes) {
         this.xMsFileAttributes = xMsFileAttributes;
         return this;
@@ -536,6 +681,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsStructuredContentLength value.
      */
+    @Generated
     public Long getXMsStructuredContentLength() {
         return this.xMsStructuredContentLength;
     }
@@ -546,6 +692,7 @@ public final class FilesDownloadHeaders {
      * @param xMsStructuredContentLength the xMsStructuredContentLength value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsStructuredContentLength(Long xMsStructuredContentLength) {
         this.xMsStructuredContentLength = xMsStructuredContentLength;
         return this;
@@ -556,6 +703,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the contentEncoding value.
      */
+    @Generated
     public String getContentEncoding() {
         return this.contentEncoding;
     }
@@ -566,6 +714,7 @@ public final class FilesDownloadHeaders {
      * @param contentEncoding the contentEncoding value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setContentEncoding(String contentEncoding) {
         this.contentEncoding = contentEncoding;
         return this;
@@ -576,6 +725,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsCopyStatusDescription value.
      */
+    @Generated
     public String getXMsCopyStatusDescription() {
         return this.xMsCopyStatusDescription;
     }
@@ -586,6 +736,7 @@ public final class FilesDownloadHeaders {
      * @param xMsCopyStatusDescription the xMsCopyStatusDescription value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsCopyStatusDescription(String xMsCopyStatusDescription) {
         this.xMsCopyStatusDescription = xMsCopyStatusDescription;
         return this;
@@ -596,6 +747,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsLeaseDuration value.
      */
+    @Generated
     public LeaseDurationType getXMsLeaseDuration() {
         return this.xMsLeaseDuration;
     }
@@ -606,6 +758,7 @@ public final class FilesDownloadHeaders {
      * @param xMsLeaseDuration the xMsLeaseDuration value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsLeaseDuration(LeaseDurationType xMsLeaseDuration) {
         this.xMsLeaseDuration = xMsLeaseDuration;
         return this;
@@ -616,6 +769,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the contentLength value.
      */
+    @Generated
     public Long getContentLength() {
         return this.contentLength;
     }
@@ -626,6 +780,7 @@ public final class FilesDownloadHeaders {
      * @param contentLength the contentLength value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
@@ -636,6 +791,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsRequestId value.
      */
+    @Generated
     public String getXMsRequestId() {
         return this.xMsRequestId;
     }
@@ -646,8 +802,31 @@ public final class FilesDownloadHeaders {
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsOwner property: The x-ms-owner property.
+     * 
+     * @return the xMsOwner value.
+     */
+    @Generated
+    public String getXMsOwner() {
+        return this.xMsOwner;
+    }
+
+    /**
+     * Set the xMsOwner property: The x-ms-owner property.
+     * 
+     * @param xMsOwner the xMsOwner value to set.
+     * @return the FilesDownloadHeaders object itself.
+     */
+    @Generated
+    public FilesDownloadHeaders setXMsOwner(String xMsOwner) {
+        this.xMsOwner = xMsOwner;
         return this;
     }
 
@@ -656,6 +835,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the contentType value.
      */
+    @Generated
     public String getContentType() {
         return this.contentType;
     }
@@ -666,8 +846,31 @@ public final class FilesDownloadHeaders {
      * @param contentType the contentType value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the xMsGroup property: The x-ms-group property.
+     * 
+     * @return the xMsGroup value.
+     */
+    @Generated
+    public String getXMsGroup() {
+        return this.xMsGroup;
+    }
+
+    /**
+     * Set the xMsGroup property: The x-ms-group property.
+     * 
+     * @param xMsGroup the xMsGroup value to set.
+     * @return the FilesDownloadHeaders object itself.
+     */
+    @Generated
+    public FilesDownloadHeaders setXMsGroup(String xMsGroup) {
+        this.xMsGroup = xMsGroup;
         return this;
     }
 
@@ -676,6 +879,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsVersion value.
      */
+    @Generated
     public String getXMsVersion() {
         return this.xMsVersion;
     }
@@ -686,6 +890,7 @@ public final class FilesDownloadHeaders {
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
@@ -696,6 +901,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsFilePermissionKey value.
      */
+    @Generated
     public String getXMsFilePermissionKey() {
         return this.xMsFilePermissionKey;
     }
@@ -706,6 +912,7 @@ public final class FilesDownloadHeaders {
      * @param xMsFilePermissionKey the xMsFilePermissionKey value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsFilePermissionKey(String xMsFilePermissionKey) {
         this.xMsFilePermissionKey = xMsFilePermissionKey;
         return this;
@@ -716,6 +923,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsCopyId value.
      */
+    @Generated
     public String getXMsCopyId() {
         return this.xMsCopyId;
     }
@@ -726,6 +934,7 @@ public final class FilesDownloadHeaders {
      * @param xMsCopyId the xMsCopyId value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsCopyId(String xMsCopyId) {
         this.xMsCopyId = xMsCopyId;
         return this;
@@ -736,6 +945,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsCopySource value.
      */
+    @Generated
     public String getXMsCopySource() {
         return this.xMsCopySource;
     }
@@ -746,6 +956,7 @@ public final class FilesDownloadHeaders {
      * @param xMsCopySource the xMsCopySource value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsCopySource(String xMsCopySource) {
         this.xMsCopySource = xMsCopySource;
         return this;
@@ -756,6 +967,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsCopyProgress value.
      */
+    @Generated
     public String getXMsCopyProgress() {
         return this.xMsCopyProgress;
     }
@@ -766,6 +978,7 @@ public final class FilesDownloadHeaders {
      * @param xMsCopyProgress the xMsCopyProgress value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsCopyProgress(String xMsCopyProgress) {
         this.xMsCopyProgress = xMsCopyProgress;
         return this;
@@ -776,6 +989,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsMeta value.
      */
+    @Generated
     public Map<String, String> getXMsMeta() {
         return this.xMsMeta;
     }
@@ -786,6 +1000,7 @@ public final class FilesDownloadHeaders {
      * @param xMsMeta the xMsMeta value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsMeta(Map<String, String> xMsMeta) {
         this.xMsMeta = xMsMeta;
         return this;
@@ -796,6 +1011,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the date value.
      */
+    @Generated
     public OffsetDateTime getDate() {
         if (this.date == null) {
             return null;
@@ -809,6 +1025,7 @@ public final class FilesDownloadHeaders {
      * @param date the date value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setDate(OffsetDateTime date) {
         if (date == null) {
             this.date = null;
@@ -823,6 +1040,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the contentMD5 value.
      */
+    @Generated
     public byte[] getContentMD5() {
         return CoreUtils.clone(this.contentMD5);
     }
@@ -833,6 +1051,7 @@ public final class FilesDownloadHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setContentMD5(byte[] contentMD5) {
         this.contentMD5 = CoreUtils.clone(contentMD5);
         return this;
@@ -843,6 +1062,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the acceptRanges value.
      */
+    @Generated
     public String getAcceptRanges() {
         return this.acceptRanges;
     }
@@ -853,6 +1073,7 @@ public final class FilesDownloadHeaders {
      * @param acceptRanges the acceptRanges value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setAcceptRanges(String acceptRanges) {
         this.acceptRanges = acceptRanges;
         return this;
@@ -863,6 +1084,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsCopyCompletionTime value.
      */
+    @Generated
     public OffsetDateTime getXMsCopyCompletionTime() {
         if (this.xMsCopyCompletionTime == null) {
             return null;
@@ -876,6 +1098,7 @@ public final class FilesDownloadHeaders {
      * @param xMsCopyCompletionTime the xMsCopyCompletionTime value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsCopyCompletionTime(OffsetDateTime xMsCopyCompletionTime) {
         if (xMsCopyCompletionTime == null) {
             this.xMsCopyCompletionTime = null;
@@ -890,6 +1113,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsServerEncrypted value.
      */
+    @Generated
     public Boolean isXMsServerEncrypted() {
         return this.xMsServerEncrypted;
     }
@@ -900,6 +1124,7 @@ public final class FilesDownloadHeaders {
      * @param xMsServerEncrypted the xMsServerEncrypted value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsServerEncrypted(Boolean xMsServerEncrypted) {
         this.xMsServerEncrypted = xMsServerEncrypted;
         return this;
@@ -910,6 +1135,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the cacheControl value.
      */
+    @Generated
     public String getCacheControl() {
         return this.cacheControl;
     }
@@ -920,6 +1146,7 @@ public final class FilesDownloadHeaders {
      * @param cacheControl the cacheControl value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setCacheControl(String cacheControl) {
         this.cacheControl = cacheControl;
         return this;
@@ -930,6 +1157,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the eTag value.
      */
+    @Generated
     public String getETag() {
         return this.eTag;
     }
@@ -940,8 +1168,31 @@ public final class FilesDownloadHeaders {
      * @param eTag the eTag value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setETag(String eTag) {
         this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @return the xMsLinkCount value.
+     */
+    @Generated
+    public Long getXMsLinkCount() {
+        return this.xMsLinkCount;
+    }
+
+    /**
+     * Set the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @param xMsLinkCount the xMsLinkCount value to set.
+     * @return the FilesDownloadHeaders object itself.
+     */
+    @Generated
+    public FilesDownloadHeaders setXMsLinkCount(Long xMsLinkCount) {
+        this.xMsLinkCount = xMsLinkCount;
         return this;
     }
 
@@ -950,6 +1201,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the contentDisposition value.
      */
+    @Generated
     public String getContentDisposition() {
         return this.contentDisposition;
     }
@@ -960,6 +1212,7 @@ public final class FilesDownloadHeaders {
      * @param contentDisposition the contentDisposition value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setContentDisposition(String contentDisposition) {
         this.contentDisposition = contentDisposition;
         return this;
@@ -970,6 +1223,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsFileChangeTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileChangeTime() {
         return this.xMsFileChangeTime;
     }
@@ -980,6 +1234,7 @@ public final class FilesDownloadHeaders {
      * @param xMsFileChangeTime the xMsFileChangeTime value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsFileChangeTime(OffsetDateTime xMsFileChangeTime) {
         this.xMsFileChangeTime = xMsFileChangeTime;
         return this;
@@ -990,6 +1245,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsFileParentId value.
      */
+    @Generated
     public String getXMsFileParentId() {
         return this.xMsFileParentId;
     }
@@ -1000,6 +1256,7 @@ public final class FilesDownloadHeaders {
      * @param xMsFileParentId the xMsFileParentId value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsFileParentId(String xMsFileParentId) {
         this.xMsFileParentId = xMsFileParentId;
         return this;
@@ -1010,6 +1267,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsCopyStatus value.
      */
+    @Generated
     public CopyStatusType getXMsCopyStatus() {
         return this.xMsCopyStatus;
     }
@@ -1020,6 +1278,7 @@ public final class FilesDownloadHeaders {
      * @param xMsCopyStatus the xMsCopyStatus value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsCopyStatus(CopyStatusType xMsCopyStatus) {
         this.xMsCopyStatus = xMsCopyStatus;
         return this;
@@ -1030,6 +1289,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the contentLanguage value.
      */
+    @Generated
     public String getContentLanguage() {
         return this.contentLanguage;
     }
@@ -1040,6 +1300,7 @@ public final class FilesDownloadHeaders {
      * @param contentLanguage the contentLanguage value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setContentLanguage(String contentLanguage) {
         this.contentLanguage = contentLanguage;
         return this;
@@ -1050,6 +1311,7 @@ public final class FilesDownloadHeaders {
      * 
      * @return the xMsFileLastWriteTime value.
      */
+    @Generated
     public OffsetDateTime getXMsFileLastWriteTime() {
         return this.xMsFileLastWriteTime;
     }
@@ -1060,6 +1322,7 @@ public final class FilesDownloadHeaders {
      * @param xMsFileLastWriteTime the xMsFileLastWriteTime value to set.
      * @return the FilesDownloadHeaders object itself.
      */
+    @Generated
     public FilesDownloadHeaders setXMsFileLastWriteTime(OffsetDateTime xMsFileLastWriteTime) {
         this.xMsFileLastWriteTime = xMsFileLastWriteTime;
         return this;

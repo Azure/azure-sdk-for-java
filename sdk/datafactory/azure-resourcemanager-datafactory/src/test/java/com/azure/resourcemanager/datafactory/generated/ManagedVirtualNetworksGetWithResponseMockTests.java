@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.ManagedVirtualNetworkResource;
@@ -21,19 +21,19 @@ public final class ManagedVirtualNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"vNetId\":\"xausivh\",\"alias\":\"unnjwmdtbx\",\"\":{\"elxd\":\"datamcbaiamtdfpkfwzq\"}},\"name\":\"dfsteouzoglvt\",\"type\":\"jlejvlf\",\"etag\":\"rqkgibpehqb\",\"id\":\"zcmqqehxigsi\"}";
+            = "{\"properties\":{\"vNetId\":\"bheiywmxsxl\",\"alias\":\"lqtnngw\",\"bgaafttv\":\"datafrt\",\"afrwmxmd\":\"datamdnigajbxjnrlfdq\"},\"name\":\"zhutcaqqdchmxr\",\"type\":\"ljqhoiqvk\",\"etag\":\"djlxzt\",\"id\":\"vawy\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ManagedVirtualNetworkResource response = manager.managedVirtualNetworks()
-            .getWithResponse("iyavfeyyb", "duyastybomiyj", "jsseemhdf", "lai", com.azure.core.util.Context.NONE)
+            .getWithResponse("rxaww", "kgzsqrirlcjm", "aarkhlayercs", "iuwne", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zcmqqehxigsi", response.id());
+        Assertions.assertEquals("vawy", response.id());
     }
 }

@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.DomainEventSubscriptionsClient;
@@ -73,7 +75,7 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "EventGridManagementC")
+    @ServiceInterface(name = "EventGridManagementClientDomainEventSubscriptions")
     public interface DomainEventSubscriptionsService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
@@ -86,10 +88,30 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<DeliveryAttributeListResultInner> getDeliveryAttributesSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EventSubscriptionInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
@@ -107,11 +129,33 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
             @BodyParam("application/json") EventSubscriptionInner eventSubscriptionInfo,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") EventSubscriptionInner eventSubscriptionInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
@@ -130,10 +174,32 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionFullUrlInner>> getFullUrl(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @PathParam("eventSubscriptionName") String eventSubscriptionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EventSubscriptionFullUrlInner> getFullUrlSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
@@ -150,10 +216,28 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
             @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/eventSubscriptions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EventSubscriptionsListResult> listSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("domainName") String domainName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EventSubscriptionsListResult> listNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -210,49 +294,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription for domain along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
-        String resourceGroupName, String domainName, String eventSubscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDeliveryAttributes(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, domainName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get delivery attributes for an event subscription for domain.
-     * 
-     * Get all delivery attributes for an event subscription for domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -282,8 +323,31 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String resourceGroupName,
         String domainName, String eventSubscriptionName, Context context) {
-        return getDeliveryAttributesWithResponseAsync(resourceGroupName, domainName, eventSubscriptionName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDeliveryAttributesSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, domainName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -357,49 +421,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param eventSubscriptionName Name of the event subscription to be found.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription of a domain along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(String resourceGroupName, String domainName,
-        String eventSubscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
-            eventSubscriptionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get an event subscription of a domain.
-     * 
-     * Get properties of an event subscription of a domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -429,7 +450,31 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventSubscriptionInner> getWithResponse(String resourceGroupName, String domainName,
         String eventSubscriptionName, Context context) {
-        return getWithResponseAsync(resourceGroupName, domainName, eventSubscriptionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -511,44 +556,97 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
      * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return event Subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String domainName, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo,
-        Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String domainName,
+        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         if (eventSubscriptionInfo == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionInfo is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionInfo is required and cannot be null."));
         } else {
             eventSubscriptionInfo.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, eventSubscriptionName, this.client.getApiVersion(), eventSubscriptionInfo, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Create or update an event subscription to a domain.
+     * 
+     * Asynchronously creates a new event subscription or updates an existing event subscription.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String domainName,
+        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        if (eventSubscriptionInfo == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionInfo is required and cannot be null."));
+        } else {
+            eventSubscriptionInfo.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             domainName, eventSubscriptionName, this.client.getApiVersion(), eventSubscriptionInfo, accept, context);
     }
 
@@ -588,33 +686,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
      * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of event Subscription.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String domainName, String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, domainName,
-            eventSubscriptionName, eventSubscriptionInfo, context);
-        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
-            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class, context);
-    }
-
-    /**
-     * Create or update an event subscription to a domain.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 64 characters in length and use alphanumeric letters only.
-     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -624,9 +695,10 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateWithResponse(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(response,
+            EventSubscriptionInner.class, EventSubscriptionInner.class, Context.NONE);
     }
 
     /**
@@ -649,10 +721,10 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, domainName, eventSubscriptionName,
+            eventSubscriptionInfo, context);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(response,
+            EventSubscriptionInner.class, EventSubscriptionInner.class, context);
     }
 
     /**
@@ -688,29 +760,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
      * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> createOrUpdateAsync(String resourceGroupName, String domainName,
-        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update an event subscription to a domain.
-     * 
-     * Asynchronously creates a new event subscription or updates an existing event subscription.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     * between 3 and 64 characters in length and use alphanumeric letters only.
-     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -719,7 +768,8 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner createOrUpdate(String resourceGroupName, String domainName,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
-        return createOrUpdateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo).block();
+        return beginCreateOrUpdate(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo)
+            .getFinalResult();
     }
 
     /**
@@ -741,8 +791,8 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner createOrUpdate(String resourceGroupName, String domainName,
         String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
-        return createOrUpdateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo, context)
-            .block();
+        return beginCreateOrUpdate(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionInfo, context)
+            .getFinalResult();
     }
 
     /**
@@ -794,37 +844,81 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param eventSubscriptionName Name of the event subscription to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String domainName,
+        String eventSubscriptionName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, eventSubscriptionName, this.client.getApiVersion(), Context.NONE);
+    }
+
+    /**
+     * Delete an event subscription for a domain.
+     * 
+     * Delete an existing event subscription for a domain.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String domainName,
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String domainName,
         String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
-            eventSubscriptionName, this.client.getApiVersion(), context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, eventSubscriptionName, this.client.getApiVersion(), context);
     }
 
     /**
@@ -857,30 +951,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param eventSubscriptionName Name of the event subscription to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String domainName,
-        String eventSubscriptionName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, domainName, eventSubscriptionName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete an event subscription for a domain.
-     * 
-     * Delete an existing event subscription for a domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -889,7 +959,8 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName,
         String eventSubscriptionName) {
-        return this.beginDeleteAsync(resourceGroupName, domainName, eventSubscriptionName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, domainName, eventSubscriptionName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -909,7 +980,9 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName,
         String eventSubscriptionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, domainName, eventSubscriptionName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteWithResponse(resourceGroupName, domainName, eventSubscriptionName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -939,34 +1012,13 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param eventSubscriptionName Name of the event subscription to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String domainName, String eventSubscriptionName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, domainName, eventSubscriptionName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete an event subscription for a domain.
-     * 
-     * Delete an existing event subscription for a domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String domainName, String eventSubscriptionName) {
-        deleteAsync(resourceGroupName, domainName, eventSubscriptionName).block();
+        beginDelete(resourceGroupName, domainName, eventSubscriptionName).getFinalResult();
     }
 
     /**
@@ -984,7 +1036,7 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String domainName, String eventSubscriptionName, Context context) {
-        deleteAsync(resourceGroupName, domainName, eventSubscriptionName, context).block();
+        beginDelete(resourceGroupName, domainName, eventSubscriptionName, context).getFinalResult();
     }
 
     /**
@@ -1046,45 +1098,101 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param domainName Name of the domain.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return event Subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String domainName,
-        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String domainName,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         if (eventSubscriptionUpdateParameters == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
         } else {
             eventSubscriptionUpdateParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
-            eventSubscriptionName, this.client.getApiVersion(), eventSubscriptionUpdateParameters, accept, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, eventSubscriptionName, this.client.getApiVersion(), eventSubscriptionUpdateParameters, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Update an event subscription for a domain.
+     * 
+     * Update an existing event subscription for a topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
+     * @param eventSubscriptionUpdateParameters Updated event subscription information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return event Subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String domainName,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        if (eventSubscriptionUpdateParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
+        } else {
+            eventSubscriptionUpdateParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, eventSubscriptionName, this.client.getApiVersion(), eventSubscriptionUpdateParameters, accept,
+            context);
     }
 
     /**
@@ -1121,32 +1229,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param domainName Name of the domain.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of event Subscription.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
-        String resourceGroupName, String domainName, String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, domainName,
-            eventSubscriptionName, eventSubscriptionUpdateParameters, context);
-        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
-            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class, context);
-    }
-
-    /**
-     * Update an event subscription for a domain.
-     * 
-     * Update an existing event subscription for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param eventSubscriptionName Name of the event subscription to be updated.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1156,9 +1238,10 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String resourceGroupName,
         String domainName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters)
-            .getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, domainName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(response,
+            EventSubscriptionInner.class, EventSubscriptionInner.class, Context.NONE);
     }
 
     /**
@@ -1180,10 +1263,10 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String resourceGroupName,
         String domainName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, domainName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, context);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(response,
+            EventSubscriptionInner.class, EventSubscriptionInner.class, context);
     }
 
     /**
@@ -1217,29 +1300,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param domainName Name of the domain.
      * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> updateAsync(String resourceGroupName, String domainName,
-        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update an event subscription for a domain.
-     * 
-     * Update an existing event subscription for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param eventSubscriptionName Name of the event subscription to be updated.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1248,8 +1308,8 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner update(String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return updateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters)
-            .block();
+        return beginUpdate(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters)
+            .getFinalResult();
     }
 
     /**
@@ -1270,8 +1330,8 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSubscriptionInner update(String resourceGroupName, String domainName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
-        return updateAsync(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters,
-            context).block();
+        return beginUpdate(resourceGroupName, domainName, eventSubscriptionName, eventSubscriptionUpdateParameters,
+            context).getFinalResult();
     }
 
     /**
@@ -1325,49 +1385,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain topic.
      * @param eventSubscriptionName Name of the event subscription.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription for domain along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(String resourceGroupName,
-        String domainName, String eventSubscriptionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (eventSubscriptionName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getFullUrl(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            domainName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get full URL of an event subscription for domain.
-     * 
-     * Get the full endpoint URL for an event subscription for domain.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain topic.
-     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1397,7 +1414,31 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(String resourceGroupName, String domainName,
         String eventSubscriptionName, Context context) {
-        return getFullUrlWithResponseAsync(resourceGroupName, domainName, eventSubscriptionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (eventSubscriptionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getFullUrlSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            domainName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1480,54 +1521,6 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listSinglePageAsync(String resourceGroupName, String domainName,
-        String filter, Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, domainName,
-                this.client.getApiVersion(), filter, top, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List all event subscriptions for a specific domain.
-     * 
-     * List all event subscriptions that have been created for a specific topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1574,17 +1567,87 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EventSubscriptionInner> listSinglePage(String resourceGroupName, String domainName,
+        String filter, Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EventSubscriptionsListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                domainName, this.client.getApiVersion(), filter, top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all event subscriptions for a specific domain.
+     * 
+     * List all event subscriptions that have been created for a specific topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
+     * @return result of the List EventSubscriptions operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listAsync(String resourceGroupName, String domainName, String filter,
-        Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, domainName, filter, top, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EventSubscriptionInner> listSinglePage(String resourceGroupName, String domainName,
+        String filter, Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EventSubscriptionsListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                domainName, this.client.getApiVersion(), filter, top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1603,7 +1666,8 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     public PagedIterable<EventSubscriptionInner> list(String resourceGroupName, String domainName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, domainName, filter, top));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, domainName, filter, top),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -1629,7 +1693,8 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> list(String resourceGroupName, String domainName, String filter,
         Integer top, Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, domainName, filter, top, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, domainName, filter, top, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1662,26 +1727,56 @@ public final class DomainEventSubscriptionsClientImpl implements DomainEventSubs
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List EventSubscriptions operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EventSubscriptionInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EventSubscriptionsListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return result of the List EventSubscriptions operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<EventSubscriptionInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<EventSubscriptionsListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DomainEventSubscriptionsClientImpl.class);
 }

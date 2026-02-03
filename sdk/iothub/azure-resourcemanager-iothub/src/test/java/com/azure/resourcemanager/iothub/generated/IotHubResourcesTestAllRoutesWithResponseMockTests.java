@@ -6,8 +6,8 @@ package com.azure.resourcemanager.iothub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.iothub.IotHubManager;
 import com.azure.resourcemanager.iothub.models.RoutingMessage;
@@ -28,18 +28,18 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
     @Test
     public void testTestAllRoutesWithResponse() throws Exception {
         String responseStr
-            = "{\"routes\":[{\"properties\":{\"name\":\"zsjqlh\",\"source\":\"TwinChangeEvents\",\"condition\":\"ibdeibq\",\"endpointNames\":[\"qkgh\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"dzwmkrefajpj\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"kqnyh\",\"endpointNames\":[\"ij\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"vfxzsjab\",\"source\":\"TwinChangeEvents\",\"condition\":\"ystawfsdjpvkvp\",\"endpointNames\":[\"xbkzbzkdvncj\",\"budurgkakmo\",\"zhjjklffhmouwq\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"rfzeey\",\"source\":\"Invalid\",\"condition\":\"zi\",\"endpointNames\":[\"yuhqlbjbsybbqwrv\",\"ldgmfpgvmpip\",\"slthaq\"],\"isEnabled\":false}}]}";
+            = "{\"routes\":[{\"properties\":{\"name\":\"zsjqlh\",\"source\":\"TwinChangeEvents\",\"condition\":\"ibdeibq\",\"endpointNames\":[\"qkgh\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"dzwmkrefajpj\",\"source\":\"DeviceMessages\",\"condition\":\"kqnyh\",\"endpointNames\":[\"ij\"],\"isEnabled\":true}},{\"properties\":{\"name\":\"vfxzsjab\",\"source\":\"DeviceConnectionStateEvents\",\"condition\":\"ystawfsdjpvkvp\",\"endpointNames\":[\"xbkzbzkdvncj\",\"budurgkakmo\",\"zhjjklffhmouwq\"],\"isEnabled\":false}},{\"properties\":{\"name\":\"rfzeey\",\"source\":\"DeviceJobLifecycleEvents\",\"condition\":\"zi\",\"endpointNames\":[\"yuhqlbjbsybbqwrv\",\"ldgmfpgvmpip\",\"slthaq\"],\"isEnabled\":false}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         IotHubManager manager = IotHubManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TestAllRoutesResult response = manager.iotHubResources()
             .testAllRoutesWithResponse("kyhejhzisxgf", "elolppvksrpqvuj",
-                new TestAllRoutesInput().withRoutingSource(RoutingSource.DEVICE_LIFECYCLE_EVENTS)
+                new TestAllRoutesInput().withRoutingSource(RoutingSource.TWIN_CHANGE_EVENTS)
                     .withMessage(new RoutingMessage().withBody("twdw")
                         .withAppProperties(mapOf("dl", "swibyr", "hfwpracstwit", "h"))
                         .withSystemProperties(mapOf("md", "evxccedcp", "zxltjcvn", "odn")))
@@ -53,7 +53,7 @@ public final class IotHubResourcesTestAllRoutesWithResponseMockTests {
         Assertions.assertEquals(RoutingSource.TWIN_CHANGE_EVENTS, response.routes().get(0).properties().source());
         Assertions.assertEquals("ibdeibq", response.routes().get(0).properties().condition());
         Assertions.assertEquals("qkgh", response.routes().get(0).properties().endpointNames().get(0));
-        Assertions.assertEquals(false, response.routes().get(0).properties().isEnabled());
+        Assertions.assertFalse(response.routes().get(0).properties().isEnabled());
     }
 
     // Use "Map.of" if available

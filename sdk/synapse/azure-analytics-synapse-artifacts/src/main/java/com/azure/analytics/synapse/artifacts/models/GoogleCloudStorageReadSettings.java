@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,64 +21,76 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /*
      * The read setting type.
      */
+    @Generated
     private String type = "GoogleCloudStorageReadSettings";
 
     /*
      * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object recursive;
 
     /*
      * Google Cloud Storage wildcardFolderPath. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object wildcardFolderPath;
 
     /*
      * Google Cloud Storage wildcardFileName. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object wildcardFileName;
 
     /*
      * The prefix filter for the Google Cloud Storage object name. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object prefix;
 
     /*
      * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
      * copy. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object fileListPath;
 
     /*
      * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionRootPath;
 
     /*
      * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
+    @Generated
     private Object deleteFilesAfterCompletion;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeEnd;
 
     /**
      * Creates an instance of GoogleCloudStorageReadSettings class.
      */
+    @Generated
     public GoogleCloudStorageReadSettings() {
     }
 
@@ -86,6 +99,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -97,6 +111,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the recursive value.
      */
+    @Generated
     public Object getRecursive() {
         return this.recursive;
     }
@@ -108,6 +123,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param recursive the recursive value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setRecursive(Object recursive) {
         this.recursive = recursive;
         return this;
@@ -119,6 +135,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the wildcardFolderPath value.
      */
+    @Generated
     public Object getWildcardFolderPath() {
         return this.wildcardFolderPath;
     }
@@ -130,6 +147,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param wildcardFolderPath the wildcardFolderPath value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setWildcardFolderPath(Object wildcardFolderPath) {
         this.wildcardFolderPath = wildcardFolderPath;
         return this;
@@ -141,6 +159,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the wildcardFileName value.
      */
+    @Generated
     public Object getWildcardFileName() {
         return this.wildcardFileName;
     }
@@ -152,6 +171,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param wildcardFileName the wildcardFileName value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setWildcardFileName(Object wildcardFileName) {
         this.wildcardFileName = wildcardFileName;
         return this;
@@ -163,6 +183,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the prefix value.
      */
+    @Generated
     public Object getPrefix() {
         return this.prefix;
     }
@@ -174,6 +195,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param prefix the prefix value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setPrefix(Object prefix) {
         this.prefix = prefix;
         return this;
@@ -185,6 +207,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the fileListPath value.
      */
+    @Generated
     public Object getFileListPath() {
         return this.fileListPath;
     }
@@ -196,6 +219,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param fileListPath the fileListPath value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setFileListPath(Object fileListPath) {
         this.fileListPath = fileListPath;
         return this;
@@ -207,6 +231,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the enablePartitionDiscovery value.
      */
+    @Generated
     public Object getEnablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
@@ -218,6 +243,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
@@ -229,6 +255,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the partitionRootPath value.
      */
+    @Generated
     public Object getPartitionRootPath() {
         return this.partitionRootPath;
     }
@@ -240,6 +267,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setPartitionRootPath(Object partitionRootPath) {
         this.partitionRootPath = partitionRootPath;
         return this;
@@ -251,6 +279,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the deleteFilesAfterCompletion value.
      */
+    @Generated
     public Object getDeleteFilesAfterCompletion() {
         return this.deleteFilesAfterCompletion;
     }
@@ -262,6 +291,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setDeleteFilesAfterCompletion(Object deleteFilesAfterCompletion) {
         this.deleteFilesAfterCompletion = deleteFilesAfterCompletion;
         return this;
@@ -273,6 +303,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the modifiedDatetimeStart value.
      */
+    @Generated
     public Object getModifiedDatetimeStart() {
         return this.modifiedDatetimeStart;
     }
@@ -284,6 +315,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setModifiedDatetimeStart(Object modifiedDatetimeStart) {
         this.modifiedDatetimeStart = modifiedDatetimeStart;
         return this;
@@ -295,6 +327,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * 
      * @return the modifiedDatetimeEnd value.
      */
+    @Generated
     public Object getModifiedDatetimeEnd() {
         return this.modifiedDatetimeEnd;
     }
@@ -306,6 +339,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the GoogleCloudStorageReadSettings object itself.
      */
+    @Generated
     public GoogleCloudStorageReadSettings setModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
@@ -314,6 +348,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public GoogleCloudStorageReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -323,21 +358,44 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("recursive", this.recursive);
-        jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
-        jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
-        jsonWriter.writeUntypedField("prefix", this.prefix);
-        jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
-        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
-        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
-        jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
-        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        if (this.recursive != null) {
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+        }
+        if (this.wildcardFolderPath != null) {
+            jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
+        }
+        if (this.wildcardFileName != null) {
+            jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
+        }
+        if (this.prefix != null) {
+            jsonWriter.writeUntypedField("prefix", this.prefix);
+        }
+        if (this.fileListPath != null) {
+            jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
+        }
+        if (this.enablePartitionDiscovery != null) {
+            jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        }
+        if (this.partitionRootPath != null) {
+            jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        }
+        if (this.deleteFilesAfterCompletion != null) {
+            jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
+        }
+        if (this.modifiedDatetimeStart != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        }
+        if (this.modifiedDatetimeEnd != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -354,6 +412,7 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the GoogleCloudStorageReadSettings.
      */
+    @Generated
     public static GoogleCloudStorageReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GoogleCloudStorageReadSettings deserializedGoogleCloudStorageReadSettings

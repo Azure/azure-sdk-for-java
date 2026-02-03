@@ -225,11 +225,21 @@ public final class AzureBlobDatasetTypeProperties implements JsonSerializable<Az
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", this.folderPath);
-        jsonWriter.writeUntypedField("tableRootLocation", this.tableRootLocation);
-        jsonWriter.writeUntypedField("fileName", this.fileName);
-        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        if (this.folderPath != null) {
+            jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        }
+        if (this.tableRootLocation != null) {
+            jsonWriter.writeUntypedField("tableRootLocation", this.tableRootLocation);
+        }
+        if (this.fileName != null) {
+            jsonWriter.writeUntypedField("fileName", this.fileName);
+        }
+        if (this.modifiedDatetimeStart != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        }
+        if (this.modifiedDatetimeEnd != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        }
         jsonWriter.writeJsonField("format", this.format);
         jsonWriter.writeJsonField("compression", this.compression);
         return jsonWriter.writeEndObject();

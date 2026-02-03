@@ -4,6 +4,7 @@
 
 package com.azure.maps.route.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -15,26 +16,31 @@ public final class DelayMagnitude extends ExpandableStringEnum<DelayMagnitude> {
     /**
      * Unknown.
      */
+    @Generated
     public static final DelayMagnitude UNKNOWN = fromString("0");
 
     /**
      * Minor.
      */
+    @Generated
     public static final DelayMagnitude MINOR = fromString("1");
 
     /**
      * Moderate.
      */
+    @Generated
     public static final DelayMagnitude MODERATE = fromString("2");
 
     /**
      * Major.
      */
+    @Generated
     public static final DelayMagnitude MAJOR = fromString("3");
 
     /**
      * Undefined, used for road closures and other indefinite delays.
      */
+    @Generated
     public static final DelayMagnitude UNDEFINED = fromString("4");
 
     /**
@@ -42,6 +48,7 @@ public final class DelayMagnitude extends ExpandableStringEnum<DelayMagnitude> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DelayMagnitude() {
     }
@@ -52,6 +59,7 @@ public final class DelayMagnitude extends ExpandableStringEnum<DelayMagnitude> {
      * @param name a name to look for.
      * @return the corresponding DelayMagnitude.
      */
+    @Generated
     public static DelayMagnitude fromString(String name) {
         return fromString(name, DelayMagnitude.class);
     }
@@ -61,6 +69,7 @@ public final class DelayMagnitude extends ExpandableStringEnum<DelayMagnitude> {
      * 
      * @return known DelayMagnitude values.
      */
+    @Generated
     public static Collection<DelayMagnitude> values() {
         return values(DelayMagnitude.class);
     }

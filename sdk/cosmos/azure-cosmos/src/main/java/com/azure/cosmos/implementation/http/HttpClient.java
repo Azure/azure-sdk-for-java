@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.http;
 
+import com.azure.cosmos.Http2ConnectionConfig;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.Http2AllocationStrategy;
 import reactor.netty.resources.ConnectionProvider;
@@ -42,16 +44,24 @@ public interface HttpClient {
 
         ConnectionProvider.Builder fixedConnectionProviderBuilder = ConnectionProvider
             .builder(httpClientConfig.getConnectionPoolName());
+
         fixedConnectionProviderBuilder.maxConnections(httpClientConfig.getMaxPoolSize());
+        Integer customPendingAcquireMaxCount = httpClientConfig.getPendingAcquireMaxCount();
+        if (customPendingAcquireMaxCount != null) {
+            fixedConnectionProviderBuilder.pendingAcquireMaxCount(customPendingAcquireMaxCount);
+        }
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 
-        if (httpClientConfig.getHttp2Config().isEnabled()) {
+        ImplementationBridgeHelpers.Http2ConnectionConfigHelper.Http2ConnectionConfigAccessor http2CfgAccessor =
+            ImplementationBridgeHelpers.Http2ConnectionConfigHelper.getHttp2ConnectionConfigAccessor();
+        Http2ConnectionConfig http2Cfg = httpClientConfig.getHttp2ConnectionConfig();
+        if (http2CfgAccessor.isEffectivelyEnabled(http2Cfg)) {
             fixedConnectionProviderBuilder.allocationStrategy(
                 Http2AllocationStrategy.builder()
-                    .maxConnections(httpClientConfig.getHttp2Config().getMaxConnectionPoolSize())
-                    .minConnections(httpClientConfig.getHttp2Config().getMinConnectionPoolSize())
-                    .maxConcurrentStreams(httpClientConfig.getHttp2Config().getMaxConcurrentStreams())
+                    .minConnections(http2CfgAccessor.getEffectiveMinConnectionPoolSize(http2Cfg))
+                    .maxConnections(http2CfgAccessor.getEffectiveMaxConnectionPoolSize(http2Cfg))
+                    .maxConcurrentStreams(http2CfgAccessor.getEffectiveMaxConcurrentStreams(http2Cfg))
                     .build()
             );
         }

@@ -1,64 +1,105 @@
 package com.azure.openrewrite.migration;
 
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.openrewrite.Tree;
+import org.openrewrite.java.JavaParser;
+import org.openrewrite.java.style.Autodetect;
+import org.openrewrite.java.style.ImportLayoutStyle;
+import org.openrewrite.java.style.TabsAndIndentsStyle;
+import org.openrewrite.style.NamedStyles;
+import org.openrewrite.style.Style;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 import org.openrewrite.test.SourceSpecs;
 import org.openrewrite.test.TypeValidation;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.openrewrite.java.Assertions.java;
 
+@DisplayNameGeneration(CustomDisplayNameGenerator.class)
 public class FullSampleMigrationTest implements RewriteTest {
 
     static final String GOLDEN_IMAGE = "v2";
     static final String ORIGINAL_IMAGE = "v1";
+    static final String RECIPE_NAME = "com.azure.openrewrite";
+    static final String[] DISABLED_DIRS = {
+        "src/test/resources/migrationExamples/azure-storage-blob/"
+    };
 
-    static Stream<Path> sampleDirectories() throws IOException {
-        List<Path> packageDirectories = packageDirectories().collect(Collectors.toList());
-        List<Path> sampleDirectories = new ArrayList<>();
-        for (Path packageDirectory : packageDirectories) {
-            sampleDirectories.addAll(Files
-                .list(packageDirectory)
-                .filter(Files::isDirectory)
-                .collect(Collectors.toList()));
+    static boolean isDisabledDir(Path dir) {
+        for (String disabledDir : DISABLED_DIRS) {
+            if (dir.startsWith(Paths.get(disabledDir))) {
+                return true;
+            }
         }
-        return sampleDirectories.stream();
+        return false;
+    }
+
+    static Stream<String> sampleDirectories() throws IOException {
+        return packageDirectories().flatMap(packageDirectory -> {
+            try {
+                return Files.list(packageDirectory).filter(Files::isDirectory).map(Path::toString);
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
+            }
+        });
     }
 
     static Stream<Path> packageDirectories() throws IOException {
-        return Files.list(Paths.get("src/test/resources/migrationExamples"))
-            .filter(Files::isDirectory);
+        return Files.list(Paths.get("src/test/resources/migrationExamples")).filter(Files::isDirectory);
     }
 
     static Stream<Path> gatherAllRegularFiles(Path sampleDir) throws IOException {
-        return Files.walk(sampleDir)
-            .filter(Files::isRegularFile).collect(Collectors.toList()).stream();
+        return Files.walk(sampleDir).filter(Files::isRegularFile);
+    }
+
+
+
+    private static List<NamedStyles> getStyles() {
+        List<Style> styles = Arrays.asList(
+            new ImportLayoutStyle(9999, 9999, Autodetect.detector().getImportLayoutStyle().getLayout(),
+                Collections.emptyList()),
+            new TabsAndIndentsStyle(false, 4, 4, 4, true, new TabsAndIndentsStyle.MethodDeclarationParameters(true),
+                new TabsAndIndentsStyle.RecordComponents(true)));
+
+        return Collections.singletonList(new NamedStyles(Tree.randomId(), "com.azure.openrewrite.style",
+            "Azure OpenRewrite Style", "The style for Azure OpenRewrite", Collections.emptySet(), styles));
     }
 
     @Override
     public void defaults(RecipeSpec spec) {
-        spec.recipeFromResources("com.azure.openrewrite.migrateToVNext")
+
+        spec.recipeFromResources(RECIPE_NAME )
             .typeValidationOptions(TypeValidation.none());
     }
 
-
-    @ParameterizedTest
+    @ParameterizedTest(name="{0}")
+    @Execution(ExecutionMode.CONCURRENT)
     @MethodSource("sampleDirectories")
-    public void testGoldenImage(Path sampleDir) throws Exception {
+    public void testGoldenImage(String sampleDirString) throws Exception {
+        System.out.printf("Sample: %s;\nActive Recipe: %s\n", sampleDirString, RECIPE_NAME);
 
-        Map<String, String> fileMap = new HashMap<String, String>();
+        Path sampleDir = Paths.get(sampleDirString);
+
+        Assumptions.assumeFalse(isDisabledDir(sampleDir));
+        Map<String, String> fileMap = new HashMap<>();
 
         Path unmigratedDir = sampleDir.resolve(ORIGINAL_IMAGE);
         gatherAllRegularFiles(unmigratedDir).forEach(file -> {
@@ -71,12 +112,13 @@ public class FullSampleMigrationTest implements RewriteTest {
             }
         });
 
-        assertFullMigration(fileMap);
+        assertFullMigration(fileMap, sampleDirString);
     }
 
-    public void assertFullMigration(Map<String,String> fileMap) throws IOException {
-        List<SourceSpecs> sourceSpecs = new ArrayList<SourceSpecs>();
+    public void assertFullMigration(Map<String,String> fileMap, String name) throws IOException {
+        List<SourceSpecs> sourceSpecs = new ArrayList<>();
         for (Map.Entry<String,String> entry : fileMap.entrySet()) {
+
             String before = Files.readAllLines(Paths.get(entry.getKey()))
                 .stream()
                 .reduce("", (a, b) -> a + b + "\n");
@@ -84,11 +126,24 @@ public class FullSampleMigrationTest implements RewriteTest {
             String after = Files.readAllLines(Paths.get(entry.getValue()))
                 .stream()
                 .reduce("", (a, b) -> a + b + "\n");
-            sourceSpecs.add(java(before, after));
+            if (!before.equals(after)) {
+                sourceSpecs.add(java(before, after));
+            }
         }
-        rewriteRun(
-            sourceSpecs.toArray(new SourceSpecs[sourceSpecs.size()])
-        );
-    }
+        if (sourceSpecs.isEmpty()) {
+            Assumptions.abort("Migration samples are identical. No migration detected.");
+        }
 
+        try  {
+            rewriteRun(
+                spec -> spec
+                    .parser(JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath()).styles(getStyles()))
+                    .recipeFromResources(RECIPE_NAME),
+                sourceSpecs.toArray(new SourceSpecs[0])
+            );
+        } catch (AssertionError e) {
+            throw new AssertionError("Migration failed for sample directory: " + name, e);
+        }
+
+    }
 }

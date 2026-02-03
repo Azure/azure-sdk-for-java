@@ -11,17 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureStorageJobTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureStorageJobTaskDetails model = BinaryData.fromString("{\"taskId\":\"lds\",\"status\":\"stjbkkdmfl\"}")
+        AzureStorageJobTaskDetails model = BinaryData.fromString("{\"taskId\":\"bzo\",\"status\":\"culapzwyrpgogtq\"}")
             .toObject(AzureStorageJobTaskDetails.class);
-        Assertions.assertEquals("lds", model.taskId());
-        Assertions.assertEquals("stjbkkdmfl", model.status());
+        Assertions.assertEquals("bzo", model.taskId());
+        Assertions.assertEquals("culapzwyrpgogtq", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStorageJobTaskDetails model = new AzureStorageJobTaskDetails().withTaskId("lds").withStatus("stjbkkdmfl");
+        AzureStorageJobTaskDetails model
+            = new AzureStorageJobTaskDetails().withTaskId("bzo").withStatus("culapzwyrpgogtq");
         model = BinaryData.fromObject(model).toObject(AzureStorageJobTaskDetails.class);
-        Assertions.assertEquals("lds", model.taskId());
-        Assertions.assertEquals("stjbkkdmfl", model.status());
+        Assertions.assertEquals("bzo", model.taskId());
+        Assertions.assertEquals("culapzwyrpgogtq", model.status());
     }
 }

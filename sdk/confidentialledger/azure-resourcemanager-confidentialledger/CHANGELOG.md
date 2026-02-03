@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,105 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2025-05-15)
+
+- Azure Resource Manager ConfidentialLedger client library for Java. This package contains Microsoft Azure SDK for ConfidentialLedger Management SDK. Microsoft Azure Confidential Compute Ledger Control Plane REST API version 2020-12-01-preview. Package tag package-preview-2024-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ResourceLocation` was removed
+
+#### `models.Tags` was removed
+
+### Features Added
+
+* `models.MemberIdentityCertificate` was added
+
+* `models.ManagedCcfRestore` was added
+
+* `models.LanguageRuntime` was added
+
+* `models.ManagedCcf$Update` was added
+
+* `models.ManagedCcfBackup` was added
+
+* `models.ConfidentialLedgerBackup` was added
+
+* `models.ManagedCcf$UpdateStages` was added
+
+* `models.ManagedCcf$Definition` was added
+
+* `models.ManagedCcf$DefinitionStages` was added
+
+* `models.ManagedCcfs` was added
+
+* `models.EnclavePlatform` was added
+
+* `models.ApplicationType` was added
+
+* `models.ConfidentialLedgerBackupResponse` was added
+
+* `models.ManagedCcfRestoreResponse` was added
+
+* `models.ManagedCcfProperties` was added
+
+* `models.ManagedCcfList` was added
+
+* `models.ManagedCcf` was added
+
+* `models.ConfidentialLedgerRestore` was added
+
+* `models.ManagedCcfBackupResponse` was added
+
+* `models.RunningState` was added
+
+* `models.DeploymentType` was added
+
+* `models.ConfidentialLedgerRestoreResponse` was added
+
+* `models.LedgerSku` was added
+
+#### `models.LedgerProperties` was modified
+
+* `withRunningState(models.RunningState)` was added
+* `enclavePlatform()` was added
+* `withWriteLBAddressPrefix(java.lang.String)` was added
+* `hostLevel()` was added
+* `withSubjectName(java.lang.String)` was added
+* `withHostLevel(java.lang.String)` was added
+* `applicationType()` was added
+* `nodeCount()` was added
+* `withApplicationType(models.ApplicationType)` was added
+* `withNodeCount(java.lang.Integer)` was added
+* `withEnclavePlatform(models.EnclavePlatform)` was added
+* `subjectName()` was added
+* `ledgerSku()` was added
+* `maxBodySizeInMb()` was added
+* `workerThreads()` was added
+* `writeLBAddressPrefix()` was added
+* `withWorkerThreads(java.lang.Integer)` was added
+* `runningState()` was added
+* `withLedgerSku(models.LedgerSku)` was added
+* `withMaxBodySizeInMb(java.lang.Integer)` was added
+
+#### `ConfidentialLedgerManager` was modified
+
+* `managedCcfs()` was added
+
+#### `models.ConfidentialLedger` was modified
+
+* `backup(models.ConfidentialLedgerBackup)` was added
+* `backup(models.ConfidentialLedgerBackup,com.azure.core.util.Context)` was added
+* `restore(models.ConfidentialLedgerRestore)` was added
+* `restore(models.ConfidentialLedgerRestore,com.azure.core.util.Context)` was added
+
+#### `models.Ledgers` was modified
+
+* `backup(java.lang.String,java.lang.String,models.ConfidentialLedgerBackup)` was added
+* `backup(java.lang.String,java.lang.String,models.ConfidentialLedgerBackup,com.azure.core.util.Context)` was added
+* `restore(java.lang.String,java.lang.String,models.ConfidentialLedgerRestore,com.azure.core.util.Context)` was added
+* `restore(java.lang.String,java.lang.String,models.ConfidentialLedgerRestore)` was added
 
 ## 1.0.0 (2024-12-26)
 

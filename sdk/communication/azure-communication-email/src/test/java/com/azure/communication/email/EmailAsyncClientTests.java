@@ -5,6 +5,7 @@ package com.azure.communication.email;
 
 import com.azure.communication.email.models.*;
 import com.azure.core.http.HttpClient;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Timeout;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +21,11 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
     private EmailAsyncClient emailAsyncClient;
 
+    @BeforeEach
+    public void beforeEach() {
+        interceptorManager.removeSanitizers("AZSDK3493", "AZSDK3430");
+    }
+
     @Override
     protected void beforeTest() {
         super.beforeTest();
@@ -32,7 +38,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - sendEmailToSingleRecipient - async")
             .setBodyHtml("<h1>test message</h1>");
 
         StepVerifier.create(emailAsyncClient.beginSend(message).last()).assertNext(response -> {
@@ -46,7 +52,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - sendEmailToMultipleRecipients - async")
             .setBodyPlainText("test message")
             .setToRecipients(RECIPIENT_ADDRESS, SECOND_RECIPIENT_ADDRESS)
             .setCcRecipients(RECIPIENT_ADDRESS)
@@ -66,7 +72,7 @@ public class EmailAsyncClientTests extends EmailTestBase {
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - sendEmailWithAttachment - async")
             .setBodyHtml("<h1>test message</h1>")
             .setAttachments(attachment);
 
@@ -80,12 +86,12 @@ public class EmailAsyncClientTests extends EmailTestBase {
     public void sendEmailWithInlineAttachment(HttpClient httpClient) {
         emailAsyncClient = getEmailAsyncClient(httpClient);
 
-        EmailAttachment attachment = new EmailAttachment("inlineimage.jpg", "image/jpeg", BinaryData.fromString("test"))
-            .setContentId("inline_image");
+        EmailAttachment attachment
+            = new EmailAttachment("inlineimage.jpg", "image/png", getRedPngImageData()).setContentId("inline_image");
 
         EmailMessage message = new EmailMessage().setSenderAddress(SENDER_ADDRESS)
             .setToRecipients(RECIPIENT_ADDRESS)
-            .setSubject("test subject")
+            .setSubject("test subject - sendEmailWithInlineAttachment - async")
             .setBodyHtml("<h1>test message<img src=\"cid:inline_image\"></h1>")
             .setAttachments(attachment);
 

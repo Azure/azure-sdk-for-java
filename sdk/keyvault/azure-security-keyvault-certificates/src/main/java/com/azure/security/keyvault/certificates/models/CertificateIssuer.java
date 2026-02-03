@@ -28,18 +28,18 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
     static {
         CertificateIssuerHelper.setAccessor(new CertificateIssuerHelper.CertificateIssuerAccessor() {
             @Override
-            public CertificateIssuer createCertificateIssuer(IssuerBundle impl) {
-                return new CertificateIssuer(impl);
+            public CertificateIssuer createCertificateIssuer(IssuerBundle issuerBundle) {
+                return new CertificateIssuer(issuerBundle);
             }
 
             @Override
-            public IssuerBundle getImpl(CertificateIssuer certificateIssuer) {
-                return certificateIssuer.impl;
+            public IssuerBundle getIssuerBundle(CertificateIssuer certificateIssuer) {
+                return certificateIssuer.issuerBundle;
             }
         });
     }
 
-    private final IssuerBundle impl;
+    private final IssuerBundle issuerBundle;
 
     /**
      * Name of the referenced issuer object or reserved names; for example,
@@ -55,7 +55,7 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      */
     public CertificateIssuer(String name, String provider) {
         this.name = name;
-        this.impl = new IssuerBundle().setProvider(provider);
+        this.issuerBundle = new IssuerBundle().setProvider(provider);
     }
 
     /**
@@ -67,9 +67,9 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
         this(name, null);
     }
 
-    private CertificateIssuer(IssuerBundle impl) {
-        this.impl = impl;
-        this.name = getIdMetadata(impl.getId(), -1, 3, -1, LOGGER).getName();
+    private CertificateIssuer(IssuerBundle issuerBundle) {
+        this.issuerBundle = issuerBundle;
+        this.name = getIdMetadata(issuerBundle.getId(), -1, 3, -1, LOGGER).getName();
     }
 
     /**
@@ -77,7 +77,7 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the identifier.
      */
     public String getId() {
-        return impl.getId();
+        return issuerBundle.getId();
     }
 
     /**
@@ -85,7 +85,7 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the issuer provider
      */
     public String getProvider() {
-        return impl.getProvider();
+        return issuerBundle.getProvider();
     }
 
     /**
@@ -101,7 +101,7 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the account id
      */
     public String getAccountId() {
-        return impl.getCredentials() == null ? null : impl.getCredentials().getAccountId();
+        return issuerBundle.getCredentials() == null ? null : issuerBundle.getCredentials().getAccountId();
     }
 
     /**
@@ -110,11 +110,11 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the Issuer object itself.
      */
     public CertificateIssuer setAccountId(String accountId) {
-        if (impl.getCredentials() == null) {
-            impl.setCredentials(new IssuerCredentials());
+        if (issuerBundle.getCredentials() == null) {
+            issuerBundle.setCredentials(new IssuerCredentials());
         }
 
-        impl.getCredentials().setAccountId(accountId);
+        issuerBundle.getCredentials().setAccountId(accountId);
         return this;
     }
 
@@ -123,7 +123,7 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the password
      */
     public String getPassword() {
-        return impl.getCredentials() == null ? null : impl.getCredentials().getPassword();
+        return issuerBundle.getCredentials() == null ? null : issuerBundle.getCredentials().getPassword();
     }
 
     /**
@@ -132,11 +132,11 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the Issuer object itself.
      */
     public CertificateIssuer setPassword(String password) {
-        if (impl.getCredentials() == null) {
-            impl.setCredentials(new IssuerCredentials());
+        if (issuerBundle.getCredentials() == null) {
+            issuerBundle.setCredentials(new IssuerCredentials());
         }
 
-        impl.getCredentials().setPassword(password);
+        issuerBundle.getCredentials().setPassword(password);
         return this;
     }
 
@@ -145,7 +145,7 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the organization id
      */
     public String getOrganizationId() {
-        return impl.getOrganizationDetails() == null ? null : impl.getOrganizationDetails().getId();
+        return issuerBundle.getOrganizationDetails() == null ? null : issuerBundle.getOrganizationDetails().getId();
     }
 
     /**
@@ -154,11 +154,11 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the Issuer object itself.
      */
     public CertificateIssuer setOrganizationId(String organizationId) {
-        if (impl.getOrganizationDetails() == null) {
-            impl.setOrganizationDetails(new OrganizationDetails());
+        if (issuerBundle.getOrganizationDetails() == null) {
+            issuerBundle.setOrganizationDetails(new OrganizationDetails());
         }
 
-        impl.getOrganizationDetails().setId(organizationId);
+        issuerBundle.getOrganizationDetails().setId(organizationId);
         return this;
     }
 
@@ -167,7 +167,9 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the administrators
      */
     public List<AdministratorContact> getAdministratorContacts() {
-        return impl.getOrganizationDetails() == null ? null : impl.getOrganizationDetails().getAdminDetails();
+        return issuerBundle.getOrganizationDetails() == null
+            ? null
+            : issuerBundle.getOrganizationDetails().getAdminDetails();
     }
 
     /**
@@ -176,11 +178,11 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the Issuer object itself.
      */
     public CertificateIssuer setAdministratorContacts(List<AdministratorContact> administratorContacts) {
-        if (impl.getOrganizationDetails() == null) {
-            impl.setOrganizationDetails(new OrganizationDetails());
+        if (issuerBundle.getOrganizationDetails() == null) {
+            issuerBundle.setOrganizationDetails(new OrganizationDetails());
         }
 
-        impl.getOrganizationDetails().setAdminDetails(administratorContacts);
+        issuerBundle.getOrganizationDetails().setAdminDetails(administratorContacts);
         return this;
     }
 
@@ -189,7 +191,7 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the enabled status
      */
     public Boolean isEnabled() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().isEnabled();
+        return issuerBundle.getAttributes() == null ? null : issuerBundle.getAttributes().isEnabled();
     }
 
     /**
@@ -198,11 +200,11 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the Issuer object itself.
      */
     public CertificateIssuer setEnabled(Boolean enabled) {
-        if (impl.getAttributes() == null) {
-            impl.setAttributes(new IssuerAttributes());
+        if (issuerBundle.getAttributes() == null) {
+            issuerBundle.setAttributes(new IssuerAttributes());
         }
 
-        impl.getAttributes().setEnabled(enabled);
+        issuerBundle.getAttributes().setEnabled(enabled);
         return this;
     }
 
@@ -211,7 +213,7 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the created UTC time.
      */
     public OffsetDateTime getCreatedOn() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().getCreated();
+        return issuerBundle.getAttributes() == null ? null : issuerBundle.getAttributes().getCreated();
     }
 
     /**
@@ -219,12 +221,12 @@ public final class CertificateIssuer implements JsonSerializable<CertificateIssu
      * @return the updated UTC time.
      */
     public OffsetDateTime getUpdatedOn() {
-        return impl.getAttributes() == null ? null : impl.getAttributes().getUpdated();
+        return issuerBundle.getAttributes() == null ? null : issuerBundle.getAttributes().getUpdated();
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return impl.toJson(jsonWriter);
+        return issuerBundle.toJson(jsonWriter);
     }
 
     /**

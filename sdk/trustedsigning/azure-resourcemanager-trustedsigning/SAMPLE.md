@@ -33,7 +33,7 @@ import com.azure.resourcemanager.trustedsigning.models.ProfileType;
  */
 public final class CertificateProfilesCreateSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CertificateProfiles_Create.json
+     * x-ms-original-file: 2025-10-13/CertificateProfiles_Create.json
      */
     /**
      * Sample code: Create a certificate profile.
@@ -62,7 +62,7 @@ public final class CertificateProfilesCreateSamples {
  */
 public final class CertificateProfilesDeleteSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CertificateProfiles_Delete.json
+     * x-ms-original-file: 2025-10-13/CertificateProfiles_Delete.json
      */
     /**
      * Sample code: Delete a certificate profile.
@@ -85,7 +85,7 @@ public final class CertificateProfilesDeleteSamples {
  */
 public final class CertificateProfilesGetSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CertificateProfiles_Get.json
+     * x-ms-original-file: 2025-10-13/CertificateProfiles_Get.json
      */
     /**
      * Sample code: Get details of a certificate profile.
@@ -108,7 +108,7 @@ public final class CertificateProfilesGetSamples {
  */
 public final class CertificateProfilesListByCodeSigningAccountSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CertificateProfiles_ListByCodeSigningAccount.json
+     * x-ms-original-file: 2025-10-13/CertificateProfiles_ListByCodeSigningAccount.json
      */
     /**
      * Sample code: List certificate profiles under a trusted signing account.
@@ -134,7 +134,7 @@ import java.time.OffsetDateTime;
  */
 public final class CertificateProfilesRevokeCertificateSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CertificateProfiles_RevokeCertificate.json
+     * x-ms-original-file: 2025-10-13/CertificateProfiles_RevokeCertificate.json
      */
     /**
      * Sample code: Revoke a certificate under a certificate profile.
@@ -165,7 +165,7 @@ import com.azure.resourcemanager.trustedsigning.models.CheckNameAvailability;
  */
 public final class CodeSigningAccountsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_CheckNameAvailability.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_CheckNameAvailability.json
      */
     /**
      * Sample code: Checks that the trusted signing account name is available.
@@ -193,7 +193,7 @@ import com.azure.resourcemanager.trustedsigning.models.SkuName;
  */
 public final class CodeSigningAccountsCreateSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_Create.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Create.json
      */
     /**
      * Sample code: Create a trusted Signing Account.
@@ -220,7 +220,7 @@ public final class CodeSigningAccountsCreateSamples {
  */
 public final class CodeSigningAccountsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_Delete.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Delete.json
      */
     /**
      * Sample code: Delete a trusted signing account.
@@ -242,7 +242,7 @@ public final class CodeSigningAccountsDeleteSamples {
  */
 public final class CodeSigningAccountsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_Get.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Get.json
      */
     /**
      * Sample code: Get a Trusted Signing Account.
@@ -265,7 +265,7 @@ public final class CodeSigningAccountsGetByResourceGroupSamples {
  */
 public final class CodeSigningAccountsListSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_ListBySubscription.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_ListBySubscription.json
      */
     /**
      * Sample code: Lists trusted signing accounts within a subscription.
@@ -287,7 +287,7 @@ public final class CodeSigningAccountsListSamples {
  */
 public final class CodeSigningAccountsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_ListByResourceGroup.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_ListByResourceGroup.json
      */
     /**
      * Sample code: Lists trusted signing accounts within a resource group.
@@ -313,7 +313,7 @@ import java.util.Map;
  */
 public final class CodeSigningAccountsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/CodeSigningAccounts_Update.json
+     * x-ms-original-file: 2025-10-13/CodeSigningAccounts_Update.json
      */
     /**
      * Sample code: Update a trusted signing account.
@@ -350,7 +350,7 @@ public final class CodeSigningAccountsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: 2024-02-05-preview/Operations_List.json
+     * x-ms-original-file: 2025-10-13/Operations_List.json
      */
     /**
      * Sample code: List trusted signing account operations.

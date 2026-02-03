@@ -12,19 +12,24 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Server version capabilities.
+ * Capabilities in terms of major versions of PostgreSQL database engine.
  */
 @Immutable
 public final class ServerVersionCapability extends CapabilityBase {
     /*
-     * Server version
+     * Major version of PostgreSQL database engine.
      */
     private String name;
 
     /*
-     * Supported servers versions to upgrade
+     * Major versions of PostgreSQL database engine to which this version can be automatically upgraded.
      */
     private List<String> supportedVersionsToUpgrade;
+
+    /*
+     * Features supported.
+     */
+    private List<SupportedFeature> supportedFeatures;
 
     /*
      * The reason for the capability not being available.
@@ -43,7 +48,7 @@ public final class ServerVersionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the name property: Server version.
+     * Get the name property: Major version of PostgreSQL database engine.
      * 
      * @return the name value.
      */
@@ -52,12 +57,22 @@ public final class ServerVersionCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedVersionsToUpgrade property: Supported servers versions to upgrade.
+     * Get the supportedVersionsToUpgrade property: Major versions of PostgreSQL database engine to which this version
+     * can be automatically upgraded.
      * 
      * @return the supportedVersionsToUpgrade value.
      */
     public List<String> supportedVersionsToUpgrade() {
         return this.supportedVersionsToUpgrade;
+    }
+
+    /**
+     * Get the supportedFeatures property: Features supported.
+     * 
+     * @return the supportedFeatures value.
+     */
+    public List<SupportedFeature> supportedFeatures() {
+        return this.supportedFeatures;
     }
 
     /**
@@ -87,6 +102,9 @@ public final class ServerVersionCapability extends CapabilityBase {
      */
     @Override
     public void validate() {
+        if (supportedFeatures() != null) {
+            supportedFeatures().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -122,6 +140,10 @@ public final class ServerVersionCapability extends CapabilityBase {
                 } else if ("supportedVersionsToUpgrade".equals(fieldName)) {
                     List<String> supportedVersionsToUpgrade = reader.readArray(reader1 -> reader1.getString());
                     deserializedServerVersionCapability.supportedVersionsToUpgrade = supportedVersionsToUpgrade;
+                } else if ("supportedFeatures".equals(fieldName)) {
+                    List<SupportedFeature> supportedFeatures
+                        = reader.readArray(reader1 -> SupportedFeature.fromJson(reader1));
+                    deserializedServerVersionCapability.supportedFeatures = supportedFeatures;
                 } else {
                     reader.skipChildren();
                 }

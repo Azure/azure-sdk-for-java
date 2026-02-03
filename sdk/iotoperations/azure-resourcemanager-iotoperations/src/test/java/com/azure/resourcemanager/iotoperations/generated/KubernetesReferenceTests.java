@@ -13,24 +13,24 @@ public final class KubernetesReferenceTests {
     public void testDeserialize() throws Exception {
         KubernetesReference model = BinaryData
             .fromString(
-                "{\"apiGroup\":\"clhocohsl\",\"kind\":\"ev\",\"name\":\"eggzfb\",\"namespace\":\"fmvfaxkffeiit\"}")
+                "{\"apiGroup\":\"qsqsy\",\"kind\":\"bkbfkgukdkex\",\"name\":\"ppofmxaxcfjpgdd\",\"namespace\":\"c\"}")
             .toObject(KubernetesReference.class);
-        Assertions.assertEquals("clhocohsl", model.apiGroup());
-        Assertions.assertEquals("ev", model.kind());
-        Assertions.assertEquals("eggzfb", model.name());
-        Assertions.assertEquals("fmvfaxkffeiit", model.namespace());
+        Assertions.assertEquals("qsqsy", model.apiGroup());
+        Assertions.assertEquals("bkbfkgukdkex", model.kind());
+        Assertions.assertEquals("ppofmxaxcfjpgdd", model.name());
+        Assertions.assertEquals("c", model.namespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KubernetesReference model = new KubernetesReference().withApiGroup("clhocohsl")
-            .withKind("ev")
-            .withName("eggzfb")
-            .withNamespace("fmvfaxkffeiit");
+        KubernetesReference model = new KubernetesReference().withApiGroup("qsqsy")
+            .withKind("bkbfkgukdkex")
+            .withName("ppofmxaxcfjpgdd")
+            .withNamespace("c");
         model = BinaryData.fromObject(model).toObject(KubernetesReference.class);
-        Assertions.assertEquals("clhocohsl", model.apiGroup());
-        Assertions.assertEquals("ev", model.kind());
-        Assertions.assertEquals("eggzfb", model.name());
-        Assertions.assertEquals("fmvfaxkffeiit", model.namespace());
+        Assertions.assertEquals("qsqsy", model.apiGroup());
+        Assertions.assertEquals("bkbfkgukdkex", model.kind());
+        Assertions.assertEquals("ppofmxaxcfjpgdd", model.name());
+        Assertions.assertEquals("c", model.namespace());
     }
 }

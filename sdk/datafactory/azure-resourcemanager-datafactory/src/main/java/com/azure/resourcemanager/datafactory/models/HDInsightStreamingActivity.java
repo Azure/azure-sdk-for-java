@@ -52,7 +52,7 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private HDInsightStreamingActivityTypeProperties innerTypeProperties() {
+    HDInsightStreamingActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

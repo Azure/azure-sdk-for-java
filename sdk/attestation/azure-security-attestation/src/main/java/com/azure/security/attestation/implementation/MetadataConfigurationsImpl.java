@@ -50,7 +50,7 @@ public final class MetadataConfigurationsImpl {
      * service to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientMet")
+    @ServiceInterface(name = "AttestationClientMetadataConfigurations")
     public interface MetadataConfigurationsService {
         @Get("/.well-known/openid-configuration")
         @ExpectedResponses({ 200 })

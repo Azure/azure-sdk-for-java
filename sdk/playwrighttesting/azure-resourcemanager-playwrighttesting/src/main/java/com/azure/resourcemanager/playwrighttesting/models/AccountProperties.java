@@ -41,8 +41,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private EnablementStatus reporting;
 
     /*
-     * When enabled, this feature allows the workspace to use local auth(through access key) for authentication of test
-     * runs.
+     * When enabled, this feature allows the workspace to use local auth (through service access token) for executing
+     * operations.
      */
     private EnablementStatus localAuth;
 
@@ -141,8 +141,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the localAuth property: When enabled, this feature allows the workspace to use local auth(through access key)
-     * for authentication of test runs.
+     * Get the localAuth property: When enabled, this feature allows the workspace to use local auth (through service
+     * access token) for executing operations.
      * 
      * @return the localAuth value.
      */
@@ -151,8 +151,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Set the localAuth property: When enabled, this feature allows the workspace to use local auth(through access key)
-     * for authentication of test runs.
+     * Set the localAuth property: When enabled, this feature allows the workspace to use local auth (through service
+     * access token) for executing operations.
      * 
      * @param localAuth the localAuth value to set.
      * @return the AccountProperties object itself.
@@ -169,14 +169,6 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
     }
 
     /**

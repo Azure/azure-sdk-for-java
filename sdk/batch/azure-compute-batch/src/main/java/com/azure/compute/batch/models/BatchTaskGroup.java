@@ -18,36 +18,14 @@ import java.util.List;
 @Immutable
 public final class BatchTaskGroup implements JsonSerializable<BatchTaskGroup> {
 
-    /*
-     * The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized size of this collection
-     * must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of resource files or
-     * environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with
-     * fewer Tasks.
-     */
-    @Generated
-    private final List<BatchTaskCreateContent> value;
-
     /**
      * Creates an instance of BatchTaskGroup class.
      *
-     * @param value the value value to set.
+     * @param values the values value to set.
      */
     @Generated
-    public BatchTaskGroup(List<BatchTaskCreateContent> value) {
-        this.value = value;
-    }
-
-    /**
-     * Get the value property: The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized
-     * size of this collection must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of
-     * resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be
-     * retried again with fewer Tasks.
-     *
-     * @return the value value.
-     */
-    @Generated
-    public List<BatchTaskCreateContent> getValue() {
-        return this.value;
+    public BatchTaskGroup(List<BatchTaskCreateParameters> values) {
+        this.values = values;
     }
 
     /**
@@ -57,7 +35,7 @@ public final class BatchTaskGroup implements JsonSerializable<BatchTaskGroup> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.values, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -73,17 +51,39 @@ public final class BatchTaskGroup implements JsonSerializable<BatchTaskGroup> {
     @Generated
     public static BatchTaskGroup fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<BatchTaskCreateContent> value = null;
+            List<BatchTaskCreateParameters> values = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("value".equals(fieldName)) {
-                    value = reader.readArray(reader1 -> BatchTaskCreateContent.fromJson(reader1));
+                    values = reader.readArray(reader1 -> BatchTaskCreateParameters.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new BatchTaskGroup(value);
+            return new BatchTaskGroup(values);
         });
+    }
+
+    /*
+     * The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized size of this collection
+     * must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of resource files or
+     * environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with
+     * fewer Tasks.
+     */
+    @Generated
+    private final List<BatchTaskCreateParameters> values;
+
+    /**
+     * Get the values property: The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized
+     * size of this collection must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of
+     * resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be
+     * retried again with fewer Tasks.
+     *
+     * @return the values value.
+     */
+    @Generated
+    public List<BatchTaskCreateParameters> getValues() {
+        return this.values;
     }
 }

@@ -13,7 +13,7 @@ public final class FieldRestrictionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FieldRestrictions model = BinaryData.fromString(
-            "{\"field\":\"iuubwefqsf\",\"restrictions\":[{\"result\":\"Deny\",\"defaultValue\":\"e\",\"values\":[\"wexjkmfxapjwogq\"],\"policy\":{\"policyDefinitionId\":\"bpudcdab\",\"policySetDefinitionId\":\"wpwyawbz\",\"policyDefinitionReferenceId\":\"qbucljgkyexaoguy\",\"policyAssignmentId\":\"p\"}},{\"result\":\"Deny\",\"defaultValue\":\"ault\",\"values\":[\"jumfqwazlnq\"],\"policy\":{\"policyDefinitionId\":\"jng\",\"policySetDefinitionId\":\"dqxtbjwgnyf\",\"policyDefinitionReferenceId\":\"fzsvtuikzh\",\"policyAssignmentId\":\"qglcfhmlrqryxynq\"}}]}")
+            "{\"field\":\"bsoqeqala\",\"restrictions\":[{\"result\":\"Audit\",\"defaultValue\":\"nbtgfebwl\",\"values\":[\"hyreeu\",\"zqavbpdqmjx\",\"yyzglgouwtlmjjy\"],\"policy\":{\"policyDefinitionId\":\"qtobaxkjeyt\",\"policySetDefinitionId\":\"lbfjkwr\",\"policyDefinitionReferenceId\":\"nkqbhsyrq\",\"policyAssignmentId\":\"jqhden\"},\"policyEffect\":\"ulkpakd\",\"reason\":\"fmjnnawtqa\"},{\"result\":\"Audit\",\"defaultValue\":\"ckpggqoweyird\",\"values\":[\"sn\",\"wfl\",\"qmp\",\"zruwn\"],\"policy\":{\"policyDefinitionId\":\"pxiwf\",\"policySetDefinitionId\":\"gjsaasiixtm\",\"policyDefinitionReferenceId\":\"jvkviirhgfgrws\",\"policyAssignmentId\":\"gratzvzbglbyvict\"},\"policyEffect\":\"brxkjzwr\",\"reason\":\"ffm\"}]}")
             .toObject(FieldRestrictions.class);
     }
 

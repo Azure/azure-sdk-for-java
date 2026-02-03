@@ -268,13 +268,19 @@ public final class HDInsightLinkedServiceTypeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeUntypedField("clusterUri", this.clusterUri);
-        jsonWriter.writeUntypedField("userName", this.username);
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("userName", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
         jsonWriter.writeJsonField("hcatalogLinkedServiceName", this.hcatalogLinkedServiceName);
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
-        jsonWriter.writeUntypedField("isEspEnabled", this.isEspEnabled);
-        jsonWriter.writeUntypedField("fileSystem", this.fileSystem);
+        if (this.isEspEnabled != null) {
+            jsonWriter.writeUntypedField("isEspEnabled", this.isEspEnabled);
+        }
+        if (this.fileSystem != null) {
+            jsonWriter.writeUntypedField("fileSystem", this.fileSystem);
+        }
         return jsonWriter.writeEndObject();
     }
 

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.LinkedIntegrationRuntimeRequest;
@@ -26,11 +26,12 @@ public final class IntegrationRuntimesRemoveLinksWithResponseMockTests {
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.integrationRuntimes()
-            .removeLinksWithResponse("dqop", "abrzrhdezlhsdcp", "bolczhyqdvxqo",
-                new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("j"), com.azure.core.util.Context.NONE);
+            .removeLinksWithResponse("wfqagblwoozlfl", "irudn", "lfcrtkpfs",
+                new LinkedIntegrationRuntimeRequest().withLinkedFactoryName("wtqtoqeof"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

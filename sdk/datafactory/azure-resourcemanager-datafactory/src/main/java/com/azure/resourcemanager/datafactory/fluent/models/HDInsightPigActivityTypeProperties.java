@@ -201,9 +201,13 @@ public final class HDInsightPigActivityTypeProperties implements JsonSerializabl
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("storageLinkedServices", this.storageLinkedServices,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeUntypedField("arguments", this.arguments);
+        if (this.arguments != null) {
+            jsonWriter.writeUntypedField("arguments", this.arguments);
+        }
         jsonWriter.writeStringField("getDebugInfo", this.getDebugInfo == null ? null : this.getDebugInfo.toString());
-        jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+        if (this.scriptPath != null) {
+            jsonWriter.writeUntypedField("scriptPath", this.scriptPath);
+        }
         jsonWriter.writeJsonField("scriptLinkedService", this.scriptLinkedService);
         jsonWriter.writeMapField("defines", this.defines, (writer, element) -> writer.writeUntyped(element));
         return jsonWriter.writeEndObject();

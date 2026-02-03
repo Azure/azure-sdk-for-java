@@ -17,28 +17,22 @@ public final class DefenderForAISettingResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DefenderForAISettingResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ibmikostbzb\",\"value\":[{\"etag\":\"qnyophzfyls\",\"tags\":{\"lfwyfwlwxjwetn\":\"pfbcunezzcez\",\"rsqqwztcm\":\"sihclafzvaylp\",\"cxwaxfewz\":\"qkc\"},\"properties\":{\"state\":\"Enabled\"},\"id\":\"xfdeqvhpsyl\",\"name\":\"ksh\",\"type\":\"bffmbmxz\"},{\"etag\":\"ywwpgjxsnptfuj\",\"tags\":{\"pttaqutd\":\"gaao\"},\"properties\":{\"state\":\"Enabled\"},\"id\":\"xswvru\",\"name\":\"nz\",\"type\":\"jgehkf\"}]}")
+            "{\"nextLink\":\"hs\",\"value\":[{\"etag\":\"jpllndnpdwrpq\",\"tags\":{\"oc\":\"fugsnnfhyetefy\",\"vzuyturmlmu\":\"ctfjgtixr\",\"iropionszon\":\"wolba\"},\"properties\":{\"state\":\"Enabled\"},\"id\":\"jinnix\",\"name\":\"awrtmjfjmyccxlz\",\"type\":\"coxovn\"}]}")
             .toObject(DefenderForAISettingResult.class);
-        Assertions.assertEquals("ibmikostbzb", model.nextLink());
-        Assertions.assertEquals("pfbcunezzcez", model.value().get(0).tags().get("lfwyfwlwxjwetn"));
+        Assertions.assertEquals("hs", model.nextLink());
+        Assertions.assertEquals("fugsnnfhyetefy", model.value().get(0).tags().get("oc"));
         Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.value().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForAISettingResult model
-            = new DefenderForAISettingResult().withNextLink("ibmikostbzb")
-                .withValue(
-                    Arrays.asList(
-                        new DefenderForAISettingInner()
-                            .withTags(mapOf("lfwyfwlwxjwetn", "pfbcunezzcez", "rsqqwztcm", "sihclafzvaylp", "cxwaxfewz",
-                                "qkc"))
-                            .withState(DefenderForAISettingState.ENABLED),
-                        new DefenderForAISettingInner().withTags(mapOf("pttaqutd", "gaao"))
-                            .withState(DefenderForAISettingState.ENABLED)));
+        DefenderForAISettingResult model = new DefenderForAISettingResult().withNextLink("hs")
+            .withValue(Arrays.asList(new DefenderForAISettingInner()
+                .withTags(mapOf("oc", "fugsnnfhyetefy", "vzuyturmlmu", "ctfjgtixr", "iropionszon", "wolba"))
+                .withState(DefenderForAISettingState.ENABLED)));
         model = BinaryData.fromObject(model).toObject(DefenderForAISettingResult.class);
-        Assertions.assertEquals("ibmikostbzb", model.nextLink());
-        Assertions.assertEquals("pfbcunezzcez", model.value().get(0).tags().get("lfwyfwlwxjwetn"));
+        Assertions.assertEquals("hs", model.nextLink());
+        Assertions.assertEquals("fugsnnfhyetefy", model.value().get(0).tags().get("oc"));
         Assertions.assertEquals(DefenderForAISettingState.ENABLED, model.value().get(0).state());
     }
 

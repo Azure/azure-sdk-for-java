@@ -52,6 +52,7 @@ public class MetricsClientTest extends MetricsClientTestBase {
                 .getValue();
         assertEquals(1, metricsQueryResults.getMetricsQueryResults().size());
         assertEquals(1, metricsQueryResults.getMetricsQueryResults().get(0).getMetrics().size());
+        assertNotNull(metricsQueryResults.getMetricsQueryResults().get(0).getResourceId());
         MetricResult metricResult = metricsQueryResults.getMetricsQueryResults().get(0).getMetrics().get(0);
         assertEquals("HttpIncomingRequestCount", metricResult.getMetricName());
         assertFalse(CoreUtils.isNullOrEmpty(metricResult.getTimeSeries()));

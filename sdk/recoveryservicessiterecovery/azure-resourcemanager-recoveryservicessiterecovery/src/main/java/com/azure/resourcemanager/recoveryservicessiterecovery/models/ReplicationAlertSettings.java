@@ -17,23 +17,23 @@ public interface ReplicationAlertSettings {
      * 
      * Gets the list of email notification(alert) configurations for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of email notification(alert) configurations for the vault as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<Alert> list(String resourceName, String resourceGroupName);
+    PagedIterable<Alert> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of configured email notification(alert) configurations.
      * 
      * Gets the list of email notification(alert) configurations for the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,15 +41,15 @@ public interface ReplicationAlertSettings {
      * @return the list of email notification(alert) configurations for the vault as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<Alert> list(String resourceName, String resourceGroupName, Context context);
+    PagedIterable<Alert> list(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets an email notification(alert) configuration.
      * 
      * Gets the details of the specified email notification(alert) configuration.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param alertSettingName The name of the email notification configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,7 +57,7 @@ public interface ReplicationAlertSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified email notification(alert) configuration along with {@link Response}.
      */
-    Response<Alert> getWithResponse(String resourceName, String resourceGroupName, String alertSettingName,
+    Response<Alert> getWithResponse(String resourceGroupName, String resourceName, String alertSettingName,
         Context context);
 
     /**
@@ -65,15 +65,15 @@ public interface ReplicationAlertSettings {
      * 
      * Gets the details of the specified email notification(alert) configuration.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param alertSettingName The name of the email notification configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified email notification(alert) configuration.
      */
-    Alert get(String resourceName, String resourceGroupName, String alertSettingName);
+    Alert get(String resourceGroupName, String resourceName, String alertSettingName);
 
     /**
      * Gets an email notification(alert) configuration.

@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -16,49 +17,61 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
+ * 
+ * @deprecated This class is deprecated and may be removed in future releases. System events are now available in the
+ * azure-messaging-eventgrid-systemevents package.
  */
 @Fluent
+@Deprecated
 public final class AcsRecordingFileStatusUpdatedEventData
     implements JsonSerializable<AcsRecordingFileStatusUpdatedEventData> {
 
     /*
      * The details of recording storage information
      */
+    @Generated
     private AcsRecordingStorageInfoProperties recordingStorageInfo;
 
     /*
      * The time at which the recording started
      */
+    @Generated
     private OffsetDateTime recordingStartTime;
 
     /*
      * The recording duration in milliseconds
      */
+    @Generated
     private Long recordingDurationMs;
 
     /*
      * The recording content type- AudioVideo, or Audio
      */
+    @Generated
     private RecordingContentType recordingContentType;
 
     /*
      * The recording channel type - Mixed, Unmixed
      */
+    @Generated
     private RecordingChannelType recordingChannelType;
 
     /*
      * The recording format type - Mp4, Mp3, Wav
      */
+    @Generated
     private RecordingFormatType recordingFormatType;
 
     /*
      * The reason for ending recording session
      */
+    @Generated
     private String sessionEndReason;
 
     /**
      * Creates an instance of AcsRecordingFileStatusUpdatedEventData class.
      */
+    @Generated
     public AcsRecordingFileStatusUpdatedEventData() {
     }
 
@@ -67,6 +80,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      *
      * @return the recordingStorageInfo value.
      */
+    @Generated
     public AcsRecordingStorageInfoProperties getRecordingStorageInfo() {
         return this.recordingStorageInfo;
     }
@@ -77,6 +91,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * @param recordingStorageInfo the recordingStorageInfo value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsRecordingFileStatusUpdatedEventData
         setRecordingStorageInfo(AcsRecordingStorageInfoProperties recordingStorageInfo) {
         this.recordingStorageInfo = recordingStorageInfo;
@@ -88,6 +103,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      *
      * @return the recordingStartTime value.
      */
+    @Generated
     public OffsetDateTime getRecordingStartTime() {
         return this.recordingStartTime;
     }
@@ -98,6 +114,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * @param recordingStartTime the recordingStartTime value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsRecordingFileStatusUpdatedEventData setRecordingStartTime(OffsetDateTime recordingStartTime) {
         this.recordingStartTime = recordingStartTime;
         return this;
@@ -108,6 +125,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      *
      * @return the recordingDuration value.
      */
+    @Generated
     public Duration getRecordingDuration() {
         if (this.recordingDurationMs != null) {
             return Duration.ofMillis(this.recordingDurationMs);
@@ -121,6 +139,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * @param recordingDuration the recordingDuration value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsRecordingFileStatusUpdatedEventData setRecordingDuration(Duration recordingDuration) {
         if (recordingDuration != null) {
             this.recordingDurationMs = recordingDuration.toMillis();
@@ -135,6 +154,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      *
      * @return the recordingContentType value.
      */
+    @Generated
     public RecordingContentType getRecordingContentType() {
         return this.recordingContentType;
     }
@@ -145,6 +165,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * @param recordingContentType the recordingContentType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsRecordingFileStatusUpdatedEventData setRecordingContentType(RecordingContentType recordingContentType) {
         this.recordingContentType = recordingContentType;
         return this;
@@ -155,6 +176,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      *
      * @return the recordingChannelType value.
      */
+    @Generated
     public RecordingChannelType getRecordingChannelType() {
         return this.recordingChannelType;
     }
@@ -165,6 +187,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsRecordingFileStatusUpdatedEventData setRecordingChannelType(RecordingChannelType recordingChannelType) {
         this.recordingChannelType = recordingChannelType;
         return this;
@@ -175,6 +198,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      *
      * @return the recordingFormatType value.
      */
+    @Generated
     public RecordingFormatType getRecordingFormatType() {
         return this.recordingFormatType;
     }
@@ -185,6 +209,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsRecordingFileStatusUpdatedEventData setRecordingFormatType(RecordingFormatType recordingFormatType) {
         this.recordingFormatType = recordingFormatType;
         return this;
@@ -195,6 +220,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      *
      * @return the sessionEndReason value.
      */
+    @Generated
     public String getSessionEndReason() {
         return this.sessionEndReason;
     }
@@ -205,6 +231,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * @param sessionEndReason the sessionEndReason value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
+    @Generated
     public AcsRecordingFileStatusUpdatedEventData setSessionEndReason(String sessionEndReason) {
         this.sessionEndReason = sessionEndReason;
         return this;
@@ -213,6 +240,7 @@ public final class AcsRecordingFileStatusUpdatedEventData
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -238,8 +266,10 @@ public final class AcsRecordingFileStatusUpdatedEventData
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsRecordingFileStatusUpdatedEventData if the JsonReader was pointing to an instance of
      * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsRecordingFileStatusUpdatedEventData.
      */
+    @Generated
     public static AcsRecordingFileStatusUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AcsRecordingFileStatusUpdatedEventData deserializedAcsRecordingFileStatusUpdatedEventData

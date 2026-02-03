@@ -11,15 +11,16 @@ trigger:
       - sdk/cosmos/ci.yml
       - sdk/cosmos/azure-cosmos/
       - sdk/cosmos/azure-cosmos-benchmark/
-      - sdk/cosmos/azure-cosmos-dotnet-benchmark/
       - sdk/cosmos/azure-cosmos-encryption/
       - sdk/cosmos/azure-cosmos-examples/
-      - sdk/cosmos/azure-cosmos-spark_3_2-12/
-      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
-      - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3/
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-5/
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-13/
+      - sdk/cosmos/azure-cosmos-spark_4-0_2-13/
+      - sdk/cosmos/fabric-cosmos-spark-auth_3/
       - sdk/cosmos/azure-cosmos-test/
       - sdk/cosmos/azure-cosmos-tests/
       - sdk/cosmos/azure-cosmos-kafka-connect/
@@ -29,14 +30,15 @@ trigger:
       - sdk/cosmos/azure-cosmos/pom.xml
       - sdk/cosmos/azure-cosmos-tests/pom.xml
       - sdk/cosmos/azure-cosmos-benchmark/pom.xml
-      - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-encryption/pom.xml
-      - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
-      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
-      - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-13/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-5/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_4-0_2-13/pom.xml
+      - sdk/cosmos/fabric-cosmos-spark-auth_3/pom.xml
       - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
 
 pr:
@@ -52,31 +54,33 @@ pr:
       - sdk/cosmos/ci.yml
       - sdk/cosmos/azure-cosmos/
       - sdk/cosmos/azure-cosmos-benchmark/
-      - sdk/cosmos/azure-cosmos-dotnet-benchmark/
       - sdk/cosmos/azure-cosmos-encryption/
       - sdk/cosmos/azure-cosmos-examples/
       - sdk/cosmos/azure-cosmos-test/
       - sdk/cosmos/azure-cosmos-tests/
-      - sdk/cosmos/azure-cosmos-spark_3_2-12/
-      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
-      - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3/
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-5/
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-13/
+      - sdk/cosmos/azure-cosmos-spark_4-0_2-13/
+      - sdk/cosmos/fabric-cosmos-spark-auth_3/
       - sdk/cosmos/faq/
       - sdk/cosmos/azure-cosmos-kafka-connect/
     exclude:
       - sdk/cosmos/pom.xml
       - sdk/cosmos/azure-cosmos/pom.xml
       - sdk/cosmos/azure-cosmos-benchmark/pom.xml
-      - sdk/cosmos/azure-cosmos-dotnet-benchmark/pom.xml
       - sdk/cosmos/azure-cosmos-encryption/pom.xml
-      - sdk/cosmos/azure-cosmos-spark_3_2-12/pom.xml
-      - sdk/cosmos/azure-cosmos-spark_3-1_2-12/pom.xml
-      - sdk/cosmos/azure-cosmos-spark_3-2_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-4_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-5/pom.xml
       - sdk/cosmos/azure-cosmos-spark_3-5_2-12/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_3-5_2-13/pom.xml
+      - sdk/cosmos/azure-cosmos-spark_4-0_2-13/pom.xml
+      - sdk/cosmos/fabric-cosmos-spark-auth_3/pom.xml
       - sdk/cosmos/azure-cosmos-test/pom.xml
       - sdk/cosmos/azure-cosmos-tests/pom.xml
       - sdk/cosmos/azure-cosmos-kafka-connect/pom.xml
@@ -89,14 +93,6 @@ parameters:
     displayName: 'azure-cosmos-encryption'
     type: boolean
     default: true
-  - name: release_azurecosmosspark31
-    displayName: 'azure-cosmos-spark_3-1_2-12'
-    type: boolean
-    default: true
-  - name: release_azurecosmosspark32
-    displayName: 'azure-cosmos-spark_3-2_2-12'
-    type: boolean
-    default: true
   - name: release_azurecosmosspark33
     displayName: 'azure-cosmos-spark_3-3_2-12'
     type: boolean
@@ -105,8 +101,20 @@ parameters:
     displayName: 'azure-cosmos-spark_3-4_2-12'
     type: boolean
     default: true
-  - name: release_azurecosmosspark35
+  - name: release_azurecosmosspark35_scala212
     displayName: 'azure-cosmos-spark_3-5_2-12'
+    type: boolean
+    default: true
+  - name: release_azurecosmosspark35_scala213
+    displayName: 'azure-cosmos-spark_3-5_2-13'
+    type: boolean
+    default: true
+  - name: release_azurecosmosspark40_scala213
+    displayName: 'azure-cosmos-spark_4-0_2-13'
+    type: boolean
+    default: true
+  - name: release_fabriccosmossparkauth3
+    displayName: 'fabric-cosmos-spark-auth_3'
     type: boolean
     default: true
   - name: release_azurecosmostest
@@ -132,20 +140,6 @@ extends:
         groupId: com.azure
         safeName: azurecosmosencryption
         releaseInBatch: ${{ parameters.release_azurecosmosencryption }}
-      - name: azure-cosmos-spark_3-1_2-12
-        groupId: com.azure.cosmos.spark
-        safeName: azurecosmosspark31
-        uberJar: true
-        skipPublishDocGithubIo: true
-        skipPublishDocMs: true
-        releaseInBatch: ${{ parameters.release_azurecosmosspark31 }}
-      - name: azure-cosmos-spark_3-2_2-12
-        groupId: com.azure.cosmos.spark
-        safeName: azurecosmosspark32
-        uberJar: true
-        skipPublishDocGithubIo: true
-        skipPublishDocMs: true
-        releaseInBatch: ${{ parameters.release_azurecosmosspark32 }}
       - name: azure-cosmos-spark_3-3_2-12
         groupId: com.azure.cosmos.spark
         safeName: azurecosmosspark33
@@ -162,11 +156,32 @@ extends:
         releaseInBatch: ${{ parameters.release_azurecosmosspark34 }}
       - name: azure-cosmos-spark_3-5_2-12
         groupId: com.azure.cosmos.spark
-        safeName: azurecosmosspark35
+        safeName: azurecosmosspark35scala212
         uberJar: true
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-        releaseInBatch: ${{ parameters.release_azurecosmosspark35 }}
+        releaseInBatch: ${{ parameters.release_azurecosmosspark35_scala212 }}
+      - name: azure-cosmos-spark_3-5_2-13
+        groupId: com.azure.cosmos.spark
+        safeName: azurecosmosspark35scala213
+        uberJar: true
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_azurecosmosspark35_scala213 }}
+      - name: azure-cosmos-spark_4-0_2-13
+        groupId: com.azure.cosmos.spark
+        safeName: azurecosmosspark40scala213
+        uberJar: true
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_azurecosmosspark40_scala213 }}
+      - name: fabric-cosmos-spark-auth_3
+        groupId: com.azure.cosmos.spark
+        safeName: fabriccosmossparkauth3
+        uberJar: true
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_fabriccosmossparkauth3 }}
       - name: azure-cosmos-test
         groupId: com.azure
         safeName: azurecosmostest
@@ -183,5 +198,7 @@ extends:
         groupId: com.azure
       - name: azure-cosmos-benchmark
         groupId: com.azure
-      - name: azure-cosmos-spark_3_2-12
+      - name: azure-cosmos-spark_3
+        groupId: com.azure.cosmos.spark
+      - name: azure-cosmos-spark_3-5
         groupId: com.azure.cosmos.spark

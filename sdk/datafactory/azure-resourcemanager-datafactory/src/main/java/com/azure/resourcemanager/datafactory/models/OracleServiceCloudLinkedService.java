@@ -52,7 +52,7 @@ public final class OracleServiceCloudLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private OracleServiceCloudLinkedServiceTypeProperties innerTypeProperties() {
+    OracleServiceCloudLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

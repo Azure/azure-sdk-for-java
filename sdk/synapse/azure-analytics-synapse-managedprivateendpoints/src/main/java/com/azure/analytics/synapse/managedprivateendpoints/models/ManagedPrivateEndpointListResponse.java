@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.managedprivateendpoints.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,16 +21,19 @@ public final class ManagedPrivateEndpointListResponse implements JsonSerializabl
     /*
      * List of managed private endpoints
      */
+    @Generated
     private List<ManagedPrivateEndpoint> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
+    @Generated
     private String nextLink;
 
     /**
      * Creates an instance of ManagedPrivateEndpointListResponse class.
      */
+    @Generated
     public ManagedPrivateEndpointListResponse() {
     }
 
@@ -38,6 +42,7 @@ public final class ManagedPrivateEndpointListResponse implements JsonSerializabl
      * 
      * @return the value value.
      */
+    @Generated
     public List<ManagedPrivateEndpoint> getValue() {
         return this.value;
     }
@@ -48,6 +53,7 @@ public final class ManagedPrivateEndpointListResponse implements JsonSerializabl
      * @param value the value value to set.
      * @return the ManagedPrivateEndpointListResponse object itself.
      */
+    @Generated
     public ManagedPrivateEndpointListResponse setValue(List<ManagedPrivateEndpoint> value) {
         this.value = value;
         return this;
@@ -58,6 +64,7 @@ public final class ManagedPrivateEndpointListResponse implements JsonSerializabl
      * 
      * @return the nextLink value.
      */
+    @Generated
     public String getNextLink() {
         return this.nextLink;
     }
@@ -65,6 +72,7 @@ public final class ManagedPrivateEndpointListResponse implements JsonSerializabl
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -80,6 +88,7 @@ public final class ManagedPrivateEndpointListResponse implements JsonSerializabl
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the ManagedPrivateEndpointListResponse.
      */
+    @Generated
     public static ManagedPrivateEndpointListResponse fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ManagedPrivateEndpointListResponse deserializedManagedPrivateEndpointListResponse

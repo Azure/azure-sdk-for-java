@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * The location of Microsoft Fabric LakeHouse Files dataset.
+ * The location of Microsoft Fabric Lakehouse Files dataset.
  */
 @Fluent
 public final class LakeHouseLocation extends DatasetLocation {
@@ -71,8 +71,12 @@ public final class LakeHouseLocation extends DatasetLocation {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", folderPath());
-        jsonWriter.writeUntypedField("fileName", fileName());
+        if (folderPath() != null) {
+            jsonWriter.writeUntypedField("folderPath", folderPath());
+        }
+        if (fileName() != null) {
+            jsonWriter.writeUntypedField("fileName", fileName());
+        }
         jsonWriter.writeStringField("type", this.type);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {

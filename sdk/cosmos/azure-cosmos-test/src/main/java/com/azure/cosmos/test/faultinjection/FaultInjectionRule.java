@@ -158,7 +158,7 @@ public final class FaultInjectionRule {
     public List<String> getRegionEndpoints() {
         return this.effectiveRule == null
             ? null
-            : this.effectiveRule.getRegionEndpoints().stream().map(URI::toString).collect(Collectors.toList());
+            : this.effectiveRule.getRegionalRoutingContexts().stream().map(regionalRoutingContext -> regionalRoutingContext.getGatewayRegionalEndpoint().toString()).collect(Collectors.toList());
     }
 
     /***

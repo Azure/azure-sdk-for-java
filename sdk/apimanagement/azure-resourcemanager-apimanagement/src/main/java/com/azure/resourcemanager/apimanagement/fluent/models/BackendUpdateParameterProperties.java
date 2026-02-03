@@ -9,11 +9,14 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.BackendBaseParameters;
+import com.azure.resourcemanager.apimanagement.models.BackendBaseParametersPool;
+import com.azure.resourcemanager.apimanagement.models.BackendCircuitBreaker;
 import com.azure.resourcemanager.apimanagement.models.BackendCredentialsContract;
 import com.azure.resourcemanager.apimanagement.models.BackendProperties;
 import com.azure.resourcemanager.apimanagement.models.BackendProtocol;
 import com.azure.resourcemanager.apimanagement.models.BackendProxyContract;
 import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
+import com.azure.resourcemanager.apimanagement.models.BackendType;
 import java.io.IOException;
 
 /**
@@ -141,6 +144,33 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BackendUpdateParameterProperties withCircuitBreaker(BackendCircuitBreaker circuitBreaker) {
+        super.withCircuitBreaker(circuitBreaker);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BackendUpdateParameterProperties withPool(BackendBaseParametersPool pool) {
+        super.withPool(pool);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BackendUpdateParameterProperties withType(BackendType type) {
+        super.withType(type);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -159,6 +189,12 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
         if (tls() != null) {
             tls().validate();
         }
+        if (circuitBreaker() != null) {
+            circuitBreaker().validate();
+        }
+        if (pool() != null) {
+            pool().validate();
+        }
     }
 
     /**
@@ -174,6 +210,9 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
         jsonWriter.writeJsonField("credentials", credentials());
         jsonWriter.writeJsonField("proxy", proxy());
         jsonWriter.writeJsonField("tls", tls());
+        jsonWriter.writeJsonField("circuitBreaker", circuitBreaker());
+        jsonWriter.writeJsonField("pool", pool());
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
         jsonWriter.writeStringField("url", this.url);
         jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
         return jsonWriter.writeEndObject();
@@ -210,6 +249,13 @@ public final class BackendUpdateParameterProperties extends BackendBaseParameter
                     deserializedBackendUpdateParameterProperties.withProxy(BackendProxyContract.fromJson(reader));
                 } else if ("tls".equals(fieldName)) {
                     deserializedBackendUpdateParameterProperties.withTls(BackendTlsProperties.fromJson(reader));
+                } else if ("circuitBreaker".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties
+                        .withCircuitBreaker(BackendCircuitBreaker.fromJson(reader));
+                } else if ("pool".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.withPool(BackendBaseParametersPool.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackendUpdateParameterProperties.withType(BackendType.fromString(reader.getString()));
                 } else if ("url".equals(fieldName)) {
                     deserializedBackendUpdateParameterProperties.url = reader.getString();
                 } else if ("protocol".equals(fieldName)) {

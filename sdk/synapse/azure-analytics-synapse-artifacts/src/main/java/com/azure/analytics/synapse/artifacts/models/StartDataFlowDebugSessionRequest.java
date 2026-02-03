@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,46 +21,55 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
     /*
      * The ID of data flow debug session.
      */
+    @Generated
     private String sessionId;
 
     /*
      * Data flow instance.
      */
+    @Generated
     private DataFlowResource dataFlow;
 
     /*
      * List of Data flows
      */
+    @Generated
     private List<DataFlowResource> dataFlows;
 
     /*
      * List of datasets.
      */
+    @Generated
     private List<DatasetResource> datasets;
 
     /*
      * List of linked services.
      */
+    @Generated
     private List<LinkedServiceResource> linkedServices;
 
     /*
      * Staging info for debug session.
      */
+    @Generated
     private Object staging;
 
     /*
      * Data flow debug settings.
      */
+    @Generated
     private Object debugSettings;
 
     /*
      * The type of new Databricks cluster.
      */
+    @Generated
     private Boolean incrementalDebug;
 
     /**
      * Creates an instance of StartDataFlowDebugSessionRequest class.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest() {
     }
 
@@ -68,6 +78,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -78,6 +89,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * @param sessionId the sessionId value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -88,6 +100,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * 
      * @return the dataFlow value.
      */
+    @Generated
     public DataFlowResource getDataFlow() {
         return this.dataFlow;
     }
@@ -98,6 +111,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * @param dataFlow the dataFlow value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest setDataFlow(DataFlowResource dataFlow) {
         this.dataFlow = dataFlow;
         return this;
@@ -108,6 +122,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * 
      * @return the dataFlows value.
      */
+    @Generated
     public List<DataFlowResource> getDataFlows() {
         return this.dataFlows;
     }
@@ -118,6 +133,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * @param dataFlows the dataFlows value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest setDataFlows(List<DataFlowResource> dataFlows) {
         this.dataFlows = dataFlows;
         return this;
@@ -128,6 +144,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * 
      * @return the datasets value.
      */
+    @Generated
     public List<DatasetResource> getDatasets() {
         return this.datasets;
     }
@@ -138,6 +155,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * @param datasets the datasets value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest setDatasets(List<DatasetResource> datasets) {
         this.datasets = datasets;
         return this;
@@ -148,6 +166,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * 
      * @return the linkedServices value.
      */
+    @Generated
     public List<LinkedServiceResource> getLinkedServices() {
         return this.linkedServices;
     }
@@ -158,6 +177,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * @param linkedServices the linkedServices value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest setLinkedServices(List<LinkedServiceResource> linkedServices) {
         this.linkedServices = linkedServices;
         return this;
@@ -168,6 +188,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * 
      * @return the staging value.
      */
+    @Generated
     public Object getStaging() {
         return this.staging;
     }
@@ -178,6 +199,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * @param staging the staging value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest setStaging(Object staging) {
         this.staging = staging;
         return this;
@@ -188,6 +210,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * 
      * @return the debugSettings value.
      */
+    @Generated
     public Object getDebugSettings() {
         return this.debugSettings;
     }
@@ -198,6 +221,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * @param debugSettings the debugSettings value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest setDebugSettings(Object debugSettings) {
         this.debugSettings = debugSettings;
         return this;
@@ -208,6 +232,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * 
      * @return the incrementalDebug value.
      */
+    @Generated
     public Boolean isIncrementalDebug() {
         return this.incrementalDebug;
     }
@@ -218,6 +243,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * @param incrementalDebug the incrementalDebug value to set.
      * @return the StartDataFlowDebugSessionRequest object itself.
      */
+    @Generated
     public StartDataFlowDebugSessionRequest setIncrementalDebug(Boolean incrementalDebug) {
         this.incrementalDebug = incrementalDebug;
         return this;
@@ -226,6 +252,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -235,8 +262,12 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
         jsonWriter.writeArrayField("datasets", this.datasets, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("linkedServices", this.linkedServices,
             (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeUntypedField("staging", this.staging);
-        jsonWriter.writeUntypedField("debugSettings", this.debugSettings);
+        if (this.staging != null) {
+            jsonWriter.writeUntypedField("staging", this.staging);
+        }
+        if (this.debugSettings != null) {
+            jsonWriter.writeUntypedField("debugSettings", this.debugSettings);
+        }
         jsonWriter.writeBooleanField("incrementalDebug", this.incrementalDebug);
         return jsonWriter.writeEndObject();
     }
@@ -249,6 +280,7 @@ public final class StartDataFlowDebugSessionRequest implements JsonSerializable<
      * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the StartDataFlowDebugSessionRequest.
      */
+    @Generated
     public static StartDataFlowDebugSessionRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             StartDataFlowDebugSessionRequest deserializedStartDataFlowDebugSessionRequest

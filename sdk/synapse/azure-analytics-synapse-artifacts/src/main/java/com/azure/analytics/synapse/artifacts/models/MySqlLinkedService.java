@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,63 +22,120 @@ public class MySqlLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "MySql";
 
     /*
      * The version of the MySQL driver. Type: string. V1 or empty for legacy driver, V2 for new driver. V1 can support
      * connection string and property bag, V2 can only support connection string.
      */
+    @Generated
     private Object driverVersion;
 
     /*
      * The connection string.
      */
+    @Generated
     private Object connectionString;
 
     /*
      * Server name for connection. Type: string.
      */
+    @Generated
     private Object server;
 
     /*
      * The port for the connection. Type: integer.
      */
+    @Generated
     private Object port;
 
     /*
      * Username for authentication. Type: string.
      */
+    @Generated
     private Object username;
 
     /*
      * Database name for connection. Type: string.
      */
+    @Generated
     private Object database;
 
     /*
      * SSL mode for connection. Type: integer. 0: disable, 1: prefer, 2: require, 3: verify-ca, 4: verify-full.
      */
+    @Generated
     private Object sslMode;
 
     /*
      * Use system trust store for connection. Type: integer. 0: enable, 1: disable.
      */
+    @Generated
     private Object useSystemTrustStore;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
+    @Generated
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
+
+    /*
+     * This allows the special “zero” date value 0000-00-00 to be retrieved from the database. Type: boolean.
+     */
+    @Generated
+    private Object allowZeroDateTime;
+
+    /*
+     * The length of time (in seconds) to wait for a connection to the server before terminating the attempt and
+     * generating an error. Type: integer.
+     */
+    @Generated
+    private Object connectionTimeout;
+
+    /*
+     * True to return DateTime.MinValue for date or datetime columns that have disallowed values. Type: boolean.
+     */
+    @Generated
+    private Object convertZeroDateTime;
+
+    /*
+     * Determines which column type (if any) should be read as a GUID. Type: string. None: No column types are
+     * automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using lowercase hex with
+     * hyphens, which matches UUID.
+     */
+    @Generated
+    private Object guidFormat;
+
+    /*
+     * The path to the client’s SSL certificate file in PEM format. SslKey must also be specified. Type: string.
+     */
+    @Generated
+    private Object sslCert;
+
+    /*
+     * The path to the client’s SSL private key in PEM format. SslCert must also be specified. Type: string.
+     */
+    @Generated
+    private Object sslKey;
+
+    /*
+     * When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     */
+    @Generated
+    private Object treatTinyAsBoolean;
 
     /**
      * Creates an instance of MySqlLinkedService class.
      */
+    @Generated
     public MySqlLinkedService() {
     }
 
@@ -86,6 +144,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -97,6 +156,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the driverVersion value.
      */
+    @Generated
     public Object getDriverVersion() {
         return this.driverVersion;
     }
@@ -108,6 +168,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param driverVersion the driverVersion value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setDriverVersion(Object driverVersion) {
         this.driverVersion = driverVersion;
         return this;
@@ -118,6 +179,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the connectionString value.
      */
+    @Generated
     public Object getConnectionString() {
         return this.connectionString;
     }
@@ -128,6 +190,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param connectionString the connectionString value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setConnectionString(Object connectionString) {
         this.connectionString = connectionString;
         return this;
@@ -138,6 +201,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the server value.
      */
+    @Generated
     public Object getServer() {
         return this.server;
     }
@@ -148,6 +212,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param server the server value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setServer(Object server) {
         this.server = server;
         return this;
@@ -158,6 +223,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the port value.
      */
+    @Generated
     public Object getPort() {
         return this.port;
     }
@@ -168,6 +234,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param port the port value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setPort(Object port) {
         this.port = port;
         return this;
@@ -178,6 +245,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -188,6 +256,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -198,6 +267,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the database value.
      */
+    @Generated
     public Object getDatabase() {
         return this.database;
     }
@@ -208,6 +278,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param database the database value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setDatabase(Object database) {
         this.database = database;
         return this;
@@ -219,6 +290,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the sslMode value.
      */
+    @Generated
     public Object getSslMode() {
         return this.sslMode;
     }
@@ -230,6 +302,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param sslMode the sslMode value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setSslMode(Object sslMode) {
         this.sslMode = sslMode;
         return this;
@@ -241,6 +314,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the useSystemTrustStore value.
      */
+    @Generated
     public Object getUseSystemTrustStore() {
         return this.useSystemTrustStore;
     }
@@ -252,6 +326,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param useSystemTrustStore the useSystemTrustStore value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setUseSystemTrustStore(Object useSystemTrustStore) {
         this.useSystemTrustStore = useSystemTrustStore;
         return this;
@@ -262,6 +337,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public AzureKeyVaultSecretReference getPassword() {
         return this.password;
     }
@@ -272,6 +348,7 @@ public class MySqlLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setPassword(AzureKeyVaultSecretReference password) {
         this.password = password;
         return this;
@@ -283,6 +360,7 @@ public class MySqlLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -294,14 +372,194 @@ public class MySqlLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MySqlLinkedService object itself.
      */
+    @Generated
     public MySqlLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
+     * Get the allowZeroDateTime property: This allows the special “zero” date value 0000-00-00 to be retrieved from the
+     * database. Type: boolean.
+     * 
+     * @return the allowZeroDateTime value.
+     */
+    @Generated
+    public Object getAllowZeroDateTime() {
+        return this.allowZeroDateTime;
+    }
+
+    /**
+     * Set the allowZeroDateTime property: This allows the special “zero” date value 0000-00-00 to be retrieved from the
+     * database. Type: boolean.
+     * 
+     * @param allowZeroDateTime the allowZeroDateTime value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    @Generated
+    public MySqlLinkedService setAllowZeroDateTime(Object allowZeroDateTime) {
+        this.allowZeroDateTime = allowZeroDateTime;
+        return this;
+    }
+
+    /**
+     * Get the connectionTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error. Type: integer.
+     * 
+     * @return the connectionTimeout value.
+     */
+    @Generated
+    public Object getConnectionTimeout() {
+        return this.connectionTimeout;
+    }
+
+    /**
+     * Set the connectionTimeout property: The length of time (in seconds) to wait for a connection to the server before
+     * terminating the attempt and generating an error. Type: integer.
+     * 
+     * @param connectionTimeout the connectionTimeout value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    @Generated
+    public MySqlLinkedService setConnectionTimeout(Object connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    /**
+     * Get the convertZeroDateTime property: True to return DateTime.MinValue for date or datetime columns that have
+     * disallowed values. Type: boolean.
+     * 
+     * @return the convertZeroDateTime value.
+     */
+    @Generated
+    public Object getConvertZeroDateTime() {
+        return this.convertZeroDateTime;
+    }
+
+    /**
+     * Set the convertZeroDateTime property: True to return DateTime.MinValue for date or datetime columns that have
+     * disallowed values. Type: boolean.
+     * 
+     * @param convertZeroDateTime the convertZeroDateTime value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    @Generated
+    public MySqlLinkedService setConvertZeroDateTime(Object convertZeroDateTime) {
+        this.convertZeroDateTime = convertZeroDateTime;
+        return this;
+    }
+
+    /**
+     * Get the guidFormat property: Determines which column type (if any) should be read as a GUID. Type: string. None:
+     * No column types are automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+     * lowercase hex with hyphens, which matches UUID.
+     * 
+     * @return the guidFormat value.
+     */
+    @Generated
+    public Object getGuidFormat() {
+        return this.guidFormat;
+    }
+
+    /**
+     * Set the guidFormat property: Determines which column type (if any) should be read as a GUID. Type: string. None:
+     * No column types are automatically read as a Guid; Char36: All CHAR(36) columns are read/written as a Guid using
+     * lowercase hex with hyphens, which matches UUID.
+     * 
+     * @param guidFormat the guidFormat value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    @Generated
+    public MySqlLinkedService setGuidFormat(Object guidFormat) {
+        this.guidFormat = guidFormat;
+        return this;
+    }
+
+    /**
+     * Get the sslCert property: The path to the client’s SSL certificate file in PEM format. SslKey must also be
+     * specified. Type: string.
+     * 
+     * @return the sslCert value.
+     */
+    @Generated
+    public Object getSslCert() {
+        return this.sslCert;
+    }
+
+    /**
+     * Set the sslCert property: The path to the client’s SSL certificate file in PEM format. SslKey must also be
+     * specified. Type: string.
+     * 
+     * @param sslCert the sslCert value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    @Generated
+    public MySqlLinkedService setSslCert(Object sslCert) {
+        this.sslCert = sslCert;
+        return this;
+    }
+
+    /**
+     * Get the sslKey property: The path to the client’s SSL private key in PEM format. SslCert must also be specified.
+     * Type: string.
+     * 
+     * @return the sslKey value.
+     */
+    @Generated
+    public Object getSslKey() {
+        return this.sslKey;
+    }
+
+    /**
+     * Set the sslKey property: The path to the client’s SSL private key in PEM format. SslCert must also be specified.
+     * Type: string.
+     * 
+     * @param sslKey the sslKey value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    @Generated
+    public MySqlLinkedService setSslKey(Object sslKey) {
+        this.sslKey = sslKey;
+        return this;
+    }
+
+    /**
+     * Get the treatTinyAsBoolean property: When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     * 
+     * @return the treatTinyAsBoolean value.
+     */
+    @Generated
+    public Object getTreatTinyAsBoolean() {
+        return this.treatTinyAsBoolean;
+    }
+
+    /**
+     * Set the treatTinyAsBoolean property: When set to true, TINYINT(1) values are returned as booleans. Type: bool.
+     * 
+     * @param treatTinyAsBoolean the treatTinyAsBoolean value to set.
+     * @return the MySqlLinkedService object itself.
+     */
+    @Generated
+    public MySqlLinkedService setTreatTinyAsBoolean(Object treatTinyAsBoolean) {
+        this.treatTinyAsBoolean = treatTinyAsBoolean;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public MySqlLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public MySqlLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -311,6 +569,7 @@ public class MySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -320,6 +579,7 @@ public class MySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -329,6 +589,7 @@ public class MySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public MySqlLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -338,9 +599,11 @@ public class MySqlLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -355,18 +618,64 @@ public class MySqlLinkedService extends LinkedService {
             || sslMode != null
             || useSystemTrustStore != null
             || password != null
-            || encryptedCredential != null) {
+            || encryptedCredential != null
+            || allowZeroDateTime != null
+            || connectionTimeout != null
+            || convertZeroDateTime != null
+            || guidFormat != null
+            || sslCert != null
+            || sslKey != null
+            || treatTinyAsBoolean != null) {
             jsonWriter.writeStartObject("typeProperties");
-            jsonWriter.writeUntypedField("driverVersion", this.driverVersion);
-            jsonWriter.writeUntypedField("connectionString", this.connectionString);
-            jsonWriter.writeUntypedField("server", this.server);
-            jsonWriter.writeUntypedField("port", this.port);
-            jsonWriter.writeUntypedField("username", this.username);
-            jsonWriter.writeUntypedField("database", this.database);
-            jsonWriter.writeUntypedField("sslMode", this.sslMode);
-            jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+            if (this.driverVersion != null) {
+                jsonWriter.writeUntypedField("driverVersion", this.driverVersion);
+            }
+            if (this.connectionString != null) {
+                jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            }
+            if (this.server != null) {
+                jsonWriter.writeUntypedField("server", this.server);
+            }
+            if (this.port != null) {
+                jsonWriter.writeUntypedField("port", this.port);
+            }
+            if (this.username != null) {
+                jsonWriter.writeUntypedField("username", this.username);
+            }
+            if (this.database != null) {
+                jsonWriter.writeUntypedField("database", this.database);
+            }
+            if (this.sslMode != null) {
+                jsonWriter.writeUntypedField("sslMode", this.sslMode);
+            }
+            if (this.useSystemTrustStore != null) {
+                jsonWriter.writeUntypedField("useSystemTrustStore", this.useSystemTrustStore);
+            }
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
+            if (this.allowZeroDateTime != null) {
+                jsonWriter.writeUntypedField("allowZeroDateTime", this.allowZeroDateTime);
+            }
+            if (this.connectionTimeout != null) {
+                jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+            }
+            if (this.convertZeroDateTime != null) {
+                jsonWriter.writeUntypedField("convertZeroDateTime", this.convertZeroDateTime);
+            }
+            if (this.guidFormat != null) {
+                jsonWriter.writeUntypedField("guidFormat", this.guidFormat);
+            }
+            if (this.sslCert != null) {
+                jsonWriter.writeUntypedField("sslCert", this.sslCert);
+            }
+            if (this.sslKey != null) {
+                jsonWriter.writeUntypedField("sslKey", this.sslKey);
+            }
+            if (this.treatTinyAsBoolean != null) {
+                jsonWriter.writeUntypedField("treatTinyAsBoolean", this.treatTinyAsBoolean);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -385,6 +694,7 @@ public class MySqlLinkedService extends LinkedService {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the MySqlLinkedService.
      */
+    @Generated
     public static MySqlLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             MySqlLinkedService deserializedMySqlLinkedService = new MySqlLinkedService();
@@ -393,7 +703,9 @@ public class MySqlLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedMySqlLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedMySqlLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedMySqlLinkedService.setDescription(reader.getString());
@@ -431,6 +743,20 @@ public class MySqlLinkedService extends LinkedService {
                             deserializedMySqlLinkedService.password = AzureKeyVaultSecretReference.fromJson(reader);
                         } else if ("encryptedCredential".equals(fieldName)) {
                             deserializedMySqlLinkedService.encryptedCredential = reader.readUntyped();
+                        } else if ("allowZeroDateTime".equals(fieldName)) {
+                            deserializedMySqlLinkedService.allowZeroDateTime = reader.readUntyped();
+                        } else if ("connectionTimeout".equals(fieldName)) {
+                            deserializedMySqlLinkedService.connectionTimeout = reader.readUntyped();
+                        } else if ("convertZeroDateTime".equals(fieldName)) {
+                            deserializedMySqlLinkedService.convertZeroDateTime = reader.readUntyped();
+                        } else if ("guidFormat".equals(fieldName)) {
+                            deserializedMySqlLinkedService.guidFormat = reader.readUntyped();
+                        } else if ("sslCert".equals(fieldName)) {
+                            deserializedMySqlLinkedService.sslCert = reader.readUntyped();
+                        } else if ("sslKey".equals(fieldName)) {
+                            deserializedMySqlLinkedService.sslKey = reader.readUntyped();
+                        } else if ("treatTinyAsBoolean".equals(fieldName)) {
+                            deserializedMySqlLinkedService.treatTinyAsBoolean = reader.readUntyped();
                         } else {
                             reader.skipChildren();
                         }

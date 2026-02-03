@@ -223,6 +223,8 @@ public interface JavaComponentsClient {
         JavaComponentInner javaComponentEnvelope, Context context);
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -237,6 +239,8 @@ public interface JavaComponentsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String environmentName, String name);
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -253,6 +257,8 @@ public interface JavaComponentsClient {
         Context context);
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -266,6 +272,8 @@ public interface JavaComponentsClient {
     void delete(String resourceGroupName, String environmentName, String name);
 
     /**
+     * Delete.
+     * 
      * Delete a Java Component.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

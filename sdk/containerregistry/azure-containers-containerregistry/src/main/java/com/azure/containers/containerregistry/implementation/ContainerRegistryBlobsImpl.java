@@ -73,7 +73,7 @@ public final class ContainerRegistryBlobsImpl {
      * service to perform REST calls.
      */
     @Host("{url}")
-    @ServiceInterface(name = "AzureContainerRegist")
+    @ServiceInterface(name = "AzureContainerRegistryContainerRegistryBlobs")
     public interface ContainerRegistryBlobsService {
         @Get("/v2/{name}/blobs/{digest}")
         @ExpectedResponses({ 200, 307 })

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
@@ -24,21 +24,21 @@ public final class GraphQLApiResolverPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"xwhcvasy\",\"format\":\"rawxml\"},\"id\":\"qokjbmsrk\",\"name\":\"xyxxhwr\",\"type\":\"qomaqsyilpzzbrw\"}";
+            = "{\"properties\":{\"value\":\"qsznsyovqm\",\"format\":\"rawxml\"},\"id\":\"dp\",\"name\":\"oqwrnfckjthlok\",\"type\":\"xw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyContract response = manager.graphQLApiResolverPolicies()
-            .getWithResponse("tostjixyzsecig", "zdwjtacfvvtdpcbp", "fomcsau", "brhfiwltkfysunte", PolicyIdName.POLICY,
+            .getWithResponse("ihsujtg", "ybsz", "mijxejpd", "liqwzutiyelrnhh", PolicyIdName.POLICY,
                 PolicyExportFormat.XML, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xwhcvasy", response.value());
+        Assertions.assertEquals("qsznsyovqm", response.value());
         Assertions.assertEquals(PolicyContentFormat.RAWXML, response.format());
     }
 }

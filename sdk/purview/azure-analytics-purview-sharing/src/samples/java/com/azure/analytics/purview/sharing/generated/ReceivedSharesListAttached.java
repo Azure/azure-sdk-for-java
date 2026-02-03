@@ -17,11 +17,11 @@ public class ReceivedSharesListAttached {
             = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("accountName.purview.azure.com/share")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.receivedshareslistattachedreceivedshares.receivedshareslistattached
+        // BEGIN:com.azure.analytics.purview.sharing.generated.received-shares-list-attached-received-shares.received-shares-list-attached
         RequestOptions requestOptions = new RequestOptions().addQueryParam("filter", "Name eq 'testName'");
         PagedIterable<BinaryData> response = receivedSharesClient.listAttachedReceivedShares(
             "/subscriptions/4D8FD81D-431D-4B1D-B46C-C770CFC034FC/resourceGroups/contoso-rg/providers/Microsoft.Storage/storageAccounts/blobAccount",
             requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.receivedshareslistattachedreceivedshares.receivedshareslistattached
+        // END:com.azure.analytics.purview.sharing.generated.received-shares-list-attached-received-shares.received-shares-list-attached
     }
 }

@@ -59,31 +59,31 @@ public final class VaultSettingImpl implements VaultSetting, VaultSetting.Defini
         return this.serviceManager;
     }
 
-    private String resourceName;
-
     private String resourceGroupName;
+
+    private String resourceName;
 
     private String vaultSettingName;
 
     private VaultSettingCreationInput createInput;
 
-    public VaultSettingImpl withExistingVault(String resourceName, String resourceGroupName) {
-        this.resourceName = resourceName;
+    public VaultSettingImpl withExistingVault(String resourceGroupName, String resourceName) {
         this.resourceGroupName = resourceGroupName;
+        this.resourceName = resourceName;
         return this;
     }
 
     public VaultSetting create() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationVaultSettings()
-            .create(resourceName, resourceGroupName, vaultSettingName, createInput, Context.NONE);
+            .create(resourceGroupName, resourceName, vaultSettingName, createInput, Context.NONE);
         return this;
     }
 
     public VaultSetting create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationVaultSettings()
-            .create(resourceName, resourceGroupName, vaultSettingName, createInput, context);
+            .create(resourceGroupName, resourceName, vaultSettingName, createInput, context);
         return this;
     }
 
@@ -98,7 +98,7 @@ public final class VaultSettingImpl implements VaultSetting, VaultSetting.Defini
     public VaultSetting refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationVaultSettings()
-            .getWithResponse(resourceName, resourceGroupName, vaultSettingName, Context.NONE)
+            .getWithResponse(resourceGroupName, resourceName, vaultSettingName, Context.NONE)
             .getValue();
         return this;
     }
@@ -106,7 +106,7 @@ public final class VaultSettingImpl implements VaultSetting, VaultSetting.Defini
     public VaultSetting refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationVaultSettings()
-            .getWithResponse(resourceName, resourceGroupName, vaultSettingName, context)
+            .getWithResponse(resourceGroupName, resourceName, vaultSettingName, context)
             .getValue();
         return this;
     }

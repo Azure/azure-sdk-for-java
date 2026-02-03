@@ -4,6 +4,7 @@
 
 package com.azure.security.attestation.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,12 +15,14 @@ public final class DataType extends ExpandableStringEnum<DataType> {
     /**
      * The field's content should be treated as binary and not interpreted by MAA.
      */
+    @Generated
     public static final DataType BINARY = fromString("Binary");
 
     /**
      * The field's content should be treated as UTF-8 JSON text that may be further interpreted by MAA. Refer to RFC
      * 8259 for a description of JSON serialization standards for interoperability.
      */
+    @Generated
     public static final DataType JSON = fromString("JSON");
 
     /**
@@ -27,6 +30,7 @@ public final class DataType extends ExpandableStringEnum<DataType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public DataType() {
     }
@@ -37,6 +41,7 @@ public final class DataType extends ExpandableStringEnum<DataType> {
      * @param name a name to look for.
      * @return the corresponding DataType.
      */
+    @Generated
     public static DataType fromString(String name) {
         return fromString(name, DataType.class);
     }
@@ -46,6 +51,7 @@ public final class DataType extends ExpandableStringEnum<DataType> {
      * 
      * @return known DataType values.
      */
+    @Generated
     public static Collection<DataType> values() {
         return values(DataType.class);
     }

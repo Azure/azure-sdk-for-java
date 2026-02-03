@@ -230,12 +230,22 @@ public final class FileShareDatasetTypeProperties implements JsonSerializable<Fi
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("folderPath", this.folderPath);
-        jsonWriter.writeUntypedField("fileName", this.fileName);
-        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        if (this.folderPath != null) {
+            jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        }
+        if (this.fileName != null) {
+            jsonWriter.writeUntypedField("fileName", this.fileName);
+        }
+        if (this.modifiedDatetimeStart != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        }
+        if (this.modifiedDatetimeEnd != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        }
         jsonWriter.writeJsonField("format", this.format);
-        jsonWriter.writeUntypedField("fileFilter", this.fileFilter);
+        if (this.fileFilter != null) {
+            jsonWriter.writeUntypedField("fileFilter", this.fileFilter);
+        }
         jsonWriter.writeJsonField("compression", this.compression);
         return jsonWriter.writeEndObject();
     }

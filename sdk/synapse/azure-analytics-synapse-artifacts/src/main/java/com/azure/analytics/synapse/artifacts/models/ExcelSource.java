@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,22 +21,26 @@ public final class ExcelSource extends CopySource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "ExcelSource";
 
     /*
      * Excel store settings.
      */
+    @Generated
     private StoreReadSettings storeSettings;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
+    @Generated
     private Object additionalColumns;
 
     /**
      * Creates an instance of ExcelSource class.
      */
+    @Generated
     public ExcelSource() {
     }
 
@@ -44,6 +49,7 @@ public final class ExcelSource extends CopySource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public final class ExcelSource extends CopySource {
      * 
      * @return the storeSettings value.
      */
+    @Generated
     public StoreReadSettings getStoreSettings() {
         return this.storeSettings;
     }
@@ -64,6 +71,7 @@ public final class ExcelSource extends CopySource {
      * @param storeSettings the storeSettings value to set.
      * @return the ExcelSource object itself.
      */
+    @Generated
     public ExcelSource setStoreSettings(StoreReadSettings storeSettings) {
         this.storeSettings = storeSettings;
         return this;
@@ -75,6 +83,7 @@ public final class ExcelSource extends CopySource {
      * 
      * @return the additionalColumns value.
      */
+    @Generated
     public Object getAdditionalColumns() {
         return this.additionalColumns;
     }
@@ -86,6 +95,7 @@ public final class ExcelSource extends CopySource {
      * @param additionalColumns the additionalColumns value to set.
      * @return the ExcelSource object itself.
      */
+    @Generated
     public ExcelSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
         return this;
@@ -94,6 +104,7 @@ public final class ExcelSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -103,6 +114,7 @@ public final class ExcelSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -112,6 +124,7 @@ public final class ExcelSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public ExcelSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -121,15 +134,24 @@ public final class ExcelSource extends CopySource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("storeSettings", this.storeSettings);
-        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (this.additionalColumns != null) {
+            jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -146,6 +168,7 @@ public final class ExcelSource extends CopySource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ExcelSource.
      */
+    @Generated
     public static ExcelSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ExcelSource deserializedExcelSource = new ExcelSource();

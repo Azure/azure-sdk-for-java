@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,36 +15,43 @@ public final class PluginCurrentState extends ExpandableStringEnum<PluginCurrent
     /**
      * Static value Preparation for PluginCurrentState.
      */
+    @Generated
     public static final PluginCurrentState PREPARATION = fromString("Preparation");
 
     /**
      * Static value ResourceAcquisition for PluginCurrentState.
      */
+    @Generated
     public static final PluginCurrentState RESOURCE_ACQUISITION = fromString("ResourceAcquisition");
 
     /**
      * Static value Queued for PluginCurrentState.
      */
+    @Generated
     public static final PluginCurrentState QUEUED = fromString("Queued");
 
     /**
      * Static value Submission for PluginCurrentState.
      */
+    @Generated
     public static final PluginCurrentState SUBMISSION = fromString("Submission");
 
     /**
      * Static value Monitoring for PluginCurrentState.
      */
+    @Generated
     public static final PluginCurrentState MONITORING = fromString("Monitoring");
 
     /**
      * Static value Cleanup for PluginCurrentState.
      */
+    @Generated
     public static final PluginCurrentState CLEANUP = fromString("Cleanup");
 
     /**
      * Static value Ended for PluginCurrentState.
      */
+    @Generated
     public static final PluginCurrentState ENDED = fromString("Ended");
 
     /**
@@ -51,6 +59,7 @@ public final class PluginCurrentState extends ExpandableStringEnum<PluginCurrent
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public PluginCurrentState() {
     }
@@ -61,6 +70,7 @@ public final class PluginCurrentState extends ExpandableStringEnum<PluginCurrent
      * @param name a name to look for.
      * @return the corresponding PluginCurrentState.
      */
+    @Generated
     public static PluginCurrentState fromString(String name) {
         return fromString(name, PluginCurrentState.class);
     }
@@ -70,6 +80,7 @@ public final class PluginCurrentState extends ExpandableStringEnum<PluginCurrent
      * 
      * @return known PluginCurrentState values.
      */
+    @Generated
     public static Collection<PluginCurrentState> values() {
         return values(PluginCurrentState.class);
     }

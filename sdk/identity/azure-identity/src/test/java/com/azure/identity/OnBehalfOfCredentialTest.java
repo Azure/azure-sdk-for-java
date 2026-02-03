@@ -9,7 +9,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
-import com.microsoft.aad.msal4j.MsalClientException;
+import com.microsoft.aad.msal4j.MsalServiceException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
@@ -187,6 +188,7 @@ public class OnBehalfOfCredentialTest {
 
         OnBehalfOfCredential credential = new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
             .clientId(CLIENT_ID)
+            .userAssertion("assertion")
             .clientSecret(badSecret)
             .additionallyAllowedTenants("RANDOM")
             .build();
@@ -203,8 +205,11 @@ public class OnBehalfOfCredentialTest {
         TokenRequestContext request
             = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        OnBehalfOfCredential credential
-            = new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).clientSecret(badSecret).build();
+        OnBehalfOfCredential credential = new OnBehalfOfCredentialBuilder().tenantId(TENANT_ID)
+            .clientId(CLIENT_ID)
+            .clientSecret(badSecret)
+            .userAssertion("assertion")
+            .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e instanceof ClientAuthenticationException
                 && (e.getMessage().startsWith("The current credential is not configured to")))
@@ -226,7 +231,7 @@ public class OnBehalfOfCredentialTest {
             .additionallyAllowedTenants("*")
             .build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof MsalClientException)
+            .expectErrorMatches(e -> e instanceof MsalServiceException)
             .verify();
     }
 }

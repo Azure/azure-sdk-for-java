@@ -38,11 +38,6 @@ public class Main {
                 return;
             }
 
-            if (cfg.isClientTelemetryEnabled()) {
-                System.setProperty("COSMOS.CLIENT_TELEMETRY_ENDPOINT", cfg.getClientTelemetryEndpoint());
-                System.setProperty("COSMOS.CLIENT_TELEMETRY_SCHEDULING_IN_SECONDS", String.valueOf(cfg.getClientTelemetrySchedulingInSeconds()));
-            }
-
             validateConfiguration(cfg);
 
             if (cfg.isSync()) {

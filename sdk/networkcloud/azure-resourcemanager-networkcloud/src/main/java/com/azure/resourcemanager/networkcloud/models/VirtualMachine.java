@@ -51,11 +51,25 @@ public interface VirtualMachine {
     Map<String, String> tags();
 
     /**
+     * Gets the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    String etag();
+
+    /**
      * Gets the extendedLocation property: The extended location of the cluster associated with the resource.
      * 
      * @return the extendedLocation value.
      */
     ExtendedLocation extendedLocation();
+
+    /**
+     * Gets the identity property: The identity for the resource.
+     * 
+     * @return the identity value.
+     */
+    ManagedServiceIdentity identity();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -109,6 +123,13 @@ public interface VirtualMachine {
     String clusterId();
 
     /**
+     * Gets the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @return the consoleExtendedLocation value.
+     */
+    ExtendedLocation consoleExtendedLocation();
+
+    /**
      * Gets the cpuCores property: The number of CPU cores in the virtual machine.
      * 
      * @return the cpuCores value.
@@ -152,11 +173,19 @@ public interface VirtualMachine {
     List<NetworkAttachment> networkAttachments();
 
     /**
-     * Gets the networkData property: The Base64 encoded cloud-init network data.
+     * Gets the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+     * networkDataContent property will be used in preference to this property.
      * 
      * @return the networkData value.
      */
     String networkData();
+
+    /**
+     * Gets the networkDataContent property: The Base64 encoded cloud-init network data.
+     * 
+     * @return the networkDataContent value.
+     */
+    String networkDataContent();
 
     /**
      * Gets the placementHints property: The scheduling hints for the virtual machine.
@@ -196,11 +225,19 @@ public interface VirtualMachine {
     StorageProfile storageProfile();
 
     /**
-     * Gets the userData property: The Base64 encoded cloud-init user data.
+     * Gets the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent
+     * property will be used in preference to this property.
      * 
      * @return the userData value.
      */
     String userData();
+
+    /**
+     * Gets the userDataContent property: The Base64 encoded cloud-init user data.
+     * 
+     * @return the userDataContent value.
+     */
+    String userDataContent();
 
     /**
      * Gets the virtioInterface property: Field Deprecated, use virtualizationModel instead. The type of the virtio
@@ -427,11 +464,14 @@ public interface VirtualMachine {
          * The stage of the VirtualMachine definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithBootMethod,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithBootMethod, DefinitionStages.WithConsoleExtendedLocation,
             DefinitionStages.WithIsolateEmulatorThread, DefinitionStages.WithNetworkAttachments,
-            DefinitionStages.WithNetworkData, DefinitionStages.WithPlacementHints, DefinitionStages.WithSshPublicKeys,
-            DefinitionStages.WithUserData, DefinitionStages.WithVirtioInterface, DefinitionStages.WithVmDeviceModel,
-            DefinitionStages.WithVmImageRepositoryCredentials {
+            DefinitionStages.WithNetworkData, DefinitionStages.WithNetworkDataContent,
+            DefinitionStages.WithPlacementHints, DefinitionStages.WithSshPublicKeys, DefinitionStages.WithUserData,
+            DefinitionStages.WithUserDataContent, DefinitionStages.WithVirtioInterface,
+            DefinitionStages.WithVmDeviceModel, DefinitionStages.WithVmImageRepositoryCredentials,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
              * 
@@ -462,6 +502,19 @@ public interface VirtualMachine {
         }
 
         /**
+         * The stage of the VirtualMachine definition allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity for the resource..
+             * 
+             * @param identity The identity for the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
          * The stage of the VirtualMachine definition allowing to specify bootMethod.
          */
         interface WithBootMethod {
@@ -472,6 +525,20 @@ public interface VirtualMachine {
              * @return the next definition stage.
              */
             WithCreate withBootMethod(VirtualMachineBootMethod bootMethod);
+        }
+
+        /**
+         * The stage of the VirtualMachine definition allowing to specify consoleExtendedLocation.
+         */
+        interface WithConsoleExtendedLocation {
+            /**
+             * Specifies the consoleExtendedLocation property: The extended location to use for creation of a VM console
+             * resource..
+             * 
+             * @param consoleExtendedLocation The extended location to use for creation of a VM console resource.
+             * @return the next definition stage.
+             */
+            WithCreate withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation);
         }
 
         /**
@@ -508,12 +575,27 @@ public interface VirtualMachine {
          */
         interface WithNetworkData {
             /**
-             * Specifies the networkData property: The Base64 encoded cloud-init network data..
+             * Specifies the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+             * networkDataContent property will be used in preference to this property..
              * 
-             * @param networkData The Base64 encoded cloud-init network data.
+             * @param networkData Field Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
+             * property will be used in preference to this property.
              * @return the next definition stage.
              */
             WithCreate withNetworkData(String networkData);
+        }
+
+        /**
+         * The stage of the VirtualMachine definition allowing to specify networkDataContent.
+         */
+        interface WithNetworkDataContent {
+            /**
+             * Specifies the networkDataContent property: The Base64 encoded cloud-init network data..
+             * 
+             * @param networkDataContent The Base64 encoded cloud-init network data.
+             * @return the next definition stage.
+             */
+            WithCreate withNetworkDataContent(String networkDataContent);
         }
 
         /**
@@ -549,12 +631,27 @@ public interface VirtualMachine {
          */
         interface WithUserData {
             /**
-             * Specifies the userData property: The Base64 encoded cloud-init user data..
+             * Specifies the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The
+             * userDataContent property will be used in preference to this property..
              * 
-             * @param userData The Base64 encoded cloud-init user data.
+             * @param userData Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent property
+             * will be used in preference to this property.
              * @return the next definition stage.
              */
             WithCreate withUserData(String userData);
+        }
+
+        /**
+         * The stage of the VirtualMachine definition allowing to specify userDataContent.
+         */
+        interface WithUserDataContent {
+            /**
+             * Specifies the userDataContent property: The Base64 encoded cloud-init user data..
+             * 
+             * @param userDataContent The Base64 encoded cloud-init user data.
+             * @return the next definition stage.
+             */
+            WithCreate withUserDataContent(String userDataContent);
         }
 
         /**
@@ -599,6 +696,37 @@ public interface VirtualMachine {
              */
             WithCreate withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials);
         }
+
+        /**
+         * The stage of the VirtualMachine definition allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the VirtualMachine definition allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            WithCreate withIfNoneMatch(String ifNoneMatch);
+        }
     }
 
     /**
@@ -611,7 +739,8 @@ public interface VirtualMachine {
     /**
      * The template for VirtualMachine update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithVmImageRepositoryCredentials {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity,
+        UpdateStages.WithVmImageRepositoryCredentials, UpdateStages.WithIfMatch, UpdateStages.WithIfNoneMatch {
         /**
          * Executes the update request.
          * 
@@ -646,6 +775,19 @@ public interface VirtualMachine {
         }
 
         /**
+         * The stage of the VirtualMachine update allowing to specify identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The identity for the resource..
+             * 
+             * @param identity The identity for the resource.
+             * @return the next definition stage.
+             */
+            Update withIdentity(ManagedServiceIdentity identity);
+        }
+
+        /**
          * The stage of the VirtualMachine update allowing to specify vmImageRepositoryCredentials.
          */
         interface WithVmImageRepositoryCredentials {
@@ -658,6 +800,37 @@ public interface VirtualMachine {
              * @return the next definition stage.
              */
             Update withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials);
+        }
+
+        /**
+         * The stage of the VirtualMachine update allowing to specify ifMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: The ETag of the transformation. Omit this value to always overwrite the
+             * current resource. Specify the last-seen ETag value to prevent accidentally overwriting concurrent
+             * changes..
+             * 
+             * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the VirtualMachine update allowing to specify ifNoneMatch.
+         */
+        interface WithIfNoneMatch {
+            /**
+             * Specifies the ifNoneMatch property: Set to '*' to allow a new record set to be created, but to prevent
+             * updating an existing resource. Other values will result in error from server as they are not supported..
+             * 
+             * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an
+             * existing resource. Other values will result in error from server as they are not supported.
+             * @return the next definition stage.
+             */
+            Update withIfNoneMatch(String ifNoneMatch);
         }
     }
 
@@ -675,6 +848,32 @@ public interface VirtualMachine {
      * @return the refreshed resource.
      */
     VirtualMachine refresh(Context context);
+
+    /**
+     * Assigns a relay to the specified Microsoft.HybridCompute machine.
+     * 
+     * Assigns a relay to the specified Microsoft.HybridCompute machine associated with the provided virtual machine.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult assignRelay();
+
+    /**
+     * Assigns a relay to the specified Microsoft.HybridCompute machine.
+     * 
+     * Assigns a relay to the specified Microsoft.HybridCompute machine associated with the provided virtual machine.
+     * 
+     * @param virtualMachineAssignRelayParameters The request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult assignRelay(VirtualMachineAssignRelayParameters virtualMachineAssignRelayParameters,
+        Context context);
 
     /**
      * Power off the virtual machine.

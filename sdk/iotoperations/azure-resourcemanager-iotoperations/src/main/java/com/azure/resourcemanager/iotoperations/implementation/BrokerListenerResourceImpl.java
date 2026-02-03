@@ -134,13 +134,13 @@ public final class BrokerListenerResourceImpl
         return this;
     }
 
-    public BrokerListenerResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
-        this.innerModel().withExtendedLocation(extendedLocation);
+    public BrokerListenerResourceImpl withProperties(BrokerListenerProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public BrokerListenerResourceImpl withProperties(BrokerListenerProperties properties) {
-        this.innerModel().withProperties(properties);
+    public BrokerListenerResourceImpl withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.innerModel().withExtendedLocation(extendedLocation);
         return this;
     }
 }

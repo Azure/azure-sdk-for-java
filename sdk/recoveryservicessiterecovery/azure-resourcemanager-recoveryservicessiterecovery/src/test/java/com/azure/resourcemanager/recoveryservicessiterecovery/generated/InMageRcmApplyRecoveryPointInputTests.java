@@ -12,16 +12,15 @@ public final class InMageRcmApplyRecoveryPointInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmApplyRecoveryPointInput model
-            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"recoveryPointId\":\"mvhzfovanyrvaprt\"}")
+            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"recoveryPointId\":\"akmhz\"}")
                 .toObject(InMageRcmApplyRecoveryPointInput.class);
-        Assertions.assertEquals("mvhzfovanyrvaprt", model.recoveryPointId());
+        Assertions.assertEquals("akmhz", model.recoveryPointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmApplyRecoveryPointInput model
-            = new InMageRcmApplyRecoveryPointInput().withRecoveryPointId("mvhzfovanyrvaprt");
+        InMageRcmApplyRecoveryPointInput model = new InMageRcmApplyRecoveryPointInput().withRecoveryPointId("akmhz");
         model = BinaryData.fromObject(model).toObject(InMageRcmApplyRecoveryPointInput.class);
-        Assertions.assertEquals("mvhzfovanyrvaprt", model.recoveryPointId());
+        Assertions.assertEquals("akmhz", model.recoveryPointId());
     }
 }

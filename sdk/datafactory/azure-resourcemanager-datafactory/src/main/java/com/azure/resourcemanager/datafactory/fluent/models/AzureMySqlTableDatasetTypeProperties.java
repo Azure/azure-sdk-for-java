@@ -91,8 +91,12 @@ public final class AzureMySqlTableDatasetTypeProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("tableName", this.tableName);
-        jsonWriter.writeUntypedField("table", this.table);
+        if (this.tableName != null) {
+            jsonWriter.writeUntypedField("tableName", this.tableName);
+        }
+        if (this.table != null) {
+            jsonWriter.writeUntypedField("table", this.table);
+        }
         return jsonWriter.writeEndObject();
     }
 

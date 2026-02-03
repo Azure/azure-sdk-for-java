@@ -17,10 +17,10 @@ public class ClassificationRulesGet {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildClassificationRulesClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.classificationrulesget.classificationrulesget
+        // BEGIN:com.azure.analytics.purview.scanning.generated.classification-rules-get.classification-rules-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = classificationRulesClient.getWithResponse("ClassificationRule1", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.classificationrulesget.classificationrulesget
+        // END:com.azure.analytics.purview.scanning.generated.classification-rules-get.classification-rules-get
     }
 }

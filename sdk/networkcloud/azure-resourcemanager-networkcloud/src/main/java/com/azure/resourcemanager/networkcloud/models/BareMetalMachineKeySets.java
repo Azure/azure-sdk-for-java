@@ -34,6 +34,9 @@ public interface BareMetalMachineKeySets {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +44,8 @@ public interface BareMetalMachineKeySets {
      * @return a list of bare metal machine key sets for the provided cluster as paginated response with
      * {@link PagedIterable}.
      */
-    PagedIterable<BareMetalMachineKeySet> listByCluster(String resourceGroupName, String clusterName, Context context);
+    PagedIterable<BareMetalMachineKeySet> listByCluster(String resourceGroupName, String clusterName, Integer top,
+        String skipToken, Context context);
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
@@ -98,6 +102,10 @@ public interface BareMetalMachineKeySets {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param bareMetalMachineKeySetName The name of the bare metal machine key set.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,7 +113,7 @@ public interface BareMetalMachineKeySets {
      * @return the current status of an async operation.
      */
     OperationStatusResult delete(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
-        Context context);
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
@@ -153,13 +161,17 @@ public interface BareMetalMachineKeySets {
      * Delete the bare metal machine key set of the provided cluster.
      * 
      * @param id the resource ID.
+     * @param ifMatch The ETag of the transformation. Omit this value to always overwrite the current resource. Specify
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing
+     * resource. Other values will result in error from server as they are not supported.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Begins definition for a new BareMetalMachineKeySet resource.

@@ -17,10 +17,10 @@ public class ClassificationRulesTagClassificationVersion {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildClassificationRulesClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.classificationrulestagclassificationversion.classificationrulestagclassificationversion
+        // BEGIN:com.azure.analytics.purview.scanning.generated.classification-rules-tag-classification-version.classification-rules-tag-classification-version
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = classificationRulesClient
             .tagClassificationVersionWithResponse("ClassificationRule1", 3, "Keep", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.classificationrulestagclassificationversion.classificationrulestagclassificationversion
+        // END:com.azure.analytics.purview.scanning.generated.classification-rules-tag-classification-version.classification-rules-tag-classification-version
     }
 }

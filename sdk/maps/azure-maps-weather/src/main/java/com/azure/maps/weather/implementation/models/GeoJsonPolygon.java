@@ -5,6 +5,7 @@
 package com.azure.maps.weather.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,18 +19,22 @@ import java.util.List;
 @Fluent
 public final class GeoJsonPolygon extends GeoJsonGeometry {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
+    @Generated
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_POLYGON;
 
     /*
      * Coordinates for the `GeoJson Polygon` geometry type.
      */
+    @Generated
     private List<List<List<Double>>> coordinates;
 
     /**
      * Creates an instance of GeoJsonPolygon class.
      */
+    @Generated
     public GeoJsonPolygon() {
     }
 
@@ -40,6 +45,7 @@ public final class GeoJsonPolygon extends GeoJsonGeometry {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public GeoJsonObjectType getType() {
         return this.type;
@@ -50,6 +56,7 @@ public final class GeoJsonPolygon extends GeoJsonGeometry {
      * 
      * @return the coordinates value.
      */
+    @Generated
     public List<List<List<Double>>> getCoordinates() {
         return this.coordinates;
     }
@@ -60,6 +67,7 @@ public final class GeoJsonPolygon extends GeoJsonGeometry {
      * @param coordinates the coordinates value to set.
      * @return the GeoJsonPolygon object itself.
      */
+    @Generated
     public GeoJsonPolygon setCoordinates(List<List<List<Double>>> coordinates) {
         this.coordinates = coordinates;
         return this;
@@ -68,6 +76,7 @@ public final class GeoJsonPolygon extends GeoJsonGeometry {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -86,6 +95,7 @@ public final class GeoJsonPolygon extends GeoJsonGeometry {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GeoJsonPolygon.
      */
+    @Generated
     public static GeoJsonPolygon fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             GeoJsonPolygon deserializedGeoJsonPolygon = new GeoJsonPolygon();

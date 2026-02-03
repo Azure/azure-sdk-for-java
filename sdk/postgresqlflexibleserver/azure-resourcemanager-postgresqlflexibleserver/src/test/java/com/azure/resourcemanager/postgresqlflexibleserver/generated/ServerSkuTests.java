@@ -13,16 +13,16 @@ public final class ServerSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerSku model
-            = BinaryData.fromString("{\"name\":\"gkfpaga\",\"tier\":\"MemoryOptimized\"}").toObject(ServerSku.class);
-        Assertions.assertEquals("gkfpaga", model.name());
+            = BinaryData.fromString("{\"name\":\"ty\",\"tier\":\"MemoryOptimized\"}").toObject(ServerSku.class);
+        Assertions.assertEquals("ty", model.name());
         Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerSku model = new ServerSku().withName("gkfpaga").withTier(SkuTier.MEMORY_OPTIMIZED);
+        ServerSku model = new ServerSku().withName("ty").withTier(SkuTier.MEMORY_OPTIMIZED);
         model = BinaryData.fromObject(model).toObject(ServerSku.class);
-        Assertions.assertEquals("gkfpaga", model.name());
+        Assertions.assertEquals("ty", model.name());
         Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.tier());
     }
 }

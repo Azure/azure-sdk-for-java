@@ -12,20 +12,20 @@ public final class TermsOfServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TermsOfServiceProperties model
-            = BinaryData.fromString("{\"text\":\"uwod\",\"enabled\":false,\"consentRequired\":true}")
+            = BinaryData.fromString("{\"text\":\"lgwzpvxa\",\"enabled\":false,\"consentRequired\":false}")
                 .toObject(TermsOfServiceProperties.class);
-        Assertions.assertEquals("uwod", model.text());
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(true, model.consentRequired());
+        Assertions.assertEquals("lgwzpvxa", model.text());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertFalse(model.consentRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TermsOfServiceProperties model
-            = new TermsOfServiceProperties().withText("uwod").withEnabled(false).withConsentRequired(true);
+            = new TermsOfServiceProperties().withText("lgwzpvxa").withEnabled(false).withConsentRequired(false);
         model = BinaryData.fromObject(model).toObject(TermsOfServiceProperties.class);
-        Assertions.assertEquals("uwod", model.text());
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(true, model.consentRequired());
+        Assertions.assertEquals("lgwzpvxa", model.text());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertFalse(model.consentRequired());
     }
 }

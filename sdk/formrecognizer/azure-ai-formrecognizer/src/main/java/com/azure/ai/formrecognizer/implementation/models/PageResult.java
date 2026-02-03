@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,26 +21,31 @@ public final class PageResult implements JsonSerializable<PageResult> {
     /*
      * Page number.
      */
+    @Generated
     private int page;
 
     /*
      * Cluster identifier.
      */
+    @Generated
     private Integer clusterId;
 
     /*
      * List of key-value pairs extracted from the page.
      */
+    @Generated
     private List<KeyValuePair> keyValuePairs;
 
     /*
      * List of data tables extracted from the page.
      */
+    @Generated
     private List<DataTable> tables;
 
     /**
      * Creates an instance of PageResult class.
      */
+    @Generated
     public PageResult() {
     }
 
@@ -48,6 +54,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * 
      * @return the page value.
      */
+    @Generated
     public int getPage() {
         return this.page;
     }
@@ -58,6 +65,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * @param page the page value to set.
      * @return the PageResult object itself.
      */
+    @Generated
     public PageResult setPage(int page) {
         this.page = page;
         return this;
@@ -68,6 +76,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * 
      * @return the clusterId value.
      */
+    @Generated
     public Integer getClusterId() {
         return this.clusterId;
     }
@@ -78,6 +87,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * @param clusterId the clusterId value to set.
      * @return the PageResult object itself.
      */
+    @Generated
     public PageResult setClusterId(Integer clusterId) {
         this.clusterId = clusterId;
         return this;
@@ -88,6 +98,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * 
      * @return the keyValuePairs value.
      */
+    @Generated
     public List<KeyValuePair> getKeyValuePairs() {
         return this.keyValuePairs;
     }
@@ -98,6 +109,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * @param keyValuePairs the keyValuePairs value to set.
      * @return the PageResult object itself.
      */
+    @Generated
     public PageResult setKeyValuePairs(List<KeyValuePair> keyValuePairs) {
         this.keyValuePairs = keyValuePairs;
         return this;
@@ -108,6 +120,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * 
      * @return the tables value.
      */
+    @Generated
     public List<DataTable> getTables() {
         return this.tables;
     }
@@ -118,6 +131,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * @param tables the tables value to set.
      * @return the PageResult object itself.
      */
+    @Generated
     public PageResult setTables(List<DataTable> tables) {
         this.tables = tables;
         return this;
@@ -126,6 +140,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -145,6 +160,7 @@ public final class PageResult implements JsonSerializable<PageResult> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PageResult.
      */
+    @Generated
     public static PageResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PageResult deserializedPageResult = new PageResult();

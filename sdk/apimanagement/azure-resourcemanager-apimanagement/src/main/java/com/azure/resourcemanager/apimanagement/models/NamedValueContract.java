@@ -59,6 +59,13 @@ public interface NamedValueContract {
     KeyVaultContractProperties keyVault();
 
     /**
+     * Gets the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    String provisioningState();
+
+    /**
      * Gets the tags property: Optional tags that when provided can be used to filter the NamedValue list.
      * 
      * @return the tags value.

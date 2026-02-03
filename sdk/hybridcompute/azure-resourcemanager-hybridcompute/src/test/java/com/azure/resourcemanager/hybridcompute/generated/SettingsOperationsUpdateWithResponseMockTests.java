@@ -6,8 +6,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hybridcompute.HybridComputeManager;
 import com.azure.resourcemanager.hybridcompute.fluent.models.SettingsInner;
@@ -22,20 +22,20 @@ public final class SettingsOperationsUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"bgatzu\",\"gatewayProperties\":{\"gatewayResourceId\":\"xngre\"}},\"id\":\"ggahtt\",\"name\":\"lswva\",\"type\":\"qfutlxjo\"}";
+            = "{\"properties\":{\"tenantId\":\"xmrgchbapxkiy\",\"gatewayProperties\":{\"gatewayResourceId\":\"kbajbu\"}},\"id\":\"gd\",\"name\":\"u\",\"type\":\"ioycbl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         HybridComputeManager manager = HybridComputeManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Settings response = manager.settingsOperations()
-            .updateWithResponse("lsvjgpliu", "iqwoyxqvapcoh", "oucqpqojx", "x", "rzdcgdzbenribcaw",
-                new SettingsInner().withGatewayResourceId("wflj"), com.azure.core.util.Context.NONE)
+            .updateWithResponse("h", "zhomewjjstliu", "qawmoaianc", "nvodrrs", "blxydkxr",
+                new SettingsInner().withGatewayResourceId("ychocokulehu"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xngre", response.gatewayResourceId());
+        Assertions.assertEquals("kbajbu", response.gatewayResourceId());
     }
 }

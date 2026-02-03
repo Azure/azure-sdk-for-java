@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,21 +20,25 @@ public class SentimentDocumentResult extends DocumentResult {
     /*
      * Predicted sentiment for document (Negative, Neutral, Positive, or Mixed).
      */
+    @Generated
     private DocumentSentimentValue sentiment;
 
     /*
      * Document level sentiment confidence scores between 0 and 1 for each sentiment class.
      */
+    @Generated
     private SentimentConfidenceScorePerLabel confidenceScores;
 
     /*
      * Sentence level sentiment analysis.
      */
+    @Generated
     private List<SentenceSentiment> sentences;
 
     /**
      * Creates an instance of SentimentDocumentResult class.
      */
+    @Generated
     public SentimentDocumentResult() {
     }
 
@@ -42,6 +47,7 @@ public class SentimentDocumentResult extends DocumentResult {
      * 
      * @return the sentiment value.
      */
+    @Generated
     public DocumentSentimentValue getSentiment() {
         return this.sentiment;
     }
@@ -52,6 +58,7 @@ public class SentimentDocumentResult extends DocumentResult {
      * @param sentiment the sentiment value to set.
      * @return the SentimentDocumentResult object itself.
      */
+    @Generated
     public SentimentDocumentResult setSentiment(DocumentSentimentValue sentiment) {
         this.sentiment = sentiment;
         return this;
@@ -63,6 +70,7 @@ public class SentimentDocumentResult extends DocumentResult {
      * 
      * @return the confidenceScores value.
      */
+    @Generated
     public SentimentConfidenceScorePerLabel getConfidenceScores() {
         return this.confidenceScores;
     }
@@ -74,6 +82,7 @@ public class SentimentDocumentResult extends DocumentResult {
      * @param confidenceScores the confidenceScores value to set.
      * @return the SentimentDocumentResult object itself.
      */
+    @Generated
     public SentimentDocumentResult setConfidenceScores(SentimentConfidenceScorePerLabel confidenceScores) {
         this.confidenceScores = confidenceScores;
         return this;
@@ -84,6 +93,7 @@ public class SentimentDocumentResult extends DocumentResult {
      * 
      * @return the sentences value.
      */
+    @Generated
     public List<SentenceSentiment> getSentences() {
         return this.sentences;
     }
@@ -94,6 +104,7 @@ public class SentimentDocumentResult extends DocumentResult {
      * @param sentences the sentences value to set.
      * @return the SentimentDocumentResult object itself.
      */
+    @Generated
     public SentimentDocumentResult setSentences(List<SentenceSentiment> sentences) {
         this.sentences = sentences;
         return this;
@@ -102,6 +113,7 @@ public class SentimentDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentDocumentResult setId(String id) {
         super.setId(id);
@@ -111,6 +123,7 @@ public class SentimentDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
@@ -120,6 +133,7 @@ public class SentimentDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SentimentDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
@@ -129,6 +143,7 @@ public class SentimentDocumentResult extends DocumentResult {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -150,6 +165,7 @@ public class SentimentDocumentResult extends DocumentResult {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SentimentDocumentResult.
      */
+    @Generated
     public static SentimentDocumentResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SentimentDocumentResult deserializedSentimentDocumentResult = new SentimentDocumentResult();

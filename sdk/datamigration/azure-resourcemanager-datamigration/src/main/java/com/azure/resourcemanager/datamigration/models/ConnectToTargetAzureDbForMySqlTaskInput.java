@@ -28,6 +28,11 @@ public final class ConnectToTargetAzureDbForMySqlTaskInput
      */
     private MySqlConnectionInfo targetConnectionInfo;
 
+    /*
+     * Flag for whether or not the migration is offline
+     */
+    private Boolean isOfflineMigration;
+
     /**
      * Creates an instance of ConnectToTargetAzureDbForMySqlTaskInput class.
      */
@@ -75,6 +80,26 @@ public final class ConnectToTargetAzureDbForMySqlTaskInput
     }
 
     /**
+     * Get the isOfflineMigration property: Flag for whether or not the migration is offline.
+     * 
+     * @return the isOfflineMigration value.
+     */
+    public Boolean isOfflineMigration() {
+        return this.isOfflineMigration;
+    }
+
+    /**
+     * Set the isOfflineMigration property: Flag for whether or not the migration is offline.
+     * 
+     * @param isOfflineMigration the isOfflineMigration value to set.
+     * @return the ConnectToTargetAzureDbForMySqlTaskInput object itself.
+     */
+    public ConnectToTargetAzureDbForMySqlTaskInput withIsOfflineMigration(Boolean isOfflineMigration) {
+        this.isOfflineMigration = isOfflineMigration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -106,6 +131,7 @@ public final class ConnectToTargetAzureDbForMySqlTaskInput
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
         jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        jsonWriter.writeBooleanField("isOfflineMigration", this.isOfflineMigration);
         return jsonWriter.writeEndObject();
     }
 
@@ -132,6 +158,9 @@ public final class ConnectToTargetAzureDbForMySqlTaskInput
                 } else if ("targetConnectionInfo".equals(fieldName)) {
                     deserializedConnectToTargetAzureDbForMySqlTaskInput.targetConnectionInfo
                         = MySqlConnectionInfo.fromJson(reader);
+                } else if ("isOfflineMigration".equals(fieldName)) {
+                    deserializedConnectToTargetAzureDbForMySqlTaskInput.isOfflineMigration
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

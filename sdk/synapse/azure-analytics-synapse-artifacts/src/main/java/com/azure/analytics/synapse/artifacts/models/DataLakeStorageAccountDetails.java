@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
     /*
      * Account URL
      */
+    @Generated
     private String accountUrl;
 
     /*
      * Filesystem name
      */
+    @Generated
     private String filesystem;
 
     /**
      * Creates an instance of DataLakeStorageAccountDetails class.
      */
+    @Generated
     public DataLakeStorageAccountDetails() {
     }
 
@@ -37,6 +41,7 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
      * 
      * @return the accountUrl value.
      */
+    @Generated
     public String getAccountUrl() {
         return this.accountUrl;
     }
@@ -47,6 +52,7 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
      * @param accountUrl the accountUrl value to set.
      * @return the DataLakeStorageAccountDetails object itself.
      */
+    @Generated
     public DataLakeStorageAccountDetails setAccountUrl(String accountUrl) {
         this.accountUrl = accountUrl;
         return this;
@@ -57,6 +63,7 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
      * 
      * @return the filesystem value.
      */
+    @Generated
     public String getFilesystem() {
         return this.filesystem;
     }
@@ -67,6 +74,7 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
      * @param filesystem the filesystem value to set.
      * @return the DataLakeStorageAccountDetails object itself.
      */
+    @Generated
     public DataLakeStorageAccountDetails setFilesystem(String filesystem) {
         this.filesystem = filesystem;
         return this;
@@ -75,6 +83,7 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -91,6 +100,7 @@ public final class DataLakeStorageAccountDetails implements JsonSerializable<Dat
      * if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataLakeStorageAccountDetails.
      */
+    @Generated
     public static DataLakeStorageAccountDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataLakeStorageAccountDetails deserializedDataLakeStorageAccountDetails

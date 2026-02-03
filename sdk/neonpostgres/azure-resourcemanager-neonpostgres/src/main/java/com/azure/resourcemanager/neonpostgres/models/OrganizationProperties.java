@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.neonpostgres.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Properties specific to Data Organization resource.
+ * Properties specific to Neon Organization resource.
  */
 @Fluent
 public final class OrganizationProperties implements JsonSerializable<OrganizationProperties> {
@@ -38,9 +37,14 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     private ResourceProvisioningState provisioningState;
 
     /*
-     * Organization properties
+     * Neon Organization properties
      */
     private PartnerOrganizationProperties partnerOrganizationProperties;
+
+    /*
+     * Neon Project Properties
+     */
+    private ProjectProperties projectProperties;
 
     /**
      * Creates an instance of OrganizationProperties class.
@@ -118,7 +122,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     }
 
     /**
-     * Get the partnerOrganizationProperties property: Organization properties.
+     * Get the partnerOrganizationProperties property: Neon Organization properties.
      * 
      * @return the partnerOrganizationProperties value.
      */
@@ -127,7 +131,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     }
 
     /**
-     * Set the partnerOrganizationProperties property: Organization properties.
+     * Set the partnerOrganizationProperties property: Neon Organization properties.
      * 
      * @param partnerOrganizationProperties the partnerOrganizationProperties value to set.
      * @return the OrganizationProperties object itself.
@@ -139,38 +143,24 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     }
 
     /**
-     * Validates the instance.
+     * Get the projectProperties property: Neon Project Properties.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the projectProperties value.
      */
-    public void validate() {
-        if (marketplaceDetails() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property marketplaceDetails in model OrganizationProperties"));
-        } else {
-            marketplaceDetails().validate();
-        }
-        if (userDetails() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property userDetails in model OrganizationProperties"));
-        } else {
-            userDetails().validate();
-        }
-        if (companyDetails() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property companyDetails in model OrganizationProperties"));
-        } else {
-            companyDetails().validate();
-        }
-        if (partnerOrganizationProperties() != null) {
-            partnerOrganizationProperties().validate();
-        }
+    public ProjectProperties projectProperties() {
+        return this.projectProperties;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(OrganizationProperties.class);
+    /**
+     * Set the projectProperties property: Neon Project Properties.
+     * 
+     * @param projectProperties the projectProperties value to set.
+     * @return the OrganizationProperties object itself.
+     */
+    public OrganizationProperties withProjectProperties(ProjectProperties projectProperties) {
+        this.projectProperties = projectProperties;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -182,6 +172,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
         jsonWriter.writeJsonField("userDetails", this.userDetails);
         jsonWriter.writeJsonField("companyDetails", this.companyDetails);
         jsonWriter.writeJsonField("partnerOrganizationProperties", this.partnerOrganizationProperties);
+        jsonWriter.writeJsonField("projectProperties", this.projectProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -213,6 +204,8 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
                 } else if ("partnerOrganizationProperties".equals(fieldName)) {
                     deserializedOrganizationProperties.partnerOrganizationProperties
                         = PartnerOrganizationProperties.fromJson(reader);
+                } else if ("projectProperties".equals(fieldName)) {
+                    deserializedOrganizationProperties.projectProperties = ProjectProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -119,7 +119,9 @@ public final class DataFlowDebugPackageDebugSettings implements JsonSerializable
         jsonWriter.writeArrayField("sourceSettings", this.sourceSettings,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
-        jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        if (this.datasetParameters != null) {
+            jsonWriter.writeUntypedField("datasetParameters", this.datasetParameters);
+        }
         return jsonWriter.writeEndObject();
     }
 

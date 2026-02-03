@@ -22,13 +22,6 @@ param(
   [string]$AutorestOptions
 )
 
-# Ensure Autorest is installed.
-npm install --error -g autorest
-if ($LASTEXITCODE -ne 0) {
-  Write-Error "Failed to install Autorest."
-  exit 1
-}
-
 try {
   Push-Location $Directory
   if ($AutorestOptions) {

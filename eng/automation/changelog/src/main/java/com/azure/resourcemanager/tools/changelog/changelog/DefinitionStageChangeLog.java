@@ -28,10 +28,11 @@ public class DefinitionStageChangeLog extends ChangeLog {
         this.breakingChange = BreakingChange.onJavaClass(this.parentClass);
         oldMethodStages = new ArrayList<>();
         newMethodStages = new ArrayList<>();
-        AllMethods blankStage = allStages.entrySet().stream().filter(x -> ClassName.name(x.getKey()).equals("Blank")).findAny().get().getValue();
-        calcMethodStages(blankStage, allStages, method -> method.getReturnType().getOldReturnType(), oldMethodStages);
-        calcMethodStages(blankStage, allStages, method -> method.getReturnType().getNewReturnType(), newMethodStages);
-        calcChangeLog();
+        allStages.entrySet().stream().filter(x -> ClassName.name(x.getKey()).equals("Blank")).findAny().ifPresent(blankStage -> {
+            calcMethodStages(blankStage.getValue(), allStages, method -> method.getReturnType().getOldReturnType(), oldMethodStages);
+            calcMethodStages(blankStage.getValue(), allStages, method -> method.getReturnType().getNewReturnType(), newMethodStages);
+            calcChangeLog();
+        });
     }
 
     /**

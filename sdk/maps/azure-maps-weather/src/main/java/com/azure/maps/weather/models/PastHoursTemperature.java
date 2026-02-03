@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class PastHoursTemperature implements JsonSerializable<PastHoursTem
     /*
      * minimum
      */
+    @Generated
     private WeatherUnitDetails minimum;
 
     /*
      * maximum
      */
+    @Generated
     private WeatherUnitDetails maximum;
 
     /**
      * Set default PastHoursTemperature constructor to private
      */
+    @Generated
     private PastHoursTemperature() {
     }
 
@@ -37,6 +41,7 @@ public final class PastHoursTemperature implements JsonSerializable<PastHoursTem
      *
      * @return the minimum value.
      */
+    @Generated
     public WeatherUnitDetails getMinimum() {
         return this.minimum;
     }
@@ -46,6 +51,7 @@ public final class PastHoursTemperature implements JsonSerializable<PastHoursTem
      *
      * @return the maximum value.
      */
+    @Generated
     public WeatherUnitDetails getMaximum() {
         return this.maximum;
     }
@@ -53,6 +59,7 @@ public final class PastHoursTemperature implements JsonSerializable<PastHoursTem
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -69,6 +76,7 @@ public final class PastHoursTemperature implements JsonSerializable<PastHoursTem
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the PastHoursTemperature.
      */
+    @Generated
     public static PastHoursTemperature fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PastHoursTemperature deserializedPastHoursTemperature = new PastHoursTemperature();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,32 +21,38 @@ public final class SapHanaSource extends TabularSource {
     /*
      * Copy source type.
      */
+    @Generated
     private String type = "SapHanaSource";
 
     /*
      * SAP HANA Sql query. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object query;
 
     /*
      * The packet size of data read from SAP HANA. Type: integer(or Expression with resultType integer).
      */
+    @Generated
     private Object packetSize;
 
     /*
      * The partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None",
      * "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
      */
+    @Generated
     private Object partitionOption;
 
     /*
      * The settings that will be leveraged for SAP HANA source partitioning.
      */
+    @Generated
     private SapHanaPartitionSettings partitionSettings;
 
     /**
      * Creates an instance of SapHanaSource class.
      */
+    @Generated
     public SapHanaSource() {
     }
 
@@ -54,6 +61,7 @@ public final class SapHanaSource extends TabularSource {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -64,6 +72,7 @@ public final class SapHanaSource extends TabularSource {
      * 
      * @return the query value.
      */
+    @Generated
     public Object getQuery() {
         return this.query;
     }
@@ -74,6 +83,7 @@ public final class SapHanaSource extends TabularSource {
      * @param query the query value to set.
      * @return the SapHanaSource object itself.
      */
+    @Generated
     public SapHanaSource setQuery(Object query) {
         this.query = query;
         return this;
@@ -85,6 +95,7 @@ public final class SapHanaSource extends TabularSource {
      * 
      * @return the packetSize value.
      */
+    @Generated
     public Object getPacketSize() {
         return this.packetSize;
     }
@@ -96,6 +107,7 @@ public final class SapHanaSource extends TabularSource {
      * @param packetSize the packetSize value to set.
      * @return the SapHanaSource object itself.
      */
+    @Generated
     public SapHanaSource setPacketSize(Object packetSize) {
         this.packetSize = packetSize;
         return this;
@@ -107,6 +119,7 @@ public final class SapHanaSource extends TabularSource {
      * 
      * @return the partitionOption value.
      */
+    @Generated
     public Object getPartitionOption() {
         return this.partitionOption;
     }
@@ -118,6 +131,7 @@ public final class SapHanaSource extends TabularSource {
      * @param partitionOption the partitionOption value to set.
      * @return the SapHanaSource object itself.
      */
+    @Generated
     public SapHanaSource setPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
@@ -128,6 +142,7 @@ public final class SapHanaSource extends TabularSource {
      * 
      * @return the partitionSettings value.
      */
+    @Generated
     public SapHanaPartitionSettings getPartitionSettings() {
         return this.partitionSettings;
     }
@@ -138,6 +153,7 @@ public final class SapHanaSource extends TabularSource {
      * @param partitionSettings the partitionSettings value to set.
      * @return the SapHanaSource object itself.
      */
+    @Generated
     public SapHanaSource setPartitionSettings(SapHanaPartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
         return this;
@@ -146,6 +162,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapHanaSource setQueryTimeout(Object queryTimeout) {
         super.setQueryTimeout(queryTimeout);
@@ -155,6 +172,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapHanaSource setAdditionalColumns(Object additionalColumns) {
         super.setAdditionalColumns(additionalColumns);
@@ -164,6 +182,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapHanaSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
@@ -173,6 +192,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapHanaSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
@@ -182,6 +202,7 @@ public final class SapHanaSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapHanaSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -191,18 +212,35 @@ public final class SapHanaSource extends TabularSource {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
-        jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
-        jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
-        jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        if (getSourceRetryCount() != null) {
+            jsonWriter.writeUntypedField("sourceRetryCount", getSourceRetryCount());
+        }
+        if (getSourceRetryWait() != null) {
+            jsonWriter.writeUntypedField("sourceRetryWait", getSourceRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
+        if (getQueryTimeout() != null) {
+            jsonWriter.writeUntypedField("queryTimeout", getQueryTimeout());
+        }
+        if (getAdditionalColumns() != null) {
+            jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("query", this.query);
-        jsonWriter.writeUntypedField("packetSize", this.packetSize);
-        jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        if (this.query != null) {
+            jsonWriter.writeUntypedField("query", this.query);
+        }
+        if (this.packetSize != null) {
+            jsonWriter.writeUntypedField("packetSize", this.packetSize);
+        }
+        if (this.partitionOption != null) {
+            jsonWriter.writeUntypedField("partitionOption", this.partitionOption);
+        }
         jsonWriter.writeJsonField("partitionSettings", this.partitionSettings);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
@@ -220,6 +258,7 @@ public final class SapHanaSource extends TabularSource {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SapHanaSource.
      */
+    @Generated
     public static SapHanaSource fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapHanaSource deserializedSapHanaSource = new SapHanaSource();

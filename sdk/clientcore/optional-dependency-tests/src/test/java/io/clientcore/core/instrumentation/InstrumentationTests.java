@@ -50,8 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class InstrumentationTests {
-    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
-        = new LibraryInstrumentationOptions("test-library");
+    private static final SdkInstrumentationOptions DEFAULT_SDK_OPTIONS = new SdkInstrumentationOptions("test-library");
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
 
@@ -69,7 +68,7 @@ public class InstrumentationTests {
 
     @Test
     public void createTracerOTelNotConfigured() {
-        Tracer tracer = Instrumentation.create(null, DEFAULT_LIB_OPTIONS).createTracer();
+        Tracer tracer = Instrumentation.create(null, DEFAULT_SDK_OPTIONS).getTracer();
         assertFalse(tracer.isEnabled());
     }
 
@@ -80,7 +79,7 @@ public class InstrumentationTests {
         InstrumentationOptions options
             = new InstrumentationOptions().setTracingEnabled(false).setTelemetryProvider(otel);
 
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_SDK_OPTIONS).getTracer();
         assertFalse(tracer.isEnabled());
         tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
 
@@ -93,7 +92,8 @@ public class InstrumentationTests {
         try (AutoCloseable otel
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            Tracer tracer = Instrumentation.create(null, DEFAULT_LIB_OPTIONS).createTracer();
+            Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
+            Tracer tracer = instrumentation.getTracer();
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
@@ -120,8 +120,8 @@ public class InstrumentationTests {
             OpenTelemetry localOTel = OpenTelemetrySdk.builder().setTracerProvider(localTracerProvider).build();
 
             Tracer tracer = Instrumentation
-                .create(new InstrumentationOptions().setTelemetryProvider(localOTel), DEFAULT_LIB_OPTIONS)
-                .createTracer();
+                .create(new InstrumentationOptions().setTelemetryProvider(localOTel), DEFAULT_SDK_OPTIONS)
+                .getTracer();
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
@@ -137,8 +137,8 @@ public class InstrumentationTests {
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(tracerProvider);
 
         assertThrows(IllegalArgumentException.class,
-            () -> Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer());
-        assertThrows(NullPointerException.class, () -> Instrumentation.create(null, null).createTracer());
+            () -> Instrumentation.create(options, DEFAULT_SDK_OPTIONS).getTracer());
+        assertThrows(NullPointerException.class, () -> Instrumentation.create(null, null).getTracer());
     }
 
     @SuppressWarnings("try")
@@ -147,11 +147,10 @@ public class InstrumentationTests {
         try (AutoCloseable otel
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            LibraryInstrumentationOptions libOptions
-                = new LibraryInstrumentationOptions("test-library").setLibraryVersion("1.0.0")
-                    .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("test-library").setSdkVersion("1.0.0")
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
-            Tracer tracer = Instrumentation.create(null, libOptions).createTracer();
+            Tracer tracer = Instrumentation.create(null, sdkOptions).getTracer();
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
@@ -185,8 +184,8 @@ public class InstrumentationTests {
         assertEquals(otelSpan.getSpanContext().getTraceFlags().asHex(), context.getTraceFlags());
 
         Tracer tracer
-            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_LIB_OPTIONS)
-                .createTracer();
+            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_SDK_OPTIONS)
+                .getTracer();
         Span span = tracer.spanBuilder("test", INTERNAL, context).startSpan();
         assertEquals(otelSpan.getSpanContext().getTraceId(), span.getInstrumentationContext().getTraceId());
 
@@ -229,8 +228,8 @@ public class InstrumentationTests {
         assertEquals(otelSpanContext.getTraceFlags().asHex(), context.getTraceFlags());
 
         Tracer tracer
-            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_LIB_OPTIONS)
-                .createTracer();
+            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_SDK_OPTIONS)
+                .getTracer();
         Span span = tracer.spanBuilder("test", INTERNAL, context).startSpan();
         assertEquals(otelSpanContext.getTraceId(), span.getInstrumentationContext().getTraceId());
 
@@ -269,12 +268,12 @@ public class InstrumentationTests {
 
     @Test
     public void testCreateMeterAndInstruments() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
-        Meter meter = instrumentation.createMeter();
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
+        Meter meter = instrumentation.getMeter();
         assertTrue(meter.isEnabled());
 
         InstrumentationAttributes attributes = instrumentation.createAttributes(Collections.emptyMap());
-        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "By");
+        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "By", null);
         histogram.record(42.0, attributes, null);
         assertTrue(histogram.isEnabled());
 
@@ -289,20 +288,20 @@ public class InstrumentationTests {
 
     @Test
     public void testInvalidParams() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
-        Meter meter = instrumentation.createMeter();
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
+        Meter meter = instrumentation.getMeter();
 
-        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", null, "1"));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", null, "1", null));
         assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", null, "1"));
         assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", null, "1"));
-        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram(null, "description", "1"));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram(null, "description", "1", null));
         assertThrows(NullPointerException.class, () -> meter.createLongCounter(null, "description", "1"));
         assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter(null, "description", "1"));
-        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", "description", null));
+        assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", "description", null, null));
         assertThrows(NullPointerException.class, () -> meter.createLongCounter("test", "description", null));
         assertThrows(NullPointerException.class, () -> meter.createLongUpDownCounter("test", "description", null));
 
-        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "1");
+        DoubleHistogram histogram = meter.createDoubleHistogram("test", "description", "1", null);
         assertThrows(NullPointerException.class, () -> histogram.record(42.0, null, null));
 
         LongCounter counter = meter.createLongCounter("test", "description", "1");
@@ -314,7 +313,7 @@ public class InstrumentationTests {
 
     @Test
     public void testCreateAttributes() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         InstrumentationAttributes attributes = instrumentation.createAttributes(Collections.emptyMap());
         assertInstanceOf(OTelAttributes.class, attributes);
 
@@ -326,7 +325,7 @@ public class InstrumentationTests {
 
     @Test
     public void testAttributesInvalidParams() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         assertThrows(NullPointerException.class,
             () -> instrumentation.createAttributes(Collections.singletonMap(null, "value")));
         assertThrows(NullPointerException.class,
@@ -338,7 +337,7 @@ public class InstrumentationTests {
 
     @Test
     public void testAttributes() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         Map<String, Object> start = new HashMap<>();
         start.put("string", "value");
         start.put("int", 42);
@@ -385,7 +384,7 @@ public class InstrumentationTests {
 
     @Test
     public void testDuplicates() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         Map<String, Object> start = new HashMap<>();
         start.put("string", "value1");
         start.put("string", "value2");

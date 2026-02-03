@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -22,51 +23,61 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
     /*
      * the time that at which "not_started" livy state was first seen.
      */
+    @Generated
     private OffsetDateTime notStartedAt;
 
     /*
      * the time that at which "starting" livy state was first seen.
      */
+    @Generated
     private OffsetDateTime startingAt;
 
     /*
      * the time that at which "running" livy state was first seen.
      */
+    @Generated
     private OffsetDateTime runningAt;
 
     /*
      * time that at which "dead" livy state was first seen.
      */
+    @Generated
     private OffsetDateTime deadAt;
 
     /*
      * the time that at which "success" livy state was first seen.
      */
+    @Generated
     private OffsetDateTime successAt;
 
     /*
      * the time that at which "killed" livy state was first seen.
      */
+    @Generated
     private OffsetDateTime terminatedAt;
 
     /*
      * the time that at which "recovering" livy state was first seen.
      */
+    @Generated
     private OffsetDateTime recoveringAt;
 
     /*
      * the Spark job state.
      */
+    @Generated
     private String currentState;
 
     /*
      * The jobCreationRequest property.
      */
+    @Generated
     private SparkRequest jobCreationRequest;
 
     /**
      * Creates an instance of SparkBatchJobState class.
      */
+    @Generated
     public SparkBatchJobState() {
     }
 
@@ -75,6 +86,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the notStartedAt value.
      */
+    @Generated
     public OffsetDateTime getNotStartedAt() {
         return this.notStartedAt;
     }
@@ -85,6 +97,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param notStartedAt the notStartedAt value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setNotStartedAt(OffsetDateTime notStartedAt) {
         this.notStartedAt = notStartedAt;
         return this;
@@ -95,6 +108,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the startingAt value.
      */
+    @Generated
     public OffsetDateTime getStartingAt() {
         return this.startingAt;
     }
@@ -105,6 +119,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param startingAt the startingAt value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setStartingAt(OffsetDateTime startingAt) {
         this.startingAt = startingAt;
         return this;
@@ -115,6 +130,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the runningAt value.
      */
+    @Generated
     public OffsetDateTime getRunningAt() {
         return this.runningAt;
     }
@@ -125,6 +141,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param runningAt the runningAt value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setRunningAt(OffsetDateTime runningAt) {
         this.runningAt = runningAt;
         return this;
@@ -135,6 +152,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the deadAt value.
      */
+    @Generated
     public OffsetDateTime getDeadAt() {
         return this.deadAt;
     }
@@ -145,6 +163,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param deadAt the deadAt value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setDeadAt(OffsetDateTime deadAt) {
         this.deadAt = deadAt;
         return this;
@@ -155,6 +174,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the successAt value.
      */
+    @Generated
     public OffsetDateTime getSuccessAt() {
         return this.successAt;
     }
@@ -165,6 +185,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param successAt the successAt value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setSuccessAt(OffsetDateTime successAt) {
         this.successAt = successAt;
         return this;
@@ -175,6 +196,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the terminatedAt value.
      */
+    @Generated
     public OffsetDateTime getTerminatedAt() {
         return this.terminatedAt;
     }
@@ -185,6 +207,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param terminatedAt the terminatedAt value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setTerminatedAt(OffsetDateTime terminatedAt) {
         this.terminatedAt = terminatedAt;
         return this;
@@ -195,6 +218,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the recoveringAt value.
      */
+    @Generated
     public OffsetDateTime getRecoveringAt() {
         return this.recoveringAt;
     }
@@ -205,6 +229,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param recoveringAt the recoveringAt value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setRecoveringAt(OffsetDateTime recoveringAt) {
         this.recoveringAt = recoveringAt;
         return this;
@@ -215,6 +240,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the currentState value.
      */
+    @Generated
     public String getCurrentState() {
         return this.currentState;
     }
@@ -225,6 +251,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param currentState the currentState value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setCurrentState(String currentState) {
         this.currentState = currentState;
         return this;
@@ -235,6 +262,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * 
      * @return the jobCreationRequest value.
      */
+    @Generated
     public SparkRequest getJobCreationRequest() {
         return this.jobCreationRequest;
     }
@@ -245,6 +273,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * @param jobCreationRequest the jobCreationRequest value to set.
      * @return the SparkBatchJobState object itself.
      */
+    @Generated
     public SparkBatchJobState setJobCreationRequest(SparkRequest jobCreationRequest) {
         this.jobCreationRequest = jobCreationRequest;
         return this;
@@ -253,6 +282,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -283,6 +313,7 @@ public final class SparkBatchJobState implements JsonSerializable<SparkBatchJobS
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SparkBatchJobState.
      */
+    @Generated
     public static SparkBatchJobState fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SparkBatchJobState deserializedSparkBatchJobState = new SparkBatchJobState();

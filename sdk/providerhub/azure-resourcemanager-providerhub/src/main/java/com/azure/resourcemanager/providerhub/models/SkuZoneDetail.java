@@ -18,12 +18,12 @@ import java.util.List;
 @Fluent
 public final class SkuZoneDetail implements JsonSerializable<SkuZoneDetail> {
     /*
-     * The name property.
+     * The name.
      */
     private List<String> name;
 
     /*
-     * The capabilities property.
+     * The capabilities.
      */
     private List<SkuCapability> capabilities;
 
@@ -34,7 +34,7 @@ public final class SkuZoneDetail implements JsonSerializable<SkuZoneDetail> {
     }
 
     /**
-     * Get the name property: The name property.
+     * Get the name property: The name.
      * 
      * @return the name value.
      */
@@ -43,7 +43,7 @@ public final class SkuZoneDetail implements JsonSerializable<SkuZoneDetail> {
     }
 
     /**
-     * Set the name property: The name property.
+     * Set the name property: The name.
      * 
      * @param name the name value to set.
      * @return the SkuZoneDetail object itself.
@@ -54,7 +54,7 @@ public final class SkuZoneDetail implements JsonSerializable<SkuZoneDetail> {
     }
 
     /**
-     * Get the capabilities property: The capabilities property.
+     * Get the capabilities property: The capabilities.
      * 
      * @return the capabilities value.
      */
@@ -63,7 +63,7 @@ public final class SkuZoneDetail implements JsonSerializable<SkuZoneDetail> {
     }
 
     /**
-     * Set the capabilities property: The capabilities property.
+     * Set the capabilities property: The capabilities.
      * 
      * @param capabilities the capabilities value to set.
      * @return the SkuZoneDetail object itself.

@@ -11,7 +11,7 @@ public final class OSUpgradeSupportedVersionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OSUpgradeSupportedVersions model = BinaryData.fromString(
-            "{\"supportedSourceOsVersion\":\"hhkvguavtptbk\",\"supportedTargetOsVersions\":[\"qynspgbvoffb\",\"kwvdxa\",\"xqokmyrlji\"]}")
+            "{\"supportedSourceOsVersion\":\"wkppnwyytfvp\",\"supportedTargetOsVersions\":[\"jikffffgkuhznw\",\"vuldbkkejjk\",\"igaw\",\"azmxjqi\"]}")
             .toObject(OSUpgradeSupportedVersions.class);
     }
 

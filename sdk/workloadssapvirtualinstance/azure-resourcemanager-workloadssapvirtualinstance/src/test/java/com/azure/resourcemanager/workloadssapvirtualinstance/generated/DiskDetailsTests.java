@@ -13,14 +13,14 @@ public final class DiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskDetails model = BinaryData.fromString(
-            "{\"sku\":{\"name\":\"Standard_LRS\"},\"sizeGB\":5272627491576584483,\"minimumSupportedDiskCount\":6465268745370114488,\"maximumSupportedDiskCount\":2144640656240762223,\"iopsReadWrite\":2524808261528080597,\"mbpsReadWrite\":3202643871738398151,\"diskTier\":\"hfwdsjnkaljutiis\"}")
+            "{\"sku\":{\"name\":\"StandardSSD_ZRS\"},\"sizeGB\":1038709270981332585,\"minimumSupportedDiskCount\":5656325235866740661,\"maximumSupportedDiskCount\":182803850681582090,\"iopsReadWrite\":4333514918579005647,\"mbpsReadWrite\":4002820270364168224,\"diskTier\":\"ygtdsslswt\"}")
             .toObject(DiskDetails.class);
-        Assertions.assertEquals(DiskSkuName.STANDARD_LRS, model.sku().name());
-        Assertions.assertEquals(5272627491576584483L, model.sizeGB());
-        Assertions.assertEquals(6465268745370114488L, model.minimumSupportedDiskCount());
-        Assertions.assertEquals(2144640656240762223L, model.maximumSupportedDiskCount());
-        Assertions.assertEquals(2524808261528080597L, model.iopsReadWrite());
-        Assertions.assertEquals(3202643871738398151L, model.mbpsReadWrite());
-        Assertions.assertEquals("hfwdsjnkaljutiis", model.diskTier());
+        Assertions.assertEquals(DiskSkuName.STANDARD_SSD_ZRS, model.sku().name());
+        Assertions.assertEquals(1038709270981332585L, model.sizeGB());
+        Assertions.assertEquals(5656325235866740661L, model.minimumSupportedDiskCount());
+        Assertions.assertEquals(182803850681582090L, model.maximumSupportedDiskCount());
+        Assertions.assertEquals(4333514918579005647L, model.iopsReadWrite());
+        Assertions.assertEquals(4002820270364168224L, model.mbpsReadWrite());
+        Assertions.assertEquals("ygtdsslswt", model.diskTier());
     }
 }

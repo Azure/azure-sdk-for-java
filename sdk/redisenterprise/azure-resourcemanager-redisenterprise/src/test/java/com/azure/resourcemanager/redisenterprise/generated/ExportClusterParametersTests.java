@@ -12,14 +12,14 @@ public final class ExportClusterParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExportClusterParameters model
-            = BinaryData.fromString("{\"sasUri\":\"tjaodxobnb\"}").toObject(ExportClusterParameters.class);
-        Assertions.assertEquals("tjaodxobnb", model.sasUri());
+            = BinaryData.fromString("{\"sasUri\":\"abcypmivk\"}").toObject(ExportClusterParameters.class);
+        Assertions.assertEquals("abcypmivk", model.sasUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportClusterParameters model = new ExportClusterParameters().withSasUri("tjaodxobnb");
+        ExportClusterParameters model = new ExportClusterParameters().withSasUri("abcypmivk");
         model = BinaryData.fromObject(model).toObject(ExportClusterParameters.class);
-        Assertions.assertEquals("tjaodxobnb", model.sasUri());
+        Assertions.assertEquals("abcypmivk", model.sasUri());
     }
 }

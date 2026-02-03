@@ -11,7 +11,7 @@ import com.azure.core.exception.ServiceResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImpl;
+import com.azure.monitor.query.implementation.logs.AzureLogAnalytics;
 import com.azure.monitor.query.implementation.logs.models.BatchQueryRequest;
 import com.azure.monitor.query.implementation.logs.models.BatchRequest;
 import com.azure.monitor.query.implementation.logs.models.ErrorInfo;
@@ -91,13 +91,13 @@ import static com.azure.monitor.query.implementation.logs.models.LogsQueryHelper
 @ServiceClient(builder = LogsQueryClientBuilder.class, isAsync = true)
 public final class LogsQueryAsyncClient {
 
-    private final AzureLogAnalyticsImpl innerClient;
+    private final AzureLogAnalytics innerClient;
 
     /**
      * Constructor that has the inner generated client to make the service call.
      * @param innerClient The inner generated client.
      */
-    LogsQueryAsyncClient(AzureLogAnalyticsImpl innerClient) {
+    LogsQueryAsyncClient(AzureLogAnalytics innerClient) {
         this.innerClient = innerClient;
     }
 

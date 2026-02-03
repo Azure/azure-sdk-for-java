@@ -53,8 +53,8 @@ The value of `AZURE_AUTHORITY_HOST` can be set via [`AzureAuthorityHosts`](https
 Sample code to create a `AzureProfile`:
 
 ```java readme-sample-buildAzureProfile
-// AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-AzureProfile profile = new AzureProfile("<YOUR_TENANT_ID>", "<YOUR_SUBSCRIPTION_ID>", AzureEnvironment.AZURE);
+// AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
+AzureProfile profile = new AzureProfile("<YOUR_TENANT_ID>", "<YOUR_SUBSCRIPTION_ID>", AzureCloud.AZURE_PUBLIC_CLOUD);
 ```
 
 The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` variable if otherwise.
@@ -62,7 +62,7 @@ The sample code assumes global Azure. Please change `AzureEnvironment.AZURE` var
 Sample code for Azure Germany, with `EnvironmentCredential`:
 
 ```java readme-sample-buildEnvironmentCredential
-AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE_GERMANY);
+AzureProfile profile = new AzureProfile(AzureCloud.AZURE_CHINA_CLOUD);
 EnvironmentCredential credential = new EnvironmentCredentialBuilder()
     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
     .build();
@@ -70,7 +70,7 @@ EnvironmentCredential credential = new EnvironmentCredentialBuilder()
 
 ### Authenticating with default HttpPipeline
 
-Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
+Once the `TokenCredential` and `AzureProfile` are ready, you can move forward with below authenticating code. It helps build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/41db6e79c13bc5c54597f33b4e365456a9c61da4/sdk/resources/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/utils/HttpPipelineProvider.java#L48).
 
 ```java readme-sample-authenticateAuth
 AzureResourceManager azure = AzureResourceManager.authenticate(credential, profile).withDefaultSubscription();
@@ -89,7 +89,7 @@ AzureResourceManager azure = authenticated.withSubscription(subscriptionId);
 If you want to take full control of Azure client, you could build your own http pipeline for authentication.
 
 ### Preparing HttpPipelinePolicy
-  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resourcemanager/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
+  * The `HttpPipelinePolicy` is an interface that process provided request context and invokes the next policy. To learn more, see [policies in Azure Core](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core/src/main/java/com/azure/core/http/policy) and [policies in Azure Management Libraries for Java](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/resources/azure-resourcemanager-resources/src/main/java/com/azure/resourcemanager/resources/fluentcore/policy).
 
 ### Preparing HttpClient
   * The `HttpClient` is a generic interface for sending HTTP requests and getting responses. 

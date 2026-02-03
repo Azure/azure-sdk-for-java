@@ -44,31 +44,41 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     /**
      * The service client containing this operation class.
      */
-    private final StandbyPoolClientImpl client;
+    private final StandbyPoolManagementClientImpl client;
 
     /**
      * Initializes an instance of StandbyContainerGroupPoolRuntimeViewsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    StandbyContainerGroupPoolRuntimeViewsClientImpl(StandbyPoolClientImpl client) {
+    StandbyContainerGroupPoolRuntimeViewsClientImpl(StandbyPoolManagementClientImpl client) {
         this.service = RestProxy.create(StandbyContainerGroupPoolRuntimeViewsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for StandbyPoolClientStandbyContainerGroupPoolRuntimeViews to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for StandbyPoolManagementClientStandbyContainerGroupPoolRuntimeViews to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "StandbyPoolClientSta")
+    @ServiceInterface(name = "StandbyPoolManagementClientStandbyContainerGroupPoolRuntimeViews")
     public interface StandbyContainerGroupPoolRuntimeViewsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews/{runtimeView}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolRuntimeViewResourceInner>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
+            @PathParam("runtimeView") String runtimeView, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews/{runtimeView}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolRuntimeViewResourceInner> getSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
@@ -86,10 +96,29 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}/runtimeViews")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolRuntimeViewResourceListResult> listByStandbyPoolSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("standbyContainerGroupPoolName") String standbyContainerGroupPoolName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StandbyContainerGroupPoolRuntimeViewResourceListResult>> listByStandbyPoolNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<StandbyContainerGroupPoolRuntimeViewResourceListResult> listByStandbyPoolNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -110,73 +139,12 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StandbyContainerGroupPoolRuntimeViewResourceInner>>
         getWithResponseAsync(String resourceGroupName, String standbyContainerGroupPoolName, String runtimeView) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        if (runtimeView == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runtimeView is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, runtimeView, accept,
                 context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get a StandbyContainerGroupPoolRuntimeViewResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param runtimeView The unique identifier for the runtime view. The input string should be the word 'latest',
-     * which will get the latest runtime view of the pool, otherwise the request will fail with NotFound exception.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a StandbyContainerGroupPoolRuntimeViewResource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StandbyContainerGroupPoolRuntimeViewResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String standbyContainerGroupPoolName, String runtimeView, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        if (runtimeView == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runtimeView is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, standbyContainerGroupPoolName, runtimeView, accept, context);
     }
 
     /**
@@ -214,7 +182,9 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StandbyContainerGroupPoolRuntimeViewResourceInner> getWithResponse(String resourceGroupName,
         String standbyContainerGroupPoolName, String runtimeView, Context context) {
-        return getWithResponseAsync(resourceGroupName, standbyContainerGroupPoolName, runtimeView, context).block();
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, standbyContainerGroupPoolName, runtimeView, accept, context);
     }
 
     /**
@@ -249,22 +219,6 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>>
         listByStandbyPoolSinglePageAsync(String resourceGroupName, String standbyContainerGroupPoolName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByStandbyPool(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -273,46 +227,6 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List StandbyContainerGroupPoolRuntimeViewResource resources by StandbyContainerGroupPoolResource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param standbyContainerGroupPoolName Name of the standby container group pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolRuntimeViewResource list operation along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>> listByStandbyPoolSinglePageAsync(
-        String resourceGroupName, String standbyContainerGroupPoolName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (standbyContainerGroupPoolName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter standbyContainerGroupPoolName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByStandbyPool(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, standbyContainerGroupPoolName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -338,19 +252,44 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param standbyContainerGroupPoolName Name of the standby container group pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a StandbyContainerGroupPoolRuntimeViewResource list operation along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>
+        listByStandbyPoolSinglePage(String resourceGroupName, String standbyContainerGroupPoolName) {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolRuntimeViewResourceListResult> res = service.listByStandbyPoolSync(
+            this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName,
+            standbyContainerGroupPoolName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List StandbyContainerGroupPoolRuntimeViewResource resources by StandbyContainerGroupPoolResource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param standbyContainerGroupPoolName Name of the standby container group pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a StandbyContainerGroupPoolRuntimeViewResource list operation as paginated response with
-     * {@link PagedFlux}.
+     * @return the response of a StandbyContainerGroupPoolRuntimeViewResource list operation along with
+     * {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StandbyContainerGroupPoolRuntimeViewResourceInner>
-        listByStandbyPoolAsync(String resourceGroupName, String standbyContainerGroupPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listByStandbyPoolSinglePageAsync(resourceGroupName, standbyContainerGroupPoolName, context),
-            nextLink -> listByStandbyPoolNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>
+        listByStandbyPoolSinglePage(String resourceGroupName, String standbyContainerGroupPoolName, Context context) {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolRuntimeViewResourceListResult> res
+            = service.listByStandbyPoolSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, standbyContainerGroupPoolName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -367,7 +306,8 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolRuntimeViewResourceInner> listByStandbyPool(String resourceGroupName,
         String standbyContainerGroupPoolName) {
-        return new PagedIterable<>(listByStandbyPoolAsync(resourceGroupName, standbyContainerGroupPoolName));
+        return new PagedIterable<>(() -> listByStandbyPoolSinglePage(resourceGroupName, standbyContainerGroupPoolName),
+            nextLink -> listByStandbyPoolNextSinglePage(nextLink));
     }
 
     /**
@@ -385,7 +325,9 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StandbyContainerGroupPoolRuntimeViewResourceInner> listByStandbyPool(String resourceGroupName,
         String standbyContainerGroupPoolName, Context context) {
-        return new PagedIterable<>(listByStandbyPoolAsync(resourceGroupName, standbyContainerGroupPoolName, context));
+        return new PagedIterable<>(
+            () -> listByStandbyPoolSinglePage(resourceGroupName, standbyContainerGroupPoolName, context),
+            nextLink -> listByStandbyPoolNextSinglePage(nextLink, context));
     }
 
     /**
@@ -401,13 +343,6 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>>
         listByStandbyPoolNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByStandbyPoolNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -421,27 +356,40 @@ public final class StandbyContainerGroupPoolRuntimeViewsClientImpl
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a StandbyContainerGroupPoolRuntimeViewResource list operation along with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>
+        listByStandbyPoolNextSinglePage(String nextLink) {
+        final String accept = "application/json";
+        Response<StandbyContainerGroupPoolRuntimeViewResourceListResult> res
+            = service.listByStandbyPoolNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a StandbyContainerGroupPoolRuntimeViewResource list operation along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>>
-        listByStandbyPoolNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
+    private PagedResponse<StandbyContainerGroupPoolRuntimeViewResourceInner>
+        listByStandbyPoolNextSinglePage(String nextLink, Context context) {
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByStandbyPoolNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StandbyContainerGroupPoolRuntimeViewResourceListResult> res
+            = service.listByStandbyPoolNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 }

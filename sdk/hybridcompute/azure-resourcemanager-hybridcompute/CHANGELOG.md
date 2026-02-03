@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.1.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,81 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.2 (2025-06-16)
+
+- Azure Resource Manager HybridCompute client library for Java. This package contains Microsoft Azure SDK for HybridCompute Management SDK. The Hybrid Compute Management Client. Package tag package-preview-2025-02-19. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Machines` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.SetupExtensionRequest` was added
+
+* `models.ExtensionPublisherListResult` was added
+
+* `models.ExtensionTypes` was added
+
+* `models.ExtensionPublishers` was added
+
+* `models.IdentityKeyStore` was added
+
+* `models.ExtensionValueV2` was added
+
+* `models.ExtensionMetadataV2s` was added
+
+* `models.ExtensionTypeListResult` was added
+
+* `models.ExtensionPublisher` was added
+
+* `models.ExtensionType` was added
+
+* `models.ExtensionValueListResultV2` was added
+
+#### `models.ResourceProviders` was modified
+
+* `setupExtensions(java.lang.String,java.lang.String,fluent.models.SetupExtensionRequestInner,com.azure.core.util.Context)` was added
+* `setupExtensions(java.lang.String,java.lang.String,fluent.models.SetupExtensionRequestInner)` was added
+
+#### `models.MachineProperties` was modified
+
+* `identityKeyStore()` was added
+* `hardwareResourceId()` was added
+* `tpmEkCertificate()` was added
+
+#### `models.Machines` was modified
+
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.MachineUpdate` was modified
+
+* `identityKeyStore()` was added
+* `withTpmEkCertificate(java.lang.String)` was added
+* `tpmEkCertificate()` was added
+* `withIdentityKeyStore(java.lang.String)` was added
+
+#### `models.Machine` was modified
+
+* `tpmEkCertificate()` was added
+* `identityKeyStore()` was added
+* `hardwareResourceId()` was added
+
+#### `HybridComputeManager` was modified
+
+* `extensionPublishers()` was added
+* `extensionTypes()` was added
+* `extensionMetadataV2s()` was added
+
+#### `models.WindowsParameters` was modified
+
+* `withPatchNameMasksToExclude(java.util.List)` was added
+* `patchNameMasksToInclude()` was added
+* `patchNameMasksToExclude()` was added
+* `withPatchNameMasksToInclude(java.util.List)` was added
 
 ## 1.1.0-beta.1 (2024-11-14)
 

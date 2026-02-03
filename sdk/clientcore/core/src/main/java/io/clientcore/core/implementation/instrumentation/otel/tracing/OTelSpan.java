@@ -196,7 +196,11 @@ public class OTelSpan implements Span {
         return spanContext;
     }
 
-    SpanKind getSpanKind() {
+    /**
+     * Gets the span kind.
+     * @return the span kind
+     */
+    public SpanKind getSpanKind() {
         return spanKind;
     }
 

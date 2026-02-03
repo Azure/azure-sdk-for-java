@@ -13,21 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultRolloutSpecificationRestOfTheWorldGroupOneTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultRolloutSpecificationRestOfTheWorldGroupOne model
-            = BinaryData.fromString("{\"waitDuration\":\"PT204H22M\",\"regions\":[\"zbchckqqzqioxiy\",\"uiizynke\"]}")
-                .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
-        Assertions.assertEquals("zbchckqqzqioxiy", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT204H22M"), model.waitDuration());
+        DefaultRolloutSpecificationRestOfTheWorldGroupOne model = BinaryData
+            .fromString(
+                "{\"waitDuration\":\"PT209H50M30S\",\"regions\":[\"wabfatkl\",\"dxbjhwuaanozj\",\"sphyoulpjrvxa\"]}")
+            .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
+        Assertions.assertEquals("wabfatkl", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT209H50M30S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationRestOfTheWorldGroupOne model
             = new DefaultRolloutSpecificationRestOfTheWorldGroupOne()
-                .withRegions(Arrays.asList("zbchckqqzqioxiy", "uiizynke"))
-                .withWaitDuration(Duration.parse("PT204H22M"));
+                .withRegions(Arrays.asList("wabfatkl", "dxbjhwuaanozj", "sphyoulpjrvxa"))
+                .withWaitDuration(Duration.parse("PT209H50M30S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationRestOfTheWorldGroupOne.class);
-        Assertions.assertEquals("zbchckqqzqioxiy", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT204H22M"), model.waitDuration());
+        Assertions.assertEquals("wabfatkl", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT209H50M30S"), model.waitDuration());
     }
 }

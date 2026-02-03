@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisionContract;
@@ -22,19 +22,20 @@ public final class PortalRevisionsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"phmriip\",\"statusDetails\":\"fofuadcjqne\",\"status\":\"completed\",\"isCurrent\":true,\"createdDateTime\":\"2021-03-25T15:46:49Z\",\"updatedDateTime\":\"2021-01-02T23:52:32Z\"},\"id\":\"gee\",\"name\":\"nqlsnrgaxoy\",\"type\":\"gjjpfyxhsppvj\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"ms\",\"statusDetails\":\"wsmdoowfrgd\",\"status\":\"failed\",\"isCurrent\":true,\"createdDateTime\":\"2021-02-07T21:09:01Z\",\"updatedDateTime\":\"2021-03-24T14:20Z\",\"provisioningState\":\"ustkqywabhlgrrsk\"},\"id\":\"tzbkeeohpf\",\"name\":\"dxgdjudek\",\"type\":\"xh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PortalRevisionContract> response = manager.portalRevisions()
-            .listByService("ebq", "qiaklqakps", "if", 2045563128, 1242205159, com.azure.core.util.Context.NONE);
+            .listByService("fcbweabptkmkuquv", "gvnomlcldoyohuaf", "c", 554725414, 392572184,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("phmriip", response.iterator().next().description());
-        Assertions.assertEquals(true, response.iterator().next().isCurrent());
+        Assertions.assertEquals("ms", response.iterator().next().description());
+        Assertions.assertTrue(response.iterator().next().isCurrent());
     }
 }

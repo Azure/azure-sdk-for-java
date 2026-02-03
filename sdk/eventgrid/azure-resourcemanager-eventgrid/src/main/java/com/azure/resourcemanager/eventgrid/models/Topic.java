@@ -80,7 +80,7 @@ public interface Topic {
     ExtendedLocation extendedLocation();
 
     /**
-     * Gets the systemData property: The system metadata relating to Topic resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */
@@ -168,8 +168,8 @@ public interface Topic {
 
     /**
      * Gets the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the topic.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the topic.
      * 
      * @return the disableLocalAuth value.
      */
@@ -455,12 +455,12 @@ public interface Topic {
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
-             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
-             * allowed to publish to the topic..
+             * value is false. When the property is set to true, only Microsoft Entra ID token will be used to
+             * authenticate if user is allowed to publish to the topic..
              * 
              * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
-             * When the property is set to true, only AAD token will be used to authenticate if user is allowed to
-             * publish to the topic.
+             * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is
+             * allowed to publish to the topic.
              * @return the next definition stage.
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
@@ -609,12 +609,12 @@ public interface Topic {
         interface WithDisableLocalAuth {
             /**
              * Specifies the disableLocalAuth property: This boolean is used to enable or disable local auth. Default
-             * value is false. When the property is set to true, only AAD token will be used to authenticate if user is
-             * allowed to publish to the topic..
+             * value is false. When the property is set to true, only Microsoft Entra ID token will be used to
+             * authenticate if user is allowed to publish to the topic..
              * 
              * @param disableLocalAuth This boolean is used to enable or disable local auth. Default value is false.
-             * When the property is set to true, only AAD token will be used to authenticate if user is allowed to
-             * publish to the topic.
+             * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is
+             * allowed to publish to the topic.
              * @return the next definition stage.
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);

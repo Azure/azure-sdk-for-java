@@ -8,8 +8,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapVirtualInstanceInner;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.OperationStatusResult;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentity;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapVirtualInstance;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapVirtualInstanceProperties;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
@@ -54,7 +54,7 @@ public final class SapVirtualInstanceImpl
         return this.innerModel().properties();
     }
 
-    public ManagedServiceIdentity identity() {
+    public SAPVirtualInstanceIdentity identity() {
         return this.innerModel().identity();
     }
 
@@ -199,7 +199,7 @@ public final class SapVirtualInstanceImpl
         return this;
     }
 
-    public SapVirtualInstanceImpl withIdentity(ManagedServiceIdentity identity) {
+    public SapVirtualInstanceImpl withIdentity(SAPVirtualInstanceIdentity identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
             return this;
@@ -215,6 +215,6 @@ public final class SapVirtualInstanceImpl
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

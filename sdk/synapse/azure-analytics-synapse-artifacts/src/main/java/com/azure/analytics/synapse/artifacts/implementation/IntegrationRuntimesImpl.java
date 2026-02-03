@@ -54,7 +54,7 @@ public final class IntegrationRuntimesImpl {
      * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ArtifactsClientInteg")
+    @ServiceInterface(name = "ArtifactsClientIntegrationRuntimes")
     public interface IntegrationRuntimesService {
         @Get("/integrationRuntimes")
         @ExpectedResponses({ 200 })

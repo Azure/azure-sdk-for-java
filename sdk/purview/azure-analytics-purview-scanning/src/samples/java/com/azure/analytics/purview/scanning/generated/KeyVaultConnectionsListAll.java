@@ -17,9 +17,9 @@ public class KeyVaultConnectionsListAll {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildKeyVaultConnectionsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.keyvaultconnectionslistall.keyvaultconnectionslistall
+        // BEGIN:com.azure.analytics.purview.scanning.generated.key-vault-connections-list-all.key-vault-connections-list-all
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = keyVaultConnectionsClient.listAll(requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.keyvaultconnectionslistall.keyvaultconnectionslistall
+        // END:com.azure.analytics.purview.scanning.generated.key-vault-connections-list-all.key-vault-connections-list-all
     }
 }

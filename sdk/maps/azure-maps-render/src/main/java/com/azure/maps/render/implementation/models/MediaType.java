@@ -4,6 +4,7 @@
 
 package com.azure.maps.render.implementation.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -14,11 +15,13 @@ public final class MediaType extends ExpandableStringEnum<MediaType> {
     /**
      * Return image in png format.
      */
+    @Generated
     public static final MediaType IMAGE_PNG = fromString("image/png");
 
     /**
      * Return image in jpeg format.
      */
+    @Generated
     public static final MediaType IMAGE_JPEG = fromString("image/jpeg");
 
     /**
@@ -26,6 +29,7 @@ public final class MediaType extends ExpandableStringEnum<MediaType> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public MediaType() {
     }
@@ -36,6 +40,7 @@ public final class MediaType extends ExpandableStringEnum<MediaType> {
      * @param name a name to look for.
      * @return the corresponding MediaType.
      */
+    @Generated
     public static MediaType fromString(String name) {
         return fromString(name, MediaType.class);
     }
@@ -45,6 +50,7 @@ public final class MediaType extends ExpandableStringEnum<MediaType> {
      * 
      * @return known MediaType values.
      */
+    @Generated
     public static Collection<MediaType> values() {
         return values(MediaType.class);
     }

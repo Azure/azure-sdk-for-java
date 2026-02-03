@@ -17,13 +17,13 @@ public class SentSharesCreateServiceInvitation {
             = new SentSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("accountName.purview.azure.com/share")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.sentsharescreatesentshareinvitation.sentsharescreateserviceinvitation
+        // BEGIN:com.azure.analytics.purview.sharing.generated.sent-shares-create-sent-share-invitation.sent-shares-create-service-invitation
         BinaryData sentShareInvitation = BinaryData.fromString(
             "{\"invitationKind\":\"Service\",\"properties\":{\"expirationDate\":null,\"targetActiveDirectoryId\":\"5DAE1226-9FAA-4D71-B8D4-87B81DFF672E\",\"targetObjectId\":\"EFA02830-BB7A-4586-B615-A6DFF19FEBBF\"}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = sentSharesClient.createSentShareInvitationWithResponse("FF4A2AAE-8755-47BB-9C00-A774B5A7006E",
                 "9F154FA4-93D1-426B-A908-A9CAC7192B21", sentShareInvitation, requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.sentsharescreatesentshareinvitation.sentsharescreateserviceinvitation
+        // END:com.azure.analytics.purview.sharing.generated.sent-shares-create-sent-share-invitation.sent-shares-create-service-invitation
     }
 }

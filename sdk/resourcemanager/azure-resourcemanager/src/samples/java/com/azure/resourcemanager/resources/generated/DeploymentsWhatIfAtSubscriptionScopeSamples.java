@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/deployments/stable/2025-04-01/examples/
      * PostDeploymentWhatIfOnSubscription.json
      */
     /**
@@ -27,7 +28,7 @@ public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
     public static void predictTemplateChangesAtSubscriptionScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
-            .serviceClient()
+            .deploymentClient()
             .getDeployments()
             .whatIfAtSubscriptionScope("my-deployment",
                 new DeploymentWhatIf().withLocation("westus")

@@ -5,6 +5,7 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -19,16 +20,19 @@ public final class Trace extends DocumentIngress {
     /*
      * Telemetry type. Types not defined in enum will get replaced with a 'Unknown' type.
      */
+    @Generated
     private DocumentType documentType = DocumentType.TRACE;
 
     /*
      * Trace message.
      */
+    @Generated
     private String message;
 
     /**
      * Creates an instance of Trace class.
      */
+    @Generated
     public Trace() {
     }
 
@@ -37,6 +41,7 @@ public final class Trace extends DocumentIngress {
      * 
      * @return the documentType value.
      */
+    @Generated
     @Override
     public DocumentType getDocumentType() {
         return this.documentType;
@@ -47,6 +52,7 @@ public final class Trace extends DocumentIngress {
      * 
      * @return the message value.
      */
+    @Generated
     public String getMessage() {
         return this.message;
     }
@@ -57,6 +63,7 @@ public final class Trace extends DocumentIngress {
      * @param message the message value to set.
      * @return the Trace object itself.
      */
+    @Generated
     public Trace setMessage(String message) {
         this.message = message;
         return this;
@@ -65,6 +72,7 @@ public final class Trace extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Trace setDocumentStreamIds(List<String> documentStreamIds) {
         super.setDocumentStreamIds(documentStreamIds);
@@ -74,6 +82,7 @@ public final class Trace extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public Trace setProperties(List<KeyValuePairString> properties) {
         super.setProperties(properties);
@@ -83,6 +92,7 @@ public final class Trace extends DocumentIngress {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -102,6 +112,7 @@ public final class Trace extends DocumentIngress {
      * JSON null.
      * @throws IOException If an error occurs while reading the Trace.
      */
+    @Generated
     public static Trace fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             Trace deserializedTrace = new Trace();

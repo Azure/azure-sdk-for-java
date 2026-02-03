@@ -5,7 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,36 +23,43 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
     /*
      * The Name property.
      */
+    @Generated
     private String name;
 
     /*
      * The Snapshot property.
      */
+    @Generated
     private String snapshot;
 
     /*
      * The Deleted property.
      */
+    @Generated
     private Boolean deleted;
 
     /*
      * The Version property.
      */
+    @Generated
     private String version;
 
     /*
      * Properties of a share.
      */
+    @Generated
     private SharePropertiesInternal properties;
 
     /*
      * Dictionary of <string>
      */
+    @Generated
     private Map<String, String> metadata;
 
     /**
      * Creates an instance of ShareItemInternal class.
      */
+    @Generated
     public ShareItemInternal() {
     }
 
@@ -61,6 +68,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -71,6 +79,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * @param name the name value to set.
      * @return the ShareItemInternal object itself.
      */
+    @Generated
     public ShareItemInternal setName(String name) {
         this.name = name;
         return this;
@@ -81,6 +90,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * 
      * @return the snapshot value.
      */
+    @Generated
     public String getSnapshot() {
         return this.snapshot;
     }
@@ -91,6 +101,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * @param snapshot the snapshot value to set.
      * @return the ShareItemInternal object itself.
      */
+    @Generated
     public ShareItemInternal setSnapshot(String snapshot) {
         this.snapshot = snapshot;
         return this;
@@ -101,6 +112,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * 
      * @return the deleted value.
      */
+    @Generated
     public Boolean isDeleted() {
         return this.deleted;
     }
@@ -111,6 +123,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * @param deleted the deleted value to set.
      * @return the ShareItemInternal object itself.
      */
+    @Generated
     public ShareItemInternal setDeleted(Boolean deleted) {
         this.deleted = deleted;
         return this;
@@ -121,6 +134,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * 
      * @return the version value.
      */
+    @Generated
     public String getVersion() {
         return this.version;
     }
@@ -131,6 +145,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * @param version the version value to set.
      * @return the ShareItemInternal object itself.
      */
+    @Generated
     public ShareItemInternal setVersion(String version) {
         this.version = version;
         return this;
@@ -141,6 +156,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * 
      * @return the properties value.
      */
+    @Generated
     public SharePropertiesInternal getProperties() {
         return this.properties;
     }
@@ -151,6 +167,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * @param properties the properties value to set.
      * @return the ShareItemInternal object itself.
      */
+    @Generated
     public ShareItemInternal setProperties(SharePropertiesInternal properties) {
         this.properties = properties;
         return this;
@@ -161,6 +178,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * 
      * @return the metadata value.
      */
+    @Generated
     public Map<String, String> getMetadata() {
         return this.metadata;
     }
@@ -171,19 +189,22 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * @param metadata the metadata value to set.
      * @return the ShareItemInternal object itself.
      */
+    @Generated
     public ShareItemInternal setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Share" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "Share" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Name", this.name);
         xmlWriter.writeStringElement("Snapshot", this.snapshot);
@@ -208,6 +229,7 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareItemInternal.
      */
+    @Generated
     public static ShareItemInternal fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -222,8 +244,9 @@ public final class ShareItemInternal implements XmlSerializable<ShareItemInterna
      * pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the ShareItemInternal.
      */
+    @Generated
     public static ShareItemInternal fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Share" : rootElementName;
+        String finalRootElementName = rootElementName == null || rootElementName.isEmpty() ? "Share" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ShareItemInternal deserializedShareItemInternal = new ShareItemInternal();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

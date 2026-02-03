@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.Snapshot;
@@ -21,19 +21,20 @@ public final class VolumeSnapshotsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"creationData\":{\"sourceId\":\"tmmjihyeozph\"},\"provisioningState\":\"Creating\",\"sourceVolumeSizeGiB\":227084746082206788,\"volumeName\":\"c\"},\"id\":\"upkvipmdsc\",\"name\":\"xqupevzhf\",\"type\":\"totxhojujb\"}";
+            = "{\"properties\":{\"creationData\":{\"sourceId\":\"ttpkiwkkbnujrywv\"},\"provisioningState\":\"Deleted\",\"sourceVolumeSizeGiB\":9175524620575954054,\"volumeName\":\"curdoiwiitht\"},\"id\":\"ubxcbihw\",\"name\":\"knfd\",\"type\":\"twjchrdg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Snapshot response = manager.volumeSnapshots()
-            .getWithResponse("ixqtn", "ttezlw", "ffiakp", "pqqmted", com.azure.core.util.Context.NONE)
+            .getWithResponse("mdscwxqupev", "hfstotxhojujbyp", "lmcuvhixb", "xyfwnylrcool",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("tmmjihyeozph", response.creationData().sourceId());
+        Assertions.assertEquals("ttpkiwkkbnujrywv", response.creationData().sourceId());
     }
 }

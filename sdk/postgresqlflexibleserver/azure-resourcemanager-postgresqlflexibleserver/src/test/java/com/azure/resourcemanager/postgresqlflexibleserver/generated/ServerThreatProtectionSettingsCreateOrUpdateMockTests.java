@@ -6,11 +6,11 @@ package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.ServerThreatProtectionSettingsModel;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.AdvancedThreatProtectionSettingsModel;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionName;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionState;
 import java.nio.charset.StandardCharsets;
@@ -23,21 +23,21 @@ public final class ServerThreatProtectionSettingsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Disabled\",\"creationTime\":\"2021-08-26T01:20:28Z\"},\"id\":\"p\",\"name\":\"ilkmk\",\"type\":\"holvdn\"}";
+            = "{\"properties\":{\"state\":\"Enabled\",\"creationTime\":\"2021-01-18T07:47:20Z\"},\"id\":\"kdlpa\",\"name\":\"zrcxfailcfxwmdbo\",\"type\":\"dfgsftufqobrj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PostgreSqlManager manager = PostgreSqlManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        ServerThreatProtectionSettingsModel response = manager.serverThreatProtectionSettings()
+        AdvancedThreatProtectionSettingsModel response = manager.serverThreatProtectionSettings()
             .define(ThreatProtectionName.DEFAULT)
-            .withExistingFlexibleServer("vqylkmqpzoyhl", "bcg")
+            .withExistingFlexibleServer("dmdqb", "pypqtgsfj")
             .withState(ThreatProtectionState.DISABLED)
             .create();
 
-        Assertions.assertEquals(ThreatProtectionState.DISABLED, response.state());
+        Assertions.assertEquals(ThreatProtectionState.ENABLED, response.state());
     }
 }

@@ -27,6 +27,11 @@ public final class ClientAuthenticationSettings implements JsonSerializable<Clie
      */
     private CustomJwtAuthenticationSettings customJwtAuthentication;
 
+    /*
+     * Authentication settings for a webhook endpoint within a Namespace resource.
+     */
+    private WebhookAuthenticationSettings webhookAuthentication;
+
     /**
      * Creates an instance of ClientAuthenticationSettings class.
      */
@@ -78,6 +83,28 @@ public final class ClientAuthenticationSettings implements JsonSerializable<Clie
     }
 
     /**
+     * Get the webhookAuthentication property: Authentication settings for a webhook endpoint within a Namespace
+     * resource.
+     * 
+     * @return the webhookAuthentication value.
+     */
+    public WebhookAuthenticationSettings webhookAuthentication() {
+        return this.webhookAuthentication;
+    }
+
+    /**
+     * Set the webhookAuthentication property: Authentication settings for a webhook endpoint within a Namespace
+     * resource.
+     * 
+     * @param webhookAuthentication the webhookAuthentication value to set.
+     * @return the ClientAuthenticationSettings object itself.
+     */
+    public ClientAuthenticationSettings withWebhookAuthentication(WebhookAuthenticationSettings webhookAuthentication) {
+        this.webhookAuthentication = webhookAuthentication;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -85,6 +112,9 @@ public final class ClientAuthenticationSettings implements JsonSerializable<Clie
     public void validate() {
         if (customJwtAuthentication() != null) {
             customJwtAuthentication().validate();
+        }
+        if (webhookAuthentication() != null) {
+            webhookAuthentication().validate();
         }
     }
 
@@ -97,6 +127,7 @@ public final class ClientAuthenticationSettings implements JsonSerializable<Clie
         jsonWriter.writeArrayField("alternativeAuthenticationNameSources", this.alternativeAuthenticationNameSources,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeJsonField("customJwtAuthentication", this.customJwtAuthentication);
+        jsonWriter.writeJsonField("webhookAuthentication", this.webhookAuthentication);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,6 +154,9 @@ public final class ClientAuthenticationSettings implements JsonSerializable<Clie
                 } else if ("customJwtAuthentication".equals(fieldName)) {
                     deserializedClientAuthenticationSettings.customJwtAuthentication
                         = CustomJwtAuthenticationSettings.fromJson(reader);
+                } else if ("webhookAuthentication".equals(fieldName)) {
+                    deserializedClientAuthenticationSettings.webhookAuthentication
+                        = WebhookAuthenticationSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

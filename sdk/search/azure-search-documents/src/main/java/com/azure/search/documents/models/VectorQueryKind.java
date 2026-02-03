@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,21 +17,25 @@ public final class VectorQueryKind extends ExpandableStringEnum<VectorQueryKind>
     /**
      * Vector query where a raw vector value is provided.
      */
+    @Generated
     public static final VectorQueryKind VECTOR = fromString("vector");
 
     /**
      * Vector query where a text value that needs to be vectorized is provided.
      */
+    @Generated
     public static final VectorQueryKind TEXT = fromString("text");
 
     /**
      * Vector query where an url that represents an image value that needs to be vectorized is provided.
      */
+    @Generated
     public static final VectorQueryKind IMAGE_URL = fromString("imageUrl");
 
     /**
      * Vector query where a base 64 encoded binary of an image that needs to be vectorized is provided.
      */
+    @Generated
     public static final VectorQueryKind IMAGE_BINARY = fromString("imageBinary");
 
     /**
@@ -38,6 +43,7 @@ public final class VectorQueryKind extends ExpandableStringEnum<VectorQueryKind>
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VectorQueryKind() {
     }
@@ -48,6 +54,7 @@ public final class VectorQueryKind extends ExpandableStringEnum<VectorQueryKind>
      * @param name a name to look for.
      * @return the corresponding VectorQueryKind.
      */
+    @Generated
     public static VectorQueryKind fromString(String name) {
         return fromString(name, VectorQueryKind.class);
     }
@@ -57,6 +64,7 @@ public final class VectorQueryKind extends ExpandableStringEnum<VectorQueryKind>
      * 
      * @return known VectorQueryKind values.
      */
+    @Generated
     public static Collection<VectorQueryKind> values() {
         return values(VectorQueryKind.class);
     }

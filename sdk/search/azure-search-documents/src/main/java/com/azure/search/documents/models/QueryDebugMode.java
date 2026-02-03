@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,26 +18,37 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
     /**
      * No query debugging information will be returned.
      */
+    @Generated
     public static final QueryDebugMode DISABLED = fromString("disabled");
 
     /**
      * Allows the user to further explore their reranked results.
      */
+    @Generated
     public static final QueryDebugMode SEMANTIC = fromString("semantic");
 
     /**
      * Allows the user to further explore their hybrid and vector query results.
      */
+    @Generated
     public static final QueryDebugMode VECTOR = fromString("vector");
 
     /**
      * Allows the user to explore the list of query rewrites generated for their search request.
      */
+    @Generated
     public static final QueryDebugMode QUERY_REWRITES = fromString("queryRewrites");
+
+    /**
+     * Allows the user to retrieve scoring information regarding vectors matched within a collection of complex types.
+     */
+    @Generated
+    public static final QueryDebugMode INNER_HITS = fromString("innerHits");
 
     /**
      * Turn on all debug options.
      */
+    @Generated
     public static final QueryDebugMode ALL = fromString("all");
 
     /**
@@ -44,6 +56,7 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public QueryDebugMode() {
     }
@@ -54,6 +67,7 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
      * @param name a name to look for.
      * @return the corresponding QueryDebugMode.
      */
+    @Generated
     public static QueryDebugMode fromString(String name) {
         return fromString(name, QueryDebugMode.class);
     }
@@ -63,6 +77,7 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
      * 
      * @return known QueryDebugMode values.
      */
+    @Generated
     public static Collection<QueryDebugMode> values() {
         return values(QueryDebugMode.class);
     }

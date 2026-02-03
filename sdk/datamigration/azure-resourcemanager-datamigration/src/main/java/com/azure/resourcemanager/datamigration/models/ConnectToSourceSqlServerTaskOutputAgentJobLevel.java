@@ -11,9 +11,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 /**
- * AgentJob level output for the task that validates connection to SQL Server and also validates source server
+ * Agent Job level output for the task that validates connection to SQL Server and also validates source server
  * requirements.
  */
 @Immutable
@@ -24,29 +25,34 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
     private String resultType = "AgentJobLevelOutput";
 
     /*
-     * AgentJob name
+     * Agent Job name
      */
     private String name;
 
     /*
-     * The type of AgentJob.
+     * The type of Agent Job.
      */
     private String jobCategory;
 
     /*
-     * The state of the original AgentJob.
+     * The state of the original Agent Job.
      */
     private Boolean isEnabled;
 
     /*
-     * The owner of the AgentJob
+     * The owner of the Agent Job
      */
     private String jobOwner;
 
     /*
-     * UTC Date and time when the AgentJob was last executed.
+     * UTC Date and time when the Agent Job was last executed.
      */
     private OffsetDateTime lastExecutedOn;
+
+    /*
+     * Validation errors
+     */
+    private List<ReportableException> validationErrors;
 
     /*
      * Information about eligibility of agent job for migration.
@@ -70,7 +76,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
     }
 
     /**
-     * Get the name property: AgentJob name.
+     * Get the name property: Agent Job name.
      * 
      * @return the name value.
      */
@@ -79,7 +85,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
     }
 
     /**
-     * Get the jobCategory property: The type of AgentJob.
+     * Get the jobCategory property: The type of Agent Job.
      * 
      * @return the jobCategory value.
      */
@@ -88,7 +94,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
     }
 
     /**
-     * Get the isEnabled property: The state of the original AgentJob.
+     * Get the isEnabled property: The state of the original Agent Job.
      * 
      * @return the isEnabled value.
      */
@@ -97,7 +103,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
     }
 
     /**
-     * Get the jobOwner property: The owner of the AgentJob.
+     * Get the jobOwner property: The owner of the Agent Job.
      * 
      * @return the jobOwner value.
      */
@@ -106,12 +112,21 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
     }
 
     /**
-     * Get the lastExecutedOn property: UTC Date and time when the AgentJob was last executed.
+     * Get the lastExecutedOn property: UTC Date and time when the Agent Job was last executed.
      * 
      * @return the lastExecutedOn value.
      */
     public OffsetDateTime lastExecutedOn() {
         return this.lastExecutedOn;
+    }
+
+    /**
+     * Get the validationErrors property: Validation errors.
+     * 
+     * @return the validationErrors value.
+     */
+    public List<ReportableException> validationErrors() {
+        return this.validationErrors;
     }
 
     /**
@@ -130,6 +145,9 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
      */
     @Override
     public void validate() {
+        if (validationErrors() != null) {
+            validationErrors().forEach(e -> e.validate());
+        }
         if (migrationEligibility() != null) {
             migrationEligibility().validate();
         }
@@ -177,6 +195,10 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
                 } else if ("lastExecutedOn".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.lastExecutedOn = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<ReportableException> validationErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.validationErrors = validationErrors;
                 } else if ("migrationEligibility".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.migrationEligibility
                         = MigrationEligibilityInfo.fromJson(reader);

@@ -18,6 +18,16 @@ public class ChatOptionsProvider {
         return options;
     }
 
+    public static CreateChatThreadOptions createThreadOptionsWithMemberMetadata(String userId1, String userId2,
+        Map<String, String> map) {
+        CreateChatThreadOptions options = new CreateChatThreadOptions("Test");
+
+        options.addParticipant(generateParticipant(userId1, "Tester 1").setMetadata(map));
+        options.addParticipant(generateParticipant(userId2, "Tester 2").setMetadata(map));
+
+        return options;
+    }
+
     public static UpdateChatThreadOptions updateThreadOptions() {
         UpdateChatThreadOptions options = new UpdateChatThreadOptions();
         options.setTopic("Update Test");

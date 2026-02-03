@@ -7,8 +7,8 @@ package com.azure.resourcemanager.mongocluster.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mongocluster.MongoClusterManager;
 import com.azure.resourcemanager.mongocluster.models.PrivateEndpointConnectionResource;
@@ -23,23 +23,23 @@ public final class PrivateEndpointConnectionsListByMongoClusterMockTests {
     @Test
     public void testListByMongoCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"zbinjeputtm\",\"ywnuzoq\",\"tiyqzrnkcqv\"],\"privateEndpoint\":{\"id\":\"whzlsicohoq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"lryav\",\"actionsRequired\":\"heun\"},\"provisioningState\":\"Failed\"},\"id\":\"gyxzk\",\"name\":\"noc\",\"type\":\"koklya\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"hxw\",\"ctyqik\",\"bbovplwzbhvgyugu\",\"svmkfssxquk\"],\"privateEndpoint\":{\"id\":\"l\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"xnkjzkdesl\",\"actionsRequired\":\"lopwiyig\"},\"provisioningState\":\"Creating\"},\"id\":\"dwzbaiue\",\"name\":\"baumnyqupedeoj\",\"type\":\"a\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         MongoClusterManager manager = MongoClusterManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndpointConnections()
-            .listByMongoCluster("agalpbuxwgipwhon", "wkgshwa", com.azure.core.util.Context.NONE);
+            .listByMongoCluster("xytxhpzxbz", "fzab", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("lryav",
+        Assertions.assertEquals("xnkjzkdesl",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("heun",
+        Assertions.assertEquals("lopwiyig",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -20,11 +21,13 @@ public final class PathList implements JsonSerializable<PathList> {
     /*
      * The paths property.
      */
+    @Generated
     private List<Path> paths;
 
     /**
      * Creates an instance of PathList class.
      */
+    @Generated
     public PathList() {
     }
 
@@ -33,6 +36,7 @@ public final class PathList implements JsonSerializable<PathList> {
      * 
      * @return the paths value.
      */
+    @Generated
     public List<Path> getPaths() {
         return this.paths;
     }
@@ -43,6 +47,7 @@ public final class PathList implements JsonSerializable<PathList> {
      * @param paths the paths value to set.
      * @return the PathList object itself.
      */
+    @Generated
     public PathList setPaths(List<Path> paths) {
         this.paths = paths;
         return this;
@@ -51,6 +56,7 @@ public final class PathList implements JsonSerializable<PathList> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -66,6 +72,7 @@ public final class PathList implements JsonSerializable<PathList> {
      * to JSON null.
      * @throws IOException If an error occurs while reading the PathList.
      */
+    @Generated
     public static PathList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PathList deserializedPathList = new PathList();

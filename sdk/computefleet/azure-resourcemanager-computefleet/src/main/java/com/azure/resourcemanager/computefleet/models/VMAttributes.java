@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -601,49 +600,6 @@ public final class VMAttributes implements JsonSerializable<VMAttributes> {
         this.excludedVMSizes = excludedVMSizes;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (vCpuCount() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property vCpuCount in model VMAttributes"));
-        } else {
-            vCpuCount().validate();
-        }
-        if (memoryInGiB() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property memoryInGiB in model VMAttributes"));
-        } else {
-            memoryInGiB().validate();
-        }
-        if (memoryInGiBPerVCpu() != null) {
-            memoryInGiBPerVCpu().validate();
-        }
-        if (localStorageInGiB() != null) {
-            localStorageInGiB().validate();
-        }
-        if (dataDiskCount() != null) {
-            dataDiskCount().validate();
-        }
-        if (networkInterfaceCount() != null) {
-            networkInterfaceCount().validate();
-        }
-        if (networkBandwidthInMbps() != null) {
-            networkBandwidthInMbps().validate();
-        }
-        if (rdmaNetworkInterfaceCount() != null) {
-            rdmaNetworkInterfaceCount().validate();
-        }
-        if (acceleratorCount() != null) {
-            acceleratorCount().validate();
-        }
-    }
-
-    private static final ClientLogger LOGGER = new ClientLogger(VMAttributes.class);
 
     /**
      * {@inheritDoc}

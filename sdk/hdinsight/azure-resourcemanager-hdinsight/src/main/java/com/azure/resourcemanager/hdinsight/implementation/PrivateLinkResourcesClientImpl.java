@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hdinsight.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateLinkResourceListResultInner;
@@ -56,7 +57,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "HDInsightManagementC")
+    @ServiceInterface(name = "HDInsightManagementClientPrivateLinkResources")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/privateLinkResources")
@@ -68,10 +69,30 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @PathParam("clusterName") String clusterName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateLinkResourceListResultInner> listByClusterSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("clusterName") String clusterName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/privateLinkResources/{privateLinkResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("clusterName") String clusterName,
+            @PathParam("privateLinkResourceName") String privateLinkResourceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HDInsight/clusters/{clusterName}/privateLinkResources/{privateLinkResourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<PrivateLinkResourceInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @PathParam("clusterName") String clusterName,
@@ -119,41 +140,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceListResultInner>> listByClusterWithResponseAsync(String resourceGroupName,
-        String clusterName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByCluster(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            this.client.getApiVersion(), clusterName, accept, context);
-    }
-
-    /**
-     * Lists the private link resources in a HDInsight cluster.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -179,7 +165,27 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceListResultInner> listByClusterWithResponse(String resourceGroupName,
         String clusterName, Context context) {
-        return listByClusterWithResponseAsync(resourceGroupName, clusterName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listByClusterSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), clusterName, accept, context);
     }
 
     /**
@@ -243,46 +249,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster.
      * @param privateLinkResourceName The name of the private link resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific private link resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
-        String privateLinkResourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (clusterName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
-        }
-        if (privateLinkResourceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            this.client.getApiVersion(), clusterName, privateLinkResourceName, accept, context);
-    }
-
-    /**
-     * Gets the specific private link resource.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster.
-     * @param privateLinkResourceName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -310,7 +276,31 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String clusterName,
         String privateLinkResourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, clusterName, privateLinkResourceName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (privateLinkResourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), clusterName, privateLinkResourceName, accept, context);
     }
 
     /**
@@ -328,4 +318,6 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     public PrivateLinkResourceInner get(String resourceGroupName, String clusterName, String privateLinkResourceName) {
         return getWithResponse(resourceGroupName, clusterName, privateLinkResourceName, Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesClientImpl.class);
 }

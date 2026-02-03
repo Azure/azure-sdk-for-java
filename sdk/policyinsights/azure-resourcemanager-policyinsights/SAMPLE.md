@@ -123,7 +123,7 @@ import java.util.Arrays;
 public final class AttestationsCreateOrUpdateAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_CreateResourceScope.json
      */
     /**
@@ -172,7 +172,7 @@ import java.util.Arrays;
 public final class AttestationsCreateOrUpdateAtResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_CreateResourceGroupScope.json
      */
     /**
@@ -220,7 +220,7 @@ import java.util.Arrays;
 public final class AttestationsCreateOrUpdateAtSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_CreateSubscriptionScope.json
      */
     /**
@@ -240,7 +240,7 @@ public final class AttestationsCreateOrUpdateAtSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_CreateSubscriptionScope_AllProperties.json
      */
     /**
@@ -279,7 +279,7 @@ public final class AttestationsCreateOrUpdateAtSubscriptionSamples {
 public final class AttestationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_DeleteResourceGroupScope.json
      */
     /**
@@ -305,7 +305,7 @@ public final class AttestationsDeleteSamples {
 public final class AttestationsDeleteAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_DeleteResourceScope.json
      */
     /**
@@ -332,7 +332,7 @@ public final class AttestationsDeleteAtResourceSamples {
 public final class AttestationsDeleteAtSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_DeleteSubscriptionScope.json
      */
     /**
@@ -357,7 +357,7 @@ public final class AttestationsDeleteAtSubscriptionSamples {
 public final class AttestationsGetAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_GetResourceScope.json
      */
     /**
@@ -384,7 +384,7 @@ public final class AttestationsGetAtResourceSamples {
 public final class AttestationsGetAtSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_GetSubscriptionScope.json
      */
     /**
@@ -409,7 +409,7 @@ public final class AttestationsGetAtSubscriptionSamples {
 public final class AttestationsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_GetResourceGroupScope.json
      */
     /**
@@ -435,7 +435,7 @@ public final class AttestationsGetByResourceGroupSamples {
 public final class AttestationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_ListSubscriptionScope.json
      */
     /**
@@ -450,7 +450,7 @@ public final class AttestationsListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_ListSubscriptionScope_WithQuery.json
      */
     /**
@@ -477,7 +477,7 @@ public final class AttestationsListSamples {
 public final class AttestationsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_ListResourceGroupScope_WithQuery.json
      */
     /**
@@ -495,7 +495,7 @@ public final class AttestationsListByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_ListResourceGroupScope.json
      */
     /**
@@ -519,7 +519,7 @@ public final class AttestationsListByResourceGroupSamples {
 public final class AttestationsListForResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_ListResourceScope_WithQuery.json
      */
     /**
@@ -539,7 +539,7 @@ public final class AttestationsListForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Attestations_ListResourceScope.json
      */
     /**
@@ -568,7 +568,7 @@ import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStatesReso
 public final class ComponentPolicyStatesListQueryResultsForPolicyDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QuerySubscriptionLevelPolicyDefinitionScope.json
      */
     /**
@@ -597,7 +597,7 @@ import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStatesReso
 public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceScopeFilterByComponentId.json
      */
     /**
@@ -616,7 +616,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryNestedResourceScope.json
      */
     /**
@@ -635,7 +635,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceScopeGroupByComponentTypeWithAggregate.json
      */
     /**
@@ -658,7 +658,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceScope.json
      */
     /**
@@ -677,7 +677,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceScopeExpandPolicyEvaluationDetails.json
      */
     /**
@@ -708,7 +708,7 @@ import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStatesReso
 public final class ComponentPolicyStatesListQueryResultsForResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceGroupScopeGroupByComponentTypeWithAggregate.json
      */
     /**
@@ -729,7 +729,7 @@ public final class ComponentPolicyStatesListQueryResultsForResourceGroupSamples 
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceGroupScope.json
      */
     /**
@@ -758,7 +758,7 @@ import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStatesReso
 public final class ComponentPolicyStatesListQueryResultsForResourceGroupLevelPolicyAssignmentSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QueryResourceGroupLevelPolicyAssignmentScope.json
      */
     /**
@@ -787,7 +787,7 @@ import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStatesReso
 public final class ComponentPolicyStatesListQueryResultsForSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QuerySubscriptionScopeGroupByComponentTypeWithAggregate.json
      */
     /**
@@ -809,7 +809,7 @@ public final class ComponentPolicyStatesListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QuerySubscriptionScope.json
      */
     /**
@@ -838,7 +838,7 @@ import com.azure.resourcemanager.policyinsights.models.ComponentPolicyStatesReso
 public final class ComponentPolicyStatesListQueryResultsForSubscriptionLevelPolicyAssignmentSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * ComponentPolicyStates_QuerySubscriptionLevelPolicyAssignmentScope.json
      */
     /**
@@ -865,7 +865,7 @@ public final class ComponentPolicyStatesListQueryResultsForSubscriptionLevelPoli
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-04-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Operations_ListOperations.json
      */
     /**
@@ -890,7 +890,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 public final class PolicyEventsListQueryResultsForManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryManagementGroupScopeNextLink.json
      */
     /**
@@ -907,7 +907,7 @@ public final class PolicyEventsListQueryResultsForManagementGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryManagementGroupScope.json
      */
     /**
@@ -935,7 +935,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 public final class PolicyEventsListQueryResultsForPolicyDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScope.json
      */
     /**
@@ -953,7 +953,7 @@ public final class PolicyEventsListQueryResultsForPolicyDefinitionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelPolicyDefinitionScopeNextLink.json
      */
     /**
@@ -982,7 +982,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 public final class PolicyEventsListQueryResultsForPolicySetDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelPolicySetDefinitionScope.json
      */
     /**
@@ -1000,7 +1000,7 @@ public final class PolicyEventsListQueryResultsForPolicySetDefinitionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelPolicySetDefinitionScopeNextLink.json
      */
     /**
@@ -1029,7 +1029,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 public final class PolicyEventsListQueryResultsForResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelResourceScope.json
      */
     /**
@@ -1047,7 +1047,7 @@ public final class PolicyEventsListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryNestedResourceScope.json
      */
     /**
@@ -1065,7 +1065,7 @@ public final class PolicyEventsListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelNestedResourceScope.json
      */
     /**
@@ -1083,7 +1083,7 @@ public final class PolicyEventsListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryResourceScope.json
      */
     /**
@@ -1100,7 +1100,7 @@ public final class PolicyEventsListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryResourceScopeExpandComponents.json
      */
     /**
@@ -1120,7 +1120,7 @@ public final class PolicyEventsListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryResourceScopeExpandComponentsGroupByWithAggregate.json
      */
     /**
@@ -1144,7 +1144,7 @@ public final class PolicyEventsListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryResourceScopeNextLink.json
      */
     /**
@@ -1173,7 +1173,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 public final class PolicyEventsListQueryResultsForResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryResourceGroupScope.json
      */
     /**
@@ -1190,7 +1190,7 @@ public final class PolicyEventsListQueryResultsForResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryResourceGroupScopeNextLink.json
      */
     /**
@@ -1219,7 +1219,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 public final class PolicyEventsListQueryResultsForResourceGroupLevelPolicyAssignmentSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryResourceGroupLevelPolicyAssignmentScope.json
      */
     /**
@@ -1237,7 +1237,7 @@ public final class PolicyEventsListQueryResultsForResourceGroupLevelPolicyAssign
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QueryResourceGroupLevelPolicyAssignmentScopeNextLink.json
      */
     /**
@@ -1267,7 +1267,7 @@ import java.time.OffsetDateTime;
 public final class PolicyEventsListQueryResultsForSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_TimeRangeSortSelectTop.json
      */
     /**
@@ -1287,7 +1287,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_FilterAndAggregateOnly.json
      */
     /**
@@ -1305,7 +1305,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_FilterAndGroupByWithoutAggregate.json
      */
     /**
@@ -1325,7 +1325,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionScopeNextLink.json
      */
     /**
@@ -1342,7 +1342,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_FilterAndMultipleGroups.json
      */
     /**
@@ -1361,7 +1361,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_FilterAndGroupByWithAggregate.json
      */
     /**
@@ -1381,7 +1381,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionScope.json
      */
     /**
@@ -1409,7 +1409,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyEventsResourceType;
 public final class PolicyEventsListQueryResultsForSubscriptionLevelPolicyAssignmentSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelPolicyAssignmentScope.json
      */
     /**
@@ -1427,7 +1427,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionLevelPolicyAssignm
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyEvents_QuerySubscriptionLevelPolicyAssignmentScopeNextLink.json
      */
     /**
@@ -1454,7 +1454,7 @@ public final class PolicyEventsListQueryResultsForSubscriptionLevelPolicyAssignm
 public final class PolicyMetadataGetResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyMetadata_GetResource.json
      */
     /**
@@ -1478,7 +1478,7 @@ public final class PolicyMetadataGetResourceSamples {
 public final class PolicyMetadataListSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyMetadata_List.json
      */
     /**
@@ -1493,7 +1493,7 @@ public final class PolicyMetadataListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyMetadata_List_WithTop.json
      */
     /**
@@ -1521,7 +1521,7 @@ import java.util.Arrays;
 public final class PolicyRestrictionsCheckAtManagementGroupScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyRestrictions_CheckAtManagementGroupScope.json
      */
     /**
@@ -1556,7 +1556,7 @@ import java.util.Arrays;
 public final class PolicyRestrictionsCheckAtResourceGroupScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyRestrictions_CheckAtResourceGroupScope.json
      */
     /**
@@ -1581,6 +1581,34 @@ public final class PolicyRestrictionsCheckAtResourceGroupScopeSamples {
                         new PendingField().withField("tags"))),
                 com.azure.core.util.Context.NONE);
     }
+
+    /*
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
+     * PolicyRestrictions_CheckAtResourceGroupScopeIncludeAuditEffect.json
+     */
+    /**
+     * Sample code: Check policy restrictions at resource group scope including audit effect.
+     * 
+     * @param manager Entry point to PolicyInsightsManager.
+     */
+    public static void checkPolicyRestrictionsAtResourceGroupScopeIncludingAuditEffect(
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) throws IOException {
+        manager.policyRestrictions()
+            .checkAtResourceGroupScopeWithResponse("vmRg", new CheckRestrictionsRequest()
+                .withResourceDetails(new CheckRestrictionsResourceDetails()
+                    .withResourceContent(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"type\":\"Microsoft.Compute/virtualMachines\",\"properties\":{\"priority\":\"Spot\"}}",
+                            Object.class, SerializerEncoding.JSON))
+                    .withApiVersion("2019-12-01"))
+                .withPendingFields(
+                    Arrays.asList(new PendingField().withField("name").withValues(Arrays.asList("myVMName")),
+                        new PendingField().withField("location")
+                            .withValues(Arrays.asList("eastus", "westus", "westus2", "westeurope")),
+                        new PendingField().withField("tags")))
+                .withIncludeAuditEffect(true), com.azure.core.util.Context.NONE);
+    }
 }
 ```
 
@@ -1601,7 +1629,7 @@ import java.util.Arrays;
 public final class PolicyRestrictionsCheckAtSubscriptionScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyRestrictions_CheckAtSubscriptionScope.json
      */
     /**
@@ -1626,6 +1654,34 @@ public final class PolicyRestrictionsCheckAtSubscriptionScopeSamples {
                         new PendingField().withField("tags"))),
                 com.azure.core.util.Context.NONE);
     }
+
+    /*
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
+     * PolicyRestrictions_CheckAtSubscriptionScopeIncludeAuditEffect.json
+     */
+    /**
+     * Sample code: Check policy restrictions at subscription scope including audit effect.
+     * 
+     * @param manager Entry point to PolicyInsightsManager.
+     */
+    public static void checkPolicyRestrictionsAtSubscriptionScopeIncludingAuditEffect(
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) throws IOException {
+        manager.policyRestrictions()
+            .checkAtSubscriptionScopeWithResponse(new CheckRestrictionsRequest()
+                .withResourceDetails(new CheckRestrictionsResourceDetails()
+                    .withResourceContent(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"type\":\"Microsoft.Compute/virtualMachines\",\"properties\":{\"priority\":\"Spot\"}}",
+                            Object.class, SerializerEncoding.JSON))
+                    .withApiVersion("2019-12-01"))
+                .withPendingFields(
+                    Arrays.asList(new PendingField().withField("name").withValues(Arrays.asList("myVMName")),
+                        new PendingField().withField("location")
+                            .withValues(Arrays.asList("eastus", "westus", "westus2", "westeurope")),
+                        new PendingField().withField("tags")))
+                .withIncludeAuditEffect(true), com.azure.core.util.Context.NONE);
+    }
 }
 ```
 
@@ -1640,7 +1696,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
 public final class PolicyStatesListQueryResultsForManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryManagementGroupScope.json
      */
     /**
@@ -1657,7 +1713,7 @@ public final class PolicyStatesListQueryResultsForManagementGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryManagementGroupScopeNextLink.json
      */
     /**
@@ -1685,7 +1741,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
 public final class PolicyStatesListQueryResultsForPolicyDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionLevelPolicyDefinitionScope.json
      */
     /**
@@ -1703,7 +1759,7 @@ public final class PolicyStatesListQueryResultsForPolicyDefinitionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionLevelPolicyDefinitionScopeNextLink.json
      */
     /**
@@ -1732,7 +1788,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
 public final class PolicyStatesListQueryResultsForPolicySetDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionLevelPolicySetDefinitionScopeNextLink.json
      */
     /**
@@ -1750,7 +1806,7 @@ public final class PolicyStatesListQueryResultsForPolicySetDefinitionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionLevelPolicySetDefinitionScope.json
      */
     /**
@@ -1779,7 +1835,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
 public final class PolicyStatesListQueryResultsForResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceScopeExpandPolicyEvaluationDetails.json
      */
     /**
@@ -1798,7 +1854,7 @@ public final class PolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceScopeNextLink.json
      */
     /**
@@ -1816,7 +1872,7 @@ public final class PolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionLevelNestedResourceScope.json
      */
     /**
@@ -1834,7 +1890,7 @@ public final class PolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceScopeExpandComponents.json
      */
     /**
@@ -1855,7 +1911,7 @@ public final class PolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceScopeExpandComponentsGroupByWithAggregate.json
      */
     /**
@@ -1879,7 +1935,7 @@ public final class PolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionLevelResourceScope.json
      */
     /**
@@ -1897,7 +1953,7 @@ public final class PolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceScope.json
      */
     /**
@@ -1915,7 +1971,7 @@ public final class PolicyStatesListQueryResultsForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryNestedResourceScope.json
      */
     /**
@@ -1944,7 +2000,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
 public final class PolicyStatesListQueryResultsForResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceGroupScopeNextLink.json
      */
     /**
@@ -1962,7 +2018,7 @@ public final class PolicyStatesListQueryResultsForResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceGroupScope.json
      */
     /**
@@ -1990,7 +2046,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
 public final class PolicyStatesListQueryResultsForResourceGroupLevelPolicyAssignmentSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceGroupLevelPolicyAssignmentScopeNextLink.json
      */
     /**
@@ -2008,7 +2064,7 @@ public final class PolicyStatesListQueryResultsForResourceGroupLevelPolicyAssign
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QueryResourceGroupLevelPolicyAssignmentScope.json
      */
     /**
@@ -2038,7 +2094,7 @@ import java.time.OffsetDateTime;
 public final class PolicyStatesListQueryResultsForSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionScope.json
      */
     /**
@@ -2055,7 +2111,7 @@ public final class PolicyStatesListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionScopeNextLink.json
      */
     /**
@@ -2072,7 +2128,7 @@ public final class PolicyStatesListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_TimeRangeSortSelectTop.json
      */
     /**
@@ -2092,7 +2148,7 @@ public final class PolicyStatesListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_FilterAndAggregateOnly.json
      */
     /**
@@ -2109,7 +2165,7 @@ public final class PolicyStatesListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_FilterAndGroupByWithoutAggregate.json
      */
     /**
@@ -2129,7 +2185,7 @@ public final class PolicyStatesListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_FilterAndMultipleGroups.json
      */
     /**
@@ -2147,7 +2203,7 @@ public final class PolicyStatesListQueryResultsForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_FilterAndGroupByWithAggregate.json
      */
     /**
@@ -2178,7 +2234,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesResource;
 public final class PolicyStatesListQueryResultsForSubscriptionLevelPolicyAssignmentSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionLevelPolicyAssignmentScopeNextLink.json
      */
     /**
@@ -2196,7 +2252,7 @@ public final class PolicyStatesListQueryResultsForSubscriptionLevelPolicyAssignm
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_QuerySubscriptionLevelPolicyAssignmentScope.json
      */
     /**
@@ -2226,7 +2282,7 @@ import java.time.OffsetDateTime;
 public final class PolicyStatesSummarizeForManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeManagementGroupScope.json
      */
     /**
@@ -2256,7 +2312,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResour
 public final class PolicyStatesSummarizeForPolicyDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeSubscriptionLevelPolicyDefinitionScope.json
      */
     /**
@@ -2286,7 +2342,7 @@ import java.time.OffsetDateTime;
 public final class PolicyStatesSummarizeForPolicySetDefinitionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeSubscriptionLevelPolicySetDefinitionScope.json
      */
     /**
@@ -2316,7 +2372,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResour
 public final class PolicyStatesSummarizeForResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeResourceScope.json
      */
     /**
@@ -2345,7 +2401,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResour
 public final class PolicyStatesSummarizeForResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeResourceGroupScope.json
      */
     /**
@@ -2374,7 +2430,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResour
 public final class PolicyStatesSummarizeForResourceGroupLevelPolicyAssignmentSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeResourceGroupLevelPolicyAssignmentScope.json
      */
     /**
@@ -2403,7 +2459,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResour
 public final class PolicyStatesSummarizeForSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeSubscriptionScopeForPolicyGroup.json
      */
     /**
@@ -2421,7 +2477,7 @@ public final class PolicyStatesSummarizeForSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeSubscriptionScope.json
      */
     /**
@@ -2449,7 +2505,7 @@ import com.azure.resourcemanager.policyinsights.models.PolicyStatesSummaryResour
 public final class PolicyStatesSummarizeForSubscriptionLevelPolicyAssignmentSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_SummarizeSubscriptionLevelPolicyAssignmentScope.json
      */
     /**
@@ -2476,7 +2532,7 @@ public final class PolicyStatesSummarizeForSubscriptionLevelPolicyAssignmentSamp
 public final class PolicyStatesTriggerResourceGroupEvaluationSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_TriggerResourceGroupEvaluation.json
      */
     /**
@@ -2502,7 +2558,7 @@ public final class PolicyStatesTriggerResourceGroupEvaluationSamples {
 public final class PolicyStatesTriggerSubscriptionEvaluationSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2019-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyStates_TriggerSubscriptionEvaluation.json
      */
     /**
@@ -2713,7 +2769,7 @@ public final class PolicyTrackedResourcesListQueryResultsForSubscriptionSamples 
 public final class RemediationsCancelAtManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CancelManagementGroupScope.json
      */
     /**
@@ -2738,7 +2794,7 @@ public final class RemediationsCancelAtManagementGroupSamples {
 public final class RemediationsCancelAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CancelResourceScope.json
      */
     /**
@@ -2765,7 +2821,7 @@ public final class RemediationsCancelAtResourceSamples {
 public final class RemediationsCancelAtResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CancelResourceGroupScope.json
      */
     /**
@@ -2790,7 +2846,7 @@ public final class RemediationsCancelAtResourceGroupSamples {
 public final class RemediationsCancelAtSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CancelSubscriptionScope.json
      */
     /**
@@ -2816,7 +2872,7 @@ import com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner;
 public final class RemediationsCreateOrUpdateAtManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CreateManagementGroupScope.json
      */
     /**
@@ -2846,7 +2902,7 @@ import com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner;
 public final class RemediationsCreateOrUpdateAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CreateResourceScope.json
      */
     /**
@@ -2876,7 +2932,7 @@ public final class RemediationsCreateOrUpdateAtResourceSamples {
 public final class RemediationsCreateOrUpdateAtResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CreateResourceGroupScope.json
      */
     /**
@@ -2911,7 +2967,7 @@ import java.util.Arrays;
 public final class RemediationsCreateOrUpdateAtSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CreateSubscriptionScope.json
      */
     /**
@@ -2930,7 +2986,7 @@ public final class RemediationsCreateOrUpdateAtSubscriptionSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_CreateSubscriptionScope_AllProperties.json
      */
     /**
@@ -2952,6 +3008,38 @@ public final class RemediationsCreateOrUpdateAtSubscriptionSamples {
                     .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(0.1F)),
                 com.azure.core.util.Context.NONE);
     }
+
+    /*
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
+     * Remediations_CreateSubscriptionScope_ResourceIdsFilter.json
+     */
+    /**
+     * Sample code: Create remediation at subscription scope with resourceIds filter.
+     * 
+     * @param manager Entry point to PolicyInsightsManager.
+     */
+    public static void createRemediationAtSubscriptionScopeWithResourceIdsFilter(
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
+        manager.remediations()
+            .createOrUpdateAtSubscriptionWithResponse("storageRemediation", new RemediationInner()
+                .withPolicyAssignmentId(
+                    "/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/providers/microsoft.authorization/policyassignments/b101830944f246d8a14088c5")
+                .withPolicyDefinitionReferenceId("8c8fa9e4")
+                .withResourceDiscoveryMode(ResourceDiscoveryMode.EXISTING_NON_COMPLIANT)
+                .withFilters(new RemediationFilters().withLocations(Arrays.asList("eastus", "westus"))
+                    .withResourceIds(Arrays.asList(
+                        "/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourceGroups/res2627/providers/Microsoft.Storage/storageAccounts/sto1125",
+                        "/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourceGroups/testcmk3/providers/Microsoft.Storage/storageAccounts/sto3699",
+                        "/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourceGroups/res9407/providers/Microsoft.Storage/storageAccounts/sto8596",
+                        "/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourceGroups/testcmk3/providers/Microsoft.Storage/storageAccounts/sto6637",
+                        "/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourceGroups/res8186/providers/Microsoft.Storage/storageAccounts/sto834",
+                        "/subscriptions/35ee058e-5fa0-414c-8145-3ebb8d09b6e2/resourceGroups/testcmk3/providers/Microsoft.Storage/storageAccounts/sto9174")))
+                .withResourceCount(42)
+                .withParallelDeployments(6)
+                .withFailureThreshold(new RemediationPropertiesFailureThreshold().withPercentage(0.1F)),
+                com.azure.core.util.Context.NONE);
+    }
 }
 ```
 
@@ -2964,7 +3052,7 @@ public final class RemediationsCreateOrUpdateAtSubscriptionSamples {
 public final class RemediationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_DeleteResourceGroupScope.json
      */
     /**
@@ -2990,7 +3078,7 @@ public final class RemediationsDeleteSamples {
 public final class RemediationsDeleteAtManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_DeleteManagementGroupScope.json
      */
     /**
@@ -3015,7 +3103,7 @@ public final class RemediationsDeleteAtManagementGroupSamples {
 public final class RemediationsDeleteAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_DeleteResourceScope.json
      */
     /**
@@ -3042,7 +3130,7 @@ public final class RemediationsDeleteAtResourceSamples {
 public final class RemediationsDeleteAtSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_DeleteSubscriptionScope.json
      */
     /**
@@ -3066,7 +3154,7 @@ public final class RemediationsDeleteAtSubscriptionSamples {
 public final class RemediationsGetAtManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_GetManagementGroupScope.json
      */
     /**
@@ -3091,7 +3179,7 @@ public final class RemediationsGetAtManagementGroupSamples {
 public final class RemediationsGetAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_GetResourceScope.json
      */
     /**
@@ -3118,7 +3206,7 @@ public final class RemediationsGetAtResourceSamples {
 public final class RemediationsGetAtSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_GetSubscriptionScope.json
      */
     /**
@@ -3142,7 +3230,7 @@ public final class RemediationsGetAtSubscriptionSamples {
 public final class RemediationsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_GetResourceGroupScope.json
      */
     /**
@@ -3167,7 +3255,7 @@ public final class RemediationsGetByResourceGroupSamples {
 public final class RemediationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListSubscriptionScope_WithQuery.json
      */
     /**
@@ -3185,7 +3273,7 @@ public final class RemediationsListSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListSubscriptionScope.json
      */
     /**
@@ -3209,7 +3297,7 @@ public final class RemediationsListSamples {
 public final class RemediationsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListResourceGroupScope_WithQuery.json
      */
     /**
@@ -3227,7 +3315,7 @@ public final class RemediationsListByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListResourceGroupScope.json
      */
     /**
@@ -3251,7 +3339,7 @@ public final class RemediationsListByResourceGroupSamples {
 public final class RemediationsListDeploymentsAtManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListDeploymentsManagementGroupScope.json
      */
     /**
@@ -3276,7 +3364,7 @@ public final class RemediationsListDeploymentsAtManagementGroupSamples {
 public final class RemediationsListDeploymentsAtResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListDeploymentsResourceScope.json
      */
     /**
@@ -3303,7 +3391,7 @@ public final class RemediationsListDeploymentsAtResourceSamples {
 public final class RemediationsListDeploymentsAtResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListDeploymentsResourceGroupScope.json
      */
     /**
@@ -3328,7 +3416,7 @@ public final class RemediationsListDeploymentsAtResourceGroupSamples {
 public final class RemediationsListDeploymentsAtSubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListDeploymentsSubscriptionScope.json
      */
     /**
@@ -3352,7 +3440,7 @@ public final class RemediationsListDeploymentsAtSubscriptionSamples {
 public final class RemediationsListForManagementGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListManagementGroupScope.json
      */
     /**
@@ -3367,7 +3455,7 @@ public final class RemediationsListForManagementGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListManagementGroupScope_WithQuery.json
      */
     /**
@@ -3394,7 +3482,7 @@ public final class RemediationsListForManagementGroupSamples {
 public final class RemediationsListForResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListResourceScope.json
      */
     /**
@@ -3412,7 +3500,7 @@ public final class RemediationsListForResourceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-10-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * Remediations_ListResourceScope_WithQuery.json
      */
     /**

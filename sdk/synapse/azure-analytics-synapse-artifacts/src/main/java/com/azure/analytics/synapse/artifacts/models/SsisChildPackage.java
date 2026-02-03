@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,26 +20,31 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
     /*
      * Path for embedded child package. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object packagePath;
 
     /*
      * Name for embedded child package.
      */
+    @Generated
     private String packageName;
 
     /*
      * Content for embedded child package. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object packageContent;
 
     /*
      * Last modified date for embedded child package.
      */
+    @Generated
     private String packageLastModifiedDate;
 
     /**
      * Creates an instance of SsisChildPackage class.
      */
+    @Generated
     public SsisChildPackage() {
     }
 
@@ -48,6 +54,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * 
      * @return the packagePath value.
      */
+    @Generated
     public Object getPackagePath() {
         return this.packagePath;
     }
@@ -59,6 +66,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * @param packagePath the packagePath value to set.
      * @return the SsisChildPackage object itself.
      */
+    @Generated
     public SsisChildPackage setPackagePath(Object packagePath) {
         this.packagePath = packagePath;
         return this;
@@ -69,6 +77,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * 
      * @return the packageName value.
      */
+    @Generated
     public String getPackageName() {
         return this.packageName;
     }
@@ -79,6 +88,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * @param packageName the packageName value to set.
      * @return the SsisChildPackage object itself.
      */
+    @Generated
     public SsisChildPackage setPackageName(String packageName) {
         this.packageName = packageName;
         return this;
@@ -90,6 +100,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * 
      * @return the packageContent value.
      */
+    @Generated
     public Object getPackageContent() {
         return this.packageContent;
     }
@@ -101,6 +112,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * @param packageContent the packageContent value to set.
      * @return the SsisChildPackage object itself.
      */
+    @Generated
     public SsisChildPackage setPackageContent(Object packageContent) {
         this.packageContent = packageContent;
         return this;
@@ -111,6 +123,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * 
      * @return the packageLastModifiedDate value.
      */
+    @Generated
     public String getPackageLastModifiedDate() {
         return this.packageLastModifiedDate;
     }
@@ -121,6 +134,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * @param packageLastModifiedDate the packageLastModifiedDate value to set.
      * @return the SsisChildPackage object itself.
      */
+    @Generated
     public SsisChildPackage setPackageLastModifiedDate(String packageLastModifiedDate) {
         this.packageLastModifiedDate = packageLastModifiedDate;
         return this;
@@ -129,6 +143,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -148,6 +163,7 @@ public final class SsisChildPackage implements JsonSerializable<SsisChildPackage
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SsisChildPackage.
      */
+    @Generated
     public static SsisChildPackage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SsisChildPackage deserializedSsisChildPackage = new SsisChildPackage();

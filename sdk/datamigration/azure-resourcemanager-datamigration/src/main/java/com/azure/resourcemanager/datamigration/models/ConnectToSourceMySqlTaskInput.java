@@ -32,6 +32,11 @@ public final class ConnectToSourceMySqlTaskInput implements JsonSerializable<Con
      */
     private ServerLevelPermissionsGroup checkPermissionsGroup;
 
+    /*
+     * Flag for whether or not the migration is offline
+     */
+    private Boolean isOfflineMigration;
+
     /**
      * Creates an instance of ConnectToSourceMySqlTaskInput class.
      */
@@ -99,6 +104,26 @@ public final class ConnectToSourceMySqlTaskInput implements JsonSerializable<Con
     }
 
     /**
+     * Get the isOfflineMigration property: Flag for whether or not the migration is offline.
+     * 
+     * @return the isOfflineMigration value.
+     */
+    public Boolean isOfflineMigration() {
+        return this.isOfflineMigration;
+    }
+
+    /**
+     * Set the isOfflineMigration property: Flag for whether or not the migration is offline.
+     * 
+     * @param isOfflineMigration the isOfflineMigration value to set.
+     * @return the ConnectToSourceMySqlTaskInput object itself.
+     */
+    public ConnectToSourceMySqlTaskInput withIsOfflineMigration(Boolean isOfflineMigration) {
+        this.isOfflineMigration = isOfflineMigration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -126,6 +151,7 @@ public final class ConnectToSourceMySqlTaskInput implements JsonSerializable<Con
             this.targetPlatform == null ? null : this.targetPlatform.toString());
         jsonWriter.writeStringField("checkPermissionsGroup",
             this.checkPermissionsGroup == null ? null : this.checkPermissionsGroup.toString());
+        jsonWriter.writeBooleanField("isOfflineMigration", this.isOfflineMigration);
         return jsonWriter.writeEndObject();
     }
 
@@ -155,6 +181,9 @@ public final class ConnectToSourceMySqlTaskInput implements JsonSerializable<Con
                 } else if ("checkPermissionsGroup".equals(fieldName)) {
                     deserializedConnectToSourceMySqlTaskInput.checkPermissionsGroup
                         = ServerLevelPermissionsGroup.fromString(reader.getString());
+                } else if ("isOfflineMigration".equals(fieldName)) {
+                    deserializedConnectToSourceMySqlTaskInput.isOfflineMigration
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

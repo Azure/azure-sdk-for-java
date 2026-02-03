@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,11 +17,13 @@ public final class VectorSearchAlgorithmKind extends ExpandableStringEnum<Vector
     /**
      * HNSW (Hierarchical Navigable Small World), a type of approximate nearest neighbors algorithm.
      */
+    @Generated
     public static final VectorSearchAlgorithmKind HNSW = fromString("hnsw");
 
     /**
      * Exhaustive KNN algorithm which will perform brute-force search.
      */
+    @Generated
     public static final VectorSearchAlgorithmKind EXHAUSTIVE_KNN = fromString("exhaustiveKnn");
 
     /**
@@ -28,6 +31,7 @@ public final class VectorSearchAlgorithmKind extends ExpandableStringEnum<Vector
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VectorSearchAlgorithmKind() {
     }
@@ -38,6 +42,7 @@ public final class VectorSearchAlgorithmKind extends ExpandableStringEnum<Vector
      * @param name a name to look for.
      * @return the corresponding VectorSearchAlgorithmKind.
      */
+    @Generated
     public static VectorSearchAlgorithmKind fromString(String name) {
         return fromString(name, VectorSearchAlgorithmKind.class);
     }
@@ -47,6 +52,7 @@ public final class VectorSearchAlgorithmKind extends ExpandableStringEnum<Vector
      * 
      * @return known VectorSearchAlgorithmKind values.
      */
+    @Generated
     public static Collection<VectorSearchAlgorithmKind> values() {
         return values(VectorSearchAlgorithmKind.class);
     }

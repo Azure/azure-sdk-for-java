@@ -1,14 +1,3 @@
-- [Azure identity authentication extensions plugin library for Java](#azure-identity-authentication-extensions-plugin-library-for-java)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-  - [Key concepts](#key-concepts)
-  - [Architecture](#architecture)
-    - [Authenticating with JDBC](#authenticating-with-jdbc)
-  - [Examples](#examples)
-  - [Troubleshooting](#troubleshooting)
-  - [Next steps](#next-steps)
-  - [Contributing](#contributing)
-    
 # Azure identity authentication extensions plugin library for Java
 
 This package contains authentication extensions to get a token from Microsoft Entra ID for Azure services, like Azure Database for MySQL.
@@ -33,7 +22,7 @@ token as a password to connect with MySQL.
 ### Authenticating with JDBC
 
 This picture shows how the JDBC authentication plugins provided by Azure Identity Extensions authenticate with managed identity.
-![Architecture](img/passwordless-connections-from-java-apps-to-data-services.jpg)
+![Architecture](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/identity/azure-identity-extensions/img/passwordless-connections-from-java-apps-to-data-services.jpg)
 
 ## Examples
 For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for MySQL](https://aka.ms/passwordless/quickstart/mysql) and [Quickstart:Use Java and JDBC with Azure Database for PostgreSQL](https://aka.ms/passwordless/quickstart/postgresql).

@@ -21,7 +21,7 @@ import java.util.Arrays;
 public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPerformConnectivityCheck.json
      */
     /**
@@ -41,7 +41,7 @@ public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPerformConnectivityCheckHttpConnect.json
      */
     /**
@@ -59,7 +59,8 @@ public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
                 .withProtocolConfiguration(new ConnectivityCheckRequestProtocolConfiguration().withHttpConfiguration(
                     new ConnectivityCheckRequestProtocolConfigurationHttpConfiguration().withMethod(Method.GET)
                         .withValidStatusCodes(Arrays.asList(200L, 204L))
-                        .withHeaders(Arrays.asList(new HttpHeader().withName("Authorization").withValue("******"))))),
+                        .withHeaders(Arrays
+                            .asList(new HttpHeader().withName("Authorization").withValue("Bearer myPreciousToken"))))),
                 com.azure.core.util.Context.NONE);
     }
 }

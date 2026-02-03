@@ -37,6 +37,11 @@ public final class CertificateProvisioningState extends ExpandableStringEnum<Cer
     public static final CertificateProvisioningState PENDING = fromString("Pending");
 
     /**
+     * Static value Deleting for CertificateProvisioningState.
+     */
+    public static final CertificateProvisioningState DELETING = fromString("Deleting");
+
+    /**
      * Creates a new instance of CertificateProvisioningState value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

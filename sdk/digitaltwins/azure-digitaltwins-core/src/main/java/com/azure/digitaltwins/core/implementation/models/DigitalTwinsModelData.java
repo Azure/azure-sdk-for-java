@@ -5,6 +5,7 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -23,32 +24,38 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
     /*
      * A language map that contains the localized display names as specified in the model definition.
      */
+    @Generated
     private Map<String, String> displayName;
 
     /*
      * A language map that contains the localized descriptions as specified in the model definition.
      */
+    @Generated
     private Map<String, String> description;
 
     /*
      * The id of the model as specified in the model definition.
      */
+    @Generated
     private final String id;
 
     /*
      * The time the model was uploaded to the service.
      */
+    @Generated
     private OffsetDateTime uploadTime;
 
     /*
      * Indicates if the model is decommissioned. Decommissioned models cannot be referenced by newly created digital
      * twins.
      */
+    @Generated
     private Boolean decommissioned;
 
     /*
      * The model definition.
      */
+    @Generated
     private Object model;
 
     /**
@@ -56,6 +63,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * 
      * @param id the id value to set.
      */
+    @Generated
     public DigitalTwinsModelData(String id) {
         this.id = id;
     }
@@ -66,6 +74,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * 
      * @return the displayName value.
      */
+    @Generated
     public Map<String, String> getDisplayName() {
         return this.displayName;
     }
@@ -77,6 +86,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * @param displayName the displayName value to set.
      * @return the DigitalTwinsModelData object itself.
      */
+    @Generated
     public DigitalTwinsModelData setDisplayName(Map<String, String> displayName) {
         this.displayName = displayName;
         return this;
@@ -88,6 +98,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * 
      * @return the description value.
      */
+    @Generated
     public Map<String, String> getDescription() {
         return this.description;
     }
@@ -99,6 +110,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * @param description the description value to set.
      * @return the DigitalTwinsModelData object itself.
      */
+    @Generated
     public DigitalTwinsModelData setDescription(Map<String, String> description) {
         this.description = description;
         return this;
@@ -109,6 +121,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -118,6 +131,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * 
      * @return the uploadTime value.
      */
+    @Generated
     public OffsetDateTime getUploadTime() {
         return this.uploadTime;
     }
@@ -128,6 +142,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * @param uploadTime the uploadTime value to set.
      * @return the DigitalTwinsModelData object itself.
      */
+    @Generated
     public DigitalTwinsModelData setUploadTime(OffsetDateTime uploadTime) {
         this.uploadTime = uploadTime;
         return this;
@@ -139,6 +154,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * 
      * @return the decommissioned value.
      */
+    @Generated
     public Boolean isDecommissioned() {
         return this.decommissioned;
     }
@@ -150,6 +166,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * @param decommissioned the decommissioned value to set.
      * @return the DigitalTwinsModelData object itself.
      */
+    @Generated
     public DigitalTwinsModelData setDecommissioned(Boolean decommissioned) {
         this.decommissioned = decommissioned;
         return this;
@@ -160,6 +177,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * 
      * @return the model value.
      */
+    @Generated
     public Object getModel() {
         return this.model;
     }
@@ -170,6 +188,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * @param model the model value to set.
      * @return the DigitalTwinsModelData object itself.
      */
+    @Generated
     public DigitalTwinsModelData setModel(Object model) {
         this.model = model;
         return this;
@@ -178,6 +197,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -187,7 +207,9 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
         jsonWriter.writeStringField("uploadTime",
             this.uploadTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.uploadTime));
         jsonWriter.writeBooleanField("decommissioned", this.decommissioned);
-        jsonWriter.writeUntypedField("model", this.model);
+        if (this.model != null) {
+            jsonWriter.writeUntypedField("model", this.model);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -200,6 +222,7 @@ public final class DigitalTwinsModelData implements JsonSerializable<DigitalTwin
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the DigitalTwinsModelData.
      */
+    @Generated
     public static DigitalTwinsModelData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

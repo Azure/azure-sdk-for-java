@@ -6,7 +6,6 @@ package com.azure.resourcemanager.computefleet.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -64,6 +63,23 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
      * Specifies the ID which uniquely identifies a Compute Fleet.
      */
     private String uniqueId;
+
+    /*
+     * Mode of the Fleet.
+     */
+    private FleetMode mode;
+
+    /*
+     * Specifies capacity type for Fleet Regular and Spot priority profiles.
+     * capacityType is an immutable property. Once set during Fleet creation, it cannot be updated.
+     * Specifying different capacity type for Fleet Regular and Spot priority profiles is not allowed.
+     */
+    private CapacityType capacityType;
+
+    /*
+     * Zone Allocation Policy for Fleet.
+     */
+    private ZoneAllocationPolicy zoneAllocationPolicy;
 
     /**
      * Creates an instance of FleetProperties class.
@@ -221,38 +237,68 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
     }
 
     /**
-     * Validates the instance.
+     * Get the mode property: Mode of the Fleet.
      * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the mode value.
      */
-    public void validate() {
-        if (spotPriorityProfile() != null) {
-            spotPriorityProfile().validate();
-        }
-        if (regularPriorityProfile() != null) {
-            regularPriorityProfile().validate();
-        }
-        if (vmSizesProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property vmSizesProfile in model FleetProperties"));
-        } else {
-            vmSizesProfile().forEach(e -> e.validate());
-        }
-        if (vmAttributes() != null) {
-            vmAttributes().validate();
-        }
-        if (additionalLocationsProfile() != null) {
-            additionalLocationsProfile().validate();
-        }
-        if (computeProfile() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property computeProfile in model FleetProperties"));
-        } else {
-            computeProfile().validate();
-        }
+    public FleetMode mode() {
+        return this.mode;
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(FleetProperties.class);
+    /**
+     * Set the mode property: Mode of the Fleet.
+     * 
+     * @param mode the mode value to set.
+     * @return the FleetProperties object itself.
+     */
+    public FleetProperties withMode(FleetMode mode) {
+        this.mode = mode;
+        return this;
+    }
+
+    /**
+     * Get the capacityType property: Specifies capacity type for Fleet Regular and Spot priority profiles.
+     * capacityType is an immutable property. Once set during Fleet creation, it cannot be updated.
+     * Specifying different capacity type for Fleet Regular and Spot priority profiles is not allowed.
+     * 
+     * @return the capacityType value.
+     */
+    public CapacityType capacityType() {
+        return this.capacityType;
+    }
+
+    /**
+     * Set the capacityType property: Specifies capacity type for Fleet Regular and Spot priority profiles.
+     * capacityType is an immutable property. Once set during Fleet creation, it cannot be updated.
+     * Specifying different capacity type for Fleet Regular and Spot priority profiles is not allowed.
+     * 
+     * @param capacityType the capacityType value to set.
+     * @return the FleetProperties object itself.
+     */
+    public FleetProperties withCapacityType(CapacityType capacityType) {
+        this.capacityType = capacityType;
+        return this;
+    }
+
+    /**
+     * Get the zoneAllocationPolicy property: Zone Allocation Policy for Fleet.
+     * 
+     * @return the zoneAllocationPolicy value.
+     */
+    public ZoneAllocationPolicy zoneAllocationPolicy() {
+        return this.zoneAllocationPolicy;
+    }
+
+    /**
+     * Set the zoneAllocationPolicy property: Zone Allocation Policy for Fleet.
+     * 
+     * @param zoneAllocationPolicy the zoneAllocationPolicy value to set.
+     * @return the FleetProperties object itself.
+     */
+    public FleetProperties withZoneAllocationPolicy(ZoneAllocationPolicy zoneAllocationPolicy) {
+        this.zoneAllocationPolicy = zoneAllocationPolicy;
+        return this;
+    }
 
     /**
      * {@inheritDoc}
@@ -267,6 +313,9 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
         jsonWriter.writeJsonField("regularPriorityProfile", this.regularPriorityProfile);
         jsonWriter.writeJsonField("vmAttributes", this.vmAttributes);
         jsonWriter.writeJsonField("additionalLocationsProfile", this.additionalLocationsProfile);
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("capacityType", this.capacityType == null ? null : this.capacityType.toString());
+        jsonWriter.writeJsonField("zoneAllocationPolicy", this.zoneAllocationPolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -307,6 +356,12 @@ public final class FleetProperties implements JsonSerializable<FleetProperties> 
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("uniqueId".equals(fieldName)) {
                     deserializedFleetProperties.uniqueId = reader.getString();
+                } else if ("mode".equals(fieldName)) {
+                    deserializedFleetProperties.mode = FleetMode.fromString(reader.getString());
+                } else if ("capacityType".equals(fieldName)) {
+                    deserializedFleetProperties.capacityType = CapacityType.fromString(reader.getString());
+                } else if ("zoneAllocationPolicy".equals(fieldName)) {
+                    deserializedFleetProperties.zoneAllocationPolicy = ZoneAllocationPolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

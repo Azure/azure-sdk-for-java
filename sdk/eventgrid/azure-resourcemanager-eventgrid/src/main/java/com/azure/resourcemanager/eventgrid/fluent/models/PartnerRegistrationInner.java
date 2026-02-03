@@ -26,7 +26,7 @@ public final class PartnerRegistrationInner extends Resource {
     private PartnerRegistrationProperties innerProperties;
 
     /*
-     * The system metadata relating to Partner Registration resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -61,7 +61,7 @@ public final class PartnerRegistrationInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Partner Registration resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

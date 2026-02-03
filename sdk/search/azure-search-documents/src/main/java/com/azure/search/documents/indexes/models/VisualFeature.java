@@ -6,6 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -16,36 +17,43 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
     /**
      * Visual features recognized as adult persons.
      */
+    @Generated
     public static final VisualFeature ADULT = fromString("adult");
 
     /**
      * Visual features recognized as commercial brands.
      */
+    @Generated
     public static final VisualFeature BRANDS = fromString("brands");
 
     /**
      * Categories.
      */
+    @Generated
     public static final VisualFeature CATEGORIES = fromString("categories");
 
     /**
      * Description.
      */
+    @Generated
     public static final VisualFeature DESCRIPTION = fromString("description");
 
     /**
      * Visual features recognized as people faces.
      */
+    @Generated
     public static final VisualFeature FACES = fromString("faces");
 
     /**
      * Visual features recognized as objects.
      */
+    @Generated
     public static final VisualFeature OBJECTS = fromString("objects");
 
     /**
      * Tags.
      */
+    @Generated
     public static final VisualFeature TAGS = fromString("tags");
 
     /**
@@ -53,6 +61,7 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public VisualFeature() {
     }
@@ -63,6 +72,7 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
      * @param name a name to look for.
      * @return the corresponding VisualFeature.
      */
+    @Generated
     public static VisualFeature fromString(String name) {
         return fromString(name, VisualFeature.class);
     }
@@ -72,6 +82,7 @@ public final class VisualFeature extends ExpandableStringEnum<VisualFeature> {
      * 
      * @return known VisualFeature values.
      */
+    @Generated
     public static Collection<VisualFeature> values() {
         return values(VisualFeature.class);
     }

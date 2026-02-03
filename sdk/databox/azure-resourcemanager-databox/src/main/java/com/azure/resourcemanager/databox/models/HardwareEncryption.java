@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.databox.models;
 
 /**
- * Defines Hardware level encryption (Only for disk).
+ * Hardware encryption support for a given sku for a given region.
  */
 public enum HardwareEncryption {
     /**

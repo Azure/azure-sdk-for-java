@@ -35,10 +35,6 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
         return this.innerModel().sku();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String etag() {
         return this.innerModel().etag();
     }
@@ -54,6 +50,10 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
 
     public DeploymentProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {
@@ -172,6 +172,6 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+        return this.innerModel() == null || this.innerModel().id() == null;
     }
 }

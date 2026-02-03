@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Common Configuration for Cosmos DB Kafka source connector.
@@ -295,13 +296,13 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
         String databaseName = this.getString(DATABASE_NAME_CONF);
         boolean includeAllContainers = this.getBoolean(CONTAINERS_INCLUDE_ALL_CONFIG);
         List<String> containersIncludedList = this.getContainersIncludedList();
-        List<String> containersTopicMap = this.getContainersTopicMap();
+        Map<String, String> containerToTopicMap = this.getContainersTopicMap();
 
         return new CosmosSourceContainersConfig(
             databaseName,
             includeAllContainers,
             containersIncludedList,
-            containersTopicMap
+            containerToTopicMap
         );
     }
 
@@ -309,8 +310,15 @@ public class CosmosSourceConfig extends KafkaCosmosConfig {
         return convertToList(this.getString(CONTAINERS_INCLUDED_LIST_CONFIG));
     }
 
-    private List<String> getContainersTopicMap() {
-        return convertToList(this.getString(CONTAINERS_TOPIC_MAP_CONFIG));
+    private Map<String, String> getContainersTopicMap() {
+        List<String> topicToContainerMapList = convertToList(this.getString(CONTAINERS_TOPIC_MAP_CONFIG));
+        return topicToContainerMapList
+            .stream()
+            .map(topicToContainerMapString -> topicToContainerMapString.split(CosmosSourceContainersConfig.CONTAINER_TOPIC_MAP_SEPARATOR))
+            .collect(
+                Collectors.toMap(
+                    containerTopicMapArray -> containerTopicMapArray[1],
+                    containerTopicMapArray -> containerTopicMapArray[0]));
     }
 
     private CosmosMetadataConfig parseMetadataConfig() {

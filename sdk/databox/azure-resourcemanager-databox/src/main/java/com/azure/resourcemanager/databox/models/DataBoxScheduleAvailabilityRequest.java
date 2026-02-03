@@ -56,6 +56,15 @@ public final class DataBoxScheduleAvailabilityRequest extends ScheduleAvailabili
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DataBoxScheduleAvailabilityRequest withModel(ModelName model) {
+        super.withModel(model);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -79,6 +88,7 @@ public final class DataBoxScheduleAvailabilityRequest extends ScheduleAvailabili
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("storageLocation", storageLocation());
         jsonWriter.writeStringField("country", country());
+        jsonWriter.writeStringField("model", model() == null ? null : model().toString());
         jsonWriter.writeStringField("skuName", this.skuName == null ? null : this.skuName.toString());
         return jsonWriter.writeEndObject();
     }
@@ -104,6 +114,8 @@ public final class DataBoxScheduleAvailabilityRequest extends ScheduleAvailabili
                     deserializedDataBoxScheduleAvailabilityRequest.withStorageLocation(reader.getString());
                 } else if ("country".equals(fieldName)) {
                     deserializedDataBoxScheduleAvailabilityRequest.withCountry(reader.getString());
+                } else if ("model".equals(fieldName)) {
+                    deserializedDataBoxScheduleAvailabilityRequest.withModel(ModelName.fromString(reader.getString()));
                 } else if ("skuName".equals(fieldName)) {
                     deserializedDataBoxScheduleAvailabilityRequest.skuName = SkuName.fromString(reader.getString());
                 } else {

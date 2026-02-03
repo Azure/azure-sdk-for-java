@@ -15,49 +15,49 @@ public final class ApiVersionSetCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiVersionSetCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"dzyyfytpq\",\"versioningScheme\":\"Segment\",\"description\":\"ymmpujivy\",\"versionQueryName\":\"kjuvs\",\"versionHeaderName\":\"msl\"},\"id\":\"oyovwz\",\"name\":\"bpqvybefg\",\"type\":\"mx\"},{\"properties\":{\"displayName\":\"kcvtl\",\"versioningScheme\":\"Query\",\"description\":\"eskvcuartrhun\",\"versionQueryName\":\"iryky\",\"versionHeaderName\":\"dzfqivjreuy\"},\"id\":\"bbmnwagltb\",\"name\":\"oeeonqlnfwm\",\"type\":\"ymvqdbpbhfckdvez\"},{\"properties\":{\"displayName\":\"cssbzhddu\",\"versioningScheme\":\"Header\",\"description\":\"qfblhkalehpa\",\"versionQueryName\":\"wugiqjti\",\"versionHeaderName\":\"qgdm\"},\"id\":\"nictteajo\",\"name\":\"iygspnbonhpczyk\",\"type\":\"ktpv\"},{\"properties\":{\"displayName\":\"qcs\",\"versioningScheme\":\"Segment\",\"description\":\"hkhufm\",\"versionQueryName\":\"umqy\",\"versionHeaderName\":\"ydzulodsaeuzan\"},\"id\":\"sfnhsenwphp\",\"name\":\"fngq\",\"type\":\"clid\"}],\"count\":1042823858711156853,\"nextLink\":\"jj\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"fmmp\",\"versioningScheme\":\"Segment\",\"description\":\"zwv\",\"versionQueryName\":\"rgyngydgrpxnca\",\"versionHeaderName\":\"qao\"},\"id\":\"djrkclamggl\",\"name\":\"lmf\",\"type\":\"jdoq\"},{\"properties\":{\"displayName\":\"kgltyg\",\"versioningScheme\":\"Segment\",\"description\":\"fgqka\",\"versionQueryName\":\"jsxtlgflwfgziiuc\",\"versionHeaderName\":\"jceatlijjjrtva\"},\"id\":\"caszk\",\"name\":\"xk\",\"type\":\"ccxetyvkun\"},{\"properties\":{\"displayName\":\"gno\",\"versioningScheme\":\"Segment\",\"description\":\"kgqogjw\",\"versionQueryName\":\"nd\",\"versionHeaderName\":\"vabbx\"},\"id\":\"hmedeilbjywfcfxz\",\"name\":\"rzzihvwypus\",\"type\":\"vjslczwcii\"},{\"properties\":{\"displayName\":\"sllfryvdmvxad\",\"versioningScheme\":\"Header\",\"description\":\"frgnawbabgfbktyj\",\"versionQueryName\":\"czlfsy\",\"versionHeaderName\":\"frbzgowo\"},\"id\":\"qmje\",\"name\":\"jcx\",\"type\":\"yqgxhlus\"}],\"count\":4395926953552775706,\"nextLink\":\"i\"}")
             .toObject(ApiVersionSetCollection.class);
-        Assertions.assertEquals("dzyyfytpq", model.value().get(0).displayName());
+        Assertions.assertEquals("fmmp", model.value().get(0).displayName());
         Assertions.assertEquals(VersioningScheme.SEGMENT, model.value().get(0).versioningScheme());
-        Assertions.assertEquals("ymmpujivy", model.value().get(0).description());
-        Assertions.assertEquals("kjuvs", model.value().get(0).versionQueryName());
-        Assertions.assertEquals("msl", model.value().get(0).versionHeaderName());
-        Assertions.assertEquals(1042823858711156853L, model.count());
-        Assertions.assertEquals("jj", model.nextLink());
+        Assertions.assertEquals("zwv", model.value().get(0).description());
+        Assertions.assertEquals("rgyngydgrpxnca", model.value().get(0).versionQueryName());
+        Assertions.assertEquals("qao", model.value().get(0).versionHeaderName());
+        Assertions.assertEquals(4395926953552775706L, model.count());
+        Assertions.assertEquals("i", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiVersionSetCollection model = new ApiVersionSetCollection().withValue(Arrays.asList(
-            new ApiVersionSetContractInner().withDisplayName("dzyyfytpq")
+            new ApiVersionSetContractInner().withDisplayName("fmmp")
                 .withVersioningScheme(VersioningScheme.SEGMENT)
-                .withDescription("ymmpujivy")
-                .withVersionQueryName("kjuvs")
-                .withVersionHeaderName("msl"),
-            new ApiVersionSetContractInner().withDisplayName("kcvtl")
-                .withVersioningScheme(VersioningScheme.QUERY)
-                .withDescription("eskvcuartrhun")
-                .withVersionQueryName("iryky")
-                .withVersionHeaderName("dzfqivjreuy"),
-            new ApiVersionSetContractInner().withDisplayName("cssbzhddu")
+                .withDescription("zwv")
+                .withVersionQueryName("rgyngydgrpxnca")
+                .withVersionHeaderName("qao"),
+            new ApiVersionSetContractInner().withDisplayName("kgltyg")
+                .withVersioningScheme(VersioningScheme.SEGMENT)
+                .withDescription("fgqka")
+                .withVersionQueryName("jsxtlgflwfgziiuc")
+                .withVersionHeaderName("jceatlijjjrtva"),
+            new ApiVersionSetContractInner().withDisplayName("gno")
+                .withVersioningScheme(VersioningScheme.SEGMENT)
+                .withDescription("kgqogjw")
+                .withVersionQueryName("nd")
+                .withVersionHeaderName("vabbx"),
+            new ApiVersionSetContractInner().withDisplayName("sllfryvdmvxad")
                 .withVersioningScheme(VersioningScheme.HEADER)
-                .withDescription("qfblhkalehpa")
-                .withVersionQueryName("wugiqjti")
-                .withVersionHeaderName("qgdm"),
-            new ApiVersionSetContractInner().withDisplayName("qcs")
-                .withVersioningScheme(VersioningScheme.SEGMENT)
-                .withDescription("hkhufm")
-                .withVersionQueryName("umqy")
-                .withVersionHeaderName("ydzulodsaeuzan")))
-            .withCount(1042823858711156853L)
-            .withNextLink("jj");
+                .withDescription("frgnawbabgfbktyj")
+                .withVersionQueryName("czlfsy")
+                .withVersionHeaderName("frbzgowo")))
+            .withCount(4395926953552775706L)
+            .withNextLink("i");
         model = BinaryData.fromObject(model).toObject(ApiVersionSetCollection.class);
-        Assertions.assertEquals("dzyyfytpq", model.value().get(0).displayName());
+        Assertions.assertEquals("fmmp", model.value().get(0).displayName());
         Assertions.assertEquals(VersioningScheme.SEGMENT, model.value().get(0).versioningScheme());
-        Assertions.assertEquals("ymmpujivy", model.value().get(0).description());
-        Assertions.assertEquals("kjuvs", model.value().get(0).versionQueryName());
-        Assertions.assertEquals("msl", model.value().get(0).versionHeaderName());
-        Assertions.assertEquals(1042823858711156853L, model.count());
-        Assertions.assertEquals("jj", model.nextLink());
+        Assertions.assertEquals("zwv", model.value().get(0).description());
+        Assertions.assertEquals("rgyngydgrpxnca", model.value().get(0).versionQueryName());
+        Assertions.assertEquals("qao", model.value().get(0).versionHeaderName());
+        Assertions.assertEquals(4395926953552775706L, model.count());
+        Assertions.assertEquals("i", model.nextLink());
     }
 }

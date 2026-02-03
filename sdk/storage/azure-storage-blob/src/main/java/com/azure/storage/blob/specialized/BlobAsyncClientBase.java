@@ -337,7 +337,8 @@ public class BlobAsyncClientBase {
      * @return the URL.
      */
     public String getBlobUrl() {
-        String blobUrl = azureBlobStorage.getUrl() + "/" + containerName + "/" + Utility.urlEncode(blobName);
+        String blobUrl
+            = azureBlobStorage.getUrl() + "/" + Utility.urlEncode(containerName) + "/" + Utility.urlEncode(blobName);
         if (this.isSnapshot()) {
             blobUrl = Utility.appendQueryParameter(blobUrl, "snapshot", getSnapshotId());
         }
@@ -990,7 +991,8 @@ public class BlobAsyncClientBase {
                 destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
                 destRequestConditions.getLeaseId(), null, null, ModelHelper.tagsToString(options.getTags()),
                 immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.hasLegalHold(),
-                sourceAuth, options.getCopySourceTagsMode(), this.encryptionScope, context)
+                sourceAuth, options.getCopySourceTagsMode(), options.getSourceShareTokenIntent(), this.encryptionScope,
+                context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
 
@@ -1997,7 +1999,9 @@ public class BlobAsyncClientBase {
             = (options.getRequestConditions() == null) ? new BlobRequestConditions() : options.getRequestConditions();
         return this.azureBlobStorage.getBlobs()
             .getTagsWithResponseAsync(containerName, blobName, null, null, snapshot, versionId,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), context)
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), context)
             .map(response -> {
                 Map<String, String> tags = new HashMap<>();
                 for (BlobTag tag : response.getValue().getBlobTagSet()) {
@@ -2076,7 +2080,9 @@ public class BlobAsyncClientBase {
         BlobTags t = new BlobTags().setBlobTagSet(tagList);
         return this.azureBlobStorage.getBlobs()
             .setTagsNoCustomHeadersWithResponseAsync(containerName, blobName, null, versionId, null, null, null,
-                requestConditions.getTagsConditions(), requestConditions.getLeaseId(), t, context);
+                requestConditions.getTagsConditions(), requestConditions.getLeaseId(),
+                requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(),
+                requestConditions.getIfMatch(), requestConditions.getIfNoneMatch(), t, context);
     }
 
     /**

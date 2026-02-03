@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientDiscoveryValueForSingleApi;
@@ -22,29 +22,29 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"dkygywezski\",\"display\":{\"provider\":\"f\",\"resource\":\"zmxieqvdsmaklix\",\"operation\":\"ah\",\"description\":\"xalybxawoijpo\"},\"origin\":\"blxpkkwjdjodq\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"n\",\"displayName\":\"mehllizhceu\",\"blobDuration\":\"qodkadppyibngql\"}]}}}]}";
+            = "{\"value\":[{\"name\":\"ryf\",\"display\":{\"provider\":\"asigrowsocne\",\"resource\":\"ygdjboqgrmtqjk\",\"operation\":\"vadrmm\",\"description\":\"uawvcmjzk\"},\"origin\":\"idisczskosw\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"ugam\",\"displayName\":\"krrcoiisbamnpp\",\"blobDuration\":\"ekuztdsbe\"},{\"name\":\"xyfukzxuizhyhn\",\"displayName\":\"kpetiarxq\",\"blobDuration\":\"bxdukecpxdazvd\"},{\"name\":\"tmmkosz\",\"displayName\":\"blnsntrpcaqk\",\"blobDuration\":\"f\"},{\"name\":\"tfmhklbnldpvcb\",\"displayName\":\"ezyquw\",\"blobDuration\":\"qxutrpbrruyuua\"}]}}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ClientDiscoveryValueForSingleApi> response
             = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dkygywezski", response.iterator().next().name());
-        Assertions.assertEquals("f", response.iterator().next().display().provider());
-        Assertions.assertEquals("zmxieqvdsmaklix", response.iterator().next().display().resource());
-        Assertions.assertEquals("ah", response.iterator().next().display().operation());
-        Assertions.assertEquals("xalybxawoijpo", response.iterator().next().display().description());
-        Assertions.assertEquals("blxpkkwjdjodq", response.iterator().next().origin());
-        Assertions.assertEquals("n",
+        Assertions.assertEquals("ryf", response.iterator().next().name());
+        Assertions.assertEquals("asigrowsocne", response.iterator().next().display().provider());
+        Assertions.assertEquals("ygdjboqgrmtqjk", response.iterator().next().display().resource());
+        Assertions.assertEquals("vadrmm", response.iterator().next().display().operation());
+        Assertions.assertEquals("uawvcmjzk", response.iterator().next().display().description());
+        Assertions.assertEquals("idisczskosw", response.iterator().next().origin());
+        Assertions.assertEquals("ugam",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("mehllizhceu",
+        Assertions.assertEquals("krrcoiisbamnpp",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions.assertEquals("qodkadppyibngql",
+        Assertions.assertEquals("ekuztdsbe",
             response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class DataFlowStagingInfo implements JsonSerializable<DataFlowStagi
     /*
      * Staging linked service reference.
      */
+    @Generated
     private LinkedServiceReference linkedService;
 
     /*
      * Folder path for staging blob.
      */
+    @Generated
     private Object folderPath;
 
     /**
      * Creates an instance of DataFlowStagingInfo class.
      */
+    @Generated
     public DataFlowStagingInfo() {
     }
 
@@ -37,6 +41,7 @@ public final class DataFlowStagingInfo implements JsonSerializable<DataFlowStagi
      * 
      * @return the linkedService value.
      */
+    @Generated
     public LinkedServiceReference getLinkedService() {
         return this.linkedService;
     }
@@ -47,6 +52,7 @@ public final class DataFlowStagingInfo implements JsonSerializable<DataFlowStagi
      * @param linkedService the linkedService value to set.
      * @return the DataFlowStagingInfo object itself.
      */
+    @Generated
     public DataFlowStagingInfo setLinkedService(LinkedServiceReference linkedService) {
         this.linkedService = linkedService;
         return this;
@@ -57,6 +63,7 @@ public final class DataFlowStagingInfo implements JsonSerializable<DataFlowStagi
      * 
      * @return the folderPath value.
      */
+    @Generated
     public Object getFolderPath() {
         return this.folderPath;
     }
@@ -67,6 +74,7 @@ public final class DataFlowStagingInfo implements JsonSerializable<DataFlowStagi
      * @param folderPath the folderPath value to set.
      * @return the DataFlowStagingInfo object itself.
      */
+    @Generated
     public DataFlowStagingInfo setFolderPath(Object folderPath) {
         this.folderPath = folderPath;
         return this;
@@ -75,11 +83,14 @@ public final class DataFlowStagingInfo implements JsonSerializable<DataFlowStagi
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedService", this.linkedService);
-        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        if (this.folderPath != null) {
+            jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        }
         return jsonWriter.writeEndObject();
     }
 
@@ -91,6 +102,7 @@ public final class DataFlowStagingInfo implements JsonSerializable<DataFlowStagi
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowStagingInfo.
      */
+    @Generated
     public static DataFlowStagingInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowStagingInfo deserializedDataFlowStagingInfo = new DataFlowStagingInfo();

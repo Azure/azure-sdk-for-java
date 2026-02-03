@@ -71,7 +71,7 @@ public final class TrafficsImpl {
      * calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "TrafficClientTraffic")
+    @ServiceInterface(name = "TrafficClientTraffics")
     public interface TrafficsService {
         @Get("/traffic/flow/tile/{format}")
         @ExpectedResponses({ 200 })
@@ -151,6 +151,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
      * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
      * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
@@ -174,18 +183,23 @@ public final class TrafficsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<TrafficsGetTrafficFlowTileHeaders, BinaryData>> getTrafficFlowTileWithResponseAsync(
         TileFormat format, TrafficFlowTileStyle style, int zoom, TileIndex tileIndex, Integer thickness) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return FluxUtil
-            .withContext(context -> service.getTrafficFlowTile(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, style, zoom, x, y, thickness, accept, context));
+        return FluxUtil.withContext(
+            context -> getTrafficFlowTileWithResponseAsync(format, style, zoom, tileIndex, thickness, context));
     }
 
     /**
      * Use to get 256 x 256 pixel tiles showing traffic flow.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
      * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
@@ -224,6 +238,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
      * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
      * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
@@ -255,6 +278,15 @@ public final class TrafficsImpl {
      * Use to get 256 x 256 pixel tiles showing traffic flow.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
      * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
@@ -289,6 +321,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
      * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
      * use transparent images, they can be layered on top of map tiles to create a compound display. The Flow tiles use
@@ -312,18 +353,23 @@ public final class TrafficsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTrafficFlowTileNoCustomHeadersWithResponseAsync(TileFormat format,
         TrafficFlowTileStyle style, int zoom, TileIndex tileIndex, Integer thickness) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return FluxUtil.withContext(
-            context -> service.getTrafficFlowTileNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, style, zoom, x, y, thickness, accept, context));
+        return FluxUtil.withContext(context -> getTrafficFlowTileNoCustomHeadersWithResponseAsync(format, style, zoom,
+            tileIndex, thickness, context));
     }
 
     /**
      * Use to get 256 x 256 pixel tiles showing traffic flow.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Flow Tile` API is an HTTP `GET` request that returns real-time information about traffic conditions
      * in 256 x 256 pixel tiles that show traffic flow. All tiles use the same grid system. Because the traffic tiles
@@ -361,6 +407,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Flow Segment` API is an HTTP `GET` request that provides information about the speeds and travel
      * times of the road fragment closest to the given coordinates. It is designed to work alongside the Flow layer of
      * the [Render](/rest/api/maps/render) Service to support clickable flow data visualizations. With the `Traffic Flow
@@ -392,18 +447,23 @@ public final class TrafficsImpl {
     public Mono<Response<TrafficFlowSegmentData>> getTrafficFlowSegmentWithResponseAsync(ResponseFormat format,
         TrafficFlowSegmentStyle style, int zoom, List<Double> coordinates, SpeedUnit unit, Integer thickness,
         Boolean openLr) {
-        final String accept = "application/json";
-        String coordinatesConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(coordinates, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getTrafficFlowSegment(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, style, zoom, coordinatesConverted, unit,
-            thickness, openLr, accept, context));
+        return FluxUtil.withContext(context -> getTrafficFlowSegmentWithResponseAsync(format, style, zoom, coordinates,
+            unit, thickness, openLr, context));
     }
 
     /**
      * Use to get information about the speeds and travel times of the specified section of road.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Flow Segment` API is an HTTP `GET` request that provides information about the speeds and travel
      * times of the road fragment closest to the given coordinates. It is designed to work alongside the Flow layer of
@@ -450,6 +510,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Flow Segment` API is an HTTP `GET` request that provides information about the speeds and travel
      * times of the road fragment closest to the given coordinates. It is designed to work alongside the Flow layer of
      * the [Render](/rest/api/maps/render) Service to support clickable flow data visualizations. With the `Traffic Flow
@@ -488,6 +557,15 @@ public final class TrafficsImpl {
      * Use to get information about the speeds and travel times of the specified section of road.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Flow Segment` API is an HTTP `GET` request that provides information about the speeds and travel
      * times of the road fragment closest to the given coordinates. It is designed to work alongside the Flow layer of
@@ -529,6 +607,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
      * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
      * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
@@ -553,18 +640,23 @@ public final class TrafficsImpl {
     public Mono<ResponseBase<TrafficsGetTrafficIncidentTileHeaders, BinaryData>>
         getTrafficIncidentTileWithResponseAsync(TileFormat format, TrafficIncidentTileStyle style, int zoom,
             TileIndex tileIndex, String trafficState) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return FluxUtil
-            .withContext(context -> service.getTrafficIncidentTile(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, style, zoom, x, y, trafficState, accept, context));
+        return FluxUtil.withContext(
+            context -> getTrafficIncidentTileWithResponseAsync(format, style, zoom, tileIndex, trafficState, context));
     }
 
     /**
      * Use to get 256 x 256 pixel tiles showing traffic incidents.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
      * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
@@ -603,6 +695,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
      * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
      * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
@@ -634,6 +735,15 @@ public final class TrafficsImpl {
      * Use to get 256 x 256 pixel tiles showing traffic incidents.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
      * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
@@ -668,6 +778,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
      * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
      * layered on top of map tiles to create a compound display. Traffic tiles render graphics to indicate traffic on
@@ -691,18 +810,23 @@ public final class TrafficsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTrafficIncidentTileNoCustomHeadersWithResponseAsync(TileFormat format,
         TrafficIncidentTileStyle style, int zoom, TileIndex tileIndex, String trafficState) {
-        final String accept = "application/json, image/jpeg, image/png, image/pbf, application/vnd.mapbox-vector-tile";
-        int x = tileIndex.getX();
-        int y = tileIndex.getY();
-        return FluxUtil.withContext(
-            context -> service.getTrafficIncidentTileNoCustomHeaders(this.client.getHost(), this.client.getClientId(),
-                this.client.getApiVersion(), format, style, zoom, x, y, trafficState, accept, context));
+        return FluxUtil.withContext(context -> getTrafficIncidentTileNoCustomHeadersWithResponseAsync(format, style,
+            zoom, tileIndex, trafficState, context));
     }
 
     /**
      * Use to get 256 x 256 pixel tiles showing traffic incidents.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Incident Tile` API is an HTTP `GET` request that returns 256 x 256 pixel tiles showing traffic
      * incidents. All tiles use the same grid system. Because the traffic tiles use transparent images, they can be
@@ -739,6 +863,15 @@ public final class TrafficsImpl {
      * Use to get information on traffic incidents inside a given bounding box.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Incident Detail` API is an HTTP `GET` request that provides information on traffic incidents inside
      * a given bounding box, based on the current [Traffic Model ID](#uri-parameters). The Traffic Model ID is available
@@ -788,18 +921,23 @@ public final class TrafficsImpl {
         IncidentDetailStyle style, List<Double> boundingbox, int boundingZoom, String trafficmodelid, String language,
         ProjectionStandard projection, IncidentGeometryType geometries, Boolean expandCluster,
         Boolean originalPosition) {
-        final String accept = "application/json";
-        String boundingboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(boundingbox, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getTrafficIncidentDetail(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, style, boundingboxConverted, boundingZoom,
-            trafficmodelid, language, projection, geometries, expandCluster, originalPosition, accept, context));
+        return FluxUtil.withContext(context -> getTrafficIncidentDetailWithResponseAsync(format, style, boundingbox,
+            boundingZoom, trafficmodelid, language, projection, geometries, expandCluster, originalPosition, context));
     }
 
     /**
      * Use to get information on traffic incidents inside a given bounding box.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Incident Detail` API is an HTTP `GET` request that provides information on traffic incidents inside
      * a given bounding box, based on the current [Traffic Model ID](#uri-parameters). The Traffic Model ID is available
@@ -863,6 +1001,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Incident Detail` API is an HTTP `GET` request that provides information on traffic incidents inside
      * a given bounding box, based on the current [Traffic Model ID](#uri-parameters). The Traffic Model ID is available
      * to grant synchronization of data between calls and API's. The Traffic Model ID is a key value for determining the
@@ -920,6 +1067,15 @@ public final class TrafficsImpl {
      * Use to get information on traffic incidents inside a given bounding box.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Incident Detail` API is an HTTP `GET` request that provides information on traffic incidents inside
      * a given bounding box, based on the current [Traffic Model ID](#uri-parameters). The Traffic Model ID is available
@@ -980,6 +1136,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Incident Viewport` API is an HTTP `GET` request that returns legal and technical information for the
      * viewport described in the request. It should be called by client applications whenever the viewport changes (for
      * instance, through zooming, panning, going to a location, or displaying a route). The request should contain the
@@ -1017,20 +1182,23 @@ public final class TrafficsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TrafficIncidentViewport>> getTrafficIncidentViewportWithResponseAsync(ResponseFormat format,
         List<Double> boundingbox, int boundingzoom, List<Double> overviewbox, int overviewzoom, Boolean copyright) {
-        final String accept = "application/json";
-        String boundingboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(boundingbox, CollectionFormat.CSV);
-        String overviewboxConverted
-            = JacksonAdapter.createDefaultSerializerAdapter().serializeIterable(overviewbox, CollectionFormat.CSV);
-        return FluxUtil.withContext(context -> service.getTrafficIncidentViewport(this.client.getHost(),
-            this.client.getClientId(), this.client.getApiVersion(), format, boundingboxConverted, boundingzoom,
-            overviewboxConverted, overviewzoom, copyright, accept, context));
+        return FluxUtil.withContext(context -> getTrafficIncidentViewportWithResponseAsync(format, boundingbox,
+            boundingzoom, overviewbox, overviewzoom, copyright, context));
     }
 
     /**
      * Use to get legal and technical information for a viewport.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Incident Viewport` API is an HTTP `GET` request that returns legal and technical information for the
      * viewport described in the request. It should be called by client applications whenever the viewport changes (for
@@ -1086,6 +1254,15 @@ public final class TrafficsImpl {
      * 
      * 
      * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
+     * 
      * The `Traffic Incident Viewport` API is an HTTP `GET` request that returns legal and technical information for the
      * viewport described in the request. It should be called by client applications whenever the viewport changes (for
      * instance, through zooming, panning, going to a location, or displaying a route). The request should contain the
@@ -1131,6 +1308,15 @@ public final class TrafficsImpl {
      * Use to get legal and technical information for a viewport.
      * 
      * 
+     * 
+     * &gt; [!NOTE]
+     * &gt;
+     * &gt; **Azure Maps Traffic v1 service retirement**
+     * &gt;
+     * &gt; The Azure Maps [Traffic v1](/rest/api/maps/traffic?view=rest-maps-1.0) service is now deprecated and will be
+     * retired on 3/31/28. To avoid service disruptions, all calls to Traffic v1 service will need to be updated by
+     * 3/31/28. For more information, see [Migrate Azure Maps Traffic 1.0
+     * APIs](/azure/azure-maps/migrate-traffic-v1-api).
      * 
      * The `Traffic Incident Viewport` API is an HTTP `GET` request that returns legal and technical information for the
      * viewport described in the request. It should be called by client applications whenever the viewport changes (for

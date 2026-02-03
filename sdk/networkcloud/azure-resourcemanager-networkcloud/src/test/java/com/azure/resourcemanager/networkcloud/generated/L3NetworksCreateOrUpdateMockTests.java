@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
@@ -27,43 +27,45 @@ public final class L3NetworksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"odlikcdrdaasax\",\"type\":\"obsmf\"},\"properties\":{\"associatedResourceIds\":[\"yjvzukosr\",\"awn\"],\"clusterId\":\"mlnkoywsxv\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"qqax\",\"hybridAksClustersAssociatedIds\":[\"y\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"doabhj\",\"ipAllocationType\":\"IPV4\",\"ipv4ConnectedPrefix\":\"weuipmpvksmi\",\"ipv6ConnectedPrefix\":\"sqxtltclkrdpq\",\"l3IsolationDomainId\":\"fhyrfrakk\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"wfcmfcnr\"],\"vlan\":6199502759615666213},\"location\":\"matxjti\",\"tags\":{\"fbbmtlp\":\"zqgxx\",\"rnzcalinc\":\"agynoi\",\"ymqruqguhfupet\":\"yqxzxaqzibmqim\",\"xsyaowuzowpuoh\":\"svvoqsbpkflanfk\"},\"id\":\"kc\",\"name\":\"rgukxrztio\",\"type\":\"hlutixmqrudjizc\"}";
+            = "{\"etag\":\"otnxlkfhglh\",\"extendedLocation\":{\"name\":\"foxqwecrsn\",\"type\":\"pcs\"},\"properties\":{\"associatedResourceIds\":[\"xovppqibukklvzr\",\"rmlccmet\",\"scz\"],\"clusterId\":\"fqbqnasd\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"zsieuscplhyvd\",\"hybridAksClustersAssociatedIds\":[\"yzkxitds\",\"ezsvkolrupjov\",\"ozsaye\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"lpzbtzuykykipf\",\"ipAllocationType\":\"DualStack\",\"ipv4ConnectedPrefix\":\"pfnocm\",\"ipv6ConnectedPrefix\":\"zacfpztgazw\",\"l3IsolationDomainId\":\"qejg\",\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"tgkppgkqzkcyzmff\",\"gdyfcixrhlcqvhoe\",\"goiutgw\",\"mkahpqha\"],\"vlan\":1459817406277558792},\"location\":\"a\",\"tags\":{\"i\":\"ncogmipnmliqmvlb\",\"sdfjyiesoc\":\"eaqgrvgpomxpupd\",\"mpyzgleo\":\"iqbuou\"},\"id\":\"jsb\",\"name\":\"bwwzvdajf\",\"type\":\"nncfmaciqgjjrlhi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         L3Network response = manager.l3Networks()
-            .define("vfejvqnttmbqda")
-            .withRegion("ekscbctnanqimwbz")
-            .withExistingResourceGroup("oka")
-            .withExtendedLocation(new ExtendedLocation().withName("zfivfokpysthhzag").withType("fwy"))
-            .withL3IsolationDomainId("waokbavlytta")
-            .withVlan(7333016694568690931L)
-            .withTags(mapOf("nlaimouxwksqmudm", "cldpkawn", "qsj", "coibicziuswswjrk", "yrfwbivq", "btqqvyfs"))
+            .define("wxspvckojaz")
+            .withRegion("vxprwpxsoohu")
+            .withExistingResourceGroup("kzpatqtdi")
+            .withExtendedLocation(new ExtendedLocation().withName("zpvpvdyly").withType("covqseusrfjbdxzf"))
+            .withL3IsolationDomainId("cauwazcgwdfriwg")
+            .withVlan(7466162583914746093L)
+            .withTags(mapOf("lfb", "cskltezuuggg", "srtmdylperpiltt", "rdcgu"))
             .withHybridAksIpamEnabled(HybridAksIpamEnabled.TRUE)
             .withHybridAksPluginType(HybridAksPluginType.DPDK)
-            .withInterfaceName("mm")
+            .withInterfaceName("jvavdpwwo")
             .withIpAllocationType(IpAllocationType.IPV6)
-            .withIpv4ConnectedPrefix("fgtdmbvx")
-            .withIpv6ConnectedPrefix("raokqkbudb")
+            .withIpv4ConnectedPrefix("htitsffofwan")
+            .withIpv6ConnectedPrefix("k")
+            .withIfMatch("muqkevzgjypanhx")
+            .withIfNoneMatch("pdxxzetwwz")
             .create();
 
-        Assertions.assertEquals("matxjti", response.location());
-        Assertions.assertEquals("zqgxx", response.tags().get("fbbmtlp"));
-        Assertions.assertEquals("odlikcdrdaasax", response.extendedLocation().name());
-        Assertions.assertEquals("obsmf", response.extendedLocation().type());
-        Assertions.assertEquals(HybridAksIpamEnabled.TRUE, response.hybridAksIpamEnabled());
+        Assertions.assertEquals("a", response.location());
+        Assertions.assertEquals("ncogmipnmliqmvlb", response.tags().get("i"));
+        Assertions.assertEquals("foxqwecrsn", response.extendedLocation().name());
+        Assertions.assertEquals("pcs", response.extendedLocation().type());
+        Assertions.assertEquals(HybridAksIpamEnabled.FALSE, response.hybridAksIpamEnabled());
         Assertions.assertEquals(HybridAksPluginType.OSDEVICE, response.hybridAksPluginType());
-        Assertions.assertEquals("doabhj", response.interfaceName());
-        Assertions.assertEquals(IpAllocationType.IPV4, response.ipAllocationType());
-        Assertions.assertEquals("weuipmpvksmi", response.ipv4ConnectedPrefix());
-        Assertions.assertEquals("sqxtltclkrdpq", response.ipv6ConnectedPrefix());
-        Assertions.assertEquals("fhyrfrakk", response.l3IsolationDomainId());
-        Assertions.assertEquals(6199502759615666213L, response.vlan());
+        Assertions.assertEquals("lpzbtzuykykipf", response.interfaceName());
+        Assertions.assertEquals(IpAllocationType.DUAL_STACK, response.ipAllocationType());
+        Assertions.assertEquals("pfnocm", response.ipv4ConnectedPrefix());
+        Assertions.assertEquals("zacfpztgazw", response.ipv6ConnectedPrefix());
+        Assertions.assertEquals("qejg", response.l3IsolationDomainId());
+        Assertions.assertEquals(1459817406277558792L, response.vlan());
     }
 
     // Use "Map.of" if available

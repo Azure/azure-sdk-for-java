@@ -55,7 +55,7 @@ public final class PolicyCertificatesImpl {
      * to perform REST calls.
      */
     @Host("{instanceUrl}")
-    @ServiceInterface(name = "AttestationClientPol")
+    @ServiceInterface(name = "AttestationClientPolicyCertificates")
     public interface PolicyCertificatesService {
         @Get("/certificates")
         @ExpectedResponses({ 200 })

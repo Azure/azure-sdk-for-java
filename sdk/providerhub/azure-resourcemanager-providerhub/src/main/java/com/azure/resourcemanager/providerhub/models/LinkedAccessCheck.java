@@ -17,27 +17,27 @@ import java.io.IOException;
 @Fluent
 public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessCheck> {
     /*
-     * The actionName property.
+     * The action name.
      */
     private String actionName;
 
     /*
-     * The linkedProperty property.
+     * The linked property.
      */
     private String linkedProperty;
 
     /*
-     * The linkedAction property.
+     * The linked action.
      */
     private String linkedAction;
 
     /*
-     * The linkedActionVerb property.
+     * The linked action verb.
      */
     private String linkedActionVerb;
 
     /*
-     * The linkedType property.
+     * The linked type.
      */
     private String linkedType;
 
@@ -48,7 +48,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Get the actionName property: The actionName property.
+     * Get the actionName property: The action name.
      * 
      * @return the actionName value.
      */
@@ -57,7 +57,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Set the actionName property: The actionName property.
+     * Set the actionName property: The action name.
      * 
      * @param actionName the actionName value to set.
      * @return the LinkedAccessCheck object itself.
@@ -68,7 +68,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Get the linkedProperty property: The linkedProperty property.
+     * Get the linkedProperty property: The linked property.
      * 
      * @return the linkedProperty value.
      */
@@ -77,7 +77,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Set the linkedProperty property: The linkedProperty property.
+     * Set the linkedProperty property: The linked property.
      * 
      * @param linkedProperty the linkedProperty value to set.
      * @return the LinkedAccessCheck object itself.
@@ -88,7 +88,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Get the linkedAction property: The linkedAction property.
+     * Get the linkedAction property: The linked action.
      * 
      * @return the linkedAction value.
      */
@@ -97,7 +97,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Set the linkedAction property: The linkedAction property.
+     * Set the linkedAction property: The linked action.
      * 
      * @param linkedAction the linkedAction value to set.
      * @return the LinkedAccessCheck object itself.
@@ -108,7 +108,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Get the linkedActionVerb property: The linkedActionVerb property.
+     * Get the linkedActionVerb property: The linked action verb.
      * 
      * @return the linkedActionVerb value.
      */
@@ -117,7 +117,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Set the linkedActionVerb property: The linkedActionVerb property.
+     * Set the linkedActionVerb property: The linked action verb.
      * 
      * @param linkedActionVerb the linkedActionVerb value to set.
      * @return the LinkedAccessCheck object itself.
@@ -128,7 +128,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Get the linkedType property: The linkedType property.
+     * Get the linkedType property: The linked type.
      * 
      * @return the linkedType value.
      */
@@ -137,7 +137,7 @@ public final class LinkedAccessCheck implements JsonSerializable<LinkedAccessChe
     }
 
     /**
-     * Set the linkedType property: The linkedType property.
+     * Set the linkedType property: The linked type.
      * 
      * @param linkedType the linkedType value to set.
      * @return the LinkedAccessCheck object itself.

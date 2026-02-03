@@ -5,12 +5,14 @@ package com.azure.spring.cloud.appconfiguration.config.web.implementation.pushre
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
+import org.springframework.lang.NonNull;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 
 /**
  * Listens for AppConfigurationRefreshEvents and sets the App Configuration watch interval to zero.
  */
+@SuppressWarnings("deprecation")
 public final class AppConfigurationRefreshEventListener implements ApplicationListener<AppConfigurationRefreshEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshEventListener.class);
@@ -32,7 +34,7 @@ public final class AppConfigurationRefreshEventListener implements ApplicationLi
      * @param event Event Triggering refresh, contains valid config store endpoint.
      */
     @Override
-    public void onApplicationEvent(AppConfigurationRefreshEvent event) {
+    public void onApplicationEvent(@NonNull AppConfigurationRefreshEvent event) {
         try {
             appConfigurationRefresh.expireRefreshInterval(event.getEndpoint(), event.getSyncToken());
         } catch (Exception e) {

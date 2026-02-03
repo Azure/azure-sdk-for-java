@@ -6,6 +6,7 @@ package com.azure.resourcemanager.computeschedule.generated;
 
 import com.azure.resourcemanager.computeschedule.models.DeadlineType;
 import com.azure.resourcemanager.computeschedule.models.ExecutionParameters;
+import com.azure.resourcemanager.computeschedule.models.OptimizationPreference;
 import com.azure.resourcemanager.computeschedule.models.Resources;
 import com.azure.resourcemanager.computeschedule.models.RetryPolicy;
 import com.azure.resourcemanager.computeschedule.models.Schedule;
@@ -18,24 +19,46 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesSubmitStartSamples {
     /*
-     * x-ms-original-file: 2024-10-01/ScheduledActions_VirtualMachinesSubmitStart.json
+     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitStart_MaximumSet_Gen.json
      */
     /**
-     * Sample code: ScheduledActions_VirtualMachinesSubmitStart.
+     * Sample code: ScheduledActions_VirtualMachinesSubmitStart_MaximumSet.
      * 
      * @param manager Entry point to ComputeScheduleManager.
      */
-    public static void scheduledActionsVirtualMachinesSubmitStart(
+    public static void scheduledActionsVirtualMachinesSubmitStartMaximumSet(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesSubmitStartWithResponse("eastus2euap", new SubmitStartRequest()
-                .withSchedule(new Schedule().withDeadline(OffsetDateTime.parse("2024-11-01T17:52:54.215Z"))
-                    .withTimezone("UTC")
-                    .withDeadlineType(DeadlineType.INITIATE_AT))
-                .withExecutionParameters(new ExecutionParameters()
-                    .withRetryPolicy(new RetryPolicy().withRetryCount(5).withRetryWindowInMinutes(27)))
+            .virtualMachinesSubmitStartWithResponse("pxtvvk", new SubmitStartRequest()
+                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
+                    .withTimeZone("aigbjdnldtzkteqi")
+                    .withDeadlineType(DeadlineType.UNKNOWN))
+                .withExecutionParameters(
+                    new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
+                        .withRetryPolicy(new RetryPolicy().withRetryCount(17).withRetryWindowInMinutes(29)))
                 .withResources(new Resources().withIds(Arrays.asList(
-                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationid("23480d2f-1dca-4610-afb4-dd25eec1f34r"), com.azure.core.util.Context.NONE);
+                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
+                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: 2025-04-15-preview/ScheduledActions_VirtualMachinesSubmitStart_MinimumSet_Gen.json
+     */
+    /**
+     * Sample code: ScheduledActions_VirtualMachinesSubmitStart_MinimumSet.
+     * 
+     * @param manager Entry point to ComputeScheduleManager.
+     */
+    public static void scheduledActionsVirtualMachinesSubmitStartMinimumSet(
+        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
+        manager.scheduledActions()
+            .virtualMachinesSubmitStartWithResponse("ufrcsuw", new SubmitStartRequest()
+                .withSchedule(new Schedule().withDeadLine(OffsetDateTime.parse("2025-04-17T00:23:56.803Z"))
+                    .withTimeZone("aigbjdnldtzkteqi")
+                    .withDeadlineType(DeadlineType.UNKNOWN))
+                .withExecutionParameters(new ExecutionParameters())
+                .withResources(new Resources().withIds(Arrays.asList(
+                    "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
+                .withCorrelationid("b211f086-4b91-4686-a453-2f5c012e4d80"), com.azure.core.util.Context.NONE);
     }
 }

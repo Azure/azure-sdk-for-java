@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,37 +24,50 @@ public class LinkedService implements JsonSerializable<LinkedService> {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "LinkedService";
+
+    /*
+     * Version of the linked service.
+     */
+    @Generated
+    private String version;
 
     /*
      * The integration runtime reference.
      */
+    @Generated
     private IntegrationRuntimeReference connectVia;
 
     /*
      * Linked service description.
      */
+    @Generated
     private String description;
 
     /*
      * Parameters for linked service.
      */
+    @Generated
     private Map<String, ParameterSpecification> parameters;
 
     /*
      * List of tags that can be used for describing the linked service.
      */
+    @Generated
     private List<Object> annotations;
 
     /*
      * The Azure Synapse nested object which contains the information and credential which can be used to connect with
      * related store or compute resource.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of LinkedService class.
      */
+    @Generated
     public LinkedService() {
     }
 
@@ -62,8 +76,31 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * 
      * @return the type value.
      */
+    @Generated
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * Get the version property: Version of the linked service.
+     * 
+     * @return the version value.
+     */
+    @Generated
+    public String getVersion() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: Version of the linked service.
+     * 
+     * @param version the version value to set.
+     * @return the LinkedService object itself.
+     */
+    @Generated
+    public LinkedService setVersion(String version) {
+        this.version = version;
+        return this;
     }
 
     /**
@@ -71,6 +108,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * 
      * @return the connectVia value.
      */
+    @Generated
     public IntegrationRuntimeReference getConnectVia() {
         return this.connectVia;
     }
@@ -81,6 +119,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * @param connectVia the connectVia value to set.
      * @return the LinkedService object itself.
      */
+    @Generated
     public LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         this.connectVia = connectVia;
         return this;
@@ -91,6 +130,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -101,6 +141,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * @param description the description value to set.
      * @return the LinkedService object itself.
      */
+    @Generated
     public LinkedService setDescription(String description) {
         this.description = description;
         return this;
@@ -111,6 +152,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * 
      * @return the parameters value.
      */
+    @Generated
     public Map<String, ParameterSpecification> getParameters() {
         return this.parameters;
     }
@@ -121,6 +163,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * @param parameters the parameters value to set.
      * @return the LinkedService object itself.
      */
+    @Generated
     public LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         this.parameters = parameters;
         return this;
@@ -131,6 +174,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * 
      * @return the annotations value.
      */
+    @Generated
     public List<Object> getAnnotations() {
         return this.annotations;
     }
@@ -141,6 +185,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * @param annotations the annotations value to set.
      * @return the LinkedService object itself.
      */
+    @Generated
     public LinkedService setAnnotations(List<Object> annotations) {
         this.annotations = annotations;
         return this;
@@ -152,6 +197,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -163,6 +209,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * @param additionalProperties the additionalProperties value to set.
      * @return the LinkedService object itself.
      */
+    @Generated
     public LinkedService setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -171,10 +218,12 @@ public class LinkedService implements JsonSerializable<LinkedService> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeJsonField("connectVia", this.connectVia);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
@@ -195,6 +244,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the LinkedService.
      */
+    @Generated
     public static LinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -439,7 +489,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
                     return SharePointOnlineListLinkedService.fromJson(readerToUse.reset());
                 } else if ("AzureSynapseArtifacts".equals(discriminatorValue)) {
                     return AzureSynapseArtifactsLinkedService.fromJson(readerToUse.reset());
-                } else if ("LakeHouse".equals(discriminatorValue)) {
+                } else if ("Lakehouse".equals(discriminatorValue)) {
                     return LakeHouseLinkedService.fromJson(readerToUse.reset());
                 } else if ("PowerBIWorkspace".equals(discriminatorValue)) {
                     return PowerBIWorkspaceLinkedService.fromJson(readerToUse.reset());
@@ -449,6 +499,8 @@ public class LinkedService implements JsonSerializable<LinkedService> {
                     return SalesforceServiceCloudV2LinkedService.fromJson(readerToUse.reset());
                 } else if ("Warehouse".equals(discriminatorValue)) {
                     return WarehouseLinkedService.fromJson(readerToUse.reset());
+                } else if ("ServiceNowV2".equals(discriminatorValue)) {
+                    return ServiceNowV2LinkedService.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -456,6 +508,7 @@ public class LinkedService implements JsonSerializable<LinkedService> {
         });
     }
 
+    @Generated
     static LinkedService fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             LinkedService deserializedLinkedService = new LinkedService();
@@ -466,6 +519,8 @@ public class LinkedService implements JsonSerializable<LinkedService> {
 
                 if ("type".equals(fieldName)) {
                     deserializedLinkedService.type = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedLinkedService.version = reader.getString();
                 } else if ("connectVia".equals(fieldName)) {
                     deserializedLinkedService.connectVia = IntegrationRuntimeReference.fromJson(reader);
                 } else if ("description".equals(fieldName)) {

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.PipelineRun;
@@ -20,17 +20,17 @@ public final class PipelineRunsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"runId\":\"wzm\",\"runGroupId\":\"plzbzcgzhdrv\",\"isLatest\":false,\"pipelineName\":\"hfogjoocnseo\",\"parameters\":{\"zglgx\":\"tqrvzaabeiqopj\",\"hbieeswb\":\"qdlwuzkz\",\"otsawapm\":\"bijtepr\",\"bwy\":\"yfgswpqunvxtv\"},\"runDimensions\":{\"zwkzedi\":\"qpqyjebgveu\",\"ohz\":\"wdrrgzguupwq\",\"nco\":\"fbb\",\"jshyyrcr\":\"iniadlx\"},\"invokedBy\":{\"name\":\"qsfaurmqpkgwf\",\"id\":\"t\",\"invokedByType\":\"hmrhhx\",\"pipelineName\":\"bdnpeamslv\",\"pipelineRunId\":\"sywnifvwrdya\"},\"lastUpdated\":\"2021-01-05T09:04:18Z\",\"runStart\":\"2021-05-21T20:59:20Z\",\"runEnd\":\"2021-04-22T06:44:56Z\",\"durationInMs\":1046273347,\"status\":\"vvebxgxgr\",\"message\":\"oabhkyaspc\",\"\":{\"yxlcgycvcspcfx\":\"dataevjndvafxcvn\",\"ioqtafmbxtn\":\"dataal\",\"y\":\"datax\",\"a\":\"datarut\"}}";
+            = "{\"runId\":\"mrfjjrp\",\"runGroupId\":\"jecqwdosbsngyia\",\"isLatest\":false,\"pipelineName\":\"vlkuucpw\",\"parameters\":{\"c\":\"yrblrqeqcdi\",\"njxi\":\"cvzdtft\"},\"runDimensions\":{\"yixgxtccmqzkuq\":\"mm\",\"gindlnteoapszxq\":\"rzu\"},\"invokedBy\":{\"name\":\"vyracqmfjihm\",\"id\":\"zwoijtlhxlsxxra\",\"invokedByType\":\"aicgqgafkrtsaeag\",\"pipelineName\":\"ctcrdfxqhn\",\"pipelineRunId\":\"ujrnfdqlzggvo\"},\"lastUpdated\":\"2021-11-15T19:48:05Z\",\"runStart\":\"2021-08-31T03:56:26Z\",\"runEnd\":\"2021-10-30T14:33:10Z\",\"durationInMs\":41436935,\"status\":\"uj\",\"message\":\"jqci\",\"shmntlbfknxzc\":\"datapsvgupqw\",\"ccpbtvgiokz\":\"datauvjbfryortbres\",\"dwawomkzussgjmub\":\"datatpvs\",\"ekzcmfibbozkp\":\"datagjdluwbmwuj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PipelineRun response = manager.pipelineRuns()
-            .getWithResponse("kpsw", "sveymd", "bmffcryyykwwhscu", com.azure.core.util.Context.NONE)
+            .getWithResponse("llzbtq", "jmio", "csdfbki", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

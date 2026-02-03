@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,56 +22,67 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
     /*
      * The name of the data flow.
      */
+    @Generated
     private String dataFlowName;
 
     /*
      * Compute type of the cluster.
      */
+    @Generated
     private String computeType;
 
     /*
      * Core count of the cluster.
      */
+    @Generated
     private Integer coreCount;
 
     /*
      * Node count of the cluster. (deprecated property)
      */
+    @Generated
     private Integer nodeCount;
 
     /*
      * Attached integration runtime name of data flow debug session.
      */
+    @Generated
     private String integrationRuntimeName;
 
     /*
      * The ID of data flow debug session.
      */
+    @Generated
     private String sessionId;
 
     /*
      * Start time of data flow debug session.
      */
+    @Generated
     private String startTime;
 
     /*
      * Compute type of the cluster.
      */
+    @Generated
     private Integer timeToLiveInMinutes;
 
     /*
      * Last activity time of data flow debug session.
      */
+    @Generated
     private String lastActivityTime;
 
     /*
      * Data flow debug session info.
      */
+    @Generated
     private Map<String, Object> additionalProperties;
 
     /**
      * Creates an instance of DataFlowDebugSessionInfo class.
      */
+    @Generated
     public DataFlowDebugSessionInfo() {
     }
 
@@ -79,6 +91,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the dataFlowName value.
      */
+    @Generated
     public String getDataFlowName() {
         return this.dataFlowName;
     }
@@ -89,6 +102,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param dataFlowName the dataFlowName value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setDataFlowName(String dataFlowName) {
         this.dataFlowName = dataFlowName;
         return this;
@@ -99,6 +113,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the computeType value.
      */
+    @Generated
     public String getComputeType() {
         return this.computeType;
     }
@@ -109,6 +124,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param computeType the computeType value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setComputeType(String computeType) {
         this.computeType = computeType;
         return this;
@@ -119,6 +135,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the coreCount value.
      */
+    @Generated
     public Integer getCoreCount() {
         return this.coreCount;
     }
@@ -129,6 +146,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param coreCount the coreCount value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setCoreCount(Integer coreCount) {
         this.coreCount = coreCount;
         return this;
@@ -139,6 +157,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the nodeCount value.
      */
+    @Generated
     public Integer getNodeCount() {
         return this.nodeCount;
     }
@@ -149,6 +168,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param nodeCount the nodeCount value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setNodeCount(Integer nodeCount) {
         this.nodeCount = nodeCount;
         return this;
@@ -159,6 +179,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the integrationRuntimeName value.
      */
+    @Generated
     public String getIntegrationRuntimeName() {
         return this.integrationRuntimeName;
     }
@@ -169,6 +190,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param integrationRuntimeName the integrationRuntimeName value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setIntegrationRuntimeName(String integrationRuntimeName) {
         this.integrationRuntimeName = integrationRuntimeName;
         return this;
@@ -179,6 +201,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the sessionId value.
      */
+    @Generated
     public String getSessionId() {
         return this.sessionId;
     }
@@ -189,6 +212,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setSessionId(String sessionId) {
         this.sessionId = sessionId;
         return this;
@@ -199,6 +223,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the startTime value.
      */
+    @Generated
     public String getStartTime() {
         return this.startTime;
     }
@@ -209,6 +234,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param startTime the startTime value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setStartTime(String startTime) {
         this.startTime = startTime;
         return this;
@@ -219,6 +245,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the timeToLiveInMinutes value.
      */
+    @Generated
     public Integer getTimeToLiveInMinutes() {
         return this.timeToLiveInMinutes;
     }
@@ -229,6 +256,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param timeToLiveInMinutes the timeToLiveInMinutes value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setTimeToLiveInMinutes(Integer timeToLiveInMinutes) {
         this.timeToLiveInMinutes = timeToLiveInMinutes;
         return this;
@@ -239,6 +267,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the lastActivityTime value.
      */
+    @Generated
     public String getLastActivityTime() {
         return this.lastActivityTime;
     }
@@ -249,6 +278,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param lastActivityTime the lastActivityTime value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setLastActivityTime(String lastActivityTime) {
         this.lastActivityTime = lastActivityTime;
         return this;
@@ -259,6 +289,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * 
      * @return the additionalProperties value.
      */
+    @Generated
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
@@ -269,6 +300,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowDebugSessionInfo object itself.
      */
+    @Generated
     public DataFlowDebugSessionInfo setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
@@ -277,6 +309,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -305,6 +338,7 @@ public final class DataFlowDebugSessionInfo implements JsonSerializable<DataFlow
      * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DataFlowDebugSessionInfo.
      */
+    @Generated
     public static DataFlowDebugSessionInfo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DataFlowDebugSessionInfo deserializedDataFlowDebugSessionInfo = new DataFlowDebugSessionInfo();

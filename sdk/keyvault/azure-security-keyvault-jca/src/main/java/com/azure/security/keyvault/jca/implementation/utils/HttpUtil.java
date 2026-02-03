@@ -3,22 +3,22 @@
 package com.azure.security.keyvault.jca.implementation.utils;
 
 import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContexts;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
+import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.config.RegistryBuilder;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.ssl.SSLContexts;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -36,6 +36,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
+import static java.util.logging.Level.SEVERE;
 import static java.util.logging.Level.WARNING;
 
 /**
@@ -116,8 +117,8 @@ public final class HttpUtil {
         return result;
     }
 
-    public static HttpResponse getWithResponse(String uri, Map<String, String> headers) {
-        HttpResponse result = null;
+    public static ClassicHttpResponse getWithResponse(String uri, Map<String, String> headers) {
+        ClassicHttpResponse result = null;
 
         try (CloseableHttpClient client = buildClient()) {
             HttpGet httpGet = new HttpGet(uri);
@@ -136,23 +137,30 @@ public final class HttpUtil {
         return result;
     }
 
-    private static ResponseHandler<String> createResponseHandler() {
-        return (HttpResponse response) -> {
-            int status = response.getStatusLine().getStatusCode();
-            String result = null;
+    private static HttpClientResponseHandler<String> createResponseHandler() {
+        return (ClassicHttpResponse response) -> {
+            int status = response.getCode();
+            String result;
 
             if (status >= 200 && status < 300) {
                 HttpEntity entity = response.getEntity();
                 result = entity != null ? EntityUtils.toString(entity) : null;
+            } else {
+                String errorMessage = "Fail to get response from Key Vault because return http status code is " + status
+                    + ". It "
+                    + "can be caused by missing permissions or roles. To know how to add permissions or roles, see "
+                    + "https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#prerequisites.";
+                LOGGER.log(SEVERE, errorMessage);
+                throw new RuntimeException(errorMessage);
             }
 
             return result;
         };
     }
 
-    private static ResponseHandler<HttpResponse> createResponseHandlerForAuthChallenge() {
-        return (HttpResponse response) -> {
-            int status = response.getStatusLine().getStatusCode();
+    private static HttpClientResponseHandler<ClassicHttpResponse> createResponseHandlerForAuthChallenge() {
+        return (ClassicHttpResponse response) -> {
+            int status = response.getCode();
 
             return status == 401 ? response : null;
         };

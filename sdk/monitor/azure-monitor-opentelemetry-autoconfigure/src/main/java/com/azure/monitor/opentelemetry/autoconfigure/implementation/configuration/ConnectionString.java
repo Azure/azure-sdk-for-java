@@ -19,14 +19,16 @@ public final class ConnectionString {
     private final URL profilerEndpoint;
 
     private final String originalString;
+    private final String aadAudience;
 
     ConnectionString(String instrumentationKey, URL ingestionEndpoint, URL liveEndpoint, URL profilerEndpoint,
-        String originalString) {
+        String originalString, String aadAudience) {
         this.instrumentationKey = instrumentationKey;
         this.ingestionEndpoint = ingestionEndpoint.toExternalForm();
         this.liveEndpoint = liveEndpoint;
         this.profilerEndpoint = profilerEndpoint;
         this.originalString = originalString;
+        this.aadAudience = aadAudience;
     }
 
     public static ConnectionString parse(String connectionString) {
@@ -53,5 +55,9 @@ public final class ConnectionString {
 
     public String getOriginalString() {
         return originalString;
+    }
+
+    public String getAadAudienceWithScope() {
+        return aadAudience + "/.default";
     }
 }

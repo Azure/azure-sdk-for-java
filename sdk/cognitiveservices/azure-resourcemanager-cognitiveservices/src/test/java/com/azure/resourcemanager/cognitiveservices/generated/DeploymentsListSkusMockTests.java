@@ -7,8 +7,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.SkuResource;
@@ -23,28 +23,28 @@ public final class DeploymentsListSkusMockTests {
     @Test
     public void testListSkus() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"randoypmb\",\"sku\":{\"name\":\"oormkfqlwxldyka\",\"tier\":\"Free\",\"size\":\"aolnjpnnbmjk\",\"family\":\"bjgsjjxxahmrn\",\"capacity\":177973727},\"capacity\":{\"minimum\":1916460685,\"maximum\":156378653,\"step\":319427729,\"default\":1974200246,\"allowedValues\":[739994606]}}]}";
+            = "{\"value\":[{\"resourceType\":\"eskwxeg\",\"sku\":{\"name\":\"hrg\",\"tier\":\"Standard\",\"size\":\"ctmjtsghpbcbc\",\"family\":\"arpzeqacdldtzm\",\"capacity\":1809146245},\"capacity\":{\"minimum\":698852842,\"maximum\":1337763239,\"step\":1691859102,\"default\":611241791,\"allowedValues\":[731388560,1810636595,830792514,2133411593]}}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SkuResource> response
-            = manager.deployments().listSkus("ukkutvl", "hrpqhv", "blcouqehbhbcdszi", com.azure.core.util.Context.NONE);
+            = manager.deployments().listSkus("oy", "uiylpc", "aewse", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("randoypmb", response.iterator().next().resourceType());
-        Assertions.assertEquals("oormkfqlwxldyka", response.iterator().next().sku().name());
-        Assertions.assertEquals(SkuTier.FREE, response.iterator().next().sku().tier());
-        Assertions.assertEquals("aolnjpnnbmjk", response.iterator().next().sku().size());
-        Assertions.assertEquals("bjgsjjxxahmrn", response.iterator().next().sku().family());
-        Assertions.assertEquals(177973727, response.iterator().next().sku().capacity());
-        Assertions.assertEquals(1916460685, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(156378653, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(319427729, response.iterator().next().capacity().step());
-        Assertions.assertEquals(1974200246, response.iterator().next().capacity().defaultProperty());
-        Assertions.assertEquals(739994606, response.iterator().next().capacity().allowedValues().get(0));
+        Assertions.assertEquals("eskwxeg", response.iterator().next().resourceType());
+        Assertions.assertEquals("hrg", response.iterator().next().sku().name());
+        Assertions.assertEquals(SkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals("ctmjtsghpbcbc", response.iterator().next().sku().size());
+        Assertions.assertEquals("arpzeqacdldtzm", response.iterator().next().sku().family());
+        Assertions.assertEquals(1809146245, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(698852842, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(1337763239, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(1691859102, response.iterator().next().capacity().step());
+        Assertions.assertEquals(611241791, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals(731388560, response.iterator().next().capacity().allowedValues().get(0));
     }
 }

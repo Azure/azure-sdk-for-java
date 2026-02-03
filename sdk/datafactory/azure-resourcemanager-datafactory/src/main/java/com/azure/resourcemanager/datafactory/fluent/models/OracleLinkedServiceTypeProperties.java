@@ -5,12 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
+import com.azure.resourcemanager.datafactory.models.OracleAuthenticationType;
 import java.io.IOException;
 
 /**
@@ -19,14 +19,99 @@ import java.io.IOException;
 @Fluent
 public final class OracleLinkedServiceTypeProperties implements JsonSerializable<OracleLinkedServiceTypeProperties> {
     /*
-     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Only used for Version 1.0.
      */
     private Object connectionString;
+
+    /*
+     * The location of Oracle database you want to connect to, the supported forms include connector descriptor, Easy
+     * Connect (Plus) Naming and Oracle Net Services Name (Only self-hosted IR). Type: string. Only used for Version
+     * 2.0.
+     */
+    private Object server;
+
+    /*
+     * Authentication type for connecting to the Oracle database. Only used for Version 2.0.
+     */
+    private OracleAuthenticationType authenticationType;
+
+    /*
+     * The Oracle database username. Type: string. Only used for Version 2.0.
+     */
+    private Object username;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
     private AzureKeyVaultSecretReference password;
+
+    /*
+     * Specifies the encryption client behavior. Supported values are accepted, rejected, requested or required, default
+     * value is required. Type: string. Only used for Version 2.0.
+     */
+    private Object encryptionClient;
+
+    /*
+     * Specifies the encryption algorithms that client can use. Supported values are AES128, AES192, AES256, 3DES112,
+     * 3DES168, default value is (AES256). Type: string. Only used for Version 2.0.
+     */
+    private Object encryptionTypesClient;
+
+    /*
+     * Specifies the desired data integrity behavior when this client connects to a server. Supported values are
+     * accepted, rejected, requested or required, default value is required. Type: string. Only used for Version 2.0.
+     */
+    private Object cryptoChecksumClient;
+
+    /*
+     * Specifies the crypto-checksum algorithms that client can use. Supported values are SHA1, SHA256, SHA384, SHA512,
+     * default value is (SHA512). Type: string. Only used for Version 2.0.
+     */
+    private Object cryptoChecksumTypesClient;
+
+    /*
+     * Specifies the amount that the source initially fetches for LOB columns, default value is 0. Type: integer. Only
+     * used for Version 2.0.
+     */
+    private Object initialLobFetchSize;
+
+    /*
+     * Specifies the number of bytes that the driver allocates to fetch the data in one database round-trip, default
+     * value is 10485760. Type: integer. Only used for Version 2.0.
+     */
+    private Object fetchSize;
+
+    /*
+     * Specifies the number of cursors or statements to be cached for each database connection, default value is 0.
+     * Type: integer. Only used for Version 2.0.
+     */
+    private Object statementCacheSize;
+
+    /*
+     * Specifies a command that is issued immediately after connecting to the database to manage session settings. Type:
+     * string. Only used for Version 2.0.
+     */
+    private Object initializationString;
+
+    /*
+     * Specifies whether to use bulk copy or batch insert when loading data into the database, default value is true.
+     * Type: boolean. Only used for Version 2.0.
+     */
+    private Object enableBulkLoad;
+
+    /*
+     * Specifies whether to use the Version 1.0 data type mappings. Do not set this to true unless you want to keep
+     * backward compatibility with Version 1.0's data type mappings, default value is false. Type: boolean. Only used
+     * for Version 2.0.
+     */
+    private Object supportV1DataTypes;
+
+    /*
+     * Specifies whether the driver returns column value with the TIMESTAMP WITH TIME ZONE data type as DateTime or
+     * string. This setting is ignored if supportV1DataTypes is not true, default value is true. Type: boolean. Only
+     * used for Version 2.0.
+     */
+    private Object fetchTswtzAsTimestamp;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
@@ -42,7 +127,7 @@ public final class OracleLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * AzureKeyVaultSecretReference. Only used for Version 1.0.
      * 
      * @return the connectionString value.
      */
@@ -52,13 +137,79 @@ public final class OracleLinkedServiceTypeProperties implements JsonSerializable
 
     /**
      * Set the connectionString property: The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * AzureKeyVaultSecretReference. Only used for Version 1.0.
      * 
      * @param connectionString the connectionString value to set.
      * @return the OracleLinkedServiceTypeProperties object itself.
      */
     public OracleLinkedServiceTypeProperties withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get the server property: The location of Oracle database you want to connect to, the supported forms include
+     * connector descriptor, Easy Connect (Plus) Naming and Oracle Net Services Name (Only self-hosted IR). Type:
+     * string. Only used for Version 2.0.
+     * 
+     * @return the server value.
+     */
+    public Object server() {
+        return this.server;
+    }
+
+    /**
+     * Set the server property: The location of Oracle database you want to connect to, the supported forms include
+     * connector descriptor, Easy Connect (Plus) Naming and Oracle Net Services Name (Only self-hosted IR). Type:
+     * string. Only used for Version 2.0.
+     * 
+     * @param server the server value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withServer(Object server) {
+        this.server = server;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: Authentication type for connecting to the Oracle database. Only used for
+     * Version 2.0.
+     * 
+     * @return the authenticationType value.
+     */
+    public OracleAuthenticationType authenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: Authentication type for connecting to the Oracle database. Only used for
+     * Version 2.0.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withAuthenticationType(OracleAuthenticationType authenticationType) {
+        this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the username property: The Oracle database username. Type: string. Only used for Version 2.0.
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.username;
+    }
+
+    /**
+     * Set the username property: The Oracle database username. Type: string. Only used for Version 2.0.
+     * 
+     * @param username the username value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withUsername(Object username) {
+        this.username = username;
         return this;
     }
 
@@ -79,6 +230,256 @@ public final class OracleLinkedServiceTypeProperties implements JsonSerializable
      */
     public OracleLinkedServiceTypeProperties withPassword(AzureKeyVaultSecretReference password) {
         this.password = password;
+        return this;
+    }
+
+    /**
+     * Get the encryptionClient property: Specifies the encryption client behavior. Supported values are accepted,
+     * rejected, requested or required, default value is required. Type: string. Only used for Version 2.0.
+     * 
+     * @return the encryptionClient value.
+     */
+    public Object encryptionClient() {
+        return this.encryptionClient;
+    }
+
+    /**
+     * Set the encryptionClient property: Specifies the encryption client behavior. Supported values are accepted,
+     * rejected, requested or required, default value is required. Type: string. Only used for Version 2.0.
+     * 
+     * @param encryptionClient the encryptionClient value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withEncryptionClient(Object encryptionClient) {
+        this.encryptionClient = encryptionClient;
+        return this;
+    }
+
+    /**
+     * Get the encryptionTypesClient property: Specifies the encryption algorithms that client can use. Supported values
+     * are AES128, AES192, AES256, 3DES112, 3DES168, default value is (AES256). Type: string. Only used for Version 2.0.
+     * 
+     * @return the encryptionTypesClient value.
+     */
+    public Object encryptionTypesClient() {
+        return this.encryptionTypesClient;
+    }
+
+    /**
+     * Set the encryptionTypesClient property: Specifies the encryption algorithms that client can use. Supported values
+     * are AES128, AES192, AES256, 3DES112, 3DES168, default value is (AES256). Type: string. Only used for Version 2.0.
+     * 
+     * @param encryptionTypesClient the encryptionTypesClient value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withEncryptionTypesClient(Object encryptionTypesClient) {
+        this.encryptionTypesClient = encryptionTypesClient;
+        return this;
+    }
+
+    /**
+     * Get the cryptoChecksumClient property: Specifies the desired data integrity behavior when this client connects to
+     * a server. Supported values are accepted, rejected, requested or required, default value is required. Type:
+     * string. Only used for Version 2.0.
+     * 
+     * @return the cryptoChecksumClient value.
+     */
+    public Object cryptoChecksumClient() {
+        return this.cryptoChecksumClient;
+    }
+
+    /**
+     * Set the cryptoChecksumClient property: Specifies the desired data integrity behavior when this client connects to
+     * a server. Supported values are accepted, rejected, requested or required, default value is required. Type:
+     * string. Only used for Version 2.0.
+     * 
+     * @param cryptoChecksumClient the cryptoChecksumClient value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withCryptoChecksumClient(Object cryptoChecksumClient) {
+        this.cryptoChecksumClient = cryptoChecksumClient;
+        return this;
+    }
+
+    /**
+     * Get the cryptoChecksumTypesClient property: Specifies the crypto-checksum algorithms that client can use.
+     * Supported values are SHA1, SHA256, SHA384, SHA512, default value is (SHA512). Type: string. Only used for Version
+     * 2.0.
+     * 
+     * @return the cryptoChecksumTypesClient value.
+     */
+    public Object cryptoChecksumTypesClient() {
+        return this.cryptoChecksumTypesClient;
+    }
+
+    /**
+     * Set the cryptoChecksumTypesClient property: Specifies the crypto-checksum algorithms that client can use.
+     * Supported values are SHA1, SHA256, SHA384, SHA512, default value is (SHA512). Type: string. Only used for Version
+     * 2.0.
+     * 
+     * @param cryptoChecksumTypesClient the cryptoChecksumTypesClient value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withCryptoChecksumTypesClient(Object cryptoChecksumTypesClient) {
+        this.cryptoChecksumTypesClient = cryptoChecksumTypesClient;
+        return this;
+    }
+
+    /**
+     * Get the initialLobFetchSize property: Specifies the amount that the source initially fetches for LOB columns,
+     * default value is 0. Type: integer. Only used for Version 2.0.
+     * 
+     * @return the initialLobFetchSize value.
+     */
+    public Object initialLobFetchSize() {
+        return this.initialLobFetchSize;
+    }
+
+    /**
+     * Set the initialLobFetchSize property: Specifies the amount that the source initially fetches for LOB columns,
+     * default value is 0. Type: integer. Only used for Version 2.0.
+     * 
+     * @param initialLobFetchSize the initialLobFetchSize value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withInitialLobFetchSize(Object initialLobFetchSize) {
+        this.initialLobFetchSize = initialLobFetchSize;
+        return this;
+    }
+
+    /**
+     * Get the fetchSize property: Specifies the number of bytes that the driver allocates to fetch the data in one
+     * database round-trip, default value is 10485760. Type: integer. Only used for Version 2.0.
+     * 
+     * @return the fetchSize value.
+     */
+    public Object fetchSize() {
+        return this.fetchSize;
+    }
+
+    /**
+     * Set the fetchSize property: Specifies the number of bytes that the driver allocates to fetch the data in one
+     * database round-trip, default value is 10485760. Type: integer. Only used for Version 2.0.
+     * 
+     * @param fetchSize the fetchSize value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withFetchSize(Object fetchSize) {
+        this.fetchSize = fetchSize;
+        return this;
+    }
+
+    /**
+     * Get the statementCacheSize property: Specifies the number of cursors or statements to be cached for each database
+     * connection, default value is 0. Type: integer. Only used for Version 2.0.
+     * 
+     * @return the statementCacheSize value.
+     */
+    public Object statementCacheSize() {
+        return this.statementCacheSize;
+    }
+
+    /**
+     * Set the statementCacheSize property: Specifies the number of cursors or statements to be cached for each database
+     * connection, default value is 0. Type: integer. Only used for Version 2.0.
+     * 
+     * @param statementCacheSize the statementCacheSize value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withStatementCacheSize(Object statementCacheSize) {
+        this.statementCacheSize = statementCacheSize;
+        return this;
+    }
+
+    /**
+     * Get the initializationString property: Specifies a command that is issued immediately after connecting to the
+     * database to manage session settings. Type: string. Only used for Version 2.0.
+     * 
+     * @return the initializationString value.
+     */
+    public Object initializationString() {
+        return this.initializationString;
+    }
+
+    /**
+     * Set the initializationString property: Specifies a command that is issued immediately after connecting to the
+     * database to manage session settings. Type: string. Only used for Version 2.0.
+     * 
+     * @param initializationString the initializationString value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withInitializationString(Object initializationString) {
+        this.initializationString = initializationString;
+        return this;
+    }
+
+    /**
+     * Get the enableBulkLoad property: Specifies whether to use bulk copy or batch insert when loading data into the
+     * database, default value is true. Type: boolean. Only used for Version 2.0.
+     * 
+     * @return the enableBulkLoad value.
+     */
+    public Object enableBulkLoad() {
+        return this.enableBulkLoad;
+    }
+
+    /**
+     * Set the enableBulkLoad property: Specifies whether to use bulk copy or batch insert when loading data into the
+     * database, default value is true. Type: boolean. Only used for Version 2.0.
+     * 
+     * @param enableBulkLoad the enableBulkLoad value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withEnableBulkLoad(Object enableBulkLoad) {
+        this.enableBulkLoad = enableBulkLoad;
+        return this;
+    }
+
+    /**
+     * Get the supportV1DataTypes property: Specifies whether to use the Version 1.0 data type mappings. Do not set this
+     * to true unless you want to keep backward compatibility with Version 1.0's data type mappings, default value is
+     * false. Type: boolean. Only used for Version 2.0.
+     * 
+     * @return the supportV1DataTypes value.
+     */
+    public Object supportV1DataTypes() {
+        return this.supportV1DataTypes;
+    }
+
+    /**
+     * Set the supportV1DataTypes property: Specifies whether to use the Version 1.0 data type mappings. Do not set this
+     * to true unless you want to keep backward compatibility with Version 1.0's data type mappings, default value is
+     * false. Type: boolean. Only used for Version 2.0.
+     * 
+     * @param supportV1DataTypes the supportV1DataTypes value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withSupportV1DataTypes(Object supportV1DataTypes) {
+        this.supportV1DataTypes = supportV1DataTypes;
+        return this;
+    }
+
+    /**
+     * Get the fetchTswtzAsTimestamp property: Specifies whether the driver returns column value with the TIMESTAMP WITH
+     * TIME ZONE data type as DateTime or string. This setting is ignored if supportV1DataTypes is not true, default
+     * value is true. Type: boolean. Only used for Version 2.0.
+     * 
+     * @return the fetchTswtzAsTimestamp value.
+     */
+    public Object fetchTswtzAsTimestamp() {
+        return this.fetchTswtzAsTimestamp;
+    }
+
+    /**
+     * Set the fetchTswtzAsTimestamp property: Specifies whether the driver returns column value with the TIMESTAMP WITH
+     * TIME ZONE data type as DateTime or string. This setting is ignored if supportV1DataTypes is not true, default
+     * value is true. Type: boolean. Only used for Version 2.0.
+     * 
+     * @param fetchTswtzAsTimestamp the fetchTswtzAsTimestamp value to set.
+     * @return the OracleLinkedServiceTypeProperties object itself.
+     */
+    public OracleLinkedServiceTypeProperties withFetchTswtzAsTimestamp(Object fetchTswtzAsTimestamp) {
+        this.fetchTswtzAsTimestamp = fetchTswtzAsTimestamp;
         return this;
     }
 
@@ -110,17 +511,10 @@ public final class OracleLinkedServiceTypeProperties implements JsonSerializable
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (connectionString() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property connectionString in model OracleLinkedServiceTypeProperties"));
-        }
         if (password() != null) {
             password().validate();
         }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(OracleLinkedServiceTypeProperties.class);
 
     /**
      * {@inheritDoc}
@@ -128,8 +522,51 @@ public final class OracleLinkedServiceTypeProperties implements JsonSerializable
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        if (this.connectionString != null) {
+            jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        }
+        if (this.server != null) {
+            jsonWriter.writeUntypedField("server", this.server);
+        }
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        if (this.username != null) {
+            jsonWriter.writeUntypedField("username", this.username);
+        }
         jsonWriter.writeJsonField("password", this.password);
+        if (this.encryptionClient != null) {
+            jsonWriter.writeUntypedField("encryptionClient", this.encryptionClient);
+        }
+        if (this.encryptionTypesClient != null) {
+            jsonWriter.writeUntypedField("encryptionTypesClient", this.encryptionTypesClient);
+        }
+        if (this.cryptoChecksumClient != null) {
+            jsonWriter.writeUntypedField("cryptoChecksumClient", this.cryptoChecksumClient);
+        }
+        if (this.cryptoChecksumTypesClient != null) {
+            jsonWriter.writeUntypedField("cryptoChecksumTypesClient", this.cryptoChecksumTypesClient);
+        }
+        if (this.initialLobFetchSize != null) {
+            jsonWriter.writeUntypedField("initialLobFetchSize", this.initialLobFetchSize);
+        }
+        if (this.fetchSize != null) {
+            jsonWriter.writeUntypedField("fetchSize", this.fetchSize);
+        }
+        if (this.statementCacheSize != null) {
+            jsonWriter.writeUntypedField("statementCacheSize", this.statementCacheSize);
+        }
+        if (this.initializationString != null) {
+            jsonWriter.writeUntypedField("initializationString", this.initializationString);
+        }
+        if (this.enableBulkLoad != null) {
+            jsonWriter.writeUntypedField("enableBulkLoad", this.enableBulkLoad);
+        }
+        if (this.supportV1DataTypes != null) {
+            jsonWriter.writeUntypedField("supportV1DataTypes", this.supportV1DataTypes);
+        }
+        if (this.fetchTswtzAsTimestamp != null) {
+            jsonWriter.writeUntypedField("fetchTswtzAsTimestamp", this.fetchTswtzAsTimestamp);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }
@@ -140,7 +577,6 @@ public final class OracleLinkedServiceTypeProperties implements JsonSerializable
      * @param jsonReader The JsonReader being read.
      * @return An instance of OracleLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the OracleLinkedServiceTypeProperties.
      */
     public static OracleLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -153,9 +589,38 @@ public final class OracleLinkedServiceTypeProperties implements JsonSerializable
 
                 if ("connectionString".equals(fieldName)) {
                     deserializedOracleLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("server".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.authenticationType
+                        = OracleAuthenticationType.fromString(reader.getString());
+                } else if ("username".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.username = reader.readUntyped();
                 } else if ("password".equals(fieldName)) {
                     deserializedOracleLinkedServiceTypeProperties.password
                         = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptionClient".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.encryptionClient = reader.readUntyped();
+                } else if ("encryptionTypesClient".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.encryptionTypesClient = reader.readUntyped();
+                } else if ("cryptoChecksumClient".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.cryptoChecksumClient = reader.readUntyped();
+                } else if ("cryptoChecksumTypesClient".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.cryptoChecksumTypesClient = reader.readUntyped();
+                } else if ("initialLobFetchSize".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.initialLobFetchSize = reader.readUntyped();
+                } else if ("fetchSize".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.fetchSize = reader.readUntyped();
+                } else if ("statementCacheSize".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.statementCacheSize = reader.readUntyped();
+                } else if ("initializationString".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.initializationString = reader.readUntyped();
+                } else if ("enableBulkLoad".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.enableBulkLoad = reader.readUntyped();
+                } else if ("supportV1DataTypes".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.supportV1DataTypes = reader.readUntyped();
+                } else if ("fetchTswtzAsTimestamp".equals(fieldName)) {
+                    deserializedOracleLinkedServiceTypeProperties.fetchTswtzAsTimestamp = reader.readUntyped();
                 } else if ("encryptedCredential".equals(fieldName)) {
                     deserializedOracleLinkedServiceTypeProperties.encryptedCredential = reader.getString();
                 } else {

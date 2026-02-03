@@ -5,13 +5,15 @@
 package com.azure.resourcemanager.redisenterprise.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.redisenterprise.models.ClusterCommonProperties;
 import com.azure.resourcemanager.redisenterprise.models.ClusterPropertiesEncryption;
 import com.azure.resourcemanager.redisenterprise.models.HighAvailability;
 import com.azure.resourcemanager.redisenterprise.models.ProvisioningState;
+import com.azure.resourcemanager.redisenterprise.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redisenterprise.models.RedundancyMode;
 import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
@@ -19,49 +21,22 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Redis Enterprise cluster properties
+ * Redis Enterprise cluster properties for create operations
  * 
- * Properties of Redis Enterprise clusters, as opposed to general resource properties like location, tags.
+ * Properties of Redis Enterprise clusters for create operations.
  */
 @Fluent
-public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
+public final class ClusterProperties extends ClusterCommonProperties {
     /*
-     * Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the
-     * availability SLA, and increases the risk of data loss.
+     * Whether or not public network traffic can access the Redis cluster. Only 'Enabled' or 'Disabled' can be set. null
+     * is returned only for clusters created using an old API version which do not have this property and cannot be set.
      */
-    private HighAvailability highAvailability;
+    private PublicNetworkAccess publicNetworkAccess;
 
     /*
-     * The minimum TLS version for the cluster to support, e.g. '1.2'. Newer versions can be added in the future. Note
-     * that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use them. They are mentioned only for the sake
-     * of consistency with old API versions.
+     * List of private endpoint connections associated with the specified Redis Enterprise cluster
      */
-    private TlsVersion minimumTlsVersion;
-
-    /*
-     * Encryption-at-rest configuration for the cluster.
-     */
-    private ClusterPropertiesEncryption encryption;
-
-    /*
-     * DNS name of the cluster endpoint
-     */
-    private String hostname;
-
-    /*
-     * Current provisioning status of the cluster
-     */
-    private ProvisioningState provisioningState;
-
-    /*
-     * Explains the current redundancy strategy of the cluster, which affects the expected SLA.
-     */
-    private RedundancyMode redundancyMode;
-
-    /*
-     * Current resource status of the cluster
-     */
-    private ResourceState resourceState;
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Version of redis the cluster supports, e.g. '6'
@@ -69,9 +44,24 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     private String redisVersion;
 
     /*
-     * List of private endpoint connections associated with the specified Redis Enterprise cluster
+     * Current resource status of the cluster
      */
-    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+    private ResourceState resourceState;
+
+    /*
+     * Explains the current redundancy strategy of the cluster, which affects the expected SLA.
+     */
+    private RedundancyMode redundancyMode;
+
+    /*
+     * Current provisioning status of the cluster
+     */
+    private ProvisioningState provisioningState;
+
+    /*
+     * DNS name of the cluster endpoint
+     */
+    private String hostname;
 
     /**
      * Creates an instance of ClusterProperties class.
@@ -80,115 +70,27 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
-     * Get the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
-     * replicated. This affects the availability SLA, and increases the risk of data loss.
+     * Get the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
      * 
-     * @return the highAvailability value.
+     * @return the publicNetworkAccess value.
      */
-    public HighAvailability highAvailability() {
-        return this.highAvailability;
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
     }
 
     /**
-     * Set the highAvailability property: Enabled by default. If highAvailability is disabled, the data set is not
-     * replicated. This affects the availability SLA, and increases the risk of data loss.
+     * Set the publicNetworkAccess property: Whether or not public network traffic can access the Redis cluster. Only
+     * 'Enabled' or 'Disabled' can be set. null is returned only for clusters created using an old API version which do
+     * not have this property and cannot be set.
      * 
-     * @param highAvailability the highAvailability value to set.
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ClusterProperties object itself.
      */
-    public ClusterProperties withHighAvailability(HighAvailability highAvailability) {
-        this.highAvailability = highAvailability;
+    public ClusterProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
-    }
-
-    /**
-     * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'. Newer
-     * versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
-     * them. They are mentioned only for the sake of consistency with old API versions.
-     * 
-     * @return the minimumTlsVersion value.
-     */
-    public TlsVersion minimumTlsVersion() {
-        return this.minimumTlsVersion;
-    }
-
-    /**
-     * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'. Newer
-     * versions can be added in the future. Note that TLS 1.0 and TLS 1.1 are now completely obsolete -- you cannot use
-     * them. They are mentioned only for the sake of consistency with old API versions.
-     * 
-     * @param minimumTlsVersion the minimumTlsVersion value to set.
-     * @return the ClusterProperties object itself.
-     */
-    public ClusterProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
-        this.minimumTlsVersion = minimumTlsVersion;
-        return this;
-    }
-
-    /**
-     * Get the encryption property: Encryption-at-rest configuration for the cluster.
-     * 
-     * @return the encryption value.
-     */
-    public ClusterPropertiesEncryption encryption() {
-        return this.encryption;
-    }
-
-    /**
-     * Set the encryption property: Encryption-at-rest configuration for the cluster.
-     * 
-     * @param encryption the encryption value to set.
-     * @return the ClusterProperties object itself.
-     */
-    public ClusterProperties withEncryption(ClusterPropertiesEncryption encryption) {
-        this.encryption = encryption;
-        return this;
-    }
-
-    /**
-     * Get the hostname property: DNS name of the cluster endpoint.
-     * 
-     * @return the hostname value.
-     */
-    public String hostname() {
-        return this.hostname;
-    }
-
-    /**
-     * Get the provisioningState property: Current provisioning status of the cluster.
-     * 
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the redundancyMode property: Explains the current redundancy strategy of the cluster, which affects the
-     * expected SLA.
-     * 
-     * @return the redundancyMode value.
-     */
-    public RedundancyMode redundancyMode() {
-        return this.redundancyMode;
-    }
-
-    /**
-     * Get the resourceState property: Current resource status of the cluster.
-     * 
-     * @return the resourceState value.
-     */
-    public ResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /**
-     * Get the redisVersion property: Version of redis the cluster supports, e.g. '6'.
-     * 
-     * @return the redisVersion value.
-     */
-    public String redisVersion() {
-        return this.redisVersion;
     }
 
     /**
@@ -197,8 +99,87 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * 
      * @return the privateEndpointConnections value.
      */
+    @Override
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the redisVersion property: Version of redis the cluster supports, e.g. '6'.
+     * 
+     * @return the redisVersion value.
+     */
+    @Override
+    public String redisVersion() {
+        return this.redisVersion;
+    }
+
+    /**
+     * Get the resourceState property: Current resource status of the cluster.
+     * 
+     * @return the resourceState value.
+     */
+    @Override
+    public ResourceState resourceState() {
+        return this.resourceState;
+    }
+
+    /**
+     * Get the redundancyMode property: Explains the current redundancy strategy of the cluster, which affects the
+     * expected SLA.
+     * 
+     * @return the redundancyMode value.
+     */
+    @Override
+    public RedundancyMode redundancyMode() {
+        return this.redundancyMode;
+    }
+
+    /**
+     * Get the provisioningState property: Current provisioning status of the cluster.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the hostname property: DNS name of the cluster endpoint.
+     * 
+     * @return the hostname value.
+     */
+    @Override
+    public String hostname() {
+        return this.hostname;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ClusterProperties withHighAvailability(HighAvailability highAvailability) {
+        super.withHighAvailability(highAvailability);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ClusterProperties withMinimumTlsVersion(TlsVersion minimumTlsVersion) {
+        super.withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ClusterProperties withEncryption(ClusterPropertiesEncryption encryption) {
+        super.withEncryption(encryption);
+        return this;
     }
 
     /**
@@ -206,7 +187,13 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        if (publicNetworkAccess() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publicNetworkAccess in model ClusterProperties"));
+        }
         if (encryption() != null) {
             encryption().validate();
         }
@@ -215,6 +202,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
         }
     }
 
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterProperties.class);
+
     /**
      * {@inheritDoc}
      */
@@ -222,10 +211,12 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("highAvailability",
-            this.highAvailability == null ? null : this.highAvailability.toString());
+            highAvailability() == null ? null : highAvailability().toString());
         jsonWriter.writeStringField("minimumTlsVersion",
-            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
-        jsonWriter.writeJsonField("encryption", this.encryption);
+            minimumTlsVersion() == null ? null : minimumTlsVersion().toString());
+        jsonWriter.writeJsonField("encryption", encryption());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -235,6 +226,7 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ClusterProperties.
      */
     public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -245,11 +237,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                 reader.nextToken();
 
                 if ("highAvailability".equals(fieldName)) {
-                    deserializedClusterProperties.highAvailability = HighAvailability.fromString(reader.getString());
+                    deserializedClusterProperties.withHighAvailability(HighAvailability.fromString(reader.getString()));
                 } else if ("minimumTlsVersion".equals(fieldName)) {
-                    deserializedClusterProperties.minimumTlsVersion = TlsVersion.fromString(reader.getString());
+                    deserializedClusterProperties.withMinimumTlsVersion(TlsVersion.fromString(reader.getString()));
                 } else if ("encryption".equals(fieldName)) {
-                    deserializedClusterProperties.encryption = ClusterPropertiesEncryption.fromJson(reader);
+                    deserializedClusterProperties.withEncryption(ClusterPropertiesEncryption.fromJson(reader));
                 } else if ("hostName".equals(fieldName)) {
                     deserializedClusterProperties.hostname = reader.getString();
                 } else if ("provisioningState".equals(fieldName)) {
@@ -264,6 +256,9 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     List<PrivateEndpointConnectionInner> privateEndpointConnections
                         = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
                     deserializedClusterProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedClusterProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

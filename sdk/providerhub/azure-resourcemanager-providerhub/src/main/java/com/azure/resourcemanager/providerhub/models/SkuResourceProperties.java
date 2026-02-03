@@ -17,10 +17,25 @@ import java.util.List;
  */
 @Fluent
 public final class SkuResourceProperties extends ResourceTypeSku {
+    /*
+     * The provisioning state.
+     */
+    private ProvisioningState provisioningState;
+
     /**
      * Creates an instance of SkuResourceProperties class.
      */
     public SkuResourceProperties() {
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -29,15 +44,6 @@ public final class SkuResourceProperties extends ResourceTypeSku {
     @Override
     public SkuResourceProperties withSkuSettings(List<SkuSetting> skuSettings) {
         super.withSkuSettings(skuSettings);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SkuResourceProperties withProvisioningState(ProvisioningState provisioningState) {
-        super.withProvisioningState(provisioningState);
         return this;
     }
 
@@ -66,8 +72,6 @@ public final class SkuResourceProperties extends ResourceTypeSku {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("skuSettings", skuSettings(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("provisioningState",
-            provisioningState() == null ? null : provisioningState().toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -91,8 +95,8 @@ public final class SkuResourceProperties extends ResourceTypeSku {
                     List<SkuSetting> skuSettings = reader.readArray(reader1 -> SkuSetting.fromJson(reader1));
                     deserializedSkuResourceProperties.withSkuSettings(skuSettings);
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedSkuResourceProperties
-                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                    deserializedSkuResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

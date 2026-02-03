@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class VirtualNetworkProfile implements JsonSerializable<VirtualNetw
     /*
      * Subnet ID used for computes in workspace
      */
+    @Generated
     private String computeSubnetId;
 
     /**
      * Creates an instance of VirtualNetworkProfile class.
      */
+    @Generated
     public VirtualNetworkProfile() {
     }
 
@@ -32,6 +35,7 @@ public final class VirtualNetworkProfile implements JsonSerializable<VirtualNetw
      * 
      * @return the computeSubnetId value.
      */
+    @Generated
     public String getComputeSubnetId() {
         return this.computeSubnetId;
     }
@@ -42,6 +46,7 @@ public final class VirtualNetworkProfile implements JsonSerializable<VirtualNetw
      * @param computeSubnetId the computeSubnetId value to set.
      * @return the VirtualNetworkProfile object itself.
      */
+    @Generated
     public VirtualNetworkProfile setComputeSubnetId(String computeSubnetId) {
         this.computeSubnetId = computeSubnetId;
         return this;
@@ -50,6 +55,7 @@ public final class VirtualNetworkProfile implements JsonSerializable<VirtualNetw
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class VirtualNetworkProfile implements JsonSerializable<VirtualNetw
      * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the VirtualNetworkProfile.
      */
+    @Generated
     public static VirtualNetworkProfile fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             VirtualNetworkProfile deserializedVirtualNetworkProfile = new VirtualNetworkProfile();

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,65 +21,77 @@ public final class SftpReadSettings extends StoreReadSettings {
     /*
      * The read setting type.
      */
+    @Generated
     private String type = "SftpReadSettings";
 
     /*
      * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object recursive;
 
     /*
      * Sftp wildcardFolderPath. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object wildcardFolderPath;
 
     /*
      * Sftp wildcardFileName. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object wildcardFileName;
 
     /*
      * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object partitionRootPath;
 
     /*
      * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
      * copy. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object fileListPath;
 
     /*
      * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
+    @Generated
     private Object deleteFilesAfterCompletion;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object modifiedDatetimeEnd;
 
     /*
      * If true, disable parallel reading within each file. Default is false. Type: boolean (or Expression with
      * resultType boolean).
      */
+    @Generated
     private Object disableChunking;
 
     /**
      * Creates an instance of SftpReadSettings class.
      */
+    @Generated
     public SftpReadSettings() {
     }
 
@@ -87,6 +100,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -98,6 +112,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the recursive value.
      */
+    @Generated
     public Object getRecursive() {
         return this.recursive;
     }
@@ -109,6 +124,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param recursive the recursive value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setRecursive(Object recursive) {
         this.recursive = recursive;
         return this;
@@ -120,6 +136,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the wildcardFolderPath value.
      */
+    @Generated
     public Object getWildcardFolderPath() {
         return this.wildcardFolderPath;
     }
@@ -131,6 +148,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param wildcardFolderPath the wildcardFolderPath value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setWildcardFolderPath(Object wildcardFolderPath) {
         this.wildcardFolderPath = wildcardFolderPath;
         return this;
@@ -141,6 +159,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the wildcardFileName value.
      */
+    @Generated
     public Object getWildcardFileName() {
         return this.wildcardFileName;
     }
@@ -151,6 +170,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param wildcardFileName the wildcardFileName value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setWildcardFileName(Object wildcardFileName) {
         this.wildcardFileName = wildcardFileName;
         return this;
@@ -162,6 +182,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the enablePartitionDiscovery value.
      */
+    @Generated
     public Object getEnablePartitionDiscovery() {
         return this.enablePartitionDiscovery;
     }
@@ -173,6 +194,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setEnablePartitionDiscovery(Object enablePartitionDiscovery) {
         this.enablePartitionDiscovery = enablePartitionDiscovery;
         return this;
@@ -184,6 +206,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the partitionRootPath value.
      */
+    @Generated
     public Object getPartitionRootPath() {
         return this.partitionRootPath;
     }
@@ -195,6 +218,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param partitionRootPath the partitionRootPath value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setPartitionRootPath(Object partitionRootPath) {
         this.partitionRootPath = partitionRootPath;
         return this;
@@ -206,6 +230,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the fileListPath value.
      */
+    @Generated
     public Object getFileListPath() {
         return this.fileListPath;
     }
@@ -217,6 +242,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param fileListPath the fileListPath value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setFileListPath(Object fileListPath) {
         this.fileListPath = fileListPath;
         return this;
@@ -228,6 +254,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the deleteFilesAfterCompletion value.
      */
+    @Generated
     public Object getDeleteFilesAfterCompletion() {
         return this.deleteFilesAfterCompletion;
     }
@@ -239,6 +266,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param deleteFilesAfterCompletion the deleteFilesAfterCompletion value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setDeleteFilesAfterCompletion(Object deleteFilesAfterCompletion) {
         this.deleteFilesAfterCompletion = deleteFilesAfterCompletion;
         return this;
@@ -250,6 +278,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the modifiedDatetimeStart value.
      */
+    @Generated
     public Object getModifiedDatetimeStart() {
         return this.modifiedDatetimeStart;
     }
@@ -261,6 +290,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setModifiedDatetimeStart(Object modifiedDatetimeStart) {
         this.modifiedDatetimeStart = modifiedDatetimeStart;
         return this;
@@ -272,6 +302,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the modifiedDatetimeEnd value.
      */
+    @Generated
     public Object getModifiedDatetimeEnd() {
         return this.modifiedDatetimeEnd;
     }
@@ -283,6 +314,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
         this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
@@ -294,6 +326,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * 
      * @return the disableChunking value.
      */
+    @Generated
     public Object getDisableChunking() {
         return this.disableChunking;
     }
@@ -305,6 +338,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * @param disableChunking the disableChunking value to set.
      * @return the SftpReadSettings object itself.
      */
+    @Generated
     public SftpReadSettings setDisableChunking(Object disableChunking) {
         this.disableChunking = disableChunking;
         return this;
@@ -313,6 +347,7 @@ public final class SftpReadSettings extends StoreReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SftpReadSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -322,21 +357,44 @@ public final class SftpReadSettings extends StoreReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("recursive", this.recursive);
-        jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
-        jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
-        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
-        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
-        jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
-        jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
-        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
-        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
-        jsonWriter.writeUntypedField("disableChunking", this.disableChunking);
+        if (this.recursive != null) {
+            jsonWriter.writeUntypedField("recursive", this.recursive);
+        }
+        if (this.wildcardFolderPath != null) {
+            jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
+        }
+        if (this.wildcardFileName != null) {
+            jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
+        }
+        if (this.enablePartitionDiscovery != null) {
+            jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        }
+        if (this.partitionRootPath != null) {
+            jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        }
+        if (this.fileListPath != null) {
+            jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
+        }
+        if (this.deleteFilesAfterCompletion != null) {
+            jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
+        }
+        if (this.modifiedDatetimeStart != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        }
+        if (this.modifiedDatetimeEnd != null) {
+            jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        }
+        if (this.disableChunking != null) {
+            jsonWriter.writeUntypedField("disableChunking", this.disableChunking);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -353,6 +411,7 @@ public final class SftpReadSettings extends StoreReadSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the SftpReadSettings.
      */
+    @Generated
     public static SftpReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SftpReadSettings deserializedSftpReadSettings = new SftpReadSettings();

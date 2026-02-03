@@ -18,10 +18,10 @@ public class WorkTaskGet {
             = new WorkflowTaskClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowtaskget.worktaskget
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflow-task-get.work-task-get
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = workflowTaskClient.getWithResponse("98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.workflowtaskget.worktaskget
+        // END:com.azure.analytics.purview.workflow.generated.workflow-task-get.work-task-get
     }
 }

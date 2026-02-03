@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.UserContract;
@@ -22,27 +22,26 @@ public final class GroupUsersCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"firstName\":\"jwkow\",\"lastName\":\"zkkagvej\",\"email\":\"naphrskmpea\",\"registrationDate\":\"2021-09-17T16:10:59Z\",\"groups\":[{\"displayName\":\"avamzmzfntte\",\"description\":\"ftxyt\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"rjlijkkvbfaehjji\"},{\"displayName\":\"vjqxav\",\"description\":\"dmrac\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"alihhss\"},{\"displayName\":\"ygy\",\"description\":\"cvlavyr\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"myzvtiojtpdr\"},{\"displayName\":\"bxaxoyjyhutwe\",\"description\":\"givkteccxfnatntm\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"mfhjikqcnbd\"}],\"state\":\"deleted\",\"note\":\"h\",\"identities\":[{\"provider\":\"zvrchmyuc\",\"id\":\"mwyvhdiyp\"},{\"provider\":\"qqq\",\"id\":\"brhhvipgt\"},{\"provider\":\"aaoylwhfmkbwe\",\"id\":\"gypjixdmobadydw\"},{\"provider\":\"uwdvclsxdqdc\",\"id\":\"zibixrgsrwxxqkwa\"}]},\"id\":\"gcbgdgosi\",\"name\":\"iqexqwqykmv\",\"type\":\"gflhdhoxur\"}";
+            = "{\"properties\":{\"firstName\":\"iiytqx\",\"lastName\":\"jsyutez\",\"email\":\"hkvoxdporxki\",\"registrationDate\":\"2021-01-23T17:15:09Z\",\"groups\":[{\"displayName\":\"o\",\"description\":\"cyqoytws\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"wdwdmuvyakrbq\"},{\"displayName\":\"wxnblzrmiukothy\",\"description\":\"bpnhdhfrvsiz\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"jniaffwcgj\"}],\"state\":\"active\",\"note\":\"wuuogdkpnmwrfu\",\"identities\":[{\"provider\":\"byxq\",\"id\":\"nbgi\"},{\"provider\":\"l\",\"id\":\"wdkouzyvi\"},{\"provider\":\"v\",\"id\":\"vxmtsmgk\"},{\"provider\":\"tsnyr\",\"id\":\"ulbyzzcxs\"}]},\"id\":\"gaoymyckdpzbr\",\"name\":\"bmljrjyfj\",\"type\":\"euxixkps\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UserContract response = manager.groupUsers()
-            .createWithResponse("wcacwaaqakvokyax", "ratqlreqbrc", "mdts", "zumxucznbabowrcy",
-                com.azure.core.util.Context.NONE)
+            .createWithResponse("ofenin", "zunhyyqxckdl", "jpisrdnow", "ncbesfvijnu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jwkow", response.firstName());
-        Assertions.assertEquals("zkkagvej", response.lastName());
-        Assertions.assertEquals("naphrskmpea", response.email());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T16:10:59Z"), response.registrationDate());
-        Assertions.assertEquals(UserState.DELETED, response.state());
-        Assertions.assertEquals("h", response.note());
-        Assertions.assertEquals("zvrchmyuc", response.identities().get(0).provider());
-        Assertions.assertEquals("mwyvhdiyp", response.identities().get(0).id());
+        Assertions.assertEquals("iiytqx", response.firstName());
+        Assertions.assertEquals("jsyutez", response.lastName());
+        Assertions.assertEquals("hkvoxdporxki", response.email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-23T17:15:09Z"), response.registrationDate());
+        Assertions.assertEquals(UserState.ACTIVE, response.state());
+        Assertions.assertEquals("wuuogdkpnmwrfu", response.note());
+        Assertions.assertEquals("byxq", response.identities().get(0).provider());
+        Assertions.assertEquals("nbgi", response.identities().get(0).id());
     }
 }

@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -21,16 +21,19 @@ public final class ClearRange implements XmlSerializable<ClearRange> {
     /*
      * The Start property.
      */
+    @Generated
     private long start;
 
     /*
      * The End property.
      */
+    @Generated
     private long end;
 
     /**
      * Creates an instance of ClearRange class.
      */
+    @Generated
     public ClearRange() {
     }
 
@@ -39,6 +42,7 @@ public final class ClearRange implements XmlSerializable<ClearRange> {
      * 
      * @return the start value.
      */
+    @Generated
     public long getStart() {
         return this.start;
     }
@@ -49,6 +53,7 @@ public final class ClearRange implements XmlSerializable<ClearRange> {
      * @param start the start value to set.
      * @return the ClearRange object itself.
      */
+    @Generated
     public ClearRange setStart(long start) {
         this.start = start;
         return this;
@@ -59,6 +64,7 @@ public final class ClearRange implements XmlSerializable<ClearRange> {
      * 
      * @return the end value.
      */
+    @Generated
     public long getEnd() {
         return this.end;
     }
@@ -69,19 +75,22 @@ public final class ClearRange implements XmlSerializable<ClearRange> {
      * @param end the end value to set.
      * @return the ClearRange object itself.
      */
+    @Generated
     public ClearRange setEnd(long end) {
         this.end = end;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ClearRange" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "ClearRange" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeLongElement("Start", this.start);
         xmlWriter.writeLongElement("End", this.end);
@@ -96,6 +105,7 @@ public final class ClearRange implements XmlSerializable<ClearRange> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the ClearRange.
      */
+    @Generated
     public static ClearRange fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -110,8 +120,10 @@ public final class ClearRange implements XmlSerializable<ClearRange> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the ClearRange.
      */
+    @Generated
     public static ClearRange fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ClearRange" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "ClearRange" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             ClearRange deserializedClearRange = new ClearRange();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

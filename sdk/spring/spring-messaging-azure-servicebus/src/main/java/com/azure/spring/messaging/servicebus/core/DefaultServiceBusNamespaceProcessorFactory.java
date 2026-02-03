@@ -25,6 +25,7 @@ import com.azure.spring.messaging.servicebus.implementation.properties.merger.Pr
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
@@ -48,12 +49,13 @@ import java.util.function.Consumer;
  * advantage.
  * </p>
  */
+@SuppressWarnings("deprecation")
 public final class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusProcessorFactory, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceProcessorFactory.class);
-    private static final String LOG_IGNORE_NULL_CUSTOMIZER = "The provided '{}' customizer is null, will ignore it.";
     private final Map<ConsumerIdentifier, ServiceBusProcessorClient> processorMap = new ConcurrentHashMap<>();
     private final List<Listener> listeners = new ArrayList<>();
+    private ApplicationContext applicationContext;
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers = new ArrayList<>();
@@ -181,6 +183,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+                factory.setApplicationContext(this.applicationContext);
 
                 ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
                 customizeBuilder(name, subscription, builder);
@@ -193,6 +196,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
                 factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+                factory.setApplicationContext(this.applicationContext);
 
                 ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = factory.build();
                 customizeBuilder(name, subscription, builder);
@@ -246,7 +250,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      */
     public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", ServiceBusClientBuilder.class.getName());
         } else {
             this.serviceBusClientBuilderCustomizers.add(customizer);
         }
@@ -260,7 +264,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      */
     public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusProcessorClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
+                ServiceBusClientBuilder.ServiceBusProcessorClientBuilder.class.getName());
         } else {
             this.customizers.add(customizer);
         }
@@ -274,7 +279,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      */
     public void addSessionBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
+                ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class.getName());
         } else {
             this.sessionCustomizers.add(customizer);
         }
@@ -292,7 +298,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                                      String subscription,
                                      AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusProcessorClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' dedicated customizer is null, will ignore it.",
+                ServiceBusClientBuilder.ServiceBusProcessorClientBuilder.class.getName());
         } else {
             this.dedicatedCustomizers
                 .computeIfAbsent(new ConsumerIdentifier(entityName, subscription), key -> new ArrayList<>())
@@ -312,7 +319,8 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                                             String subscription,
                                             AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' dedicated customizer is null, will ignore it.",
+                ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class.getName());
         } else {
             this.dedicatedSessionCustomizers
                 .computeIfAbsent(new ConsumerIdentifier(entityName, subscription), key -> new ArrayList<>())
@@ -337,6 +345,14 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private String buildProcessorName(ConsumerIdentifier k) {
         String group = k.getGroup();
         return k.getDestination() + "/" + (group == null ? "" : group);
+    }
+
+    /**
+     * Set the application context.
+     * @param applicationContext the application context.
+     */
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
 }

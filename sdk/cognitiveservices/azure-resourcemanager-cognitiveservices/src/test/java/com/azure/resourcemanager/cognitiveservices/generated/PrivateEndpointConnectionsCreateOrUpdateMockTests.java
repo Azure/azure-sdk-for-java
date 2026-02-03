@@ -6,8 +6,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpoint;
@@ -26,34 +26,33 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"dlfp\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"cygvoavyunssx\",\"actionsRequired\":\"hi\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"gvvpasek\",\"gbuxantuygdh\",\"aq\",\"pirpiwrqof\"]},\"location\":\"pmjnlexwhcb\",\"etag\":\"ibkeph\",\"id\":\"uuerctatoyi\",\"name\":\"tqpbrlcy\",\"type\":\"duczkgof\"}";
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"oqujlyegqavn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"qqbtny\",\"actionsRequired\":\"ylxd\"},\"provisioningState\":\"Succeeded\",\"groupIds\":[\"mvmsxbae\",\"wjcnkottl\"]},\"location\":\"hvajmailfemjjzak\",\"etag\":\"jiqul\",\"id\":\"xbdmvrscmqernd\",\"name\":\"rnyeofltfnnxrk\",\"type\":\"dj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response
             = manager.privateEndpointConnections()
-                .define("z")
-                .withExistingAccount("jwfljhznamtua", "mzwcjjncqt")
-                .withRegion("r")
+                .define("yjmfczlfsyqkfr")
+                .withExistingAccount("lfryvdmvxadqac", "rgnawbabgfbk")
+                .withRegion("ywzash")
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("wggahttzlswvaj")
-                        .withActionsRequired("utlxjoqzasunwqrj"))
-                    .withGroupIds(Arrays.asList("haohcmbuo")))
+                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                        .withDescription("cxn")
+                        .withActionsRequired("gxhlusr"))
+                    .withGroupIds(Arrays.asList("mjceagbjqvls")))
                 .create();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("cygvoavyunssx",
-            response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("hi", response.properties().privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("gvvpasek", response.properties().groupIds().get(0));
-        Assertions.assertEquals("pmjnlexwhcb", response.location());
+        Assertions.assertEquals("qqbtny", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ylxd", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("mvmsxbae", response.properties().groupIds().get(0));
+        Assertions.assertEquals("hvajmailfemjjzak", response.location());
     }
 }

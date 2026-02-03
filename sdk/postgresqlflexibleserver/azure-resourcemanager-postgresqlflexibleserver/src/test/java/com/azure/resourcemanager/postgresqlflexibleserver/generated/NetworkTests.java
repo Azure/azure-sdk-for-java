@@ -13,21 +13,21 @@ public final class NetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Network model = BinaryData.fromString(
-            "{\"publicNetworkAccess\":\"Disabled\",\"delegatedSubnetResourceId\":\"akauha\",\"privateDnsZoneArmResourceId\":\"sfwxosowzxc\"}")
+            "{\"publicNetworkAccess\":\"Enabled\",\"delegatedSubnetResourceId\":\"w\",\"privateDnsZoneArmResourceId\":\"oupfgfb\"}")
             .toObject(Network.class);
-        Assertions.assertEquals(ServerPublicNetworkAccessState.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("akauha", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("sfwxosowzxc", model.privateDnsZoneArmResourceId());
+        Assertions.assertEquals(ServerPublicNetworkAccessState.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("w", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("oupfgfb", model.privateDnsZoneArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Network model = new Network().withPublicNetworkAccess(ServerPublicNetworkAccessState.DISABLED)
-            .withDelegatedSubnetResourceId("akauha")
-            .withPrivateDnsZoneArmResourceId("sfwxosowzxc");
+        Network model = new Network().withPublicNetworkAccess(ServerPublicNetworkAccessState.ENABLED)
+            .withDelegatedSubnetResourceId("w")
+            .withPrivateDnsZoneArmResourceId("oupfgfb");
         model = BinaryData.fromObject(model).toObject(Network.class);
-        Assertions.assertEquals(ServerPublicNetworkAccessState.DISABLED, model.publicNetworkAccess());
-        Assertions.assertEquals("akauha", model.delegatedSubnetResourceId());
-        Assertions.assertEquals("sfwxosowzxc", model.privateDnsZoneArmResourceId());
+        Assertions.assertEquals(ServerPublicNetworkAccessState.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("w", model.delegatedSubnetResourceId());
+        Assertions.assertEquals("oupfgfb", model.privateDnsZoneArmResourceId());
     }
 }

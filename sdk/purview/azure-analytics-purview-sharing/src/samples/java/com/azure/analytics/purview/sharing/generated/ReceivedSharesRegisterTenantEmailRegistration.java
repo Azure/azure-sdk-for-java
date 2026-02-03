@@ -17,10 +17,10 @@ public class ReceivedSharesRegisterTenantEmailRegistration {
             = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("accountName.purview.azure.com/share")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesregistertenantemailregistration.receivedsharesregistertenantemailregistration
+        // BEGIN:com.azure.analytics.purview.sharing.generated.received-shares-register-tenant-email-registration.received-shares-register-tenant-email-registration
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = receivedSharesClient.registerTenantEmailRegistrationWithResponse(requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.receivedsharesregistertenantemailregistration.receivedsharesregistertenantemailregistration
+        // END:com.azure.analytics.purview.sharing.generated.received-shares-register-tenant-email-registration.received-shares-register-tenant-email-registration
     }
 }

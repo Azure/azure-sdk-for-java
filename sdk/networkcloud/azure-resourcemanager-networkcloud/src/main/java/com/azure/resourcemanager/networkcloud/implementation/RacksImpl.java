@@ -34,8 +34,8 @@ public final class RacksImpl implements Racks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RackImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Rack> list(Context context) {
-        PagedIterable<RackInner> inner = this.serviceClient().list(context);
+    public PagedIterable<Rack> list(Integer top, String skipToken, Context context) {
+        PagedIterable<RackInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RackImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class RacksImpl implements Racks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RackImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Rack> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<RackInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<Rack> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<RackInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RackImpl(inner1, this.manager()));
     }
 
@@ -78,8 +80,10 @@ public final class RacksImpl implements Racks {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String rackName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, rackName, context);
+    public OperationStatusResult delete(String resourceGroupName, String rackName, String ifMatch, String ifNoneMatch,
+        Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, rackName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -126,10 +130,13 @@ public final class RacksImpl implements Racks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'racks'.", id)));
         }
-        return this.delete(resourceGroupName, rackName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, rackName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -140,7 +147,7 @@ public final class RacksImpl implements Racks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'racks'.", id)));
         }
-        return this.delete(resourceGroupName, rackName, context);
+        return this.delete(resourceGroupName, rackName, ifMatch, ifNoneMatch, context);
     }
 
     private RacksClient serviceClient() {

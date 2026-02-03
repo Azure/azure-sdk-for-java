@@ -20,6 +20,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.fluent.OperationsClient;
 import com.azure.resourcemanager.policyinsights.fluent.models.OperationsListResultsInner;
 import reactor.core.publisher.Mono;
@@ -54,13 +55,20 @@ public final class OperationsClientImpl implements OperationsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PolicyInsightsClient")
+    @ServiceInterface(name = "PolicyInsightsClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.PolicyInsights/operations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OperationsListResultsInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.PolicyInsights/operations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OperationsListResultsInner> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -77,31 +85,10 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String apiVersion = "2022-04-01";
+        final String apiVersion = "2024-10-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists available operations.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available operations along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationsListResultsInner>> listWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String apiVersion = "2022-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**
@@ -127,7 +114,14 @@ public final class OperationsClientImpl implements OperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperationsListResultsInner> listWithResponse(Context context) {
-        return listWithResponseAsync(context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String apiVersion = "2024-10-01";
+        final String accept = "application/json";
+        return service.listSync(this.client.getEndpoint(), apiVersion, accept, context);
     }
 
     /**
@@ -141,4 +135,6 @@ public final class OperationsClientImpl implements OperationsClient {
     public OperationsListResultsInner list() {
         return listWithResponse(Context.NONE).getValue();
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsClientImpl.class);
 }

@@ -5,7 +5,7 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.annotation.Generated;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -23,16 +23,19 @@ public final class BlockList implements XmlSerializable<BlockList> {
     /*
      * The CommittedBlocks property.
      */
+    @Generated
     private List<Block> committedBlocks;
 
     /*
      * The UncommittedBlocks property.
      */
+    @Generated
     private List<Block> uncommittedBlocks;
 
     /**
      * Creates an instance of BlockList class.
      */
+    @Generated
     public BlockList() {
     }
 
@@ -41,6 +44,7 @@ public final class BlockList implements XmlSerializable<BlockList> {
      * 
      * @return the committedBlocks value.
      */
+    @Generated
     public List<Block> getCommittedBlocks() {
         if (this.committedBlocks == null) {
             this.committedBlocks = new ArrayList<>();
@@ -54,6 +58,7 @@ public final class BlockList implements XmlSerializable<BlockList> {
      * @param committedBlocks the committedBlocks value to set.
      * @return the BlockList object itself.
      */
+    @Generated
     public BlockList setCommittedBlocks(List<Block> committedBlocks) {
         this.committedBlocks = committedBlocks;
         return this;
@@ -64,6 +69,7 @@ public final class BlockList implements XmlSerializable<BlockList> {
      * 
      * @return the uncommittedBlocks value.
      */
+    @Generated
     public List<Block> getUncommittedBlocks() {
         if (this.uncommittedBlocks == null) {
             this.uncommittedBlocks = new ArrayList<>();
@@ -77,19 +83,22 @@ public final class BlockList implements XmlSerializable<BlockList> {
      * @param uncommittedBlocks the uncommittedBlocks value to set.
      * @return the BlockList object itself.
      */
+    @Generated
     public BlockList setUncommittedBlocks(List<Block> uncommittedBlocks) {
         this.uncommittedBlocks = uncommittedBlocks;
         return this;
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
     }
 
+    @Generated
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlockList" : rootElementName;
+        rootElementName = rootElementName == null || rootElementName.isEmpty() ? "BlockList" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         if (this.committedBlocks != null) {
             xmlWriter.writeStartElement("CommittedBlocks");
@@ -116,6 +125,7 @@ public final class BlockList implements XmlSerializable<BlockList> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlockList.
      */
+    @Generated
     public static BlockList fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
@@ -130,8 +140,10 @@ public final class BlockList implements XmlSerializable<BlockList> {
      * to XML null.
      * @throws XMLStreamException If an error occurs while reading the BlockList.
      */
+    @Generated
     public static BlockList fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "BlockList" : rootElementName;
+        String finalRootElementName
+            = rootElementName == null || rootElementName.isEmpty() ? "BlockList" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             BlockList deserializedBlockList = new BlockList();
             while (reader.nextElement() != XmlToken.END_ELEMENT) {

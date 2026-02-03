@@ -17,18 +17,20 @@ public final class DataflowEndpointDataExplorerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowEndpointDataExplorer model = BinaryData.fromString(
-            "{\"authentication\":{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"udfnbyxba\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"bjyvay\",\"scope\":\"imrzrtuzqog\",\"tenantId\":\"exn\"}},\"database\":\"vfdnwnwmewzsyyce\",\"host\":\"zsoibjudpfrxtr\",\"batching\":{\"latencySeconds\":729293630,\"maxMessages\":1056443128}}")
+            "{\"authentication\":{\"method\":\"SystemAssignedManagedIdentity\",\"systemAssignedManagedIdentitySettings\":{\"audience\":\"wvnhdldwmgx\"},\"userAssignedManagedIdentitySettings\":{\"clientId\":\"rslpmutwuoeg\",\"scope\":\"khjwn\",\"tenantId\":\"yqsluic\"}},\"database\":\"dggkzzlvmbmpa\",\"host\":\"modfvuefywsbpfvm\",\"batching\":{\"latencySeconds\":1075239402,\"maxMessages\":22897042}}")
             .toObject(DataflowEndpointDataExplorer.class);
         Assertions.assertEquals(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY,
             model.authentication().method());
-        Assertions.assertEquals("udfnbyxba", model.authentication().systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("bjyvay", model.authentication().userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("imrzrtuzqog", model.authentication().userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("exn", model.authentication().userAssignedManagedIdentitySettings().tenantId());
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.database());
-        Assertions.assertEquals("zsoibjudpfrxtr", model.host());
-        Assertions.assertEquals(729293630, model.batching().latencySeconds());
-        Assertions.assertEquals(1056443128, model.batching().maxMessages());
+        Assertions.assertEquals("wvnhdldwmgx",
+            model.authentication().systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("rslpmutwuoeg",
+            model.authentication().userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("khjwn", model.authentication().userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("yqsluic", model.authentication().userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.database());
+        Assertions.assertEquals("modfvuefywsbpfvm", model.host());
+        Assertions.assertEquals(1075239402, model.batching().latencySeconds());
+        Assertions.assertEquals(22897042, model.batching().maxMessages());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,24 +39,26 @@ public final class DataflowEndpointDataExplorerTests {
             .withAuthentication(new DataflowEndpointDataExplorerAuthentication()
                 .withMethod(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY)
                 .withSystemAssignedManagedIdentitySettings(
-                    new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("udfnbyxba"))
+                    new DataflowEndpointAuthenticationSystemAssignedManagedIdentity().withAudience("wvnhdldwmgx"))
                 .withUserAssignedManagedIdentitySettings(
-                    new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("bjyvay")
-                        .withScope("imrzrtuzqog")
-                        .withTenantId("exn")))
-            .withDatabase("vfdnwnwmewzsyyce")
-            .withHost("zsoibjudpfrxtr")
-            .withBatching(new BatchingConfiguration().withLatencySeconds(729293630).withMaxMessages(1056443128));
+                    new DataflowEndpointAuthenticationUserAssignedManagedIdentity().withClientId("rslpmutwuoeg")
+                        .withScope("khjwn")
+                        .withTenantId("yqsluic")))
+            .withDatabase("dggkzzlvmbmpa")
+            .withHost("modfvuefywsbpfvm")
+            .withBatching(new BatchingConfiguration().withLatencySeconds(1075239402).withMaxMessages(22897042));
         model = BinaryData.fromObject(model).toObject(DataflowEndpointDataExplorer.class);
         Assertions.assertEquals(DataExplorerAuthMethod.SYSTEM_ASSIGNED_MANAGED_IDENTITY,
             model.authentication().method());
-        Assertions.assertEquals("udfnbyxba", model.authentication().systemAssignedManagedIdentitySettings().audience());
-        Assertions.assertEquals("bjyvay", model.authentication().userAssignedManagedIdentitySettings().clientId());
-        Assertions.assertEquals("imrzrtuzqog", model.authentication().userAssignedManagedIdentitySettings().scope());
-        Assertions.assertEquals("exn", model.authentication().userAssignedManagedIdentitySettings().tenantId());
-        Assertions.assertEquals("vfdnwnwmewzsyyce", model.database());
-        Assertions.assertEquals("zsoibjudpfrxtr", model.host());
-        Assertions.assertEquals(729293630, model.batching().latencySeconds());
-        Assertions.assertEquals(1056443128, model.batching().maxMessages());
+        Assertions.assertEquals("wvnhdldwmgx",
+            model.authentication().systemAssignedManagedIdentitySettings().audience());
+        Assertions.assertEquals("rslpmutwuoeg",
+            model.authentication().userAssignedManagedIdentitySettings().clientId());
+        Assertions.assertEquals("khjwn", model.authentication().userAssignedManagedIdentitySettings().scope());
+        Assertions.assertEquals("yqsluic", model.authentication().userAssignedManagedIdentitySettings().tenantId());
+        Assertions.assertEquals("dggkzzlvmbmpa", model.database());
+        Assertions.assertEquals("modfvuefywsbpfvm", model.host());
+        Assertions.assertEquals(1075239402, model.batching().latencySeconds());
+        Assertions.assertEquals(22897042, model.batching().maxMessages());
     }
 }

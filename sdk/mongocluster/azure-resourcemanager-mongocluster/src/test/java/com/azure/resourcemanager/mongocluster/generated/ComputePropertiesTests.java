@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeProperties model = BinaryData.fromString("{\"tier\":\"qnjaqwix\"}").toObject(ComputeProperties.class);
-        Assertions.assertEquals("qnjaqwix", model.tier());
+        ComputeProperties model = BinaryData.fromString("{\"tier\":\"jaqwixjsp\"}").toObject(ComputeProperties.class);
+        Assertions.assertEquals("jaqwixjsp", model.tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeProperties model = new ComputeProperties().withTier("qnjaqwix");
+        ComputeProperties model = new ComputeProperties().withTier("jaqwixjsp");
         model = BinaryData.fromObject(model).toObject(ComputeProperties.class);
-        Assertions.assertEquals("qnjaqwix", model.tier());
+        Assertions.assertEquals("jaqwixjsp", model.tier());
     }
 }

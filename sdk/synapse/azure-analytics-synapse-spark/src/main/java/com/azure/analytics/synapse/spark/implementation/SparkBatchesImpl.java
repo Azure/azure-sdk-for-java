@@ -58,7 +58,7 @@ public final class SparkBatchesImpl {
      * REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "SparkClientSparkBatc")
+    @ServiceInterface(name = "SparkClientSparkBatches")
     public interface SparkBatchesService {
         @Get("/livyApi/versions/{livyApiVersion}/sparkPools/{sparkPoolName}/batches")
         @ExpectedResponses({ 200 })

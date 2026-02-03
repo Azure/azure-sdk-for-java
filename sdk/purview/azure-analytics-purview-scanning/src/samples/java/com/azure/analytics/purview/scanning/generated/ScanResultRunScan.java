@@ -17,10 +17,10 @@ public class ScanResultRunScan {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildScanResultClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.scanresultrunscan.scanresultrunscan
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scan-result-run-scan.scan-result-run-scan
         RequestOptions requestOptions = new RequestOptions().addQueryParam("scanLevel", "Full");
         Response<BinaryData> response = scanResultClient.runScanWithResponse("testDataSourceName", "scan1",
             "138301e4-f4f9-4ab5-b734-bac446b236e7", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.scanresultrunscan.scanresultrunscan
+        // END:com.azure.analytics.purview.scanning.generated.scan-result-run-scan.scan-result-run-scan
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,21 +20,25 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
     /*
      * The query property.
      */
+    @Generated
     private String query;
 
     /*
      * The metadata property.
      */
+    @Generated
     private KqlScriptContentMetadata metadata;
 
     /*
      * The currentConnection property.
      */
+    @Generated
     private KqlScriptContentCurrentConnection currentConnection;
 
     /**
      * Creates an instance of KqlScriptContent class.
      */
+    @Generated
     public KqlScriptContent() {
     }
 
@@ -42,6 +47,7 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
      * 
      * @return the query value.
      */
+    @Generated
     public String getQuery() {
         return this.query;
     }
@@ -52,6 +58,7 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
      * @param query the query value to set.
      * @return the KqlScriptContent object itself.
      */
+    @Generated
     public KqlScriptContent setQuery(String query) {
         this.query = query;
         return this;
@@ -62,6 +69,7 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
      * 
      * @return the metadata value.
      */
+    @Generated
     public KqlScriptContentMetadata getMetadata() {
         return this.metadata;
     }
@@ -72,6 +80,7 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
      * @param metadata the metadata value to set.
      * @return the KqlScriptContent object itself.
      */
+    @Generated
     public KqlScriptContent setMetadata(KqlScriptContentMetadata metadata) {
         this.metadata = metadata;
         return this;
@@ -82,6 +91,7 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
      * 
      * @return the currentConnection value.
      */
+    @Generated
     public KqlScriptContentCurrentConnection getCurrentConnection() {
         return this.currentConnection;
     }
@@ -92,6 +102,7 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
      * @param currentConnection the currentConnection value to set.
      * @return the KqlScriptContent object itself.
      */
+    @Generated
     public KqlScriptContent setCurrentConnection(KqlScriptContentCurrentConnection currentConnection) {
         this.currentConnection = currentConnection;
         return this;
@@ -100,6 +111,7 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -117,6 +129,7 @@ public final class KqlScriptContent implements JsonSerializable<KqlScriptContent
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the KqlScriptContent.
      */
+    @Generated
     public static KqlScriptContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             KqlScriptContent deserializedKqlScriptContent = new KqlScriptContent();

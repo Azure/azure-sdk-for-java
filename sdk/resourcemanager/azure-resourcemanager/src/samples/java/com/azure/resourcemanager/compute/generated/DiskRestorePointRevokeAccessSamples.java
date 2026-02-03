@@ -9,11 +9,11 @@ package com.azure.resourcemanager.compute.generated;
  */
 public final class DiskRestorePointRevokeAccessSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2025-01-02/examples/
      * diskRestorePointExamples/DiskRestorePoint_EndGetAccess.json
      */
     /**
-     * Sample code: Revokes access to a diskRestorePoint.
+     * Sample code: revokes access to a diskRestorePoint.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

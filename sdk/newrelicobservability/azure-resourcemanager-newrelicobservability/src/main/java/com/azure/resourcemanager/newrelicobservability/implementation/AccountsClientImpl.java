@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.newrelicobservability.fluent.AccountsClient;
 import com.azure.resourcemanager.newrelicobservability.fluent.models.AccountResourceInner;
 import com.azure.resourcemanager.newrelicobservability.models.AccountsListResponse;
@@ -59,7 +60,7 @@ public final class AccountsClientImpl implements AccountsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "NewRelicObservabilit")
+    @ServiceInterface(name = "NewRelicObservabilityAccounts")
     public interface AccountsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/NewRelic.Observability/accounts")
@@ -71,15 +72,32 @@ public final class AccountsClientImpl implements AccountsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/NewRelic.Observability/accounts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AccountsListResponse> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("userEmail") String userEmail, @QueryParam("location") String location,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccountsListResponse>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<AccountsListResponse> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -115,45 +133,8 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List all the existing accounts.
-     * 
-     * @param userEmail User Email.
-     * @param location Location for NewRelic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all accounts Operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccountResourceInner>> listSinglePageAsync(String userEmail, String location,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (userEmail == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userEmail is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), userEmail,
-                location, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -169,7 +150,46 @@ public final class AccountsClientImpl implements AccountsClient {
     }
 
     /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
+     * 
+     * @param userEmail User Email.
+     * @param location Location for NewRelic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get all accounts Operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AccountResourceInner> listSinglePage(String userEmail, String location) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (userEmail == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userEmail is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AccountsListResponse> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), userEmail, location, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -177,16 +197,38 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all accounts Operation as paginated response with {@link PagedFlux}.
+     * @return response of get all accounts Operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AccountResourceInner> listAsync(String userEmail, String location, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(userEmail, location, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AccountResourceInner> listSinglePage(String userEmail, String location, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (userEmail == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userEmail is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AccountsListResponse> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), userEmail, location, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -197,11 +239,12 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountResourceInner> list(String userEmail, String location) {
-        return new PagedIterable<>(listAsync(userEmail, location));
+        return new PagedIterable<>(() -> listSinglePage(userEmail, location), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
-     * List all the existing accounts.
+     * Lists all the New Relic accounts linked to your email address, helping you understand the existing accounts that
+     * have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -213,7 +256,8 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountResourceInner> list(String userEmail, String location, Context context) {
-        return new PagedIterable<>(listAsync(userEmail, location, context));
+        return new PagedIterable<>(() -> listSinglePage(userEmail, location, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -246,26 +290,55 @@ public final class AccountsClientImpl implements AccountsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of get all accounts Operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AccountResourceInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<AccountsListResponse> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of get all accounts Operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return response of get all accounts Operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccountResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<AccountResourceInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<AccountsListResponse> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AccountsClientImpl.class);
 }

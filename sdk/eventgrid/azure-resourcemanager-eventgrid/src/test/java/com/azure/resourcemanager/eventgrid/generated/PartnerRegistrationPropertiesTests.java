@@ -13,18 +13,18 @@ public final class PartnerRegistrationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartnerRegistrationProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Deleting\",\"partnerRegistrationImmutableId\":\"554efdcd-247e-4a65-998d-c23b1caa96d2\"}")
+            "{\"provisioningState\":\"Succeeded\",\"partnerRegistrationImmutableId\":\"919503fa-b152-4fac-828a-d4001f5cbd60\"}")
             .toObject(PartnerRegistrationProperties.class);
-        Assertions.assertEquals(UUID.fromString("554efdcd-247e-4a65-998d-c23b1caa96d2"),
+        Assertions.assertEquals(UUID.fromString("919503fa-b152-4fac-828a-d4001f5cbd60"),
             model.partnerRegistrationImmutableId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartnerRegistrationProperties model = new PartnerRegistrationProperties()
-            .withPartnerRegistrationImmutableId(UUID.fromString("554efdcd-247e-4a65-998d-c23b1caa96d2"));
+            .withPartnerRegistrationImmutableId(UUID.fromString("919503fa-b152-4fac-828a-d4001f5cbd60"));
         model = BinaryData.fromObject(model).toObject(PartnerRegistrationProperties.class);
-        Assertions.assertEquals(UUID.fromString("554efdcd-247e-4a65-998d-c23b1caa96d2"),
+        Assertions.assertEquals(UUID.fromString("919503fa-b152-4fac-828a-d4001f5cbd60"),
             model.partnerRegistrationImmutableId());
     }
 }

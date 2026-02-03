@@ -24,6 +24,11 @@ public final class Certificate implements JsonSerializable<Certificate> {
     private String serialNumber;
 
     /*
+     * Enhanced key usage of the certificate.
+     */
+    private String enhancedKeyUsage;
+
+    /*
      * Subject name of the certificate.
      */
     private String subjectName;
@@ -66,6 +71,15 @@ public final class Certificate implements JsonSerializable<Certificate> {
      */
     public String serialNumber() {
         return this.serialNumber;
+    }
+
+    /**
+     * Get the enhancedKeyUsage property: Enhanced key usage of the certificate.
+     * 
+     * @return the enhancedKeyUsage value.
+     */
+    public String enhancedKeyUsage() {
+        return this.enhancedKeyUsage;
     }
 
     /**
@@ -177,23 +191,13 @@ public final class Certificate implements JsonSerializable<Certificate> {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (innerRevocation() != null) {
-            innerRevocation().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("serialNumber", this.serialNumber);
+        jsonWriter.writeStringField("enhancedKeyUsage", this.enhancedKeyUsage);
         jsonWriter.writeStringField("subjectName", this.subjectName);
         jsonWriter.writeStringField("thumbprint", this.thumbprint);
         jsonWriter.writeStringField("createdDate", this.createdDate);
@@ -220,6 +224,8 @@ public final class Certificate implements JsonSerializable<Certificate> {
 
                 if ("serialNumber".equals(fieldName)) {
                     deserializedCertificate.serialNumber = reader.getString();
+                } else if ("enhancedKeyUsage".equals(fieldName)) {
+                    deserializedCertificate.enhancedKeyUsage = reader.getString();
                 } else if ("subjectName".equals(fieldName)) {
                     deserializedCertificate.subjectName = reader.getString();
                 } else if ("thumbprint".equals(fieldName)) {

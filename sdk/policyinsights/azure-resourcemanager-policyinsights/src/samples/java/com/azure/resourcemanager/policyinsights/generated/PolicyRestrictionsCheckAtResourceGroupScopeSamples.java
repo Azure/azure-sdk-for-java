@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class PolicyRestrictionsCheckAtResourceGroupScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-03-01/examples/
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
      * PolicyRestrictions_CheckAtResourceGroupScope.json
      */
     /**
@@ -42,5 +42,33 @@ public final class PolicyRestrictionsCheckAtResourceGroupScopeSamples {
                             .withValues(Arrays.asList("eastus", "westus", "westus2", "westeurope")),
                         new PendingField().withField("tags"))),
                 com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2024-10-01/examples/
+     * PolicyRestrictions_CheckAtResourceGroupScopeIncludeAuditEffect.json
+     */
+    /**
+     * Sample code: Check policy restrictions at resource group scope including audit effect.
+     * 
+     * @param manager Entry point to PolicyInsightsManager.
+     */
+    public static void checkPolicyRestrictionsAtResourceGroupScopeIncludingAuditEffect(
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) throws IOException {
+        manager.policyRestrictions()
+            .checkAtResourceGroupScopeWithResponse("vmRg", new CheckRestrictionsRequest()
+                .withResourceDetails(new CheckRestrictionsResourceDetails()
+                    .withResourceContent(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize(
+                            "{\"type\":\"Microsoft.Compute/virtualMachines\",\"properties\":{\"priority\":\"Spot\"}}",
+                            Object.class, SerializerEncoding.JSON))
+                    .withApiVersion("2019-12-01"))
+                .withPendingFields(
+                    Arrays.asList(new PendingField().withField("name").withValues(Arrays.asList("myVMName")),
+                        new PendingField().withField("location")
+                            .withValues(Arrays.asList("eastus", "westus", "westus2", "westeurope")),
+                        new PendingField().withField("tags")))
+                .withIncludeAuditEffect(true), com.azure.core.util.Context.NONE);
     }
 }

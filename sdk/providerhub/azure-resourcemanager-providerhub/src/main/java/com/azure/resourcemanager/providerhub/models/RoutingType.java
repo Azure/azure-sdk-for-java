@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for RoutingType.
+ * The routing type.
  */
 public final class RoutingType extends ExpandableStringEnum<RoutingType> {
     /**
@@ -55,6 +55,32 @@ public final class RoutingType extends ExpandableStringEnum<RoutingType> {
      * Static value CascadeExtension for RoutingType.
      */
     public static final RoutingType CASCADE_EXTENSION = fromString("CascadeExtension");
+
+    /**
+     * Static value ChildFanout for RoutingType.
+     */
+    public static final RoutingType CHILD_FANOUT = fromString("ChildFanout");
+
+    /**
+     * Static value CascadeAuthorizedExtension for RoutingType.
+     */
+    public static final RoutingType CASCADE_AUTHORIZED_EXTENSION = fromString("CascadeAuthorizedExtension");
+
+    /**
+     * Static value BypassEndpointSelectionOptimization for RoutingType.
+     */
+    public static final RoutingType BYPASS_ENDPOINT_SELECTION_OPTIMIZATION
+        = fromString("BypassEndpointSelectionOptimization");
+
+    /**
+     * Static value LocationMapping for RoutingType.
+     */
+    public static final RoutingType LOCATION_MAPPING = fromString("LocationMapping");
+
+    /**
+     * Static value ServiceFanout for RoutingType.
+     */
+    public static final RoutingType SERVICE_FANOUT = fromString("ServiceFanout");
 
     /**
      * Creates a new instance of RoutingType value.

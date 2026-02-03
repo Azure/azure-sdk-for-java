@@ -5,6 +5,7 @@
 package com.azure.monitor.query.implementation.logs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,46 +24,55 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
     /*
      * The ID of the function.
      */
+    @Generated
     private final String id;
 
     /*
      * The name of the function, to be used in queries.
      */
+    @Generated
     private final String name;
 
     /*
      * The parameters/arguments of the function, if any.
      */
+    @Generated
     private String parameters;
 
     /*
      * The display name of the function.
      */
+    @Generated
     private String displayName;
 
     /*
      * The description of the function.
      */
+    @Generated
     private String description;
 
     /*
      * The KQL body of the function.
      */
+    @Generated
     private final String body;
 
     /*
      * The tags associated with the function.
      */
+    @Generated
     private Object tags;
 
     /*
      * The properties of the function.
      */
+    @Generated
     private Object properties;
 
     /*
      * The related metadata items for the function.
      */
+    @Generated
     private MetadataFunctionRelated related;
 
     /**
@@ -72,6 +82,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * @param name the name value to set.
      * @param body the body value to set.
      */
+    @Generated
     public MetadataFunction(String id, String name, String body) {
         this.id = id;
         this.name = name;
@@ -83,6 +94,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -92,6 +104,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -101,6 +114,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the parameters value.
      */
+    @Generated
     public String getParameters() {
         return this.parameters;
     }
@@ -111,6 +125,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * @param parameters the parameters value to set.
      * @return the MetadataFunction object itself.
      */
+    @Generated
     public MetadataFunction setParameters(String parameters) {
         this.parameters = parameters;
         return this;
@@ -121,6 +136,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the displayName value.
      */
+    @Generated
     public String getDisplayName() {
         return this.displayName;
     }
@@ -131,6 +147,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * @param displayName the displayName value to set.
      * @return the MetadataFunction object itself.
      */
+    @Generated
     public MetadataFunction setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -141,6 +158,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the description value.
      */
+    @Generated
     public String getDescription() {
         return this.description;
     }
@@ -151,6 +169,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * @param description the description value to set.
      * @return the MetadataFunction object itself.
      */
+    @Generated
     public MetadataFunction setDescription(String description) {
         this.description = description;
         return this;
@@ -161,6 +180,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the body value.
      */
+    @Generated
     public String getBody() {
         return this.body;
     }
@@ -170,6 +190,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the tags value.
      */
+    @Generated
     public Object getTags() {
         return this.tags;
     }
@@ -180,6 +201,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * @param tags the tags value to set.
      * @return the MetadataFunction object itself.
      */
+    @Generated
     public MetadataFunction setTags(Object tags) {
         this.tags = tags;
         return this;
@@ -190,6 +212,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the properties value.
      */
+    @Generated
     public Object getProperties() {
         return this.properties;
     }
@@ -200,6 +223,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * @param properties the properties value to set.
      * @return the MetadataFunction object itself.
      */
+    @Generated
     public MetadataFunction setProperties(Object properties) {
         this.properties = properties;
         return this;
@@ -210,6 +234,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * 
      * @return the related value.
      */
+    @Generated
     public MetadataFunctionRelated getRelated() {
         return this.related;
     }
@@ -220,6 +245,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * @param related the related value to set.
      * @return the MetadataFunction object itself.
      */
+    @Generated
     public MetadataFunction setRelated(MetadataFunctionRelated related) {
         this.related = related;
         return this;
@@ -228,6 +254,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -237,8 +264,12 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
         jsonWriter.writeStringField("parameters", this.parameters);
         jsonWriter.writeStringField("displayName", this.displayName);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("tags", this.tags);
-        jsonWriter.writeUntypedField("properties", this.properties);
+        if (this.tags != null) {
+            jsonWriter.writeUntypedField("tags", this.tags);
+        }
+        if (this.properties != null) {
+            jsonWriter.writeUntypedField("properties", this.properties);
+        }
         jsonWriter.writeJsonField("related", this.related);
         return jsonWriter.writeEndObject();
     }
@@ -252,6 +283,7 @@ public final class MetadataFunction implements JsonSerializable<MetadataFunction
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the MetadataFunction.
      */
+    @Generated
     public static MetadataFunction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             boolean idFound = false;

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The ResourceProviderAuthorization model.
@@ -17,19 +18,34 @@ import java.io.IOException;
 @Fluent
 public final class ResourceProviderAuthorization implements JsonSerializable<ResourceProviderAuthorization> {
     /*
-     * The applicationId property.
+     * The application id.
      */
     private String applicationId;
 
     /*
-     * The roleDefinitionId property.
+     * The role definition id.
      */
     private String roleDefinitionId;
 
     /*
-     * The managedByRoleDefinitionId property.
+     * The managed by role definition id.
      */
     private String managedByRoleDefinitionId;
+
+    /*
+     * Managed by authorization.
+     */
+    private ResourceProviderAuthorizationManagedByAuthorization managedByAuthorization;
+
+    /*
+     * The allowed third party extensions.
+     */
+    private List<ThirdPartyExtension> allowedThirdPartyExtensions;
+
+    /*
+     * The grouping tag.
+     */
+    private String groupingTag;
 
     /**
      * Creates an instance of ResourceProviderAuthorization class.
@@ -38,7 +54,7 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
     }
 
     /**
-     * Get the applicationId property: The applicationId property.
+     * Get the applicationId property: The application id.
      * 
      * @return the applicationId value.
      */
@@ -47,7 +63,7 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
     }
 
     /**
-     * Set the applicationId property: The applicationId property.
+     * Set the applicationId property: The application id.
      * 
      * @param applicationId the applicationId value to set.
      * @return the ResourceProviderAuthorization object itself.
@@ -58,7 +74,7 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
     }
 
     /**
-     * Get the roleDefinitionId property: The roleDefinitionId property.
+     * Get the roleDefinitionId property: The role definition id.
      * 
      * @return the roleDefinitionId value.
      */
@@ -67,7 +83,7 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
     }
 
     /**
-     * Set the roleDefinitionId property: The roleDefinitionId property.
+     * Set the roleDefinitionId property: The role definition id.
      * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the ResourceProviderAuthorization object itself.
@@ -78,7 +94,7 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
     }
 
     /**
-     * Get the managedByRoleDefinitionId property: The managedByRoleDefinitionId property.
+     * Get the managedByRoleDefinitionId property: The managed by role definition id.
      * 
      * @return the managedByRoleDefinitionId value.
      */
@@ -87,7 +103,7 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
     }
 
     /**
-     * Set the managedByRoleDefinitionId property: The managedByRoleDefinitionId property.
+     * Set the managedByRoleDefinitionId property: The managed by role definition id.
      * 
      * @param managedByRoleDefinitionId the managedByRoleDefinitionId value to set.
      * @return the ResourceProviderAuthorization object itself.
@@ -98,11 +114,79 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
     }
 
     /**
+     * Get the managedByAuthorization property: Managed by authorization.
+     * 
+     * @return the managedByAuthorization value.
+     */
+    public ResourceProviderAuthorizationManagedByAuthorization managedByAuthorization() {
+        return this.managedByAuthorization;
+    }
+
+    /**
+     * Set the managedByAuthorization property: Managed by authorization.
+     * 
+     * @param managedByAuthorization the managedByAuthorization value to set.
+     * @return the ResourceProviderAuthorization object itself.
+     */
+    public ResourceProviderAuthorization
+        withManagedByAuthorization(ResourceProviderAuthorizationManagedByAuthorization managedByAuthorization) {
+        this.managedByAuthorization = managedByAuthorization;
+        return this;
+    }
+
+    /**
+     * Get the allowedThirdPartyExtensions property: The allowed third party extensions.
+     * 
+     * @return the allowedThirdPartyExtensions value.
+     */
+    public List<ThirdPartyExtension> allowedThirdPartyExtensions() {
+        return this.allowedThirdPartyExtensions;
+    }
+
+    /**
+     * Set the allowedThirdPartyExtensions property: The allowed third party extensions.
+     * 
+     * @param allowedThirdPartyExtensions the allowedThirdPartyExtensions value to set.
+     * @return the ResourceProviderAuthorization object itself.
+     */
+    public ResourceProviderAuthorization
+        withAllowedThirdPartyExtensions(List<ThirdPartyExtension> allowedThirdPartyExtensions) {
+        this.allowedThirdPartyExtensions = allowedThirdPartyExtensions;
+        return this;
+    }
+
+    /**
+     * Get the groupingTag property: The grouping tag.
+     * 
+     * @return the groupingTag value.
+     */
+    public String groupingTag() {
+        return this.groupingTag;
+    }
+
+    /**
+     * Set the groupingTag property: The grouping tag.
+     * 
+     * @param groupingTag the groupingTag value to set.
+     * @return the ResourceProviderAuthorization object itself.
+     */
+    public ResourceProviderAuthorization withGroupingTag(String groupingTag) {
+        this.groupingTag = groupingTag;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (managedByAuthorization() != null) {
+            managedByAuthorization().validate();
+        }
+        if (allowedThirdPartyExtensions() != null) {
+            allowedThirdPartyExtensions().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -114,6 +198,10 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
         jsonWriter.writeStringField("applicationId", this.applicationId);
         jsonWriter.writeStringField("roleDefinitionId", this.roleDefinitionId);
         jsonWriter.writeStringField("managedByRoleDefinitionId", this.managedByRoleDefinitionId);
+        jsonWriter.writeJsonField("managedByAuthorization", this.managedByAuthorization);
+        jsonWriter.writeArrayField("allowedThirdPartyExtensions", this.allowedThirdPartyExtensions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("groupingTag", this.groupingTag);
         return jsonWriter.writeEndObject();
     }
 
@@ -139,6 +227,15 @@ public final class ResourceProviderAuthorization implements JsonSerializable<Res
                     deserializedResourceProviderAuthorization.roleDefinitionId = reader.getString();
                 } else if ("managedByRoleDefinitionId".equals(fieldName)) {
                     deserializedResourceProviderAuthorization.managedByRoleDefinitionId = reader.getString();
+                } else if ("managedByAuthorization".equals(fieldName)) {
+                    deserializedResourceProviderAuthorization.managedByAuthorization
+                        = ResourceProviderAuthorizationManagedByAuthorization.fromJson(reader);
+                } else if ("allowedThirdPartyExtensions".equals(fieldName)) {
+                    List<ThirdPartyExtension> allowedThirdPartyExtensions
+                        = reader.readArray(reader1 -> ThirdPartyExtension.fromJson(reader1));
+                    deserializedResourceProviderAuthorization.allowedThirdPartyExtensions = allowedThirdPartyExtensions;
+                } else if ("groupingTag".equals(fieldName)) {
+                    deserializedResourceProviderAuthorization.groupingTag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

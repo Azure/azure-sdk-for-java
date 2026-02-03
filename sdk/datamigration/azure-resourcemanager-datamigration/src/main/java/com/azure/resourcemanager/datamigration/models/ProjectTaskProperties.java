@@ -4,24 +4,27 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datamigration.fluent.models.CommandPropertiesInner;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Base class for all types of DMS task properties. If task is not supported by current client, this object is returned.
+ * Base class for all types of DMS (classic) task properties. If task is not supported by current client, this object is
+ * returned.
  */
-@Immutable
+@Fluent
 public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProperties> {
     /*
      * Task type.
      */
-    private String taskType = "ProjectTaskProperties";
+    private TaskType taskType = TaskType.fromString("ProjectTaskProperties");
 
     /*
      * Array of errors. This is ignored if submitted.
@@ -36,7 +39,12 @@ public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProper
     /*
      * Array of command properties.
      */
-    private List<CommandProperties> commands;
+    private List<CommandPropertiesInner> commands;
+
+    /*
+     * Key value pairs of client data to attach meta data information to task
+     */
+    private Map<String, String> clientData;
 
     /**
      * Creates an instance of ProjectTaskProperties class.
@@ -49,7 +57,7 @@ public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProper
      * 
      * @return the taskType value.
      */
-    public String taskType() {
+    public TaskType taskType() {
         return this.taskType;
     }
 
@@ -98,7 +106,7 @@ public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProper
      * 
      * @return the commands value.
      */
-    public List<CommandProperties> commands() {
+    public List<CommandPropertiesInner> commands() {
         return this.commands;
     }
 
@@ -108,8 +116,28 @@ public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProper
      * @param commands the commands value to set.
      * @return the ProjectTaskProperties object itself.
      */
-    ProjectTaskProperties withCommands(List<CommandProperties> commands) {
+    ProjectTaskProperties withCommands(List<CommandPropertiesInner> commands) {
         this.commands = commands;
+        return this;
+    }
+
+    /**
+     * Get the clientData property: Key value pairs of client data to attach meta data information to task.
+     * 
+     * @return the clientData value.
+     */
+    public Map<String, String> clientData() {
+        return this.clientData;
+    }
+
+    /**
+     * Set the clientData property: Key value pairs of client data to attach meta data information to task.
+     * 
+     * @param clientData the clientData value to set.
+     * @return the ProjectTaskProperties object itself.
+     */
+    public ProjectTaskProperties withClientData(Map<String, String> clientData) {
+        this.clientData = clientData;
         return this;
     }
 
@@ -130,7 +158,8 @@ public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProper
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeStringField("taskType", this.taskType == null ? null : this.taskType.toString());
+        jsonWriter.writeMapField("clientData", this.clientData, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -158,30 +187,52 @@ public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProper
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("ConnectToSource.MySql".equals(discriminatorValue)) {
-                    return ConnectToSourceMySqlTaskProperties.fromJson(readerToUse.reset());
+                if ("MigrateSchemaSqlServerSqlDb".equals(discriminatorValue)) {
+                    return MigrateSchemaSqlServerSqlDbTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Service.Check.OCI".equals(discriminatorValue)) {
+                    return CheckOciDriverTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Service.Upload.OCI".equals(discriminatorValue)) {
+                    return UploadOciDriverTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Service.Install.OCI".equals(discriminatorValue)) {
+                    return InstallOciDriverTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Connect.MongoDb".equals(discriminatorValue)) {
+                    return ConnectToMongoDbTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToSource.SqlServer".equals(discriminatorValue)) {
                     return ConnectToSourceSqlServerTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToSource.SqlServer.Sync".equals(discriminatorValue)) {
                     return ConnectToSourceSqlServerSyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToSource.PostgreSql.Sync".equals(discriminatorValue)) {
                     return ConnectToSourcePostgreSqlSyncTaskProperties.fromJson(readerToUse.reset());
+                } else if ("ConnectToSource.MySql".equals(discriminatorValue)) {
+                    return ConnectToSourceMySqlTaskProperties.fromJson(readerToUse.reset());
+                } else if ("ConnectToSource.Oracle.Sync".equals(discriminatorValue)) {
+                    return ConnectToSourceOracleSyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToTarget.SqlDb".equals(discriminatorValue)) {
                     return ConnectToTargetSqlDbTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToTarget.SqlDb.Sync".equals(discriminatorValue)) {
                     return ConnectToTargetSqlDbSyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToTarget.AzureDbForPostgreSql.Sync".equals(discriminatorValue)) {
                     return ConnectToTargetAzureDbForPostgreSqlSyncTaskProperties.fromJson(readerToUse.reset());
+                } else if ("ConnectToTarget.Oracle.AzureDbForPostgreSql.Sync".equals(discriminatorValue)) {
+                    return ConnectToTargetOracleAzureDbForPostgreSqlSyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("GetUserTables.Sql".equals(discriminatorValue)) {
                     return GetUserTablesSqlTaskProperties.fromJson(readerToUse.reset());
                 } else if ("GetUserTables.AzureSqlDb.Sync".equals(discriminatorValue)) {
                     return GetUserTablesSqlSyncTaskProperties.fromJson(readerToUse.reset());
+                } else if ("GetUserTablesOracle".equals(discriminatorValue)) {
+                    return GetUserTablesOracleTaskProperties.fromJson(readerToUse.reset());
+                } else if ("GetUserTablesPostgreSql".equals(discriminatorValue)) {
+                    return GetUserTablesPostgreSqlTaskProperties.fromJson(readerToUse.reset());
+                } else if ("GetUserTablesMySql".equals(discriminatorValue)) {
+                    return GetUserTablesMySqlTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToTarget.AzureSqlDbMI".equals(discriminatorValue)) {
                     return ConnectToTargetSqlMITaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToTarget.AzureSqlDbMI.Sync.LRS".equals(discriminatorValue)) {
                     return ConnectToTargetSqlMISyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ConnectToTarget.AzureDbForMySql".equals(discriminatorValue)) {
                     return ConnectToTargetAzureDbForMySqlTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Migrate.MongoDb".equals(discriminatorValue)) {
+                    return MigrateMongoDbTaskProperties.fromJson(readerToUse.reset());
                 } else if ("Migrate.SqlServer.AzureSqlDbMI".equals(discriminatorValue)) {
                     return MigrateSqlServerSqlMITaskProperties.fromJson(readerToUse.reset());
                 } else if ("Migrate.SqlServer.AzureSqlDbMI.Sync.LRS".equals(discriminatorValue)) {
@@ -192,16 +243,26 @@ public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProper
                     return MigrateSqlServerSqlDbSyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("Migrate.MySql.AzureDbForMySql.Sync".equals(discriminatorValue)) {
                     return MigrateMySqlAzureDbForMySqlSyncTaskProperties.fromJson(readerToUse.reset());
-                } else if ("Migrate.PostgreSql.AzureDbForPostgreSql.Sync".equals(discriminatorValue)) {
+                } else if ("Migrate.MySql.AzureDbForMySql".equals(discriminatorValue)) {
+                    return MigrateMySqlAzureDbForMySqlOfflineTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Migrate.PostgreSql.AzureDbForPostgreSql.SyncV2".equals(discriminatorValue)) {
                     return MigratePostgreSqlAzureDbForPostgreSqlSyncTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Migrate.Oracle.AzureDbForPostgreSql.Sync".equals(discriminatorValue)) {
+                    return MigrateOracleAzureDbForPostgreSqlSyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ValidateMigrationInput.SqlServer.SqlDb.Sync".equals(discriminatorValue)) {
                     return ValidateMigrationInputSqlServerSqlDbSyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("ValidateMigrationInput.SqlServer.AzureSqlDbMI".equals(discriminatorValue)) {
                     return ValidateMigrationInputSqlServerSqlMITaskProperties.fromJson(readerToUse.reset());
                 } else if ("ValidateMigrationInput.SqlServer.AzureSqlDbMI.Sync.LRS".equals(discriminatorValue)) {
                     return ValidateMigrationInputSqlServerSqlMISyncTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Validate.MongoDb".equals(discriminatorValue)) {
+                    return ValidateMongoDbTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Validate.Oracle.AzureDbPostgreSql.Sync".equals(discriminatorValue)) {
+                    return ValidateOracleAzureDbForPostgreSqlSyncTaskProperties.fromJson(readerToUse.reset());
                 } else if ("GetTDECertificates.Sql".equals(discriminatorValue)) {
                     return GetTdeCertificatesSqlTaskProperties.fromJson(readerToUse.reset());
+                } else if ("Migrate.Ssis".equals(discriminatorValue)) {
+                    return MigrateSsisTaskProperties.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }
@@ -217,15 +278,19 @@ public class ProjectTaskProperties implements JsonSerializable<ProjectTaskProper
                 reader.nextToken();
 
                 if ("taskType".equals(fieldName)) {
-                    deserializedProjectTaskProperties.taskType = reader.getString();
+                    deserializedProjectTaskProperties.taskType = TaskType.fromString(reader.getString());
                 } else if ("errors".equals(fieldName)) {
                     List<ManagementError> errors = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
                     deserializedProjectTaskProperties.errors = errors;
                 } else if ("state".equals(fieldName)) {
                     deserializedProjectTaskProperties.state = TaskState.fromString(reader.getString());
                 } else if ("commands".equals(fieldName)) {
-                    List<CommandProperties> commands = reader.readArray(reader1 -> CommandProperties.fromJson(reader1));
+                    List<CommandPropertiesInner> commands
+                        = reader.readArray(reader1 -> CommandPropertiesInner.fromJson(reader1));
                     deserializedProjectTaskProperties.commands = commands;
+                } else if ("clientData".equals(fieldName)) {
+                    Map<String, String> clientData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProjectTaskProperties.clientData = clientData;
                 } else {
                     reader.skipChildren();
                 }

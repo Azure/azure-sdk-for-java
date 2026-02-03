@@ -9,9 +9,10 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
- * The ResourceTypeRegistrationPropertiesIdentityManagement model.
+ * The identity management.
  */
 @Fluent
 public final class ResourceTypeRegistrationPropertiesIdentityManagement extends IdentityManagementProperties {
@@ -40,6 +41,24 @@ public final class ResourceTypeRegistrationPropertiesIdentityManagement extends 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceTypeRegistrationPropertiesIdentityManagement withApplicationIds(List<String> applicationIds) {
+        super.withApplicationIds(applicationIds);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceTypeRegistrationPropertiesIdentityManagement withDelegationAppIds(List<String> delegationAppIds) {
+        super.withDelegationAppIds(delegationAppIds);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -56,6 +75,10 @@ public final class ResourceTypeRegistrationPropertiesIdentityManagement extends 
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", type() == null ? null : type().toString());
         jsonWriter.writeStringField("applicationId", applicationId());
+        jsonWriter.writeArrayField("applicationIds", applicationIds(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("delegationAppIds", delegationAppIds(),
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -82,6 +105,13 @@ public final class ResourceTypeRegistrationPropertiesIdentityManagement extends 
                 } else if ("applicationId".equals(fieldName)) {
                     deserializedResourceTypeRegistrationPropertiesIdentityManagement
                         .withApplicationId(reader.getString());
+                } else if ("applicationIds".equals(fieldName)) {
+                    List<String> applicationIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeRegistrationPropertiesIdentityManagement.withApplicationIds(applicationIds);
+                } else if ("delegationAppIds".equals(fieldName)) {
+                    List<String> delegationAppIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedResourceTypeRegistrationPropertiesIdentityManagement
+                        .withDelegationAppIds(delegationAppIds);
                 } else {
                     reader.skipChildren();
                 }

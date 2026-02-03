@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Authorization Access Policy details.
@@ -17,6 +18,11 @@ import java.io.IOException;
 @Fluent
 public final class AuthorizationAccessPolicyContractProperties
     implements JsonSerializable<AuthorizationAccessPolicyContractProperties> {
+    /*
+     * The allowed Azure Active Directory Application IDs
+     */
+    private List<String> appIds;
+
     /*
      * The Tenant Id
      */
@@ -31,6 +37,26 @@ public final class AuthorizationAccessPolicyContractProperties
      * Creates an instance of AuthorizationAccessPolicyContractProperties class.
      */
     public AuthorizationAccessPolicyContractProperties() {
+    }
+
+    /**
+     * Get the appIds property: The allowed Azure Active Directory Application IDs.
+     * 
+     * @return the appIds value.
+     */
+    public List<String> appIds() {
+        return this.appIds;
+    }
+
+    /**
+     * Set the appIds property: The allowed Azure Active Directory Application IDs.
+     * 
+     * @param appIds the appIds value to set.
+     * @return the AuthorizationAccessPolicyContractProperties object itself.
+     */
+    public AuthorizationAccessPolicyContractProperties withAppIds(List<String> appIds) {
+        this.appIds = appIds;
+        return this;
     }
 
     /**
@@ -87,6 +113,7 @@ public final class AuthorizationAccessPolicyContractProperties
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("appIds", this.appIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeStringField("objectId", this.objectId);
         return jsonWriter.writeEndObject();
@@ -108,7 +135,10 @@ public final class AuthorizationAccessPolicyContractProperties
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("tenantId".equals(fieldName)) {
+                if ("appIds".equals(fieldName)) {
+                    List<String> appIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAuthorizationAccessPolicyContractProperties.appIds = appIds;
+                } else if ("tenantId".equals(fieldName)) {
                     deserializedAuthorizationAccessPolicyContractProperties.tenantId = reader.getString();
                 } else if ("objectId".equals(fieldName)) {
                     deserializedAuthorizationAccessPolicyContractProperties.objectId = reader.getString();

@@ -17,45 +17,42 @@ public final class UserCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"firstName\":\"akx\",\"lastName\":\"nfczmnniixyxvq\",\"email\":\"nosjtgirnbgmgmd\",\"registrationDate\":\"2021-05-22T01:48:16Z\",\"groups\":[{\"displayName\":\"y\",\"description\":\"twmp\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"a\"},{\"displayName\":\"og\",\"description\":\"xwet\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"vlkpzwb\"},{\"displayName\":\"nrecchdidrm\",\"description\":\"kahmjedbiucvkhhw\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"eunxcqrrihufoi\"},{\"displayName\":\"ppiybxv\",\"description\":\"zuzpbgkzcs\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"kunhdimjuk\"}],\"state\":\"active\",\"note\":\"kaugpucdocfqplwg\",\"identities\":[{\"provider\":\"xwr\",\"id\":\"vzklkvbgikyjtka\"}]},\"id\":\"vlbishjvpzapt\",\"name\":\"oskaoizji\",\"type\":\"wfgcdiykkcxwn\"}],\"count\":104659426635185987,\"nextLink\":\"nvavitmdm\"}")
+            "{\"value\":[{\"properties\":{\"firstName\":\"paniceo\",\"lastName\":\"gzwhsxyrujmtik\",\"email\":\"likyohz\",\"registrationDate\":\"2021-01-02T19:04:19Z\",\"groups\":[{\"displayName\":\"fn\",\"description\":\"yc\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"ipnquwzxhrptyod\"},{\"displayName\":\"hkfktlt\",\"description\":\"sobjop\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"ezkqxsalu\"},{\"displayName\":\"yigfcvcew\",\"description\":\"qhdgsjsatmrn\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"s\"}],\"state\":\"deleted\",\"note\":\"qmr\",\"identities\":[{\"provider\":\"r\",\"id\":\"vgrszr\"}]},\"id\":\"wtdrcwg\",\"name\":\"w\",\"type\":\"l\"}],\"count\":4632726883747684258,\"nextLink\":\"fi\"}")
             .toObject(UserCollection.class);
-        Assertions.assertEquals("akx", model.value().get(0).firstName());
-        Assertions.assertEquals("nfczmnniixyxvq", model.value().get(0).lastName());
-        Assertions.assertEquals("nosjtgirnbgmgmd", model.value().get(0).email());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T01:48:16Z"), model.value().get(0).registrationDate());
-        Assertions.assertEquals(UserState.ACTIVE, model.value().get(0).state());
-        Assertions.assertEquals("kaugpucdocfqplwg", model.value().get(0).note());
-        Assertions.assertEquals("xwr", model.value().get(0).identities().get(0).provider());
-        Assertions.assertEquals("vzklkvbgikyjtka", model.value().get(0).identities().get(0).id());
-        Assertions.assertEquals(104659426635185987L, model.count());
-        Assertions.assertEquals("nvavitmdm", model.nextLink());
+        Assertions.assertEquals("paniceo", model.value().get(0).firstName());
+        Assertions.assertEquals("gzwhsxyrujmtik", model.value().get(0).lastName());
+        Assertions.assertEquals("likyohz", model.value().get(0).email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T19:04:19Z"), model.value().get(0).registrationDate());
+        Assertions.assertEquals(UserState.DELETED, model.value().get(0).state());
+        Assertions.assertEquals("qmr", model.value().get(0).note());
+        Assertions.assertEquals("r", model.value().get(0).identities().get(0).provider());
+        Assertions.assertEquals("vgrszr", model.value().get(0).identities().get(0).id());
+        Assertions.assertEquals(4632726883747684258L, model.count());
+        Assertions.assertEquals("fi", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserCollection model
-            = new UserCollection()
-                .withValue(
-                    Arrays.asList(new UserContractInner().withFirstName("akx")
-                        .withLastName("nfczmnniixyxvq")
-                        .withEmail("nosjtgirnbgmgmd")
-                        .withRegistrationDate(OffsetDateTime.parse("2021-05-22T01:48:16Z"))
-                        .withState(UserState.ACTIVE)
-                        .withNote("kaugpucdocfqplwg")
-                        .withIdentities(Arrays
-                            .asList(new UserIdentityContractInner().withProvider("xwr").withId("vzklkvbgikyjtka")))))
-                .withCount(104659426635185987L)
-                .withNextLink("nvavitmdm");
+        UserCollection model = new UserCollection()
+            .withValue(Arrays.asList(new UserContractInner().withFirstName("paniceo")
+                .withLastName("gzwhsxyrujmtik")
+                .withEmail("likyohz")
+                .withRegistrationDate(OffsetDateTime.parse("2021-01-02T19:04:19Z"))
+                .withState(UserState.DELETED)
+                .withNote("qmr")
+                .withIdentities(Arrays.asList(new UserIdentityContractInner().withProvider("r").withId("vgrszr")))))
+            .withCount(4632726883747684258L)
+            .withNextLink("fi");
         model = BinaryData.fromObject(model).toObject(UserCollection.class);
-        Assertions.assertEquals("akx", model.value().get(0).firstName());
-        Assertions.assertEquals("nfczmnniixyxvq", model.value().get(0).lastName());
-        Assertions.assertEquals("nosjtgirnbgmgmd", model.value().get(0).email());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T01:48:16Z"), model.value().get(0).registrationDate());
-        Assertions.assertEquals(UserState.ACTIVE, model.value().get(0).state());
-        Assertions.assertEquals("kaugpucdocfqplwg", model.value().get(0).note());
-        Assertions.assertEquals("xwr", model.value().get(0).identities().get(0).provider());
-        Assertions.assertEquals("vzklkvbgikyjtka", model.value().get(0).identities().get(0).id());
-        Assertions.assertEquals(104659426635185987L, model.count());
-        Assertions.assertEquals("nvavitmdm", model.nextLink());
+        Assertions.assertEquals("paniceo", model.value().get(0).firstName());
+        Assertions.assertEquals("gzwhsxyrujmtik", model.value().get(0).lastName());
+        Assertions.assertEquals("likyohz", model.value().get(0).email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T19:04:19Z"), model.value().get(0).registrationDate());
+        Assertions.assertEquals(UserState.DELETED, model.value().get(0).state());
+        Assertions.assertEquals("qmr", model.value().get(0).note());
+        Assertions.assertEquals("r", model.value().get(0).identities().get(0).provider());
+        Assertions.assertEquals("vgrszr", model.value().get(0).identities().get(0).id());
+        Assertions.assertEquals(4632726883747684258L, model.count());
+        Assertions.assertEquals("fi", model.nextLink());
     }
 }

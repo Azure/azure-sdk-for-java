@@ -4,6 +4,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -21,16 +22,19 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
     /*
      * Slot ID
      */
+    @Generated
     private String id;
 
     /*
      * List of dictionaries containing slot features.
      */
+    @Generated
     private List<BinaryData> features;
 
     /*
      * List of excluded action Ids.
      */
+    @Generated
     private List<String> excludedActions;
 
     /*
@@ -40,11 +44,13 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      * BaselineAction should never be part of ExcludedActions.
      * Each slot must have a unique BaselineAction which corresponds to an an action from the event's Actions list.
      */
+    @Generated
     private String baselineAction;
 
     /**
      * Creates an instance of PersonalizerSlotOptions class.
      */
+    @Generated
     public PersonalizerSlotOptions() {
     }
 
@@ -53,6 +59,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      *
      * @return the id value.
      */
+    @Generated
     public String getId() {
         return this.id;
     }
@@ -63,6 +70,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      * @param id the id value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
+    @Generated
     public PersonalizerSlotOptions setId(String id) {
         this.id = id;
         return this;
@@ -73,6 +81,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      *
      * @return the features value.
      */
+    @Generated
     public List<BinaryData> getFeatures() {
         return this.features;
     }
@@ -83,6 +92,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      * @param features the features value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
+    @Generated
     public PersonalizerSlotOptions setFeatures(List<BinaryData> features) {
         this.features = features;
         return this;
@@ -93,6 +103,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      *
      * @return the excludedActions value.
      */
+    @Generated
     public List<String> getExcludedActions() {
         return this.excludedActions;
     }
@@ -103,6 +114,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      * @param excludedActions the excludedActions value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
+    @Generated
     public PersonalizerSlotOptions setExcludedActions(List<String> excludedActions) {
         this.excludedActions = excludedActions;
         return this;
@@ -117,6 +129,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      *
      * @return the baselineAction value.
      */
+    @Generated
     public String getBaselineAction() {
         return this.baselineAction;
     }
@@ -131,6 +144,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      * @param baselineAction the baselineAction value to set.
      * @return the PersonalizerSlotOptions object itself.
      */
+    @Generated
     public PersonalizerSlotOptions setBaselineAction(String baselineAction) {
         this.baselineAction = baselineAction;
         return this;
@@ -139,6 +153,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -159,6 +174,7 @@ public final class PersonalizerSlotOptions implements JsonSerializable<Personali
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PersonalizerSlotOptions.
      */
+    @Generated
     public static PersonalizerSlotOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PersonalizerSlotOptions deserializedPersonalizerSlotOptions = new PersonalizerSlotOptions();

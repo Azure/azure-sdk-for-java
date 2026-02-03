@@ -5,6 +5,7 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,16 +20,19 @@ public final class ClassificationResult implements JsonSerializable<Classificati
     /*
      * Classification type.
      */
+    @Generated
     private String category;
 
     /*
      * Confidence score between 0 and 1 of the recognized class.
      */
+    @Generated
     private double confidenceScore;
 
     /**
      * Creates an instance of ClassificationResult class.
      */
+    @Generated
     public ClassificationResult() {
     }
 
@@ -37,6 +41,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
      * 
      * @return the category value.
      */
+    @Generated
     public String getCategory() {
         return this.category;
     }
@@ -47,6 +52,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
      * @param category the category value to set.
      * @return the ClassificationResult object itself.
      */
+    @Generated
     public ClassificationResult setCategory(String category) {
         this.category = category;
         return this;
@@ -57,6 +63,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
      * 
      * @return the confidenceScore value.
      */
+    @Generated
     public double getConfidenceScore() {
         return this.confidenceScore;
     }
@@ -67,6 +74,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
      * @param confidenceScore the confidenceScore value to set.
      * @return the ClassificationResult object itself.
      */
+    @Generated
     public ClassificationResult setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
         return this;
@@ -75,6 +83,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -92,6 +101,7 @@ public final class ClassificationResult implements JsonSerializable<Classificati
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ClassificationResult.
      */
+    @Generated
     public static ClassificationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ClassificationResult deserializedClassificationResult = new ClassificationResult();

@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>5.19.0</version>
+    <version>7.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -131,6 +131,7 @@ Set `pointOperationLatencyThresholdInMS`, `nonPointOperationLatencyThresholdInMS
 ```java readme-sample-AppConfiguration
 @Configuration
 @EnableCosmosRepositories
+@SuppressWarnings("deprecation")
 public class AppConfiguration extends AbstractCosmosConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfiguration.class);
@@ -280,8 +281,8 @@ java -javaagent:"<path-to-applicationinsights-agent-jar>" -jar <myapp.jar>
 
 #### Using database provisioned throughput
 
-Cosmos supports both [container](https://learn.microsoft.com/azure/cosmos-db/sql/how-to-provision-container-throughput)
-and [database](https://learn.microsoft.com/azure/cosmos-db/sql/how-to-provision-database-throughput) provisioned
+Cosmos supports both [container](https://learn.microsoft.com/azure/cosmos-db/how-to-provision-container-throughput)
+and [database](https://learn.microsoft.com/azure/cosmos-db/how-to-provision-database-throughput) provisioned
 throughput.  By default, spring-data-cosmos will provision throughput for each container created.  If you prefer
 to share throughput between containers, you can enable database provisioned throughput via CosmosConfig.
 
@@ -608,7 +609,7 @@ public class MyItem {
     String _etag;
 }
 ```
-- Read more about Optimistic Locking [here](https://learn.microsoft.com/azure/cosmos-db/sql/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
+- Read more about Optimistic Locking [here](https://learn.microsoft.com/azure/cosmos-db/database-transactions-optimistic-concurrency#optimistic-concurrency-control)
 
 ### Spring Data custom query, pageable and sorting
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
@@ -1167,4 +1168,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [spring_boot_supported_versions]: https://github.com/spring-projects/spring-boot/wiki/Supported-Versions
 [azure_cosmos_db_java_sdk_samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)
+

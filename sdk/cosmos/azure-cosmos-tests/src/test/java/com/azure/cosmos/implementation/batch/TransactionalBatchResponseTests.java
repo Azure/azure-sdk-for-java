@@ -75,6 +75,7 @@ public class TransactionalBatchResponseTests {
 
         byte[] blob = responseContent.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
+            null,
             HttpResponseStatus.OK.code(),
             headers,
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
@@ -138,6 +139,7 @@ public class TransactionalBatchResponseTests {
 
         byte[] blob = responseContent.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
+            null,
             HttpResponseStatus.OK.code(),
             new HashMap<>(),
             new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),

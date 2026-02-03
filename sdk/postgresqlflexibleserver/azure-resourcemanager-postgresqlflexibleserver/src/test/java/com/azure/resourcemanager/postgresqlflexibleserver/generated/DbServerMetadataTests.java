@@ -14,23 +14,23 @@ public final class DbServerMetadataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DbServerMetadata model = BinaryData.fromString(
-            "{\"location\":\"oebwnujhemms\",\"version\":\"dkcrodt\",\"storageMb\":1997229408,\"sku\":{\"name\":\"jlfltkacjvefkdlf\",\"tier\":\"MemoryOptimized\"}}")
+            "{\"location\":\"vk\",\"version\":\"pqvujzraehtwdwrf\",\"storageMb\":575939452,\"sku\":{\"name\":\"yrcdlbhshfwprac\",\"tier\":\"Burstable\"}}")
             .toObject(DbServerMetadata.class);
-        Assertions.assertEquals("dkcrodt", model.version());
-        Assertions.assertEquals(1997229408, model.storageMb());
-        Assertions.assertEquals("jlfltkacjvefkdlf", model.sku().name());
-        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.sku().tier());
+        Assertions.assertEquals("pqvujzraehtwdwrf", model.version());
+        Assertions.assertEquals(575939452, model.storageMb());
+        Assertions.assertEquals("yrcdlbhshfwprac", model.sku().name());
+        Assertions.assertEquals(SkuTier.BURSTABLE, model.sku().tier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DbServerMetadata model = new DbServerMetadata().withVersion("dkcrodt")
-            .withStorageMb(1997229408)
-            .withSku(new ServerSku().withName("jlfltkacjvefkdlf").withTier(SkuTier.MEMORY_OPTIMIZED));
+        DbServerMetadata model = new DbServerMetadata().withVersion("pqvujzraehtwdwrf")
+            .withStorageMb(575939452)
+            .withSku(new ServerSku().withName("yrcdlbhshfwprac").withTier(SkuTier.BURSTABLE));
         model = BinaryData.fromObject(model).toObject(DbServerMetadata.class);
-        Assertions.assertEquals("dkcrodt", model.version());
-        Assertions.assertEquals(1997229408, model.storageMb());
-        Assertions.assertEquals("jlfltkacjvefkdlf", model.sku().name());
-        Assertions.assertEquals(SkuTier.MEMORY_OPTIMIZED, model.sku().tier());
+        Assertions.assertEquals("pqvujzraehtwdwrf", model.version());
+        Assertions.assertEquals(575939452, model.storageMb());
+        Assertions.assertEquals("yrcdlbhshfwprac", model.sku().name());
+        Assertions.assertEquals(SkuTier.BURSTABLE, model.sku().tier());
     }
 }

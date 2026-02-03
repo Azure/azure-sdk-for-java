@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.OperationDetail;
@@ -22,23 +22,23 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"dirdammtzjgc\",\"isDataAction\":true,\"display\":{\"provider\":\"bwjjirmuydgf\",\"resource\":\"mdofgeoagfuoft\",\"operation\":\"odwxmdajwiygmgs\",\"description\":\"mdmze\"},\"origin\":\"rstgfczljdnc\"}]}";
+            = "{\"value\":[{\"name\":\"yjdeolctaebfs\",\"isDataAction\":true,\"display\":{\"provider\":\"jcustbvtq\",\"resource\":\"d\",\"operation\":\"vsgeafgf\",\"description\":\"ehxlzsxezppk\"},\"origin\":\"aaeskyfjlpze\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OperationDetail> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dirdammtzjgc", response.iterator().next().name());
-        Assertions.assertEquals(true, response.iterator().next().isDataAction());
-        Assertions.assertEquals("bwjjirmuydgf", response.iterator().next().display().provider());
-        Assertions.assertEquals("mdofgeoagfuoft", response.iterator().next().display().resource());
-        Assertions.assertEquals("odwxmdajwiygmgs", response.iterator().next().display().operation());
-        Assertions.assertEquals("mdmze", response.iterator().next().display().description());
-        Assertions.assertEquals("rstgfczljdnc", response.iterator().next().origin());
+        Assertions.assertEquals("yjdeolctaebfs", response.iterator().next().name());
+        Assertions.assertTrue(response.iterator().next().isDataAction());
+        Assertions.assertEquals("jcustbvtq", response.iterator().next().display().provider());
+        Assertions.assertEquals("d", response.iterator().next().display().resource());
+        Assertions.assertEquals("vsgeafgf", response.iterator().next().display().operation());
+        Assertions.assertEquals("ehxlzsxezppk", response.iterator().next().display().description());
+        Assertions.assertEquals("aaeskyfjlpze", response.iterator().next().origin());
     }
 }

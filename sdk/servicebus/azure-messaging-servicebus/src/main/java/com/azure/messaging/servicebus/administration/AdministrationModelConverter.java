@@ -21,31 +21,29 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleActionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleFilterImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBody;
+import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyContent;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.ResponseLink;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeed;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeed;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescription;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntry;
+import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeed;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
 import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
@@ -104,10 +102,10 @@ class AdministrationModelConverter {
 
     //region Create entity methods
 
-    CreateQueueBodyImpl getCreateQueueBody(QueueDescriptionImpl queueDescription) {
-        final CreateQueueBodyContentImpl content
-            = new CreateQueueBodyContentImpl().setType(CONTENT_TYPE).setQueueDescription(queueDescription);
-        return new CreateQueueBodyImpl().setContent(content);
+    CreateQueueBody getCreateQueueBody(QueueDescription queueDescription) {
+        final CreateQueueBodyContent content
+            = new CreateQueueBodyContent().setType(CONTENT_TYPE).setQueueDescription(queueDescription);
+        return new CreateQueueBody().setContent(content);
     }
 
     /**
@@ -118,7 +116,7 @@ class AdministrationModelConverter {
      *
      * @return The queue create request.
      */
-    CreateQueueBodyImpl getCreateQueueBody(CreateQueueOptions createQueueOptions, Context context) {
+    CreateQueueBody getCreateQueueBody(CreateQueueOptions createQueueOptions, Context context) {
 
         final String forwardTo = getForwardToEntity(createQueueOptions.getForwardTo(), context);
         if (forwardTo != null) {
@@ -133,24 +131,23 @@ class AdministrationModelConverter {
         return getCreateQueueBody(EntityHelper.getQueueDescription(createQueueOptions));
     }
 
-    CreateRuleBodyImpl getCreateRuleBody(String ruleName, CreateRuleOptions ruleOptions) {
-        final RuleActionImpl action
+    CreateRuleBody getCreateRuleBody(String ruleName, CreateRuleOptions ruleOptions) {
+        final com.azure.messaging.servicebus.administration.implementation.models.RuleAction action
             = ruleOptions.getAction() != null ? EntityHelper.toImplementation(ruleOptions.getAction()) : null;
-        final RuleFilterImpl filter
+        final com.azure.messaging.servicebus.administration.implementation.models.RuleFilter filter
             = ruleOptions.getFilter() != null ? EntityHelper.toImplementation(ruleOptions.getFilter()) : null;
-        final RuleDescriptionImpl rule
-            = new RuleDescriptionImpl().setAction(action).setFilter(filter).setName(ruleName);
+        final RuleDescription rule = new RuleDescription().setAction(action).setFilter(filter).setName(ruleName);
 
-        final CreateRuleBodyContentImpl content
-            = new CreateRuleBodyContentImpl().setType(CONTENT_TYPE).setRuleDescription(rule);
-        return new CreateRuleBodyImpl().setContent(content);
+        final CreateRuleBodyContent content
+            = new CreateRuleBodyContent().setType(CONTENT_TYPE).setRuleDescription(rule);
+        return new CreateRuleBody().setContent(content);
     }
 
-    CreateSubscriptionBodyImpl getCreateSubscriptionBody(SubscriptionDescriptionImpl subscriptionDescription) {
-        final CreateSubscriptionBodyContentImpl content = new CreateSubscriptionBodyContentImpl().setType(CONTENT_TYPE)
+    CreateSubscriptionBody getCreateSubscriptionBody(SubscriptionDescription subscriptionDescription) {
+        final CreateSubscriptionBodyContent content = new CreateSubscriptionBodyContent().setType(CONTENT_TYPE)
             .setSubscriptionDescription(subscriptionDescription);
 
-        return new CreateSubscriptionBodyImpl().setContent(content);
+        return new CreateSubscriptionBody().setContent(content);
     }
 
     /**
@@ -166,7 +163,7 @@ class AdministrationModelConverter {
      *
      * @throws IllegalArgumentException if {@code ruleOptions} is not null but the filter is null.
      */
-    CreateSubscriptionBodyImpl getCreateSubscriptionBody(CreateSubscriptionOptions subscriptionOptions, String ruleName,
+    CreateSubscriptionBody getCreateSubscriptionBody(CreateSubscriptionOptions subscriptionOptions, String ruleName,
         CreateRuleOptions ruleOptions, Context context) {
 
         final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), context);
@@ -183,7 +180,7 @@ class AdministrationModelConverter {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'RuleFilter' cannot be null."));
             }
 
-            final RuleDescriptionImpl rule = new RuleDescriptionImpl()
+            final RuleDescription rule = new RuleDescription()
                 .setAction(
                     ruleOptions.getAction() != null ? EntityHelper.toImplementation(ruleOptions.getAction()) : null)
                 .setFilter(EntityHelper.toImplementation(ruleOptions.getFilter()))
@@ -194,10 +191,10 @@ class AdministrationModelConverter {
         return getCreateSubscriptionBody(EntityHelper.getSubscriptionDescription(subscriptionOptions));
     }
 
-    CreateTopicBodyImpl getCreateTopicBody(TopicDescriptionImpl topicOptions) {
-        final CreateTopicBodyContentImpl content
-            = new CreateTopicBodyContentImpl().setType(CONTENT_TYPE).setTopicDescription(topicOptions);
-        return new CreateTopicBodyImpl().setContent(content);
+    CreateTopicBody getCreateTopicBody(TopicDescription topicOptions) {
+        final CreateTopicBodyContent content
+            = new CreateTopicBodyContent().setType(CONTENT_TYPE).setTopicDescription(topicOptions);
+        return new CreateTopicBody().setContent(content);
     }
 
     //endregion
@@ -211,7 +208,7 @@ class AdministrationModelConverter {
      * @param context Context.
      * @return A create queue request with the corresponding properties.
      */
-    CreateQueueBodyImpl getUpdateQueueBody(QueueProperties queue, Context context) {
+    CreateQueueBody getUpdateQueueBody(QueueProperties queue, Context context) {
         final String forwardTo = getForwardToEntity(queue.getForwardTo(), context);
         if (forwardTo != null) {
             queue.setForwardTo(forwardTo);
@@ -225,14 +222,14 @@ class AdministrationModelConverter {
         return getCreateQueueBody(EntityHelper.toImplementation(queue));
     }
 
-    CreateRuleBodyImpl getUpdateRuleBody(RuleProperties rule) {
-        final RuleDescriptionImpl implementation = EntityHelper.toImplementation(rule);
-        final CreateRuleBodyContentImpl content
-            = new CreateRuleBodyContentImpl().setType(CONTENT_TYPE).setRuleDescription(implementation);
-        return new CreateRuleBodyImpl().setContent(content);
+    CreateRuleBody getUpdateRuleBody(RuleProperties rule) {
+        final RuleDescription implementation = EntityHelper.toImplementation(rule);
+        final CreateRuleBodyContent content
+            = new CreateRuleBodyContent().setType(CONTENT_TYPE).setRuleDescription(implementation);
+        return new CreateRuleBody().setContent(content);
     }
 
-    CreateSubscriptionBodyImpl getUpdateSubscriptionBody(SubscriptionProperties subscription, Context context) {
+    CreateSubscriptionBody getUpdateSubscriptionBody(SubscriptionProperties subscription, Context context) {
         final String forwardTo = getForwardToEntity(subscription.getForwardTo(), context);
         if (forwardTo != null) {
             subscription.setForwardTo(forwardTo);
@@ -245,7 +242,7 @@ class AdministrationModelConverter {
         // Set read-only properties on the subscription to null so they are not serialized.  The service will not
         // properly update fields if it encounters MessageCountDetails in the serialized XML.  Mirrors behaviour in
         // Track 1 library.
-        final SubscriptionDescriptionImpl implementation = EntityHelper.toImplementation(subscription)
+        final SubscriptionDescription implementation = EntityHelper.toImplementation(subscription)
             .setDefaultMessageTimeToLive(null)
             .setMessageCount(null)
             .setCreatedAt(null)
@@ -257,18 +254,18 @@ class AdministrationModelConverter {
         return getCreateSubscriptionBody(implementation);
     }
 
-    CreateTopicBodyImpl getUpdateTopicBody(TopicProperties topic) {
-        final TopicDescriptionImpl implementation = EntityHelper.toImplementation(topic);
-        final CreateTopicBodyContentImpl content
-            = new CreateTopicBodyContentImpl().setType(CONTENT_TYPE).setTopicDescription(implementation);
-        return new CreateTopicBodyImpl().setContent(content);
+    CreateTopicBody getUpdateTopicBody(TopicProperties topic) {
+        final TopicDescription implementation = EntityHelper.toImplementation(topic);
+        final CreateTopicBodyContent content
+            = new CreateTopicBodyContent().setType(CONTENT_TYPE).setTopicDescription(implementation);
+        return new CreateTopicBody().setContent(content);
     }
 
     //endregion
 
     //region List entity methods
 
-    List<TopicProperties> getTopics(TopicDescriptionFeedImpl feed) {
+    List<TopicProperties> getTopics(TopicDescriptionFeed feed) {
         return feed.getEntry()
             .stream()
             .filter(e -> e.getContent() != null && e.getContent().getTopicDescription() != null)
@@ -276,7 +273,7 @@ class AdministrationModelConverter {
             .collect(Collectors.toList());
     }
 
-    List<QueueProperties> getQueues(QueueDescriptionFeedImpl feed) {
+    List<QueueProperties> getQueues(QueueDescriptionFeed feed) {
         return feed.getEntry()
             .stream()
             .filter(e -> e.getContent() != null && e.getContent().getQueueDescription() != null)
@@ -284,7 +281,7 @@ class AdministrationModelConverter {
             .collect(Collectors.toList());
     }
 
-    List<RuleProperties> getRules(RuleDescriptionFeedImpl feed) {
+    List<RuleProperties> getRules(RuleDescriptionFeed feed) {
         return feed.getEntry()
             .stream()
             .filter(e -> e.getContent() != null && e.getContent().getRuleDescription() != null)
@@ -294,7 +291,7 @@ class AdministrationModelConverter {
 
     //endregion
 
-    List<SubscriptionProperties> getSubscriptions(String topicName, SubscriptionDescriptionFeedImpl feed) {
+    List<SubscriptionProperties> getSubscriptions(String topicName, SubscriptionDescriptionFeed feed) {
         return feed.getEntry()
             .stream()
             .filter(e -> e.getContent() != null && e.getContent().getSubscriptionDescription() != null)
@@ -302,7 +299,7 @@ class AdministrationModelConverter {
             .collect(Collectors.toList());
     }
 
-    QueueProperties getQueueProperties(QueueDescriptionEntryImpl e) {
+    QueueProperties getQueueProperties(QueueDescriptionEntry e) {
         final String queueName = e.getTitle().getContent();
         final QueueProperties queueProperties = EntityHelper.toModel(e.getContent().getQueueDescription());
 
@@ -311,7 +308,7 @@ class AdministrationModelConverter {
         return queueProperties;
     }
 
-    SubscriptionProperties getSubscriptionProperties(String topicName, SubscriptionDescriptionEntryImpl entry) {
+    SubscriptionProperties getSubscriptionProperties(String topicName, SubscriptionDescriptionEntry entry) {
         final SubscriptionProperties subscription
             = EntityHelper.toModel(entry.getContent().getSubscriptionDescription());
         final String subscriptionName = entry.getTitle().getContent();
@@ -320,7 +317,7 @@ class AdministrationModelConverter {
         return subscription;
     }
 
-    TopicProperties getTopicProperties(TopicDescriptionEntryImpl entry) {
+    TopicProperties getTopicProperties(TopicDescriptionEntry entry) {
         final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());
         final String topicName = entry.getTitle().getContent();
         EntityHelper.setTopicName(result, topicName);
@@ -328,8 +325,8 @@ class AdministrationModelConverter {
     }
 
     SimpleResponse<SubscriptionProperties> getSubscriptionPropertiesSimpleResponse(String topicName,
-        Response<SubscriptionDescriptionEntryImpl> response) {
-        final SubscriptionDescriptionEntryImpl entry = response.getValue();
+        Response<SubscriptionDescriptionEntry> response) {
+        final SubscriptionDescriptionEntry entry = response.getValue();
 
         // This was an empty response (ie. 204).
         if (entry == null) {
@@ -347,8 +344,8 @@ class AdministrationModelConverter {
             subscription);
     }
 
-    SimpleResponse<RuleProperties> getRulePropertiesSimpleResponse(Response<RuleDescriptionEntryImpl> response) {
-        final RuleDescriptionEntryImpl entry = response.getValue();
+    SimpleResponse<RuleProperties> getRulePropertiesSimpleResponse(Response<RuleDescriptionEntry> response) {
+        final RuleDescriptionEntry entry = response.getValue();
         // This was an empty response (ie. 204).
         if (entry == null) {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
@@ -357,7 +354,7 @@ class AdministrationModelConverter {
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         }
 
-        final RuleDescriptionImpl description = entry.getContent().getRuleDescription();
+        final RuleDescription description = entry.getContent().getRuleDescription();
         final RuleProperties result = EntityHelper.toModel(description);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
@@ -391,7 +388,7 @@ class AdministrationModelConverter {
         return EntityHelper.deserializeQueue(response, logger);
     }
 
-    Response<QueueDescriptionFeedImpl> deserializeQueueFeed(Response<Object> response) {
+    Response<QueueDescriptionFeed> deserializeQueueFeed(Response<Object> response) {
         return EntityHelper.deserializeQueueFeed(response, logger);
     }
 
@@ -399,7 +396,7 @@ class AdministrationModelConverter {
         return EntityHelper.deserializeTopic(response, logger);
     }
 
-    Response<TopicDescriptionFeedImpl> deserializeTopicFeed(Response<Object> response) {
+    Response<TopicDescriptionFeed> deserializeTopicFeed(Response<Object> response) {
         return EntityHelper.deserializeTopicFeed(response, logger);
     }
 
@@ -635,8 +632,8 @@ class AdministrationModelConverter {
      */
     @SuppressWarnings({ "SimplifyOptionalCallChains" })
     <TResult, TFeed> FeedPage<TResult> extractPage(Response<TFeed> response, List<TResult> entities,
-        List<ResponseLinkImpl> responseLinks) throws MalformedURLException, UnsupportedEncodingException {
-        final Optional<ResponseLinkImpl> nextLink
+        List<ResponseLink> responseLinks) throws MalformedURLException, UnsupportedEncodingException {
+        final Optional<ResponseLink> nextLink
             = responseLinks.stream().filter(link -> link.getRel().equalsIgnoreCase("next")).findFirst();
 
         if (!nextLink.isPresent()) {

@@ -10,18 +10,17 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.PrivateEndpointConnectionInner;
-import com.azure.resourcemanager.appcontainers.models.AppInsightsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.AppLogsConfiguration;
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.azure.resourcemanager.appcontainers.models.DaprConfiguration;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentAuthToken;
 import com.azure.resourcemanager.appcontainers.models.EnvironmentProvisioningState;
+import com.azure.resourcemanager.appcontainers.models.IngressConfiguration;
 import com.azure.resourcemanager.appcontainers.models.KedaConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerAuthentication;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentPropertiesPeerTrafficConfiguration;
 import com.azure.resourcemanager.appcontainers.models.ManagedServiceIdentity;
-import com.azure.resourcemanager.appcontainers.models.OpenTelemetryConfiguration;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.appcontainers.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appcontainers.models.VnetConfiguration;
@@ -106,14 +105,6 @@ public final class ManagedEnvironmentImpl
         return this.innerModel().appLogsConfiguration();
     }
 
-    public AppInsightsConfiguration appInsightsConfiguration() {
-        return this.innerModel().appInsightsConfiguration();
-    }
-
-    public OpenTelemetryConfiguration openTelemetryConfiguration() {
-        return this.innerModel().openTelemetryConfiguration();
-    }
-
     public Boolean zoneRedundant() {
         return this.innerModel().zoneRedundant();
     }
@@ -153,6 +144,10 @@ public final class ManagedEnvironmentImpl
 
     public ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration() {
         return this.innerModel().peerTrafficConfiguration();
+    }
+
+    public IngressConfiguration ingressConfiguration() {
+        return this.innerModel().ingressConfiguration();
     }
 
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -316,17 +311,6 @@ public final class ManagedEnvironmentImpl
         return this;
     }
 
-    public ManagedEnvironmentImpl withAppInsightsConfiguration(AppInsightsConfiguration appInsightsConfiguration) {
-        this.innerModel().withAppInsightsConfiguration(appInsightsConfiguration);
-        return this;
-    }
-
-    public ManagedEnvironmentImpl
-        withOpenTelemetryConfiguration(OpenTelemetryConfiguration openTelemetryConfiguration) {
-        this.innerModel().withOpenTelemetryConfiguration(openTelemetryConfiguration);
-        return this;
-    }
-
     public ManagedEnvironmentImpl withZoneRedundant(Boolean zoneRedundant) {
         this.innerModel().withZoneRedundant(zoneRedundant);
         return this;
@@ -366,6 +350,11 @@ public final class ManagedEnvironmentImpl
     public ManagedEnvironmentImpl
         withPeerTrafficConfiguration(ManagedEnvironmentPropertiesPeerTrafficConfiguration peerTrafficConfiguration) {
         this.innerModel().withPeerTrafficConfiguration(peerTrafficConfiguration);
+        return this;
+    }
+
+    public ManagedEnvironmentImpl withIngressConfiguration(IngressConfiguration ingressConfiguration) {
+        this.innerModel().withIngressConfiguration(ingressConfiguration);
         return this;
     }
 

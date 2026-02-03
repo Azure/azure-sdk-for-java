@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,16 +21,19 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
     /*
      * The Compression setting type.
      */
+    @Generated
     private String type = "TarGZipReadSettings";
 
     /*
      * Preserve the compression file name as folder path. Type: boolean (or Expression with resultType boolean).
      */
+    @Generated
     private Object preserveCompressionFileNameAsFolder;
 
     /**
      * Creates an instance of TarGZipReadSettings class.
      */
+    @Generated
     public TarGZipReadSettings() {
     }
 
@@ -38,6 +42,7 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
      * 
      * @return the preserveCompressionFileNameAsFolder value.
      */
+    @Generated
     public Object getPreserveCompressionFileNameAsFolder() {
         return this.preserveCompressionFileNameAsFolder;
     }
@@ -60,6 +66,7 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
      * @param preserveCompressionFileNameAsFolder the preserveCompressionFileNameAsFolder value to set.
      * @return the TarGZipReadSettings object itself.
      */
+    @Generated
     public TarGZipReadSettings setPreserveCompressionFileNameAsFolder(Object preserveCompressionFileNameAsFolder) {
         this.preserveCompressionFileNameAsFolder = preserveCompressionFileNameAsFolder;
         return this;
@@ -68,11 +75,15 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("preserveCompressionFileNameAsFolder", this.preserveCompressionFileNameAsFolder);
+        if (this.preserveCompressionFileNameAsFolder != null) {
+            jsonWriter.writeUntypedField("preserveCompressionFileNameAsFolder",
+                this.preserveCompressionFileNameAsFolder);
+        }
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -89,6 +100,7 @@ public final class TarGZipReadSettings extends CompressionReadSettings {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the TarGZipReadSettings.
      */
+    @Generated
     public static TarGZipReadSettings fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TarGZipReadSettings deserializedTarGZipReadSettings = new TarGZipReadSettings();

@@ -162,15 +162,31 @@ public final class DocumentDbCollectionSink extends CopySink {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
-        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        if (writeBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        }
+        if (writeBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        }
+        if (sinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        }
+        if (sinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        }
+        if (maxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        }
+        if (disableMetricsCollection() != null) {
+            jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("nestingSeparator", this.nestingSeparator);
-        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        if (this.nestingSeparator != null) {
+            jsonWriter.writeUntypedField("nestingSeparator", this.nestingSeparator);
+        }
+        if (this.writeBehavior != null) {
+            jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        }
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());

@@ -11,7 +11,7 @@ public final class ServerSkuCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerSkuCapability model = BinaryData.fromString(
-            "{\"name\":\"uesnzwdejbavo\",\"vCores\":669466066,\"supportedIops\":1432436623,\"supportedMemoryPerVcoreMb\":3481078275751928230,\"supportedZones\":[\"qvudwxdndnvowgu\",\"jugwdkcglhsl\",\"zj\"],\"supportedHaMode\":[\"ZoneRedundant\"],\"status\":\"Disabled\",\"reason\":\"ixhbkuofqweykhm\"}")
+            "{\"name\":\"ykvceoveil\",\"vCores\":1344905503,\"supportedIops\":2133356892,\"supportedMemoryPerVcoreMb\":1277468706791148582,\"supportedZones\":[\"njbkcnxdhbttkph\",\"wpn\",\"jtoqne\"],\"supportedHaMode\":[\"ZoneRedundant\"],\"supportedFeatures\":[{\"name\":\"phoxus\",\"status\":\"Enabled\"},{\"name\":\"bgyepsbj\",\"status\":\"Enabled\"}],\"securityProfile\":\"ugxywpmueef\",\"status\":\"Available\",\"reason\":\"qkqujidsu\"}")
             .toObject(ServerSkuCapability.class);
     }
 

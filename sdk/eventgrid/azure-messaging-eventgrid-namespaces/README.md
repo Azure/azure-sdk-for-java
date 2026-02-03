@@ -28,7 +28,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid-namespaces</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -227,4 +227,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [portal]: https://ms.portal.azure.com/
 [service_docs]: https://learn.microsoft.com/azure/event-grid/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid-namespaces%2FREADME.png)
+

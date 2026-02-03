@@ -81,9 +81,20 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
     private SecretBase privateKeyPassphrase;
 
     /*
-     * The host name of the Snowflake account.
+     * The default access control role to use in the Snowflake session. Type: string (or Expression with resultType
+     * string).
+     */
+    private Object role;
+
+    /*
+     * The host name of the Snowflake account. Type: string (or Expression with resultType string).
      */
     private Object host;
+
+    /*
+     * Schema name for connection. Type: string (or Expression with resultType string).
+     */
+    private Object schema;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
@@ -351,7 +362,30 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
     }
 
     /**
-     * Get the host property: The host name of the Snowflake account.
+     * Get the role property: The default access control role to use in the Snowflake session. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the role value.
+     */
+    public Object role() {
+        return this.role;
+    }
+
+    /**
+     * Set the role property: The default access control role to use in the Snowflake session. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param role the role value to set.
+     * @return the SnowflakeLinkedV2ServiceTypeProperties object itself.
+     */
+    public SnowflakeLinkedV2ServiceTypeProperties withRole(Object role) {
+        this.role = role;
+        return this;
+    }
+
+    /**
+     * Get the host property: The host name of the Snowflake account. Type: string (or Expression with resultType
+     * string).
      * 
      * @return the host value.
      */
@@ -360,13 +394,34 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
     }
 
     /**
-     * Set the host property: The host name of the Snowflake account.
+     * Set the host property: The host name of the Snowflake account. Type: string (or Expression with resultType
+     * string).
      * 
      * @param host the host value to set.
      * @return the SnowflakeLinkedV2ServiceTypeProperties object itself.
      */
     public SnowflakeLinkedV2ServiceTypeProperties withHost(Object host) {
         this.host = host;
+        return this;
+    }
+
+    /**
+     * Get the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     * 
+     * @return the schema value.
+     */
+    public Object schema() {
+        return this.schema;
+    }
+
+    /**
+     * Set the schema property: Schema name for connection. Type: string (or Expression with resultType string).
+     * 
+     * @param schema the schema value to set.
+     * @return the SnowflakeLinkedV2ServiceTypeProperties object itself.
+     */
+    public SnowflakeLinkedV2ServiceTypeProperties withSchema(Object schema) {
+        this.schema = schema;
         return this;
     }
 
@@ -438,17 +493,33 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
         jsonWriter.writeUntypedField("accountIdentifier", this.accountIdentifier);
         jsonWriter.writeUntypedField("database", this.database);
         jsonWriter.writeUntypedField("warehouse", this.warehouse);
-        jsonWriter.writeUntypedField("user", this.user);
+        if (this.user != null) {
+            jsonWriter.writeUntypedField("user", this.user);
+        }
         jsonWriter.writeJsonField("password", this.password);
         jsonWriter.writeStringField("authenticationType",
             this.authenticationType == null ? null : this.authenticationType.toString());
-        jsonWriter.writeUntypedField("clientId", this.clientId);
+        if (this.clientId != null) {
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+        }
         jsonWriter.writeJsonField("clientSecret", this.clientSecret);
-        jsonWriter.writeUntypedField("tenantId", this.tenantId);
-        jsonWriter.writeUntypedField("scope", this.scope);
+        if (this.tenantId != null) {
+            jsonWriter.writeUntypedField("tenantId", this.tenantId);
+        }
+        if (this.scope != null) {
+            jsonWriter.writeUntypedField("scope", this.scope);
+        }
         jsonWriter.writeJsonField("privateKey", this.privateKey);
         jsonWriter.writeJsonField("privateKeyPassphrase", this.privateKeyPassphrase);
-        jsonWriter.writeUntypedField("host", this.host);
+        if (this.role != null) {
+            jsonWriter.writeUntypedField("role", this.role);
+        }
+        if (this.host != null) {
+            jsonWriter.writeUntypedField("host", this.host);
+        }
+        if (this.schema != null) {
+            jsonWriter.writeUntypedField("schema", this.schema);
+        }
         jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
         return jsonWriter.writeEndObject();
     }
@@ -496,8 +567,12 @@ public final class SnowflakeLinkedV2ServiceTypeProperties
                 } else if ("privateKeyPassphrase".equals(fieldName)) {
                     deserializedSnowflakeLinkedV2ServiceTypeProperties.privateKeyPassphrase
                         = SecretBase.fromJson(reader);
+                } else if ("role".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.role = reader.readUntyped();
                 } else if ("host".equals(fieldName)) {
                     deserializedSnowflakeLinkedV2ServiceTypeProperties.host = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedSnowflakeLinkedV2ServiceTypeProperties.schema = reader.readUntyped();
                 } else if ("encryptedCredential".equals(fieldName)) {
                     deserializedSnowflakeLinkedV2ServiceTypeProperties.encryptedCredential = reader.getString();
                 } else {

@@ -11,7 +11,7 @@ public final class StorageMbCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageMbCapability model = BinaryData.fromString(
-            "{\"supportedIops\":1455725061,\"supportedMaximumIops\":2067310250,\"storageSizeMb\":4579526250927488523,\"maximumStorageSizeMb\":1760019269315707973,\"supportedThroughput\":1097907718,\"supportedMaximumThroughput\":1460212605,\"defaultIopsTier\":\"qwoochcbon\",\"supportedIopsTiers\":[{\"name\":\"vlrxnjeaseiph\",\"iops\":10648381,\"status\":\"Default\",\"reason\":\"eyy\"},{\"name\":\"nj\",\"iops\":147839675,\"status\":\"Disabled\",\"reason\":\"rhpdjpjumas\"}],\"status\":\"Visible\",\"reason\":\"pqyegualhbxxh\"}")
+            "{\"supportedIops\":1060544654,\"supportedMaximumIops\":413325201,\"storageSizeMb\":3085775452141512212,\"maximumStorageSizeMb\":574738342939177032,\"supportedThroughput\":1617320432,\"supportedMaximumThroughput\":635482352,\"defaultIopsTier\":\"ped\",\"supportedIopsTiers\":[{\"name\":\"a\",\"iops\":996509936,\"status\":\"Default\",\"reason\":\"txp\"}],\"status\":\"Default\",\"reason\":\"tfhvpesapskrdqmh\"}")
             .toObject(StorageMbCapability.class);
     }
 

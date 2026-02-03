@@ -17,22 +17,21 @@ public final class ClusterManagerPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterManagerPatchParameters model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"7b4a5a81-f88a-4c6d-a5db-35a0641bdf90\",\"tenantId\":\"40f9ac5e-c21c-4158-831d-d3569e891df6\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"lu\":{\"principalId\":\"050ddab3-f26f-4462-bff3-aaf69d12a188\",\"clientId\":\"dbf82f40-a210-425c-a5aa-aa54a3e7a689\"},\"tangcfhnykzcu\":{\"principalId\":\"e1e3d571-6385-4a48-9ee6-c0c5df9cfce2\",\"clientId\":\"020f20f7-8027-4f55-8dac-929382302c9c\"},\"vxwlmzqwmvtxnj\":{\"principalId\":\"fa0aec32-dc1c-414f-a1fa-dbf7a8a7f8ce\",\"clientId\":\"59682341-4e23-4639-9f51-5b4830c091b6\"}}},\"tags\":{\"pdkvg\":\"cuqudtcvclxy\",\"ibuz\":\"abuiy\",\"xgjiuqh\":\"hdugneiknpg\"}}")
+            "{\"identity\":{\"principalId\":\"9f83432b-3baf-4421-9892-eb01530118af\",\"tenantId\":\"f5b47c06-63a3-4b79-ab45-f1976ba25ab7\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"owxwcomli\":{\"principalId\":\"54f461e1-6499-4c3f-b38a-0aef8d5f2e38\",\"clientId\":\"bacf6124-9455-44f4-a608-c74ddd77ed00\"}}},\"tags\":{\"yfdvlvhbwrnfxtgd\":\"wvczcswkacve\"}}")
             .toObject(ClusterManagerPatchParameters.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("cuqudtcvclxy", model.tags().get("pdkvg"));
+        Assertions.assertEquals("wvczcswkacve", model.tags().get("yfdvlvhbwrnfxtgd"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterManagerPatchParameters model = new ClusterManagerPatchParameters()
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("lu", new UserAssignedIdentity(), "tangcfhnykzcu",
-                    new UserAssignedIdentity(), "vxwlmzqwmvtxnj", new UserAssignedIdentity())))
-            .withTags(mapOf("pdkvg", "cuqudtcvclxy", "ibuz", "abuiy", "xgjiuqh", "hdugneiknpg"));
+                .withUserAssignedIdentities(mapOf("owxwcomli", new UserAssignedIdentity())))
+            .withTags(mapOf("yfdvlvhbwrnfxtgd", "wvczcswkacve"));
         model = BinaryData.fromObject(model).toObject(ClusterManagerPatchParameters.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("cuqudtcvclxy", model.tags().get("pdkvg"));
+        Assertions.assertEquals("wvczcswkacve", model.tags().get("yfdvlvhbwrnfxtgd"));
     }
 
     // Use "Map.of" if available

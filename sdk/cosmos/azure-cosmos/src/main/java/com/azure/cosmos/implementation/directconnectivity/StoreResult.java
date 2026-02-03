@@ -36,6 +36,7 @@ public class StoreResult {
     final public boolean isGoneException;
     final public boolean isNotFoundException;
     final public boolean isInvalidPartitionException;
+    final public boolean isAvoidQuorumSelectionException;
     final public Uri storePhysicalAddress;
     final public boolean isThroughputControlRequestRateTooLargeException;
     final public Double backendLatencyInMs;
@@ -83,6 +84,7 @@ public class StoreResult {
         this.isThroughputControlRequestRateTooLargeException = this.exception != null && Exceptions.isThroughputControlRequestRateTooLargeException(this.exception);
         this.backendLatencyInMs = backendLatencyInMs;
         this.retryAfterInMs = retryAfterInMs;
+        this.isAvoidQuorumSelectionException = this.exception != null && Exceptions.isAvoidQuorumSelectionException(this.exception);
     }
 
     public StoreResponse getStoreResponse() {

@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SAPVirtualInstanceIdentity;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapVirtualInstanceProperties;
 import java.io.IOException;
 import java.util.Map;
@@ -28,7 +28,7 @@ public final class SapVirtualInstanceInner extends Resource {
     /*
      * The managed service identities assigned to this resource.
      */
-    private ManagedServiceIdentity identity;
+    private SAPVirtualInstanceIdentity identity;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -81,7 +81,7 @@ public final class SapVirtualInstanceInner extends Resource {
      * 
      * @return the identity value.
      */
-    public ManagedServiceIdentity identity() {
+    public SAPVirtualInstanceIdentity identity() {
         return this.identity;
     }
 
@@ -91,7 +91,7 @@ public final class SapVirtualInstanceInner extends Resource {
      * @param identity the identity value to set.
      * @return the SapVirtualInstanceInner object itself.
      */
-    public SapVirtualInstanceInner withIdentity(ManagedServiceIdentity identity) {
+    public SapVirtualInstanceInner withIdentity(SAPVirtualInstanceIdentity identity) {
         this.identity = identity;
         return this;
     }
@@ -154,20 +154,6 @@ public final class SapVirtualInstanceInner extends Resource {
     }
 
     /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (properties() != null) {
-            properties().validate();
-        }
-        if (identity() != null) {
-            identity().validate();
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -210,7 +196,7 @@ public final class SapVirtualInstanceInner extends Resource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedSapVirtualInstanceInner.properties = SapVirtualInstanceProperties.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
-                    deserializedSapVirtualInstanceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                    deserializedSapVirtualInstanceInner.identity = SAPVirtualInstanceIdentity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSapVirtualInstanceInner.systemData = SystemData.fromJson(reader);
                 } else {

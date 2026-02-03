@@ -10,7 +10,7 @@ package com.azure.resourcemanager.connectedcache.generated;
 public final class EnterpriseMccCacheNodesOperationsListByEnterpriseMccCustomerResourceSamples {
     /*
      * x-ms-original-file:
-     * 2023-05-01-preview/EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource_MaximumSet_Gen.json
+     * 2024-11-30-preview/EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: EnterpriseMccCacheNodesOperations_ListByEnterpriseMccCustomerResource.

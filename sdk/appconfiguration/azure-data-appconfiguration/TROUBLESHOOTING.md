@@ -41,7 +41,7 @@ ConfigurationClient configurationClient = new ConfigurationClientBuilder()
         .buildClient();
 // or
 DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-ConfigurationClient configurationClientAad = new ConfigurationClientBuilder()
+ConfigurationClient configurationClientEntraId = new ConfigurationClientBuilder()
         .credential(credential)
         .endpoint(endpoint)
         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

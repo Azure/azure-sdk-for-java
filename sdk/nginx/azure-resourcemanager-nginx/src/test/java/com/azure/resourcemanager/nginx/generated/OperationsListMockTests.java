@@ -7,8 +7,8 @@ package com.azure.resourcemanager.nginx.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.nginx.NginxManager;
 import com.azure.resourcemanager.nginx.models.OperationResult;
@@ -22,22 +22,22 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"mzqhoftrmaequi\",\"display\":{\"provider\":\"icslfaoq\",\"resource\":\"iyylhalnswhccsp\",\"operation\":\"aivwitqscywu\",\"description\":\"woluhczbwemhair\"},\"isDataAction\":true}]}";
+            = "{\"value\":[{\"name\":\"cjdx\",\"display\":{\"provider\":\"zoggculapz\",\"resource\":\"rpgogtqxep\",\"operation\":\"lbfu\",\"description\":\"lyjt\"},\"isDataAction\":false}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NginxManager manager = NginxManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OperationResult> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mzqhoftrmaequi", response.iterator().next().name());
-        Assertions.assertEquals("icslfaoq", response.iterator().next().display().provider());
-        Assertions.assertEquals("iyylhalnswhccsp", response.iterator().next().display().resource());
-        Assertions.assertEquals("aivwitqscywu", response.iterator().next().display().operation());
-        Assertions.assertEquals("woluhczbwemhair", response.iterator().next().display().description());
-        Assertions.assertEquals(true, response.iterator().next().isDataAction());
+        Assertions.assertEquals("cjdx", response.iterator().next().name());
+        Assertions.assertEquals("zoggculapz", response.iterator().next().display().provider());
+        Assertions.assertEquals("rpgogtqxep", response.iterator().next().display().resource());
+        Assertions.assertEquals("lbfu", response.iterator().next().display().operation());
+        Assertions.assertEquals("lyjt", response.iterator().next().display().description());
+        Assertions.assertEquals(false, response.iterator().next().isDataAction());
     }
 }

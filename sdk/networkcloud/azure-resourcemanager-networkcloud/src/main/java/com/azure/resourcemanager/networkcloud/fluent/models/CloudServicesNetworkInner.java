@@ -14,6 +14,8 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkEnableDefaultEgressEndpoints;
 import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkProvisioningState;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageOptions;
+import com.azure.resourcemanager.networkcloud.models.CloudServicesNetworkStorageStatus;
 import com.azure.resourcemanager.networkcloud.models.EgressEndpoint;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import java.io.IOException;
@@ -24,13 +26,18 @@ import java.util.Map;
  * CloudServicesNetwork represents additional egress information that will be used by associated virtual machines or
  * hybrid AKS clusters.
  * 
- * Upon creation, the additional services that are provided by the platform will be allocated and
- * represented in the status of this resource. All resources associated with this cloud services network will be part
- * of the same layer 2 (L2) isolation domain. At least one service network must be created but may be reused across many
- * virtual machines and/or Hybrid AKS clusters.
+ * Upon creation, the additional services that are provided by the platform will be allocated and represented in the
+ * status of this resource. All resources associated with this cloud services network will be part of the same layer 2
+ * (L2) isolation domain. At least one service network must be created but may be reused across many virtual machines
+ * and/or Hybrid AKS clusters.
  */
 @Fluent
 public final class CloudServicesNetworkInner extends Resource {
+    /*
+     * Resource ETag.
+     */
+    private String etag;
+
     /*
      * The extended location of the cluster associated with the resource.
      */
@@ -65,6 +72,15 @@ public final class CloudServicesNetworkInner extends Resource {
      * Creates an instance of CloudServicesNetworkInner class.
      */
     public CloudServicesNetworkInner() {
+    }
+
+    /**
+     * Get the etag property: Resource ETag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -282,6 +298,38 @@ public final class CloudServicesNetworkInner extends Resource {
     }
 
     /**
+     * Get the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @return the storageOptions value.
+     */
+    public CloudServicesNetworkStorageOptions storageOptions() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageOptions();
+    }
+
+    /**
+     * Set the storageOptions property: The storage options for the cloud services network.
+     * 
+     * @param storageOptions the storageOptions value to set.
+     * @return the CloudServicesNetworkInner object itself.
+     */
+    public CloudServicesNetworkInner withStorageOptions(CloudServicesNetworkStorageOptions storageOptions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CloudServicesNetworkProperties();
+        }
+        this.innerProperties().withStorageOptions(storageOptions);
+        return this;
+    }
+
+    /**
+     * Get the storageStatus property: The storage status for the cloud services network.
+     * 
+     * @return the storageStatus value.
+     */
+    public CloudServicesNetworkStorageStatus storageStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageStatus();
+    }
+
+    /**
      * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this cloud
      * services network.
@@ -354,6 +402,8 @@ public final class CloudServicesNetworkInner extends Resource {
                     deserializedCloudServicesNetworkInner.withTags(tags);
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedCloudServicesNetworkInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedCloudServicesNetworkInner.etag = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedCloudServicesNetworkInner.innerProperties
                         = CloudServicesNetworkProperties.fromJson(reader);

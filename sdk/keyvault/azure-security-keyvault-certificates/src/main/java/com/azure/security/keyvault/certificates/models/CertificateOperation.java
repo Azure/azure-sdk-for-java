@@ -161,6 +161,16 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     }
 
     /**
+     * Get a value indicating whether the order of the certificate chain is to be preserved in the vault. The default
+     * value is {@code false}, which sets the leaf certificate at index 0.
+     *
+     * @return A value indicating whether the order of the certificate chain is to be preserved in the vault.
+     */
+    public Boolean isCertificateOrderPreserved() {
+        return impl.isPreserveCertOrder();
+    }
+
+    /**
      * Get the certificate name.
      *
      * @return the name of the certificate.

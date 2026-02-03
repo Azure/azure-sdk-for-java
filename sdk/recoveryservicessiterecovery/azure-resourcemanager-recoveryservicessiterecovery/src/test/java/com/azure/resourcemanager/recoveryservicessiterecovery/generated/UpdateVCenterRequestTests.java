@@ -13,28 +13,28 @@ public final class UpdateVCenterRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateVCenterRequest model = BinaryData.fromString(
-            "{\"properties\":{\"friendlyName\":\"ytnrzvuljraae\",\"ipAddress\":\"nok\",\"processServerId\":\"ukkjqnvbroyla\",\"port\":\"ulcdisdosf\",\"runAsAccountId\":\"jsvg\"}}")
+            "{\"properties\":{\"friendlyName\":\"bmiybnnustgn\",\"ipAddress\":\"hnmgixhcm\",\"processServerId\":\"mqfoudorh\",\"port\":\"yyprotwyp\",\"runAsAccountId\":\"d\"}}")
             .toObject(UpdateVCenterRequest.class);
-        Assertions.assertEquals("ytnrzvuljraae", model.properties().friendlyName());
-        Assertions.assertEquals("nok", model.properties().ipAddress());
-        Assertions.assertEquals("ukkjqnvbroyla", model.properties().processServerId());
-        Assertions.assertEquals("ulcdisdosf", model.properties().port());
-        Assertions.assertEquals("jsvg", model.properties().runAsAccountId());
+        Assertions.assertEquals("bmiybnnustgn", model.properties().friendlyName());
+        Assertions.assertEquals("hnmgixhcm", model.properties().ipAddress());
+        Assertions.assertEquals("mqfoudorh", model.properties().processServerId());
+        Assertions.assertEquals("yyprotwyp", model.properties().port());
+        Assertions.assertEquals("d", model.properties().runAsAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateVCenterRequest model = new UpdateVCenterRequest()
-            .withProperties(new UpdateVCenterRequestProperties().withFriendlyName("ytnrzvuljraae")
-                .withIpAddress("nok")
-                .withProcessServerId("ukkjqnvbroyla")
-                .withPort("ulcdisdosf")
-                .withRunAsAccountId("jsvg"));
+            .withProperties(new UpdateVCenterRequestProperties().withFriendlyName("bmiybnnustgn")
+                .withIpAddress("hnmgixhcm")
+                .withProcessServerId("mqfoudorh")
+                .withPort("yyprotwyp")
+                .withRunAsAccountId("d"));
         model = BinaryData.fromObject(model).toObject(UpdateVCenterRequest.class);
-        Assertions.assertEquals("ytnrzvuljraae", model.properties().friendlyName());
-        Assertions.assertEquals("nok", model.properties().ipAddress());
-        Assertions.assertEquals("ukkjqnvbroyla", model.properties().processServerId());
-        Assertions.assertEquals("ulcdisdosf", model.properties().port());
-        Assertions.assertEquals("jsvg", model.properties().runAsAccountId());
+        Assertions.assertEquals("bmiybnnustgn", model.properties().friendlyName());
+        Assertions.assertEquals("hnmgixhcm", model.properties().ipAddress());
+        Assertions.assertEquals("mqfoudorh", model.properties().processServerId());
+        Assertions.assertEquals("yyprotwyp", model.properties().port());
+        Assertions.assertEquals("d", model.properties().runAsAccountId());
     }
 }

@@ -17,10 +17,10 @@ public class ReceivedSharesGetBlobAccount {
             = new ReceivedSharesClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("accountName.purview.azure.com/share")
                 .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.receivedsharesgetreceivedshare.receivedsharesgetblobaccount
+        // BEGIN:com.azure.analytics.purview.sharing.generated.received-shares-get-received-share.received-shares-get-blob-account
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = receivedSharesClient.getReceivedShareWithResponse("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.receivedsharesgetreceivedshare.receivedsharesgetblobaccount
+        // END:com.azure.analytics.purview.sharing.generated.received-shares-get-received-share.received-shares-get-blob-account
     }
 }

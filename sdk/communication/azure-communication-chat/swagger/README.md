@@ -35,17 +35,17 @@ To update generated files for chat service, run the following command
 ### Code generation settings
 
 ```yaml
-tag: package-chat-2024-03-07
+tag: package-chat-2025-03-15
 use: '@autorest/java@4.1.33'
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/72d4c8cae964a12dc27ad4684b0bddf493225338/specification/communication/data-plane/Chat/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e5f9d3b1d33ee4e98eef7ec302966f5b0b6efeeb/specification/communication/data-plane/Chat/readme.md
 java: true
 title: AzureCommunicationChatService
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,TypingNotificationOptions
+custom-types: ChatMessagePriority,ChatThreadItem,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,ChatMessageType,SendChatMessageResult,TypingNotificationOptions,CreateChatThreadOptions
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false

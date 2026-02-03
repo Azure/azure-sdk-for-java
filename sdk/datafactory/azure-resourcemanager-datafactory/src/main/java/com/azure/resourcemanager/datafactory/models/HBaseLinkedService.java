@@ -51,7 +51,7 @@ public final class HBaseLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HBaseLinkedServiceTypeProperties innerTypeProperties() {
+    HBaseLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

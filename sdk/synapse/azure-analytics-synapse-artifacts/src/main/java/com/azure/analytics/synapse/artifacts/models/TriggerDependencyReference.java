@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -18,16 +19,19 @@ public class TriggerDependencyReference extends DependencyReference {
     /*
      * The type of dependency reference.
      */
+    @Generated
     private String type = "TriggerDependencyReference";
 
     /*
      * Referenced trigger.
      */
+    @Generated
     private TriggerReference referenceTrigger;
 
     /**
      * Creates an instance of TriggerDependencyReference class.
      */
+    @Generated
     public TriggerDependencyReference() {
     }
 
@@ -36,6 +40,7 @@ public class TriggerDependencyReference extends DependencyReference {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -46,6 +51,7 @@ public class TriggerDependencyReference extends DependencyReference {
      * 
      * @return the referenceTrigger value.
      */
+    @Generated
     public TriggerReference getReferenceTrigger() {
         return this.referenceTrigger;
     }
@@ -56,6 +62,7 @@ public class TriggerDependencyReference extends DependencyReference {
      * @param referenceTrigger the referenceTrigger value to set.
      * @return the TriggerDependencyReference object itself.
      */
+    @Generated
     public TriggerDependencyReference setReferenceTrigger(TriggerReference referenceTrigger) {
         this.referenceTrigger = referenceTrigger;
         return this;
@@ -64,6 +71,7 @@ public class TriggerDependencyReference extends DependencyReference {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -81,6 +89,7 @@ public class TriggerDependencyReference extends DependencyReference {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TriggerDependencyReference.
      */
+    @Generated
     public static TriggerDependencyReference fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String discriminatorValue = null;
@@ -106,6 +115,7 @@ public class TriggerDependencyReference extends DependencyReference {
         });
     }
 
+    @Generated
     static TriggerDependencyReference fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             TriggerDependencyReference deserializedTriggerDependencyReference = new TriggerDependencyReference();

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanAccountAssociation;
@@ -22,19 +22,19 @@ public final class CommitmentPlansListAssociationsMockTests {
     @Test
     public void testListAssociations() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"kdvezc\",\"tags\":{\"ub\":\"sbzhd\",\"ugiqjtiogqg\":\"nqfblhkalehpava\",\"eajohiyg\":\"minict\",\"kmktpvwxqcseh\":\"pnbonhpcz\"},\"properties\":{\"accountId\":\"hufmpq\"},\"id\":\"mqyjgy\",\"name\":\"zulo\",\"type\":\"saeuzanhsfnhsenw\"}]}";
+            = "{\"value\":[{\"etag\":\"w\",\"tags\":{\"jdhsoy\":\"x\",\"pboujs\":\"hpvtyqftteh\",\"suenyg\":\"kfvvdshxcde\"},\"properties\":{\"accountId\":\"g\"},\"id\":\"frn\",\"name\":\"uktrfnslnlrx\",\"type\":\"myltrwntfmtbg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CommitmentPlanAccountAssociation> response
-            = manager.commitmentPlans().listAssociations("fwmyymv", "dbpb", com.azure.core.util.Context.NONE);
+            = manager.commitmentPlans().listAssociations("aiossscyvaifp", "uacvfy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("sbzhd", response.iterator().next().tags().get("ub"));
-        Assertions.assertEquals("hufmpq", response.iterator().next().accountId());
+        Assertions.assertEquals("x", response.iterator().next().tags().get("jdhsoy"));
+        Assertions.assertEquals("g", response.iterator().next().accountId());
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 public final class DocumentNotificationContent extends NotificationContent {
 
     /*
-     * The type discriminator describing a notification type.
+     * The type discriminator describing a message type.
      */
     @Generated
     private CommunicationMessageKind kind = CommunicationMessageKind.DOCUMENT;
@@ -49,7 +49,7 @@ public final class DocumentNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the kind property: The type discriminator describing a notification type.
+     * Get the kind property: The type discriminator describing a message type.
      *
      * @return the kind value.
      */

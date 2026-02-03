@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,16 +22,19 @@ public class WaitActivity extends ControlActivity {
     /*
      * Type of activity.
      */
+    @Generated
     private String type = "Wait";
 
     /*
      * Duration in seconds.
      */
+    @Generated
     private Object waitTimeInSeconds;
 
     /**
      * Creates an instance of WaitActivity class.
      */
+    @Generated
     public WaitActivity() {
     }
 
@@ -39,6 +43,7 @@ public class WaitActivity extends ControlActivity {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +54,7 @@ public class WaitActivity extends ControlActivity {
      * 
      * @return the waitTimeInSeconds value.
      */
+    @Generated
     public Object getWaitTimeInSeconds() {
         return this.waitTimeInSeconds;
     }
@@ -59,6 +65,7 @@ public class WaitActivity extends ControlActivity {
      * @param waitTimeInSeconds the waitTimeInSeconds value to set.
      * @return the WaitActivity object itself.
      */
+    @Generated
     public WaitActivity setWaitTimeInSeconds(Object waitTimeInSeconds) {
         this.waitTimeInSeconds = waitTimeInSeconds;
         return this;
@@ -67,6 +74,7 @@ public class WaitActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WaitActivity setName(String name) {
         super.setName(name);
@@ -76,6 +84,7 @@ public class WaitActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WaitActivity setDescription(String description) {
         super.setDescription(description);
@@ -85,6 +94,7 @@ public class WaitActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WaitActivity setState(ActivityState state) {
         super.setState(state);
@@ -94,6 +104,7 @@ public class WaitActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WaitActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
@@ -103,6 +114,7 @@ public class WaitActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WaitActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
@@ -112,6 +124,7 @@ public class WaitActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public WaitActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);
@@ -121,6 +134,7 @@ public class WaitActivity extends ControlActivity {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -155,6 +169,7 @@ public class WaitActivity extends ControlActivity {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the WaitActivity.
      */
+    @Generated
     public static WaitActivity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             WaitActivity deserializedWaitActivity = new WaitActivity();

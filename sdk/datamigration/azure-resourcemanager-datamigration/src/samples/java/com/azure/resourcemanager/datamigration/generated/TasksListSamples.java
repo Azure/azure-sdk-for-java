@@ -10,7 +10,8 @@ package com.azure.resourcemanager.datamigration.generated;
 public final class TasksListSamples {
     /*
      * x-ms-original-file:
-     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_List.json
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/DataMigration/stable/2025-06-30/examples/
+     * Tasks_List.json
      */
     /**
      * Sample code: Tasks_List.

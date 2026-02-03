@@ -9,6 +9,7 @@ import static com.azure.spring.cloud.appconfiguration.config.web.implementation.
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
+import org.springframework.lang.NonNull;
 import org.springframework.web.context.support.ServletRequestHandledEvent;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
@@ -16,6 +17,7 @@ import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 /**
  * Listens for ServletRequestHandledEvents to check if the configurations need to be updated.
  */
+@SuppressWarnings("deprecation")
 public final class AppConfigurationEventListener implements ApplicationListener<ServletRequestHandledEvent> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationEventListener.class);
@@ -32,11 +34,11 @@ public final class AppConfigurationEventListener implements ApplicationListener<
     }
 
     @Override
-    public void onApplicationEvent(ServletRequestHandledEvent event) {
+    public void onApplicationEvent(@NonNull ServletRequestHandledEvent event) {
         try {
             if (!(event.getRequestUrl().equals(ACTUATOR + APPCONFIGURATION_REFRESH)
                 || event.getRequestUrl().equals(ACTUATOR + APPCONFIGURATION_REFRESH_BUS))) {
-                appConfigurationRefresh.refreshConfigurations();
+                appConfigurationRefresh.refreshConfigurations().subscribe();
             }
         } catch (Exception e) {
             LOGGER.error("Refresh failed with unexpected exception.", e);

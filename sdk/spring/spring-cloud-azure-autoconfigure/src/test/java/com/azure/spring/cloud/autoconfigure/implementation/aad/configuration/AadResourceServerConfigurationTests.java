@@ -9,9 +9,9 @@ import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPr
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
+import org.springframework.boot.http.converter.autoconfigure.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener;
-import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
+import org.springframework.boot.restclient.autoconfigure.RestTemplateAutoConfiguration;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -187,12 +187,13 @@ class AadResourceServerConfigurationTests {
 
         private HttpSecurity savedResourceServerHttpSecurity;
 
-        @SuppressWarnings({"deprecation", "removal"})
         @Bean
         SecurityFilterChain testAadResourceServerFilterChain(HttpSecurity http,
                                                              TestJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter) throws Exception {
-            http.apply(aadResourceServer()
-                    .jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter));
+
+            http.with(aadResourceServer(), customizer ->
+                customizer.jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter)
+            );
             savedResourceServerHttpSecurity = http;
             return http.build();
         }

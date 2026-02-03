@@ -6,13 +6,14 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationAccessPolicyContract;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -21,24 +22,26 @@ public final class AuthorizationAccessPoliciesCreateOrUpdateWithResponseMockTest
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"jmaih\",\"objectId\":\"nlbhxjppcbqetfz\"},\"id\":\"ppvolzayjw\",\"name\":\"unj\",\"type\":\"mprklatwiuujxsuj\"}";
+            = "{\"properties\":{\"appIds\":[\"akajwscmneevl\",\"mqeumzyyhmgqa\"],\"tenantId\":\"vjqutxrbgbzgfhzd\",\"objectId\":\"hk\"},\"id\":\"xvcbicfecthotbk\",\"name\":\"whz\",\"type\":\"pxjvtwk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         AuthorizationAccessPolicyContract response = manager.authorizationAccessPolicies()
-            .define("gsbtwgnldxu")
-            .withExistingAuthorization("wcbrds", "potnpkbvzpkod", "gv", "qd")
-            .withTenantId("hvb")
-            .withObjectId("cznrirpiiuvcqo")
-            .withIfMatch("jlamyv")
+            .define("uljgxotu")
+            .withExistingAuthorization("tfcbrtsrdplqdyza", "iasfzrguz", "iyvsbfsi", "vabd")
+            .withAppIds(Arrays.asList("i", "a", "st", "ulzugifgspxl"))
+            .withTenantId("nocscygimizl")
+            .withObjectId("jbwmgksrlmsppp")
+            .withIfMatch("oexb")
             .create();
 
-        Assertions.assertEquals("jmaih", response.tenantId());
-        Assertions.assertEquals("nlbhxjppcbqetfz", response.objectId());
+        Assertions.assertEquals("akajwscmneevl", response.appIds().get(0));
+        Assertions.assertEquals("vjqutxrbgbzgfhzd", response.tenantId());
+        Assertions.assertEquals("hk", response.objectId());
     }
 }

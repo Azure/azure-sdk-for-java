@@ -12,27 +12,27 @@ public final class DataStoreTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataStore model = BinaryData.fromString(
-            "{\"symbolicName\":\"ogfuyzwvbhlim\",\"uuid\":\"qecroodl\",\"capacity\":\"cdrdaasaxxo\",\"freeSpace\":\"mfkwiyjvzuk\",\"type\":\"r\"}")
+            "{\"symbolicName\":\"lr\",\"uuid\":\"myltrwntfmtbg\",\"capacity\":\"dxwnazkurrd\",\"freeSpace\":\"yzjwhsetwwjwzzq\",\"type\":\"uzu\"}")
             .toObject(DataStore.class);
-        Assertions.assertEquals("ogfuyzwvbhlim", model.symbolicName());
-        Assertions.assertEquals("qecroodl", model.uuid());
-        Assertions.assertEquals("cdrdaasaxxo", model.capacity());
-        Assertions.assertEquals("mfkwiyjvzuk", model.freeSpace());
-        Assertions.assertEquals("r", model.type());
+        Assertions.assertEquals("lr", model.symbolicName());
+        Assertions.assertEquals("myltrwntfmtbg", model.uuid());
+        Assertions.assertEquals("dxwnazkurrd", model.capacity());
+        Assertions.assertEquals("yzjwhsetwwjwzzq", model.freeSpace());
+        Assertions.assertEquals("uzu", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataStore model = new DataStore().withSymbolicName("ogfuyzwvbhlim")
-            .withUuid("qecroodl")
-            .withCapacity("cdrdaasaxxo")
-            .withFreeSpace("mfkwiyjvzuk")
-            .withType("r");
+        DataStore model = new DataStore().withSymbolicName("lr")
+            .withUuid("myltrwntfmtbg")
+            .withCapacity("dxwnazkurrd")
+            .withFreeSpace("yzjwhsetwwjwzzq")
+            .withType("uzu");
         model = BinaryData.fromObject(model).toObject(DataStore.class);
-        Assertions.assertEquals("ogfuyzwvbhlim", model.symbolicName());
-        Assertions.assertEquals("qecroodl", model.uuid());
-        Assertions.assertEquals("cdrdaasaxxo", model.capacity());
-        Assertions.assertEquals("mfkwiyjvzuk", model.freeSpace());
-        Assertions.assertEquals("r", model.type());
+        Assertions.assertEquals("lr", model.symbolicName());
+        Assertions.assertEquals("myltrwntfmtbg", model.uuid());
+        Assertions.assertEquals("dxwnazkurrd", model.capacity());
+        Assertions.assertEquals("yzjwhsetwwjwzzq", model.freeSpace());
+        Assertions.assertEquals("uzu", model.type());
     }
 }

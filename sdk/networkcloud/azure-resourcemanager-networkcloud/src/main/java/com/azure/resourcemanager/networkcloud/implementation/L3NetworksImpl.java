@@ -34,8 +34,8 @@ public final class L3NetworksImpl implements L3Networks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<L3Network> list(Context context) {
-        PagedIterable<L3NetworkInner> inner = this.serviceClient().list(context);
+    public PagedIterable<L3Network> list(Integer top, String skipToken, Context context) {
+        PagedIterable<L3NetworkInner> inner = this.serviceClient().list(top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 
@@ -44,8 +44,10 @@ public final class L3NetworksImpl implements L3Networks {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<L3Network> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<L3NetworkInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+    public PagedIterable<L3Network> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<L3NetworkInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, skipToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 
@@ -79,8 +81,10 @@ public final class L3NetworksImpl implements L3Networks {
         }
     }
 
-    public OperationStatusResult delete(String resourceGroupName, String l3NetworkName, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, l3NetworkName, context);
+    public OperationStatusResult delete(String resourceGroupName, String l3NetworkName, String ifMatch,
+        String ifNoneMatch, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -127,10 +131,13 @@ public final class L3NetworksImpl implements L3Networks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
         }
-        return this.delete(resourceGroupName, l3NetworkName, Context.NONE);
+        String localIfMatch = null;
+        String localIfNoneMatch = null;
+        return this.delete(resourceGroupName, l3NetworkName, localIfMatch, localIfNoneMatch, Context.NONE);
     }
 
-    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+    public OperationStatusResult deleteByIdWithResponse(String id, String ifMatch, String ifNoneMatch,
+        Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -141,7 +148,7 @@ public final class L3NetworksImpl implements L3Networks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
         }
-        return this.delete(resourceGroupName, l3NetworkName, context);
+        return this.delete(resourceGroupName, l3NetworkName, ifMatch, ifNoneMatch, context);
     }
 
     private L3NetworksClient serviceClient() {

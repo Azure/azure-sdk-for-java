@@ -13,16 +13,18 @@ public final class RemediationFiltersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RemediationFilters model
-            = BinaryData.fromString("{\"locations\":[\"zafb\",\"jjgpb\",\"oq\",\"jmkljavbqidtqajz\"]}")
+            = BinaryData.fromString("{\"locations\":[\"nb\"],\"resourceIds\":[\"abnmocpcyshu\",\"zafb\"]}")
                 .toObject(RemediationFilters.class);
-        Assertions.assertEquals("zafb", model.locations().get(0));
+        Assertions.assertEquals("nb", model.locations().get(0));
+        Assertions.assertEquals("abnmocpcyshu", model.resourceIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RemediationFilters model
-            = new RemediationFilters().withLocations(Arrays.asList("zafb", "jjgpb", "oq", "jmkljavbqidtqajz"));
+        RemediationFilters model = new RemediationFilters().withLocations(Arrays.asList("nb"))
+            .withResourceIds(Arrays.asList("abnmocpcyshu", "zafb"));
         model = BinaryData.fromObject(model).toObject(RemediationFilters.class);
-        Assertions.assertEquals("zafb", model.locations().get(0));
+        Assertions.assertEquals("nb", model.locations().get(0));
+        Assertions.assertEquals("abnmocpcyshu", model.resourceIds().get(0));
     }
 }

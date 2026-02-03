@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,21 +22,25 @@ public class SapOdpResourceDataset extends Dataset {
     /*
      * Type of dataset.
      */
+    @Generated
     private String type = "SapOdpResource";
 
     /*
      * The context of the SAP ODP Object. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object context;
 
     /*
      * The name of the SAP ODP Object. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object objectName;
 
     /**
      * Creates an instance of SapOdpResourceDataset class.
      */
+    @Generated
     public SapOdpResourceDataset() {
     }
 
@@ -44,6 +49,7 @@ public class SapOdpResourceDataset extends Dataset {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -54,6 +60,7 @@ public class SapOdpResourceDataset extends Dataset {
      * 
      * @return the context value.
      */
+    @Generated
     public Object getContext() {
         return this.context;
     }
@@ -64,6 +71,7 @@ public class SapOdpResourceDataset extends Dataset {
      * @param context the context value to set.
      * @return the SapOdpResourceDataset object itself.
      */
+    @Generated
     public SapOdpResourceDataset setContext(Object context) {
         this.context = context;
         return this;
@@ -74,6 +82,7 @@ public class SapOdpResourceDataset extends Dataset {
      * 
      * @return the objectName value.
      */
+    @Generated
     public Object getObjectName() {
         return this.objectName;
     }
@@ -84,6 +93,7 @@ public class SapOdpResourceDataset extends Dataset {
      * @param objectName the objectName value to set.
      * @return the SapOdpResourceDataset object itself.
      */
+    @Generated
     public SapOdpResourceDataset setObjectName(Object objectName) {
         this.objectName = objectName;
         return this;
@@ -92,6 +102,7 @@ public class SapOdpResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpResourceDataset setDescription(String description) {
         super.setDescription(description);
@@ -101,6 +112,7 @@ public class SapOdpResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
@@ -110,6 +122,7 @@ public class SapOdpResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
@@ -119,6 +132,7 @@ public class SapOdpResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
@@ -128,6 +142,7 @@ public class SapOdpResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -137,6 +152,7 @@ public class SapOdpResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -146,6 +162,7 @@ public class SapOdpResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public SapOdpResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);
@@ -155,13 +172,18 @@ public class SapOdpResourceDataset extends Dataset {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("linkedServiceName", getLinkedServiceName());
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeUntypedField("structure", getStructure());
-        jsonWriter.writeUntypedField("schema", getSchema());
+        if (getStructure() != null) {
+            jsonWriter.writeUntypedField("structure", getStructure());
+        }
+        if (getSchema() != null) {
+            jsonWriter.writeUntypedField("schema", getSchema());
+        }
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("folder", getFolder());
@@ -189,6 +211,7 @@ public class SapOdpResourceDataset extends Dataset {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SapOdpResourceDataset.
      */
+    @Generated
     public static SapOdpResourceDataset fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             SapOdpResourceDataset deserializedSapOdpResourceDataset = new SapOdpResourceDataset();

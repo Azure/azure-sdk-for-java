@@ -4,6 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
@@ -17,51 +18,61 @@ public final class CassandraSourceReadConsistencyLevels
     /**
      * Static value ALL for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels ALL = fromString("ALL");
 
     /**
      * Static value EACH_QUORUM for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels EACH_QUORUM = fromString("EACH_QUORUM");
 
     /**
      * Static value QUORUM for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels QUORUM = fromString("QUORUM");
 
     /**
      * Static value LOCAL_QUORUM for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels LOCAL_QUORUM = fromString("LOCAL_QUORUM");
 
     /**
      * Static value ONE for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels ONE = fromString("ONE");
 
     /**
      * Static value TWO for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels TWO = fromString("TWO");
 
     /**
      * Static value THREE for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels THREE = fromString("THREE");
 
     /**
      * Static value LOCAL_ONE for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels LOCAL_ONE = fromString("LOCAL_ONE");
 
     /**
      * Static value SERIAL for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels SERIAL = fromString("SERIAL");
 
     /**
      * Static value LOCAL_SERIAL for CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static final CassandraSourceReadConsistencyLevels LOCAL_SERIAL = fromString("LOCAL_SERIAL");
 
     /**
@@ -69,6 +80,7 @@ public final class CassandraSourceReadConsistencyLevels
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
+    @Generated
     @Deprecated
     public CassandraSourceReadConsistencyLevels() {
     }
@@ -79,6 +91,7 @@ public final class CassandraSourceReadConsistencyLevels
      * @param name a name to look for.
      * @return the corresponding CassandraSourceReadConsistencyLevels.
      */
+    @Generated
     public static CassandraSourceReadConsistencyLevels fromString(String name) {
         return fromString(name, CassandraSourceReadConsistencyLevels.class);
     }
@@ -88,6 +101,7 @@ public final class CassandraSourceReadConsistencyLevels
      * 
      * @return known CassandraSourceReadConsistencyLevels values.
      */
+    @Generated
     public static Collection<CassandraSourceReadConsistencyLevels> values() {
         return values(CassandraSourceReadConsistencyLevels.class);
     }

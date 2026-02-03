@@ -12,33 +12,33 @@ public final class InMageAzureV2EventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2EventDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageAzureV2\",\"eventType\":\"fhaxttpf\",\"category\":\"wgsghqucumldd\",\"component\":\"qm\",\"correctiveAction\":\"feothxu\",\"details\":\"igrjdljlkqhvkrbz\",\"summary\":\"astax\",\"siteName\":\"pruulhg\"}")
+            "{\"instanceType\":\"InMageAzureV2\",\"eventType\":\"jgcf\",\"category\":\"xtbw\",\"component\":\"irmu\",\"correctiveAction\":\"gftt\",\"details\":\"ofgeoagf\",\"summary\":\"ftnxodwxmdajwiy\",\"siteName\":\"gsevmdm\"}")
             .toObject(InMageAzureV2EventDetails.class);
-        Assertions.assertEquals("fhaxttpf", model.eventType());
-        Assertions.assertEquals("wgsghqucumldd", model.category());
-        Assertions.assertEquals("qm", model.component());
-        Assertions.assertEquals("feothxu", model.correctiveAction());
-        Assertions.assertEquals("igrjdljlkqhvkrbz", model.details());
-        Assertions.assertEquals("astax", model.summary());
-        Assertions.assertEquals("pruulhg", model.siteName());
+        Assertions.assertEquals("jgcf", model.eventType());
+        Assertions.assertEquals("xtbw", model.category());
+        Assertions.assertEquals("irmu", model.component());
+        Assertions.assertEquals("gftt", model.correctiveAction());
+        Assertions.assertEquals("ofgeoagf", model.details());
+        Assertions.assertEquals("ftnxodwxmdajwiy", model.summary());
+        Assertions.assertEquals("gsevmdm", model.siteName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2EventDetails model = new InMageAzureV2EventDetails().withEventType("fhaxttpf")
-            .withCategory("wgsghqucumldd")
-            .withComponent("qm")
-            .withCorrectiveAction("feothxu")
-            .withDetails("igrjdljlkqhvkrbz")
-            .withSummary("astax")
-            .withSiteName("pruulhg");
+        InMageAzureV2EventDetails model = new InMageAzureV2EventDetails().withEventType("jgcf")
+            .withCategory("xtbw")
+            .withComponent("irmu")
+            .withCorrectiveAction("gftt")
+            .withDetails("ofgeoagf")
+            .withSummary("ftnxodwxmdajwiy")
+            .withSiteName("gsevmdm");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2EventDetails.class);
-        Assertions.assertEquals("fhaxttpf", model.eventType());
-        Assertions.assertEquals("wgsghqucumldd", model.category());
-        Assertions.assertEquals("qm", model.component());
-        Assertions.assertEquals("feothxu", model.correctiveAction());
-        Assertions.assertEquals("igrjdljlkqhvkrbz", model.details());
-        Assertions.assertEquals("astax", model.summary());
-        Assertions.assertEquals("pruulhg", model.siteName());
+        Assertions.assertEquals("jgcf", model.eventType());
+        Assertions.assertEquals("xtbw", model.category());
+        Assertions.assertEquals("irmu", model.component());
+        Assertions.assertEquals("gftt", model.correctiveAction());
+        Assertions.assertEquals("ofgeoagf", model.details());
+        Assertions.assertEquals("ftnxodwxmdajwiy", model.summary());
+        Assertions.assertEquals("gsevmdm", model.siteName());
     }
 }

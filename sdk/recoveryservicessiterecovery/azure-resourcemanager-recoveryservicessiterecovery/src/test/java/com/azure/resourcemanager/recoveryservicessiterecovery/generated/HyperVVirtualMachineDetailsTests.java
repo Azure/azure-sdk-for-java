@@ -16,69 +16,72 @@ public final class HyperVVirtualMachineDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HyperVVirtualMachineDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"HyperVVirtualMachine\",\"sourceItemId\":\"igglclwalhvub\",\"generation\":\"zphetxdqcm\",\"osDetails\":{\"osType\":\"ajqzj\",\"productType\":\"lecxbibiwks\",\"osEdition\":\"gyxs\",\"oSVersion\":\"pzvoikv\",\"oSMajorVersion\":\"wczfzwushlcx\",\"oSMinorVersion\":\"lalhhezpfkiss\"},\"diskDetails\":[{\"maxSizeMB\":8933439553335588786,\"vhdType\":\"aoq\",\"vhdId\":\"gpto\",\"vhdName\":\"jq\"},{\"maxSizeMB\":8153507398057204968,\"vhdType\":\"nlrtbfijzz\",\"vhdId\":\"o\",\"vhdName\":\"olbuauktwieope\"},{\"maxSizeMB\":6227229278544049294,\"vhdType\":\"dwrswyiljpi\",\"vhdId\":\"gxyxyauxredd\",\"vhdName\":\"mcnltmwytkujsqyc\"}],\"hasPhysicalDisk\":\"NotPresent\",\"hasFibreChannelAdapter\":\"Present\",\"hasSharedVhd\":\"Present\",\"hyperVHostId\":\"qgpwbmwhr\"}")
+            "{\"instanceType\":\"HyperVVirtualMachine\",\"sourceItemId\":\"rkkderfrswqikw\",\"generation\":\"w\",\"osDetails\":{\"osType\":\"gicwnxhtfmcqbs\",\"productType\":\"zp\",\"osEdition\":\"hzp\",\"oSVersion\":\"qumjdjxhzghgod\",\"oSMajorVersion\":\"nrceqavfdbdfmmx\",\"oSMinorVersion\":\"naj\",\"userSelectedOSName\":\"pjyyqmkwlhvc\"},\"diskDetails\":[{\"maxSizeMB\":7303763880942717315,\"vhdType\":\"kluxxrwzobuzmsxg\",\"vhdId\":\"tdtkwppthuz\",\"vhdName\":\"rmimrljdpoqfxyem\"},{\"maxSizeMB\":2513433009868353955,\"vhdType\":\"aew\",\"vhdId\":\"ec\",\"vhdName\":\"amfmxtllfl\"},{\"maxSizeMB\":1500411696037148636,\"vhdType\":\"nrrfijhggabqb\",\"vhdId\":\"mkli\",\"vhdName\":\"rwdvffhsdpzou\"}],\"hasPhysicalDisk\":\"Present\",\"hasFibreChannelAdapter\":\"Unknown\",\"hasSharedVhd\":\"Unknown\",\"hyperVHostId\":\"qnjxrdfddtul\"}")
             .toObject(HyperVVirtualMachineDetails.class);
-        Assertions.assertEquals("igglclwalhvub", model.sourceItemId());
-        Assertions.assertEquals("zphetxdqcm", model.generation());
-        Assertions.assertEquals("ajqzj", model.osDetails().osType());
-        Assertions.assertEquals("lecxbibiwks", model.osDetails().productType());
-        Assertions.assertEquals("gyxs", model.osDetails().osEdition());
-        Assertions.assertEquals("pzvoikv", model.osDetails().oSVersion());
-        Assertions.assertEquals("wczfzwushlcx", model.osDetails().oSMajorVersion());
-        Assertions.assertEquals("lalhhezpfkiss", model.osDetails().oSMinorVersion());
-        Assertions.assertEquals(8933439553335588786L, model.diskDetails().get(0).maxSizeMB());
-        Assertions.assertEquals("aoq", model.diskDetails().get(0).vhdType());
-        Assertions.assertEquals("gpto", model.diskDetails().get(0).vhdId());
-        Assertions.assertEquals("jq", model.diskDetails().get(0).vhdName());
-        Assertions.assertEquals(PresenceStatus.NOT_PRESENT, model.hasPhysicalDisk());
-        Assertions.assertEquals(PresenceStatus.PRESENT, model.hasFibreChannelAdapter());
-        Assertions.assertEquals(PresenceStatus.PRESENT, model.hasSharedVhd());
-        Assertions.assertEquals("qgpwbmwhr", model.hyperVHostId());
+        Assertions.assertEquals("rkkderfrswqikw", model.sourceItemId());
+        Assertions.assertEquals("w", model.generation());
+        Assertions.assertEquals("gicwnxhtfmcqbs", model.osDetails().osType());
+        Assertions.assertEquals("zp", model.osDetails().productType());
+        Assertions.assertEquals("hzp", model.osDetails().osEdition());
+        Assertions.assertEquals("qumjdjxhzghgod", model.osDetails().oSVersion());
+        Assertions.assertEquals("nrceqavfdbdfmmx", model.osDetails().oSMajorVersion());
+        Assertions.assertEquals("naj", model.osDetails().oSMinorVersion());
+        Assertions.assertEquals("pjyyqmkwlhvc", model.osDetails().userSelectedOSName());
+        Assertions.assertEquals(7303763880942717315L, model.diskDetails().get(0).maxSizeMB());
+        Assertions.assertEquals("kluxxrwzobuzmsxg", model.diskDetails().get(0).vhdType());
+        Assertions.assertEquals("tdtkwppthuz", model.diskDetails().get(0).vhdId());
+        Assertions.assertEquals("rmimrljdpoqfxyem", model.diskDetails().get(0).vhdName());
+        Assertions.assertEquals(PresenceStatus.PRESENT, model.hasPhysicalDisk());
+        Assertions.assertEquals(PresenceStatus.UNKNOWN, model.hasFibreChannelAdapter());
+        Assertions.assertEquals(PresenceStatus.UNKNOWN, model.hasSharedVhd());
+        Assertions.assertEquals("qnjxrdfddtul", model.hyperVHostId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVVirtualMachineDetails model = new HyperVVirtualMachineDetails().withSourceItemId("igglclwalhvub")
-            .withGeneration("zphetxdqcm")
-            .withOsDetails(new OSDetails().withOsType("ajqzj")
-                .withProductType("lecxbibiwks")
-                .withOsEdition("gyxs")
-                .withOSVersion("pzvoikv")
-                .withOSMajorVersion("wczfzwushlcx")
-                .withOSMinorVersion("lalhhezpfkiss"))
+        HyperVVirtualMachineDetails model = new HyperVVirtualMachineDetails().withSourceItemId("rkkderfrswqikw")
+            .withGeneration("w")
+            .withOsDetails(new OSDetails().withOsType("gicwnxhtfmcqbs")
+                .withProductType("zp")
+                .withOsEdition("hzp")
+                .withOSVersion("qumjdjxhzghgod")
+                .withOSMajorVersion("nrceqavfdbdfmmx")
+                .withOSMinorVersion("naj")
+                .withUserSelectedOSName("pjyyqmkwlhvc"))
             .withDiskDetails(Arrays.asList(
-                new DiskDetails().withMaxSizeMB(8933439553335588786L)
-                    .withVhdType("aoq")
-                    .withVhdId("gpto")
-                    .withVhdName("jq"),
-                new DiskDetails().withMaxSizeMB(8153507398057204968L)
-                    .withVhdType("nlrtbfijzz")
-                    .withVhdId("o")
-                    .withVhdName("olbuauktwieope"),
-                new DiskDetails().withMaxSizeMB(6227229278544049294L)
-                    .withVhdType("dwrswyiljpi")
-                    .withVhdId("gxyxyauxredd")
-                    .withVhdName("mcnltmwytkujsqyc")))
-            .withHasPhysicalDisk(PresenceStatus.NOT_PRESENT)
-            .withHasFibreChannelAdapter(PresenceStatus.PRESENT)
-            .withHasSharedVhd(PresenceStatus.PRESENT)
-            .withHyperVHostId("qgpwbmwhr");
+                new DiskDetails().withMaxSizeMB(7303763880942717315L)
+                    .withVhdType("kluxxrwzobuzmsxg")
+                    .withVhdId("tdtkwppthuz")
+                    .withVhdName("rmimrljdpoqfxyem"),
+                new DiskDetails().withMaxSizeMB(2513433009868353955L)
+                    .withVhdType("aew")
+                    .withVhdId("ec")
+                    .withVhdName("amfmxtllfl"),
+                new DiskDetails().withMaxSizeMB(1500411696037148636L)
+                    .withVhdType("nrrfijhggabqb")
+                    .withVhdId("mkli")
+                    .withVhdName("rwdvffhsdpzou")))
+            .withHasPhysicalDisk(PresenceStatus.PRESENT)
+            .withHasFibreChannelAdapter(PresenceStatus.UNKNOWN)
+            .withHasSharedVhd(PresenceStatus.UNKNOWN)
+            .withHyperVHostId("qnjxrdfddtul");
         model = BinaryData.fromObject(model).toObject(HyperVVirtualMachineDetails.class);
-        Assertions.assertEquals("igglclwalhvub", model.sourceItemId());
-        Assertions.assertEquals("zphetxdqcm", model.generation());
-        Assertions.assertEquals("ajqzj", model.osDetails().osType());
-        Assertions.assertEquals("lecxbibiwks", model.osDetails().productType());
-        Assertions.assertEquals("gyxs", model.osDetails().osEdition());
-        Assertions.assertEquals("pzvoikv", model.osDetails().oSVersion());
-        Assertions.assertEquals("wczfzwushlcx", model.osDetails().oSMajorVersion());
-        Assertions.assertEquals("lalhhezpfkiss", model.osDetails().oSMinorVersion());
-        Assertions.assertEquals(8933439553335588786L, model.diskDetails().get(0).maxSizeMB());
-        Assertions.assertEquals("aoq", model.diskDetails().get(0).vhdType());
-        Assertions.assertEquals("gpto", model.diskDetails().get(0).vhdId());
-        Assertions.assertEquals("jq", model.diskDetails().get(0).vhdName());
-        Assertions.assertEquals(PresenceStatus.NOT_PRESENT, model.hasPhysicalDisk());
-        Assertions.assertEquals(PresenceStatus.PRESENT, model.hasFibreChannelAdapter());
-        Assertions.assertEquals(PresenceStatus.PRESENT, model.hasSharedVhd());
-        Assertions.assertEquals("qgpwbmwhr", model.hyperVHostId());
+        Assertions.assertEquals("rkkderfrswqikw", model.sourceItemId());
+        Assertions.assertEquals("w", model.generation());
+        Assertions.assertEquals("gicwnxhtfmcqbs", model.osDetails().osType());
+        Assertions.assertEquals("zp", model.osDetails().productType());
+        Assertions.assertEquals("hzp", model.osDetails().osEdition());
+        Assertions.assertEquals("qumjdjxhzghgod", model.osDetails().oSVersion());
+        Assertions.assertEquals("nrceqavfdbdfmmx", model.osDetails().oSMajorVersion());
+        Assertions.assertEquals("naj", model.osDetails().oSMinorVersion());
+        Assertions.assertEquals("pjyyqmkwlhvc", model.osDetails().userSelectedOSName());
+        Assertions.assertEquals(7303763880942717315L, model.diskDetails().get(0).maxSizeMB());
+        Assertions.assertEquals("kluxxrwzobuzmsxg", model.diskDetails().get(0).vhdType());
+        Assertions.assertEquals("tdtkwppthuz", model.diskDetails().get(0).vhdId());
+        Assertions.assertEquals("rmimrljdpoqfxyem", model.diskDetails().get(0).vhdName());
+        Assertions.assertEquals(PresenceStatus.PRESENT, model.hasPhysicalDisk());
+        Assertions.assertEquals(PresenceStatus.UNKNOWN, model.hasFibreChannelAdapter());
+        Assertions.assertEquals(PresenceStatus.UNKNOWN, model.hasSharedVhd());
+        Assertions.assertEquals("qnjxrdfddtul", model.hyperVHostId());
     }
 }

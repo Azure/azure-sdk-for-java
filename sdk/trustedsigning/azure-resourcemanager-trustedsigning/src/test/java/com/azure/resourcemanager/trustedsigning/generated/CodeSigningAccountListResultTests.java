@@ -13,11 +13,11 @@ public final class CodeSigningAccountListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CodeSigningAccountListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"accountUri\":\"vmkjozkrwfndiodj\",\"sku\":{\"name\":\"Basic\"},\"provisioningState\":\"Succeeded\"},\"location\":\"dpvwryoqpsoaccta\",\"tags\":{\"dfdosygexp\":\"ljlahbcryf\",\"dphlxaolt\":\"ojakhmsbzjhcrze\"},\"id\":\"qtrgqjbpfzfsinzg\",\"name\":\"f\",\"type\":\"jrwzox\"}],\"nextLink\":\"tfell\"}")
+            "{\"value\":[{\"properties\":{\"accountUri\":\"ozkrwfndiodjpslw\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Updating\"},\"location\":\"ryo\",\"tags\":{\"ljlahbcryf\":\"oacctaza\",\"ojakhmsbzjhcrze\":\"dfdosygexp\",\"qtrgqjbpfzfsinzg\":\"dphlxaolt\"},\"id\":\"f\",\"name\":\"jrwzox\",\"type\":\"j\"},{\"properties\":{\"accountUri\":\"lluwfzitonpeq\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Canceled\"},\"location\":\"xofpdvhpfxxypi\",\"tags\":{\"inuvamiheogn\":\"mayhuybbkpodepoo\",\"usivye\":\"rxzxtheo\",\"nfygxgispemvtz\":\"cciqihnhungbwjz\"},\"id\":\"kufubljo\",\"name\":\"xqeofjaeqjhqjba\",\"type\":\"v\"},{\"properties\":{\"accountUri\":\"jqul\",\"sku\":{\"name\":\"Premium\"},\"provisioningState\":\"Accepted\"},\"location\":\"bybkzgcwrwclxx\",\"tags\":{\"cqvkocrcjdkwtn\":\"jdous\",\"gls\":\"xbnjbiksq\"},\"id\":\"ainqpjwnzlljfm\",\"name\":\"pee\",\"type\":\"vmgxsab\"}],\"nextLink\":\"qduujitcjczdz\"}")
             .toObject(CodeSigningAccountListResult.class);
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.value().get(0).location());
-        Assertions.assertEquals("ljlahbcryf", model.value().get(0).tags().get("dfdosygexp"));
-        Assertions.assertEquals(SkuName.BASIC, model.value().get(0).properties().sku().name());
-        Assertions.assertEquals("tfell", model.nextLink());
+        Assertions.assertEquals("ryo", model.value().get(0).location());
+        Assertions.assertEquals("oacctaza", model.value().get(0).tags().get("ljlahbcryf"));
+        Assertions.assertEquals(SkuName.PREMIUM, model.value().get(0).properties().sku().name());
+        Assertions.assertEquals("qduujitcjczdz", model.nextLink());
     }
 }

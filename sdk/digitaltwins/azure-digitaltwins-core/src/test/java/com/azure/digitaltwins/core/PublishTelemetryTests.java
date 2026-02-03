@@ -10,6 +10,7 @@ import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,8 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void publishTelemetryLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void publishTelemetryLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion)
+        throws IOException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         String wifiModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.WIFI_MODEL_ID_PREFIX, client,
@@ -66,7 +68,7 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase {
     }
 
     private void createModelsAndTwins(DigitalTwinsClient client, String wifiModelId, String roomWithWifiModelId,
-        String roomWithWifiTwinId) {
+        String roomWithWifiTwinId) throws IOException {
         String wifiModelPayload = TestAssetsHelper.getWifiModelPayload(wifiModelId);
         String roomWithWifiModelPayload = TestAssetsHelper.getRoomWithWifiModelPayload(roomWithWifiModelId, wifiModelId,
             TestAssetDefaults.WIFI_COMPONENT_NAME);
@@ -76,6 +78,7 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase {
         String roomWithWifiTwinPayload
             = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
-        client.createOrReplaceDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class);
+        client.createOrReplaceDigitalTwin(roomWithWifiTwinId,
+            deserializeJsonString(roomWithWifiTwinPayload, BasicDigitalTwin::fromJson), BasicDigitalTwin.class);
     }
 }

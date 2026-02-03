@@ -26,7 +26,6 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -168,14 +167,13 @@ public class StoreReader {
                                 BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
                             } catch (Exception e) {
-                                // RxJava1 doesn't allow throwing checked exception from Observable operators
+                                // Reactor doesn't allow throwing checked exception from flatMap operators
                                 return Flux.error(e);
                             }
                         }
                 ).onErrorResume(t -> {
                     Throwable unwrappedException = Exceptions.unwrap(t);
                     try {
-                        logger.debug("Exception is thrown while doing readMany: ", unwrappedException);
                         Exception storeException = Utils.as(unwrappedException, Exception.class);
                         if (storeException == null) {
                             return Flux.error(unwrappedException);
@@ -197,7 +195,6 @@ public class StoreReader {
                         }
                         return Flux.just(storeResult);
                     } catch (Exception e) {
-                        // RxJava1 doesn't allow throwing checked exception from Observable operators
                         return Flux.error(e);
                     }
                 });
@@ -280,6 +277,36 @@ public class StoreReader {
             return Mono.error(e);
         }).map(newStoreResults -> {
             for (StoreResult srr : newStoreResults) {
+
+                if (srr.isAvoidQuorumSelectionException) {
+
+                    // isAvoidQuorumSelectionException is a special case where we want to enable the enclosing data plane operation
+                    // to fail fast in the region where a quorum selection is being attempted
+                    // no attempts to reselect quorum will be made
+                    if (logger.isDebugEnabled()) {
+
+                        int statusCode = srr.getException() != null ? srr.getException().getStatusCode() : 0;
+                        int subStatusCode = srr.getException() != null ? srr.getException().getSubStatusCode() : 0;
+
+                        logger.debug("An exception with error code [{}-{}] was observed which means quorum cannot be attained in the current region!", statusCode, subStatusCode);
+                    }
+
+                    if (!entity.requestContext.performedBackgroundAddressRefresh) {
+                        this.startBackgroundAddressRefresh(entity);
+                        entity.requestContext.performedBackgroundAddressRefresh = true;
+                    }
+
+                    // (collect quorum store results if possible)
+                    // for QuorumReader (upstream) to make the final decision on quorum selection
+                    resultCollector.add(srr);
+
+                    // Remaining replicas
+                    replicasToRead.set(replicaCountToRead - resultCollector.size());
+
+                    // continue to the next store result
+                    continue;
+                }
+
                 if (srr.isValid) {
 
                     try {
@@ -371,7 +398,7 @@ public class StoreReader {
                              responseResult.size(),
                              replicaCountToRead,
                              resolvedAddressCount,
-                             String.join(";", responseResult.stream().map(r -> r.toString()).collect(Collectors.toList())));
+                             responseResult.stream().map(Object::toString).collect(Collectors.joining(";")));
             }
 
             if (hasGoneException) {
@@ -544,14 +571,10 @@ public class StoreReader {
                     }
                 }
         ).flatMap(readQuorumResult -> {
+            // Reactor doesn't allow throwing Typed Exception from Map.flatMap(.).
 
-            // RxJava1 doesn't allow throwing Typed Exception from Observable.map(.)
-            // this is a design flaw which was fixed in RxJava2.
-
-            // as our core is built on top of RxJava1 here we had to use Observable.flatMap(.) not map(.)
-            // once we switch to RxJava2 we can move to Observable.map(.)
-            // https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#functional-interfaces
-            if (readQuorumResult.responses.size() == 0) {
+            // as our core is built on top of Reactor here we had to use Mono.flatMap(.) not map(.)
+            if (readQuorumResult.responses.isEmpty()) {
                 return Mono.error(new GoneException(RMResources.Gone,
                     HttpConstants.SubStatusCodes.NO_VALID_STORE_RESPONSE));
             }
@@ -615,7 +638,7 @@ public class StoreReader {
                                     try {
                                         StoreResult storeResult = this.createAndRecordStoreResult(
                                             entity,
-                                            storeResponse != null ? storeResponse : null,
+                                            storeResponse,
                                             null,
                                             requiresValidLsn,
                                             true,
@@ -631,7 +654,7 @@ public class StoreReader {
                         );
 
                     } catch (CosmosException e) {
-                        // RxJava1 doesn't allow throwing checked exception from Observable:map
+                        // Reactor doesn't allow throwing checked exception from Mono.flatMap
                         return Mono.error(e);
                     }
 
@@ -654,9 +677,18 @@ public class StoreReader {
                         true,
                         primaryUriReference.get(),
                         replicaStatusList);
+
+                if (storeTaskException instanceof CosmosException) {
+                    CosmosException cosmosException = (CosmosException) storeTaskException;
+
+                    if (com.azure.cosmos.implementation.Exceptions.isAvoidQuorumSelectionException(cosmosException)) {
+                        return Mono.error(cosmosException);
+                    }
+                }
+
                 return Mono.just(storeResult);
             } catch (CosmosException e) {
-                // RxJava1 doesn't allow throwing checked exception from Observable operators
+                // Reactor doesn't allow throwing checked exception from Mono operators
                 return Mono.error(e);
             }
         })
@@ -991,7 +1023,7 @@ public class StoreReader {
                 }
 
                 return new StoreResult(
-                        /* storeResponse: */     (StoreResponse) null,
+                        /* storeResponse: */ null,
                         /* exception: */ cosmosException,
                         /* partitionKeyRangeId: */BridgeInternal.getPartitionKeyRangeId(cosmosException),
                         /* lsn: */ lsn,
@@ -1024,7 +1056,7 @@ public class StoreReader {
                                             com.azure.cosmos.implementation.Exceptions.getInternalServerErrorMessage(errorMessage),
                                             responseException,
                                             HttpConstants.SubStatusCodes.INVALID_RESULT),
-                        /* partitionKeyRangeId: */ (String) null,
+                        /* partitionKeyRangeId: */ null,
                         /* lsn: */ -1,
                         /* quorumAckedLsn: */ -1,
                         /* getRequestCharge: */ 0,
@@ -1081,8 +1113,6 @@ public class StoreReader {
         if (result != null && result == 1) {
             throw ex;
         }
-
-        return;
     }
 
     private static class ReadReplicaResult {

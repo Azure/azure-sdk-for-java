@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -13,23 +14,38 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A copy activity Azure PostgreSQL sink.
+ * A copy activity Azure Database for PostgreSQL sink.
  */
 @Fluent
 public final class AzurePostgreSqlSink extends CopySink {
     /*
      * Copy sink type.
      */
+    @Generated
     private String type = "AzurePostgreSqlSink";
 
     /*
      * A query to execute before starting the copy. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object preCopyScript;
+
+    /*
+     * The write behavior for the operation. Default is Bulk Insert.
+     */
+    @Generated
+    private AzurePostgreSqlWriteMethodEnum writeMethod;
+
+    /*
+     * Azure Database for PostgreSQL upsert option settings
+     */
+    @Generated
+    private AzurePostgreSqlSinkUpsertSettings upsertSettings;
 
     /**
      * Creates an instance of AzurePostgreSqlSink class.
      */
+    @Generated
     public AzurePostgreSqlSink() {
     }
 
@@ -38,6 +54,7 @@ public final class AzurePostgreSqlSink extends CopySink {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -49,6 +66,7 @@ public final class AzurePostgreSqlSink extends CopySink {
      * 
      * @return the preCopyScript value.
      */
+    @Generated
     public Object getPreCopyScript() {
         return this.preCopyScript;
     }
@@ -60,14 +78,60 @@ public final class AzurePostgreSqlSink extends CopySink {
      * @param preCopyScript the preCopyScript value to set.
      * @return the AzurePostgreSqlSink object itself.
      */
+    @Generated
     public AzurePostgreSqlSink setPreCopyScript(Object preCopyScript) {
         this.preCopyScript = preCopyScript;
         return this;
     }
 
     /**
+     * Get the writeMethod property: The write behavior for the operation. Default is Bulk Insert.
+     * 
+     * @return the writeMethod value.
+     */
+    @Generated
+    public AzurePostgreSqlWriteMethodEnum getWriteMethod() {
+        return this.writeMethod;
+    }
+
+    /**
+     * Set the writeMethod property: The write behavior for the operation. Default is Bulk Insert.
+     * 
+     * @param writeMethod the writeMethod value to set.
+     * @return the AzurePostgreSqlSink object itself.
+     */
+    @Generated
+    public AzurePostgreSqlSink setWriteMethod(AzurePostgreSqlWriteMethodEnum writeMethod) {
+        this.writeMethod = writeMethod;
+        return this;
+    }
+
+    /**
+     * Get the upsertSettings property: Azure Database for PostgreSQL upsert option settings.
+     * 
+     * @return the upsertSettings value.
+     */
+    @Generated
+    public AzurePostgreSqlSinkUpsertSettings getUpsertSettings() {
+        return this.upsertSettings;
+    }
+
+    /**
+     * Set the upsertSettings property: Azure Database for PostgreSQL upsert option settings.
+     * 
+     * @param upsertSettings the upsertSettings value to set.
+     * @return the AzurePostgreSqlSink object itself.
+     */
+    @Generated
+    public AzurePostgreSqlSink setUpsertSettings(AzurePostgreSqlSinkUpsertSettings upsertSettings) {
+        this.upsertSettings = upsertSettings;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
@@ -77,6 +141,7 @@ public final class AzurePostgreSqlSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
@@ -86,6 +151,7 @@ public final class AzurePostgreSqlSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
@@ -95,6 +161,7 @@ public final class AzurePostgreSqlSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
@@ -104,6 +171,7 @@ public final class AzurePostgreSqlSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public AzurePostgreSqlSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
@@ -113,16 +181,31 @@ public final class AzurePostgreSqlSink extends CopySink {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
-        jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
-        jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
-        jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
-        jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        if (getWriteBatchSize() != null) {
+            jsonWriter.writeUntypedField("writeBatchSize", getWriteBatchSize());
+        }
+        if (getWriteBatchTimeout() != null) {
+            jsonWriter.writeUntypedField("writeBatchTimeout", getWriteBatchTimeout());
+        }
+        if (getSinkRetryCount() != null) {
+            jsonWriter.writeUntypedField("sinkRetryCount", getSinkRetryCount());
+        }
+        if (getSinkRetryWait() != null) {
+            jsonWriter.writeUntypedField("sinkRetryWait", getSinkRetryWait());
+        }
+        if (getMaxConcurrentConnections() != null) {
+            jsonWriter.writeUntypedField("maxConcurrentConnections", getMaxConcurrentConnections());
+        }
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        if (this.preCopyScript != null) {
+            jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        }
+        jsonWriter.writeStringField("writeMethod", this.writeMethod == null ? null : this.writeMethod.toString());
+        jsonWriter.writeJsonField("upsertSettings", this.upsertSettings);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -139,6 +222,7 @@ public final class AzurePostgreSqlSink extends CopySink {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzurePostgreSqlSink.
      */
+    @Generated
     public static AzurePostgreSqlSink fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             AzurePostgreSqlSink deserializedAzurePostgreSqlSink = new AzurePostgreSqlSink();
@@ -161,6 +245,11 @@ public final class AzurePostgreSqlSink extends CopySink {
                     deserializedAzurePostgreSqlSink.type = reader.getString();
                 } else if ("preCopyScript".equals(fieldName)) {
                     deserializedAzurePostgreSqlSink.preCopyScript = reader.readUntyped();
+                } else if ("writeMethod".equals(fieldName)) {
+                    deserializedAzurePostgreSqlSink.writeMethod
+                        = AzurePostgreSqlWriteMethodEnum.fromString(reader.getString());
+                } else if ("upsertSettings".equals(fieldName)) {
+                    deserializedAzurePostgreSqlSink.upsertSettings = AzurePostgreSqlSinkUpsertSettings.fromJson(reader);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

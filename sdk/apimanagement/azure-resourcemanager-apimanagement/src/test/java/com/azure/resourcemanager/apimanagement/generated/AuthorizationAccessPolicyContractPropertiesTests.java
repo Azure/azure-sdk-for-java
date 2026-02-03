@@ -6,24 +6,29 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationAccessPolicyContractProperties;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class AuthorizationAccessPolicyContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizationAccessPolicyContractProperties model
-            = BinaryData.fromString("{\"tenantId\":\"gucaif\",\"objectId\":\"urwwgilfjq\"}")
-                .toObject(AuthorizationAccessPolicyContractProperties.class);
-        Assertions.assertEquals("gucaif", model.tenantId());
-        Assertions.assertEquals("urwwgilfjq", model.objectId());
+        AuthorizationAccessPolicyContractProperties model = BinaryData.fromString(
+            "{\"appIds\":[\"akftng\",\"twmykyut\",\"ym\"],\"tenantId\":\"mfjhpycvjqdvdwkq\",\"objectId\":\"drlefgnaavuag\"}")
+            .toObject(AuthorizationAccessPolicyContractProperties.class);
+        Assertions.assertEquals("akftng", model.appIds().get(0));
+        Assertions.assertEquals("mfjhpycvjqdvdwkq", model.tenantId());
+        Assertions.assertEquals("drlefgnaavuag", model.objectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AuthorizationAccessPolicyContractProperties model
-            = new AuthorizationAccessPolicyContractProperties().withTenantId("gucaif").withObjectId("urwwgilfjq");
+            = new AuthorizationAccessPolicyContractProperties().withAppIds(Arrays.asList("akftng", "twmykyut", "ym"))
+                .withTenantId("mfjhpycvjqdvdwkq")
+                .withObjectId("drlefgnaavuag");
         model = BinaryData.fromObject(model).toObject(AuthorizationAccessPolicyContractProperties.class);
-        Assertions.assertEquals("gucaif", model.tenantId());
-        Assertions.assertEquals("urwwgilfjq", model.objectId());
+        Assertions.assertEquals("akftng", model.appIds().get(0));
+        Assertions.assertEquals("mfjhpycvjqdvdwkq", model.tenantId());
+        Assertions.assertEquals("drlefgnaavuag", model.objectId());
     }
 }

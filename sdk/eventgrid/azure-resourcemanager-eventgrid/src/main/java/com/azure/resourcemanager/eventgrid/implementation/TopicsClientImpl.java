@@ -29,8 +29,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.TopicsClient;
@@ -74,13 +76,22 @@ public final class TopicsClientImpl implements TopicsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "EventGridManagementC")
+    @ServiceInterface(name = "EventGridManagementClientTopics")
     public interface TopicsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TopicInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TopicInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -95,11 +106,30 @@ public final class TopicsClientImpl implements TopicsClient {
             @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TopicInner topicInfo,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TopicInner topicInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
+            @QueryParam("api-version") String apiVersion, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
             @QueryParam("api-version") String apiVersion, Context context);
@@ -116,10 +146,30 @@ public final class TopicsClientImpl implements TopicsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> updateSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TopicUpdateParameters topicUpdateParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topics")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TopicsListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TopicsListResult> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
@@ -135,6 +185,16 @@ public final class TopicsClientImpl implements TopicsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TopicsListResult> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/listKeys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -144,10 +204,30 @@ public final class TopicsClientImpl implements TopicsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/listKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TopicSharedAccessKeysInner> listSharedAccessKeysSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/regenerateKey")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> regenerateKey(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TopicRegenerateKeyRequest regenerateKeyRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}/regenerateKey")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<BinaryData> regenerateKeySync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("topicName") String topicName,
             @QueryParam("api-version") String apiVersion,
@@ -166,6 +246,17 @@ public final class TopicsClientImpl implements TopicsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerNamespace}/{resourceTypeName}/{resourceName}/providers/Microsoft.EventGrid/eventTypes")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<EventTypesListResult> listEventTypesSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("providerNamespace") String providerNamespace,
+            @PathParam("resourceTypeName") String resourceTypeName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -177,7 +268,23 @@ public final class TopicsClientImpl implements TopicsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TopicsListResult> listBySubscriptionNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TopicsListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<TopicsListResult> listByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -226,43 +333,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TopicInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String topicName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            topicName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a topic.
-     * 
-     * Get properties of a topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,7 +360,27 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicInner> getByResourceGroupWithResponse(String resourceGroupName, String topicName,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, topicName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, topicName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -361,38 +451,86 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param topicInfo Topic information.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic along with {@link Response} on successful completion of {@link Mono}.
+     * @return eventGrid Topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String topicName,
-        TopicInner topicInfo, Context context) {
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String topicName,
+        TopicInner topicInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
         }
         if (topicInfo == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicInfo is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicInfo is required and cannot be null."));
         } else {
             topicInfo.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            topicName, this.client.getApiVersion(), topicInfo, accept, Context.NONE);
+    }
+
+    /**
+     * Create a topic.
+     * 
+     * Asynchronously creates a new topic with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param topicInfo Topic information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return eventGrid Topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String topicName,
+        TopicInner topicInfo, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (topicInfo == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicInfo is required and cannot be null."));
+        } else {
+            topicInfo.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             topicName, this.client.getApiVersion(), topicInfo, accept, context);
     }
 
@@ -426,30 +564,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param topicInfo Topic information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of eventGrid Topic.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TopicInner>, TopicInner> beginCreateOrUpdateAsync(String resourceGroupName,
-        String topicName, TopicInner topicInfo, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateWithResponseAsync(resourceGroupName, topicName, topicInfo, context);
-        return this.client.<TopicInner, TopicInner>getLroResult(mono, this.client.getHttpPipeline(), TopicInner.class,
-            TopicInner.class, context);
-    }
-
-    /**
-     * Create a topic.
-     * 
-     * Asynchronously creates a new topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param topicInfo Topic information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -458,7 +572,9 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(String resourceGroupName,
         String topicName, TopicInner topicInfo) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, topicName, topicInfo).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, topicName, topicInfo);
+        return this.client.<TopicInner, TopicInner>getLroResult(response, TopicInner.class, TopicInner.class,
+            Context.NONE);
     }
 
     /**
@@ -478,7 +594,8 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginCreateOrUpdate(String resourceGroupName,
         String topicName, TopicInner topicInfo, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, topicName, topicInfo, context).getSyncPoller();
+        Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, topicName, topicInfo, context);
+        return this.client.<TopicInner, TopicInner>getLroResult(response, TopicInner.class, TopicInner.class, context);
     }
 
     /**
@@ -508,27 +625,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param topicInfo Topic information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return eventGrid Topic on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TopicInner> createOrUpdateAsync(String resourceGroupName, String topicName, TopicInner topicInfo,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, topicName, topicInfo, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create a topic.
-     * 
-     * Asynchronously creates a new topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param topicInfo Topic information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -536,7 +632,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner createOrUpdate(String resourceGroupName, String topicName, TopicInner topicInfo) {
-        return createOrUpdateAsync(resourceGroupName, topicName, topicInfo).block();
+        return beginCreateOrUpdate(resourceGroupName, topicName, topicInfo).getFinalResult();
     }
 
     /**
@@ -556,7 +652,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner createOrUpdate(String resourceGroupName, String topicName, TopicInner topicInfo,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, topicName, topicInfo, context).block();
+        return beginCreateOrUpdate(resourceGroupName, topicName, topicInfo, context).getFinalResult();
     }
 
     /**
@@ -601,33 +697,70 @@ public final class TopicsClientImpl implements TopicsClient {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String topicName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            topicName, this.client.getApiVersion(), Context.NONE);
+    }
+
+    /**
+     * Delete a topic.
+     * 
+     * Delete existing topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String topicName,
-        Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String topicName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
         }
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, topicName,
-            this.client.getApiVersion(), context);
+        return service.deleteSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            topicName, this.client.getApiVersion(), context);
     }
 
     /**
@@ -656,28 +789,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String topicName,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, topicName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Delete a topic.
-     * 
-     * Delete existing topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -685,7 +796,8 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName) {
-        return this.beginDeleteAsync(resourceGroupName, topicName).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, topicName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -703,7 +815,8 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, topicName, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, topicName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -730,32 +843,13 @@ public final class TopicsClientImpl implements TopicsClient {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String topicName, Context context) {
-        return beginDeleteAsync(resourceGroupName, topicName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Delete a topic.
-     * 
-     * Delete existing topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String topicName) {
-        deleteAsync(resourceGroupName, topicName).block();
+        beginDelete(resourceGroupName, topicName).getFinalResult();
     }
 
     /**
@@ -772,7 +866,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String topicName, Context context) {
-        deleteAsync(resourceGroupName, topicName, context).block();
+        beginDelete(resourceGroupName, topicName, context).getFinalResult();
     }
 
     /**
@@ -827,40 +921,87 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param topicUpdateParameters Topic update information.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String topicName,
-        TopicUpdateParameters topicUpdateParameters, Context context) {
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String topicName,
+        TopicUpdateParameters topicUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
         }
         if (topicUpdateParameters == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter topicUpdateParameters is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicUpdateParameters is required and cannot be null."));
         } else {
             topicUpdateParameters.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, topicName,
-            this.client.getApiVersion(), topicUpdateParameters, accept, context);
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            topicName, this.client.getApiVersion(), topicUpdateParameters, accept, Context.NONE);
+    }
+
+    /**
+     * Update a topic.
+     * 
+     * Asynchronously updates a topic with the specified parameters.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param topicUpdateParameters Topic update information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> updateWithResponse(String resourceGroupName, String topicName,
+        TopicUpdateParameters topicUpdateParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (topicUpdateParameters == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicUpdateParameters is required and cannot be null."));
+        } else {
+            topicUpdateParameters.validate();
+        }
+        final String accept = "application/json";
+        return service.updateSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            topicName, this.client.getApiVersion(), topicUpdateParameters, accept, context);
     }
 
     /**
@@ -893,30 +1034,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param topicUpdateParameters Topic update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TopicInner>, TopicInner> beginUpdateAsync(String resourceGroupName, String topicName,
-        TopicUpdateParameters topicUpdateParameters, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceGroupName, topicName, topicUpdateParameters, context);
-        return this.client.<TopicInner, TopicInner>getLroResult(mono, this.client.getHttpPipeline(), TopicInner.class,
-            TopicInner.class, context);
-    }
-
-    /**
-     * Update a topic.
-     * 
-     * Asynchronously updates a topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param topicUpdateParameters Topic update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -925,7 +1042,9 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(String resourceGroupName, String topicName,
         TopicUpdateParameters topicUpdateParameters) {
-        return this.beginUpdateAsync(resourceGroupName, topicName, topicUpdateParameters).getSyncPoller();
+        Response<BinaryData> response = updateWithResponse(resourceGroupName, topicName, topicUpdateParameters);
+        return this.client.<TopicInner, TopicInner>getLroResult(response, TopicInner.class, TopicInner.class,
+            Context.NONE);
     }
 
     /**
@@ -945,7 +1064,9 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicInner>, TopicInner> beginUpdate(String resourceGroupName, String topicName,
         TopicUpdateParameters topicUpdateParameters, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, topicName, topicUpdateParameters, context).getSyncPoller();
+        Response<BinaryData> response
+            = updateWithResponse(resourceGroupName, topicName, topicUpdateParameters, context);
+        return this.client.<TopicInner, TopicInner>getLroResult(response, TopicInner.class, TopicInner.class, context);
     }
 
     /**
@@ -976,27 +1097,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param topicUpdateParameters Topic update information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TopicInner> updateAsync(String resourceGroupName, String topicName,
-        TopicUpdateParameters topicUpdateParameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, topicName, topicUpdateParameters, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update a topic.
-     * 
-     * Asynchronously updates a topic with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param topicUpdateParameters Topic update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1004,7 +1104,7 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner update(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters) {
-        return updateAsync(resourceGroupName, topicName, topicUpdateParameters).block();
+        return beginUpdate(resourceGroupName, topicName, topicUpdateParameters).getFinalResult();
     }
 
     /**
@@ -1024,7 +1124,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicInner update(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters,
         Context context) {
-        return updateAsync(resourceGroupName, topicName, topicUpdateParameters, context).block();
+        return beginUpdate(resourceGroupName, topicName, topicUpdateParameters, context).getFinalResult();
     }
 
     /**
@@ -1062,44 +1162,6 @@ public final class TopicsClientImpl implements TopicsClient {
             .<PagedResponse<TopicInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List topics under an Azure subscription.
-     * 
-     * List all the topics under an Azure subscription.
-     * 
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TopicInner>> listSinglePageAsync(String filter, Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top,
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1154,16 +1216,65 @@ public final class TopicsClientImpl implements TopicsClient {
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List Topics operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TopicInner> listSinglePage(String filter, Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TopicsListResult> res = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), filter, top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List topics under an Azure subscription.
+     * 
+     * List all the topics under an Azure subscription.
+     * 
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation as paginated response with {@link PagedFlux}.
+     * @return result of the List Topics operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TopicInner> listAsync(String filter, Integer top, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TopicInner> listSinglePage(String filter, Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TopicsListResult> res = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), filter, top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1179,7 +1290,8 @@ public final class TopicsClientImpl implements TopicsClient {
     public PagedIterable<TopicInner> list() {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(listAsync(filter, top));
+        return new PagedIterable<>(() -> listSinglePage(filter, top),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -1202,7 +1314,8 @@ public final class TopicsClientImpl implements TopicsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> list(String filter, Integer top, Context context) {
-        return new PagedIterable<>(listAsync(filter, top, context));
+        return new PagedIterable<>(() -> listSinglePage(filter, top, context),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1262,50 +1375,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TopicInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, String filter,
-        Integer top, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                this.client.getApiVersion(), filter, top, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List topics under a resource group.
-     * 
-     * List all the topics under a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
-     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
-     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
-     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
-     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1349,17 +1418,78 @@ public final class TopicsClientImpl implements TopicsClient {
      * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
      * 100. If not specified, the default number of results to be returned is 20 items per page.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List Topics operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TopicInner> listByResourceGroupSinglePage(String resourceGroupName, String filter,
+        Integer top) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TopicsListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), filter, top, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List topics under a resource group.
+     * 
+     * List all the topics under a resource group.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
+     * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation as paginated response with {@link PagedFlux}.
+     * @return result of the List Topics operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TopicInner> listByResourceGroupAsync(String resourceGroupName, String filter, Integer top,
-        Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TopicInner> listByResourceGroupSinglePage(String resourceGroupName, String filter,
+        Integer top, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TopicsListResult> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), filter, top, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1377,7 +1507,8 @@ public final class TopicsClientImpl implements TopicsClient {
     public PagedIterable<TopicInner> listByResourceGroup(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, top),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1402,7 +1533,8 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TopicInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
         Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, filter, top, context),
+            nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1450,43 +1582,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TopicSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(String resourceGroupName,
-        String topicName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSharedAccessKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            resourceGroupName, topicName, this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * List keys for a topic.
-     * 
-     * List the two keys used to publish to a topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1514,7 +1609,27 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicSharedAccessKeysInner> listSharedAccessKeysWithResponse(String resourceGroupName,
         String topicName, Context context) {
-        return listSharedAccessKeysWithResponseAsync(resourceGroupName, topicName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listSharedAccessKeysSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, topicName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1586,39 +1701,86 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param regenerateKeyRequest Request body to regenerate key.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic along with {@link Response} on successful completion of {@link Mono}.
+     * @return shared access keys of the Topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(String resourceGroupName, String topicName,
-        TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
+    private Response<BinaryData> regenerateKeyWithResponse(String resourceGroupName, String topicName,
+        TopicRegenerateKeyRequest regenerateKeyRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (topicName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
         }
         if (regenerateKeyRequest == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter regenerateKeyRequest is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter regenerateKeyRequest is required and cannot be null."));
         } else {
             regenerateKeyRequest.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+        return service.regenerateKeySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            topicName, this.client.getApiVersion(), regenerateKeyRequest, accept, Context.NONE);
+    }
+
+    /**
+     * Regenerate key for a topic.
+     * 
+     * Regenerate a shared access key for a topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> regenerateKeyWithResponse(String resourceGroupName, String topicName,
+        TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (topicName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter topicName is required and cannot be null."));
+        }
+        if (regenerateKeyRequest == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter regenerateKeyRequest is required and cannot be null."));
+        } else {
+            regenerateKeyRequest.validate();
+        }
+        final String accept = "application/json";
+        return service.regenerateKeySync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
             topicName, this.client.getApiVersion(), regenerateKeyRequest, accept, context);
     }
 
@@ -1653,30 +1815,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param regenerateKeyRequest Request body to regenerate key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of shared access keys of the Topic.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKeyAsync(
-        String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = regenerateKeyWithResponseAsync(resourceGroupName, topicName, regenerateKeyRequest, context);
-        return this.client.<TopicSharedAccessKeysInner, TopicSharedAccessKeysInner>getLroResult(mono,
-            this.client.getHttpPipeline(), TopicSharedAccessKeysInner.class, TopicSharedAccessKeysInner.class, context);
-    }
-
-    /**
-     * Regenerate key for a topic.
-     * 
-     * Regenerate a shared access key for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1685,7 +1823,9 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner>
         beginRegenerateKey(String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest) {
-        return this.beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest).getSyncPoller();
+        Response<BinaryData> response = regenerateKeyWithResponse(resourceGroupName, topicName, regenerateKeyRequest);
+        return this.client.<TopicSharedAccessKeysInner, TopicSharedAccessKeysInner>getLroResult(response,
+            TopicSharedAccessKeysInner.class, TopicSharedAccessKeysInner.class, Context.NONE);
     }
 
     /**
@@ -1705,8 +1845,10 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return this.beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = regenerateKeyWithResponse(resourceGroupName, topicName, regenerateKeyRequest, context);
+        return this.client.<TopicSharedAccessKeysInner, TopicSharedAccessKeysInner>getLroResult(response,
+            TopicSharedAccessKeysInner.class, TopicSharedAccessKeysInner.class, context);
     }
 
     /**
@@ -1737,27 +1879,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
      * @param regenerateKeyRequest Request body to regenerate key.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TopicSharedAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String topicName,
-        TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return beginRegenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Regenerate key for a topic.
-     * 
-     * Regenerate a shared access key for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @param regenerateKeyRequest Request body to regenerate key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1766,7 +1887,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSharedAccessKeysInner regenerateKey(String resourceGroupName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest) {
-        return regenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest).block();
+        return beginRegenerateKey(resourceGroupName, topicName, regenerateKeyRequest).getFinalResult();
     }
 
     /**
@@ -1786,7 +1907,7 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicSharedAccessKeysInner regenerateKey(String resourceGroupName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return regenerateKeyAsync(resourceGroupName, topicName, regenerateKeyRequest, context).block();
+        return beginRegenerateKey(resourceGroupName, topicName, regenerateKeyRequest, context).getFinalResult();
     }
 
     /**
@@ -1849,57 +1970,6 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the topic type.
      * @param resourceName Name of the topic.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventTypeInner>> listEventTypesSinglePageAsync(String resourceGroupName,
-        String providerNamespace, String resourceTypeName, String resourceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (providerNamespace == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
-        }
-        if (resourceTypeName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceTypeName is required and cannot be null."));
-        }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listEventTypes(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                providerNamespace, resourceTypeName, resourceName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
-    }
-
-    /**
-     * List topic event types.
-     * 
-     * List event types for a topic.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param providerNamespace Namespace of the provider of the topic.
-     * @param resourceTypeName Name of the topic type.
-     * @param resourceName Name of the topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1921,17 +1991,98 @@ public final class TopicsClientImpl implements TopicsClient {
      * @param providerNamespace Namespace of the provider of the topic.
      * @param resourceTypeName Name of the topic type.
      * @param resourceName Name of the topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List Event Types operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EventTypeInner> listEventTypesSinglePage(String resourceGroupName, String providerNamespace,
+        String resourceTypeName, String resourceName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceTypeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceTypeName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EventTypesListResult> res
+            = service.listEventTypesSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                providerNamespace, resourceTypeName, resourceName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
+    }
+
+    /**
+     * List topic event types.
+     * 
+     * List event types for a topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param providerNamespace Namespace of the provider of the topic.
+     * @param resourceTypeName Name of the topic type.
+     * @param resourceName Name of the topic.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Event Types operation as paginated response with {@link PagedFlux}.
+     * @return result of the List Event Types operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventTypeInner> listEventTypesAsync(String resourceGroupName, String providerNamespace,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<EventTypeInner> listEventTypesSinglePage(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName, Context context) {
-        return new PagedFlux<>(() -> listEventTypesSinglePageAsync(resourceGroupName, providerNamespace,
-            resourceTypeName, resourceName, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (providerNamespace == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter providerNamespace is required and cannot be null."));
+        }
+        if (resourceTypeName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceTypeName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<EventTypesListResult> res
+            = service.listEventTypesSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                providerNamespace, resourceTypeName, resourceName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            null, null);
     }
 
     /**
@@ -1952,7 +2103,7 @@ public final class TopicsClientImpl implements TopicsClient {
     public PagedIterable<EventTypeInner> listEventTypes(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName) {
         return new PagedIterable<>(
-            listEventTypesAsync(resourceGroupName, providerNamespace, resourceTypeName, resourceName));
+            () -> listEventTypesSinglePage(resourceGroupName, providerNamespace, resourceTypeName, resourceName));
     }
 
     /**
@@ -1973,8 +2124,8 @@ public final class TopicsClientImpl implements TopicsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventTypeInner> listEventTypes(String resourceGroupName, String providerNamespace,
         String resourceTypeName, String resourceName, Context context) {
-        return new PagedIterable<>(
-            listEventTypesAsync(resourceGroupName, providerNamespace, resourceTypeName, resourceName, context));
+        return new PagedIterable<>(() -> listEventTypesSinglePage(resourceGroupName, providerNamespace,
+            resourceTypeName, resourceName, context));
     }
 
     /**
@@ -2009,27 +2160,55 @@ public final class TopicsClientImpl implements TopicsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List Topics operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TopicInner> listBySubscriptionNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TopicsListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return result of the List Topics operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TopicInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<TopicInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<TopicsListResult> res
+            = service.listBySubscriptionNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2064,26 +2243,56 @@ public final class TopicsClientImpl implements TopicsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the List Topics operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<TopicInner> listByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<TopicsListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Topics operation along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return result of the List Topics operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TopicInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<TopicInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<TopicsListResult> res
+            = service.listByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TopicsClientImpl.class);
 }

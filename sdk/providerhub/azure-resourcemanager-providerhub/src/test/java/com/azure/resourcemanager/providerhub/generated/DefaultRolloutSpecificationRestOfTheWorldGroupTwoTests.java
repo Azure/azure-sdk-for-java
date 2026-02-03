@@ -13,21 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class DefaultRolloutSpecificationRestOfTheWorldGroupTwoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefaultRolloutSpecificationRestOfTheWorldGroupTwo model = BinaryData.fromString(
-            "{\"waitDuration\":\"PT62H37M52S\",\"regions\":[\"wyhqmibzyhwits\",\"ypyynpcdpumnzg\",\"wznm\",\"biknsorgjhxbld\"]}")
-            .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.class);
-        Assertions.assertEquals("wyhqmibzyhwits", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT62H37M52S"), model.waitDuration());
+        DefaultRolloutSpecificationRestOfTheWorldGroupTwo model
+            = BinaryData.fromString("{\"waitDuration\":\"PT42H42M29S\",\"regions\":[\"mjwosytx\",\"tcs\"]}")
+                .toObject(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.class);
+        Assertions.assertEquals("mjwosytx", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT42H42M29S"), model.waitDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DefaultRolloutSpecificationRestOfTheWorldGroupTwo model
-            = new DefaultRolloutSpecificationRestOfTheWorldGroupTwo()
-                .withRegions(Arrays.asList("wyhqmibzyhwits", "ypyynpcdpumnzg", "wznm", "biknsorgjhxbld"))
-                .withWaitDuration(Duration.parse("PT62H37M52S"));
+            = new DefaultRolloutSpecificationRestOfTheWorldGroupTwo().withRegions(Arrays.asList("mjwosytx", "tcs"))
+                .withWaitDuration(Duration.parse("PT42H42M29S"));
         model = BinaryData.fromObject(model).toObject(DefaultRolloutSpecificationRestOfTheWorldGroupTwo.class);
-        Assertions.assertEquals("wyhqmibzyhwits", model.regions().get(0));
-        Assertions.assertEquals(Duration.parse("PT62H37M52S"), model.waitDuration());
+        Assertions.assertEquals("mjwosytx", model.regions().get(0));
+        Assertions.assertEquals(Duration.parse("PT42H42M29S"), model.waitDuration());
     }
 }

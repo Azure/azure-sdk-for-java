@@ -6,8 +6,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.PrivateEndpoint;
@@ -25,30 +25,30 @@ public final class PrivateEndpointConnectionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"syqtfi\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"otzi\",\"actionsRequired\":\"amvpphoszqzudph\"},\"groupIds\":[\"vdkfwynwcvtbvk\"]},\"id\":\"hmtnvy\",\"name\":\"iatkzwpcnp\",\"type\":\"zcjaesgvvsccy\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"hbxvvyhgsopbyrqu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"uvwzfbnh\",\"actionsRequired\":\"ctlpdngitvgb\"},\"groupIds\":[\"ixkwmyijejveg\",\"hbpnaixexccbd\",\"eaxhcexdrrvqahqk\",\"htpwij\"]},\"id\":\"yjsvfyc\",\"name\":\"z\",\"type\":\"fvoow\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .define("lfzxiavrmbzonoki")
-            .withExistingElasticSan("yowqkdwytisibir", "gpikpzimejza")
+            .define("htjsying")
+            .withExistingElasticSan("wccsnjvcdwxlpqek", "tn")
             .withPrivateLinkServiceConnectionState(
-                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("zszrnwoiindfpw")
-                    .withActionsRequired("ylwbtlhflsjcdhsz"))
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.FAILED)
+                    .withDescription("ypgik")
+                    .withActionsRequired("szywkbirryu"))
             .withPrivateEndpoint(new PrivateEndpoint())
-            .withGroupIds(Arrays.asList("fbgofeljagrqmqh", "dvriiiojnal", "hfkvtvsexsowuel", "qhhahhxvrhmzkwpj"))
+            .withGroupIds(Arrays.asList("hkjoqr", "qqaatjinrvgou", "mfiibfggj"))
             .create();
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("otzi", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("amvpphoszqzudph", response.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("vdkfwynwcvtbvk", response.groupIds().get(0));
+        Assertions.assertEquals("uvwzfbnh", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("ctlpdngitvgb", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("ixkwmyijejveg", response.groupIds().get(0));
     }
 }

@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -21,51 +22,61 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
     /*
      * Entity text as appears in the request.
      */
+    @Generated
     private String text;
 
     /*
      * Healthcare Entity Category.
      */
+    @Generated
     private HealthcareEntityCategory category;
 
     /*
      * (Optional) Entity sub type.
      */
+    @Generated
     private String subcategory;
 
     /*
      * Start position for the entity text. Use of different 'stringIndexType' values can affect the offset returned.
      */
+    @Generated
     private int offset;
 
     /*
      * Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
      */
+    @Generated
     private int length;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
+    @Generated
     private double confidenceScore;
 
     /*
      * The assertion property.
      */
+    @Generated
     private HealthcareAssertion assertion;
 
     /*
      * Preferred name for the entity. Example: 'histologically' would have a 'name' of 'histologic'.
      */
+    @Generated
     private String name;
 
     /*
      * Entity references in known data sources.
      */
+    @Generated
     private List<HealthcareEntityLink> links;
 
     /**
      * Creates an instance of HealthcareEntity class.
      */
+    @Generated
     public HealthcareEntity() {
     }
 
@@ -74,6 +85,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the text value.
      */
+    @Generated
     public String getText() {
         return this.text;
     }
@@ -84,6 +96,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param text the text value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setText(String text) {
         this.text = text;
         return this;
@@ -94,6 +107,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the category value.
      */
+    @Generated
     public HealthcareEntityCategory getCategory() {
         return this.category;
     }
@@ -104,6 +118,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param category the category value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setCategory(HealthcareEntityCategory category) {
         this.category = category;
         return this;
@@ -114,6 +129,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the subcategory value.
      */
+    @Generated
     public String getSubcategory() {
         return this.subcategory;
     }
@@ -124,6 +140,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param subcategory the subcategory value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setSubcategory(String subcategory) {
         this.subcategory = subcategory;
         return this;
@@ -135,6 +152,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the offset value.
      */
+    @Generated
     public int getOffset() {
         return this.offset;
     }
@@ -146,6 +164,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param offset the offset value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setOffset(int offset) {
         this.offset = offset;
         return this;
@@ -157,6 +176,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the length value.
      */
+    @Generated
     public int getLength() {
         return this.length;
     }
@@ -168,6 +188,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param length the length value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setLength(int length) {
         this.length = length;
         return this;
@@ -178,6 +199,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the confidenceScore value.
      */
+    @Generated
     public double getConfidenceScore() {
         return this.confidenceScore;
     }
@@ -188,6 +210,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param confidenceScore the confidenceScore value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setConfidenceScore(double confidenceScore) {
         this.confidenceScore = confidenceScore;
         return this;
@@ -198,6 +221,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the assertion value.
      */
+    @Generated
     public HealthcareAssertion getAssertion() {
         return this.assertion;
     }
@@ -208,6 +232,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param assertion the assertion value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setAssertion(HealthcareAssertion assertion) {
         this.assertion = assertion;
         return this;
@@ -219,6 +244,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -230,6 +256,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param name the name value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setName(String name) {
         this.name = name;
         return this;
@@ -240,6 +267,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * 
      * @return the links value.
      */
+    @Generated
     public List<HealthcareEntityLink> getLinks() {
         return this.links;
     }
@@ -250,6 +278,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @param links the links value to set.
      * @return the HealthcareEntity object itself.
      */
+    @Generated
     public HealthcareEntity setLinks(List<HealthcareEntityLink> links) {
         this.links = links;
         return this;
@@ -258,6 +287,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -282,6 +312,7 @@ public final class HealthcareEntity implements JsonSerializable<HealthcareEntity
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the HealthcareEntity.
      */
+    @Generated
     public static HealthcareEntity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             HealthcareEntity deserializedHealthcareEntity = new HealthcareEntity();

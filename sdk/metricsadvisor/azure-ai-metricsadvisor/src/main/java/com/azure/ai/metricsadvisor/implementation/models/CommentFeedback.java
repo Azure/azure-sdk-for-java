@@ -6,6 +6,7 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -24,41 +25,31 @@ public final class CommentFeedback extends MetricFeedback {
     /*
      * feedback type
      */
+    @Generated
     private FeedbackType feedbackType = FeedbackType.COMMENT;
 
     /*
      * the start timestamp of feedback time range
      */
+    @Generated
     private OffsetDateTime startTime;
 
     /*
      * the end timestamp of feedback time range, when equals to startTime means only one timestamp
      */
+    @Generated
     private OffsetDateTime endTime;
 
     /*
      * The value property.
      */
+    @Generated
     private CommentFeedbackValue value;
-
-    /*
-     * user who gives this feedback
-     */
-    private String userPrincipal;
-
-    /*
-     * feedback created time
-     */
-    private OffsetDateTime createdTime;
-
-    /*
-     * feedback unique id
-     */
-    private UUID feedbackId;
 
     /**
      * Creates an instance of CommentFeedback class.
      */
+    @Generated
     public CommentFeedback() {
     }
 
@@ -67,6 +58,7 @@ public final class CommentFeedback extends MetricFeedback {
      * 
      * @return the feedbackType value.
      */
+    @Generated
     @Override
     public FeedbackType getFeedbackType() {
         return this.feedbackType;
@@ -77,6 +69,7 @@ public final class CommentFeedback extends MetricFeedback {
      * 
      * @return the startTime value.
      */
+    @Generated
     public OffsetDateTime getStartTime() {
         return this.startTime;
     }
@@ -87,6 +80,7 @@ public final class CommentFeedback extends MetricFeedback {
      * @param startTime the startTime value to set.
      * @return the CommentFeedback object itself.
      */
+    @Generated
     public CommentFeedback setStartTime(OffsetDateTime startTime) {
         this.startTime = startTime;
         return this;
@@ -98,6 +92,7 @@ public final class CommentFeedback extends MetricFeedback {
      * 
      * @return the endTime value.
      */
+    @Generated
     public OffsetDateTime getEndTime() {
         return this.endTime;
     }
@@ -109,6 +104,7 @@ public final class CommentFeedback extends MetricFeedback {
      * @param endTime the endTime value to set.
      * @return the CommentFeedback object itself.
      */
+    @Generated
     public CommentFeedback setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
@@ -119,6 +115,7 @@ public final class CommentFeedback extends MetricFeedback {
      * 
      * @return the value value.
      */
+    @Generated
     public CommentFeedbackValue getValue() {
         return this.value;
     }
@@ -129,44 +126,16 @@ public final class CommentFeedback extends MetricFeedback {
      * @param value the value value to set.
      * @return the CommentFeedback object itself.
      */
+    @Generated
     public CommentFeedback setValue(CommentFeedbackValue value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the userPrincipal property: user who gives this feedback.
-     * 
-     * @return the userPrincipal value.
-     */
-    @Override
-    public String getUserPrincipal() {
-        return this.userPrincipal;
-    }
-
-    /**
-     * Get the createdTime property: feedback created time.
-     * 
-     * @return the createdTime value.
-     */
-    @Override
-    public OffsetDateTime getCreatedTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the feedbackId property: feedback unique id.
-     * 
-     * @return the feedbackId value.
-     */
-    @Override
-    public UUID getFeedbackId() {
-        return this.feedbackId;
-    }
-
-    /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CommentFeedback setMetricId(UUID metricId) {
         super.setMetricId(metricId);
@@ -176,6 +145,7 @@ public final class CommentFeedback extends MetricFeedback {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public CommentFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
         super.setDimensionFilter(dimensionFilter);
@@ -185,6 +155,7 @@ public final class CommentFeedback extends MetricFeedback {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -208,6 +179,7 @@ public final class CommentFeedback extends MetricFeedback {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CommentFeedback.
      */
+    @Generated
     public static CommentFeedback fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             CommentFeedback deserializedCommentFeedback = new CommentFeedback();
@@ -221,13 +193,13 @@ public final class CommentFeedback extends MetricFeedback {
                 } else if ("dimensionFilter".equals(fieldName)) {
                     deserializedCommentFeedback.setDimensionFilter(FeedbackDimensionFilter.fromJson(reader));
                 } else if ("feedbackId".equals(fieldName)) {
-                    deserializedCommentFeedback.feedbackId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedCommentFeedback
+                        .setFeedbackId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedCommentFeedback.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedCommentFeedback.setCreatedTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("userPrincipal".equals(fieldName)) {
-                    deserializedCommentFeedback.userPrincipal = reader.getString();
+                    deserializedCommentFeedback.setUserPrincipal(reader.getString());
                 } else if ("value".equals(fieldName)) {
                     deserializedCommentFeedback.value = CommentFeedbackValue.fromJson(reader);
                 } else if ("feedbackType".equals(fieldName)) {

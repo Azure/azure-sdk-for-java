@@ -13,25 +13,24 @@ public final class SkuSettingCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuSettingCapacity model = BinaryData
-            .fromString(
-                "{\"minimum\":1918015991,\"maximum\":1339132065,\"default\":1982534081,\"scaleType\":\"Manual\"}")
+            .fromString("{\"minimum\":7887655,\"maximum\":1667148449,\"default\":118970540,\"scaleType\":\"None\"}")
             .toObject(SkuSettingCapacity.class);
-        Assertions.assertEquals(1918015991, model.minimum());
-        Assertions.assertEquals(1339132065, model.maximum());
-        Assertions.assertEquals(1982534081, model.defaultProperty());
-        Assertions.assertEquals(SkuScaleType.MANUAL, model.scaleType());
+        Assertions.assertEquals(7887655, model.minimum());
+        Assertions.assertEquals(1667148449, model.maximum());
+        Assertions.assertEquals(118970540, model.defaultProperty());
+        Assertions.assertEquals(SkuScaleType.NONE, model.scaleType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuSettingCapacity model = new SkuSettingCapacity().withMinimum(1918015991)
-            .withMaximum(1339132065)
-            .withDefaultProperty(1982534081)
-            .withScaleType(SkuScaleType.MANUAL);
+        SkuSettingCapacity model = new SkuSettingCapacity().withMinimum(7887655)
+            .withMaximum(1667148449)
+            .withDefaultProperty(118970540)
+            .withScaleType(SkuScaleType.NONE);
         model = BinaryData.fromObject(model).toObject(SkuSettingCapacity.class);
-        Assertions.assertEquals(1918015991, model.minimum());
-        Assertions.assertEquals(1339132065, model.maximum());
-        Assertions.assertEquals(1982534081, model.defaultProperty());
-        Assertions.assertEquals(SkuScaleType.MANUAL, model.scaleType());
+        Assertions.assertEquals(7887655, model.minimum());
+        Assertions.assertEquals(1667148449, model.maximum());
+        Assertions.assertEquals(118970540, model.defaultProperty());
+        Assertions.assertEquals(SkuScaleType.NONE, model.scaleType());
     }
 }

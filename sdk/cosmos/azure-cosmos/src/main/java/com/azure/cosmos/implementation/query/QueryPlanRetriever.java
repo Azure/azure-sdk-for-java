@@ -5,10 +5,12 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PathsHelper;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -25,6 +27,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -33,6 +36,10 @@ class QueryPlanRetriever {
     private final static
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
+
+    private final static
+    ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionAccessor =
+        ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
 
     private static final String TRUE = "True";
 
@@ -52,7 +59,8 @@ class QueryPlanRetriever {
                                                                QueryFeature.DCount.name() + ", " +
                                                                QueryFeature.NonValueAggregate.name() + ", " +
                                                                QueryFeature.NonStreamingOrderBy.name() + ", " +
-                                                               QueryFeature.HybridSearch.name();
+                                                               QueryFeature.HybridSearch.name() + ", " +
+                                                               QueryFeature.WeightedRankFusion.name();
 
     private static final String OLD_SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                 QueryFeature.CompositeAggregate.name() + ", " +
@@ -102,24 +110,33 @@ class QueryPlanRetriever {
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
             .getImpl(nonNullRequestOptions)
             .getCosmosEndToEndLatencyPolicyConfig();
+
+        List<String> excludeRegions = qryOptAccessor
+            .getImpl(nonNullRequestOptions)
+            .getExcludedRegions();
+
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
+        }
+
+        if (excludeRegions != null && !excludeRegions.isEmpty()) {
+            queryPlanRequest.requestContext.setExcludeRegions(excludeRegions);
         }
 
         BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<PartitionedQueryExecutionInfo>> executeFunc =
             (retryPolicyFactory, req) -> {
                 DocumentClientRetryPolicy retryPolicyInstance = retryPolicyFactory.get();
-                retryPolicyInstance.onBeforeSendRequest(req);
 
-                return BackoffRetryUtility.executeRetry(() ->
-                    queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
+                return BackoffRetryUtility.executeRetry(() -> {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                    return queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
                         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
                             new PartitionedQueryExecutionInfo(
-                                (ObjectNode)rxDocumentServiceResponse.getResponseBody(),
+                                (ObjectNode) rxDocumentServiceResponse.getResponseBody(),
                                 rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
                         return Mono.just(partitionedQueryExecutionInfo);
-
-                    }), retryPolicyInstance);
+                    });
+                }, retryPolicyInstance);
             };
 
         return queryClient.executeFeedOperationWithAvailabilityStrategy(
@@ -128,6 +145,21 @@ class QueryPlanRetriever {
             () -> queryClient.getResetSessionTokenRetryPolicy().getRequestPolicy(diagnosticsClientContext),
             queryPlanRequest,
             executeFunc,
-            PathsHelper.getCollectionPath(resourceLink));
+            PathsHelper.getCollectionPath(resourceLink))
+            .onErrorMap(throwable -> {
+
+                if (throwable instanceof CosmosException) {
+
+                    CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+
+                    if (HttpConstants.StatusCodes.NOTFOUND == (cosmosException.getStatusCode()) && HttpConstants.SubStatusCodes.UNKNOWN == (cosmosException.getSubStatusCode())) {
+                        cosmosExceptionAccessor.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS);
+                    }
+
+                    return cosmosException;
+                }
+
+                return throwable;
+            });
     }
 }

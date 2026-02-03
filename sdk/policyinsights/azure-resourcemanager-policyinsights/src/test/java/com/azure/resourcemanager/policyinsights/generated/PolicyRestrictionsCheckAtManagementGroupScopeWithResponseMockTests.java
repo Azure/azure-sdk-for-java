@@ -6,8 +6,8 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.policyinsights.PolicyInsightsManager;
 import com.azure.resourcemanager.policyinsights.models.CheckManagementGroupRestrictionsRequest;
@@ -24,29 +24,25 @@ public final class PolicyRestrictionsCheckAtManagementGroupScopeWithResponseMock
     @Test
     public void testCheckAtManagementGroupScopeWithResponse() throws Exception {
         String responseStr
-            = "{\"fieldRestrictions\":[{\"field\":\"tbwjjirmuydgftt\",\"restrictions\":[{\"result\":\"Removed\",\"defaultValue\":\"oagfuoftnxodwx\",\"values\":[\"jwiygmgsevmdmze\"],\"policy\":{}},{\"result\":\"Required\",\"defaultValue\":\"gfc\",\"values\":[\"d\"],\"policy\":{}}]},{\"field\":\"dtjva\",\"restrictions\":[{\"result\":\"Required\",\"defaultValue\":\"rg\",\"values\":[\"gcvucgy\",\"oxuwhttnzqsaqm\",\"bgszplusdek\",\"dzzmssgpgv\"],\"policy\":{}}]},{\"field\":\"ejidbdqzsq\",\"restrictions\":[{\"result\":\"Deny\",\"defaultValue\":\"tlvvwsnmrkkyjt\",\"values\":[\"wpwfkcaux\",\"va\",\"cpfpdofuckcl\",\"txluevs\"],\"policy\":{}}]},{\"field\":\"wil\",\"restrictions\":[{\"result\":\"Removed\",\"defaultValue\":\"sqeb\",\"values\":[\"jx\",\"fxfjwp\"],\"policy\":{}},{\"result\":\"Required\",\"defaultValue\":\"mbmxbmbrwgzzxl\",\"values\":[\"hxsdplaumydmhwe\",\"jf\",\"xydgtokvqbvwg\"],\"policy\":{}}]}],\"contentEvaluationResult\":{\"policyEvaluations\":[{\"policyInfo\":{\"policyDefinitionId\":\"akglhpsesrfga\",\"policySetDefinitionId\":\"iydvxc\",\"policyDefinitionReferenceId\":\"hyhgo\",\"policyAssignmentId\":\"soy\"},\"evaluationResult\":\"xyjrcbqpb\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{},{},{}],\"ifNotExistsDetails\":{}}},{\"policyInfo\":{\"policyDefinitionId\":\"o\",\"policySetDefinitionId\":\"dahneaoovty\",\"policyDefinitionReferenceId\":\"tivfwjlo\",\"policyAssignmentId\":\"ekfsrm\"},\"evaluationResult\":\"klajvcfocz\",\"evaluationDetails\":{\"evaluatedExpressions\":[{}],\"ifNotExistsDetails\":{}}},{\"policyInfo\":{\"policyDefinitionId\":\"tkwxnhwhhnoyrzaa\",\"policySetDefinitionId\":\"e\",\"policyDefinitionReferenceId\":\"mjenvjeatea\",\"policyAssignmentId\":\"crxoxdj\"},\"evaluationResult\":\"dnaryyinzk\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{},{},{}],\"ifNotExistsDetails\":{}}},{\"policyInfo\":{\"policyDefinitionId\":\"d\",\"policySetDefinitionId\":\"xvzaledoy\",\"policyDefinitionReferenceId\":\"lunkf\",\"policyAssignmentId\":\"mcxqqxmyzklao\"},\"evaluationResult\":\"pohrvm\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{},{},{}],\"ifNotExistsDetails\":{}}}]}}";
+            = "{\"fieldRestrictions\":[{\"field\":\"wtewf\",\"restrictions\":[{\"result\":\"Required\",\"defaultValue\":\"b\",\"values\":[\"zl\",\"ynjpchamkaepl\",\"ajubo\",\"uywevtjrieikmwl\"],\"policy\":{},\"policyEffect\":\"lfnisyxg\",\"reason\":\"bmtredscnns\"},{\"result\":\"Audit\",\"defaultValue\":\"yuvtz\",\"values\":[\"hcle\",\"wwtzqzcloy\",\"yup\"],\"policy\":{},\"policyEffect\":\"hzgyresgzsd\",\"reason\":\"wbyorjplbchych\"},{\"result\":\"Deny\",\"defaultValue\":\"rfbqvumkxqjsiuep\",\"values\":[\"fnzlpqmp\",\"t\"],\"policy\":{},\"policyEffect\":\"vulb\",\"reason\":\"rtux\"},{\"result\":\"Audit\",\"defaultValue\":\"fcaeooifqdyw\",\"values\":[\"obhahqmomf\",\"corkfrocgbmxl\"],\"policy\":{},\"policyEffect\":\"zezbjes\",\"reason\":\"slurbqfygpny\"}]}],\"contentEvaluationResult\":{\"policyEvaluations\":[{\"policyInfo\":{\"policyDefinitionId\":\"sc\",\"policySetDefinitionId\":\"qyvoupr\",\"policyDefinitionReferenceId\":\"tqzsslhmgwfnivr\",\"policyAssignmentId\":\"fduiolhgyqvpb\"},\"evaluationResult\":\"poqzucfz\",\"evaluationDetails\":{\"evaluatedExpressions\":[{},{}],\"ifNotExistsDetails\":{},\"reason\":\"uurbor\"},\"effectDetails\":{\"policyEffect\":\"vzielb\"}}]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         PolicyInsightsManager manager = PolicyInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CheckRestrictionsResult response = manager.policyRestrictions()
-            .checkAtManagementGroupScopeWithResponse("xlantolamlbijuxk",
-                new CheckManagementGroupRestrictionsRequest()
-                    .withResourceDetails(new CheckRestrictionsResourceDetails().withResourceContent("datalczipvwdtgc")
-                        .withApiVersion("dqiqdlra")
-                        .withScope("kwx"))
-                    .withPendingFields(Arrays.asList(
-                        new PendingField().withField("wxsuy")
-                            .withValues(Arrays.asList("hrfgslglhpryjfz", "huioaeoc", "ajtfey")),
-                        new PendingField().withField("kbdgddkrh")
-                            .withValues(Arrays.asList("xbeuuqu", "kzwtjwwguzytij", "xfn", "ndegjdydhqkkkbj")),
-                        new PendingField().withField("ckcatuqbhpo").withValues(Arrays.asList("xtpzdlyse")),
-                        new PendingField().withField("dtoakatpryt")
-                            .withValues(Arrays.asList("zbqfdpfawrptvcsh", "kutzct", "bqgdird", "mmtzjgc")))),
+            .checkAtManagementGroupScopeWithResponse("akmhz", new CheckManagementGroupRestrictionsRequest()
+                .withResourceDetails(new CheckRestrictionsResourceDetails().withResourceContent("datawahfbwihbn")
+                    .withApiVersion("em")
+                    .withScope("nuqqkotauratnicp"))
+                .withPendingFields(
+                    Arrays.asList(new PendingField().withField("scle").withValues(Arrays.asList("letnd", "lmfdg", "n")),
+                        new PendingField().withField("buypwovvv").withValues(Arrays.asList("eevnoqayreh")),
+                        new PendingField().withField("uqwvapxrlzhpzih")
+                            .withValues(Arrays.asList("nqqz", "xnq", "ubfonfdbgmkf")))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

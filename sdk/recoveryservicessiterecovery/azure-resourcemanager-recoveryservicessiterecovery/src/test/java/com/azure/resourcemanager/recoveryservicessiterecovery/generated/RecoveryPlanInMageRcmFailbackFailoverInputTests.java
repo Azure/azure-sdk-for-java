@@ -13,19 +13,19 @@ public final class RecoveryPlanInMageRcmFailbackFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanInMageRcmFailbackFailoverInput model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcmFailback\",\"recoveryPointType\":\"ApplicationConsistent\",\"useMultiVmSyncPoint\":\"raqp\"}")
+            "{\"instanceType\":\"InMageRcmFailback\",\"recoveryPointType\":\"ApplicationConsistent\",\"useMultiVmSyncPoint\":\"iizm\"}")
             .toObject(RecoveryPlanInMageRcmFailbackFailoverInput.class);
         Assertions.assertEquals(InMageRcmFailbackRecoveryPointType.APPLICATION_CONSISTENT, model.recoveryPointType());
-        Assertions.assertEquals("raqp", model.useMultiVmSyncPoint());
+        Assertions.assertEquals("iizm", model.useMultiVmSyncPoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanInMageRcmFailbackFailoverInput model = new RecoveryPlanInMageRcmFailbackFailoverInput()
             .withRecoveryPointType(InMageRcmFailbackRecoveryPointType.APPLICATION_CONSISTENT)
-            .withUseMultiVmSyncPoint("raqp");
+            .withUseMultiVmSyncPoint("iizm");
         model = BinaryData.fromObject(model).toObject(RecoveryPlanInMageRcmFailbackFailoverInput.class);
         Assertions.assertEquals(InMageRcmFailbackRecoveryPointType.APPLICATION_CONSISTENT, model.recoveryPointType());
-        Assertions.assertEquals("raqp", model.useMultiVmSyncPoint());
+        Assertions.assertEquals("iizm", model.useMultiVmSyncPoint());
     }
 }

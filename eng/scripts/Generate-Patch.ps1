@@ -82,8 +82,8 @@ function GetRemoteName($MainRemoteUrl) {
   return $null
 }
 
-function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName) {
-  $ReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $ReleaseVersion, $RepoRoot, $RemoteName, $GroupId = "com.azure") {
+  $ReleaseTag = "${GroupId}+${ArtifactName}_${ReleaseVersion}"
   Write-Information "Resetting the $ArtifactName sources to the release $ReleaseTag."
 
   $SdkDirPath = Join-Path $RepoRoot "sdk"
@@ -92,7 +92,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
   TestPathThrow -Path $ArtifactDirPath -PathName 'ArtifactDirPath'
 
-  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
+  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName -GroupId $GroupId
   $currentPackageVersion = $pkgProperties.Version
   if($currentPackageVersion -eq $ReleaseVersion) {
      Write-Information "We do not have to reset the sources."
@@ -100,20 +100,28 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   }
 
   $TestResourcesFilePath = Join-Path $ServiceDirPath "test-resources.json"
-  $EngDir = Join-Path $RepoRoot "eng"
-  $CodeQualityReports = Join-Path $EngDir "code-quality-reports" "src" "main" "resources"
-  $CheckStyleSuppressionFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle-suppressions.xml"
-  $CheckStyleFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle.xml"
-  $SpotBugsFilePath = Join-Path $CodeQualityReports "spotbugs" "spotbugs-exclude.xml"
+  $LintingConfigs = Join-Path $RepoRoot "eng" "lintingconfigs"
+  $CheckStyleSuppressionFilePath = Join-Path $LintingConfigs "checkstyle" "track2" "checkstyle-suppressions.xml"
+  $CheckStyleFilePath = Join-Path $LintingConfigs "checkstyle" "track2" "checkstyle.xml"
+  $SpotBugsFilePath = Join-Path $LintingConfigs "spotbugs" "track2" "spotbugs-exclude.xml"
 
   Write-Information "Fetching all the tags from $RemoteName"
   $CmdOutput = git fetch $RemoteName $ReleaseTag
   if($LASTEXITCODE -ne 0) {
-    LogError "Could not restore the tags for release tag $ReleaseTag"
-    exit 1
+    # Fall back to old tag format: <artifactName>_<version>
+    $OldReleaseTag = "${ArtifactName}_${ReleaseVersion}"
+    Write-Information "Failed to fetch new tag format. Trying old tag format: $OldReleaseTag"
+    $CmdOutput = git fetch $RemoteName $OldReleaseTag
+    
+    if($LASTEXITCODE -ne 0) {
+      LogError "Could not restore the tags for release tag $ReleaseTag or $OldReleaseTag"
+      exit 1
+    }
+    
+    $ReleaseTag = $OldReleaseTag
   }
 
-  $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
+  $cmdOutput = git restore --source $ReleaseTag -W -S -- $ArtifactDirPath
   if($LASTEXITCODE -ne 0) {
     LogError "Could not restore the changes for release tag $ReleaseTag"
     exit 1
@@ -163,7 +171,7 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $EngVersioningDir = Join-Path $EngDir "versioning"
   $SetVersionFilePath = Join-Path $EngVersioningDir "set_versions.py"
   $UpdateVersionFilePath = Join-Path $EngVersioningDir "update_versions.py"
-  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
+  $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName -GroupId $GroupId
   $ChangelogPath = $pkgProperties.ChangeLogPath
   $PomFilePath = Join-Path $pkgProperties.DirectoryPath "pom.xml"
 
@@ -176,13 +184,13 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $oldDependenciesToVersion
 
   ## Create the patch release
-  $cmdOutput = python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
+  $cmdOutput = python $SetVersionFilePath --new-version $PatchVersion --artifact-id $ArtifactName --group-id $GroupId
   if($LASTEXITCODE -ne 0) {
     LogError "Could not set the patch version."
     exit 1
   }
 
-  $cmdOutput = python $UpdateVersionFilePath --ut all --bt client --sr
+  $cmdOutput = python $UpdateVersionFilePath --skip-readme
     if($LASTEXITCODE -ne 0) {
     LogError "Could not update the versions in the pom files.. Exiting..."
     exit 1
@@ -203,12 +211,19 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $Content += "#### Dependency Updates"
   $Content += ""
 
+  $hasUpgrades = $false
   foreach($key in $oldDependenciesToVersion.Keys) {
     $oldVersion = $($oldDependenciesToVersion[$key]).Trim()
     $newVersion = $($newDependenciesToVersion[$key]).Trim()
     if($oldVersion -ne $newVersion) {
       $Content += "- Upgraded ``$key`` from ``$oldVersion`` to version ``$newVersion``."
+      $hasUpgrades = $true
     }
+  }
+
+  # If no specific dependency changes detected, add a generic message
+  if (-not $hasUpgrades) {
+    $Content += "- Upgraded core dependencies."
   }
 
   $Content += ""
@@ -265,7 +280,7 @@ try {
 
   ## Hard resetting it to the contents of the release tag.
   ## Fetching all the tags from the remote branch
-  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName
+  ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName -GroupId $GroupId
   CreatePatchRelease -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -PatchVersion $PatchVersion -RepoRoot $RepoRoot
   $cmdOutput = git add $RepoRoot
   if($LASTEXITCODE -ne 0) {

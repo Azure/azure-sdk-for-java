@@ -40,7 +40,7 @@ Note: one only need to add `azure-resourcemanager-resources` to POM, if the SDK 
 
 And run
 ```
-python eng/versioning/update_versions.py --ut library --bt client --sr
+python eng/versioning/update_versions.py --skip-readme
 ```
 to update the versions in POM.
 

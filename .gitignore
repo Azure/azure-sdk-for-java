@@ -80,7 +80,8 @@ dependency-reduced-pom.xml
 package-lock.json
 
 # VS Code
-.vscode/
+.vscode/*
+!.vscode/mcp.json
 .factorypath
 jacoco.exec
 .vs/

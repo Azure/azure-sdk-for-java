@@ -42,7 +42,8 @@ public final class PartnerNamespaceUpdateParameterProperties
 
     /*
      * This boolean is used to enable or disable local auth. Default value is false. When the property is set to true,
-     * only AAD token will be used to authenticate if user is allowed to publish to the partner namespace.
+     * only Microsoft Entra ID token will be used to authenticate if user is allowed to publish to the partner
+     * namespace.
      */
     private Boolean disableLocalAuth;
 
@@ -126,8 +127,8 @@ public final class PartnerNamespaceUpdateParameterProperties
 
     /**
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the partner namespace.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the partner namespace.
      * 
      * @return the disableLocalAuth value.
      */
@@ -137,8 +138,8 @@ public final class PartnerNamespaceUpdateParameterProperties
 
     /**
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
-     * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
-     * the partner namespace.
+     * When the property is set to true, only Microsoft Entra ID token will be used to authenticate if user is allowed
+     * to publish to the partner namespace.
      * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the PartnerNamespaceUpdateParameterProperties object itself.

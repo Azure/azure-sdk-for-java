@@ -4,10 +4,22 @@
 
 package com.azure.resourcemanager.neonpostgres.generated;
 
+import com.azure.resourcemanager.neonpostgres.models.Attributes;
+import com.azure.resourcemanager.neonpostgres.models.AutoscalingSize;
+import com.azure.resourcemanager.neonpostgres.models.BranchProperties;
 import com.azure.resourcemanager.neonpostgres.models.CompanyDetails;
+import com.azure.resourcemanager.neonpostgres.models.DefaultEndpointSettings;
+import com.azure.resourcemanager.neonpostgres.models.EndpointProperties;
+import com.azure.resourcemanager.neonpostgres.models.EndpointType;
+import com.azure.resourcemanager.neonpostgres.models.MarketplaceDetails;
+import com.azure.resourcemanager.neonpostgres.models.MarketplaceSubscriptionStatus;
+import com.azure.resourcemanager.neonpostgres.models.NeonDatabaseProperties;
+import com.azure.resourcemanager.neonpostgres.models.NeonRoleProperties;
+import com.azure.resourcemanager.neonpostgres.models.OfferDetails;
 import com.azure.resourcemanager.neonpostgres.models.OrganizationProperties;
 import com.azure.resourcemanager.neonpostgres.models.OrganizationResource;
 import com.azure.resourcemanager.neonpostgres.models.PartnerOrganizationProperties;
+import com.azure.resourcemanager.neonpostgres.models.ProjectProperties;
 import com.azure.resourcemanager.neonpostgres.models.SingleSignOnProperties;
 import com.azure.resourcemanager.neonpostgres.models.SingleSignOnStates;
 import com.azure.resourcemanager.neonpostgres.models.UserDetails;
@@ -20,39 +32,103 @@ import java.util.Map;
  */
 public final class OrganizationsUpdateSamples {
     /*
-     * x-ms-original-file: 2024-08-01-preview/Organizations_Update_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-06-23-preview/Organizations_Update_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Organizations_Update.
+     * Sample code: Organizations_Update_MaximumSet.
      * 
      * @param manager Entry point to NeonPostgresManager.
      */
-    public static void organizationsUpdate(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
+    public static void
+        organizationsUpdateMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
         OrganizationResource resource = manager.organizations()
-            .getByResourceGroupWithResponse("rgneon", "eRY-J_:", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("rgneon", "myOrganization", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withTags(mapOf("key8990", "fakeTokenPlaceholder"))
+            .withTags(mapOf("key2979", "fakeTokenPlaceholder"))
             .withProperties(new OrganizationProperties()
-                .withUserDetails(new UserDetails().withFirstName("buwwe")
-                    .withLastName("escynjpynkoox")
-                    .withEmailAddress("3i_%@w8-y.H-p.tvj.dG")
-                    .withUpn("fwedjamgwwrotcjaucuzdwycfjdqn")
-                    .withPhoneNumber("dlrqoowumy"))
-                .withCompanyDetails(new CompanyDetails().withCompanyName("uxn")
-                    .withCountry("lpajqzptqchuko")
-                    .withOfficeAddress("chpkrlpmfslmawgunjxdllzcrctykq")
-                    .withBusinessPhone("hbeb")
-                    .withDomain("krjldeakhwiepvs")
-                    .withNumberOfEmployees(23L))
+                .withMarketplaceDetails(
+                    new MarketplaceDetails().withSubscriptionId("11111111-2222-3333-4444-555555555555")
+                        .withSubscriptionStatus(MarketplaceSubscriptionStatus.fromString("Fulfilled"))
+                        .withOfferDetails(new OfferDetails().withPublisherId("neon")
+                            .withOfferId("neon-postgres")
+                            .withPlanId("standard")
+                            .withPlanName("Standard Plan")
+                            .withTermUnit("P1M")
+                            .withTermId("hjk5-pou9-mnb8")))
+                .withUserDetails(new UserDetails().withFirstName("John")
+                    .withLastName("Doe")
+                    .withEmailAddress("john.doe@example.com")
+                    .withUpn("johndoe")
+                    .withPhoneNumber("555-123-4567"))
+                .withCompanyDetails(new CompanyDetails().withCompanyName("Contoso Ltd.")
+                    .withCountry("United States")
+                    .withOfficeAddress("123 Main Street, Seattle, WA 98101")
+                    .withBusinessPhone("555-987-6543")
+                    .withDomain("contoso.com")
+                    .withNumberOfEmployees(250L))
                 .withPartnerOrganizationProperties(
-                    new PartnerOrganizationProperties().withOrganizationId("njyoqflcmfwzfsqe")
-                        .withOrganizationName("J:.._3P")
-                        .withSingleSignOnProperties(
-                            new SingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
-                                .withEnterpriseAppId("fpibacregjfncfdsojs")
-                                .withSingleSignOnUrl("tmojh")
-                                .withAadDomains(Arrays.asList("kndszgrwzbvvlssvkej")))))
+                    new PartnerOrganizationProperties().withOrganizationId("org-123456")
+                        .withOrganizationName("myOrganization")
+                        .withSingleSignOnProperties(new SingleSignOnProperties()
+                            .withSingleSignOnState(SingleSignOnStates.fromString("Configured"))
+                            .withEnterpriseAppId("12345678-abcd-1234-efgh-123456789012")
+                            .withSingleSignOnUrl("https://login.microsoftonline.com/contoso.com")
+                            .withAadDomains(Arrays.asList("contoso.com"))))
+                .withProjectProperties(new ProjectProperties().withEntityName("myProject")
+                    .withAttributes(Arrays.asList(new Attributes().withName("environment").withValue("development")))
+                    .withRegionId("westus")
+                    .withStorage(22L)
+                    .withPgVersion(23)
+                    .withHistoryRetention(16)
+                    .withDefaultEndpointSettings(
+                        new DefaultEndpointSettings().withAutoscalingLimitMinCu(11.0).withAutoscalingLimitMaxCu(11.0))
+                    .withBranch(new BranchProperties().withEntityName("main")
+                        .withAttributes(
+                            Arrays.asList(new Attributes().withName("environment").withValue("development")))
+                        .withProjectId("project-123")
+                        .withParentId("main-branch")
+                        .withRoles(Arrays.asList(new NeonRoleProperties().withEntityName("read_only_role")
+                            .withAttributes(
+                                Arrays.asList(new Attributes().withName("environment").withValue("development")))
+                            .withBranchId("branch-123")
+                            .withPermissions(Arrays.asList("SELECT"))
+                            .withIsSuperUser(true)))
+                        .withDatabases(Arrays.asList(new NeonDatabaseProperties().withEntityName("appdb")
+                            .withAttributes(
+                                Arrays.asList(new Attributes().withName("environment").withValue("development")))
+                            .withBranchId("branch-123")
+                            .withOwnerName("postgres")))
+                        .withEndpoints(
+                            Arrays.asList(new EndpointProperties().withEntityName("primary-endpoint")
+                                .withAttributes(
+                                    Arrays.asList(new Attributes().withName("environment").withValue("development")))
+                                .withProjectId("project-123")
+                                .withBranchId("branch-123")
+                                .withEndpointType(EndpointType.READ_WRITE)
+                                .withSize(new AutoscalingSize().withAutoscalingLimitMinCu(1.0)
+                                    .withAutoscalingLimitMaxCu(4.0)))))
+                    .withRoles(Arrays.asList(new NeonRoleProperties().withEntityName("admin_role")
+                        .withAttributes(
+                            Arrays.asList(new Attributes().withName("environment").withValue("development")))
+                        .withBranchId("branch-123")
+                        .withPermissions(Arrays.asList("ALL"))
+                        .withIsSuperUser(true)))
+                    .withDatabases(Arrays.asList(new NeonDatabaseProperties().withEntityName("postgres")
+                        .withAttributes(
+                            Arrays.asList(new Attributes().withName("environment").withValue("development")))
+                        .withBranchId("branch-123")
+                        .withOwnerName("postgres")))
+                    .withEndpoints(
+                        Arrays
+                            .asList(new EndpointProperties().withEntityName("readonly-endpoint")
+                                .withAttributes(
+                                    Arrays.asList(new Attributes().withName("environment").withValue("development")))
+                                .withProjectId("project-123")
+                                .withBranchId("branch-123")
+                                .withEndpointType(EndpointType.READ_ONLY)
+                                .withSize(new AutoscalingSize().withAutoscalingLimitMinCu(1.0)
+                                    .withAutoscalingLimitMaxCu(2.0))))))
             .apply();
     }
 

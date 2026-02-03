@@ -6,23 +6,28 @@ package com.azure.resourcemanager.providerhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.providerhub.models.OptInHeaderType;
+import com.azure.resourcemanager.providerhub.models.OptOutHeaderType;
 import com.azure.resourcemanager.providerhub.models.ResourceProviderManifestRequestHeaderOptions;
 import org.junit.jupiter.api.Assertions;
 
 public final class ResourceProviderManifestRequestHeaderOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderManifestRequestHeaderOptions model
-            = BinaryData.fromString("{\"optInHeaders\":\"NotSpecified\"}")
-                .toObject(ResourceProviderManifestRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.NOT_SPECIFIED, model.optInHeaders());
+        ResourceProviderManifestRequestHeaderOptions model = BinaryData
+            .fromString(
+                "{\"optInHeaders\":\"PrivateLinkResourceId\",\"optOutHeaders\":\"SystemDataCreatedByLastModifiedBy\"}")
+            .toObject(ResourceProviderManifestRequestHeaderOptions.class);
+        Assertions.assertEquals(OptInHeaderType.PRIVATE_LINK_RESOURCE_ID, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderManifestRequestHeaderOptions model
-            = new ResourceProviderManifestRequestHeaderOptions().withOptInHeaders(OptInHeaderType.NOT_SPECIFIED);
+        ResourceProviderManifestRequestHeaderOptions model = new ResourceProviderManifestRequestHeaderOptions()
+            .withOptInHeaders(OptInHeaderType.PRIVATE_LINK_RESOURCE_ID)
+            .withOptOutHeaders(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY);
         model = BinaryData.fromObject(model).toObject(ResourceProviderManifestRequestHeaderOptions.class);
-        Assertions.assertEquals(OptInHeaderType.NOT_SPECIFIED, model.optInHeaders());
+        Assertions.assertEquals(OptInHeaderType.PRIVATE_LINK_RESOURCE_ID, model.optInHeaders());
+        Assertions.assertEquals(OptOutHeaderType.SYSTEM_DATA_CREATED_BY_LAST_MODIFIED_BY, model.optOutHeaders());
     }
 }

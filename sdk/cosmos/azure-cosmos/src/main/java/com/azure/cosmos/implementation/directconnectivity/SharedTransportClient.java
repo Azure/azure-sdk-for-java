@@ -96,7 +96,7 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
+    public Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return transportClient.invokeStoreAsync(physicalAddress, request);
     }
 
@@ -123,7 +123,7 @@ public class SharedTransportClient extends TransportClient {
     }
 
     @Override
-    protected GlobalEndpointManager getGlobalEndpointManager() {
+    public GlobalEndpointManager getGlobalEndpointManager() {
         return this.transportClient.getGlobalEndpointManager();
     }
 

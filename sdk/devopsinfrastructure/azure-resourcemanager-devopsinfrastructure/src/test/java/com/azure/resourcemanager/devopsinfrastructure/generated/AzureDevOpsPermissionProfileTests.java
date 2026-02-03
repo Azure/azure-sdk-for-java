@@ -14,22 +14,22 @@ public final class AzureDevOpsPermissionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDevOpsPermissionProfile model = BinaryData.fromString(
-            "{\"kind\":\"Inherit\",\"users\":[\"bybkzgcwrwclxx\",\"rljdouskcqv\",\"ocrcjdk\",\"tnhxbn\"],\"groups\":[\"ksqrglssai\",\"qpjwnzlljfm\"]}")
+            "{\"kind\":\"Inherit\",\"users\":[\"gsntnbybkzgcwr\",\"clxxwrljdo\",\"skcqvkocrcjd\"],\"groups\":[\"nh\",\"bnjbiksqrglssain\"]}")
             .toObject(AzureDevOpsPermissionProfile.class);
         Assertions.assertEquals(AzureDevOpsPermissionType.INHERIT, model.kind());
-        Assertions.assertEquals("bybkzgcwrwclxx", model.users().get(0));
-        Assertions.assertEquals("ksqrglssai", model.groups().get(0));
+        Assertions.assertEquals("gsntnbybkzgcwr", model.users().get(0));
+        Assertions.assertEquals("nh", model.groups().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDevOpsPermissionProfile model
             = new AzureDevOpsPermissionProfile().withKind(AzureDevOpsPermissionType.INHERIT)
-                .withUsers(Arrays.asList("bybkzgcwrwclxx", "rljdouskcqv", "ocrcjdk", "tnhxbn"))
-                .withGroups(Arrays.asList("ksqrglssai", "qpjwnzlljfm"));
+                .withUsers(Arrays.asList("gsntnbybkzgcwr", "clxxwrljdo", "skcqvkocrcjd"))
+                .withGroups(Arrays.asList("nh", "bnjbiksqrglssain"));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsPermissionProfile.class);
         Assertions.assertEquals(AzureDevOpsPermissionType.INHERIT, model.kind());
-        Assertions.assertEquals("bybkzgcwrwclxx", model.users().get(0));
-        Assertions.assertEquals("ksqrglssai", model.groups().get(0));
+        Assertions.assertEquals("gsntnbybkzgcwr", model.users().get(0));
+        Assertions.assertEquals("nh", model.groups().get(0));
     }
 }

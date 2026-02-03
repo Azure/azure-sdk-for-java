@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,11 +20,13 @@ public final class PipelineFolder implements JsonSerializable<PipelineFolder> {
     /*
      * The name of the folder that this Pipeline is in.
      */
+    @Generated
     private String name;
 
     /**
      * Creates an instance of PipelineFolder class.
      */
+    @Generated
     public PipelineFolder() {
     }
 
@@ -32,6 +35,7 @@ public final class PipelineFolder implements JsonSerializable<PipelineFolder> {
      * 
      * @return the name value.
      */
+    @Generated
     public String getName() {
         return this.name;
     }
@@ -42,6 +46,7 @@ public final class PipelineFolder implements JsonSerializable<PipelineFolder> {
      * @param name the name value to set.
      * @return the PipelineFolder object itself.
      */
+    @Generated
     public PipelineFolder setName(String name) {
         this.name = name;
         return this;
@@ -50,6 +55,7 @@ public final class PipelineFolder implements JsonSerializable<PipelineFolder> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -65,6 +71,7 @@ public final class PipelineFolder implements JsonSerializable<PipelineFolder> {
      * pointing to JSON null.
      * @throws IOException If an error occurs while reading the PipelineFolder.
      */
+    @Generated
     public static PipelineFolder fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             PipelineFolder deserializedPipelineFolder = new PipelineFolder();

@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStat
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.netty.buffer.ByteBufInputStream;
+import io.netty.util.IllegalReferenceCountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Used internally to represents a response from the store.
@@ -42,8 +44,10 @@ public class StoreResponse {
     private List<String> faultInjectionRuleEvaluationResults;
 
     private final JsonNodeStorePayload responsePayload;
+    private final String endpoint;
 
     public StoreResponse(
+            String endpoint,
             int status,
             Map<String, String> headerMap,
             ByteBufInputStream contentStream,
@@ -54,6 +58,7 @@ public class StoreResponse {
         requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerMap.size()];
         responseHeaderValues = new String[headerMap.size()];
+        this.endpoint = endpoint != null ? endpoint : "";
 
         int i = 0;
         for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
@@ -66,13 +71,15 @@ public class StoreResponse {
         replicaStatusList = new HashMap<>();
         if (contentStream != null) {
             try {
-                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
-            }
-            finally {
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength, headerMap);
+            } finally {
                 try {
                     contentStream.close();
-                } catch (IOException e) {
-                    logger.debug("Could not successfully close content stream.", e);
+                } catch (Throwable e) {
+                    if (!(e instanceof IllegalReferenceCountException)) {
+                        // Log as warning instead of debug to make ByteBuf leak issues more visible
+                        logger.warn("Failed to close content stream. This may cause a Netty ByteBuf leak.", e);
+                    }
                 }
             }
         } else {
@@ -81,13 +88,17 @@ public class StoreResponse {
     }
 
     private StoreResponse(
+        String endpoint,
         int status,
         Map<String, String> headerMap,
         JsonNodeStorePayload responsePayload) {
 
+        checkNotNull(endpoint, "Parameter 'endpoint' must not be null.");
+
         requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerMap.size()];
         responseHeaderValues = new String[headerMap.size()];
+        this.endpoint = endpoint;
 
         int i = 0;
         for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
@@ -162,6 +173,11 @@ public class StoreResponse {
         return -1;
     }
 
+    // NOTE: Only used in local test through transport client interceptor
+    public void setGCLSN(long gclsn) {
+        this.setHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, String.valueOf(gclsn));
+    }
+
     public String getPartitionKeyRangeId() {
         return this.getHeaderValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
     }
@@ -186,6 +202,20 @@ public class StoreResponse {
         }
 
         return null;
+    }
+
+    //NOTE: only used for testing purpose to change the response header value
+    void setHeaderValue(String headerName, String value) {
+        if (this.responseHeaderValues == null || this.responseHeaderNames.length != this.responseHeaderValues.length) {
+            return;
+        }
+
+        for (int i = 0; i < responseHeaderNames.length; i++) {
+            if (responseHeaderNames[i].equalsIgnoreCase(headerName)) {
+                responseHeaderValues[i] = value;
+                break;
+            }
+        }
     }
 
     public double getRequestCharge() {
@@ -280,8 +310,13 @@ public class StoreResponse {
         }
 
         return new StoreResponse(
+            this.endpoint,
             newStatusCode,
             headers,
             this.responsePayload);
+    }
+
+    public String getEndpoint() {
+        return this.endpoint;
     }
 }

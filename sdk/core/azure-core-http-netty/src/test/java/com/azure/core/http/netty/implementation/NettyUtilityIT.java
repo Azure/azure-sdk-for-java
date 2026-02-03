@@ -3,6 +3,8 @@
 package com.azure.core.http.netty.implementation;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.parallel.Isolated;
 
 import java.net.URISyntaxException;
@@ -16,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
  */
 @SuppressWarnings("removal")
 @Isolated("Mutates the global SecurityManager")
+@EnabledForJreRange(min = JRE.JAVA_8, max = JRE.JAVA_23, disabledReason = "Security manager was removed in Java 24")
 public class NettyUtilityIT {
     private java.lang.SecurityManager originalManager;
     private java.security.Policy originalPolicy;

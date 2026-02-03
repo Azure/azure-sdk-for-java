@@ -14,23 +14,23 @@ public final class RackPatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RackPatchParameters model = BinaryData.fromString(
-            "{\"properties\":{\"rackLocation\":\"i\",\"rackSerialNumber\":\"pwpgddei\"},\"tags\":{\"jcazt\":\"zovgkkumuikj\",\"comlikytwvczc\":\"wsnsqowx\"}}")
+            "{\"properties\":{\"rackLocation\":\"mewjjstliuhq\",\"rackSerialNumber\":\"moaiancz\"},\"tags\":{\"rxvvbxi\":\"drrslblxydk\",\"h\":\"kgfbqljnqkhy\",\"kulehurqlrq\":\"c\"}}")
             .toObject(RackPatchParameters.class);
-        Assertions.assertEquals("zovgkkumuikj", model.tags().get("jcazt"));
-        Assertions.assertEquals("i", model.rackLocation());
-        Assertions.assertEquals("pwpgddei", model.rackSerialNumber());
+        Assertions.assertEquals("drrslblxydk", model.tags().get("rxvvbxi"));
+        Assertions.assertEquals("mewjjstliuhq", model.rackLocation());
+        Assertions.assertEquals("moaiancz", model.rackSerialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RackPatchParameters model
-            = new RackPatchParameters().withTags(mapOf("jcazt", "zovgkkumuikj", "comlikytwvczc", "wsnsqowx"))
-                .withRackLocation("i")
-                .withRackSerialNumber("pwpgddei");
+        RackPatchParameters model = new RackPatchParameters()
+            .withTags(mapOf("rxvvbxi", "drrslblxydk", "h", "kgfbqljnqkhy", "kulehurqlrq", "c"))
+            .withRackLocation("mewjjstliuhq")
+            .withRackSerialNumber("moaiancz");
         model = BinaryData.fromObject(model).toObject(RackPatchParameters.class);
-        Assertions.assertEquals("zovgkkumuikj", model.tags().get("jcazt"));
-        Assertions.assertEquals("i", model.rackLocation());
-        Assertions.assertEquals("pwpgddei", model.rackSerialNumber());
+        Assertions.assertEquals("drrslblxydk", model.tags().get("rxvvbxi"));
+        Assertions.assertEquals("mewjjstliuhq", model.rackLocation());
+        Assertions.assertEquals("moaiancz", model.rackSerialNumber());
     }
 
     // Use "Map.of" if available

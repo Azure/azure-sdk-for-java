@@ -7,8 +7,8 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.PrivateEndpointConnection;
@@ -23,22 +23,22 @@ public final class ManagedEnvironmentPrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"groupIds\":[\"htuzlxiwyopgar\",\"fctwra\"],\"privateEndpoint\":{\"id\":\"dojq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"sipiysnjqyowa\",\"actionsRequired\":\"c\"},\"provisioningState\":\"Updating\"},\"id\":\"a\",\"name\":\"undtsew\",\"type\":\"aupwhlzyckrem\"}]}";
+            = "{\"value\":[{\"properties\":{\"groupIds\":[\"rpzuyudivbx\",\"hsqe\",\"eonqelwgdhuru\",\"y\"],\"privateEndpoint\":{\"id\":\"rogatmolj\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"pinm\",\"actionsRequired\":\"fkneerzztrkn\"},\"provisioningState\":\"Pending\"},\"id\":\"ugdybnhrxlel\",\"name\":\"jhkeizcp\",\"type\":\"htdm\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ContainerAppsApiManager manager = ContainerAppsApiManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<PrivateEndpointConnection> response = manager.managedEnvironmentPrivateEndpointConnections()
-            .list("vdrijanxndm", "vardlmzjotprrm", com.azure.core.util.Context.NONE);
+            .list("alzb", "obrqlp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("sipiysnjqyowa",
-            response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("c", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("pinm", response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("fkneerzztrkn",
+            response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -22,16 +23,19 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
     /*
      * List of model ids to compose.
      */
+    @Generated
     private List<UUID> modelIds;
 
     /*
      * Optional user defined model name (max length: 1024).
      */
+    @Generated
     private String modelName;
 
     /**
      * Creates an instance of ComposeRequest class.
      */
+    @Generated
     public ComposeRequest() {
     }
 
@@ -40,6 +44,7 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
      * 
      * @return the modelIds value.
      */
+    @Generated
     public List<UUID> getModelIds() {
         return this.modelIds;
     }
@@ -50,6 +55,7 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
      * @param modelIds the modelIds value to set.
      * @return the ComposeRequest object itself.
      */
+    @Generated
     public ComposeRequest setModelIds(List<UUID> modelIds) {
         this.modelIds = modelIds;
         return this;
@@ -60,6 +66,7 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
      * 
      * @return the modelName value.
      */
+    @Generated
     public String getModelName() {
         return this.modelName;
     }
@@ -70,6 +77,7 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
      * @param modelName the modelName value to set.
      * @return the ComposeRequest object itself.
      */
+    @Generated
     public ComposeRequest setModelName(String modelName) {
         this.modelName = modelName;
         return this;
@@ -78,6 +86,7 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -96,6 +105,7 @@ public final class ComposeRequest implements JsonSerializable<ComposeRequest> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ComposeRequest.
      */
+    @Generated
     public static ComposeRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ComposeRequest deserializedComposeRequest = new ComposeRequest();

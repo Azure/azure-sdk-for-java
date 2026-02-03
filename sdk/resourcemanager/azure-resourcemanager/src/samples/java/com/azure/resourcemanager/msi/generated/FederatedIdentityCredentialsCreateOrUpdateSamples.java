@@ -12,7 +12,7 @@ import java.util.Arrays;
  */
 public final class FederatedIdentityCredentialsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/
+     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2024-11-30/examples/
      * FederatedIdentityCredentialCreate.json
      */
     /**

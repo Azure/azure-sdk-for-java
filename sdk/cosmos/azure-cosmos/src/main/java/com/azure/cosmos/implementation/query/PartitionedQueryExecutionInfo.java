@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.implementation.routing.Range;
@@ -32,8 +31,8 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
 
         this.set(
             PartitionedQueryExecutionInfoInternal.PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY,
-            Constants.PartitionedQueryExecutionInfo.VERSION_1,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            Constants.PartitionedQueryExecutionInfo.VERSION_1
+        );
     }
 
     public PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline) {

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GenerateSsoUrlResult;
@@ -20,19 +20,20 @@ import reactor.core.publisher.Mono;
 public final class UsersGenerateSsoUrlWithResponseMockTests {
     @Test
     public void testGenerateSsoUrlWithResponse() throws Exception {
-        String responseStr = "{\"value\":\"akovslvwpvdm\"}";
+        String responseStr = "{\"value\":\"rvf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GenerateSsoUrlResult response = manager.users()
-            .generateSsoUrlWithResponse("ouzo", "ihqlwyqsxeqtltl", "czcxouaneuepgq", com.azure.core.util.Context.NONE)
+            .generateSsoUrlWithResponse("eaxthuhuruouqy", "tapstkdbnqjpcuz", "xoymfkumbysgsqz",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("akovslvwpvdm", response.value());
+        Assertions.assertEquals("rvf", response.value());
     }
 }

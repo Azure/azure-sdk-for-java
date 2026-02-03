@@ -13,19 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SubscriptionStateRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionStateRule model = BinaryData
-            .fromString("{\"state\":\"NotDefined\",\"allowedActions\":[\"mcdytdxwitxnrj\",\"wgqwgxhn\",\"skxfbk\"]}")
-            .toObject(SubscriptionStateRule.class);
-        Assertions.assertEquals(SubscriptionState.NOT_DEFINED, model.state());
-        Assertions.assertEquals("mcdytdxwitxnrj", model.allowedActions().get(0));
+        SubscriptionStateRule model
+            = BinaryData.fromString("{\"state\":\"Warned\",\"allowedActions\":[\"uujqgidokgjljyo\",\"gvcl\"]}")
+                .toObject(SubscriptionStateRule.class);
+        Assertions.assertEquals(SubscriptionState.WARNED, model.state());
+        Assertions.assertEquals("uujqgidokgjljyo", model.allowedActions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionStateRule model = new SubscriptionStateRule().withState(SubscriptionState.NOT_DEFINED)
-            .withAllowedActions(Arrays.asList("mcdytdxwitxnrj", "wgqwgxhn", "skxfbk"));
+        SubscriptionStateRule model = new SubscriptionStateRule().withState(SubscriptionState.WARNED)
+            .withAllowedActions(Arrays.asList("uujqgidokgjljyo", "gvcl"));
         model = BinaryData.fromObject(model).toObject(SubscriptionStateRule.class);
-        Assertions.assertEquals(SubscriptionState.NOT_DEFINED, model.state());
-        Assertions.assertEquals("mcdytdxwitxnrj", model.allowedActions().get(0));
+        Assertions.assertEquals(SubscriptionState.WARNED, model.state());
+        Assertions.assertEquals("uujqgidokgjljyo", model.allowedActions().get(0));
     }
 }

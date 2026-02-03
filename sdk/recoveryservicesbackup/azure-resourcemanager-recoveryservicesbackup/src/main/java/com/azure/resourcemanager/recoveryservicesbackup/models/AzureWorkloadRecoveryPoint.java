@@ -240,8 +240,12 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
                     return AzureWorkloadPointInTimeRecoveryPoint.fromJsonKnownDiscriminator(readerToUse.reset());
                 } else if ("AzureWorkloadSAPHanaPointInTimeRecoveryPoint".equals(discriminatorValue)) {
                     return AzureWorkloadSapHanaPointInTimeRecoveryPoint.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSAPAsePointInTimeRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadSapAsePointInTimeRecoveryPoint.fromJson(readerToUse.reset());
                 } else if ("AzureWorkloadSAPHanaRecoveryPoint".equals(discriminatorValue)) {
                     return AzureWorkloadSapHanaRecoveryPoint.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSAPAseRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadSapAseRecoveryPoint.fromJson(readerToUse.reset());
                 } else if ("AzureWorkloadSQLRecoveryPoint".equals(discriminatorValue)) {
                     return AzureWorkloadSqlRecoveryPoint.fromJsonKnownDiscriminator(readerToUse.reset());
                 } else if ("AzureWorkloadSQLPointInTimeRecoveryPoint".equals(discriminatorValue)) {

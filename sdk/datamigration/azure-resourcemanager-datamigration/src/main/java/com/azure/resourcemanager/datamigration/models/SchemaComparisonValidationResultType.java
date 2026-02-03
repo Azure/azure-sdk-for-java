@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.datamigration.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Description about the errors happen while performing migration validation.
  */
-@Immutable
+@Fluent
 public final class SchemaComparisonValidationResultType
     implements JsonSerializable<SchemaComparisonValidationResultType> {
     /*
@@ -48,6 +48,17 @@ public final class SchemaComparisonValidationResultType
     }
 
     /**
+     * Set the objectName property: Name of the object that has the difference.
+     * 
+     * @param objectName the objectName value to set.
+     * @return the SchemaComparisonValidationResultType object itself.
+     */
+    public SchemaComparisonValidationResultType withObjectName(String objectName) {
+        this.objectName = objectName;
+        return this;
+    }
+
+    /**
      * Get the objectType property: Type of the object that has the difference. e.g (Table/View/StoredProcedure).
      * 
      * @return the objectType value.
@@ -57,12 +68,34 @@ public final class SchemaComparisonValidationResultType
     }
 
     /**
+     * Set the objectType property: Type of the object that has the difference. e.g (Table/View/StoredProcedure).
+     * 
+     * @param objectType the objectType value to set.
+     * @return the SchemaComparisonValidationResultType object itself.
+     */
+    public SchemaComparisonValidationResultType withObjectType(ObjectType objectType) {
+        this.objectType = objectType;
+        return this;
+    }
+
+    /**
      * Get the updateAction property: Update action type with respect to target.
      * 
      * @return the updateAction value.
      */
     public UpdateActionType updateAction() {
         return this.updateAction;
+    }
+
+    /**
+     * Set the updateAction property: Update action type with respect to target.
+     * 
+     * @param updateAction the updateAction value to set.
+     * @return the SchemaComparisonValidationResultType object itself.
+     */
+    public SchemaComparisonValidationResultType withUpdateAction(UpdateActionType updateAction) {
+        this.updateAction = updateAction;
+        return this;
     }
 
     /**
@@ -79,6 +112,9 @@ public final class SchemaComparisonValidationResultType
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectName", this.objectName);
+        jsonWriter.writeStringField("objectType", this.objectType == null ? null : this.objectType.toString());
+        jsonWriter.writeStringField("updateAction", this.updateAction == null ? null : this.updateAction.toString());
         return jsonWriter.writeEndObject();
     }
 

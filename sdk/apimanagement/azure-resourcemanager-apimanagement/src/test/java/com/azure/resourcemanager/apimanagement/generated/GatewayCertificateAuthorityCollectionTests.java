@@ -11,7 +11,7 @@ public final class GatewayCertificateAuthorityCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayCertificateAuthorityCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"isTrusted\":false},\"id\":\"fgxkydpmypgf\",\"name\":\"vmtywhlakxp\",\"type\":\"jpewpyjlfx\"},{\"properties\":{\"isTrusted\":true},\"id\":\"crzge\",\"name\":\"qxbpiatwfauje\",\"type\":\"qdtadrakgdd\"},{\"properties\":{\"isTrusted\":true},\"id\":\"ukizyhgsqtnqs\",\"name\":\"txqfpjbq\",\"type\":\"gweeiwd\"}],\"nextLink\":\"mnc\"}")
+            "{\"value\":[{\"properties\":{\"isTrusted\":true},\"id\":\"xlapjajod\",\"name\":\"krrwepgqvqokql\",\"type\":\"jqgir\"},{\"properties\":{\"isTrusted\":false},\"id\":\"yvxchpqvctsfae\",\"name\":\"hwwskn\",\"type\":\"tvzuzhasup\"},{\"properties\":{\"isTrusted\":false},\"id\":\"dpgzvzqazv\",\"name\":\"karkptg\",\"type\":\"ngru\"},{\"properties\":{\"isTrusted\":true},\"id\":\"iysjqhe\",\"name\":\"igbeqn\",\"type\":\"uba\"}],\"nextLink\":\"jdeayscse\"}")
             .toObject(GatewayCertificateAuthorityCollection.class);
     }
 

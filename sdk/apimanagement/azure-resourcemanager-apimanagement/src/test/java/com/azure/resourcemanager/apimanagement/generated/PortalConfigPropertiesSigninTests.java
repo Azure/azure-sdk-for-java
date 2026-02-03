@@ -12,14 +12,14 @@ public final class PortalConfigPropertiesSigninTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PortalConfigPropertiesSignin model
-            = BinaryData.fromString("{\"require\":false}").toObject(PortalConfigPropertiesSignin.class);
-        Assertions.assertEquals(false, model.require());
+            = BinaryData.fromString("{\"require\":true}").toObject(PortalConfigPropertiesSignin.class);
+        Assertions.assertTrue(model.require());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortalConfigPropertiesSignin model = new PortalConfigPropertiesSignin().withRequire(false);
+        PortalConfigPropertiesSignin model = new PortalConfigPropertiesSignin().withRequire(true);
         model = BinaryData.fromObject(model).toObject(PortalConfigPropertiesSignin.class);
-        Assertions.assertEquals(false, model.require());
+        Assertions.assertTrue(model.require());
     }
 }

@@ -17,9 +17,9 @@ public class ScanRulesetsDelete {
             = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("{Endpoint}")
                 .buildScanRulesetsClient();
-        // BEGIN:com.azure.analytics.purview.scanning.generated.scanrulesetsdelete.scanrulesetsdelete
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scan-rulesets-delete.scan-rulesets-delete
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = scanRulesetsClient.deleteWithResponse("myRuleSetName", requestOptions);
-        // END:com.azure.analytics.purview.scanning.generated.scanrulesetsdelete.scanrulesetsdelete
+        // END:com.azure.analytics.purview.scanning.generated.scan-rulesets-delete.scan-rulesets-delete
     }
 }

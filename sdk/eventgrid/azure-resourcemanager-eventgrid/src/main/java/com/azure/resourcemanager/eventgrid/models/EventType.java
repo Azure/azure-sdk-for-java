@@ -46,7 +46,7 @@ public interface EventType {
     String description();
 
     /**
-     * Gets the schemaUrl property: Url of the schema for this event type.
+     * Gets the schemaUrl property: URL of the schema for this event type.
      * 
      * @return the schemaUrl value.
      */

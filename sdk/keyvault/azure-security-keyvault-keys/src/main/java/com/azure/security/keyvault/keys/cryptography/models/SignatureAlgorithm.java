@@ -13,54 +13,72 @@ import java.util.Collection;
 public final class SignatureAlgorithm extends ExpandableStringEnum<SignatureAlgorithm> {
 
     /**
-     * Static value PS256 for SignatureAlgorithm.
+     * RSASSA-PSS using SHA-256 and MGF1 with SHA-256, as described in
+     * <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm PS256 = fromString("PS256");
 
     /**
-     * Static value PS384 for SignatureAlgorithm.
+     * RSASSA-PSS using SHA-384 and MGF1 with SHA-384, as described in
+     * <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm PS384 = fromString("PS384");
 
     /**
-     * Static value PS512 for SignatureAlgorithm.
+     * RSASSA-PSS using SHA-512 and MGF1 with SHA-512, as described in
+     * <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm PS512 = fromString("PS512");
 
     /**
-     * Static value RS256 for SignatureAlgorithm.
+     * RSASSA-PKCS1-v1_5 using SHA-256, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm RS256 = fromString("RS256");
 
     /**
-     * Static value RS384 for SignatureAlgorithm.
+     * RSASSA-PKCS1-v1_5 using SHA-384, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm RS384 = fromString("RS384");
 
     /**
-     * Static value RS512 for SignatureAlgorithm.
+     * RSASSA-PKCS1-v1_5 using SHA-512, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm RS512 = fromString("RS512");
 
     /**
-     * Static value ES256 for SignatureAlgorithm.
+     * ECDSA using P-256 and SHA-256, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm ES256 = fromString("ES256");
 
     /**
-     * Static value ES384 for SignatureAlgorithm.
+     * ECDSA using P-384 and SHA-384, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm ES384 = fromString("ES384");
 
     /**
-     * Static value ES512 for SignatureAlgorithm.
+     * ECDSA using P-521 and SHA-512, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm ES512 = fromString("ES512");
 
     /**
-     * Static value ES256K for SignatureAlgorithm.
+     * ECDSA using P-256K and SHA-256, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
      */
     public static final SignatureAlgorithm ES256K = fromString("ES256K");
+
+    /**
+     * HMAC using SHA-256, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
+     */
+    public static final SignatureAlgorithm HS256 = fromString("HS256");
+
+    /**
+     * HMAC using SHA-384, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
+     */
+    public static final SignatureAlgorithm HS384 = fromString("HS384");
+
+    /**
+     * HMAC using SHA-512, as described in <a href="https://tools.ietf.org/html/rfc7518">RFC7518</a>.
+     */
+    public static final SignatureAlgorithm HS512 = fromString("HS512");
 
     /**
      * Creates a new instance of {@link SignatureAlgorithm} without a {@link #toString()} value.

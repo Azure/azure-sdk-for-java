@@ -98,6 +98,27 @@ public interface BackendContract {
     BackendTlsProperties tls();
 
     /**
+     * Gets the circuitBreaker property: Backend Circuit Breaker Configuration.
+     * 
+     * @return the circuitBreaker value.
+     */
+    BackendCircuitBreaker circuitBreaker();
+
+    /**
+     * Gets the pool property: The pool property.
+     * 
+     * @return the pool value.
+     */
+    BackendBaseParametersPool pool();
+
+    /**
+     * Gets the typePropertiesType property: Type of the backend. A backend can be either Single or Pool.
+     * 
+     * @return the typePropertiesType value.
+     */
+    BackendType typePropertiesType();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -149,7 +170,8 @@ public interface BackendContract {
         interface WithCreate extends DefinitionStages.WithUrl, DefinitionStages.WithProtocol,
             DefinitionStages.WithTitle, DefinitionStages.WithDescription, DefinitionStages.WithResourceId,
             DefinitionStages.WithProperties, DefinitionStages.WithCredentials, DefinitionStages.WithProxy,
-            DefinitionStages.WithTls, DefinitionStages.WithIfMatch {
+            DefinitionStages.WithTls, DefinitionStages.WithCircuitBreaker, DefinitionStages.WithPool,
+            DefinitionStages.WithTypePropertiesType, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              * 
@@ -286,6 +308,45 @@ public interface BackendContract {
         }
 
         /**
+         * The stage of the BackendContract definition allowing to specify circuitBreaker.
+         */
+        interface WithCircuitBreaker {
+            /**
+             * Specifies the circuitBreaker property: Backend Circuit Breaker Configuration.
+             * 
+             * @param circuitBreaker Backend Circuit Breaker Configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withCircuitBreaker(BackendCircuitBreaker circuitBreaker);
+        }
+
+        /**
+         * The stage of the BackendContract definition allowing to specify pool.
+         */
+        interface WithPool {
+            /**
+             * Specifies the pool property: The pool property..
+             * 
+             * @param pool The pool property.
+             * @return the next definition stage.
+             */
+            WithCreate withPool(BackendBaseParametersPool pool);
+        }
+
+        /**
+         * The stage of the BackendContract definition allowing to specify typePropertiesType.
+         */
+        interface WithTypePropertiesType {
+            /**
+             * Specifies the typePropertiesType property: Type of the backend. A backend can be either Single or Pool..
+             * 
+             * @param typePropertiesType Type of the backend. A backend can be either Single or Pool.
+             * @return the next definition stage.
+             */
+            WithCreate withTypePropertiesType(BackendType typePropertiesType);
+        }
+
+        /**
          * The stage of the BackendContract definition allowing to specify ifMatch.
          */
         interface WithIfMatch {
@@ -313,7 +374,8 @@ public interface BackendContract {
      */
     interface Update extends UpdateStages.WithUrl, UpdateStages.WithProtocol, UpdateStages.WithTitle,
         UpdateStages.WithDescription, UpdateStages.WithResourceId, UpdateStages.WithProperties,
-        UpdateStages.WithCredentials, UpdateStages.WithProxy, UpdateStages.WithTls, UpdateStages.WithIfMatch {
+        UpdateStages.WithCredentials, UpdateStages.WithProxy, UpdateStages.WithTls, UpdateStages.WithCircuitBreaker,
+        UpdateStages.WithPool, UpdateStages.WithType, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -451,6 +513,45 @@ public interface BackendContract {
              * @return the next definition stage.
              */
             Update withTls(BackendTlsProperties tls);
+        }
+
+        /**
+         * The stage of the BackendContract update allowing to specify circuitBreaker.
+         */
+        interface WithCircuitBreaker {
+            /**
+             * Specifies the circuitBreaker property: Backend Circuit Breaker Configuration.
+             * 
+             * @param circuitBreaker Backend Circuit Breaker Configuration.
+             * @return the next definition stage.
+             */
+            Update withCircuitBreaker(BackendCircuitBreaker circuitBreaker);
+        }
+
+        /**
+         * The stage of the BackendContract update allowing to specify pool.
+         */
+        interface WithPool {
+            /**
+             * Specifies the pool property: The pool property..
+             * 
+             * @param pool The pool property.
+             * @return the next definition stage.
+             */
+            Update withPool(BackendBaseParametersPool pool);
+        }
+
+        /**
+         * The stage of the BackendContract update allowing to specify type.
+         */
+        interface WithType {
+            /**
+             * Specifies the type property: Type of the backend. A backend can be either Single or Pool..
+             * 
+             * @param type Type of the backend. A backend can be either Single or Pool.
+             * @return the next definition stage.
+             */
+            Update withType(BackendType type);
         }
 
         /**

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Generated;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,48 +22,57 @@ public class EloquaLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
+    @Generated
     private String type = "Eloqua";
 
     /*
      * The endpoint of the Eloqua server. (i.e. eloqua.example.com)
      */
+    @Generated
     private Object endpoint;
 
     /*
      * The site name and user name of your Eloqua account in the form: sitename/username. (i.e. Eloqua/Alice)
      */
+    @Generated
     private Object username;
 
     /*
      * The password corresponding to the user name.
      */
+    @Generated
     private SecretBase password;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
+    @Generated
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
+    @Generated
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
+    @Generated
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
+    @Generated
     private Object encryptedCredential;
 
     /**
      * Creates an instance of EloquaLinkedService class.
      */
+    @Generated
     public EloquaLinkedService() {
     }
 
@@ -71,6 +81,7 @@ public class EloquaLinkedService extends LinkedService {
      * 
      * @return the type value.
      */
+    @Generated
     @Override
     public String getType() {
         return this.type;
@@ -81,6 +92,7 @@ public class EloquaLinkedService extends LinkedService {
      * 
      * @return the endpoint value.
      */
+    @Generated
     public Object getEndpoint() {
         return this.endpoint;
     }
@@ -91,6 +103,7 @@ public class EloquaLinkedService extends LinkedService {
      * @param endpoint the endpoint value to set.
      * @return the EloquaLinkedService object itself.
      */
+    @Generated
     public EloquaLinkedService setEndpoint(Object endpoint) {
         this.endpoint = endpoint;
         return this;
@@ -102,6 +115,7 @@ public class EloquaLinkedService extends LinkedService {
      * 
      * @return the username value.
      */
+    @Generated
     public Object getUsername() {
         return this.username;
     }
@@ -113,6 +127,7 @@ public class EloquaLinkedService extends LinkedService {
      * @param username the username value to set.
      * @return the EloquaLinkedService object itself.
      */
+    @Generated
     public EloquaLinkedService setUsername(Object username) {
         this.username = username;
         return this;
@@ -123,6 +138,7 @@ public class EloquaLinkedService extends LinkedService {
      * 
      * @return the password value.
      */
+    @Generated
     public SecretBase getPassword() {
         return this.password;
     }
@@ -133,6 +149,7 @@ public class EloquaLinkedService extends LinkedService {
      * @param password the password value to set.
      * @return the EloquaLinkedService object itself.
      */
+    @Generated
     public EloquaLinkedService setPassword(SecretBase password) {
         this.password = password;
         return this;
@@ -144,6 +161,7 @@ public class EloquaLinkedService extends LinkedService {
      * 
      * @return the useEncryptedEndpoints value.
      */
+    @Generated
     public Object getUseEncryptedEndpoints() {
         return this.useEncryptedEndpoints;
     }
@@ -155,6 +173,7 @@ public class EloquaLinkedService extends LinkedService {
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the EloquaLinkedService object itself.
      */
+    @Generated
     public EloquaLinkedService setUseEncryptedEndpoints(Object useEncryptedEndpoints) {
         this.useEncryptedEndpoints = useEncryptedEndpoints;
         return this;
@@ -166,6 +185,7 @@ public class EloquaLinkedService extends LinkedService {
      * 
      * @return the useHostVerification value.
      */
+    @Generated
     public Object getUseHostVerification() {
         return this.useHostVerification;
     }
@@ -177,6 +197,7 @@ public class EloquaLinkedService extends LinkedService {
      * @param useHostVerification the useHostVerification value to set.
      * @return the EloquaLinkedService object itself.
      */
+    @Generated
     public EloquaLinkedService setUseHostVerification(Object useHostVerification) {
         this.useHostVerification = useHostVerification;
         return this;
@@ -188,6 +209,7 @@ public class EloquaLinkedService extends LinkedService {
      * 
      * @return the usePeerVerification value.
      */
+    @Generated
     public Object getUsePeerVerification() {
         return this.usePeerVerification;
     }
@@ -199,6 +221,7 @@ public class EloquaLinkedService extends LinkedService {
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the EloquaLinkedService object itself.
      */
+    @Generated
     public EloquaLinkedService setUsePeerVerification(Object usePeerVerification) {
         this.usePeerVerification = usePeerVerification;
         return this;
@@ -210,6 +233,7 @@ public class EloquaLinkedService extends LinkedService {
      * 
      * @return the encryptedCredential value.
      */
+    @Generated
     public Object getEncryptedCredential() {
         return this.encryptedCredential;
     }
@@ -221,6 +245,7 @@ public class EloquaLinkedService extends LinkedService {
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the EloquaLinkedService object itself.
      */
+    @Generated
     public EloquaLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
@@ -229,6 +254,17 @@ public class EloquaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
+    @Override
+    public EloquaLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
     @Override
     public EloquaLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
@@ -238,6 +274,7 @@ public class EloquaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EloquaLinkedService setDescription(String description) {
         super.setDescription(description);
@@ -247,6 +284,7 @@ public class EloquaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EloquaLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
@@ -256,6 +294,7 @@ public class EloquaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public EloquaLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
@@ -265,9 +304,11 @@ public class EloquaLinkedService extends LinkedService {
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -284,10 +325,18 @@ public class EloquaLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("endpoint", this.endpoint);
             jsonWriter.writeUntypedField("username", this.username);
             jsonWriter.writeJsonField("password", this.password);
-            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
-            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
-            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
-            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            if (this.useEncryptedEndpoints != null) {
+                jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+            }
+            if (this.useHostVerification != null) {
+                jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+            }
+            if (this.usePeerVerification != null) {
+                jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+            }
+            if (this.encryptedCredential != null) {
+                jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            }
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -307,6 +356,7 @@ public class EloquaLinkedService extends LinkedService {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the EloquaLinkedService.
      */
+    @Generated
     public static EloquaLinkedService fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             EloquaLinkedService deserializedEloquaLinkedService = new EloquaLinkedService();
@@ -315,7 +365,9 @@ public class EloquaLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedEloquaLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedEloquaLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedEloquaLinkedService.setDescription(reader.getString());

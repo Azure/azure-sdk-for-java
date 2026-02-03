@@ -15,37 +15,34 @@ public final class ListUsagesResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListUsagesResult model = BinaryData.fromString(
-            "{\"value\":[{\"currentValue\":41.2557,\"limit\":14.812088,\"name\":{\"value\":\"rsiwdyjqur\",\"localizedValue\":\"crraueekcsu\"}},{\"currentValue\":1.5593171,\"limit\":12.774044,\"name\":{\"value\":\"ddacbcbgydlqidy\",\"localizedValue\":\"hmptyrilkfbn\"}},{\"currentValue\":55.588596,\"limit\":89.35382,\"name\":{\"value\":\"vzt\",\"localizedValue\":\"nfnqtxjtomals\"}},{\"currentValue\":43.106903,\"limit\":78.589905,\"name\":{\"value\":\"ddepldwqjns\",\"localizedValue\":\"ygleexa\"}}],\"nextLink\":\"mywhsb\"}")
+            "{\"value\":[{\"currentValue\":62.789894,\"limit\":86.50556,\"name\":{\"value\":\"gapyyrmfsv\",\"localizedValue\":\"avbopfp\"}},{\"currentValue\":29.759396,\"limit\":84.622314,\"name\":{\"value\":\"nupgahxku\",\"localizedValue\":\"sjcaacfdmmcpugm\"}},{\"currentValue\":92.74943,\"limit\":65.175865,\"name\":{\"value\":\"pvufhbze\",\"localizedValue\":\"whoqhnlbqnbldxe\"}}],\"nextLink\":\"lgsc\"}")
             .toObject(ListUsagesResult.class);
-        Assertions.assertEquals(41.2557f, model.value().get(0).currentValue());
-        Assertions.assertEquals(14.812088f, model.value().get(0).limit());
-        Assertions.assertEquals("rsiwdyjqur", model.value().get(0).name().value());
-        Assertions.assertEquals("crraueekcsu", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("mywhsb", model.nextLink());
+        Assertions.assertEquals(62.789894f, model.value().get(0).currentValue());
+        Assertions.assertEquals(86.50556f, model.value().get(0).limit());
+        Assertions.assertEquals("gapyyrmfsv", model.value().get(0).name().value());
+        Assertions.assertEquals("avbopfp", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("lgsc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ListUsagesResult model = new ListUsagesResult()
             .withValue(Arrays.asList(
-                new UsageInner().withCurrentValue(41.2557f)
-                    .withLimit(14.812088f)
-                    .withName(new UsageName().withValue("rsiwdyjqur").withLocalizedValue("crraueekcsu")),
-                new UsageInner().withCurrentValue(1.5593171f)
-                    .withLimit(12.774044f)
-                    .withName(new UsageName().withValue("ddacbcbgydlqidy").withLocalizedValue("hmptyrilkfbn")),
-                new UsageInner().withCurrentValue(55.588596f)
-                    .withLimit(89.35382f)
-                    .withName(new UsageName().withValue("vzt").withLocalizedValue("nfnqtxjtomals")),
-                new UsageInner().withCurrentValue(43.106903f)
-                    .withLimit(78.589905f)
-                    .withName(new UsageName().withValue("ddepldwqjns").withLocalizedValue("ygleexa"))))
-            .withNextLink("mywhsb");
+                new UsageInner().withCurrentValue(62.789894f)
+                    .withLimit(86.50556f)
+                    .withName(new UsageName().withValue("gapyyrmfsv").withLocalizedValue("avbopfp")),
+                new UsageInner().withCurrentValue(29.759396f)
+                    .withLimit(84.622314f)
+                    .withName(new UsageName().withValue("nupgahxku").withLocalizedValue("sjcaacfdmmcpugm")),
+                new UsageInner().withCurrentValue(92.74943f)
+                    .withLimit(65.175865f)
+                    .withName(new UsageName().withValue("pvufhbze").withLocalizedValue("whoqhnlbqnbldxe"))))
+            .withNextLink("lgsc");
         model = BinaryData.fromObject(model).toObject(ListUsagesResult.class);
-        Assertions.assertEquals(41.2557f, model.value().get(0).currentValue());
-        Assertions.assertEquals(14.812088f, model.value().get(0).limit());
-        Assertions.assertEquals("rsiwdyjqur", model.value().get(0).name().value());
-        Assertions.assertEquals("crraueekcsu", model.value().get(0).name().localizedValue());
-        Assertions.assertEquals("mywhsb", model.nextLink());
+        Assertions.assertEquals(62.789894f, model.value().get(0).currentValue());
+        Assertions.assertEquals(86.50556f, model.value().get(0).limit());
+        Assertions.assertEquals("gapyyrmfsv", model.value().get(0).name().value());
+        Assertions.assertEquals("avbopfp", model.value().get(0).name().localizedValue());
+        Assertions.assertEquals("lgsc", model.nextLink());
     }
 }

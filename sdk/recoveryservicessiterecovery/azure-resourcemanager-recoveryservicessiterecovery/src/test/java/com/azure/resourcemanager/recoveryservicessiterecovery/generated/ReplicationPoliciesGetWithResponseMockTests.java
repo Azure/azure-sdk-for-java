@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Policy;
@@ -21,20 +21,20 @@ public final class ReplicationPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"friendlyName\":\"sychdcjggcmpncj\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"bnoq\",\"id\":\"owvfxe\",\"name\":\"tzgwjeky\",\"type\":\"irvcpol\"}";
+            = "{\"properties\":{\"friendlyName\":\"enpftk\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"mvxbiubzgh\",\"id\":\"s\",\"name\":\"tbame\",\"type\":\"rbusnaq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Policy response = manager.replicationPolicies()
-            .getWithResponse("rs", "vvmrn", "rdijox", com.azure.core.util.Context.NONE)
+            .getWithResponse("hvdulymkgjsr", "h", "f", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sychdcjggcmpncj", response.properties().friendlyName());
-        Assertions.assertEquals("bnoq", response.location());
+        Assertions.assertEquals("enpftk", response.properties().friendlyName());
+        Assertions.assertEquals("mvxbiubzgh", response.location());
     }
 }
