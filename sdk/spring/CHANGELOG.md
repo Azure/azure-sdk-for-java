@@ -22,17 +22,17 @@ This section includes changes in `spring-cloud-azure-appconfiguration-config` mo
 
 - Fixed bug where connection string validation occurred even when `spring.cloud.azure.appconfiguration.enabled` is `false`. ([#47587](https://github.com/Azure/azure-sdk-for-java/issues/47587))
 
-### Spring Cloud Azure Test Containers
+### Spring Cloud Azure Docker Compose
 
-This section includes changes in `spring-cloud-azure-testcontainers` module.
+This section includes changes in `spring-cloud-azure-docker-compose` module.
 
 #### New Features
 
 - Add ServiceBusDockerComposeConnectionDetailsFactory. [44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
 
-### Spring Cloud Azure Docker Compose
+### Spring Cloud Azure Test Containers
 
-This section includes changes in `spring-cloud-azure-docker-compose` module.
+This section includes changes in `spring-cloud-azure-testcontainers` module.
 
 #### New Features
 
