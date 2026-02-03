@@ -215,4 +215,44 @@ class AzureAuthenticationTemplateTest {
         assertNotNull(template.getBlockTimeout());
         assertEquals(template.getBlockTimeout().getSeconds(), 35);
     }
+
+    @Test
+    void useSocketTimeoutWhenGetTokenTimeoutNotSet() {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        Properties properties = new Properties();
+        properties.setProperty("socketTimeout", "10");
+        template.init(properties);
+        assertNotNull(template.getBlockTimeout());
+        assertEquals(10, template.getBlockTimeout().getSeconds());
+    }
+
+    @Test
+    void getTokenTimeoutTakesPrecedenceOverSocketTimeout() {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        Properties properties = new Properties();
+        properties.setProperty("socketTimeout", "10");
+        properties.setProperty(AuthProperty.GET_TOKEN_TIMEOUT.getPropertyKey(), "25");
+        template.init(properties);
+        assertNotNull(template.getBlockTimeout());
+        assertEquals(25, template.getBlockTimeout().getSeconds());
+    }
+
+    @Test
+    void useDefaultTimeoutWhenSocketTimeoutInvalid() {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        Properties properties = new Properties();
+        properties.setProperty("socketTimeout", "invalid");
+        template.init(properties);
+        assertNotNull(template.getBlockTimeout());
+        assertEquals(30, template.getBlockTimeout().getSeconds());
+    }
+
+    @Test
+    void useDefaultTimeoutWhenSocketTimeoutNotSet() {
+        AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+        Properties properties = new Properties();
+        template.init(properties);
+        assertNotNull(template.getBlockTimeout());
+        assertEquals(30, template.getBlockTimeout().getSeconds());
+    }
 }

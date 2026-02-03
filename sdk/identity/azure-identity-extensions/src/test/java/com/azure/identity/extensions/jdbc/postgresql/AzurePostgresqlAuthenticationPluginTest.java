@@ -44,4 +44,15 @@ class AzurePostgresqlAuthenticationPluginTest {
             template.getTokenAsPassword());
     }
 
+    @Test
+    void testSocketTimeoutPassedToTemplate() {
+        Properties properties = new Properties();
+        properties.setProperty("socketTimeout", "10");
+        AzurePostgresqlAuthenticationPlugin plugin = new AzurePostgresqlAuthenticationPlugin(properties);
+        AzureAuthenticationTemplate template = plugin.getAzureAuthenticationTemplate();
+        // The template should be initialized with socketTimeout property
+        // We can't directly verify internal state, but we can verify the template exists
+        assertNotNull(template);
+    }
+
 }

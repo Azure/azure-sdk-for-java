@@ -79,6 +79,18 @@ public class AzureAuthenticationTemplate {
 
             if (properties.containsKey(GET_TOKEN_TIMEOUT.getPropertyKey())) {
                 accessTokenTimeoutInSeconds = Long.parseLong(GET_TOKEN_TIMEOUT.get(properties));
+            } else if (properties.containsKey("socketTimeout")) {
+                // If socketTimeout is specified in the JDBC URL, use it for token retrieval timeout
+                // to ensure authentication respects the socket timeout setting
+                try {
+                    accessTokenTimeoutInSeconds = Long.parseLong(properties.getProperty("socketTimeout"));
+                    LOGGER.verbose("Using socketTimeout for access token timeout: {} seconds.",
+                        accessTokenTimeoutInSeconds);
+                } catch (NumberFormatException e) {
+                    accessTokenTimeoutInSeconds = 30;
+                    LOGGER.warning("Invalid socketTimeout value, using default access token timeout: {} seconds.",
+                        accessTokenTimeoutInSeconds);
+                }
             } else {
                 accessTokenTimeoutInSeconds = 30;
                 LOGGER.verbose("Use default access token timeout: {} seconds.", accessTokenTimeoutInSeconds);
