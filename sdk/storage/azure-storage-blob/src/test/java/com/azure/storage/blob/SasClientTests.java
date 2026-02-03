@@ -29,9 +29,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
-import com.azure.storage.common.test.shared.SasTestData;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
-import com.azure.storage.common.test.shared.UserDelegationSasTestData;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,12 +42,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -941,7 +937,7 @@ public class SasClientTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
-    @MethodSource("blobSasImplUtilStringToSignSupplier")
+    @MethodSource("com.azure.storage.common.test.shared.SasTestData#blobSasImplUtilStringToSignSupplier")
     public void blobSasImplUtilStringToSign(OffsetDateTime startTime, String identifier, SasIpRange ipRange,
         SasProtocol protocol, String snapId, String cacheControl, String disposition, String encoding, String language,
         String type, String versionId, String encryptionScope, String expectedStringToSign) {
@@ -952,11 +948,9 @@ public class SasClientTests extends BlobTestBase {
 
         String expected = String.format(expectedStringToSign, ENVIRONMENT.getPrimaryAccount().getName());
 
-        v.setStartTime(startTime);
-
-        v.setSasIpRange(ipRange);
-
-        v.setIdentifier(identifier)
+        v.setStartTime(startTime)
+            .setSasIpRange(ipRange)
+            .setIdentifier(identifier)
             .setProtocol(protocol)
             .setCacheControl(cacheControl)
             .setContentDisposition(disposition)
@@ -975,117 +969,9 @@ public class SasClientTests extends BlobTestBase {
         assertEquals(token.getSignature(), ENVIRONMENT.getPrimaryAccount().getCredential().computeHmac256(expected));
     }
 
-    /*
-    We don't test the blob or containerName properties because canonicalized resource is always added as at least
-    /blob/accountName. We test canonicalization of resources later. Again, this is not to test a fully functional
-    sas but the construction of the string to sign.
-    Signed resource is tested elsewhere, as we work some minor magic in choosing which value to use.
-    */
-    private static Stream<Arguments> blobSasImplUtilStringToSignSupplier() {
-        return Stream.of(
-            //Start Time
-            new SasTestData().setStartTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setExpectedStringToSign("r\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Identifier
-            new SasTestData().setIdentifier("id")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\nid\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Sas IP Range
-            new SasTestData().setIpRange(new SasIpRange().setIpMin("ip"))
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\nip\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Sas Protocol
-            new SasTestData().setProtocol(SasProtocol.HTTPS_ONLY)
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n" + SasProtocol.HTTPS_ONLY + "\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Snapshot ID
-            new SasTestData().setSnapshotId("snapId")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nbs\nsnapId\n\n\n\n\n\n")
-                .toArguments(),
-            // Cache Control
-            new SasTestData().setCacheControl("control")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\ncontrol\n\n\n\n")
-                .toArguments(),
-            // Content Disposition
-            new SasTestData().setDisposition("disposition")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\ndisposition\n\n\n")
-                .toArguments(),
-            // Content Encoding
-            new SasTestData().setEncoding("encoding")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\nencoding\n\n")
-                .toArguments(),
-            // Content Language
-            new SasTestData().setLanguage("language")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\nlanguage\n")
-                .toArguments(),
-            // Content Type
-            new SasTestData().setType("type")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\ntype")
-                .toArguments(),
-            // Version ID
-            new SasTestData().setVersionId("versionId")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nbv\nversionId\n\n\n\n\n\n")
-                .toArguments(),
-            // Encryption Scope
-            new SasTestData().setEncryptionScope("encryptionScope")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\nencryptionScope\n\n\n\n\n")
-                .toArguments());
-    }
-
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")
     @ParameterizedTest
-    @MethodSource("blobSasImplUtilStringToSignUserDelegationKeySupplier")
+    @MethodSource("com.azure.storage.common.test.shared.UserDelegationSasTestData#blobSasImplUtilStringToSignUserDelegationKeySupplier")
     public void blobSasImplUtilStringToSignUserDelegationKey(OffsetDateTime startTime, String keyOid, String keyTid,
         OffsetDateTime keyStart, OffsetDateTime keyExpiry, String keyService, String keyVersion, String keyValue,
         SasIpRange ipRange, SasProtocol protocol, String snapId, String cacheControl, String disposition,
@@ -1099,10 +985,9 @@ public class SasClientTests extends BlobTestBase {
 
         String expected = String.format(expectedStringToSign, ENVIRONMENT.getPrimaryAccount().getName());
 
-        v.setStartTime(startTime);
-        v.setSasIpRange(ipRange);
-
-        v.setProtocol(protocol)
+        v.setStartTime(startTime)
+            .setSasIpRange(ipRange)
+            .setProtocol(protocol)
             .setCacheControl(cacheControl)
             .setContentDisposition(disposition)
             .setContentEncoding(encoding)
@@ -1131,311 +1016,6 @@ public class SasClientTests extends BlobTestBase {
 
         assertEqualsForEachLine(stringToSign, expected);
         assertEquals(token.getSignature(), StorageImplUtils.computeHMac256(key.getValue(), expected));
-    }
-
-    /*
-    We test string to sign functionality directly related toUserDelegation sas specific parameters
-    */
-    private static Stream<Arguments> blobSasImplUtilStringToSignUserDelegationKeySupplier() {
-        // Use LinkedHashMap to ensure deterministic iteration order
-        Map<String, String> singleHeader = new LinkedHashMap<>();
-        singleHeader.put("x-ms-encryption-key-sha256", "hashvalue");
-
-        Map<String, String> singleQueryParam = new LinkedHashMap<>();
-        singleQueryParam.put("comp", "blocklist");
-
-        Map<String, String> multipleHeaders = new LinkedHashMap<>();
-        multipleHeaders.put("x-ms-encryption-key-sha256", "hashvalue");
-        multipleHeaders.put("x-ms-source-if-match", "etag");
-
-        Map<String, String> multipleQueryParams = new LinkedHashMap<>();
-        multipleQueryParams.put("blockid", "blockidvalue");
-        multipleQueryParams.put("comp", "blocklist");
-
-        return Stream.of(
-            //StartTime
-            new UserDelegationSasTestData().setStartTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Key Object ID
-            new UserDelegationSasTestData().setKeyOid("11111111-1111-1111-1111-111111111111")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n11111111-1111-1111-1111-111111111111\n\n\n\n\n\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Key Tenant ID
-            new UserDelegationSasTestData().setKeyTid("22222222-2222-2222-2222-222222222222")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n22222222-2222-2222-2222-222222222222\n\n\n\n\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Key Start Time
-            new UserDelegationSasTestData()
-                .setKeyStart(OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC))
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Key Expiry Time
-            new UserDelegationSasTestData()
-                .setKeyExpiry(OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC))
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n2018-01-01T00:00:00Z\n\n\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Key Service
-            new UserDelegationSasTestData().setKeyService("b")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\nb\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Key Version
-            new UserDelegationSasTestData().setKeyVersion("2018-06-17")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n2018-06-17\n\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Sas Ip Range
-            new UserDelegationSasTestData().setIpRange(new SasIpRange().setIpMin("ip"))
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\nip\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Sas Protocol
-            new UserDelegationSasTestData().setProtocol(SasProtocol.HTTPS_ONLY)
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n" + SasProtocol.HTTPS_ONLY + "\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Snapshot ID
-            new UserDelegationSasTestData().setSnapshotId("snapId")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nbs\nsnapId\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Cache Control
-            new UserDelegationSasTestData().setCacheControl("control")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\ncontrol\n\n\n\n")
-                .toArguments(),
-            // Content Disposition
-            new UserDelegationSasTestData().setDisposition("disposition")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\ndisposition\n\n\n")
-                .toArguments(),
-            // Content Encoding
-            new UserDelegationSasTestData().setEncoding("encoding")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\nencoding\n\n")
-                .toArguments(),
-            // Content Language
-            new UserDelegationSasTestData().setLanguage("language")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n\nlanguage\n")
-                .toArguments(),
-            // Content Type
-            new UserDelegationSasTestData().setType("type")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n\n\ntype")
-                .toArguments(),
-            // Version ID
-            new UserDelegationSasTestData().setVersionId("versionId")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nbv\nversionId\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Saoid - Preauthorized Agent Object ID
-            new UserDelegationSasTestData().setSaoid("saoid")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nsaoid\n\n\n\n\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Correlation ID
-            new UserDelegationSasTestData().setCid("cid")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\ncid\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Encryption Scope
-            new UserDelegationSasTestData().setEncryptionScope("encryptionScope")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\nencryptionScope\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Delegated User Object ID
-            new UserDelegationSasTestData().setDelegatedOid("delegatedOid")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\ndelegatedOid\n\n\n"
-                    + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Request Headers (single header)
-            new UserDelegationSasTestData().setRequestHeaders(singleHeader)
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\nx-ms-encryption-key-sha256:hashvalue\n\n\n\n\n\n\n")
-                .toArguments(),
-            // Request Query Params (single param)
-            new UserDelegationSasTestData().setRequestQueryParameters(singleQueryParam)
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\n\n\ncomp:blocklist\n\n\n\n\n")
-                .toArguments(),
-            // Request Headers and Query Params (single each)
-            new UserDelegationSasTestData().setRequestQueryParameters(singleQueryParam)
-                .setRequestHeaders(singleHeader)
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\nx-ms-encryption-key-sha256:hashvalue\n\n\ncomp:blocklist\n\n\n\n\n")
-                .toArguments(),
-            // Test multiple headers and multiple query parameters
-            new UserDelegationSasTestData().setRequestHeaders(multipleHeaders)
-                .setRequestQueryParameters(multipleQueryParams)
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setExpectedStringToSign("r\n\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
-                    + "\nb\n\n\nx-ms-encryption-key-sha256:hashvalue\n"
-                    + "x-ms-source-if-match:etag\n\n\nblockid:blockidvalue\n" + "comp:blocklist\n\n\n\n\n")
-                .toArguments(),
-            // Test with all parameters populated
-            new UserDelegationSasTestData().setStartTime(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC))
-                .setKeyOid("11111111-1111-1111-1111-111111111111")
-                .setKeyTid("22222222-2222-2222-2222-222222222222")
-                .setKeyStart(OffsetDateTime.of(LocalDateTime.of(2018, 1, 1, 0, 0), ZoneOffset.UTC))
-                .setKeyExpiry(OffsetDateTime.of(LocalDateTime.of(2018, 6, 1, 0, 0), ZoneOffset.UTC))
-                .setKeyService("b")
-                .setKeyVersion("2018-06-17")
-                .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setIpRange(new SasIpRange().setIpMin("ip"))
-                .setProtocol(SasProtocol.HTTPS_ONLY)
-                .setSnapshotId("snapId")
-                .setCacheControl("control")
-                .setDisposition("disposition")
-                .setEncoding("encoding")
-                .setLanguage("language")
-                .setType("type")
-                .setVersionId(null) // versionId and snapId are mutually exclusive
-                .setSaoid("saoid")
-                .setCid("cid")
-                .setEncryptionScope("encryptionScope")
-                .setDelegatedOid("delegatedOid")
-                .setRequestHeaders(multipleHeaders)
-                .setRequestQueryParameters(multipleQueryParams)
-                .setExpectedStringToSign("r\n" // permissions
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) // startTime
-                    + "\n"
-                    + Constants.ISO_8601_UTC_DATE_FORMATTER
-                        .format(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)) // expiryTime
-                    + "\n/blob/%s/containerName/blobName\n" // canonicalName
-                    + "11111111-1111-1111-1111-111111111111\n" // keyOid
-                    + "22222222-2222-2222-2222-222222222222\n" // keyTid
-                    + "2018-01-01T00:00:00Z\n" // keyStart
-                    + "2018-06-01T00:00:00Z\n" // keyExpiry
-                    + "b\n" // keyService
-                    + "2018-06-17\n" // keyVersion
-                    + "saoid\n" // saoid (preauthorizedAgentObjectId)
-                    + "\n" // suoid (always empty)
-                    + "cid\n" // cid (correlationId)
-                    + "\n" // delegatedUserTenantId (removed - empty)
-                    + "delegatedOid\n" // delegatedUserObjectId
-                    + "ip\n" // sasIpRange
-                    + SasProtocol.HTTPS_ONLY + "\n" // protocol
-                    + Constants.SAS_SERVICE_VERSION + "\n" // VERSION
-                    + "bs\n" // resource (blob snapshot)
-                    + "snapId\n" // snapId (versionSegment with snapId)
-                    + "encryptionScope\n" // encryptionScope
-                    + "x-ms-encryption-key-sha256:hashvalue\n" // requestHeaders (multiple)
-                    + "x-ms-source-if-match:etag\n\n" // requestHeaders continuation + newline separator
-                    + "\nblockid:blockidvalue\n" // requestQueryParameters (multiple, with prepended newline)
-                    + "comp:blocklist\n" // requestQueryParameters continuation
-                    + "control\n" // cacheControl
-                    + "disposition\n" // contentDisposition
-                    + "encoding\n" // contentEncoding
-                    + "language\n" // contentLanguage
-                    + "type" // contentType (no trailing newline)
-                )
-                .toArguments());
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-12-06")

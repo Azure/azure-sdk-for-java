@@ -4,7 +4,6 @@
 package com.azure.storage.file.datalake.sas;
 
 import com.azure.core.util.Configuration;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.SasIpRange;
