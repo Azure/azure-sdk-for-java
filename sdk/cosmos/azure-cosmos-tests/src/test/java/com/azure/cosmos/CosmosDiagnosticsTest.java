@@ -555,7 +555,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     @Test(groups = {"fast"})
     public void databaseAccountToClients() {
         CosmosClient testClient = null;
-        CosmosClient testClient2 = null;
         try {
             testClient = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
@@ -589,7 +588,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             String intString = substrings[substrings.length-1];
             int intValue = Integer.parseInt(intString);
 
-            testClient2 = new CosmosClientBuilder()
+
+            CosmosClient testClient2 = new CosmosClientBuilder()
                 .endpoint(TestConfigurations.HOST)
                 .key(TestConfigurations.MASTER_KEY)
                 .contentResponseOnWriteEnabled(true)
@@ -615,9 +615,13 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             intString = substrings[substrings.length-1];
             assertThat(Integer.parseInt(intString)).isEqualTo(intValue+1);
 
+            //close second client
+            testClient2.close();
+
         } finally {
-            safeCloseSyncClient(testClient);
-            safeCloseSyncClient(testClient2);
+            if (testClient != null) {
+                testClient.close();
+            }
         }
     }
 
