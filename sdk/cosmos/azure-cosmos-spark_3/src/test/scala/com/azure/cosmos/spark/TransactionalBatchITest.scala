@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import com.azure.cosmos.models.{PartitionKey, PartitionKeyBuilder}
-import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
 import com.azure.cosmos.test.faultinjection._
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.sql.types._
@@ -50,7 +50,7 @@ class TransactionalBatchITest extends IntegrationSpec
     )
 
     val operationsDf = spark.createDataFrame(batchOperations.asJava, schema)
-    
+
     // Execute transactional batch using bulk transactional mode
     operationsDf.write
       .format("cosmos.oltp")
