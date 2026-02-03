@@ -18,28 +18,31 @@ public final class ProjectInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProjectInner model = BinaryData.fromString(
-            "{\"identity\":{\"type\":\"None\",\"tenantId\":\"aj\",\"principalId\":\"wxacevehj\",\"userAssignedIdentities\":{\"gv\":{\"principalId\":\"oafgaoql\",\"clientId\":\"aeylinm\"},\"prlpy\":{\"principalId\":\"r\",\"clientId\":\"hriypoqeyhlqhy\"}}},\"tags\":{\"smexiitdf\":\"iq\",\"nustgnljh\":\"xtyasiibmiyb\"},\"location\":\"g\",\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"avmqfoudor\",\"description\":\"gyyprotwy\",\"endpoints\":{\"bxhugcmjkavlgorb\":\"d\"},\"isDefault\":false},\"etag\":\"mdtzfjltfvnzc\",\"id\":\"jtotpvopvpbd\",\"name\":\"zq\",\"type\":\"qqihedsvqwthmk\"}")
+            "{\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"dohzjq\",\"principalId\":\"ucoig\",\"userAssignedIdentities\":{\"dlfgtdysnaq\":{\"principalId\":\"cnwfepbnwgfmxjg\",\"clientId\":\"bjb\"},\"antkwcegyamlbns\":{\"principalId\":\"lqbctqhamzjrw\",\"clientId\":\"qzeqyjleziunjxdf\"}}},\"tags\":{\"m\":\"cjjvpilguooqja\"},\"location\":\"tg\",\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"kjbsah\",\"description\":\"dt\",\"endpoints\":{\"cslmotoebnfxo\":\"lq\",\"razftxejwabmdujt\":\"vcjkgd\",\"m\":\"vcopex\"},\"isDefault\":false},\"etag\":\"u\",\"id\":\"lkyqltqsrog\",\"name\":\"uwkffdjktsysid\",\"type\":\"vclglxnfuij\"}")
             .toObject(ProjectInner.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("iq", model.tags().get("smexiitdf"));
-        Assertions.assertEquals("g", model.location());
-        Assertions.assertEquals("avmqfoudor", model.properties().displayName());
-        Assertions.assertEquals("gyyprotwy", model.properties().description());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("cjjvpilguooqja", model.tags().get("m"));
+        Assertions.assertEquals("tg", model.location());
+        Assertions.assertEquals("kjbsah", model.properties().displayName());
+        Assertions.assertEquals("dt", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProjectInner model = new ProjectInner().withIdentity(new Identity().withType(ResourceIdentityType.NONE)
-            .withUserAssignedIdentities(mapOf("gv", new UserAssignedIdentity(), "prlpy", new UserAssignedIdentity())))
-            .withTags(mapOf("smexiitdf", "iq", "nustgnljh", "xtyasiibmiyb"))
-            .withLocation("g")
-            .withProperties(new ProjectProperties().withDisplayName("avmqfoudor").withDescription("gyyprotwy"));
+        ProjectInner model
+            = new ProjectInner()
+                .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("dlfgtdysnaq", new UserAssignedIdentity(), "antkwcegyamlbns",
+                        new UserAssignedIdentity())))
+                .withTags(mapOf("m", "cjjvpilguooqja"))
+                .withLocation("tg")
+                .withProperties(new ProjectProperties().withDisplayName("kjbsah").withDescription("dt"));
         model = BinaryData.fromObject(model).toObject(ProjectInner.class);
-        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("iq", model.tags().get("smexiitdf"));
-        Assertions.assertEquals("g", model.location());
-        Assertions.assertEquals("avmqfoudor", model.properties().displayName());
-        Assertions.assertEquals("gyyprotwy", model.properties().description());
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("cjjvpilguooqja", model.tags().get("m"));
+        Assertions.assertEquals("tg", model.location());
+        Assertions.assertEquals("kjbsah", model.properties().displayName());
+        Assertions.assertEquals("dt", model.properties().description());
     }
 
     // Use "Map.of" if available

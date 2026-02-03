@@ -13,21 +13,21 @@ public final class ScheduledEntryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEntry model
-            = BinaryData.fromString("{\"weekDay\":\"Tuesday\",\"startHourUtc\":1715684823,\"durationHours\":279788749}")
+            = BinaryData.fromString("{\"weekDay\":\"Monday\",\"startHourUtc\":2014891569,\"durationHours\":1921621659}")
                 .toObject(ScheduledEntry.class);
-        Assertions.assertEquals(WeekDay.TUESDAY, model.weekDay());
-        Assertions.assertEquals(1715684823, model.startHourUtc());
-        Assertions.assertEquals(279788749, model.durationHours());
+        Assertions.assertEquals(WeekDay.MONDAY, model.weekDay());
+        Assertions.assertEquals(2014891569, model.startHourUtc());
+        Assertions.assertEquals(1921621659, model.durationHours());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledEntry model = new ScheduledEntry().withWeekDay(WeekDay.TUESDAY)
-            .withStartHourUtc(1715684823)
-            .withDurationHours(279788749);
+        ScheduledEntry model = new ScheduledEntry().withWeekDay(WeekDay.MONDAY)
+            .withStartHourUtc(2014891569)
+            .withDurationHours(1921621659);
         model = BinaryData.fromObject(model).toObject(ScheduledEntry.class);
-        Assertions.assertEquals(WeekDay.TUESDAY, model.weekDay());
-        Assertions.assertEquals(1715684823, model.startHourUtc());
-        Assertions.assertEquals(279788749, model.durationHours());
+        Assertions.assertEquals(WeekDay.MONDAY, model.weekDay());
+        Assertions.assertEquals(2014891569, model.startHourUtc());
+        Assertions.assertEquals(1921621659, model.durationHours());
     }
 }

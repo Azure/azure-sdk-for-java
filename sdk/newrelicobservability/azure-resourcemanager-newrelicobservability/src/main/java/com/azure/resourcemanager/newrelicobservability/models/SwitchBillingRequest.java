@@ -33,7 +33,7 @@ public final class SwitchBillingRequest implements JsonSerializable<SwitchBillin
     private PlanData planData;
 
     /*
-     * User Email
+     * Reusable representation of an email address
      */
     private String userEmail;
 
@@ -104,7 +104,7 @@ public final class SwitchBillingRequest implements JsonSerializable<SwitchBillin
     }
 
     /**
-     * Get the userEmail property: User Email.
+     * Get the userEmail property: Reusable representation of an email address.
      * 
      * @return the userEmail value.
      */
@@ -113,7 +113,7 @@ public final class SwitchBillingRequest implements JsonSerializable<SwitchBillin
     }
 
     /**
-     * Set the userEmail property: User Email.
+     * Set the userEmail property: Reusable representation of an email address.
      * 
      * @param userEmail the userEmail value to set.
      * @return the SwitchBillingRequest object itself.

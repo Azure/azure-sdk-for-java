@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class JobExecutionBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobExecutionBaseInner model
-            = BinaryData.fromString("{\"name\":\"kdqkkyihzt\",\"id\":\"qm\"}").toObject(JobExecutionBaseInner.class);
-        Assertions.assertEquals("kdqkkyihzt", model.name());
-        Assertions.assertEquals("qm", model.id());
+        JobExecutionBaseInner model = BinaryData.fromString("{\"name\":\"biuimzdlyjdfq\",\"id\":\"kyoqufdv\"}")
+            .toObject(JobExecutionBaseInner.class);
+        Assertions.assertEquals("biuimzdlyjdfq", model.name());
+        Assertions.assertEquals("kyoqufdv", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobExecutionBaseInner model = new JobExecutionBaseInner().withName("kdqkkyihzt").withId("qm");
+        JobExecutionBaseInner model = new JobExecutionBaseInner().withName("biuimzdlyjdfq").withId("kyoqufdv");
         model = BinaryData.fromObject(model).toObject(JobExecutionBaseInner.class);
-        Assertions.assertEquals("kdqkkyihzt", model.name());
-        Assertions.assertEquals("qm", model.id());
+        Assertions.assertEquals("biuimzdlyjdfq", model.name());
+        Assertions.assertEquals("kyoqufdv", model.id());
     }
 }

@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class TrustSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrustSettings model
-            = BinaryData.fromString("{\"trustList\":\"fphsdyhtozfikdow\"}").toObject(TrustSettings.class);
-        Assertions.assertEquals("fphsdyhtozfikdow", model.trustList());
+        TrustSettings model = BinaryData.fromString("{\"trustList\":\"irels\"}").toObject(TrustSettings.class);
+        Assertions.assertEquals("irels", model.trustList());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrustSettings model = new TrustSettings().withTrustList("fphsdyhtozfikdow");
+        TrustSettings model = new TrustSettings().withTrustList("irels");
         model = BinaryData.fromObject(model).toObject(TrustSettings.class);
-        Assertions.assertEquals("fphsdyhtozfikdow", model.trustList());
+        Assertions.assertEquals("irels", model.trustList());
     }
 }

@@ -273,6 +273,7 @@ public class HttpConstants {
         // Dedicated Gateway Headers
         public static final String DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS = "x-ms-dedicatedgateway-max-age";
         public static final String DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE = "x-ms-dedicatedgateway-bypass-cache";
+        public static final String DEDICATED_GATEWAY_PER_REQUEST_SHARD_KEY = "x-ms-dedicatedgateway-shard-key";
 
         // Client Encryption Headers
         public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
@@ -466,6 +467,7 @@ public class HttpConstants {
         public static final int INVALID_RESULT = 20910;
         public static final int CLOSED_CLIENT = 20912;
         public static final int PPCB_INVALID_STATE = 20913;
+        public static final int REGION_SCOPED_SESSION_CONTAINER_IN_BAD_STATE = 20914;
 
         //SDK Codes (Server)
         // IMPORTANT - whenever possible use consistency substatus codes that .Net SDK also uses
@@ -479,6 +481,7 @@ public class HttpConstants {
         public static final int SERVER_GENERATED_503 = 21008;
         public static final int NO_VALID_STORE_RESPONSE = 21009;
         public static final int SERVER_GENERATED_408 = 21010;
+        public static final int FAILED_TO_PARSE_SERVER_RESPONSE = 21011;
     }
 
     public static class HeaderValues {

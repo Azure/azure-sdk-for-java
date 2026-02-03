@@ -19,8 +19,7 @@ import java.util.Arrays;
  */
 public final class HttpRouteConfigCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * HttpRouteConfig_CreateOrUpdate.json
      */
     /**
@@ -39,8 +38,8 @@ public final class HttpRouteConfigCreateOrUpdateSamples {
                 .withCertificateId(
                     "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-1")))
                 .withRules(Arrays.asList(new HttpRouteRule()
-                    .withTargets(Arrays
-                        .asList(new HttpRouteTarget().withContainerApp("capp-1").withRevision("rev-1").withWeight(100)))
+                    .withTargets(
+                        Arrays.asList(new HttpRouteTarget().withContainerApp("capp-1").withRevision("capp-1--0000001")))
                     .withRoutes(Arrays
                         .asList(new HttpRoute().withMatch(new HttpRouteMatch().withPath("/v1").withCaseSensitive(true))
                             .withAction(new HttpRouteAction().withPrefixRewrite("/v1/api"))))
@@ -49,8 +48,7 @@ public final class HttpRouteConfigCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * HttpRouteConfig_CreateOrUpdate_PathSepPrefix.json
      */
     /**
@@ -65,7 +63,7 @@ public final class HttpRouteConfigCreateOrUpdateSamples {
             .withExistingManagedEnvironment("examplerg", "testcontainerenv")
             .withProperties(new HttpRouteConfigProperties().withCustomDomains(Arrays.asList(new CustomDomain()
                 .withName("example.com")
-                .withBindingType(BindingType.DISABLED)
+                .withBindingType(BindingType.SNI_ENABLED)
                 .withCertificateId(
                     "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-1")))
                 .withRules(Arrays.asList(new HttpRouteRule()
@@ -78,8 +76,7 @@ public final class HttpRouteConfigCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * HttpRouteConfig_CreateOrUpdatePrefix.json
      */
     /**
@@ -94,7 +91,7 @@ public final class HttpRouteConfigCreateOrUpdateSamples {
             .withExistingManagedEnvironment("examplerg", "testcontainerenv")
             .withProperties(new HttpRouteConfigProperties().withCustomDomains(Arrays.asList(new CustomDomain()
                 .withName("example.com")
-                .withBindingType(BindingType.DISABLED)
+                .withBindingType(BindingType.SNI_ENABLED)
                 .withCertificateId(
                     "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/testcontainerenv/certificates/certificate-1")))
                 .withRules(Arrays.asList(new HttpRouteRule()

@@ -15,21 +15,21 @@ public final class DataflowResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"mode\":\"Enabled\",\"requestDiskPersistence\":\"Disabled\",\"operations\":[{\"operationType\":\"BuiltInTransformation\",\"name\":\"dslgnayqigynduh\",\"sourceSettings\":{\"endpointRef\":\"hqlkthumaqo\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"ycduier\",\"dataDestination\":\"gccymvaolpssl\"}},{\"operationType\":\"BuiltInTransformation\",\"name\":\"mmdnbbglzps\",\"sourceSettings\":{\"endpointRef\":\"ydmcwyhzdxssa\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"mnvdfzn\",\"dataDestination\":\"daodvxzbncblyl\"}}],\"provisioningState\":\"Accepted\"},\"extendedLocation\":{\"name\":\"bhhxsrzdzuc\",\"type\":\"CustomLocation\"},\"id\":\"cdntnevfiwjmy\",\"name\":\"tdss\",\"type\":\"s\"},{\"properties\":{\"mode\":\"Disabled\",\"requestDiskPersistence\":\"Disabled\",\"operations\":[{\"operationType\":\"BuiltInTransformation\",\"name\":\"zpyqsemwab\",\"sourceSettings\":{\"endpointRef\":\"tshhszhedp\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"iwubmwmbesldnk\",\"dataDestination\":\"wtppjflcxogaoko\"}}],\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"name\":\"sikvmkqzeqqkdlt\",\"type\":\"CustomLocation\"},\"id\":\"mhhv\",\"name\":\"gureodkwobdag\",\"type\":\"tibqdxbxwakb\"},{\"properties\":{\"mode\":\"Disabled\",\"requestDiskPersistence\":\"Disabled\",\"operations\":[{\"operationType\":\"BuiltInTransformation\",\"name\":\"gxhuriplbp\",\"sourceSettings\":{\"endpointRef\":\"xunkbebxmubyynt\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"bqtkoievseotgqr\",\"dataDestination\":\"ltmuwlauwzizx\"}},{\"operationType\":\"Destination\",\"name\":\"gcj\",\"sourceSettings\":{\"endpointRef\":\"u\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"vpbttd\",\"dataDestination\":\"morppxebmnzbtbh\"}},{\"operationType\":\"Destination\",\"name\":\"lkfg\",\"sourceSettings\":{\"endpointRef\":\"dneu\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"phsdyhto\",\"dataDestination\":\"fikdowwqu\"}},{\"operationType\":\"Destination\",\"name\":\"zx\",\"sourceSettings\":{\"endpointRef\":\"vithh\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"nosggbhcoh\",\"dataDestination\":\"wdsjnkalju\"}}],\"provisioningState\":\"Canceled\"},\"extendedLocation\":{\"name\":\"wacf\",\"type\":\"CustomLocation\"},\"id\":\"k\",\"name\":\"zewk\",\"type\":\"vhqcrail\"}],\"nextLink\":\"n\"}")
+            "{\"value\":[{\"properties\":{\"mode\":\"Disabled\",\"requestDiskPersistence\":\"Disabled\",\"operations\":[{\"operationType\":\"Source\",\"name\":\"edplvwiwubmw\",\"sourceSettings\":{\"endpointRef\":\"esl\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"wwtppj\",\"dataDestination\":\"lcxog\"}},{\"operationType\":\"Source\",\"name\":\"onz\",\"sourceSettings\":{\"endpointRef\":\"sikvmkqzeqqkdlt\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"mhhv\",\"dataDestination\":\"gureodkwobdag\"}},{\"operationType\":\"BuiltInTransformation\",\"name\":\"bqdxbx\",\"sourceSettings\":{\"endpointRef\":\"kbogqxndlkzgx\",\"dataSources\":[]},\"builtInTransformationSettings\":{},\"destinationSettings\":{\"endpointRef\":\"iplbpodxunkbebxm\",\"dataDestination\":\"byyntwlrbqt\"}}],\"provisioningState\":\"Canceled\",\"healthState\":\"Unavailable\"},\"extendedLocation\":{\"name\":\"eotg\",\"type\":\"CustomLocation\"},\"id\":\"ltmuwlauwzizx\",\"name\":\"mpgcjefuzmuvpbt\",\"type\":\"d\"}],\"nextLink\":\"orppxebmnzbtb\"}")
             .toObject(DataflowResourceListResult.class);
-        Assertions.assertEquals(OperationalMode.ENABLED, model.value().get(0).properties().mode());
+        Assertions.assertEquals(OperationalMode.DISABLED, model.value().get(0).properties().mode());
         Assertions.assertEquals(OperationalMode.DISABLED, model.value().get(0).properties().requestDiskPersistence());
-        Assertions.assertEquals(OperationType.BUILT_IN_TRANSFORMATION,
+        Assertions.assertEquals(OperationType.SOURCE,
             model.value().get(0).properties().operations().get(0).operationType());
-        Assertions.assertEquals("dslgnayqigynduh", model.value().get(0).properties().operations().get(0).name());
-        Assertions.assertEquals("hqlkthumaqo",
+        Assertions.assertEquals("edplvwiwubmw", model.value().get(0).properties().operations().get(0).name());
+        Assertions.assertEquals("esl",
             model.value().get(0).properties().operations().get(0).sourceSettings().endpointRef());
-        Assertions.assertEquals("ycduier",
+        Assertions.assertEquals("wwtppj",
             model.value().get(0).properties().operations().get(0).destinationSettings().endpointRef());
-        Assertions.assertEquals("gccymvaolpssl",
+        Assertions.assertEquals("lcxog",
             model.value().get(0).properties().operations().get(0).destinationSettings().dataDestination());
-        Assertions.assertEquals("bhhxsrzdzuc", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("eotg", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationType.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("n", model.nextLink());
+        Assertions.assertEquals("orppxebmnzbtb", model.nextLink());
     }
 }

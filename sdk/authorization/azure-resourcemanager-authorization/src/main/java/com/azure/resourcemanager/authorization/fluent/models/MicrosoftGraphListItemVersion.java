@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * listItemVersion.
+ * Represents a list item version.
  */
 @Fluent
 public final class MicrosoftGraphListItemVersion extends MicrosoftGraphBaseItemVersion {

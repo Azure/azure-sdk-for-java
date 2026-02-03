@@ -18,17 +18,17 @@ import java.util.List;
 @Fluent
 public final class ValidationSummaryItem implements JsonSerializable<ValidationSummaryItem> {
     /*
-     * Validation type
+     * Validation type.
      */
     private String type;
 
     /*
-     * Validation status for migration
+     * Validation status for migration.
      */
     private ValidationState state;
 
     /*
-     * Validation messages
+     * Validation messages.
      */
     private List<ValidationMessage> messages;
 

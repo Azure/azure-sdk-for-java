@@ -17,8 +17,8 @@ import java.io.IOException;
 @Fluent
 public final class BareMetalMachinePatchProperties implements JsonSerializable<BareMetalMachinePatchProperties> {
     /*
-     * The details provided by the customer during the creation of rack manifests
-     * that allows for custom data to be associated with this machine.
+     * The details provided by the customer during the creation of rack manifests that allows for custom data to be
+     * associated with this machine.
      */
     private String machineDetails;
 
@@ -29,8 +29,8 @@ public final class BareMetalMachinePatchProperties implements JsonSerializable<B
     }
 
     /**
-     * Get the machineDetails property: The details provided by the customer during the creation of rack manifests
-     * that allows for custom data to be associated with this machine.
+     * Get the machineDetails property: The details provided by the customer during the creation of rack manifests that
+     * allows for custom data to be associated with this machine.
      * 
      * @return the machineDetails value.
      */
@@ -39,8 +39,8 @@ public final class BareMetalMachinePatchProperties implements JsonSerializable<B
     }
 
     /**
-     * Set the machineDetails property: The details provided by the customer during the creation of rack manifests
-     * that allows for custom data to be associated with this machine.
+     * Set the machineDetails property: The details provided by the customer during the creation of rack manifests that
+     * allows for custom data to be associated with this machine.
      * 
      * @param machineDetails the machineDetails value to set.
      * @return the BareMetalMachinePatchProperties object itself.

@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
+import com.azure.cosmos.implementation.batch.TransactionalBatchRetryPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,6 +86,7 @@ public final class CosmosBatch {
 
     private final List<ItemBatchOperation<?>> operations;
     private final PartitionKey partitionKey;
+    private TransactionalBatchRetryPolicy retryPolicy;
 
     CosmosBatch(PartitionKey partitionKey) {
         checkNotNull(partitionKey, "expected non-null partitionKey");
@@ -391,12 +393,37 @@ public final class CosmosBatch {
         return operations;
     }
 
+    CosmosBatch setRetryPolicy(TransactionalBatchRetryPolicy transactionalBatchRetryPolicy) {
+        this.retryPolicy = transactionalBatchRetryPolicy;
+        return this;
+    }
+
+    TransactionalBatchRetryPolicy getRetryPolicy() {
+        return this.retryPolicy;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchHelper.setCosmosBatchAccessor(
-            cosmosBatch -> cosmosBatch.getOperationsInternal());
+            new ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor() {
+                @Override
+                public List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch) {
+                    return cosmosBatch.getOperationsInternal();
+                }
+
+                @Override
+                public CosmosBatch setRetryPolicy(CosmosBatch cosmosBatch, TransactionalBatchRetryPolicy transactionalBatchRetryPolicy) {
+                    return cosmosBatch.setRetryPolicy(transactionalBatchRetryPolicy);
+                }
+
+                @Override
+                public TransactionalBatchRetryPolicy getRetryPolicy(CosmosBatch cosmosBatch) {
+                    return cosmosBatch.getRetryPolicy();
+                }
+            }
+        );
     }
 
     static { initialize(); }

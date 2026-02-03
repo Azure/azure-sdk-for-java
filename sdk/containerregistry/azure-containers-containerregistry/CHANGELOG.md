@@ -8,6 +8,29 @@
 
 ### Bugs Fixed
 
+- Fixed `ContainerRegistryClient`'s handling of paging for `listRepositoryNames`. ([#47700](https://github.com/Azure/azure-sdk-for-java/pull/47700))
+
+### Other Changes
+
+## 1.2.22 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 1.2.21 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+
 ## 1.2.20 (2025-09-25)
 
 ### Other Changes

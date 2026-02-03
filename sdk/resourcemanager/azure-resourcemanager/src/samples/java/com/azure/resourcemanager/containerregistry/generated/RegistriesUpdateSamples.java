@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.containerregistry.generated;
 
 import com.azure.resourcemanager.containerregistry.models.RegistryUpdateParameters;
+import com.azure.resourcemanager.containerregistry.models.RoleAssignmentMode;
 import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.Map;
 public final class RegistriesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2025-04-01/examples/
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/Registry/stable/2025-11-01/examples/
      * RegistryUpdate.json
      */
     /**
@@ -32,7 +33,8 @@ public final class RegistriesUpdateSamples {
             .update("myResourceGroup", "myRegistry",
                 new RegistryUpdateParameters().withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withAdminUserEnabled(true),
+                    .withAdminUserEnabled(true)
+                    .withRoleAssignmentMode(RoleAssignmentMode.ABAC_REPOSITORY_PERMISSIONS),
                 com.azure.core.util.Context.NONE);
     }
 

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import io.netty.util.ResourceLeakDetector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,8 @@ import java.util.List;
 class RntbdContextDecoder extends ByteToMessageDecoder {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdContextDecoder.class);
+    private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
+        ResourceLeakDetector.Level.ADVANCED.ordinal();
 
     /**
      * Deserialize from an input {@link ByteBuf} to an {@link RntbdContext} instance
@@ -27,6 +30,10 @@ class RntbdContextDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(final ChannelHandlerContext context, final ByteBuf in, final List<Object> out) {
 
+        if (leakDetectionDebuggingEnabled) {
+            in.touch("RntbdContextDecoder.decode: entry");
+        }
+
         if (RntbdFramer.canDecodeHead(in)) {
 
             Object result;
@@ -35,14 +42,35 @@ class RntbdContextDecoder extends ByteToMessageDecoder {
                 final RntbdContext rntbdContext = RntbdContext.decode(in);
                 context.fireUserEventTriggered(rntbdContext);
                 result = rntbdContext;
+
+                if (leakDetectionDebuggingEnabled) {
+                    logger.debug("{} RntbdContextDecoder: decoded RntbdContext successfully", context.channel());
+                }
             } catch (RntbdContextException error) {
                 context.fireUserEventTriggered(error);
                 result = error;
+
+                if (leakDetectionDebuggingEnabled) {
+                    logger.debug("{} RntbdContextDecoder: caught RntbdContextException", context.channel(), error);
+                }
             } finally {
+                if (leakDetectionDebuggingEnabled) {
+                    in.touch("RntbdContextDecoder.decode: before discardReadBytes in finally block");
+                }
                 in.discardReadBytes();
             }
 
             logger.debug("{} DECODE COMPLETE: {}", context.channel(), result);
+        } else if (leakDetectionDebuggingEnabled) {
+            logger.debug("{} RntbdContextDecoder: cannot decode head yet, readableBytes={}",
+                context.channel(), in.readableBytes());
         }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        // BREADCRUMB: Track exceptions that might lead to leaked buffers
+        logger.warn("{} RntbdContextDecoder.exceptionCaught: {}", ctx.channel(), cause.getMessage(), cause);
+        super.exceptionCaught(ctx, cause);
     }
 }

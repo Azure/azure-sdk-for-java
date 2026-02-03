@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.directconnectivity.TcpServerMock.rntbd;
 
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
 
@@ -66,7 +65,7 @@ public final class ServerRntbdRequest {
         final int observedLength = in.readerIndex() - payloadStart;
 
         if (observedLength != payloadExpectedLength) {
-            final String reason = Strings.lenientFormat("expectedLength=%s, observedLength=%s", payloadExpectedLength, observedLength);
+            final String reason = String.format("expectedLength=%s, observedLength=%s", payloadExpectedLength, observedLength);
             throw new IllegalStateException(reason);
         }
 

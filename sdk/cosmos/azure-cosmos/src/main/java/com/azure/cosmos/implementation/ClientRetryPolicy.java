@@ -62,7 +62,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                              ThrottlingRetryOptions throttlingRetryOptions,
                              RxCollectionCache rxCollectionCache,
                              GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
-                             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover) {
+                             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
+                             boolean disableRetryForThrottledBatchRequest) {
 
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
@@ -74,7 +75,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             throttlingRetryOptions.getMaxRetryAttemptsOnThrottledRequests(),
             throttlingRetryOptions.getMaxRetryWaitTime(),
             BridgeInternal.getRetryContext(this.getCosmosDiagnostics()),
-            false);
+            disableRetryForThrottledBatchRequest);
         this.metadataThrottlingRetry = new MetadataThrottlingRetryPolicy(BridgeInternal.getRetryContext(this.getCosmosDiagnostics()));
         this.rxCollectionCache = rxCollectionCache;
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
@@ -524,6 +525,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // In case PPAF is enabled and a location override exists for the partition key range assigned to the request
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryAddPartitionLevelLocationOverride(request);
+        this.throttlingRetry.onBeforeSendRequest(request);
     }
 
     @Override

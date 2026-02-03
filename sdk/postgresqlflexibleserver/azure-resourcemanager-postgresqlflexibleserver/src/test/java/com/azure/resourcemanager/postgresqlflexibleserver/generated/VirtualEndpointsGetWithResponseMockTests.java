@@ -10,7 +10,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointResource;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpoint;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualEndpointType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -22,7 +22,7 @@ public final class VirtualEndpointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"upia\",\"name\":\"xnafbw\",\"type\":\"oohtuovmaonurjtu\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"ecmslclbl\"],\"virtualEndpoints\":[\"lt\",\"sjuscvsfxigctmg\",\"uupb\"]}}";
+            = "{\"id\":\"rmkfqlwxldykals\",\"name\":\"aolnjpnnbmjk\",\"type\":\"bjgsjjxxahmrn\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"xyivpinbm\",\"wbjijkgq\",\"nhmbkez\"],\"virtualEndpoints\":[\"ujvaannggi\",\"cwkdtaaw\"]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class VirtualEndpointsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        VirtualEndpointResource response = manager.virtualEndpoints()
-            .getWithResponse("vidbztjhqtfb", "vnynkb", "etnjuhpsprkz", com.azure.core.util.Context.NONE)
+        VirtualEndpoint response = manager.virtualEndpoints()
+            .getWithResponse("bhbcdszir", "randoypmb", "t", com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.endpointType());
-        Assertions.assertEquals("ecmslclbl", response.members().get(0));
+        Assertions.assertEquals("xyivpinbm", response.members().get(0));
     }
 }

@@ -28,7 +28,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.OperationsClient;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.OperationInner;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.OperationListResult;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.OperationList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -61,43 +61,43 @@ public final class OperationsClientImpl implements OperationsClient {
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PostgreSqlManagement")
+    @ServiceInterface(name = "PostgreSqlManagementClientOperations")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.DBforPostgreSQL/operations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationListResult>> list(@HostParam("$host") String endpoint,
+        Mono<Response<OperationList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.DBforPostgreSQL/operations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<OperationListResult> listSync(@HostParam("$host") String endpoint,
+        Response<OperationList> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Mono<Response<OperationList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Response<OperationListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        Response<OperationList> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Lists all of the available REST API operations.
+     * Lists all available REST API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations along with {@link PagedResponse} on successful completion of
+     * @return list of resource provider operations along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -116,11 +116,11 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available REST API operations.
+     * Lists all available REST API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations as paginated response with {@link PagedFlux}.
+     * @return list of resource provider operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<OperationInner> listAsync() {
@@ -128,11 +128,11 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available REST API operations.
+     * Lists all available REST API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations along with {@link PagedResponse}.
+     * @return list of resource provider operations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationInner> listSinglePage() {
@@ -142,20 +142,20 @@ public final class OperationsClientImpl implements OperationsClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<OperationListResult> res
+        Response<OperationList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
     /**
-     * Lists all of the available REST API operations.
+     * Lists all available REST API operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations along with {@link PagedResponse}.
+     * @return list of resource provider operations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationInner> listSinglePage(Context context) {
@@ -165,18 +165,18 @@ public final class OperationsClientImpl implements OperationsClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<OperationListResult> res
+        Response<OperationList> res
             = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
 
     /**
-     * Lists all of the available REST API operations.
+     * Lists all available REST API operations.
      * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations as paginated response with {@link PagedIterable}.
+     * @return list of resource provider operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list() {
@@ -184,13 +184,13 @@ public final class OperationsClientImpl implements OperationsClient {
     }
 
     /**
-     * Lists all of the available REST API operations.
+     * Lists all available REST API operations.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations as paginated response with {@link PagedIterable}.
+     * @return list of resource provider operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OperationInner> list(Context context) {
@@ -204,7 +204,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations along with {@link PagedResponse} on successful completion of
+     * @return list of resource provider operations along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -230,7 +230,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations along with {@link PagedResponse}.
+     * @return list of resource provider operations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationInner> listNextSinglePage(String nextLink) {
@@ -244,8 +244,7 @@ public final class OperationsClientImpl implements OperationsClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<OperationListResult> res
-            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        Response<OperationList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -258,7 +257,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of resource provider operations along with {@link PagedResponse}.
+     * @return list of resource provider operations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<OperationInner> listNextSinglePage(String nextLink, Context context) {
@@ -272,7 +271,7 @@ public final class OperationsClientImpl implements OperationsClient {
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<OperationListResult> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        Response<OperationList> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }

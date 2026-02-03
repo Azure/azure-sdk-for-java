@@ -83,6 +83,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<KubernetesClusterList>> list(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -91,6 +92,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<KubernetesClusterList> listSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$top") Integer top, @QueryParam("$skipToken") String skipToken,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -99,8 +101,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<KubernetesClusterList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters")
@@ -108,8 +110,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<KubernetesClusterList> listByResourceGroupSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}")
@@ -259,13 +261,17 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * 
      * Get a list of Kubernetes clusters in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Kubernetes clusters in the provided subscription along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KubernetesClusterInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<KubernetesClusterInner>> listSinglePageAsync(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -277,10 +283,29 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), accept, context))
+                this.client.getSubscriptionId(), top, skipToken, accept, context))
             .<PagedResponse<KubernetesClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List Kubernetes clusters in the subscription.
+     * 
+     * Get a list of Kubernetes clusters in the provided subscription.
+     * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Kubernetes clusters in the provided subscription as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<KubernetesClusterInner> listAsync(Integer top, String skipToken) {
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -294,7 +319,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubernetesClusterInner> listAsync() {
-        return new PagedFlux<>(() -> listSinglePageAsync(),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(top, skipToken),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
@@ -303,12 +330,16 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * 
      * Get a list of Kubernetes clusters in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Kubernetes clusters in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<KubernetesClusterInner> listSinglePage() {
+    private PagedResponse<KubernetesClusterInner> listSinglePage(Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -321,7 +352,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         }
         final String accept = "application/json";
         Response<KubernetesClusterList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, Context.NONE);
+            this.client.getSubscriptionId(), top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -331,6 +362,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * 
      * Get a list of Kubernetes clusters in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,7 +372,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @return a list of Kubernetes clusters in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<KubernetesClusterInner> listSinglePage(Context context) {
+    private PagedResponse<KubernetesClusterInner> listSinglePage(Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -351,7 +385,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         }
         final String accept = "application/json";
         Response<KubernetesClusterList> res = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), accept, context);
+            this.client.getSubscriptionId(), top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -368,7 +402,10 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterInner> list() {
-        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listBySubscriptionNextSinglePage(nextLink));
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken),
+            nextLink -> listBySubscriptionNextSinglePage(nextLink));
     }
 
     /**
@@ -376,6 +413,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * 
      * Get a list of Kubernetes clusters in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -384,8 +424,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KubernetesClusterInner> list(Context context) {
-        return new PagedIterable<>(() -> listSinglePage(context),
+    public PagedIterable<KubernetesClusterInner> list(Integer top, String skipToken, Context context) {
+        return new PagedIterable<>(() -> listSinglePage(top, skipToken, context),
             nextLink -> listBySubscriptionNextSinglePage(nextLink, context));
     }
 
@@ -395,6 +435,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * Get a list of Kubernetes clusters in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -402,7 +445,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KubernetesClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+    private Mono<PagedResponse<KubernetesClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -418,10 +462,32 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context))
             .<PagedResponse<KubernetesClusterInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List Kubernetes clusters in the resource group.
+     * 
+     * Get a list of Kubernetes clusters in the provided resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Kubernetes clusters in the provided resource group as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<KubernetesClusterInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        String skipToken) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -438,7 +504,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubernetesClusterInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -448,13 +516,17 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * Get a list of Kubernetes clusters in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Kubernetes clusters in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<KubernetesClusterInner> listByResourceGroupSinglePage(String resourceGroupName) {
+    private PagedResponse<KubernetesClusterInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -470,8 +542,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<KubernetesClusterList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, Context.NONE);
+        Response<KubernetesClusterList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -482,6 +555,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * Get a list of Kubernetes clusters in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -489,8 +565,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @return a list of Kubernetes clusters in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<KubernetesClusterInner> listByResourceGroupSinglePage(String resourceGroupName,
-        Context context) {
+    private PagedResponse<KubernetesClusterInner> listByResourceGroupSinglePage(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -506,8 +582,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
                 .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<KubernetesClusterList> res = service.listByResourceGroupSync(this.client.getEndpoint(),
-            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accept, context);
+        Response<KubernetesClusterList> res
+            = service.listByResourceGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, top, skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -526,7 +603,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken),
             nextLink -> listByResourceGroupNextSinglePage(nextLink));
     }
 
@@ -536,6 +615,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * Get a list of Kubernetes clusters in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -544,8 +626,9 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KubernetesClusterInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+    public PagedIterable<KubernetesClusterInner> listByResourceGroup(String resourceGroupName, Integer top,
+        String skipToken, Context context) {
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, top, skipToken, context),
             nextLink -> listByResourceGroupNextSinglePage(nextLink, context));
     }
 
@@ -2053,14 +2136,16 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
     }
 
     /**
+     * List Kubernetes clusters in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
+     * @return a list of Kubernetes clusters in the provided subscription along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2081,13 +2166,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
     }
 
     /**
+     * List Kubernetes clusters in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse}.
+     * @return a list of Kubernetes clusters in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterInner> listBySubscriptionNextSinglePage(String nextLink) {
@@ -2108,6 +2195,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
     }
 
     /**
+     * List Kubernetes clusters in the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2115,7 +2204,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse}.
+     * @return a list of Kubernetes clusters in the provided subscription along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterInner> listBySubscriptionNextSinglePage(String nextLink, Context context) {
@@ -2136,13 +2225,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
     }
 
     /**
+     * List Kubernetes clusters in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse} on
+     * @return a list of Kubernetes clusters in the provided resource group along with {@link PagedResponse} on
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2164,13 +2255,15 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
     }
 
     /**
+     * List Kubernetes clusters in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse}.
+     * @return a list of Kubernetes clusters in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterInner> listByResourceGroupNextSinglePage(String nextLink) {
@@ -2191,6 +2284,8 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
     }
 
     /**
+     * List Kubernetes clusters in the resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2198,7 +2293,7 @@ public final class KubernetesClustersClientImpl implements KubernetesClustersCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterList represents a list of Kubernetes clusters along with {@link PagedResponse}.
+     * @return a list of Kubernetes clusters in the provided resource group along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterInner> listByResourceGroupNextSinglePage(String nextLink, Context context) {

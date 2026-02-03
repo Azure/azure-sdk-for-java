@@ -8,7 +8,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageResultInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.VirtualNetworkSubnetUsageModelInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.VirtualNetworkSubnetUsageParameter;
 import reactor.core.publisher.Mono;
 
@@ -17,36 +17,35 @@ import reactor.core.publisher.Mono;
  */
 public interface VirtualNetworkSubnetUsagesClient {
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return virtual network subnet usage data along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualNetworkSubnetUsageResultInner>> executeWithResponseAsync(String locationName,
+    Mono<Response<VirtualNetworkSubnetUsageModelInner>> listWithResponseAsync(String locationName,
         VirtualNetworkSubnetUsageParameter parameters);
 
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id on successful completion of {@link Mono}.
+     * @return virtual network subnet usage data on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkSubnetUsageResultInner> executeAsync(String locationName,
+    Mono<VirtualNetworkSubnetUsageModelInner> listAsync(String locationName,
         VirtualNetworkSubnetUsageParameter parameters);
 
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
@@ -54,22 +53,22 @@ public interface VirtualNetworkSubnetUsagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id along with {@link Response}.
+     * @return virtual network subnet usage data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkSubnetUsageResultInner> executeWithResponse(String locationName,
+    Response<VirtualNetworkSubnetUsageModelInner> listWithResponse(String locationName,
         VirtualNetworkSubnetUsageParameter parameters, Context context);
 
     /**
-     * Get virtual network subnet usage for a given vNet resource id.
+     * Lists the virtual network subnet usage for a given virtual network.
      * 
      * @param locationName The name of the location.
      * @param parameters The required parameters for creating or updating a server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network subnet usage for a given vNet resource id.
+     * @return virtual network subnet usage data.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkSubnetUsageResultInner execute(String locationName, VirtualNetworkSubnetUsageParameter parameters);
+    VirtualNetworkSubnetUsageModelInner list(String locationName, VirtualNetworkSubnetUsageParameter parameters);
 }

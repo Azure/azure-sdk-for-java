@@ -244,6 +244,33 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
+     * Get the instantAccessDurationMinutes property: This property determines the time in minutes the snapshot is
+     * retained as instant access for restoring Premium SSD v2 or Ultra disk with fast restore performance in this
+     * restore point.
+     * 
+     * @return the instantAccessDurationMinutes value.
+     */
+    public Integer instantAccessDurationMinutes() {
+        return this.innerProperties() == null ? null : this.innerProperties().instantAccessDurationMinutes();
+    }
+
+    /**
+     * Set the instantAccessDurationMinutes property: This property determines the time in minutes the snapshot is
+     * retained as instant access for restoring Premium SSD v2 or Ultra disk with fast restore performance in this
+     * restore point.
+     * 
+     * @param instantAccessDurationMinutes the instantAccessDurationMinutes value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withInstantAccessDurationMinutes(Integer instantAccessDurationMinutes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withInstantAccessDurationMinutes(instantAccessDurationMinutes);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

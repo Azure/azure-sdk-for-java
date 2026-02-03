@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.models.ServiceResourceInner;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.RestartReplicaRequest;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ServiceUpdateParameters;
 
 /**
@@ -257,4 +258,72 @@ public interface ServicesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServiceResourceInner> listByApplications(String resourceGroupName, String clusterName,
         String applicationName, Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestartReplica(String resourceGroupName, String clusterName,
+        String applicationName, String serviceName, RestartReplicaRequest parameters);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRestartReplica(String resourceGroupName, String clusterName,
+        String applicationName, String serviceName, RestartReplicaRequest parameters, Context context);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restartReplica(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        RestartReplicaRequest parameters);
+
+    /**
+     * A long-running resource action.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @param serviceName The name of the service resource in the format of {applicationName}~{serviceName}.
+     * @param parameters The parameters for restarting replicas.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void restartReplica(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        RestartReplicaRequest parameters, Context context);
 }

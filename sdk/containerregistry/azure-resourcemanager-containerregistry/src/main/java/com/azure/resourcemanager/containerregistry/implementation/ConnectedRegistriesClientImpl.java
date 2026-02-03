@@ -71,8 +71,17 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
      * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ContainerRegistryMan")
+    @ServiceInterface(name = "ContainerRegistryManagementClientConnectedRegistries")
     public interface ConnectedRegistriesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/connectedRegistries")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectedRegistryListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/connectedRegistries/{connectedRegistryName}")
         @ExpectedResponses({ 200 })
@@ -116,15 +125,6 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/connectedRegistries")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConnectedRegistryListResult>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
-            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/connectedRegistries/{connectedRegistryName}/deactivate")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -141,6 +141,187 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         Mono<Response<ConnectedRegistryListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
+     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
+     * The supported operator is eq.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectedRegistryInner>> listSinglePageAsync(String resourceGroupName,
+        String registryName, String filter) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, filter, accept, context))
+            .<PagedResponse<ConnectedRegistryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
+     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
+     * The supported operator is eq.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectedRegistryInner>> listSinglePageAsync(String resourceGroupName,
+        String registryName, String filter, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (registryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, registryName, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
+     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
+     * The supported operator is eq.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName, String filter) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName) {
+        final String filter = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, filter),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
+     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
+     * The supported operator is eq.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, filter, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName) {
+        final String filter = null;
+        return new PagedIterable<>(listAsync(resourceGroupName, registryName, filter));
+    }
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
+     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
+     * The supported operator is eq.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName, String filter,
+        Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, registryName, filter, context));
     }
 
     /**
@@ -177,11 +358,9 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, registryName, connectedRegistryName, accept, context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -220,11 +399,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, connectedRegistryName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, connectedRegistryName, accept, context);
     }
 
     /**
@@ -320,10 +498,9 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         } else {
             connectedRegistryCreateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName,
                 connectedRegistryCreateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -371,11 +548,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         } else {
             connectedRegistryCreateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, connectedRegistryName, connectedRegistryCreateParameters, accept, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, connectedRegistryName, connectedRegistryCreateParameters, accept, context);
     }
 
     /**
@@ -593,10 +769,9 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         } else {
             connectedRegistryUpdateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName,
                 connectedRegistryUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -645,11 +820,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
         } else {
             connectedRegistryUpdateParameters.validate();
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, connectedRegistryName, connectedRegistryUpdateParameters, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, connectedRegistryName, connectedRegistryUpdateParameters, accept, context);
     }
 
     /**
@@ -861,12 +1035,9 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, registryName, connectedRegistryName, accept, context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -904,11 +1075,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            registryName, connectedRegistryName, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, registryName, connectedRegistryName, accept, context);
     }
 
     /**
@@ -1056,189 +1226,6 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
     }
 
     /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectedRegistryInner>> listSinglePageAsync(String resourceGroupName,
-        String registryName, String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2025-04-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, registryName, filter, accept, context))
-            .<PagedResponse<ConnectedRegistryInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectedRegistryInner>> listSinglePageAsync(String resourceGroupName,
-        String registryName, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (registryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
-        }
-        final String apiVersion = "2025-04-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                registryName, filter, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName, String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, filter),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName) {
-        final String filter = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, filter),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName, String filter,
-        Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, registryName, filter, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName) {
-        final String filter = null;
-        return new PagedIterable<>(listAsync(resourceGroupName, registryName, filter));
-    }
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName, String filter,
-        Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, registryName, filter, context));
-    }
-
-    /**
      * Deactivates the connected registry instance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1271,12 +1258,11 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.deactivate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                    resourceGroupName, registryName, connectedRegistryName, accept, context))
+            .withContext(context -> service.deactivate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1314,11 +1300,10 @@ public final class ConnectedRegistriesClientImpl implements ConnectedRegistriesC
             return Mono
                 .error(new IllegalArgumentException("Parameter connectedRegistryName is required and cannot be null."));
         }
-        final String apiVersion = "2025-04-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deactivate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, registryName, connectedRegistryName, accept, context);
+        return service.deactivate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, registryName, connectedRegistryName, accept, context);
     }
 
     /**

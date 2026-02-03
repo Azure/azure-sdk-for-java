@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -137,15 +136,20 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client.clearCapturedRequests();
 
-        client.queryDocuments(
-            collectionLink,
-            query,
-            TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client),
-            Document.class).blockLast();
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
+        try {
+            client.queryDocuments(
+                collectionLink,
+                query,
+                dummyState,
+                Document.class).blockLast();
 
-        List<HttpRequest> requests = client.getCapturedRequests();
-        for (HttpRequest httpRequest : requests) {
-            validateRequestHasDedicatedGatewayHeaders(httpRequest, options.getDedicatedGatewayRequestOptions());
+            List<HttpRequest> requests = client.getCapturedRequests();
+            for (HttpRequest httpRequest : requests) {
+                validateRequestHasDedicatedGatewayHeaders(httpRequest, options.getDedicatedGatewayRequestOptions());
+            }
+        } finally {
+            safeClose(dummyState);
         }
     }
 
@@ -168,11 +172,15 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             client
         );
 
-        assertThatThrownBy(() -> client
-            .queryDocuments(collectionLink, query, state, Document.class)
-            .blockLast())
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
+        try {
+            assertThatThrownBy(() -> client
+                .queryDocuments(collectionLink, query, state, Document.class)
+                .blockLast())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("MaxIntegratedCacheStaleness granularity is milliseconds");
+        } finally {
+            safeClose(state);
+        }
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT)
@@ -192,13 +200,17 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             client
         );
 
-        client.clearCapturedRequests();
+        try {
+            client.clearCapturedRequests();
 
-        assertThatThrownBy(() -> client
-            .queryDocuments(collectionLink, query, state, Document.class)
-            .blockLast())
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
+            assertThatThrownBy(() -> client
+                .queryDocuments(collectionLink, query, state, Document.class)
+                .blockLast())
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("MaxIntegratedCacheStaleness duration cannot be negative");
+        } finally {
+            safeClose(state);
+        }
     }
 
     @Test(dataProvider = "maxIntegratedCacheStalenessDurationProviderItemOptions", groups = { "fast" }, timeOut =
@@ -285,7 +297,7 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
     private void validateRequestHasDedicatedGatewayHeaders(HttpRequest httpRequest,
                                                            DedicatedGatewayRequestOptions options) {
         Map<String, String> headers = httpRequest.headers().toMap();
-        if (headers.get(HttpConstants.HttpHeaders.IS_QUERY) != null) {
+        if (headers.get(HttpConstants.HttpHeaders.IS_QUERY) != null || headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL) != null) {
             assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS)).isTrue();
             String durationInMillis =
                 headers.get(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_CACHE_STALENESS);
@@ -300,6 +312,57 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
             } else {
                 assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_BYPASS_CACHE)).isFalse();
             }
+            // Validate shardKey header
+            if (options.getShardKey() != null) {
+                assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_SHARD_KEY)).isTrue();
+                String shardKeyHeader = headers.get(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_SHARD_KEY);
+                assertThat(shardKeyHeader).isEqualTo(options.getShardKey());
+            } else {
+                assertThat(headers.containsKey(HttpConstants.HttpHeaders.DEDICATED_GATEWAY_PER_REQUEST_SHARD_KEY)).isFalse();
+            }
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void queryWithDedicatedGatewayShardKeyHeader() {
+        String query = "Select * from r";
+        DedicatedGatewayRequestOptions dedicatedOptions = new DedicatedGatewayRequestOptions();
+        dedicatedOptions.setMaxIntegratedCacheStaleness(Duration.ofMinutes(1));
+        dedicatedOptions.setIntegratedCacheBypassed(true);
+        dedicatedOptions.setShardKey("shard-123");
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setDedicatedGatewayRequestOptions(dedicatedOptions);
+        String collectionLink = getDocumentCollectionLink();
+        client.clearCapturedRequests();
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(ResourceType.Document, OperationType.Query, options, client);
+        try {
+            client.queryDocuments(collectionLink, query, dummyState, Document.class).blockLast();
+            List<HttpRequest> requests = client.getCapturedRequests();
+            for (HttpRequest httpRequest : requests) {
+                validateRequestHasDedicatedGatewayHeaders(httpRequest, options.getDedicatedGatewayRequestOptions());
+            }
+        } finally {
+            safeClose(dummyState);
+        }
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void readItemWithDedicatedGatewayShardKeyHeader() {
+        DedicatedGatewayRequestOptions dedicatedOptions = new DedicatedGatewayRequestOptions();
+        dedicatedOptions.setMaxIntegratedCacheStaleness(Duration.ofMinutes(1));
+        dedicatedOptions.setIntegratedCacheBypassed(true);
+        dedicatedOptions.setShardKey("shard-456");
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        cosmosItemRequestOptions.setDedicatedGatewayRequestOptions(dedicatedOptions);
+        cosmosItemRequestOptions.setCustomItemSerializer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+        String documentLink = getDocumentLink();
+        client.clearCapturedRequests();
+        RequestOptions requestOptions = itemOptionsAccessor.toRequestOptions(cosmosItemRequestOptions);
+        requestOptions.setPartitionKey(new PartitionKey(DOCUMENT_ID));
+        client.readDocument(documentLink, requestOptions).block();
+        List<HttpRequest> requests = client.getCapturedRequests();
+        for (HttpRequest httpRequest : requests) {
+            validateRequestHasDedicatedGatewayHeaders(httpRequest, cosmosItemRequestOptions.getDedicatedGatewayRequestOptions());
         }
     }
 

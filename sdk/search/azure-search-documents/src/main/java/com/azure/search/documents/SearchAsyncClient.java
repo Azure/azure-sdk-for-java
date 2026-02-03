@@ -28,6 +28,7 @@ import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.models.GetDocumentOptions;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexBatchException;
@@ -55,6 +56,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -858,7 +860,7 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getDocument(String key, Class<T> modelClass) {
-        return getDocumentWithResponse(key, modelClass, null, null).map(Response::getValue);
+        return getDocumentWithResponse(key, modelClass, (List<String>) null, (String) null).map(Response::getValue);
     }
 
     /**
@@ -893,7 +895,8 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getDocument(String key, Class<T> modelClass, String querySourceAuthorization) {
-        return getDocumentWithResponse(key, modelClass, null, querySourceAuthorization).map(Response::getValue);
+        return getDocumentWithResponse(key, modelClass, (List<String>) null, querySourceAuthorization)
+            .map(Response::getValue);
     }
 
     /**
@@ -929,7 +932,8 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields) {
-        return withContext(context -> getDocumentWithResponse(key, modelClass, selectedFields, null, context));
+        return withContext(
+            context -> getDocumentWithResponseInternal(key, modelClass, selectedFields, null, null, context));
     }
 
     /**
@@ -968,15 +972,44 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         String querySourceAuthorization) {
-        return withContext(
-            context -> getDocumentWithResponse(key, modelClass, selectedFields, querySourceAuthorization, context));
+        return withContext(context -> getDocumentWithResponseInternal(key, modelClass, selectedFields,
+            querySourceAuthorization, null, context));
+    }
+
+    /**
+     * Retrieves a document from the Azure AI Search index.
+     * <p>
+     * View <a href="https://docs.microsoft.com/rest/api/searchservice/Naming-rules">naming rules</a> for guidelines on
+     * constructing valid document keys.
+     *
+     * @param options Additional options for retrieving the document.
+     * @param <T> Convert document to the generic type.
+     * @return response containing a document object
+     * @throws NullPointerException If {@code options} is null.
+     * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Lookup-Document">Lookup document</a>
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public <T> Mono<Response<T>> getDocumentWithResponse(GetDocumentOptions<T> options) {
+        return withContext(context -> getDocumentWithResponse(options, context));
+    }
+
+    <T> Mono<Response<T>> getDocumentWithResponse(GetDocumentOptions<T> options, Context context) {
+        Objects.requireNonNull(options, "'options' cannot be null.");
+        return getDocumentWithResponseInternal(options.getKey(), options.getModelClass(), options.getSelectedFields(),
+            null, options.isElevatedReadEnabled(), context);
     }
 
     <T> Mono<Response<T>> getDocumentWithResponse(String key, Class<T> modelClass, List<String> selectedFields,
         String querySourceAuthorization, Context context) {
+        return getDocumentWithResponseInternal(key, modelClass, selectedFields, querySourceAuthorization, null,
+            context);
+    }
+
+    <T> Mono<Response<T>> getDocumentWithResponseInternal(String key, Class<T> modelClass, List<String> selectedFields,
+        String querySourceAuthorization, Boolean enableElevatedRead, Context context) {
         try {
             return restClient.getDocuments()
-                .getWithResponseAsync(key, selectedFields, querySourceAuthorization, null, context)
+                .getWithResponseAsync(key, selectedFields, querySourceAuthorization, enableElevatedRead, null, context)
                 .onErrorMap(Utility::exceptionMapper)
                 .map(res -> new SimpleResponse<>(res, serializer
                     .deserializeFromBytes(serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
@@ -1259,8 +1292,9 @@ public final class SearchAsyncClient {
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
-        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(
-            context -> search(request, continuationToken, firstPageResponse, querySourceAuthorization, context));
+        Boolean enableElevatedRead = (searchOptions != null) ? searchOptions.isElevatedReadEnabled() : null;
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context -> search(request,
+            continuationToken, firstPageResponse, querySourceAuthorization, enableElevatedRead, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
@@ -1269,32 +1303,25 @@ public final class SearchAsyncClient {
         SearchRequest request = createSearchRequest(searchText, searchOptions);
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
+        Boolean enableElevatedRead = (searchOptions != null) ? searchOptions.isElevatedReadEnabled() : null;
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
         Function<String, Mono<SearchPagedResponse>> func = continuationToken -> search(request, continuationToken,
-            firstPageResponseWrapper, querySourceAuthorization, context);
+            firstPageResponseWrapper, querySourceAuthorization, enableElevatedRead, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
     private Mono<SearchPagedResponse> search(SearchRequest request, String continuationToken,
-        SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization, Context context) {
-        if (continuationToken == null && firstPageResponseWrapper.getFirstPageResponse() != null) {
-            return Mono.just(firstPageResponseWrapper.getFirstPageResponse());
-        }
+        SearchFirstPageResponseWrapper firstPageResponseWrapper, String querySourceAuthorization,
+        Boolean enableElevatedRead, Context context) {
         SearchRequest requestToUse = (continuationToken == null)
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
         return restClient.getDocuments()
-            .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, null, context)
+            .searchPostWithResponseAsync(requestToUse, querySourceAuthorization, enableElevatedRead, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
-                SearchDocumentsResult result = response.getValue();
-
-                SearchPagedResponse page
-                    = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                        createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                        result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                        result.getSemanticPartialResponseType());
+                SearchPagedResponse page = mapToSearchPagedResponse(response, serializer, serviceVersion);
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -1312,6 +1339,16 @@ public final class SearchAsyncClient {
     static String createContinuationToken(SearchDocumentsResult result, ServiceVersion serviceVersion) {
         return SearchContinuationToken.serializeToken(serviceVersion.getVersion(), result.getNextLink(),
             result.getNextPageParameters());
+    }
+
+    static SearchPagedResponse mapToSearchPagedResponse(Response<SearchDocumentsResult> response,
+        JsonSerializer serializer, SearchServiceVersion serviceVersion) {
+        SearchDocumentsResult result = response.getValue();
+        return new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
+            createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
+            result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
+            result.getSemanticPartialResponseType(), result.getDebugInfo(),
+            result.getSemanticQueryRewritesResultType());
     }
 
     /**

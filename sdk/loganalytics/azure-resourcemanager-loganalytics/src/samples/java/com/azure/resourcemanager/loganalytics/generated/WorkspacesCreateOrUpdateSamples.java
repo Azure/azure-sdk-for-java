@@ -15,8 +15,8 @@ import java.util.Map;
 public final class WorkspacesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
-     * WorkspacesCreate.json
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/OperationalInsights/stable/2025-
+     * 07-01/examples/WorkspacesCreate.json
      */
     /**
      * Sample code: WorkspacesCreate.

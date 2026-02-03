@@ -20,6 +20,11 @@ import java.util.List;
 @Fluent
 public final class VolumeProperties implements JsonSerializable<VolumeProperties> {
     /*
+     * The allocated size of the volume in Mebibytes.
+     */
+    private Long allocatedSizeMiB;
+
+    /*
      * The list of resource IDs that attach the volume. It may include virtual machines and Hybrid AKS clusters.
      */
     private List<String> attachedTo;
@@ -45,14 +50,28 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private String serialNumber;
 
     /*
-     * The size of the allocation for this volume in Mebibytes.
+     * The requested storage allocation for the volume in Mebibytes.
      */
     private long sizeMiB;
+
+    /*
+     * The resource ID of the storage appliance that hosts the volume.
+     */
+    private String storageApplianceId;
 
     /**
      * Creates an instance of VolumeProperties class.
      */
     public VolumeProperties() {
+    }
+
+    /**
+     * Get the allocatedSizeMiB property: The allocated size of the volume in Mebibytes.
+     * 
+     * @return the allocatedSizeMiB value.
+     */
+    public Long allocatedSizeMiB() {
+        return this.allocatedSizeMiB;
     }
 
     /**
@@ -102,7 +121,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the sizeMiB property: The size of the allocation for this volume in Mebibytes.
+     * Get the sizeMiB property: The requested storage allocation for the volume in Mebibytes.
      * 
      * @return the sizeMiB value.
      */
@@ -111,13 +130,33 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the sizeMiB property: The size of the allocation for this volume in Mebibytes.
+     * Set the sizeMiB property: The requested storage allocation for the volume in Mebibytes.
      * 
      * @param sizeMiB the sizeMiB value to set.
      * @return the VolumeProperties object itself.
      */
     public VolumeProperties withSizeMiB(long sizeMiB) {
         this.sizeMiB = sizeMiB;
+        return this;
+    }
+
+    /**
+     * Get the storageApplianceId property: The resource ID of the storage appliance that hosts the volume.
+     * 
+     * @return the storageApplianceId value.
+     */
+    public String storageApplianceId() {
+        return this.storageApplianceId;
+    }
+
+    /**
+     * Set the storageApplianceId property: The resource ID of the storage appliance that hosts the volume.
+     * 
+     * @param storageApplianceId the storageApplianceId value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withStorageApplianceId(String storageApplianceId) {
+        this.storageApplianceId = storageApplianceId;
         return this;
     }
 
@@ -136,6 +175,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeLongField("sizeMiB", this.sizeMiB);
+        jsonWriter.writeStringField("storageApplianceId", this.storageApplianceId);
         return jsonWriter.writeEndObject();
     }
 
@@ -157,6 +197,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
                 if ("sizeMiB".equals(fieldName)) {
                     deserializedVolumeProperties.sizeMiB = reader.getLong();
+                } else if ("allocatedSizeMiB".equals(fieldName)) {
+                    deserializedVolumeProperties.allocatedSizeMiB = reader.getNullable(JsonReader::getLong);
                 } else if ("attachedTo".equals(fieldName)) {
                     List<String> attachedTo = reader.readArray(reader1 -> reader1.getString());
                     deserializedVolumeProperties.attachedTo = attachedTo;
@@ -169,6 +211,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                         = VolumeProvisioningState.fromString(reader.getString());
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedVolumeProperties.serialNumber = reader.getString();
+                } else if ("storageApplianceId".equals(fieldName)) {
+                    deserializedVolumeProperties.storageApplianceId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

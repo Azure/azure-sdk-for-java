@@ -43,7 +43,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
      * The thread metadata
      */
     @Generated
-    private final Map<String, String> metadata;
+    private Map<String, String> metadata;
 
     /*
      * The version of the thread
@@ -65,17 +65,15 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
      * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
      * @param editTime the editTime value to set.
      * @param properties the properties value to set.
-     * @param metadata the metadata value to set.
      */
     @Generated
     private AcsChatThreadPropertiesUpdatedEventData(String threadId, OffsetDateTime createTime,
         CommunicationIdentifierModel editedByCommunicationIdentifier, OffsetDateTime editTime,
-        Map<String, BinaryData> properties, Map<String, String> metadata) {
+        Map<String, BinaryData> properties) {
         super(threadId, createTime);
         this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
         this.editTime = editTime;
         this.properties = properties;
-        this.metadata = metadata;
     }
 
     /**
@@ -158,7 +156,6 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
             this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
         jsonWriter.writeMapField("properties", this.properties,
             (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -210,9 +207,10 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
             }
             AcsChatThreadPropertiesUpdatedEventData deserializedAcsChatThreadPropertiesUpdatedEventData
                 = new AcsChatThreadPropertiesUpdatedEventData(threadId, createTime, editedByCommunicationIdentifier,
-                    editTime, properties, metadata);
+                    editTime, properties);
             deserializedAcsChatThreadPropertiesUpdatedEventData.transactionId = transactionId;
             deserializedAcsChatThreadPropertiesUpdatedEventData.version = version;
+            deserializedAcsChatThreadPropertiesUpdatedEventData.metadata = metadata;
             return deserializedAcsChatThreadPropertiesUpdatedEventData;
         });
     }

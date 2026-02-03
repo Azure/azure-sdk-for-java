@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The intended executor of the operation.
+ * Intended executor of the operation.
  */
 public final class OperationOrigin extends ExpandableStringEnum<OperationOrigin> {
     /**

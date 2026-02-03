@@ -28,9 +28,9 @@ public final class NamespaceAssetStatus implements JsonSerializable<NamespaceAss
     private List<NamespaceAssetStatusDataset> datasets;
 
     /*
-     * Array of event statuses that describe the status of each event.
+     * Array of event group statuses that describe the status of each event group.
      */
-    private List<NamespaceAssetStatusEvent> events;
+    private List<NamespaceAssetStatusEventGroup> eventGroups;
 
     /*
      * Array of stream statuses that describe the status of each stream.
@@ -67,12 +67,12 @@ public final class NamespaceAssetStatus implements JsonSerializable<NamespaceAss
     }
 
     /**
-     * Get the events property: Array of event statuses that describe the status of each event.
+     * Get the eventGroups property: Array of event group statuses that describe the status of each event group.
      * 
-     * @return the events value.
+     * @return the eventGroups value.
      */
-    public List<NamespaceAssetStatusEvent> events() {
-        return this.events;
+    public List<NamespaceAssetStatusEventGroup> eventGroups() {
+        return this.eventGroups;
     }
 
     /**
@@ -124,10 +124,10 @@ public final class NamespaceAssetStatus implements JsonSerializable<NamespaceAss
                     List<NamespaceAssetStatusDataset> datasets
                         = reader.readArray(reader1 -> NamespaceAssetStatusDataset.fromJson(reader1));
                     deserializedNamespaceAssetStatus.datasets = datasets;
-                } else if ("events".equals(fieldName)) {
-                    List<NamespaceAssetStatusEvent> events
-                        = reader.readArray(reader1 -> NamespaceAssetStatusEvent.fromJson(reader1));
-                    deserializedNamespaceAssetStatus.events = events;
+                } else if ("eventGroups".equals(fieldName)) {
+                    List<NamespaceAssetStatusEventGroup> eventGroups
+                        = reader.readArray(reader1 -> NamespaceAssetStatusEventGroup.fromJson(reader1));
+                    deserializedNamespaceAssetStatus.eventGroups = eventGroups;
                 } else if ("streams".equals(fieldName)) {
                     List<NamespaceAssetStatusStream> streams
                         = reader.readArray(reader1 -> NamespaceAssetStatusStream.fromJson(reader1));

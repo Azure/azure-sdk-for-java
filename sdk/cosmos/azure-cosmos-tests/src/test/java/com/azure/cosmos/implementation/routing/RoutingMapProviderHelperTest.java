@@ -41,7 +41,7 @@ public class RoutingMapProviderHelperTest {
                 pairs.add(new ImmutablePair<>(range, null));
             }
 
-            this.routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(pairs, StringUtils.EMPTY);
+            this.routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(pairs, StringUtils.EMPTY, null);
         }
 
         @Override
@@ -71,7 +71,7 @@ public class RoutingMapProviderHelperTest {
                 pairs.add(new ImmutablePair<>(range, null));
             }
 
-            this.routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(pairs, StringUtils.EMPTY);
+            this.routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(pairs, StringUtils.EMPTY, null);
         }
 
         @Override

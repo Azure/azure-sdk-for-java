@@ -8,6 +8,29 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 7.17.17 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-amqp` from `2.11.2` to version `2.11.3`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+- Upgraded `azure-xml` from `1.2.0` to version `1.2.1`.
+
+## 7.17.16 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.1` to version `1.16.2`.
+- Upgraded `azure-core-amqp` from `2.11.1` to version `2.11.2`.
+- Upgraded `azure-core` from `1.56.1` to version `1.57.0`.
+
 ## 7.17.15 (2025-09-25)
 
 ### Other Changes

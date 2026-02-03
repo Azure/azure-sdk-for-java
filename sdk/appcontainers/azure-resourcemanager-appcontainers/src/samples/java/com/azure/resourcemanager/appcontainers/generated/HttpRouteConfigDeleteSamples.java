@@ -10,17 +10,16 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class HttpRouteConfigDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
-     * HttpRouteConfig_Delete.json
+     * specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/HttpRouteConfig_Delete.
+     * json
      */
     /**
-     * Sample code: Delete Certificate.
+     * Sample code: Delete a Http Route Config.
      * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void deleteCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+    public static void deleteAHttpRouteConfig(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.httpRouteConfigs()
-            .deleteWithResponse("examplerg", "testcontainerenv", "httproutefriendlyname",
-                com.azure.core.util.Context.NONE);
+            .delete("examplerg", "testcontainerenv", "httproutefriendlyname", com.azure.core.util.Context.NONE);
     }
 }

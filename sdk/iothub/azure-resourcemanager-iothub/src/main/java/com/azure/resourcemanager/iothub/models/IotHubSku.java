@@ -47,6 +47,11 @@ public final class IotHubSku extends ExpandableStringEnum<IotHubSku> {
     public static final IotHubSku B3 = fromString("B3");
 
     /**
+     * Static value GEN2 for IotHubSku.
+     */
+    public static final IotHubSku GEN2 = fromString("GEN2");
+
+    /**
      * Creates a new instance of IotHubSku value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

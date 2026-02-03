@@ -13,17 +13,17 @@ public final class ManagedEnvironmentPropertiesPeerTrafficConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedEnvironmentPropertiesPeerTrafficConfiguration model
-            = BinaryData.fromString("{\"encryption\":{\"enabled\":true}}")
+            = BinaryData.fromString("{\"encryption\":{\"enabled\":false}}")
                 .toObject(ManagedEnvironmentPropertiesPeerTrafficConfiguration.class);
-        Assertions.assertTrue(model.encryption().enabled());
+        Assertions.assertFalse(model.encryption().enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedEnvironmentPropertiesPeerTrafficConfiguration model
-            = new ManagedEnvironmentPropertiesPeerTrafficConfiguration()
-                .withEncryption(new ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption().withEnabled(true));
+            = new ManagedEnvironmentPropertiesPeerTrafficConfiguration().withEncryption(
+                new ManagedEnvironmentPropertiesPeerTrafficConfigurationEncryption().withEnabled(false));
         model = BinaryData.fromObject(model).toObject(ManagedEnvironmentPropertiesPeerTrafficConfiguration.class);
-        Assertions.assertTrue(model.encryption().enabled());
+        Assertions.assertFalse(model.encryption().enabled());
     }
 }

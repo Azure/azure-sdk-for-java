@@ -24,6 +24,70 @@ import reactor.core.publisher.Mono;
  */
 public interface ConnectedRegistriesClient {
     /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
+     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
+     * The supported operator is eq.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName, String filter);
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName);
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName);
+
+    /**
+     * Lists all connected registries for the specified container registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param registryName The name of the container registry.
+     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
+     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
+     * The supported operator is eq.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of a request to list connected registries for a container registry as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName, String filter,
+        Context context);
+
+    /**
      * Gets the properties of the connected registry.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -426,70 +490,6 @@ public interface ConnectedRegistriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String registryName, String connectedRegistryName, Context context);
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName, String filter);
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ConnectedRegistryInner> listAsync(String resourceGroupName, String registryName);
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName);
-
-    /**
-     * Lists all connected registries for the specified container registry.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param registryName The name of the container registry.
-     * @param filter An OData filter expression that describes a subset of connectedRegistries to return. The parameters
-     * that can be filtered are parent.id (the resource id of the connectedRegistry parent), mode, and connectionState.
-     * The supported operator is eq.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list connected registries for a container registry as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectedRegistryInner> list(String resourceGroupName, String registryName, String filter,
-        Context context);
 
     /**
      * Deactivates the connected registry instance.

@@ -4,65 +4,45 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.TuningOptionsInner;
 
 /**
- * Resource collection API of TuningOptions.
+ * An immutable client-side representation of TuningOptions.
  */
 public interface TuningOptions {
     /**
-     * Retrieve the tuning option on a server.
+     * Gets the id property: Fully qualified resource Id for the resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stores property that features impact on some metric if this recommended action is applied along with
-     * {@link Response}.
+     * @return the id value.
      */
-    Response<TuningOptionsResource> getWithResponse(String resourceGroupName, String serverName,
-        TuningOptionEnum tuningOption, Context context);
+    String id();
 
     /**
-     * Retrieve the tuning option on a server.
+     * Gets the name property: The name of the resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param tuningOption The name of the tuning option.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stores property that features impact on some metric if this recommended action is applied.
+     * @return the name value.
      */
-    TuningOptionsResource get(String resourceGroupName, String serverName, TuningOptionEnum tuningOption);
+    String name();
 
     /**
-     * Retrieve the list of available tuning options.
+     * Gets the type property: The type of the resource.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server tuning options as paginated response with {@link PagedIterable}.
+     * @return the type value.
      */
-    PagedIterable<TuningOptionsResource> listByServer(String resourceGroupName, String serverName);
+    String type();
 
     /**
-     * Retrieve the list of available tuning options.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server tuning options as paginated response with {@link PagedIterable}.
+     * @return the systemData value.
      */
-    PagedIterable<TuningOptionsResource> listByServer(String resourceGroupName, String serverName, Context context);
+    SystemData systemData();
+
+    /**
+     * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.TuningOptionsInner object.
+     * 
+     * @return the inner object.
+     */
+    TuningOptionsInner innerModel();
 }

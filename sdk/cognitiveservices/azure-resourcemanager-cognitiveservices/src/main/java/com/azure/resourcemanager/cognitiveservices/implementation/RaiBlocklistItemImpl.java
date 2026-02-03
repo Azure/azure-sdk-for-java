@@ -30,10 +30,6 @@ public final class RaiBlocklistItemImpl
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String etag() {
         return this.innerModel().etag();
     }
@@ -49,6 +45,10 @@ public final class RaiBlocklistItemImpl
 
     public RaiBlocklistItemProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {

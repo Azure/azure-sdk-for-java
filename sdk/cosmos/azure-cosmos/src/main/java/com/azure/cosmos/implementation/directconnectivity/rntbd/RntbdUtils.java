@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
-
 public class RntbdUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdUtils.class);
@@ -50,7 +48,7 @@ public class RntbdUtils {
                 null);
         } catch (URISyntaxException error) {
             throw new IllegalArgumentException(
-                lenientFormat("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
+                String.format("physicalAddress %s cannot be parsed as a server-based authority", physicalAddress),
                 error);
         }
     }

@@ -10,7 +10,8 @@ package com.azure.resourcemanager.appservice.generated;
 public final class StaticSitesGetStaticSiteCustomDomainSamples {
     /*
      * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/GetStaticSiteCustomDomain.json
+     * specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/GetStaticSiteCustomDomain.
+     * json
      */
     /**
      * Sample code: Get custom domain for a static site.

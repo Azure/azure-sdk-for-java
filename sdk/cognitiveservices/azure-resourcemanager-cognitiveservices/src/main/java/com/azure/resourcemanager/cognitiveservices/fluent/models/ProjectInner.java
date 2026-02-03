@@ -27,11 +27,6 @@ public final class ProjectInner extends AzureEntityResource {
     private Identity identity;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * Resource tags.
      */
     private Map<String, String> tags;
@@ -45,6 +40,11 @@ public final class ProjectInner extends AzureEntityResource {
      * Properties of Cognitive Services project.
      */
     private ProjectProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * Resource Etag.
@@ -90,15 +90,6 @@ public final class ProjectInner extends AzureEntityResource {
     public ProjectInner withIdentity(Identity identity) {
         this.identity = identity;
         return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -159,6 +150,16 @@ public final class ProjectInner extends AzureEntityResource {
     public ProjectInner withProperties(ProjectProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -253,10 +254,10 @@ public final class ProjectInner extends AzureEntityResource {
                     deserializedProjectInner.type = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     deserializedProjectInner.etag = reader.getString();
-                } else if ("identity".equals(fieldName)) {
-                    deserializedProjectInner.identity = Identity.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedProjectInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedProjectInner.identity = Identity.fromJson(reader);
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedProjectInner.tags = tags;

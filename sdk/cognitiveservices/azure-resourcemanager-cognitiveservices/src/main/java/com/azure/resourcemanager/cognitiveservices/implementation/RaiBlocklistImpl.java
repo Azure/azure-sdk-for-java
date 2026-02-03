@@ -29,10 +29,6 @@ public final class RaiBlocklistImpl implements RaiBlocklist, RaiBlocklist.Defini
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String etag() {
         return this.innerModel().etag();
     }
@@ -48,6 +44,10 @@ public final class RaiBlocklistImpl implements RaiBlocklist, RaiBlocklist.Defini
 
     public RaiBlocklistProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {

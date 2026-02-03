@@ -22,7 +22,7 @@ public final class HttpRouteConfigsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"provisioningErrors\":[{\"timestamp\":\"2021-06-06T06:23:38Z\",\"message\":\"zskwqk\"},{\"timestamp\":\"2021-02-10T06:48Z\",\"message\":\"eiphgliupqs\"}],\"fqdn\":\"obkjlcaxsqcomjiq\",\"customDomains\":[{\"name\":\"cevxxkdevpximzi\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"qmduvtvodqx\"},{\"name\":\"p\",\"bindingType\":\"Disabled\",\"certificateId\":\"qibtblmc\"},{\"name\":\"rjaznotdofqvpb\",\"bindingType\":\"Disabled\",\"certificateId\":\"kpsbqsbbmitaftaz\"},{\"name\":\"cxsvqlcqufylamxo\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"joyutehlkarvtipq\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"kn\"},{\"containerApp\":\"gofunswhpcekggv\"}],\"routes\":[{},{},{}],\"description\":\"bbxngdfkked\"},{\"targets\":[{\"containerApp\":\"xtpwcvgi\"},{\"containerApp\":\"wsunjzijaciwmmpd\"},{\"containerApp\":\"qdonbzzs\"}],\"routes\":[{},{}],\"description\":\"viiwsuanzhwsyu\"},{\"targets\":[{\"containerApp\":\"zqqhbtfloilmkfb\"},{\"containerApp\":\"oiipjpn\"},{\"containerApp\":\"vyvuoikdlpsx\"},{\"containerApp\":\"tug\"}],\"routes\":[{}],\"description\":\"qn\"},{\"targets\":[{\"containerApp\":\"locfmvsw\"}],\"routes\":[{},{},{}],\"description\":\"leif\"}]},\"id\":\"d\",\"name\":\"twwulkrybpaev\",\"type\":\"kbyje\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"provisioningErrors\":[{\"timestamp\":\"2021-10-11T19:11:58Z\",\"message\":\"y\"}],\"fqdn\":\"jahwriuomzczf\",\"customDomains\":[{\"name\":\"eevsa\",\"bindingType\":\"Auto\",\"certificateId\":\"p\"},{\"name\":\"axikhfjqebglcxk\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"romv\"}],\"rules\":[{\"targets\":[{\"containerApp\":\"mtmesrfsv\"}],\"routes\":[{},{},{},{}],\"description\":\"zpatqtd\"},{\"targets\":[{\"containerApp\":\"xspvckojazb\"},{\"containerApp\":\"gspftesu\"},{\"containerApp\":\"zpvpvdyly\"}],\"routes\":[{},{},{},{}],\"description\":\"qseusrfjbdxzfxnx\"},{\"targets\":[{\"containerApp\":\"muoswkjmdih\"}],\"routes\":[{},{},{}],\"description\":\"yzlwhbwzjnufzrf\"},{\"targets\":[{\"containerApp\":\"qgnnbz\"}],\"routes\":[{},{},{},{}],\"description\":\"edzuub\"}]},\"id\":\"vgjs\",\"name\":\"mt\",\"type\":\"jjvavdpww\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,13 +32,13 @@ public final class HttpRouteConfigsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         HttpRouteConfig response = manager.httpRouteConfigs()
-            .getWithResponse("wkgjwb", "fdwfbwxy", "dqtmggcpdrmeg", com.azure.core.util.Context.NONE)
+            .getWithResponse("clrvtzqnrbctbh", "jhxpcvrd", "y", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cevxxkdevpximzi", response.properties().customDomains().get(0).name());
-        Assertions.assertEquals(BindingType.SNI_ENABLED, response.properties().customDomains().get(0).bindingType());
-        Assertions.assertEquals("qmduvtvodqx", response.properties().customDomains().get(0).certificateId());
-        Assertions.assertEquals("kn", response.properties().rules().get(0).targets().get(0).containerApp());
-        Assertions.assertEquals("bbxngdfkked", response.properties().rules().get(0).description());
+        Assertions.assertEquals("eevsa", response.properties().customDomains().get(0).name());
+        Assertions.assertEquals(BindingType.AUTO, response.properties().customDomains().get(0).bindingType());
+        Assertions.assertEquals("p", response.properties().customDomains().get(0).certificateId());
+        Assertions.assertEquals("mtmesrfsv", response.properties().rules().get(0).targets().get(0).containerApp());
+        Assertions.assertEquals("zpatqtd", response.properties().rules().get(0).description());
     }
 }

@@ -182,7 +182,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String apiVersion = "2025-04-01";
-        final String accept = "application/json, text/json";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
                 location, accept, context))
@@ -216,7 +216,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
         final String apiVersion = "2025-04-01";
-        final String accept = "application/json, text/json";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), location, accept, context)
@@ -313,7 +313,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2025-04-01";
-        final String accept = "application/json, text/json";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, location, commandId,
                 this.client.getSubscriptionId(), accept, context))
@@ -352,7 +352,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2025-04-01";
-        final String accept = "application/json, text/json";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), apiVersion, location, commandId, this.client.getSubscriptionId(),
             accept, context);
@@ -1473,7 +1473,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String accept = "application/json, text/json";
+        final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RunCommandDocumentBaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -1500,7 +1500,7 @@ public final class VirtualMachineRunCommandsClientImpl implements VirtualMachine
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        final String accept = "application/json, text/json";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),

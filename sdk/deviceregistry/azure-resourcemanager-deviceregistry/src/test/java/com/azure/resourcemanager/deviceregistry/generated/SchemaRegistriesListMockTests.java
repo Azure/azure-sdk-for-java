@@ -23,7 +23,7 @@ public final class SchemaRegistriesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"uuid\":\"vnphc\",\"namespace\":\"zqtpjhmq\",\"displayName\":\"v\",\"description\":\"laiwdcxsmlzzh\",\"storageAccountContainerUrl\":\"dtxetlgydlh\",\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"pxy\",\"tenantId\":\"fiqgeaar\",\"type\":\"SystemAssigned\"},\"location\":\"ekglklb\",\"tags\":{\"hj\":\"idwcwvmzegjon\",\"zhzmtksjci\":\"rwgdnqzbrfks\",\"plkeuachtomflryt\":\"digsxcdgl\",\"mskwhqjjysl\":\"wfpfmdgycx\"},\"id\":\"rlpshhkv\",\"name\":\"edwqslsrh\",\"type\":\"pq\"}]}";
+            = "{\"value\":[{\"properties\":{\"uuid\":\"tmgxuupbezqcc\",\"namespace\":\"drtc\",\"displayName\":\"kdqkkyihzt\",\"description\":\"qm\",\"storageAccountContainerUrl\":\"qzgwldoychil\",\"provisioningState\":\"Accepted\"},\"identity\":{\"principalId\":\"ehuwaoa\",\"tenantId\":\"h\",\"type\":\"None\"},\"location\":\"llizs\",\"tags\":{\"weftkwq\":\"sjvh\",\"vssehaepw\":\"jp\",\"euknijduyyes\":\"mcxtczhu\"},\"id\":\"ydjfb\",\"name\":\"c\",\"type\":\"v\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,12 @@ public final class SchemaRegistriesListMockTests {
 
         PagedIterable<SchemaRegistry> response = manager.schemaRegistries().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ekglklb", response.iterator().next().location());
-        Assertions.assertEquals("idwcwvmzegjon", response.iterator().next().tags().get("hj"));
-        Assertions.assertEquals("zqtpjhmq", response.iterator().next().properties().namespace());
-        Assertions.assertEquals("v", response.iterator().next().properties().displayName());
-        Assertions.assertEquals("laiwdcxsmlzzh", response.iterator().next().properties().description());
-        Assertions.assertEquals("dtxetlgydlh", response.iterator().next().properties().storageAccountContainerUrl());
-        Assertions.assertEquals(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED,
-            response.iterator().next().identity().type());
+        Assertions.assertEquals("llizs", response.iterator().next().location());
+        Assertions.assertEquals("sjvh", response.iterator().next().tags().get("weftkwq"));
+        Assertions.assertEquals("drtc", response.iterator().next().properties().namespace());
+        Assertions.assertEquals("kdqkkyihzt", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("qm", response.iterator().next().properties().description());
+        Assertions.assertEquals("qzgwldoychil", response.iterator().next().properties().storageAccountContainerUrl());
+        Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.iterator().next().identity().type());
     }
 }

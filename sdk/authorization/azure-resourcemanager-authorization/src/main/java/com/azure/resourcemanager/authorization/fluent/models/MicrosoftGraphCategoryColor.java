@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * categoryColor.
+ * Represents a category color.
  */
 public final class MicrosoftGraphCategoryColor extends ExpandableStringEnum<MicrosoftGraphCategoryColor> {
     /**

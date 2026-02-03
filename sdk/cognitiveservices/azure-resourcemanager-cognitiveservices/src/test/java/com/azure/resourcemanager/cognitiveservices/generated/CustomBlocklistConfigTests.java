@@ -13,21 +13,21 @@ public final class CustomBlocklistConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomBlocklistConfig model
-            = BinaryData.fromString("{\"source\":\"Prompt\",\"blocklistName\":\"xcv\",\"blocking\":false}")
+            = BinaryData.fromString("{\"source\":\"Completion\",\"blocklistName\":\"widf\",\"blocking\":true}")
                 .toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("xcv", model.blocklistName());
-        Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
+        Assertions.assertEquals("widf", model.blocklistName());
+        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("xcv")
-            .withBlocking(false)
-            .withSource(RaiPolicyContentSource.PROMPT);
+        CustomBlocklistConfig model = new CustomBlocklistConfig().withBlocklistName("widf")
+            .withBlocking(true)
+            .withSource(RaiPolicyContentSource.COMPLETION);
         model = BinaryData.fromObject(model).toObject(CustomBlocklistConfig.class);
-        Assertions.assertEquals("xcv", model.blocklistName());
-        Assertions.assertFalse(model.blocking());
-        Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
+        Assertions.assertEquals("widf", model.blocklistName());
+        Assertions.assertTrue(model.blocking());
+        Assertions.assertEquals(RaiPolicyContentSource.COMPLETION, model.source());
     }
 }

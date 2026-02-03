@@ -13,7 +13,7 @@ public final class DaprSecretsCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprSecretsCollectionInner model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"yrnxxmueedn\",\"value\":\"dvstkw\"},{\"name\":\"tchealmf\",\"value\":\"d\"},{\"name\":\"ygdvwv\",\"value\":\"iohgwxrtfud\"}]}")
+            "{\"value\":[{\"name\":\"tqagnbuynh\",\"value\":\"gg\"},{\"name\":\"bfs\",\"value\":\"rbu\"},{\"name\":\"cvpnazzmhjrunmpx\",\"value\":\"dbhrbnlankxm\"}]}")
             .toObject(DaprSecretsCollectionInner.class);
     }
 

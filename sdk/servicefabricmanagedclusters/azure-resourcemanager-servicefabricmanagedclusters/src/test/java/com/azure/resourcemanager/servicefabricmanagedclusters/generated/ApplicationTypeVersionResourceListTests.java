@@ -12,11 +12,11 @@ public final class ApplicationTypeVersionResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationTypeVersionResourceList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"lfbxzpuzycisp\",\"appPackageUrl\":\"qzahmgkbrp\"},\"tags\":{\"rgvtqag\":\"hibnuqqkpika\",\"bfs\":\"buynhijggm\"},\"location\":\"rbu\",\"id\":\"cvpnazzmhjrunmpx\",\"name\":\"tdbhrbnla\",\"type\":\"kx\"}],\"nextLink\":\"skpbhenbtkcxywn\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"ojgjrwjueiotwmc\",\"appPackageUrl\":\"ytdxwit\"},\"tags\":{\"hniskxfbkpyc\":\"jawgqwg\"},\"location\":\"lwn\",\"id\":\"hjdauwhvylwz\",\"name\":\"tdhxujznbmpowuwp\",\"type\":\"zqlveualupjmkhf\"}],\"nextLink\":\"bbcswsrtjri\"}")
             .toObject(ApplicationTypeVersionResourceList.class);
-        Assertions.assertEquals("hibnuqqkpika", model.value().get(0).tags().get("rgvtqag"));
-        Assertions.assertEquals("rbu", model.value().get(0).location());
-        Assertions.assertEquals("qzahmgkbrp", model.value().get(0).appPackageUrl());
-        Assertions.assertEquals("skpbhenbtkcxywn", model.nextLink());
+        Assertions.assertEquals("jawgqwg", model.value().get(0).tags().get("hniskxfbkpyc"));
+        Assertions.assertEquals("lwn", model.value().get(0).location());
+        Assertions.assertEquals("ytdxwit", model.value().get(0).appPackageUrl());
+        Assertions.assertEquals("bbcswsrtjri", model.nextLink());
     }
 }

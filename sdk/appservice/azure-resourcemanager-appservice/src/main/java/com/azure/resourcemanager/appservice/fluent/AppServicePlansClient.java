@@ -19,6 +19,9 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmUsageQuotaInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionKeyInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionLimitsInner;
+import com.azure.resourcemanager.appservice.fluent.models.OperationInner;
+import com.azure.resourcemanager.appservice.fluent.models.ServerFarmInstanceDetailsInner;
+import com.azure.resourcemanager.appservice.fluent.models.ServerFarmRdpDetailsInner;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetGatewayInner;
 import com.azure.resourcemanager.appservice.fluent.models.VnetInfoResourceInner;
@@ -548,6 +551,73 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
     List<CapabilityInner> listCapabilities(String resourceGroupName, String name);
 
     /**
+     * Get the RDP password for an IsCustomMode ServerFarm.
+     * 
+     * Description for Get the RDP password for an IsCustomMode ServerFarm.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server Farm RDP connection details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ServerFarmRdpDetailsInner>> getServerFarmRdpPasswordWithResponseAsync(String resourceGroupName,
+        String name);
+
+    /**
+     * Get the RDP password for an IsCustomMode ServerFarm.
+     * 
+     * Description for Get the RDP password for an IsCustomMode ServerFarm.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server Farm RDP connection details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ServerFarmRdpDetailsInner> getServerFarmRdpPasswordAsync(String resourceGroupName, String name);
+
+    /**
+     * Get the RDP password for an IsCustomMode ServerFarm.
+     * 
+     * Description for Get the RDP password for an IsCustomMode ServerFarm.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server Farm RDP connection details along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ServerFarmRdpDetailsInner> getServerFarmRdpPasswordWithResponse(String resourceGroupName, String name,
+        Context context);
+
+    /**
+     * Get the RDP password for an IsCustomMode ServerFarm.
+     * 
+     * Description for Get the RDP password for an IsCustomMode ServerFarm.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server Farm RDP connection details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerFarmRdpDetailsInner getServerFarmRdpPassword(String resourceGroupName, String name);
+
+    /**
      * Retrieve a Hybrid Connection in use in an App Service plan.
      * 
      * Description for Retrieve a Hybrid Connection in use in an App Service plan.
@@ -949,6 +1019,74 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridConnectionInner> listHybridConnections(String resourceGroupName, String name, Context context);
+
+    /**
+     * Get the instance details for an app service plan.
+     * 
+     * Description for Get the instance details for an app service plan.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents instance details for an app service plan along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ServerFarmInstanceDetailsInner>>
+        getServerFarmInstanceDetailsWithResponseAsync(String resourceGroupName, String name);
+
+    /**
+     * Get the instance details for an app service plan.
+     * 
+     * Description for Get the instance details for an app service plan.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents instance details for an app service plan on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ServerFarmInstanceDetailsInner> getServerFarmInstanceDetailsAsync(String resourceGroupName, String name);
+
+    /**
+     * Get the instance details for an app service plan.
+     * 
+     * Description for Get the instance details for an app service plan.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents instance details for an app service plan along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ServerFarmInstanceDetailsInner> getServerFarmInstanceDetailsWithResponse(String resourceGroupName,
+        String name, Context context);
+
+    /**
+     * Get the instance details for an app service plan.
+     * 
+     * Description for Get the instance details for an app service plan.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents instance details for an app service plan.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerFarmInstanceDetailsInner getServerFarmInstanceDetails(String resourceGroupName, String name);
 
     /**
      * Restart all apps in an App Service plan.
@@ -2024,4 +2162,75 @@ public interface AppServicePlansClient extends InnerSupportsGet<AppServicePlanIn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void rebootWorker(String resourceGroupName, String name, String workerName);
+
+    /**
+     * Recycles a managed instance worker machine.
+     * 
+     * Description for Recycles a managed instance worker machine.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an operation on a resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<OperationInner>> recycleManagedInstanceWorkerWithResponseAsync(String resourceGroupName, String name,
+        String workerName);
+
+    /**
+     * Recycles a managed instance worker machine.
+     * 
+     * Description for Recycles a managed instance worker machine.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an operation on a resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<OperationInner> recycleManagedInstanceWorkerAsync(String resourceGroupName, String name, String workerName);
+
+    /**
+     * Recycles a managed instance worker machine.
+     * 
+     * Description for Recycles a managed instance worker machine.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an operation on a resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OperationInner> recycleManagedInstanceWorkerWithResponse(String resourceGroupName, String name,
+        String workerName, Context context);
+
+    /**
+     * Recycles a managed instance worker machine.
+     * 
+     * Description for Recycles a managed instance worker machine.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an operation on a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationInner recycleManagedInstanceWorker(String resourceGroupName, String name, String workerName);
 }

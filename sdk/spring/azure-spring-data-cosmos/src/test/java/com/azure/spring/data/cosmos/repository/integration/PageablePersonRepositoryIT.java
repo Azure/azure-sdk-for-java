@@ -10,15 +10,14 @@ import com.azure.spring.data.cosmos.domain.PageablePerson;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PageablePersonRepository;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -28,14 +27,14 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class PageablePersonRepositoryIT {
 
     private static final int TOTAL_CONTENT_SIZE = 25;
     public static final int ONE_KB = 1024;
 
-    @ClassRule
+
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
     @Autowired
@@ -48,7 +47,7 @@ public class PageablePersonRepositoryIT {
 
     private static boolean isSetupDone;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         collectionManager.ensureContainersCreated(template, PageablePerson.class);
 

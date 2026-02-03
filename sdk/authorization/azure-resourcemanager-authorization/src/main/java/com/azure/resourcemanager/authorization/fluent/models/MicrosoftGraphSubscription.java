@@ -16,7 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * subscription.
+ * Represents a subscription.
  */
 @Fluent
 public final class MicrosoftGraphSubscription extends MicrosoftGraphEntity {

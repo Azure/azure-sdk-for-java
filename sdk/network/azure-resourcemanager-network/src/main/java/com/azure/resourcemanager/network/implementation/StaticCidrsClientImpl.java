@@ -163,7 +163,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -215,7 +215,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (poolName == null) {
             return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -381,7 +381,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -431,7 +431,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -536,7 +536,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -582,7 +582,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -683,7 +683,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -729,7 +729,7 @@ public final class StaticCidrsClientImpl implements StaticCidrsClient {
         if (staticCidrName == null) {
             return Mono.error(new IllegalArgumentException("Parameter staticCidrName is required and cannot be null."));
         }
-        final String apiVersion = "2024-10-01";
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,

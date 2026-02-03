@@ -46,21 +46,24 @@ public class RntbdRequestRecordTests {
             new Uri(new URI("http://localhost/replica-path").toString())
         );
 
-        RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
-        RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
-        if (requestSent) {
-            record.setSendingRequestHasStarted();
-        }
-        record.expire();
+        try (RntbdRequestTimer requestTimer =
+                 new RntbdRequestTimer(5000, 5000)) {
 
-        try{
-            record.get();
-            fail("RntbdRequestRecord should complete with exception");
-        } catch (ExecutionException e) {
-            Throwable innerException = e.getCause();
-            assertThat(innerException).isInstanceOf(exceptionType);
-        } catch (Exception e) {
-            fail("Wrong exception");
+            RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
+            if (requestSent) {
+                record.setSendingRequestHasStarted();
+            }
+            record.expire();
+
+            try {
+                record.get();
+                fail("RntbdRequestRecord should complete with exception");
+            } catch (ExecutionException e) {
+                Throwable innerException = e.getCause();
+                assertThat(innerException).isInstanceOf(exceptionType);
+            } catch (Exception e) {
+                fail("Wrong exception");
+            }
         }
     }
 
@@ -72,22 +75,25 @@ public class RntbdRequestRecordTests {
             new Uri(new URI("http://localhost/replica-path").toString())
         );
 
-        RntbdRequestTimer requestTimer = new RntbdRequestTimer(5000, 5000);
-        RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
-        Mono<StoreResponse> result = Mono.fromFuture(record)
-            .doOnNext(storeResponse -> fail("Record got cancelled should not reach here"))
-            .doOnError(throwable -> fail("Record got cancelled should not reach here"));
+        try (RntbdRequestTimer requestTimer =
+                 new RntbdRequestTimer(5000, 5000)) {
 
-        result.cancelOn(Schedulers.boundedElastic()).subscribe().dispose();
+            RntbdRequestRecord record = new AsyncRntbdRequestRecord(requestArgs, requestTimer);
+            Mono<StoreResponse> result = Mono.fromFuture(record)
+                                             .doOnNext(storeResponse -> fail("Record got cancelled should not reach here"))
+                                             .doOnError(throwable -> fail("Record got cancelled should not reach here"));
 
-        Thread.sleep(100);
-        assertThat(record.isCancelled()).isTrue();
+            result.cancelOn(Schedulers.boundedElastic()).subscribe().dispose();
 
-        String jsonString = record.toString();
-        String statusString = "{\"done\":true,\"cancelled\":true,\"completedExceptionally\":true,\"error\":{\"type\":\"java.util.concurrent.CancellationException\"}}";
-        JsonNode jsonNode = Utils.getSimpleObjectMapper().readTree(jsonString);
-        JsonNode errorStatus = jsonNode.get("RntbdRequestRecord").get("status");
-        assertThat(errorStatus).isNotNull();
-        assertThat(errorStatus.toString()).isEqualTo(statusString);
+            Thread.sleep(100);
+            assertThat(record.isCancelled()).isTrue();
+
+            String jsonString = record.toString();
+            String statusString = "{\"done\":true,\"cancelled\":true,\"completedExceptionally\":true,\"error\":{\"type\":\"java.util.concurrent.CancellationException\"}}";
+            JsonNode jsonNode = Utils.getSimpleObjectMapper().readTree(jsonString);
+            JsonNode errorStatus = jsonNode.get("RntbdRequestRecord").get("status");
+            assertThat(errorStatus).isNotNull();
+            assertThat(errorStatus.toString()).isEqualTo(statusString);
+        }
     }
 }

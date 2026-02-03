@@ -10,12 +10,14 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.networkcloud.models.ActionState;
 import com.azure.resourcemanager.networkcloud.models.AdministrativeCredentials;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineCordonStatus;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachinePowerState;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineProvisioningState;
 import com.azure.resourcemanager.networkcloud.models.BareMetalMachineReadyState;
+import com.azure.resourcemanager.networkcloud.models.CertificateInfo;
 import com.azure.resourcemanager.networkcloud.models.HardwareInventory;
 import com.azure.resourcemanager.networkcloud.models.HardwareValidationStatus;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionStatus;
@@ -28,6 +30,12 @@ import java.util.List;
  */
 @Fluent
 public final class BareMetalMachineProperties implements JsonSerializable<BareMetalMachineProperties> {
+    /*
+     * The current state of any in progress or completed actions. The most recent known instance of each action type is
+     * shown.
+     */
+    private List<ActionState> actionStates;
+
     /*
      * The list of resource IDs for the other Microsoft.NetworkCloud resources that have attached this network.
      */
@@ -52,6 +60,13 @@ public final class BareMetalMachineProperties implements JsonSerializable<BareMe
      * The MAC address of a NIC connected to the PXE network.
      */
     private String bootMacAddress;
+
+    /*
+     * The CA certificate information issued by the platform for connecting to TLS interfaces for the bare metal
+     * machine. Callers add this certificate to the trusted CA store on the Kubernetes control plane nodes to allow
+     * secure communication with the bare metal machine.
+     */
+    private CertificateInfo caCertificate;
 
     /*
      * The resource ID of the cluster this bare metal machine is associated with.
@@ -198,6 +213,16 @@ public final class BareMetalMachineProperties implements JsonSerializable<BareMe
     }
 
     /**
+     * Get the actionStates property: The current state of any in progress or completed actions. The most recent known
+     * instance of each action type is shown.
+     * 
+     * @return the actionStates value.
+     */
+    public List<ActionState> actionStates() {
+        return this.actionStates;
+    }
+
+    /**
      * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
      * 
@@ -289,6 +314,17 @@ public final class BareMetalMachineProperties implements JsonSerializable<BareMe
     public BareMetalMachineProperties withBootMacAddress(String bootMacAddress) {
         this.bootMacAddress = bootMacAddress;
         return this;
+    }
+
+    /**
+     * Get the caCertificate property: The CA certificate information issued by the platform for connecting to TLS
+     * interfaces for the bare metal machine. Callers add this certificate to the trusted CA store on the Kubernetes
+     * control plane nodes to allow secure communication with the bare metal machine.
+     * 
+     * @return the caCertificate value.
+     */
+    public CertificateInfo caCertificate() {
+        return this.caCertificate;
     }
 
     /**
@@ -628,6 +664,9 @@ public final class BareMetalMachineProperties implements JsonSerializable<BareMe
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (actionStates() != null) {
+            actionStates().forEach(e -> e.validate());
+        }
         if (bmcConnectionString() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -649,6 +688,9 @@ public final class BareMetalMachineProperties implements JsonSerializable<BareMe
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property bootMacAddress in model BareMetalMachineProperties"));
+        }
+        if (caCertificate() != null) {
+            caCertificate().validate();
         }
         if (hardwareInventory() != null) {
             hardwareInventory().validate();
@@ -747,9 +789,14 @@ public final class BareMetalMachineProperties implements JsonSerializable<BareMe
                     deserializedBareMetalMachineProperties.rackSlot = reader.getLong();
                 } else if ("serialNumber".equals(fieldName)) {
                     deserializedBareMetalMachineProperties.serialNumber = reader.getString();
+                } else if ("actionStates".equals(fieldName)) {
+                    List<ActionState> actionStates = reader.readArray(reader1 -> ActionState.fromJson(reader1));
+                    deserializedBareMetalMachineProperties.actionStates = actionStates;
                 } else if ("associatedResourceIds".equals(fieldName)) {
                     List<String> associatedResourceIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedBareMetalMachineProperties.associatedResourceIds = associatedResourceIds;
+                } else if ("caCertificate".equals(fieldName)) {
+                    deserializedBareMetalMachineProperties.caCertificate = CertificateInfo.fromJson(reader);
                 } else if ("clusterId".equals(fieldName)) {
                     deserializedBareMetalMachineProperties.clusterId = reader.getString();
                 } else if ("cordonStatus".equals(fieldName)) {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Specifies the type of threshold criteria.
+ * Specifies the type of threshold criteria. Previously undocumented values might be returned.
  */
 public final class CriterionType extends ExpandableStringEnum<CriterionType> {
     /**

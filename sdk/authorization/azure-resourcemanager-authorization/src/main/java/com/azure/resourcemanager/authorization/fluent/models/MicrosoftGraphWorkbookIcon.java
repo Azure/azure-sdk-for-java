@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * workbookIcon.
+ * Represents a workbook icon.
  */
 @Fluent
 public final class MicrosoftGraphWorkbookIcon implements JsonSerializable<MicrosoftGraphWorkbookIcon> {

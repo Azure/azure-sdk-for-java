@@ -9,8 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WorkflowTriggerHistoriesGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/WorkflowTriggerHistories_Get.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * WorkflowTriggerHistories_Get.json
      */
     /**
      * Sample code: Get a workflow trigger history.

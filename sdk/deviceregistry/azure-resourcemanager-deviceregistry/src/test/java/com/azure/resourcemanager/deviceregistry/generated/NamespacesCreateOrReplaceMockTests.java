@@ -28,7 +28,7 @@ public final class NamespacesCreateOrReplaceMockTests {
     @Test
     public void testCreateOrReplace() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uuid\":\"qzinkfkbg\",\"messaging\":{\"endpoints\":{\"fezrx\":{\"endpointType\":\"xeqoc\",\"address\":\"jmygvk\",\"resourceId\":\"kjjeokbz\"},\"bostzel\":{\"endpointType\":\"zurtleipqxbkwvz\",\"address\":\"nzvdfbzdixzmq\",\"resourceId\":\"odawopqhewjptmcg\"},\"prprsnmokay\":{\"endpointType\":\"la\",\"address\":\"utmzlbiojlvfhrbb\",\"resourceId\":\"eqvcwwyyurmoch\"}}},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"lbkpb\",\"tenantId\":\"cpilj\",\"type\":\"None\"},\"location\":\"zv\",\"tags\":{\"lewjwiuubwef\":\"ndbnwieh\"},\"id\":\"sfapaqtferrq\",\"name\":\"ex\",\"type\":\"kmfx\"}";
+            = "{\"properties\":{\"uuid\":\"xff\",\"messaging\":{\"endpoints\":{\"nugj\":{\"endpointType\":\"fbkgozxwopdby\",\"address\":\"p\",\"resourceId\":\"qaclnapxbiy\"},\"hmrnjhvsuj\":{\"endpointType\":\"fsmfcttuxuuyi\",\"address\":\"flqo\",\"resourceId\":\"uvr\"}}},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"tqjtwhauu\",\"tenantId\":\"prnjletlxsmr\",\"type\":\"None\"},\"location\":\"ou\",\"tags\":{\"iwhxqszdtmaajq\":\"mowaziynknlqwzdv\",\"rjvmtygjbmzyosp\":\"huxy\",\"hckfkyjpmspbps\":\"p\",\"pyogtieyuj\":\"df\"},\"id\":\"vczkcnyxrxmunjd\",\"name\":\"vg\",\"type\":\"nkvxlxpaglqi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,31 +38,26 @@ public final class NamespacesCreateOrReplaceMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Namespace response = manager.namespaces()
-            .define("eglqgleohibetn")
-            .withRegion("zfjltfvnzcyjto")
-            .withExistingResourceGroup("mfg")
-            .withTags(mapOf("bdb", "opv", "ibcysihsgqc", "qgqqihedsvqwthmk"))
-            .withProperties(new NamespaceProperties().withMessaging(new Messaging().withEndpoints(mapOf("jrnwxacev",
-                new MessagingEndpoint().withEndpointType("tijv").withAddress("cvbmqzb").withResourceId("xl"),
-                "eyhlqhykprl",
-                new MessagingEndpoint().withEndpointType("jkuyxoafgaoq")
-                    .withAddress("tfaeyl")
-                    .withResourceId("mfgvxirpghriypo"),
-                "jh",
-                new MessagingEndpoint().withEndpointType("znuciqdsm")
-                    .withAddress("xiitdfuxt")
-                    .withResourceId("siibmiybnnustgn"),
-                "wy",
-                new MessagingEndpoint().withEndpointType("g").withAddress("xhcmavmqfoudo").withResourceId("cgyypro")))))
-            .withIdentity(
-                new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.SYSTEM_ASSIGNED))
+            .define("xqdlyrtltlapr")
+            .withRegion("isngwflqqmpizru")
+            .withExistingResourceGroup("amktcqiosmgbzah")
+            .withTags(mapOf("iixtmkzj", "qxpxiwfcngjsaa", "irhgfgrwsdp", "kv"))
+            .withProperties(new NamespaceProperties().withMessaging(new Messaging().withEndpoints(mapOf("mhyreeudz",
+                new MessagingEndpoint().withEndpointType("oqeq").withAddress("larvlagunbtg").withResourceId("bwln"),
+                "xkjeytunlbfj",
+                new MessagingEndpoint().withEndpointType("vbpdqmjxlyyzglgo")
+                    .withAddress("wtlmjjyuo")
+                    .withResourceId("tob"),
+                "enx", new MessagingEndpoint().withEndpointType("rusnk").withAddress("bhsy").withResourceId("unjqh")))))
+            .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
             .create();
 
-        Assertions.assertEquals("zv", response.location());
-        Assertions.assertEquals("ndbnwieh", response.tags().get("lewjwiuubwef"));
-        Assertions.assertEquals("xeqoc", response.properties().messaging().endpoints().get("fezrx").endpointType());
-        Assertions.assertEquals("jmygvk", response.properties().messaging().endpoints().get("fezrx").address());
-        Assertions.assertEquals("kjjeokbz", response.properties().messaging().endpoints().get("fezrx").resourceId());
+        Assertions.assertEquals("ou", response.location());
+        Assertions.assertEquals("mowaziynknlqwzdv", response.tags().get("iwhxqszdtmaajq"));
+        Assertions.assertEquals("fbkgozxwopdby",
+            response.properties().messaging().endpoints().get("nugj").endpointType());
+        Assertions.assertEquals("p", response.properties().messaging().endpoints().get("nugj").address());
+        Assertions.assertEquals("qaclnapxbiy", response.properties().messaging().endpoints().get("nugj").resourceId());
         Assertions.assertEquals(SystemAssignedServiceIdentityType.NONE, response.identity().type());
     }
 

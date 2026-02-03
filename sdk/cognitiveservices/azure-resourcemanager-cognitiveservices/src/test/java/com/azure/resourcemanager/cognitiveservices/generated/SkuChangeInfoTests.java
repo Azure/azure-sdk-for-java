@@ -12,21 +12,21 @@ public final class SkuChangeInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuChangeInfo model = BinaryData.fromString(
-            "{\"countOfDowngrades\":94.32142,\"countOfUpgradesAfterDowngrades\":35.12105,\"lastChangeDate\":\"atscmd\"}")
+            "{\"countOfDowngrades\":1.213932,\"countOfUpgradesAfterDowngrades\":81.72188,\"lastChangeDate\":\"ahuxinpm\"}")
             .toObject(SkuChangeInfo.class);
-        Assertions.assertEquals(94.32142F, model.countOfDowngrades());
-        Assertions.assertEquals(35.12105F, model.countOfUpgradesAfterDowngrades());
-        Assertions.assertEquals("atscmd", model.lastChangeDate());
+        Assertions.assertEquals(1.213932F, model.countOfDowngrades());
+        Assertions.assertEquals(81.72188F, model.countOfUpgradesAfterDowngrades());
+        Assertions.assertEquals("ahuxinpm", model.lastChangeDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuChangeInfo model = new SkuChangeInfo().withCountOfDowngrades(94.32142F)
-            .withCountOfUpgradesAfterDowngrades(35.12105F)
-            .withLastChangeDate("atscmd");
+        SkuChangeInfo model = new SkuChangeInfo().withCountOfDowngrades(1.213932F)
+            .withCountOfUpgradesAfterDowngrades(81.72188F)
+            .withLastChangeDate("ahuxinpm");
         model = BinaryData.fromObject(model).toObject(SkuChangeInfo.class);
-        Assertions.assertEquals(94.32142F, model.countOfDowngrades());
-        Assertions.assertEquals(35.12105F, model.countOfUpgradesAfterDowngrades());
-        Assertions.assertEquals("atscmd", model.lastChangeDate());
+        Assertions.assertEquals(1.213932F, model.countOfDowngrades());
+        Assertions.assertEquals(81.72188F, model.countOfUpgradesAfterDowngrades());
+        Assertions.assertEquals("ahuxinpm", model.lastChangeDate());
     }
 }

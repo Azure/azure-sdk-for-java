@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class DataflowEndpointDeleteSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/DataflowEndpoint_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/DataflowEndpoint_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: DataflowEndpoint_Delete.

@@ -15,24 +15,21 @@ public final class ScheduledEntriesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledEntries model = BinaryData.fromString(
-            "{\"scheduledEntries\":[{\"weekDay\":\"Friday\",\"startHourUtc\":697621672,\"durationHours\":578965332},{\"weekDay\":\"Friday\",\"startHourUtc\":589866541,\"durationHours\":1190754694},{\"weekDay\":\"Tuesday\",\"startHourUtc\":2125419820,\"durationHours\":1058519625}]}")
+            "{\"scheduledEntries\":[{\"weekDay\":\"Tuesday\",\"startHourUtc\":597638958,\"durationHours\":868896591},{\"weekDay\":\"Monday\",\"startHourUtc\":97520193,\"durationHours\":96011732}]}")
             .toObject(ScheduledEntries.class);
-        Assertions.assertEquals(WeekDay.FRIDAY, model.scheduledEntries().get(0).weekDay());
-        Assertions.assertEquals(697621672, model.scheduledEntries().get(0).startHourUtc());
-        Assertions.assertEquals(578965332, model.scheduledEntries().get(0).durationHours());
+        Assertions.assertEquals(WeekDay.TUESDAY, model.scheduledEntries().get(0).weekDay());
+        Assertions.assertEquals(597638958, model.scheduledEntries().get(0).startHourUtc());
+        Assertions.assertEquals(868896591, model.scheduledEntries().get(0).durationHours());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ScheduledEntries model = new ScheduledEntries().withScheduledEntries(Arrays.asList(
-            new ScheduledEntry().withWeekDay(WeekDay.FRIDAY).withStartHourUtc(697621672).withDurationHours(578965332),
-            new ScheduledEntry().withWeekDay(WeekDay.FRIDAY).withStartHourUtc(589866541).withDurationHours(1190754694),
-            new ScheduledEntry().withWeekDay(WeekDay.TUESDAY)
-                .withStartHourUtc(2125419820)
-                .withDurationHours(1058519625)));
+            new ScheduledEntry().withWeekDay(WeekDay.TUESDAY).withStartHourUtc(597638958).withDurationHours(868896591),
+            new ScheduledEntry().withWeekDay(WeekDay.MONDAY).withStartHourUtc(97520193).withDurationHours(96011732)));
         model = BinaryData.fromObject(model).toObject(ScheduledEntries.class);
-        Assertions.assertEquals(WeekDay.FRIDAY, model.scheduledEntries().get(0).weekDay());
-        Assertions.assertEquals(697621672, model.scheduledEntries().get(0).startHourUtc());
-        Assertions.assertEquals(578965332, model.scheduledEntries().get(0).durationHours());
+        Assertions.assertEquals(WeekDay.TUESDAY, model.scheduledEntries().get(0).weekDay());
+        Assertions.assertEquals(597638958, model.scheduledEntries().get(0).startHourUtc());
+        Assertions.assertEquals(868896591, model.scheduledEntries().get(0).durationHours());
     }
 }

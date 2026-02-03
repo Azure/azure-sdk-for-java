@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * teamGuestSettings.
+ * Represents a team guest settings.
  */
 @Fluent
 public final class MicrosoftGraphTeamGuestSettings implements JsonSerializable<MicrosoftGraphTeamGuestSettings> {

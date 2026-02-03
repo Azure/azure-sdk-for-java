@@ -33,13 +33,17 @@ public interface Consoles {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualMachineName The name of the virtual machine.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of consoles for the provided virtual machine as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Console> listByVirtualMachine(String resourceGroupName, String virtualMachineName, Context context);
+    PagedIterable<Console> listByVirtualMachine(String resourceGroupName, String virtualMachineName, Integer top,
+        String skipToken, Context context);
 
     /**
      * Retrieve the virtual machine console.

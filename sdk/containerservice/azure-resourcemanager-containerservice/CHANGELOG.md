@@ -1,6 +1,6 @@
 # Release History
 
-## 2.56.0-beta.2 (Unreleased)
+## 2.58.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,62 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.57.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded core dependencies.
+
+## 2.58.0-beta.1 (2025-12-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-02-preview`.
+
+## 2.57.0 (2025-12-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-10-01`.
+
+## 2.57.0-beta.1 (2025-12-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-09-01-preview`.
+
+## 2.56.1 (2025-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.56.0 (2025-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-09-01`.
+
+## 2.55.1 (2025-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.56.0-beta.1 (2025-10-15)
 

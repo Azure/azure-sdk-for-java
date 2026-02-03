@@ -9,8 +9,7 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class ContainerAppsGetAuthTokenSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * ContainerApps_GetAuthToken.json
      */
     /**
@@ -20,6 +19,6 @@ public final class ContainerAppsGetAuthTokenSamples {
      */
     public static void
         getContainerAppAuthToken(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerApps().getAuthTokenWithResponse("rg", "testcontainerApp0", com.azure.core.util.Context.NONE);
+        manager.containerApps().getAuthTokenWithResponse("rg", "testcontainerapp0", com.azure.core.util.Context.NONE);
     }
 }

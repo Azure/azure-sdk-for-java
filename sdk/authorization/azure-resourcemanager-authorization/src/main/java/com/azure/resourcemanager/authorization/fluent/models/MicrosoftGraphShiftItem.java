@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * shiftItem.
+ * Represents a shift item.
  */
 @Fluent
 public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {

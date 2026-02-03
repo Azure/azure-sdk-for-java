@@ -27,7 +27,7 @@ public final class DeletedAccountsPurgeMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        manager.deletedAccounts().purge("dafhr", "mdyomkxfbvfbh", "y", com.azure.core.util.Context.NONE);
+        manager.deletedAccounts().purge("eialwvskb", "hzacaqtyltco", "cujp", com.azure.core.util.Context.NONE);
 
     }
 }

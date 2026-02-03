@@ -6,7 +6,6 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.AccountInfo;
-import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
 import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicAccountProperties;
@@ -15,6 +14,7 @@ import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.OrganizationInfo;
 import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
+import com.azure.resourcemanager.newrelicobservability.models.SaaSData;
 import com.azure.resourcemanager.newrelicobservability.models.SingleSignOnStates;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
 import com.azure.resourcemanager.newrelicobservability.models.UserAssignedIdentity;
@@ -28,7 +28,8 @@ import java.util.Map;
  */
 public final class MonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/preview/2025-05-01-preview/examples/
      * Monitors_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
@@ -61,9 +62,11 @@ public final class MonitorsCreateOrUpdateSamples {
                 .withPhoneNumber("krf")
                 .withCountry("hslqnwdanrconqyekwbnttaetv"))
             .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
-                .withBillingCycle(BillingCycle.YEARLY)
+                .withBillingCycle("Yearly")
                 .withPlanDetails("tbbiaga")
                 .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+            .withSaaSData(new SaaSData().withSaaSResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/Microsoft.SaaS/resources/abcd"))
             .withOrgCreationSource(OrgCreationSource.LIFTR)
             .withAccountCreationSource(AccountCreationSource.LIFTR)
             .withSubscriptionState("Suspended")

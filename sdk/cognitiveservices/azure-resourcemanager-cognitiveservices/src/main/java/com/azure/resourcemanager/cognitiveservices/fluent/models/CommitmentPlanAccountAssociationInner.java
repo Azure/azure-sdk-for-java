@@ -19,11 +19,6 @@ import java.util.Map;
 @Fluent
 public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
-
-    /*
      * Resource Etag.
      */
     private String etag;
@@ -37,6 +32,11 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
      * Properties of Cognitive Services account commitment plan association.
      */
     private CommitmentPlanAccountAssociationProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -57,15 +57,6 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
      * Creates an instance of CommitmentPlanAccountAssociationInner class.
      */
     public CommitmentPlanAccountAssociationInner() {
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -104,6 +95,15 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
      */
     private CommitmentPlanAccountAssociationProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -204,8 +204,6 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
                     deserializedCommitmentPlanAccountAssociationInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedCommitmentPlanAccountAssociationInner.type = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedCommitmentPlanAccountAssociationInner.systemData = SystemData.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedCommitmentPlanAccountAssociationInner.etag = reader.getString();
                 } else if ("tags".equals(fieldName)) {
@@ -214,6 +212,8 @@ public final class CommitmentPlanAccountAssociationInner extends ProxyResource {
                 } else if ("properties".equals(fieldName)) {
                     deserializedCommitmentPlanAccountAssociationInner.innerProperties
                         = CommitmentPlanAccountAssociationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCommitmentPlanAccountAssociationInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

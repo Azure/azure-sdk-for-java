@@ -70,7 +70,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
      * to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientDataCol")
+    @ServiceInterface(name = "MonitorClientDataCollectionEndpoints")
     public interface DataCollectionEndpointsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints")
@@ -173,7 +173,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
@@ -208,7 +208,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -297,7 +297,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
@@ -326,7 +326,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
@@ -418,7 +418,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -458,7 +458,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -549,7 +549,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -592,7 +592,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -685,7 +685,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -728,7 +728,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
         if (body != null) {
             body.validate();
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -815,7 +815,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -853,7 +853,7 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
             return Mono.error(
                 new IllegalArgumentException("Parameter dataCollectionEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2021-09-01-preview";
+        final String apiVersion = "2024-03-11";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -907,6 +907,8 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
     }
 
     /**
+     * Lists all data collection endpoints in the specified resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -935,6 +937,8 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
     }
 
     /**
+     * Lists all data collection endpoints in the specified resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -962,6 +966,8 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
     }
 
     /**
+     * Lists all data collection endpoints in the specified subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -990,6 +996,8 @@ public final class DataCollectionEndpointsClientImpl implements InnerSupportsGet
     }
 
     /**
+     * Lists all data collection endpoints in the specified subscription
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

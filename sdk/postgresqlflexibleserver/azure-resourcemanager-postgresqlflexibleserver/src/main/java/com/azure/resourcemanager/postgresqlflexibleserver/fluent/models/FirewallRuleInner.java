@@ -14,12 +14,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Represents a server firewall rule.
+ * Firewall rule.
  */
 @Fluent
 public final class FirewallRuleInner extends ProxyResource {
     /*
-     * The properties of a firewall rule.
+     * Properties of a firewall rule.
      */
     private FirewallRuleProperties innerProperties = new FirewallRuleProperties();
 
@@ -50,7 +50,7 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The properties of a firewall rule.
+     * Get the innerProperties property: Properties of a firewall rule.
      * 
      * @return the innerProperties value.
      */
@@ -98,7 +98,8 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
+     * Get the startIpAddress property: IP address defining the start of the range of addresses of a firewall rule. Must
+     * be expressed in IPv4 format.
      * 
      * @return the startIpAddress value.
      */
@@ -107,7 +108,8 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the startIpAddress property: The start IP address of the server firewall rule. Must be IPv4 format.
+     * Set the startIpAddress property: IP address defining the start of the range of addresses of a firewall rule. Must
+     * be expressed in IPv4 format.
      * 
      * @param startIpAddress the startIpAddress value to set.
      * @return the FirewallRuleInner object itself.
@@ -121,7 +123,8 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
+     * Get the endIpAddress property: IP address defining the end of the range of addresses of a firewall rule. Must be
+     * expressed in IPv4 format.
      * 
      * @return the endIpAddress value.
      */
@@ -130,7 +133,8 @@ public final class FirewallRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the endIpAddress property: The end IP address of the server firewall rule. Must be IPv4 format.
+     * Set the endIpAddress property: IP address defining the end of the range of addresses of a firewall rule. Must be
+     * expressed in IPv4 format.
      * 
      * @param endIpAddress the endIpAddress value to set.
      * @return the FirewallRuleInner object itself.

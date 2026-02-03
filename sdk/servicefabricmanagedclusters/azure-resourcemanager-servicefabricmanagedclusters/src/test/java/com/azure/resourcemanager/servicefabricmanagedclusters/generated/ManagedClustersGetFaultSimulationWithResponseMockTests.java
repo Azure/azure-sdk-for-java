@@ -24,7 +24,7 @@ public final class ManagedClustersGetFaultSimulationWithResponseMockTests {
     @Test
     public void testGetFaultSimulationWithResponse() throws Exception {
         String responseStr
-            = "{\"simulationId\":\"rqjb\",\"status\":\"Active\",\"startTime\":\"2021-01-25T09:16:29Z\",\"endTime\":\"2021-01-05T10:30:14Z\",\"details\":{\"clusterId\":\"afhonqj\",\"operationId\":\"eickpz\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"pmxelnwcltyje\",\"status\":\"Stopping\",\"operationId\":\"mlfmkqs\",\"operationStatus\":\"Created\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":true,\"constraints\":{\"expirationTime\":\"2021-07-30T21:11:41Z\"}}}}";
+            = "{\"simulationId\":\"qvhpsylkkshkbff\",\"status\":\"StopFailed\",\"startTime\":\"2021-04-10T03:24:01Z\",\"endTime\":\"2021-06-13T14:19:09Z\",\"details\":{\"clusterId\":\"wwp\",\"operationId\":\"xs\",\"nodeTypeFaultSimulation\":[{\"nodeTypeName\":\"ujgicgaaoe\",\"status\":\"StopFailed\",\"operationId\":\"qutdewemxs\",\"operationStatus\":\"Failed\"}],\"parameters\":{\"faultKind\":\"FaultSimulationContent\",\"force\":false,\"constraints\":{\"expirationTime\":\"2021-06-28T16:34:33Z\"}}}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,24 +34,24 @@ public final class ManagedClustersGetFaultSimulationWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         FaultSimulation response = manager.managedClusters()
-            .getFaultSimulationWithResponse("xecwcro", "phslhcawjutifdw",
-                new FaultSimulationIdContent().withSimulationId("mvi"), com.azure.core.util.Context.NONE)
+            .getFaultSimulationWithResponse("mwqkchcxwaxf", "w",
+                new FaultSimulationIdContent().withSimulationId("jkjexf"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rqjb", response.simulationId());
-        Assertions.assertEquals(FaultSimulationStatus.ACTIVE, response.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-25T09:16:29Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T10:30:14Z"), response.endTime());
-        Assertions.assertEquals("afhonqj", response.details().clusterId());
-        Assertions.assertEquals("eickpz", response.details().operationId());
-        Assertions.assertEquals("pmxelnwcltyje", response.details().nodeTypeFaultSimulation().get(0).nodeTypeName());
-        Assertions.assertEquals(FaultSimulationStatus.STOPPING,
+        Assertions.assertEquals("qvhpsylkkshkbff", response.simulationId());
+        Assertions.assertEquals(FaultSimulationStatus.STOP_FAILED, response.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-10T03:24:01Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T14:19:09Z"), response.endTime());
+        Assertions.assertEquals("wwp", response.details().clusterId());
+        Assertions.assertEquals("xs", response.details().operationId());
+        Assertions.assertEquals("ujgicgaaoe", response.details().nodeTypeFaultSimulation().get(0).nodeTypeName());
+        Assertions.assertEquals(FaultSimulationStatus.STOP_FAILED,
             response.details().nodeTypeFaultSimulation().get(0).status());
-        Assertions.assertEquals("mlfmkqs", response.details().nodeTypeFaultSimulation().get(0).operationId());
-        Assertions.assertEquals(SfmcOperationStatus.CREATED,
+        Assertions.assertEquals("qutdewemxs", response.details().nodeTypeFaultSimulation().get(0).operationId());
+        Assertions.assertEquals(SfmcOperationStatus.FAILED,
             response.details().nodeTypeFaultSimulation().get(0).operationStatus());
-        Assertions.assertTrue(response.details().parameters().force());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-30T21:11:41Z"),
+        Assertions.assertFalse(response.details().parameters().force());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T16:34:33Z"),
             response.details().parameters().constraints().expirationTime());
     }
 }

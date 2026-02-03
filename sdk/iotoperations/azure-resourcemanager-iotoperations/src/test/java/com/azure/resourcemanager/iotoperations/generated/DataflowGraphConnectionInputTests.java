@@ -14,24 +14,25 @@ public final class DataflowGraphConnectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataflowGraphConnectionInput model = BinaryData
-            .fromString("{\"name\":\"dmovsm\",\"schema\":{\"serializationFormat\":\"Delta\",\"schemaRef\":\"b\"}}")
+            .fromString(
+                "{\"name\":\"kfzbeyvpnqicvi\",\"schema\":{\"serializationFormat\":\"Delta\",\"schemaRef\":\"xdxr\"}}")
             .toObject(DataflowGraphConnectionInput.class);
-        Assertions.assertEquals("dmovsm", model.name());
+        Assertions.assertEquals("kfzbeyvpnqicvi", model.name());
         Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.DELTA,
             model.schema().serializationFormat());
-        Assertions.assertEquals("b", model.schema().schemaRef());
+        Assertions.assertEquals("xdxr", model.schema().schemaRef());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataflowGraphConnectionInput model = new DataflowGraphConnectionInput().withName("dmovsm")
+        DataflowGraphConnectionInput model = new DataflowGraphConnectionInput().withName("kfzbeyvpnqicvi")
             .withSchema(new DataflowGraphConnectionSchemaSettings()
                 .withSerializationFormat(DataflowGraphConnectionSchemaSerializationFormat.DELTA)
-                .withSchemaRef("b"));
+                .withSchemaRef("xdxr"));
         model = BinaryData.fromObject(model).toObject(DataflowGraphConnectionInput.class);
-        Assertions.assertEquals("dmovsm", model.name());
+        Assertions.assertEquals("kfzbeyvpnqicvi", model.name());
         Assertions.assertEquals(DataflowGraphConnectionSchemaSerializationFormat.DELTA,
             model.schema().serializationFormat());
-        Assertions.assertEquals("b", model.schema().schemaRef());
+        Assertions.assertEquals("xdxr", model.schema().schemaRef());
     }
 }
