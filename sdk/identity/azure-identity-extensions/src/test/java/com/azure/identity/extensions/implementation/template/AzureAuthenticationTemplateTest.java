@@ -255,4 +255,55 @@ class AzureAuthenticationTemplateTest {
         assertNotNull(template.getBlockTimeout());
         assertEquals(30, template.getBlockTimeout().getSeconds());
     }
+
+    @Test
+    void socketTimeoutCausesTimeoutExceptionWhenTokenRetrievalIsSlow() {
+        // This test reproduces the issue: https://github.com/Azure/azure-sdk-for-java/issues/47874
+        // Token retrieval that takes longer than socketTimeout should timeout
+
+        // Setup: Create a mock token credential that delays for 15 seconds
+        TokenCredential mockTokenCredential = mock(TokenCredential.class);
+        when(mockTokenCredential.getToken(any()))
+            .thenAnswer(invocation -> Mono.just(new AccessToken("fake-token", OffsetDateTime.now().plusHours(1)))
+                .delayElement(java.time.Duration.ofSeconds(15)));
+
+        // Mock the DefaultTokenCredentialProvider to return our slow mock credential
+        try (MockedConstruction<DefaultTokenCredentialProvider> ignored
+            = mockConstruction(DefaultTokenCredentialProvider.class, (defaultTokenCredentialProvider, context) -> {
+                when(defaultTokenCredentialProvider.get()).thenReturn(mockTokenCredential);
+            })) {
+
+            Properties properties = new Properties();
+            properties.setProperty("socketTimeout", "10");
+            properties.setProperty("azure.tokenCredentialCacheEnabled", "false");
+
+            AzureAuthenticationTemplate template = new AzureAuthenticationTemplate();
+            template.init(properties);
+
+            // Verify the template is configured with 10 second timeout
+            assertEquals(10, template.getBlockTimeout().getSeconds());
+
+            // This should timeout after 10 seconds (socketTimeout) rather than waiting 15 seconds
+            // or the default 30 seconds, demonstrating that socketTimeout is respected
+            long startTime = System.currentTimeMillis();
+            Exception exception = assertThrows(RuntimeException.class, () -> {
+                template.getTokenAsPassword();
+            });
+            long elapsed = System.currentTimeMillis() - startTime;
+
+            // Verify it timed out around 10 seconds (with some tolerance for execution time)
+            // Should be significantly less than 15 seconds (the mock delay)
+            assertTrue(elapsed >= 9000 && elapsed <= 12000,
+                "Expected timeout around 10 seconds but was " + elapsed + "ms");
+
+            // Verify the exception is related to timeout
+            assertTrue(
+                exception.getMessage().contains("Timeout")
+                    || exception.getCause() != null && exception.getCause().getMessage().contains("Timeout"),
+                "Expected timeout exception but got: " + exception.getMessage());
+
+            // Verify the mock was constructed
+            assertNotNull(ignored);
+        }
+    }
 }
