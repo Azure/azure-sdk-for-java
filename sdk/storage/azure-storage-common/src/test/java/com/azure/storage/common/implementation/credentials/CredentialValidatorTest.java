@@ -63,10 +63,8 @@ public class CredentialValidatorTest {
             // No credentials valid according to the method as written
             Arguments.of(null, null, null, null),
             // Single credential of each type
-            Arguments.of(SHARED_KEY, null, null, null),
-            Arguments.of(null, TOKEN, null, null),
-            Arguments.of(null, null, AZURE_SAS, null),
-            Arguments.of(null, null, null, SAS_TOKEN));
+            Arguments.of(SHARED_KEY, null, null, null), Arguments.of(null, TOKEN, null, null),
+            Arguments.of(null, null, AZURE_SAS, null), Arguments.of(null, null, null, SAS_TOKEN));
     }
 
     private static Stream<Arguments> singleCredentialInvalidCases() {
@@ -87,27 +85,21 @@ public class CredentialValidatorTest {
             // No credentials valid according to the method as written
             Arguments.of(null, null, null, null),
             // Single credential of each type
-            Arguments.of(SHARED_KEY, null, null, null),
-            Arguments.of(null, TOKEN, null, null),
-            Arguments.of(null, null, AZURE_SAS, null),
-            Arguments.of(null, null, null, SAS_TOKEN),
+            Arguments.of(SHARED_KEY, null, null, null), Arguments.of(null, TOKEN, null, null),
+            Arguments.of(null, null, AZURE_SAS, null), Arguments.of(null, null, null, SAS_TOKEN),
             // Valid two-credential combinations (TokenCredential + XOR of SAS types)
-            Arguments.of(null, TOKEN, AZURE_SAS, null),
-            Arguments.of(null, TOKEN, null, SAS_TOKEN));
+            Arguments.of(null, TOKEN, AZURE_SAS, null), Arguments.of(null, TOKEN, null, SAS_TOKEN));
     }
 
     private static Stream<Arguments> credentialsNotAmbiguousInvalidCases() {
         return Stream.of(
             // Invalid two-credential combinations
-            Arguments.of(SHARED_KEY, TOKEN, null, null),
-            Arguments.of(SHARED_KEY, null, AZURE_SAS, null),
-            Arguments.of(SHARED_KEY, null, null, SAS_TOKEN),
-            Arguments.of(null, null, AZURE_SAS, SAS_TOKEN),
+            Arguments.of(SHARED_KEY, TOKEN, null, null), Arguments.of(SHARED_KEY, null, AZURE_SAS, null),
+            Arguments.of(SHARED_KEY, null, null, SAS_TOKEN), Arguments.of(null, null, AZURE_SAS, SAS_TOKEN),
             // TokenCredential + both SAS types (violates XOR). Also 3 arguments
             Arguments.of(null, TOKEN, AZURE_SAS, SAS_TOKEN),
             // Three credentials
-            Arguments.of(SHARED_KEY, TOKEN, AZURE_SAS, null),
-            Arguments.of(SHARED_KEY, TOKEN, null, SAS_TOKEN),
+            Arguments.of(SHARED_KEY, TOKEN, AZURE_SAS, null), Arguments.of(SHARED_KEY, TOKEN, null, SAS_TOKEN),
             Arguments.of(SHARED_KEY, null, AZURE_SAS, SAS_TOKEN),
             // Four credentials
             Arguments.of(SHARED_KEY, TOKEN, AZURE_SAS, SAS_TOKEN));
