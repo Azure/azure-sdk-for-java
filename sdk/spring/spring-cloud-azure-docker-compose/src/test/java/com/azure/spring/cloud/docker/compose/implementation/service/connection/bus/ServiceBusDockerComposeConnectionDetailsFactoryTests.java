@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.docker.compose.implementation.service.connection.servicebus;
+package com.azure.spring.cloud.docker.compose.implementation.service.connection.bus;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -49,8 +49,8 @@ class ServiceBusDockerComposeConnectionDetailsFactoryTests {
         this.senderClient.sendMessage(new ServiceBusMessage("Hello World!"));
 
         waitAtMost(Duration.ofSeconds(30)).pollDelay(Duration.ofSeconds(5)).untilAsserted(() -> {
-            assertThat(Config.messages).hasSize(1);
-            assertThat(Config.messages.get(0).getBody().toString()).isEqualTo("Hello World!");
+            assertThat(Config.MESSAGES).hasSize(1);
+            assertThat(Config.MESSAGES.get(0).getBody().toString()).isEqualTo("Hello World!");
         });
     }
 
@@ -60,12 +60,12 @@ class ServiceBusDockerComposeConnectionDetailsFactoryTests {
         AzureServiceBusAutoConfiguration.class})
     static class Config {
 
-        static final List<ServiceBusReceivedMessage> messages = new ArrayList<>();
+        private static final List<ServiceBusReceivedMessage> MESSAGES = new ArrayList<>();
 
         @Bean
         ServiceBusRecordMessageListener processMessage() {
             return context -> {
-                messages.add(context.getMessage());
+                MESSAGES.add(context.getMessage());
             };
         }
 

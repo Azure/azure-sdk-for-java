@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.testcontainers.implementation.service.connection.servicebus;
+package com.azure.spring.cloud.testcontainers.implementation.service.connection.bus;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -41,23 +41,23 @@ import static org.awaitility.Awaitility.waitAtMost;
 @EnabledOnOs(OS.LINUX)
 class ServiceBusContainerConnectionDetailsFactoryTests {
 
-    private static final Network network = Network.newNetwork();
+    private static final Network NETWORK = Network.newNetwork();
 
-    private static final MSSQLServerContainer<?> sqlserver = new MSSQLServerContainer<>(
+    private static final MSSQLServerContainer<?> SQLSERVER = new MSSQLServerContainer<>(
         "mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04")
         .acceptLicense()
-        .withNetwork(network)
+        .withNetwork(NETWORK)
         .withNetworkAliases("sqlserver");
 
     @Container
     @ServiceConnection
-    private static final ServiceBusEmulatorContainer serviceBus = new ServiceBusEmulatorContainer(
+    private static final ServiceBusEmulatorContainer SERVICE_BUS = new ServiceBusEmulatorContainer(
         "mcr.microsoft.com/azure-messaging/servicebus-emulator:latest")
         .acceptLicense()
         .withCopyFileToContainer(MountableFile.forClasspathResource("servicebus/Config.json"),
             "/ServiceBus_Emulator/ConfigFiles/Config.json")
-        .withNetwork(network)
-        .withMsSqlServerContainer(sqlserver);
+        .withNetwork(NETWORK)
+        .withMsSqlServerContainer(SQLSERVER);
 
     @Autowired
     private ServiceBusSenderClient senderClient;
@@ -67,8 +67,8 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
         this.senderClient.sendMessage(new ServiceBusMessage("Hello World!"));
 
         waitAtMost(Duration.ofSeconds(30)).pollDelay(Duration.ofSeconds(5)).untilAsserted(() -> {
-            assertThat(Config.messages).hasSize(1);
-            assertThat(Config.messages.get(0).getBody().toString()).isEqualTo("Hello World!");
+            assertThat(Config.MESSAGES).hasSize(1);
+            assertThat(Config.MESSAGES.get(0).getBody().toString()).isEqualTo("Hello World!");
         });
     }
 
@@ -76,12 +76,12 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
     @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureServiceBusAutoConfiguration.class})
     static class Config {
 
-        static final List<ServiceBusReceivedMessage> messages = new ArrayList<>();
+        private static final List<ServiceBusReceivedMessage> MESSAGES = new ArrayList<>();
 
         @Bean
         ServiceBusRecordMessageListener processMessage() {
             return context -> {
-                messages.add(context.getMessage());
+                MESSAGES.add(context.getMessage());
             };
         }
 
