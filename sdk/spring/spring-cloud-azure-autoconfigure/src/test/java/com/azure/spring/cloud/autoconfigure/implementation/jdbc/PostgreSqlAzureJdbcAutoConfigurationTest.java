@@ -109,4 +109,22 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
     }
+
+    @org.junit.jupiter.api.Test
+    void enhanceUrlWithSocketTimeout() {
+        String connectionString = "jdbc:postgresql://postgre:5432/test?socketTimeout=10";
+        this.contextRunner
+            .withPropertyValues("spring.datasource.url = " + connectionString)
+            .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
+            .run((context) -> {
+                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
+                String enhancedUrl = dataSourceProperties.getUrl();
+                // Verify that socketTimeout is preserved in the enhanced URL
+                assertEquals(true, enhancedUrl.contains("socketTimeout=10"), 
+                    "Enhanced URL should preserve socketTimeout parameter");
+                // Verify that authentication plugin is added
+                assertEquals(true, enhancedUrl.contains(POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME),
+                    "Enhanced URL should contain authentication plugin");
+            });
+    }
 }
