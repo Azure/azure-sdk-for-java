@@ -7,6 +7,8 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `query plan` failed with `400` when `CosmosQueryRequestOptions` has partition key filter and  partition key value contains non-ascii character. See [PR 47881](https://github.com/Azure/azure-sdk-for-java/pull/47881)
+* Fixed an issue where query return empty result when `CosmosQueryRequestOptions` has partition key filter and  partition key value contains non-ascii character. See [PR 47881](https://github.com/Azure/azure-sdk-for-java/pull/47881)
 
 #### Other Changes
 
