@@ -1,0 +1,20 @@
+trigger: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: ai/azure-ai-voicelive
+    TestResourceDirectories:
+      - ai/azure-ai-voicelive/test-resources
+    TimeoutInMinutes: 240
+    EnvVars:
+      AZURE_LOG_LEVEL: 2
+    CloudConfig:
+      Public:
+        ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
+          MatrixFilters:
+            - ArmTemplateParameters=^(?!.*enableHsm.*true)
+    Artifacts:
+      - name: azure-ai-voicelive
+        groupId: com.azure
+        safeName: azureaivoicelive
