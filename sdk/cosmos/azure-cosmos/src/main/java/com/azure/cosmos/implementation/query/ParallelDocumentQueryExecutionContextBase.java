@@ -13,7 +13,6 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -84,7 +83,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                     // partitionKeyInternal gets passed as null which avoids the feedRange normalization.
                     if (!PartitionKeyInternal.isPartialPartitionKeyQuery(collection, cosmosQueryRequestOptions.getPartitionKey())) {
                         partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
-                        headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
+                        headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKeyInternal.toJson());
                     }
                 }
 

@@ -742,27 +742,27 @@ public class Utils {
                 cosmosChangeFeedRequestRequestOptions, pagedFluxOptions);
     }
 
-    public static String escapeNonAscii(String partitionKeyJson) {
+    public static String escapeNonAscii(String value) {
         // if all are ascii original string will be returned, and avoids copying data.
         StringBuilder sb = null;
-        for (int i = 0; i < partitionKeyJson.length(); i++) {
-            int val = partitionKeyJson.charAt(i);
+        for (int i = 0; i < value.length(); i++) {
+            int val = value.charAt(i);
             if (val > 127) {
                 if (sb == null) {
-                    sb = new StringBuilder(partitionKeyJson.length());
-                    sb.append(partitionKeyJson, 0, i);
+                    sb = new StringBuilder(value.length());
+                    sb.append(value, 0, i);
                 }
                 sb.append("\\u").append(String.format("%04X", val));
             } else {
                 if (sb != null) {
-                    sb.append(partitionKeyJson.charAt(i));
+                    sb.append(value.charAt(i));
                 }
             }
         }
 
         if (sb == null) {
             // all are ascii character
-            return partitionKeyJson;
+            return value;
         } else {
             return sb.toString();
         }

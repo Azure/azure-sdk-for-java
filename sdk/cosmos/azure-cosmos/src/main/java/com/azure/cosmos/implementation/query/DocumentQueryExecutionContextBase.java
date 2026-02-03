@@ -330,7 +330,7 @@ implements IDocumentQueryExecutionContext<T> {
             if (partitionKey != null) {
                 request.setPartitionKeyInternal(partitionKey);
                 request.setPartitionKeyDefinition(partitionKeyDefinition);
-                request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKey.toJson()));
+                request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKey.toJson());
             }
         }
     }

@@ -156,7 +156,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
 
         request.getHeaders().put(
             HttpConstants.HttpHeaders.PARTITION_KEY,
-            Utils.escapeNonAscii(this.partitionKey.toJson()));
+            this.partitionKey.toJson());
         request.setPartitionKeyInternal(this.partitionKey);
 
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
