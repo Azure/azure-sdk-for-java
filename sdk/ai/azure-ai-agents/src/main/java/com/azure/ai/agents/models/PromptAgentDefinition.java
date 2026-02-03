@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.openai.models.responses.ResponseCreateParams;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +51,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      * where the model considers the results of the tokens with top_p probability
      * mass. So 0.1 means only the tokens comprising the top 10% probability mass
      * are considered.
-     *
+     * 
      * We generally recommend altering this or `temperature` but not both.
      */
     @Generated
