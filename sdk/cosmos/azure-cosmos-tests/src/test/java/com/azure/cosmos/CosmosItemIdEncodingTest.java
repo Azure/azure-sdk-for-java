@@ -13,8 +13,12 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosTriggerResponse;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.TriggerOperation;
+import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,6 +33,7 @@ import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -99,21 +104,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -129,21 +140,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -159,21 +176,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -189,21 +212,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -219,21 +248,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -249,21 +284,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -279,21 +320,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -309,21 +356,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -339,21 +392,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -372,21 +431,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -402,21 +467,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.UNAUTHORIZED));
 
         this.executeTestCase(scenario);
     }
@@ -432,21 +503,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.UNAUTHORIZED));
 
         this.executeTestCase(scenario);
     }
@@ -462,21 +539,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.NOTFOUND),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.NOTFOUND),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.NOTFOUND));
 
         this.executeTestCase(scenario);
     }
@@ -492,21 +575,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 -1 , // Non-CosmosException - in this case IllegalArgumentException
                 -1,
                 -1,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                -1),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 -1 , // Non-CosmosException - in this case IllegalArgumentException
                 -1,
                 -1,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                -1),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 -1 , // Non-CosmosException - in this case IllegalArgumentException
                 -1,
                 -1,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                -1,
+                -1));
 
         this.executeTestCase(scenario);
     }
@@ -523,21 +612,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 -1 , // Non-CosmosException - in this case IllegalArgumentException
                 -1,
                 -1,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                -1),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.BADREQUEST,
                 -1 , // Non-CosmosException - in this case IllegalArgumentException
                 -1,
                 -1,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                -1),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.BADREQUEST,
                 -1 , // Non-CosmosException - in this case IllegalArgumentException
                 -1,
                 -1,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                -1,
+                -1));
 
         this.executeTestCase(scenario);
     }
@@ -553,21 +648,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.UNAUTHORIZED));
 
         this.executeTestCase(scenario);
     }
@@ -583,21 +684,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
                 HttpConstants.StatusCodes.UNAUTHORIZED,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.UNAUTHORIZED),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                -1,
+                HttpConstants.StatusCodes.UNAUTHORIZED));
 
         this.executeTestCase(scenario);
     }
@@ -613,21 +720,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST));
 
         this.executeTestCase(scenario);
     }
@@ -643,21 +756,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST));
 
         this.executeTestCase(scenario);
     }
@@ -673,21 +792,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
                 HttpConstants.StatusCodes.BADREQUEST,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.BADREQUEST));
 
         this.executeTestCase(scenario);
     }
@@ -703,21 +828,27 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 "COMPUTE_GATEWAY",
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK),
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT),
             new TestScenarioExpectations(
                 ConnectionMode.DIRECT.toString(),
                 HttpConstants.StatusCodes.CREATED,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.OK,
                 HttpConstants.StatusCodes.NO_CONTENT,
-                HttpConstants.StatusCodes.OK));
+                HttpConstants.StatusCodes.OK,
+                HttpConstants.StatusCodes.CREATED,
+                HttpConstants.StatusCodes.NO_CONTENT));
 
         this.executeTestCase(scenario);
     }
@@ -735,11 +866,23 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         }
 
         try {
+            // create pre-trigger and post-trigger
+            String preTriggerId = scenario.id + "pre-" + UUID.randomUUID();
+            String postTriggerId = scenario.id + "post" + UUID.randomUUID();
+            createTrigger(preTriggerId, TriggerType.PRE, expected.ExpectedTriggerCreateStatusCode);
+            createTrigger(postTriggerId, TriggerType.POST, expected.ExpectedTriggerCreateStatusCode);
+
             try {
+                CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
+                if (expected.ExpectedTriggerCreateStatusCode == HttpConstants.StatusCodes.OK) {
+                    itemRequestOptions.setPreTriggerInclude(Arrays.asList(preTriggerId));
+                    itemRequestOptions.setPostTriggerInclude(Arrays.asList(postTriggerId));
+                }
+
                 CosmosItemResponse<ObjectNode> response = this.container.createItem(
                     getDocumentDefinition(scenario.id),
                     new PartitionKey(scenario.id),
-                    null);
+                    itemRequestOptions);
 
                 deserializeAndValidatePayload(response, scenario.id, expected.ExpectedCreateStatusCode);
             } catch (Throwable throwable) {
@@ -827,8 +970,70 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 }
                 assertThat(cosmosError.getStatusCode()).isEqualTo(expected.ExpectedDeleteStatusCode);
             }
+
+            deleteTrigger(preTriggerId, expected.ExpectedTriggerDeleteStatusCode);
+            deleteTrigger(postTriggerId, expected.ExpectedTriggerDeleteStatusCode);
         } finally {
             System.clearProperty(Configs.PREVENT_INVALID_ID_CHARS);
+        }
+    }
+
+    private void deleteTrigger(String triggerId, int expectedStatusCode) {
+        try {
+            CosmosTriggerResponse response = this.container.getScripts().getTrigger(triggerId).delete();
+            assertThat(response.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NO_CONTENT);
+        } catch (Throwable throwable) {
+            CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+            if (cosmosError == null) {
+                if (expectedStatusCode == -1) {
+                    return;
+                }
+
+                Fail.fail(
+                    "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
+                    throwable);
+            }
+            if (cosmosError.getStatusCode() == 0 &&
+                cosmosError.getCause() instanceof IllegalArgumentException &&
+                cosmosError.getCause().getCause() instanceof JsonParseException &&
+                (cosmosError.getCause().toString().contains("<TITLE>Bad Request</TITLE>") ||
+                    cosmosError.getCause().getCause().toString().contains("<TITLE>Bad Request</TITLE>"))) {
+
+                logger.info("HTML BAD REQUEST", cosmosError);
+                assertThat(expectedStatusCode).isEqualTo(400);
+            } else {
+                logger.info("BAD REQUEST", cosmosError);
+                assertThat(cosmosError.getStatusCode()).isEqualTo(expectedStatusCode);
+            }
+        }
+    }
+
+    private void createTrigger(String triggerId, TriggerType triggerType, int expectedStatusCode) {
+        try {
+            CosmosTriggerProperties preTrigger = new CosmosTriggerProperties(
+                triggerId,
+                "function() {var x = 10;}"
+            );
+            preTrigger.setTriggerOperation(TriggerOperation.CREATE);
+            preTrigger.setTriggerType(triggerType);
+            CosmosTriggerResponse triggerResponse = this.container.getScripts().createTrigger(preTrigger);
+            assertThat(triggerResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+
+            if (expectedStatusCode == -1) {
+                fail("Create trigger should have failed with IllegalArgumentException with trigger id " + triggerId);
+            }
+        } catch (Throwable throwable) {
+            CosmosException cosmosError = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+            if (cosmosError == null) {
+                if (expectedStatusCode == -1) {
+                    return;
+                }
+
+                Fail.fail(
+                    "Unexpected exception type " + Exceptions.unwrap(throwable).getClass().getName(),
+                    throwable);
+            }
+            assertThat(cosmosError.getStatusCode()).isEqualTo(expectedStatusCode);
         }
     }
 
@@ -896,7 +1101,9 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             int expectedReadStatusCode,
             int expectedReplaceStatusCode,
             int expectedDeleteStatusCode,
-            int expectedQueryStatusCode
+            int expectedQueryStatusCode,
+            int expectedTriggerCreateStatusCode,
+            int expectedTriggerDeleteStatusCode
         ) {
             this.ConnectionMode = connectionMode;
             this.ExpectedCreateStatusCode = expectedCreateStatusCode;
@@ -904,6 +1111,8 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
             this.ExpectedReplaceStatusCode = expectedReplaceStatusCode;
             this.ExpectedDeleteStatusCode = expectedDeleteStatusCode;
             this.ExpectedQueryStatusCode = expectedQueryStatusCode;
+            this.ExpectedTriggerCreateStatusCode = expectedTriggerCreateStatusCode;
+            this.ExpectedTriggerDeleteStatusCode = expectedTriggerDeleteStatusCode;
         }
 
         public String ConnectionMode;
@@ -917,6 +1126,10 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
         public int ExpectedDeleteStatusCode;
 
         public int ExpectedQueryStatusCode;
+
+        public int ExpectedTriggerCreateStatusCode;
+
+        public int ExpectedTriggerDeleteStatusCode;
     }
 
     private static class TestScenario {
