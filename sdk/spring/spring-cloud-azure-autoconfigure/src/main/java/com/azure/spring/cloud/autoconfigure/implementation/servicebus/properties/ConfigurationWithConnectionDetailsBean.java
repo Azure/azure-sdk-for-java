@@ -4,8 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureServicePropertiesUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.service.connection.ConnectionDetails;
@@ -34,12 +33,12 @@ class ConfigurationWithConnectionDetailsBean {
 
     @Bean
     AzureServiceBusProperties azureServiceBusProperties() {
-        AzureServiceBusProperties propertiesLoadFromServiceCommonProperties = AzureServicePropertiesUtils
-            .loadServiceCommonProperties(globalProperties, new AzureServiceBusProperties());
+        AzureServiceBusProperties propertiesLoadFromGlobalProperties =
+            AzureGlobalPropertiesUtils.loadProperties(globalProperties, new AzureServiceBusProperties());
         BindResult<AzureServiceBusProperties> bindResult = Binder.get(environment)
-            .bind(AzureServiceBusProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties));
+            .bind(AzureServiceBusProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromGlobalProperties));
         AzureServiceBusProperties properties = bindResult.isBound() ? bindResult.get()
-            : propertiesLoadFromServiceCommonProperties;
+            : propertiesLoadFromGlobalProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
         return properties;
     }

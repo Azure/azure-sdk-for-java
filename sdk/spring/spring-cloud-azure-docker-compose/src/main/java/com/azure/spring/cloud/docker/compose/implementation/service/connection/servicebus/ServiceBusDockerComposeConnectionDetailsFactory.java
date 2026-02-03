@@ -8,7 +8,7 @@ import org.springframework.boot.docker.compose.core.RunningService;
 import org.springframework.boot.docker.compose.service.connection.DockerComposeConnectionDetailsFactory;
 import org.springframework.boot.docker.compose.service.connection.DockerComposeConnectionSource;
 
-public class ServiceBusDockerComposeConnectionDetailsFactory
+class ServiceBusDockerComposeConnectionDetailsFactory
     extends DockerComposeConnectionDetailsFactory<AzureServiceBusConnectionDetails> {
 
     private static final int SERVICE_BUS_PORT = 5672;

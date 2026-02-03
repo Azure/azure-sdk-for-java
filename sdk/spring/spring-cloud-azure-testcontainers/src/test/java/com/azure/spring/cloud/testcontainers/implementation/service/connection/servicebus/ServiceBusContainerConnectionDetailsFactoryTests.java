@@ -38,12 +38,12 @@ import static org.awaitility.Awaitility.waitAtMost;
 @TestPropertySource(properties = { "spring.cloud.azure.servicebus.entity-name=queue.1",
     "spring.cloud.azure.servicebus.entity-type=queue" })
 @Testcontainers
-//@EnabledOnOs(OS.LINUX)
+@EnabledOnOs(OS.LINUX)
 class ServiceBusContainerConnectionDetailsFactoryTests {
 
     private static final Network network = Network.newNetwork();
 
-    private static MSSQLServerContainer<?> sqlserver = new MSSQLServerContainer<>(
+    private static final MSSQLServerContainer<?> sqlserver = new MSSQLServerContainer<>(
         "mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04")
         .acceptLicense()
         .withNetwork(network)
