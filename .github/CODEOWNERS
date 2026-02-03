@@ -607,9 +607,6 @@
 # ServiceLabel: %Migrate
 # ServiceOwners:                                                   @shijojoy
 
-# PRLabel: %Mixed Reality Authentication
-/sdk/mixedreality/azure-mixedreality-authentication/               @RamonArguelles @Azure/azure-java-sdk
-
 # PRLabel: %Models Repository
 /sdk/modelsrepository/                                             @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft @Azure/azure-java-sdk
 
