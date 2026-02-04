@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
 
         // Create search with temporal range
         StacSearchParameters searchParams = new StacSearchParameters();
-        searchParams.getCollections().add(collectionId);
+        searchParams.setCollections(Arrays.asList(collectionId));
         searchParams.setDatetime("2021-01-01T00:00:00Z/2022-12-31T00:00:00Z");
         searchParams.setLimit(10);
 
@@ -87,8 +88,8 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
 
         // Search with descending sort by datetime
         StacSearchParameters searchParamsDesc = new StacSearchParameters();
-        searchParamsDesc.getCollections().add(collectionId);
-        searchParamsDesc.getSortBy().add(new StacSortExtension("datetime", StacSearchSortingDirection.DESC));
+        searchParamsDesc.setCollections(Arrays.asList(collectionId));
+        searchParamsDesc.setSortBy(Arrays.asList(new StacSortExtension("datetime", StacSearchSortingDirection.DESC)));
         searchParamsDesc.setLimit(5);
 
         // Act - DESC sort
@@ -110,8 +111,8 @@ public class TestPlanetaryComputer04bStacSpecificationTests extends PlanetaryCom
 
         // Search with ascending sort
         StacSearchParameters searchParamsAsc = new StacSearchParameters();
-        searchParamsAsc.getCollections().add(collectionId);
-        searchParamsAsc.getSortBy().add(new StacSortExtension("datetime", StacSearchSortingDirection.ASC));
+        searchParamsAsc.setCollections(Arrays.asList(collectionId));
+        searchParamsAsc.setSortBy(Arrays.asList(new StacSortExtension("datetime", StacSearchSortingDirection.ASC)));
         searchParamsAsc.setLimit(5);
 
         // Act - ASC sort

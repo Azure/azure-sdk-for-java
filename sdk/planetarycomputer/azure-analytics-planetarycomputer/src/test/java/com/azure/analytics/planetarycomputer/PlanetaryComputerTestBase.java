@@ -159,7 +159,7 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
             TestProxySanitizerType.HEADER));
         customSanitizers.add(new TestProxySanitizer("x-ms-client-request-id", UUID_PATTERN, SANITIZED_ZERO_UUID,
             TestProxySanitizerType.HEADER));
-        customSanitizers.add(new TestProxySanitizer("Authorization", "Bearer\\s+.+", "Bearer " + REDACTED,
+        customSanitizers.add(new TestProxySanitizer("Authorization", "Bearer[ ]+.+", "Bearer " + REDACTED,
             TestProxySanitizerType.HEADER));
 
         // Additional Azure-specific headers
@@ -196,15 +196,15 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
 
         // URI sanitizers - geocatalog endpoints
         customSanitizers
-            .add(new TestProxySanitizer("(?<=https://)[^.]+\\.[^.]+\\.[^.]+(?=\\.geocatalog\\.spatio\\.azure\\.com)",
+            .add(new TestProxySanitizer("(?<=https://)[^.]+[.][^.]+[.][^.]+(?=[.]geocatalog[.]spatio[.]azure[.]com)",
                 "Sanitized.sanitized_label.sanitized_location", TestProxySanitizerType.URL));
 
         // Storage account sanitizers
-        customSanitizers.add(new TestProxySanitizer("(?<=https://)([^.]+)(?=\\.blob\\.core\\.windows\\.net)",
+        customSanitizers.add(new TestProxySanitizer("(?<=https://)([^.]+)(?=[.]blob[.]core[.]windows[.]net)",
             SANITIZED_HOST, TestProxySanitizerType.URL));
 
         // URL-encoded blob storage URLs
-        customSanitizers.add(new TestProxySanitizer("https%3A%2F%2F[a-z0-9]+\\.blob\\.core\\.windows\\.net",
+        customSanitizers.add(new TestProxySanitizer("https%3A%2F%2F[a-z0-9]+[.]blob[.]core[.]windows[.]net",
             "https%3A%2F%2F" + SANITIZED_HOST + ".blob.core.windows.net", TestProxySanitizerType.URL));
 
         // Operation/Ingestion/Source IDs in URLs
@@ -248,42 +248,34 @@ public class PlanetaryComputerTestBase extends TestProxyTestBase {
             .add(new TestProxySanitizer("(?<=refresh_token=)([^&]+)", REDACTED, TestProxySanitizerType.URL));
 
         // Body sanitizers - geocatalog endpoints
-        customSanitizers.add(new TestProxySanitizer("https://[^.]+\\.[^.]+\\.[^.]+\\.geocatalog\\.spatio\\.azure\\.com",
+        customSanitizers.add(new TestProxySanitizer("https://[^.]+[.][^.]+[.][^.]+[.]geocatalog[.]spatio[.]azure[.]com",
             "https://Sanitized.sanitized_label.sanitized_location.geocatalog.spatio.azure.com",
             TestProxySanitizerType.BODY_REGEX));
 
         // Body sanitizers - blob storage URLs
-        customSanitizers.add(new TestProxySanitizer("https://[a-z0-9]+\\.blob\\.core\\.windows\\.net",
+        customSanitizers.add(new TestProxySanitizer("https://[a-z0-9]+[.]blob[.]core[.]windows[.]net",
             "https://" + SANITIZED_HOST + ".blob.core.windows.net", TestProxySanitizerType.BODY_REGEX));
 
-        // Body sanitizers - UUID in JSON id fields
-        customSanitizers.add(
-            new TestProxySanitizer("\"id\"\\s*:\\s*\"[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\"",
-                "\"id\": \"" + SANITIZED_ZERO_UUID + "\"", TestProxySanitizerType.BODY_REGEX));
+        // Body sanitizers - container URLs (using BODY_KEY with JSONPath)
+        customSanitizers.add(new TestProxySanitizer("$..containerUrl", null,
+            "https://" + SANITIZED_HOST + ".blob.core.windows.net/" + SANITIZED_HOST, TestProxySanitizerType.BODY_KEY));
 
-        // Body sanitizers - container URLs
-        customSanitizers.add(new TestProxySanitizer("(?<=\"containerUrl\":\")[^\"]+",
-            "https://" + SANITIZED_HOST + ".blob.core.windows.net/" + SANITIZED_HOST,
-            TestProxySanitizerType.BODY_REGEX));
+        customSanitizers.add(new TestProxySanitizer("$..containerUri", null,
+            "https://" + SANITIZED_HOST + ".blob.core.windows.net/" + SANITIZED_HOST, TestProxySanitizerType.BODY_KEY));
 
-        customSanitizers.add(new TestProxySanitizer("(?<=\"containerUri\":\")[^\"]+",
-            "https://" + SANITIZED_HOST + ".blob.core.windows.net/" + SANITIZED_HOST,
-            TestProxySanitizerType.BODY_REGEX));
+        // Body sanitizers - SAS tokens (using BODY_KEY with JSONPath)
+        customSanitizers.add(new TestProxySanitizer("$..sasToken", null,
+            "sv=2021-01-01&st=2020-01-01T00:00:00Z&se=2099-12-31T23:59:59Z&sr=c&sp=rl&sig=Sanitized",
+            TestProxySanitizerType.BODY_KEY));
 
-        // Body sanitizers - access tokens and SAS tokens
-        customSanitizers.add(new TestProxySanitizer("\"access_token\"\\s*:\\s*\"[^\"]+\"",
-            "\"access_token\": \"" + SANITIZED_ACCESS_TOKEN + "\"", TestProxySanitizerType.BODY_REGEX));
+        // NOTE: We deliberately do NOT sanitize $..id fields because:
+        // 1. Collection IDs and item IDs are public STAC identifiers that tests need to assert on
+        // 2. The AZSDK3430 default sanitizer was removed above
+        // 3. UUID-based operation/source/ingestion IDs are sanitized in URLs (not body)
 
-        customSanitizers.add(new TestProxySanitizer("\"sasToken\"\\s*:\\s*\"[^\"]+\"",
-            "\"sasToken\": \"sv=2021-01-01&st=2020-01-01T00:00:00Z&se=2099-12-31T23:59:59Z&sr=c&sp=rl&sig=Sanitized\"",
-            TestProxySanitizerType.BODY_REGEX));
-
-        // Collection ID sanitizers (hash suffix only)
+        // Collection ID sanitizers (hash suffix only) - URL only
         customSanitizers.add(new TestProxySanitizer("([a-z0-9]+-[a-z]+-[a-z0-9]+)-[0-9a-f]{8}", "$1-00000000",
             TestProxySanitizerType.URL));
-
-        customSanitizers.add(new TestProxySanitizer("\"([a-z0-9]+-[a-z]+-[a-z0-9]+)-[0-9a-f]{8}\"", "\"$1-00000000\"",
-            TestProxySanitizerType.BODY_REGEX));
 
         // Add all sanitizers (unconditional like C#)
         interceptorManager.addSanitizers(customSanitizers);

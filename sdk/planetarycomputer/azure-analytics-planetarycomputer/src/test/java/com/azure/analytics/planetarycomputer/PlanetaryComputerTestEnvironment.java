@@ -28,14 +28,14 @@ public class PlanetaryComputerTestEnvironment {
      * Get the test collection ID.
      */
     public String getCollectionId() {
-        return configuration.get("PLANETARYCOMPUTER_COLLECTION_ID", "naip-atl");
+        return configuration.get("PLANETARYCOMPUTER_COLLECTION_ID", "naip-sample-dataset-1.0.0");
     }
 
     /**
      * Get the test item ID.
      */
     public String getItemId() {
-        return configuration.get("PLANETARYCOMPUTER_ITEM_ID", "ga_m_3308421_se_16_060_20211114");
+        return configuration.get("PLANETARYCOMPUTER_ITEM_ID", "va_m_3807708_sw_18_060_20231113_20240103");
     }
 
     /**

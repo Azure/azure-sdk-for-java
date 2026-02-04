@@ -73,14 +73,22 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
 
         System.out.println("Testing getMosaic for collection: " + collectionId);
 
+        // First create the mosaic (matching recording)
+        StacMosaic createMosaic
+            = new StacMosaic("mosaic-get-3945", "Test Mosaic for Get", new ArrayList<Map<String, BinaryData>>());
+        stacClient.addMosaic(collectionId, createMosaic);
+
         // Act
-        StacMosaic mosaic = stacClient.getMosaic(collectionId, "test-mosaic-1");
+        StacMosaic mosaic = stacClient.getMosaic(collectionId, "mosaic-get-3945");
 
         // Assert
         assertNotNull(mosaic, "Mosaic should not be null");
-        assertEquals("test-mosaic-1", mosaic.getId(), "ID should match");
+        assertEquals("mosaic-get-3945", mosaic.getId(), "ID should match");
 
         System.out.println("Successfully retrieved mosaic: " + mosaic.getId());
+
+        // Cleanup
+        stacClient.deleteMosaic(collectionId, "mosaic-get-3945");
     }
 
     /**
@@ -97,19 +105,27 @@ public class TestPlanetaryComputer01eStacCollectionTests extends PlanetaryComput
 
         System.out.println("Testing replaceMosaic for collection: " + collectionId);
 
-        // Create updated mosaic (name max 30 chars)
+        // First create the mosaic (matching recording)
+        StacMosaic createMosaic
+            = new StacMosaic("mosaic-rep-5643", "Test Mosaic Original", new ArrayList<Map<String, BinaryData>>());
+        stacClient.addMosaic(collectionId, createMosaic);
+
+        // Create updated mosaic
         StacMosaic mosaic
-            = new StacMosaic("test-mosaic-1", "Test Mosaic Updated", new ArrayList<Map<String, BinaryData>>());
+            = new StacMosaic("mosaic-rep-5643", "Test Mosaic Updated", new ArrayList<Map<String, BinaryData>>());
 
         // Act
-        StacMosaic updatedMosaic = stacClient.replaceMosaic(collectionId, "test-mosaic-1", mosaic);
+        StacMosaic updatedMosaic = stacClient.replaceMosaic(collectionId, "mosaic-rep-5643", mosaic);
 
         // Assert
         assertNotNull(updatedMosaic, "Updated mosaic should not be null");
-        assertEquals("test-mosaic-1", updatedMosaic.getId(), "ID should match");
+        assertEquals("mosaic-rep-5643", updatedMosaic.getId(), "ID should match");
         assertEquals("Test Mosaic Updated", updatedMosaic.getName(), "Name should be updated");
 
         System.out.println("Successfully replaced mosaic: " + updatedMosaic.getId());
+
+        // Cleanup
+        stacClient.deleteMosaic(collectionId, "mosaic-rep-5643");
     }
 
     /**

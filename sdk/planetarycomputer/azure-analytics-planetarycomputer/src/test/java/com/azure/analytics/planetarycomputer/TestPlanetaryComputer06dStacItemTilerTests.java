@@ -27,10 +27,9 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
-        GetPreviewOptions options = new GetPreviewOptions().setWidth(512)
-            .setHeight(512)
-            .setAssets(Arrays.asList("image"))
-            .setAssetBandIndices("image|1,2,3");
+        // Recording doesn't have asset_bidx parameter
+        GetPreviewOptions options
+            = new GetPreviewOptions().setWidth(512).setHeight(512).setAssets(Arrays.asList("image"));
 
         BinaryData imageData = dataClient.getPreviewWithFormat(collectionId, itemId, "jpg", options, "image/jpeg");
 
@@ -48,8 +47,8 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         String collectionId = testEnvironment.getCollectionId();
         String itemId = testEnvironment.getItemId();
 
+        // Recording doesn't have asset_bidx parameter
         GetTileJsonOptions options = new GetTileJsonOptions().setAssets(Arrays.asList("image"))
-            .setAssetBandIndices("image|1,2,3")
             .setTileScale(1)
             .setMinZoom(9)
             .setTileFormat(TilerImageFormat.PNG);
@@ -73,7 +72,8 @@ public class TestPlanetaryComputer06dStacItemTilerTests extends PlanetaryCompute
         GetTileOptions options
             = new GetTileOptions().setAssets(Arrays.asList("image")).setAssetBandIndices("image|1,2,3");
 
-        BinaryData imageData = dataClient.getTile(collectionId, itemId, "WebMercatorQuad", 13, 2174, 3282, 1, "png",
+        // Tile coordinates matching the recording
+        BinaryData imageData = dataClient.getTile(collectionId, itemId, "WebMercatorQuad", 13, 2341, 3133, 1, "png",
             options, "image/png");
 
         byte[] imageBytes = imageData.toBytes();

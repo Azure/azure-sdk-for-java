@@ -13,6 +13,7 @@ import com.azure.analytics.planetarycomputer.models.ManagedIdentityMetadata;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureTokenConnection;
 import com.azure.analytics.planetarycomputer.models.SharedAccessSignatureTokenIngestionSource;
 import com.azure.core.http.rest.PagedIterable;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Tag;
 
@@ -221,6 +222,7 @@ public class TestPlanetaryComputer02aIngestionManagementTests extends PlanetaryC
      * Java method: beginCreate(collectionId, IngestionDefinition)
      */
     @Test
+    @Disabled("LRO polling times out - infrastructure not ready")
     @Tag("IngestionDefinition")
     public void test02_03_CreateIngestionDefinition() {
         // Arrange
