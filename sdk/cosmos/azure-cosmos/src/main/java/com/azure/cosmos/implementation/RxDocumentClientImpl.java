@@ -504,7 +504,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.clientId = clientIdGenerator.incrementAndGet();
         this.clientCorrelationId = Strings.isNullOrWhiteSpace(clientCorrelationId) ?
             String.format("%05d",this.clientId): clientCorrelationId;
-        clientMap.compute(serviceEndpoint.toString(), (key, value) -> {
+        int clientCount = clientMap.compute(serviceEndpoint.toString(), (key, value) -> {
             if (value == null) {
                 return 1;
             }
@@ -512,6 +512,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             value += 1;
             return value;
         });
+        logger.info("Creating a new CosmosClient for serviceEndpoint {} with {} clients", serviceEndpoint.toString(), clientCount);
 
         this.diagnosticsClientConfig = new DiagnosticsClientConfig();
         this.diagnosticsClientConfig.withClientId(this.clientId);
