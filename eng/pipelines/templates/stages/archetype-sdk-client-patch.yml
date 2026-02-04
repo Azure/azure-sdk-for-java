@@ -36,6 +36,8 @@ extends:
               value: "${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}"
             - name: AdditionalModulesJson
               value: '${{ convertToJson(parameters.AdditionalModules) }}'
+            - name: SYSTEM_ACCESSTOKEN
+              value: $(System.AccessToken)
 
           pool:
             name: $(LINUXPOOL)

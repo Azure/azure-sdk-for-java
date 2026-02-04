@@ -79,6 +79,7 @@ jobs:
       Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
       Codeql.SkipTaskAutoInjection: false
       SDKType: ${{ parameters.SDKType }}
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
     # Only run CG and codeql on internal build job
     ${{ if eq(variables['System.TeamProject'], 'internal') }}:
@@ -289,6 +290,9 @@ jobs:
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
+
+    variables:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
     pool:
       name: $(LINUXPOOL)

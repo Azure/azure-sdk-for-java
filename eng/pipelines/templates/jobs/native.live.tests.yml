@@ -79,6 +79,8 @@ jobs:
     variables:
       - name: ArmTemplateParameters
         value: '@{}'
+      - name: SYSTEM_ACCESSTOKEN
+        value: $(System.AccessToken)
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
