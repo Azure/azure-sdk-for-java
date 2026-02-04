@@ -8,8 +8,8 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
-import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusPropertiesConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
@@ -30,8 +30,8 @@ import org.springframework.util.StringUtils;
  * {@link ServiceBusSessionReceiverAsyncClient} and a {@link ServiceBusSessionReceiverClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "consumer.entity-name" })
 @Import({
+    AzureServiceBusPropertiesConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class
 })

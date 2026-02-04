@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusPropertiesConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
@@ -32,8 +32,8 @@ import org.springframework.util.StringUtils;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean({ ServiceBusRecordMessageListener.class, ServiceBusErrorHandler.class })
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "processor.entity-name" })
 @Import({
+    AzureServiceBusPropertiesConfiguration.class,
     AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class,
     AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class
 })
