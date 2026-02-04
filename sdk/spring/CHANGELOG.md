@@ -38,10 +38,6 @@ This section includes changes in `spring-cloud-azure-testcontainers` module.
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
-#### New Features
-
-- Add ConnectionDetails for ServiceBus. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
-
 #### Bugs Fixed
 
 - Fixed OAuth2 JWT Bearer grant request parameter duplication issue where `grant_type` was being duplicated when using the on-behalf-of flow, causing `AADSTS70003: unsupported_grant_type` error. [#47657](https://github.com/Azure/azure-sdk-for-java/issues/47657)
