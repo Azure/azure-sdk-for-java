@@ -183,7 +183,7 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
 
         KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
         KeyVaultLoadStoreParameter.Builder builder
-            = KeyVaultLoadStoreParameter.builder(System.getProperty("azure.keyvault.uri"))
+            = KeyVaultLoadStoreParameter.createBuilder(System.getProperty("azure.keyvault.uri"))
                 .tenantId(System.getProperty("azure.keyvault.tenant-id"))
                 .clientId(System.getProperty("azure.keyvault.client-id"))
                 .clientSecret(System.getProperty("azure.keyvault.client-secret"))

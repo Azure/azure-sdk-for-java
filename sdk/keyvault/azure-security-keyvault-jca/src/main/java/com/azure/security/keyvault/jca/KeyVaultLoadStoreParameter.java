@@ -50,7 +50,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * Constructor.
      *
      * @param keyVaultUri The Azure Key Vault URI.
-     * @deprecated Use {@link #builder(String)} instead for a more flexible and maintainable API.
+     * @deprecated Use {@link #createBuilder(String)} instead for a more flexible and maintainable API.
      */
     @Deprecated
     public KeyVaultLoadStoreParameter(String keyVaultUri) {
@@ -62,7 +62,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      *
      * @param keyVaultUri The Azure Key Vault URI.
      * @param managedIdentity The managed identity.
-     * @deprecated Use {@link #builder(String)} instead for a more flexible and maintainable API.
+     * @deprecated Use {@link #createBuilder(String)} instead for a more flexible and maintainable API.
      */
     @Deprecated
     public KeyVaultLoadStoreParameter(String keyVaultUri, String managedIdentity) {
@@ -76,7 +76,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param tenantId The tenant id.
      * @param clientId The client id.
      * @param clientSecret The client secret.
-     * @deprecated Use {@link #builder(String)} instead for a more flexible and maintainable API.
+     * @deprecated Use {@link #createBuilder(String)} instead for a more flexible and maintainable API.
      */
     @Deprecated
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
@@ -91,7 +91,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param clientId The client id.
      * @param clientSecret The client secret.
      * @param managedIdentity The managed identity.
-     * @deprecated Use {@link #builder(String)} instead for a more flexible and maintainable API.
+     * @deprecated Use {@link #createBuilder(String)} instead for a more flexible and maintainable API.
      */
     @Deprecated
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
@@ -205,7 +205,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param keyVaultUri The Azure Key Vault URI (required).
      * @return A new builder instance.
      */
-    public static Builder builder(String keyVaultUri) {
+    public static Builder createBuilder(String keyVaultUri) {
         return new Builder(keyVaultUri);
     }
 
