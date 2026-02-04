@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  *       tab in your Microsoft Foundry project.</li>
  * </ul>
  */
-public class SampleAgentComputerUse {
+public class ComputerUseSync {
 
     public static void main(String[] args) {
         Configuration configuration = Configuration.getGlobalConfiguration();
