@@ -8,4 +8,13 @@
       <password>${env.SYSTEM_ACCESSTOKEN}</password>
     </server>
   </servers>
+  <mirrors>
+    <!-- Mirror all requests to Azure Artifacts feed -->
+    <mirror>
+      <id>central</id>
+      <name>Azure Artifacts Maven Mirror</name>
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      <mirrorOf>*</mirrorOf>
+    </mirror>
+  </mirrors>
 </settings>
