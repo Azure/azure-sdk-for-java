@@ -102,9 +102,15 @@ System.setProperty("azure.keyvault.managed-identity", "<managed-identity-object-
 ```
 
 #### 3. Workload Identity (AKS)
-Use this method when running in Azure Kubernetes Service with Workload Identity enabled. **Only set the Key Vault URI** - the federated credentials are automatically detected from environment variables (`AZURE_FEDERATED_TOKEN_FILE`, `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`):
+Use this method when running in Azure Kubernetes Service with Workload Identity enabled. **Only set the Key Vault URI** - the federated credentials are automatically detected from environment variables (`AZURE_FEDERATED_TOKEN_FILE`, `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`) or can be explicitly set via system properties:
 ```java
+// Automatic detection from environment variables for client ID and tenant ID
 System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+
+// Or explicitly set via system properties
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<your-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<your-client-id>");
 ```
 
 **Authentication Selection Logic:**
@@ -118,8 +124,8 @@ System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
 ### Exposed Options
 The JCA library supports configuring the following options:
 * `azure.keyvault.uri`: **(Required)** The Azure Key Vault endpoint to retrieve certificates.
-* `azure.keyvault.tenant-id`: The Microsoft Entra ID tenant ID (only required when using Service Principal authentication).
-* `azure.keyvault.client-id`: The client/application ID (only required when using Service Principal authentication).
+* `azure.keyvault.tenant-id`: The Microsoft Entra ID tenant ID (required for Service Principal authentication; optional for Workload Identity if not set via `AZURE_TENANT_ID` environment variable).
+* `azure.keyvault.client-id`: The client/application ID (required for Service Principal authentication; optional for Workload Identity if not set via `AZURE_CLIENT_ID` environment variable).
 * `azure.keyvault.client-secret`: The client secret (only required when using Service Principal authentication).
 * `azure.keyvault.managed-identity`: The user-assigned managed identity object ID (optional, for user-assigned managed identity).
 * `azure.keyvault.access-token`: The access token for authentication. This allows using a pre-obtained bearer token instead of client credentials.

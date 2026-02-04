@@ -95,14 +95,11 @@ public final class AccessTokenUtil {
         AccessToken result;
 
         /*
-         * Azure Workload Identity (AKS): AZURE_FEDERATED_TOKEN_FILE, AZURE_CLIENT_ID, AZURE_TENANT_ID
          * App Service 2017-09-01: MSI_ENDPOINT, MSI_SECRET
          * Azure Container App 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER, see more from https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=cli%2Chttp#rest-endpoint-reference
          * Azure Virtual Machine 2018-02-01, see more from https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#get-a-token-using-http
          */
-        if (isWorkloadIdentityAvailable()) {
-            result = getAccessTokenWithWorkloadIdentity(resource);
-        } else if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
+        if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource, identity);
         } else if (System.getenv(PROPERTY_IDENTITY_ENDPOINT) != null
             && !System.getenv(PROPERTY_IDENTITY_ENDPOINT).isEmpty()) {
@@ -181,21 +178,13 @@ public final class AccessTokenUtil {
      *
      * @return true if Workload Identity environment variables are present, false otherwise.
      */
-    public static boolean isWorkloadIdentityAvailable() {
+    public static boolean isWorkloadIdentityAvailable(String clientId, String tenantId) {
+        String effectiveClientId = useDefaultIfBlank(clientId, () -> System.getenv(PROPERTY_AZURE_CLIENT_ID));
+        String effectiveTenantId = useDefaultIfBlank(tenantId, () -> System.getenv(PROPERTY_AZURE_TENANT_ID));
+        
         return !isNullOrEmpty(System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE))
-            && !isNullOrEmpty(System.getenv(PROPERTY_AZURE_CLIENT_ID))
-            && !isNullOrEmpty(System.getenv(PROPERTY_AZURE_TENANT_ID));
-    }
-
-    /**
-     * Get the access token using Azure Workload Identity (AKS federated token).
-     * This is a convenience method that uses environment variables for all parameters.
-     *
-     * @param resource The resource.
-     * @return The authorization token.
-     */
-    private static AccessToken getAccessTokenWithWorkloadIdentity(String resource) {
-        return getAccessTokenWithWorkloadIdentity(resource, null, null, null);
+            && !isNullOrEmpty(effectiveClientId)
+            && !isNullOrEmpty(effectiveTenantId);
     }
 
     /**
@@ -213,15 +202,12 @@ public final class AccessTokenUtil {
      * @param tokenFilePath Path to the federated token file. If blank, fallback to environment variable AZURE_FEDERATED_TOKEN_FILE.
      * @return An access token, or null if the operation fails.
      */
-    public static AccessToken getAccessTokenWithWorkloadIdentity(String resource, String tenantId, String clientId,
-        String tokenFilePath) {
-        LOGGER.entering("AccessTokenUtil", "getAccessTokenWithWorkloadIdentity",
-            new Object[] { resource, tenantId, clientId, tokenFilePath });
+    public static AccessToken getAccessTokenWithWorkloadIdentity(String resource, String tenantId, String clientId) {
         LOGGER.info("Getting access token using federated Workload Identity token");
 
         // Use environment variables as fallback
         String effectiveTokenFilePath
-            = useDefaultIfBlank(tokenFilePath, () -> System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE));
+            = System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE);
         String effectiveTenantId = useDefaultIfBlank(tenantId, () -> System.getenv(PROPERTY_AZURE_TENANT_ID));
         String effectiveClientId = useDefaultIfBlank(clientId, () -> System.getenv(PROPERTY_AZURE_CLIENT_ID));
 
