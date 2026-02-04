@@ -364,12 +364,12 @@ public class UserDelegationSasTestData extends SasTestData {
                     + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + Constants.SAS_SERVICE_VERSION
                     + "\nbv\nversionId\n\n\n\n\n\n\n\n")
                 .toArguments(),
-            // Saoid - Preauthorized Agent Object ID
-            new UserDelegationSasTestData().setPreauthorizedAgentObjectId("saoid")
+            // Preauthorized Agent Object ID
+            new UserDelegationSasTestData().setPreauthorizedAgentObjectId("preAuthAgentOid")
                 .setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
                 .setExpectedStringToSign("r\n\n"
                     + expiryTimeStr
-                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\nsaoid\n\n\n\n\n\n\n"
+                    + "\n/blob/%s/containerName/blobName\n\n\n\n\n\n\npreAuthAgentOid\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
                 .toArguments(),
             // Correlation ID
@@ -449,7 +449,7 @@ public class UserDelegationSasTestData extends SasTestData {
                 .setLanguage("language")
                 .setType("type")
                 .setVersionId(null) // versionId and snapId are mutually exclusive
-                .setPreauthorizedAgentObjectId("saoid")
+                .setPreauthorizedAgentObjectId("preAuthAgentOid")
                 .setCorrelationId("cid")
                 .setEncryptionScope("encryptionScope")
                 .setDelegatedUserObjectId("delegatedOid")
@@ -466,8 +466,8 @@ public class UserDelegationSasTestData extends SasTestData {
                     + "2018-06-01T00:00:00Z\n" // keyExpiry
                     + "b\n" // keyService
                     + "2018-06-17\n" // keyVersion
-                    + "saoid\n" // saoid (preauthorizedAgentObjectId)
-                    + "\n" // suoid (always empty)
+                    + "preAuthAgentOid\n" // preauthorizedAgentObjectId
+                    + "\n" // (always empty for blob, agentObjectId)
                     + "cid\n" // cid (correlationId)
                     + "\n" // delegatedUserTenantId (removed - empty)
                     + "delegatedOid\n" // delegatedUserObjectId
@@ -593,17 +593,17 @@ public class UserDelegationSasTestData extends SasTestData {
                     + "\nb\n\n\n\n\n\n\n\n\ntype")
                 .toDatalakeArguments(),
             new UserDelegationSasTestData().setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setPreauthorizedAgentObjectId("saoid")
+                .setPreauthorizedAgentObjectId("preAuthAgentOid")
                 .setExpectedStringToSign("r\n\n"
                     + expiryTimeStr
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\nsaoid\n\n\n\n\n\n\n"
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\npreAuthAgentOid\n\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
                 .toDatalakeArguments(),
             new UserDelegationSasTestData().setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
-                .setAgentObjectId("suoid")
+                .setAgentObjectId("agentOid")
                 .setExpectedStringToSign("r\n\n"
                     + expiryTimeStr
-                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\nsuoid\n\n\n\n\n\n"
+                    + "\n/blob/%s/fileSystemName/pathName\n\n\n\n\n\n\n\nagentOid\n\n\n\n\n\n"
                     + Constants.SAS_SERVICE_VERSION + "\nb\n\n\n\n\n\n\n\n\n")
                 .toDatalakeArguments(),
             new UserDelegationSasTestData().setKeyValue("3hd4LRwrARVGbeMRQRfTLIsGMkCPuZJnvxZDU7Gak8c=")
