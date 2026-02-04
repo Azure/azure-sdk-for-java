@@ -40,7 +40,7 @@
 /sdk/boms/spring-cloud-azure-dependencies/                         @saragluna @rujche @netyyyy @moarychan @Azure/azure-java-sdk
 
 # PRLabel: %common
-/.vscode/                                                          @alzimmermsft @Azure/azure-java-sdk @conniey @g2vinay @moarychan @netyyyy @raych1 @rujche @saragluna @srnagar
+/.vscode/                                                          @Azure/azure-java-sdk
 
 # PRLabel: %common
 /common/perf-test-core/                                            @alzimmermsft @Azure/azure-java-sdk @g2vinay @srnagar
