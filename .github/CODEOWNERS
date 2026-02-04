@@ -92,7 +92,7 @@
 /sdk/ai/                                                           @Azure/azure-java-sdk @dargilco @jpalvarezl @trrwilson
 
 # PRLabel: %AI Agents
-/sdk/ai/azure-ai-agents-persistent/                                @Azure/azure-java-sdk @dargilco @jayantjha @trrwilson
+/sdk/ai/azure-ai-agents-persistent/                                @Azure/azure-java-sdk @dargilco @jpalvarezl @trrwilson
 
 # PRLabel: %AI Model Inference
 /sdk/ai/azure-ai-inference/                                        @Azure/azure-java-sdk @dargilco @glharper @trrwilson
@@ -327,7 +327,7 @@
 # ServiceOwners:                                                   @Kishp01 @rajeshka @shankarsama
 
 # PRLabel: %Event Hubs
-/sdk/eventhubs/                                                    @axisc @Azure/azure-java-sdk @hmlam @sjkwak
+/sdk/eventhubs/                                                    @axisc @Azure/azure-java-sdk @hmlam @j7nw4r @sjkwak
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/                      @axisc @Azure/azure-java-sdk @hmlam @sjkwak
@@ -447,7 +447,7 @@
 /sdk/servicebus/                                                   @Azure/azure-java-sdk @EldertGrootenboer @skarri-microsoft
 
 # PRLabel: %Service Bus %Track 1
-/sdk/servicebus/microsoft-azure-servicebus/                        @Azure/azure-java-sdk @EldertGrootenboer @skarri-microsoft
+/sdk/servicebus/microsoft-azure-servicebus/                        @Azure/azure-java-sdk @EldertGrootenboer @skarri-microsoft @vinaysurya
 
 # ServiceLabel: %Service Bus
 # ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
