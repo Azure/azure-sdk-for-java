@@ -124,6 +124,8 @@ extends:
                   PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
                   ForRelease: true
 
+            - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
             - task: Maven@4
               displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
               inputs:

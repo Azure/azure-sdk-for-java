@@ -52,6 +52,8 @@ jobs:
         parameters:
           JobType: 'Build and Validate'
 
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - ${{ each artifact in parameters.Artifacts }}:
         - task: Maven@4
           displayName: 'Prepare POM: ${{artifact.groupId}}:${{artifact.name}}'

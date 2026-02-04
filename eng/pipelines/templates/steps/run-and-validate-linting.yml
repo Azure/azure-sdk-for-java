@@ -20,6 +20,8 @@ parameters:
 
 steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
+  - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
   - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Build and Run SpotBugs and Checkstyle'

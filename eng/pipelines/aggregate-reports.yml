@@ -43,6 +43,8 @@ extends:
               parameters:
                 JobType: 'Reporting'
 
+            - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
             # TODO (vcolin7): Evaluate if we can avoid separating the Cosmos Spark connectors and Java 7 libraries from the rest for this. See: https://github.com/Azure/azure-sdk-for-java/issues/38283.
             - task: Maven@4
               displayName: 'Build all libraries that support Java $(JavaBuildVersion)'
