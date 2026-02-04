@@ -1,0 +1,14 @@
+# Template for authenticating with Azure Artifacts Maven feeds
+# This should be included before any Maven task that needs to download dependencies
+# from the central Azure Artifacts feed.
+
+parameters:
+  - name: ArtifactsFeeds
+    type: string
+    default: 'central'
+
+steps:
+  - task: MavenAuthenticate@0
+    displayName: 'Authenticate with Azure Artifacts'
+    inputs:
+      artifactsFeeds: ${{ parameters.ArtifactsFeeds }}

@@ -199,6 +199,8 @@ jobs:
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
+      - template: /eng/pipelines/templates/steps/maven-authenticate.yml
+
       - task: Maven@4
         displayName: 'Build and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
         inputs:
