@@ -50,7 +50,9 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * Constructor.
      *
      * @param keyVaultUri The Azure Key Vault URI.
+     * @deprecated Use {@link #builder(String)} instead for a more flexible and maintainable API.
      */
+    @Deprecated
     public KeyVaultLoadStoreParameter(String keyVaultUri) {
         this(new Builder(keyVaultUri));
     }
@@ -60,7 +62,9 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      *
      * @param keyVaultUri The Azure Key Vault URI.
      * @param managedIdentity The managed identity.
+     * @deprecated Use {@link #builder(String)} instead for a more flexible and maintainable API.
      */
+    @Deprecated
     public KeyVaultLoadStoreParameter(String keyVaultUri, String managedIdentity) {
         this(new Builder(keyVaultUri).managedIdentity(managedIdentity));
     }
@@ -72,7 +76,9 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param tenantId The tenant id.
      * @param clientId The client id.
      * @param clientSecret The client secret.
+     * @deprecated Use {@link #builder(String)} instead for a more flexible and maintainable API.
      */
+    @Deprecated
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
         this(new Builder(keyVaultUri).tenantId(tenantId).clientId(clientId).clientSecret(clientSecret));
     }
@@ -85,7 +91,9 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param clientId The client id.
      * @param clientSecret The client secret.
      * @param managedIdentity The managed identity.
+     * @deprecated Use {@link #builder(String)} instead for a more flexible and maintainable API.
      */
+    @Deprecated
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity) {
         this(new Builder(keyVaultUri).tenantId(tenantId)
