@@ -223,8 +223,17 @@ public class KeyVaultClient {
                 managedIdentity = URLEncoder.encode(managedIdentity, "UTF-8");
             }
 
-            // Priority: 1. Managed Identity, 2. Provided Access Token, 3. Client ID/Secret
-            if (managedIdentity != null) {
+            // Priority: 1. Service Principal (Client ID/Secret), 2. Workload Identity, 3. Managed Identity, 4. Provided Access Token
+            if (tenantId != null && clientId != null && clientSecret != null) {
+                LOGGER.info("Using client credentials (client ID/secret) for authentication");
+                String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
+                    disableChallengeResourceVerification);
+                result
+                    = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
+            } else if (AccessTokenUtil.isWorkloadIdentityAvailable(clientId, tenantId)) {
+                LOGGER.info("Using workload identity for authentication");
+                result = AccessTokenUtil.getAccessTokenWithWorkloadIdentity(keyVaultBaseUri, tenantId, clientId);
+            } else if (managedIdentity != null) {
                 LOGGER.info("Using managed identity for authentication");
                 result = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             } else if (providedAccessToken != null && !providedAccessToken.isEmpty()) {
@@ -234,17 +243,9 @@ public class KeyVaultClient {
                 // When the token actually expires, Azure will return authentication errors,
                 // which will inform the user to provide a new token.
                 result = new AccessToken(providedAccessToken, Long.MAX_VALUE / 1000);
-            } else if (tenantId != null && clientId != null && clientSecret != null) {
-                LOGGER.info("Using client credentials (client ID/secret) for authentication");
-                String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
-                    disableChallengeResourceVerification);
-                result
-                    = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
-            } else if (AccessTokenUtil.isWorkloadIdentityAvailable(clientId, tenantId)) {
-                accessToken
-                    = AccessTokenUtil.getAccessTokenWithWorkloadIdentity(keyVaultBaseUri, tenantId, clientId);
             } else {
-                accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
+                LOGGER.info("Using managed identity for authentication (default)");
+                result = AccessTokenUtil.getAccessToken(resource, null);
             }
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
