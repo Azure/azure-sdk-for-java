@@ -42,7 +42,7 @@ extends:
       skipBuildTagsForGitHubPullRequests: true
       # Set network isolation policy to Preferred to allow access to common public services like GitHub, NuGet, Maven Central, etc.
       # https://eng.ms/docs/coreai/devdiv/one-engineering-system-1es/1es-build/cloudbuild/security/1espt-network-isolation#shared-policies-for-common-use-cases
-      networkIsolationPolicy: Preferred
+      networkIsolationPolicy: CFSClean
     sdl:
       ${{ if and(eq(variables['Build.DefinitionName'], 'java - core'), eq(variables['Build.SourceBranchName'], 'main'), eq(variables['System.TeamProject'], 'internal')) }}:
         autobaseline:
