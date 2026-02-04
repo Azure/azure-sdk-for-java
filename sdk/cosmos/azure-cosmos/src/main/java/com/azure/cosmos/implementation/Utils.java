@@ -743,6 +743,10 @@ public class Utils {
     }
 
     public static String escapeNonAscii(String value) {
+        if (StringUtils.isEmpty(value)) {
+            return value;
+        }
+
         // if all are ascii original string will be returned, and avoids copying data.
         StringBuilder sb = null;
         for (int i = 0; i < value.length(); i++) {
