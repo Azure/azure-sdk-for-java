@@ -12,8 +12,23 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchRequestUrlRewriterPolicy;
-import com.azure.search.documents.indexes.*;
-import com.azure.search.documents.indexes.models.*;
+import com.azure.search.documents.indexes.SearchIndexAsyncClient;
+import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
+import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
+import com.azure.search.documents.indexes.SearchIndexerClient;
+import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.SearchAlias;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SkillNames;
+import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -130,7 +145,7 @@ public class SearchRequestUrlRewriterPolicyTests {
                 toCallable(searchAsyncClient.autocomplete(new AutocompleteOptions("autocomplete", "suggester"))),
                 docsUrl + "/search.post.autocomplete"),
 
-            Arguments.of(toCallable(() -> indexClient.createIndexWithResponse(fromObject(index), null)), indexesUrl),
+            Arguments.of(toCallable(() -> indexClient.createIndexWithResponse(index, null)), indexesUrl),
             Arguments.of(toCallable(() -> indexClient.getIndexWithResponse("index", null)), indexUrl),
             Arguments.of(toCallable(() -> indexClient.getIndexStatisticsWithResponse("index", null)),
                 indexUrl + "/search.stats"),
@@ -140,8 +155,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(() -> indexClient.deleteIndexWithResponse(index.getName(), null)), indexUrl),
             Arguments.of(toCallable(() -> indexClient.analyzeText("index", new AnalyzeTextOptions("text"))),
                 indexUrl + "/search.analyze"),
-            Arguments.of(toCallable(() -> indexClient.createSynonymMapWithResponse(fromObject(synonymMap), null)),
-                synonymMapsUrl),
+            Arguments.of(toCallable(() -> indexClient.createSynonymMapWithResponse(synonymMap, null)), synonymMapsUrl),
             Arguments.of(toCallable(() -> indexClient.getSynonymMapWithResponse("synonym", null)), synonymUrl),
             Arguments.of(toCallable(indexClient::listSynonymMaps), synonymMapsUrl),
             Arguments.of(toCallable(indexClient::listSynonymMapNames), synonymMapsUrl),
@@ -151,13 +165,13 @@ public class SearchRequestUrlRewriterPolicyTests {
                 synonymUrl),
             Arguments.of(toCallable(() -> indexClient.getServiceStatisticsWithResponse(null)), servicestatsUrl),
 
-            Arguments.of(toCallable(() -> indexClient.createAliasWithResponse(fromObject(alias), null)), aliasesUrl),
+            Arguments.of(toCallable(() -> indexClient.createAliasWithResponse(alias, null)), aliasesUrl),
             Arguments.of(toCallable(() -> indexClient.createOrUpdateAliasWithResponse(alias, null)), aliasUrl),
             Arguments.of(toCallable(() -> indexClient.getAliasWithResponse("alias", null)), aliasUrl),
             Arguments.of(toCallable(() -> indexClient.deleteAliasWithResponse(alias.getName(), null)), aliasUrl),
             Arguments.of(toCallable(() -> indexClient.listAliases(null).iterator().hasNext()), aliasesUrl),
 
-            Arguments.of(toCallable(indexAsyncClient.createIndexWithResponse(fromObject(index), null)), indexesUrl),
+            Arguments.of(toCallable(indexAsyncClient.createIndexWithResponse(index, null)), indexesUrl),
             Arguments.of(toCallable(indexAsyncClient.getIndexWithResponse("index", null)), indexUrl),
             Arguments.of(toCallable(indexAsyncClient.getIndexStatisticsWithResponse("index", null)),
                 indexUrl + "/search.stats"),
@@ -167,8 +181,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(indexAsyncClient.deleteIndexWithResponse(index.getName(), null)), indexUrl),
             Arguments.of(toCallable(indexAsyncClient.analyzeText("index", new AnalyzeTextOptions("text"))),
                 indexUrl + "/search.analyze"),
-            Arguments.of(toCallable(indexAsyncClient.createSynonymMapWithResponse(fromObject(synonymMap), null)),
-                synonymMapsUrl),
+            Arguments.of(toCallable(indexAsyncClient.createSynonymMapWithResponse(synonymMap, null)), synonymMapsUrl),
             Arguments.of(toCallable(indexAsyncClient.getSynonymMapWithResponse("synonym", null)), synonymUrl),
             Arguments.of(toCallable(indexAsyncClient.listSynonymMaps()), synonymMapsUrl),
             Arguments.of(toCallable(indexAsyncClient.listSynonymMapNames()), synonymMapsUrl),
@@ -177,7 +190,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(toCallable(indexAsyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), null)),
                 synonymUrl),
             Arguments.of(toCallable(indexAsyncClient.getServiceStatisticsWithResponse(null)), servicestatsUrl),
-            Arguments.of(toCallable(() -> indexClient.createAliasWithResponse(fromObject(alias), null)), aliasesUrl),
+            Arguments.of(toCallable(() -> indexClient.createAliasWithResponse(alias, null)), aliasesUrl),
             Arguments.of(toCallable(() -> indexClient.createOrUpdateAliasWithResponse(alias, null)), aliasUrl),
             Arguments.of(toCallable(() -> indexClient.getAliasWithResponse("alias", null)), aliasUrl),
             Arguments.of(toCallable(() -> indexClient.deleteAliasWithResponse(alias.getName(), null)), aliasUrl),
@@ -185,8 +198,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(
                 toCallable(() -> indexerClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, null)),
                 dataSourceUrl),
-            Arguments.of(
-                toCallable(() -> indexerClient.createDataSourceConnectionWithResponse(fromObject(dataSource), null)),
+            Arguments.of(toCallable(() -> indexerClient.createDataSourceConnectionWithResponse(dataSource, null)),
                 dataSourcesUrl),
             Arguments.of(toCallable(() -> indexerClient.getDataSourceConnectionWithResponse("datasource", null)),
                 dataSourceUrl),
@@ -195,8 +207,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(
                 toCallable(() -> indexerClient.deleteDataSourceConnectionWithResponse(dataSource.getName(), null)),
                 dataSourceUrl),
-            Arguments.of(toCallable(() -> indexerClient.createIndexerWithResponse(fromObject(indexer), null)),
-                indexersUrl),
+            Arguments.of(toCallable(() -> indexerClient.createIndexerWithResponse(indexer, null)), indexersUrl),
             Arguments.of(toCallable(() -> indexerClient.createOrUpdateIndexerWithResponse(indexer, null)), indexerUrl),
             Arguments.of(toCallable(indexerClient::listIndexers), indexersUrl),
             Arguments.of(toCallable(indexerClient::listIndexerNames), indexersUrl),
@@ -211,8 +222,7 @@ public class SearchRequestUrlRewriterPolicyTests {
                 indexerUrl + "/search.status"),
             Arguments.of(toCallable(() -> indexerClient.resetDocumentsWithResponse(indexer.getName(), null)),
                 indexerUrl + "/search.resetdocs"),
-            Arguments.of(toCallable(() -> indexerClient.createSkillsetWithResponse(fromObject(skillset), null)),
-                skillsetsUrl),
+            Arguments.of(toCallable(() -> indexerClient.createSkillsetWithResponse(skillset, null)), skillsetsUrl),
             Arguments.of(toCallable(() -> indexerClient.getSkillsetWithResponse("skillset", null)), skillsetUrl),
             Arguments.of(toCallable(indexerClient::listSkillsets), skillsetsUrl),
             Arguments.of(toCallable(indexerClient::listSkillsetNames), skillsetsUrl),
@@ -227,8 +237,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(
                 toCallable(indexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, null)),
                 dataSourceUrl),
-            Arguments.of(
-                toCallable(indexerAsyncClient.createDataSourceConnectionWithResponse(fromObject(dataSource), null)),
+            Arguments.of(toCallable(indexerAsyncClient.createDataSourceConnectionWithResponse(dataSource, null)),
                 dataSourcesUrl),
             Arguments.of(toCallable(indexerAsyncClient.getDataSourceConnectionWithResponse("datasource", null)),
                 dataSourceUrl),
@@ -237,8 +246,7 @@ public class SearchRequestUrlRewriterPolicyTests {
             Arguments.of(
                 toCallable(indexerAsyncClient.deleteDataSourceConnectionWithResponse(dataSource.getName(), null)),
                 dataSourceUrl),
-            Arguments.of(toCallable(indexerAsyncClient.createIndexerWithResponse(fromObject(indexer), null)),
-                indexersUrl),
+            Arguments.of(toCallable(indexerAsyncClient.createIndexerWithResponse(indexer, null)), indexersUrl),
             Arguments.of(toCallable(indexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, null)), indexerUrl),
             Arguments.of(toCallable(indexerAsyncClient.listIndexers()), indexersUrl),
             Arguments.of(toCallable(indexerAsyncClient.listIndexerNames()), indexersUrl),
@@ -252,8 +260,7 @@ public class SearchRequestUrlRewriterPolicyTests {
                 indexerUrl + "/search.status"),
             Arguments.of(toCallable(indexerAsyncClient.resetDocumentsWithResponse(indexer.getName(), null)),
                 indexerUrl + "/search.resetdocs"),
-            Arguments.of(toCallable(indexerAsyncClient.createSkillsetWithResponse(fromObject(skillset), null)),
-                skillsetsUrl),
+            Arguments.of(toCallable(indexerAsyncClient.createSkillsetWithResponse(skillset, null)), skillsetsUrl),
             Arguments.of(toCallable(indexerAsyncClient.getSkillsetWithResponse("skillset", null)), skillsetUrl),
             Arguments.of(toCallable(indexerAsyncClient.listSkillsets()), skillsetsUrl),
             Arguments.of(toCallable(indexerAsyncClient.listSkillsetNames()), skillsetsUrl),

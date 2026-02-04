@@ -45,7 +45,7 @@ public final class SearchIndexingBufferedSender<T> {
     private final boolean autoFlush;
     private final long flushWindowMillis;
 
-    final SearchIndexingPublisher<T> publisher;
+    final SearchIndexingPublisher publisher;
     private final JsonSerializer serializer;
 
     private Timer autoFlushTimer;
@@ -63,7 +63,7 @@ public final class SearchIndexingBufferedSender<T> {
         int initialBatchActionCount, int maxRetriesPerAction, Duration throttlingDelay, Duration maxThrottlingDelay,
         Consumer<OnActionAddedOptions> onActionAdded, Consumer<OnActionSucceededOptions> onActionSucceeded,
         Consumer<OnActionErrorOptions> onActionError, Consumer<OnActionSentOptions> onActionSent) {
-        this.publisher = new SearchIndexingPublisher<>(searchClient, documentKeyRetriever, autoFlush,
+        this.publisher = new SearchIndexingPublisher(searchClient, documentKeyRetriever, autoFlush,
             initialBatchActionCount, maxRetriesPerAction, throttlingDelay, maxThrottlingDelay, onActionAdded,
             onActionSucceeded, onActionError, onActionSent);
 

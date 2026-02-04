@@ -23,6 +23,8 @@ import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalRe
 import com.azure.search.documents.knowledgebases.models.KnowledgeBaseRetrievalResponse;
 import reactor.core.publisher.Mono;
 
+import static com.azure.search.documents.implementation.SearchUtils.mapResponse;
+
 /**
  * Initializes a new instance of the asynchronous KnowledgeBaseRetrievalClient type.
  */
@@ -71,6 +73,60 @@ public final class KnowledgeBaseRetrievalAsyncClient {
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
+     *
+     * @param knowledgeBaseName The name of the knowledge base.
+     * @param retrievalRequest The retrieval request to process.
+     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
+     * used to enforce security restrictions on documents.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the output contract for the retrieval response on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
+        KnowledgeBaseRetrievalRequest retrievalRequest, String querySourceAuthorization) {
+        // Generated convenience method for retrieveWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        if (querySourceAuthorization != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
+                querySourceAuthorization);
+        }
+        return retrieveWithResponseHiddenGenerated(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
+    }
+
+    /**
+     * KnowledgeBase retrieves relevant data from backing stores.
+     *
+     * @param knowledgeBaseName The name of the knowledge base.
+     * @param retrievalRequest The retrieval request to process.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the output contract for the retrieval response on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
+        KnowledgeBaseRetrievalRequest retrievalRequest) {
+        // Generated convenience method for retrieveWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return retrieveWithResponseHiddenGenerated(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
+            requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
+    }
+
+    /**
+     * KnowledgeBase retrieves relevant data from backing stores.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
      * <caption>Header Parameters</caption>
@@ -80,7 +136,7 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -119,9 +175,9 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -185,62 +241,36 @@ public final class KnowledgeBaseRetrievalAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> retrieveWithResponse(String knowledgeBaseName, BinaryData retrievalRequest,
-        RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> retrieveWithResponseHiddenGenerated(String knowledgeBaseName,
+        BinaryData retrievalRequest, RequestOptions requestOptions) {
         return this.serviceClient.retrieveWithResponseAsync(knowledgeBaseName, retrievalRequest, requestOptions);
     }
 
     /**
      * KnowledgeBase retrieves relevant data from backing stores.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      *
      * @param knowledgeBaseName The name of the knowledge base.
      * @param retrievalRequest The retrieval request to process.
-     * @param querySourceAuthorization Token identifying the user for which the query is being executed. This token is
-     * used to enforce security restrictions on documents.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response on successful completion of {@link Mono}.
+     * @return the output contract for the retrieval response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalRequest retrievalRequest, String querySourceAuthorization) {
-        // Generated convenience method for retrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (querySourceAuthorization != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
-                querySourceAuthorization);
-        }
-        return retrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
-    }
-
-    /**
-     * KnowledgeBase retrieves relevant data from backing stores.
-     *
-     * @param knowledgeBaseName The name of the knowledge base.
-     * @param retrievalRequest The retrieval request to process.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the output contract for the retrieval response on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KnowledgeBaseRetrievalResponse> retrieve(String knowledgeBaseName,
-        KnowledgeBaseRetrievalRequest retrievalRequest) {
-        // Generated convenience method for retrieveWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return retrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBaseRetrievalResponse.class));
+    public Mono<Response<KnowledgeBaseRetrievalResponse>> retrieveWithResponse(String knowledgeBaseName,
+        KnowledgeBaseRetrievalRequest retrievalRequest, RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.retrieveWithResponseAsync(knowledgeBaseName,
+            BinaryData.fromObject(retrievalRequest), requestOptions), KnowledgeBaseRetrievalResponse.class);
     }
 }

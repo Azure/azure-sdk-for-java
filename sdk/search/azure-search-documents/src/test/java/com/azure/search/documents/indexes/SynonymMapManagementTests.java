@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.SynonymMap;
@@ -119,34 +118,28 @@ public class SynonymMapManagementTests extends SearchTestBase {
     @Test
     public void createSynonymMapReturnsCorrectDefinitionWithResponseSync() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
-        SynonymMap actualSynonymMap
-            = client.createSynonymMapWithResponse(BinaryData.fromObject(expectedSynonymMap), null)
-                .getValue()
-                .toObject(SynonymMap.class);
+        SynonymMap actualSynonymMap = client.createSynonymMapWithResponse(expectedSynonymMap, null).getValue();
         synonymMapsToDelete.add(actualSynonymMap.getName());
 
         assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
 
-        actualSynonymMap = client.getSynonymMapWithResponse(expectedSynonymMap.getName(), null)
-            .getValue()
-            .toObject(SynonymMap.class);
+        actualSynonymMap = client.getSynonymMapWithResponse(expectedSynonymMap.getName(), null).getValue();
         assertSynonymMapsEqual(expectedSynonymMap, actualSynonymMap);
     }
 
     @Test
     public void createSynonymMapReturnsCorrectDefinitionWithResponseAsync() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
-        StepVerifier.create(asyncClient.createSynonymMapWithResponse(BinaryData.fromObject(expectedSynonymMap), null))
+        StepVerifier.create(asyncClient.createSynonymMapWithResponse(expectedSynonymMap, null))
             .assertNext(response -> {
-                SynonymMap synonymMap = response.getValue().toObject(SynonymMap.class);
+                SynonymMap synonymMap = response.getValue();
                 synonymMapsToDelete.add(synonymMap.getName());
                 assertSynonymMapsEqual(expectedSynonymMap, synonymMap);
             })
             .verifyComplete();
 
         StepVerifier.create(asyncClient.getSynonymMapWithResponse(expectedSynonymMap.getName(), null))
-            .assertNext(
-                response -> assertSynonymMapsEqual(expectedSynonymMap, response.getValue().toObject(SynonymMap.class)))
+            .assertNext(response -> assertSynonymMapsEqual(expectedSynonymMap, response.getValue()))
             .verifyComplete();
     }
 
@@ -434,7 +427,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
         Response<?> deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(), null);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
 
-        Response<?> createResponse = client.createSynonymMapWithResponse(BinaryData.fromObject(synonymMap), null);
+        Response<?> createResponse = client.createSynonymMapWithResponse(synonymMap, null);
         assertEquals(HttpURLConnection.HTTP_CREATED, createResponse.getStatusCode());
 
         deleteResponse = client.deleteSynonymMapWithResponse(synonymMap.getName(), null);
@@ -452,7 +445,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getStatusCode()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.createSynonymMapWithResponse(BinaryData.fromObject(synonymMap), null))
+        StepVerifier.create(asyncClient.createSynonymMapWithResponse(synonymMap, null))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode()))
             .verifyComplete();
 

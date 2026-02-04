@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
@@ -135,11 +134,9 @@ public class DataSourceTests extends SearchTestBase {
         expectedDataSources.add(dataSource1.getName());
         expectedDataSources.add(dataSource2.getName());
 
-        client.createOrUpdateDataSourceConnectionWithResponse(dataSource1.getName(), BinaryData.fromObject(dataSource1),
-            null);
+        client.createOrUpdateDataSourceConnectionWithResponse(dataSource1, null);
         dataSourcesToDelete.add(dataSource1.getName());
-        client.createOrUpdateDataSourceConnectionWithResponse(dataSource2.getName(), BinaryData.fromObject(dataSource2),
-            null);
+        client.createOrUpdateDataSourceConnectionWithResponse(dataSource2, null);
         dataSourcesToDelete.add(dataSource2.getName());
 
         Set<String> actualDataSources = new HashSet<>(client.listDataSourceConnectionNames());
@@ -158,10 +155,8 @@ public class DataSourceTests extends SearchTestBase {
         expectedDataSources.add(dataSource2.getName());
 
         Mono<Set<String>> listMono = Flux.fromIterable(Arrays.asList(dataSource1, dataSource2))
-            .flatMap(ds -> asyncClient.createOrUpdateDataSourceConnectionWithResponse(ds.getName(),
-                BinaryData.fromObject(ds), null))
-            .doOnNext(ds -> dataSourcesToDelete
-                .add(ds.getValue().toObject(SearchIndexerDataSourceConnection.class).getName()))
+            .flatMap(ds -> asyncClient.createOrUpdateDataSourceConnectionWithResponse(ds, null))
+            .doOnNext(ds -> dataSourcesToDelete.add(ds.getValue().getName()))
             .then(asyncClient.listDataSourceConnectionNames())
             .map(HashSet::new);
 
@@ -530,9 +525,7 @@ public class DataSourceTests extends SearchTestBase {
         SearchIndexerDataSourceConnection actualDataSource = client.getDataSourceConnection(dataSourceName);
         TestHelpers.assertObjectEquals(expectedDataSource, actualDataSource, false, "etag", "@odata.etag");
 
-        actualDataSource = client.getDataSourceConnectionWithResponse(dataSourceName, null)
-            .getValue()
-            .toObject(SearchIndexerDataSourceConnection.class);
+        actualDataSource = client.getDataSourceConnectionWithResponse(dataSourceName, null).getValue();
         TestHelpers.assertObjectEquals(expectedDataSource, actualDataSource, false, "etag", "@odata.etag");
 
         client.deleteDataSourceConnection(dataSourceName);
@@ -559,8 +552,8 @@ public class DataSourceTests extends SearchTestBase {
             .verifyComplete();
 
         StepVerifier.create(asyncClient.getDataSourceConnectionWithResponse(dataSourceName, null))
-            .assertNext(response -> assertObjectEquals(expectedDataSource,
-                response.getValue().toObject(SearchIndexerDataSourceConnection.class), false, "etag", "@odata.etag"))
+            .assertNext(response -> assertObjectEquals(expectedDataSource, response.getValue(), false, "etag",
+                "@odata.etag"))
             .verifyComplete();
 
         asyncClient.deleteDataSourceConnection(dataSourceName).block();
@@ -600,11 +593,10 @@ public class DataSourceTests extends SearchTestBase {
     public void canCreateDataSourceWithResponseSync() {
         SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
-        Response<BinaryData> response
-            = client.createDataSourceConnectionWithResponse(BinaryData.fromObject(expectedDataSource), null);
+        Response<SearchIndexerDataSourceConnection> response
+            = client.createDataSourceConnectionWithResponse(expectedDataSource, null);
 
-        assertEquals(expectedDataSource.getName(),
-            response.getValue().toObject(SearchIndexerDataSourceConnection.class).getName());
+        assertEquals(expectedDataSource.getName(), response.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());
     }
 
@@ -613,11 +605,9 @@ public class DataSourceTests extends SearchTestBase {
         SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
 
-        StepVerifier
-            .create(asyncClient.createDataSourceConnectionWithResponse(BinaryData.fromObject(expectedDataSource), null))
+        StepVerifier.create(asyncClient.createDataSourceConnectionWithResponse(expectedDataSource, null))
             .assertNext(response -> {
-                assertEquals(expectedDataSource.getName(),
-                    response.getValue().toObject(SearchIndexerDataSourceConnection.class).getName());
+                assertEquals(expectedDataSource.getName(), response.getValue().getName());
                 assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());
             })
             .verifyComplete();

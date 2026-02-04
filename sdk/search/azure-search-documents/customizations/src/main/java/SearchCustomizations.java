@@ -8,14 +8,16 @@ import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.body.BodyDeclaration;
+import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
+import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Contains customizations for Azure AI Search code generation.
@@ -33,6 +35,23 @@ public class SearchCustomizations extends Customization {
         addSearchAudienceScopeHandling(indexes.getClass("SearchIndexClientBuilder"), logger);
         addSearchAudienceScopeHandling(indexes.getClass("SearchIndexerClientBuilder"), logger);
         addSearchAudienceScopeHandling(knowledge.getClass("KnowledgeBaseRetrievalClientBuilder"), logger);
+
+        includeOldApiVersions(documents.getClass("SearchServiceVersion"));
+
+        ClassCustomization searchClient = documents.getClass("SearchClient");
+        ClassCustomization searchAsyncClient = documents.getClass("SearchAsyncClient");
+
+        removeGetApis(searchClient);
+        removeGetApis(searchAsyncClient);
+
+        hideResponseBinaryDataApis(searchClient);
+        hideResponseBinaryDataApis(searchAsyncClient);
+        hideResponseBinaryDataApis(indexes.getClass("SearchIndexClient"));
+        hideResponseBinaryDataApis(indexes.getClass("SearchIndexAsyncClient"));
+        hideResponseBinaryDataApis(indexes.getClass("SearchIndexerClient"));
+        hideResponseBinaryDataApis(indexes.getClass("SearchIndexerAsyncClient"));
+        hideResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalClient"));
+        hideResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
     }
 
     // Weird quirk in the Java generator where SearchOptions is inferred from the parameters of searchPost in TypeSpec,
@@ -84,5 +103,53 @@ public class SearchCustomizations extends Customization {
             clazz.getMethodsByName("createHttpPipeline").forEach(method -> method.getBody().ifPresent(body ->
                 method.setBody(StaticJavaParser.parseBlock(body.toString().replace("DEFAULT_SCOPES", "scopes")))));
         }));
+    }
+
+    // At the time this was added, Java TypeSpec generation doesn't support partial update behavior (inline manual
+    // modifications to generated files), so this adds back older service versions in a regeneration safe way.
+    private static void includeOldApiVersions(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getEnumByName(customization.getClassName()).ifPresent(enumDeclaration -> {
+            NodeList<EnumConstantDeclaration> entries = enumDeclaration.getEntries();
+            for (String version : Arrays.asList("2025-09-01", "2024-07-01", "2023-11-01", "2020-06-30")) {
+                String enumName = "V" + version.replace("-", "_");
+                entries.add(0, new EnumConstantDeclaration(enumName)
+                    .addArgument(new StringLiteralExpr(version))
+                    .setJavadocComment("Enum value " + version + "."));
+            }
+
+            enumDeclaration.setEntries(entries);
+        }));
+    }
+
+    // At the time this was added, Java TypeSpec for Azure-type generation doesn't support returning Response<T>, which
+    // we want, so hide all the Response<BinaryData> APIs in the specified class and manually add Response<T> APIs.
+    private static void hideResponseBinaryDataApis(ClassCustomization customization) {
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName())
+            .ifPresent(clazz -> clazz.getMethods().forEach(method -> {
+                if (method.isPublic()
+                    && method.isAnnotationPresent("Generated")
+                    && method.getType().toString().contains("Response<BinaryData>")) {
+                    String methodName = method.getNameAsString();
+                    method.setModifiers().setName(methodName + "HiddenGenerated");
+
+                    clazz.getMethodsByName(methodName.replace("WithResponse", "")).forEach(nonWithResponse -> {
+                        String body = nonWithResponse.getBody().map(BlockStmt::toString).get();
+                        body = body.replace(methodName, methodName + "HiddenGenerated");
+                        nonWithResponse.setBody(StaticJavaParser.parseBlock(body));
+                    });
+                }
+            })));
+    }
+
+    // Removes GET equivalents of POST APIs in SearchClient and SearchAsyncClient as we never plan to expose those.
+    private static void removeGetApis(ClassCustomization customization) {
+        List<String> methodPrefixesToRemove = Arrays.asList("searchGet", "suggestGet", "autocompleteGet");
+        customization.customizeAst(ast -> ast.getClassByName(customization.getClassName())
+            .ifPresent(clazz -> clazz.getMethods().forEach(method -> {
+                String methodName = method.getNameAsString();
+                if (methodPrefixesToRemove.stream().anyMatch(methodName::startsWith)) {
+                    method.remove();
+                }
+            })));
     }
 }

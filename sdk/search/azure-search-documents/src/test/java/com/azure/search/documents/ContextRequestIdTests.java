@@ -14,7 +14,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
@@ -150,7 +149,7 @@ public class ContextRequestIdTests {
         return new HttpHeaders().set(REQUEST_ID_HEADER, requestId);
     }
 
-    private static void verifySync(Function<RequestOptions, Response<BinaryData>> requestRunner, Context context,
+    private static void verifySync(Function<RequestOptions, Response<?>> requestRunner, Context context,
         String expectedRequestId) {
         RuntimeException ex
             = assertThrows(RuntimeException.class, () -> requestRunner.apply(new RequestOptions().setContext(context)));

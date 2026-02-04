@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.core.util.BinaryData;
 import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.indexes.models.SearchServiceCounters;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
@@ -38,7 +37,7 @@ public class SearchServiceTests extends SearchTestBase {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
         SearchServiceStatistics searchServiceStatistics
-            = serviceClient.getServiceStatisticsWithResponse(null).getValue().toObject(SearchServiceStatistics.class);
+            = serviceClient.getServiceStatisticsWithResponse(null).getValue();
         validateServiceStatistics(searchServiceStatistics);
     }
 
@@ -46,8 +45,7 @@ public class SearchServiceTests extends SearchTestBase {
     public void getServiceStatsReturnsCorrectDefinitionWithResponseAsync() {
         StepVerifier
             .create(getSearchIndexClientBuilder(false).buildAsyncClient().getServiceStatisticsWithResponse(null))
-            .assertNext(
-                response -> validateServiceStatistics(response.getValue().toObject(SearchServiceStatistics.class)))
+            .assertNext(response -> validateServiceStatistics(response.getValue()))
             .verifyComplete();
     }
 
@@ -56,7 +54,7 @@ public class SearchServiceTests extends SearchTestBase {
     public void getServiceStatsReturnsRequestIdSync() {
         SearchIndexClient serviceClient = getSearchIndexClientBuilder(true).buildClient();
 
-        Response<BinaryData> response = serviceClient.getServiceStatisticsWithResponse(null);
+        Response<SearchServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(null);
 
         /*
          * The service will always return a request-id and will conditionally return client-request-id if
@@ -69,7 +67,7 @@ public class SearchServiceTests extends SearchTestBase {
 
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
-        validateServiceStatistics(response.getValue().toObject(SearchServiceStatistics.class));
+        validateServiceStatistics(response.getValue());
     }
 
     @Test
@@ -89,7 +87,7 @@ public class SearchServiceTests extends SearchTestBase {
 
                 Assertions.assertNotNull(actualClientRequestId);
                 Assertions.assertEquals(actualClientRequestId, actualRequestId);
-                validateServiceStatistics(response.getValue().toObject(SearchServiceStatistics.class));
+                validateServiceStatistics(response.getValue());
             })
             .verifyComplete();
     }

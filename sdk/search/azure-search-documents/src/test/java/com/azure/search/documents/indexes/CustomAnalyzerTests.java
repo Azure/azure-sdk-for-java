@@ -2,13 +2,74 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.search.documents.SearchAsyncClient;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.indexes.models.*;
+import com.azure.search.documents.indexes.models.AnalyzeResult;
+import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
+import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.AsciiFoldingTokenFilter;
+import com.azure.search.documents.indexes.models.CharFilter;
+import com.azure.search.documents.indexes.models.CharFilterName;
+import com.azure.search.documents.indexes.models.CjkBigramTokenFilter;
+import com.azure.search.documents.indexes.models.CjkBigramTokenFilterScripts;
+import com.azure.search.documents.indexes.models.ClassicTokenizer;
+import com.azure.search.documents.indexes.models.CommonGramTokenFilter;
+import com.azure.search.documents.indexes.models.CustomAnalyzer;
+import com.azure.search.documents.indexes.models.DictionaryDecompounderTokenFilter;
+import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
+import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterV2;
+import com.azure.search.documents.indexes.models.EdgeNGramTokenizer;
+import com.azure.search.documents.indexes.models.ElisionTokenFilter;
+import com.azure.search.documents.indexes.models.KeepTokenFilter;
+import com.azure.search.documents.indexes.models.KeywordMarkerTokenFilter;
+import com.azure.search.documents.indexes.models.KeywordTokenizerV2;
+import com.azure.search.documents.indexes.models.LengthTokenFilter;
+import com.azure.search.documents.indexes.models.LexicalAnalyzer;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalTokenizer;
+import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.LimitTokenFilter;
+import com.azure.search.documents.indexes.models.LuceneStandardAnalyzer;
+import com.azure.search.documents.indexes.models.LuceneStandardTokenizerV2;
+import com.azure.search.documents.indexes.models.MappingCharFilter;
+import com.azure.search.documents.indexes.models.MicrosoftLanguageStemmingTokenizer;
+import com.azure.search.documents.indexes.models.MicrosoftLanguageTokenizer;
+import com.azure.search.documents.indexes.models.MicrosoftStemmingTokenizerLanguage;
+import com.azure.search.documents.indexes.models.MicrosoftTokenizerLanguage;
+import com.azure.search.documents.indexes.models.NGramTokenFilterV2;
+import com.azure.search.documents.indexes.models.NGramTokenizer;
+import com.azure.search.documents.indexes.models.PathHierarchyTokenizerV2;
+import com.azure.search.documents.indexes.models.PatternAnalyzer;
+import com.azure.search.documents.indexes.models.PatternCaptureTokenFilter;
+import com.azure.search.documents.indexes.models.PatternReplaceCharFilter;
+import com.azure.search.documents.indexes.models.PatternReplaceTokenFilter;
+import com.azure.search.documents.indexes.models.PatternTokenizer;
+import com.azure.search.documents.indexes.models.PhoneticEncoder;
+import com.azure.search.documents.indexes.models.PhoneticTokenFilter;
+import com.azure.search.documents.indexes.models.RegexFlags;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.ShingleTokenFilter;
+import com.azure.search.documents.indexes.models.SnowballTokenFilter;
+import com.azure.search.documents.indexes.models.SnowballTokenFilterLanguage;
+import com.azure.search.documents.indexes.models.StemmerOverrideTokenFilter;
+import com.azure.search.documents.indexes.models.StemmerTokenFilter;
+import com.azure.search.documents.indexes.models.StemmerTokenFilterLanguage;
+import com.azure.search.documents.indexes.models.StopAnalyzer;
+import com.azure.search.documents.indexes.models.StopwordsList;
+import com.azure.search.documents.indexes.models.StopwordsTokenFilter;
+import com.azure.search.documents.indexes.models.SynonymTokenFilter;
+import com.azure.search.documents.indexes.models.TokenCharacterKind;
+import com.azure.search.documents.indexes.models.TokenFilter;
+import com.azure.search.documents.indexes.models.TokenFilterName;
+import com.azure.search.documents.indexes.models.TruncateTokenFilter;
+import com.azure.search.documents.indexes.models.UaxUrlEmailTokenizer;
+import com.azure.search.documents.indexes.models.UniqueTokenFilter;
+import com.azure.search.documents.indexes.models.WordDelimiterTokenFilter;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.SearchOptions;
@@ -235,11 +296,9 @@ public class CustomAnalyzerTests extends SearchTestBase {
         indexesToCleanup.add(index.getName());
 
         addAnalyzerToIndex(index, new StopAnalyzer("a2"));
-        SearchIndex updatedIndex = searchIndexClient
-            .createOrUpdateIndexWithResponse(index.getName(), BinaryData.fromObject(index),
+        SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndexWithResponse(index,
                 ifMatch(index.getETag()).addQueryParam("allowIndexDowntime", "true"))
-            .getValue()
-            .toObject(SearchIndex.class);
+            .getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
     }
@@ -253,10 +312,9 @@ public class CustomAnalyzerTests extends SearchTestBase {
         addAnalyzerToIndex(index, new StopAnalyzer("a2"));
 
         StepVerifier
-            .create(searchIndexAsyncClient.createOrUpdateIndexWithResponse(index.getName(),
-                BinaryData.fromObject(index), ifMatch(index.getETag()).addQueryParam("allowIndexDowntime", "true")))
-            .assertNext(
-                response -> assertAnalysisComponentsEqual(index, response.getValue().toObject(SearchIndex.class)))
+            .create(searchIndexAsyncClient.createOrUpdateIndexWithResponse(index,
+                ifMatch(index.getETag()).addQueryParam("allowIndexDowntime", "true")))
+            .assertNext(response -> assertAnalysisComponentsEqual(index, response.getValue()))
             .verifyComplete();
     }
 

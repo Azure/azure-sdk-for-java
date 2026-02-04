@@ -39,6 +39,7 @@ import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.knowledgebases.models.KnowledgeSourceStatus;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
@@ -47,6 +48,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.azure.search.documents.implementation.SearchUtils.convertResponse;
 
 /**
  * Initializes a new instance of the synchronous SearchIndexClient type.
@@ -214,7 +217,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -239,9 +242,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -295,59 +298,6 @@ public final class SearchIndexClient {
      * be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     format: String (Required)
-     *     synonyms (Required): [
-     *         String (Required)
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     format: String (Required)
-     *     synonyms (Required): [
-     *         String (Required)
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param synonymMap The definition of the synonym map to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -360,9 +310,8 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
         RequestOptions requestOptions) {
-        Response<BinaryData> response = this.serviceClient.createOrUpdateSynonymMapWithResponse(synonymMap.getName(),
-            BinaryData.fromObject(synonymMap), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(SynonymMap.class));
+        return convertResponse(this.serviceClient.createOrUpdateSynonymMapWithResponse(synonymMap.getName(),
+            BinaryData.fromObject(synonymMap), requestOptions), SynonymMap.class);
     }
 
     /**
@@ -392,49 +341,6 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Retrieves a synonym map definition.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     format: String (Required)
-     *     synonyms (Required): [
-     *         String (Required)
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the synonym map.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a synonym map definition along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSynonymMapWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getSynonymMapWithResponse(name, requestOptions);
-    }
-
-    /**
      * Lists all synonym maps available for a search service.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -446,7 +352,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -490,76 +396,6 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new synonym map.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     format: String (Required)
-     *     synonyms (Required): [
-     *         String (Required)
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     format: String (Required)
-     *     synonyms (Required): [
-     *         String (Required)
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param synonymMap The definition of the synonym map to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a synonym map definition along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSynonymMapWithResponse(BinaryData synonymMap, RequestOptions requestOptions) {
-        return this.serviceClient.createSynonymMapWithResponse(synonymMap, requestOptions);
-    }
-
-    /**
      * Creates a new search index or updates an index if it already exists.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -582,7 +418,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -757,9 +593,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -973,359 +809,6 @@ public final class SearchIndexClient {
      * be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     fields (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
-     *             key: Boolean (Optional)
-     *             retrievable: Boolean (Optional)
-     *             stored: Boolean (Optional)
-     *             searchable: Boolean (Optional)
-     *             filterable: Boolean (Optional)
-     *             sortable: Boolean (Optional)
-     *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabel: Boolean (Optional)
-     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
-     *             dimensions: Integer (Optional)
-     *             vectorSearchProfile: String (Optional)
-     *             vectorEncoding: String(packedBit) (Optional)
-     *             synonymMaps (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             fields (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     ]
-     *     scoringProfiles (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             text (Optional): {
-     *                 weights (Required): {
-     *                     String: double (Required)
-     *                 }
-     *             }
-     *             functions (Optional): [
-     *                  (Optional){
-     *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
-     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
-     *                 }
-     *             ]
-     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
-     *         }
-     *     ]
-     *     defaultScoringProfile: String (Optional)
-     *     corsOptions (Optional): {
-     *         allowedOrigins (Required): [
-     *             String (Required)
-     *         ]
-     *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     suggesters (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             searchMode: String (Required)
-     *             sourceFields (Required): [
-     *                 String (Required)
-     *             ]
-     *         }
-     *     ]
-     *     analyzers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     tokenizers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     tokenFilters (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     charFilters (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     normalizers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     similarity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     semantic (Optional): {
-     *         defaultConfiguration: String (Optional)
-     *         configurations (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 prioritizedFields (Required): {
-     *                     titleField (Optional): {
-     *                         fieldName: String (Required)
-     *                     }
-     *                     prioritizedContentFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     prioritizedKeywordsFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
-     *             }
-     *         ]
-     *     }
-     *     vectorSearch (Optional): {
-     *         profiles (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 algorithm: String (Required)
-     *                 vectorizer: String (Optional)
-     *                 compression: String (Optional)
-     *             }
-     *         ]
-     *         algorithms (Optional): [
-     *              (Optional){
-     *                 kind: String(hnsw/exhaustiveKnn) (Required)
-     *                 name: String (Required)
-     *             }
-     *         ]
-     *         vectorizers (Optional): [
-     *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
-     *                 name: String (Required)
-     *             }
-     *         ]
-     *         compressions (Optional): [
-     *              (Optional){
-     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
-     *                 name: String (Required)
-     *                 rescoringOptions (Optional): {
-     *                     enableRescoring: Boolean (Optional)
-     *                     defaultOversampling: Double (Optional)
-     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
-     *                 }
-     *                 truncationDimension: Integer (Optional)
-     *             }
-     *         ]
-     *     }
-     *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     fields (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
-     *             key: Boolean (Optional)
-     *             retrievable: Boolean (Optional)
-     *             stored: Boolean (Optional)
-     *             searchable: Boolean (Optional)
-     *             filterable: Boolean (Optional)
-     *             sortable: Boolean (Optional)
-     *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabel: Boolean (Optional)
-     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
-     *             dimensions: Integer (Optional)
-     *             vectorSearchProfile: String (Optional)
-     *             vectorEncoding: String(packedBit) (Optional)
-     *             synonymMaps (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             fields (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     ]
-     *     scoringProfiles (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             text (Optional): {
-     *                 weights (Required): {
-     *                     String: double (Required)
-     *                 }
-     *             }
-     *             functions (Optional): [
-     *                  (Optional){
-     *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
-     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
-     *                 }
-     *             ]
-     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
-     *         }
-     *     ]
-     *     defaultScoringProfile: String (Optional)
-     *     corsOptions (Optional): {
-     *         allowedOrigins (Required): [
-     *             String (Required)
-     *         ]
-     *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     suggesters (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             searchMode: String (Required)
-     *             sourceFields (Required): [
-     *                 String (Required)
-     *             ]
-     *         }
-     *     ]
-     *     analyzers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     tokenizers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     tokenFilters (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     charFilters (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     normalizers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     similarity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     semantic (Optional): {
-     *         defaultConfiguration: String (Optional)
-     *         configurations (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 prioritizedFields (Required): {
-     *                     titleField (Optional): {
-     *                         fieldName: String (Required)
-     *                     }
-     *                     prioritizedContentFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     prioritizedKeywordsFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
-     *             }
-     *         ]
-     *     }
-     *     vectorSearch (Optional): {
-     *         profiles (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 algorithm: String (Required)
-     *                 vectorizer: String (Optional)
-     *                 compression: String (Optional)
-     *             }
-     *         ]
-     *         algorithms (Optional): [
-     *              (Optional){
-     *                 kind: String(hnsw/exhaustiveKnn) (Required)
-     *                 name: String (Required)
-     *             }
-     *         ]
-     *         vectorizers (Optional): [
-     *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
-     *                 name: String (Required)
-     *             }
-     *         ]
-     *         compressions (Optional): [
-     *              (Optional){
-     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
-     *                 name: String (Required)
-     *                 rescoringOptions (Optional): {
-     *                     enableRescoring: Boolean (Optional)
-     *                     defaultOversampling: Double (Optional)
-     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
-     *                 }
-     *                 truncationDimension: Integer (Optional)
-     *             }
-     *         ]
-     *     }
-     *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
      *
      * @param index The definition of the index to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1338,9 +821,8 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndex> createOrUpdateIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
-        Response<BinaryData> response = this.serviceClient.createOrUpdateIndexWithResponse(index.getName(),
-            BinaryData.fromObject(index), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(SearchIndex.class));
+        return convertResponse(this.serviceClient.createOrUpdateIndexWithResponse(index.getName(),
+            BinaryData.fromObject(index), requestOptions), SearchIndex.class);
     }
 
     /**
@@ -1372,200 +854,6 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Retrieves an index definition.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     fields (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
-     *             key: Boolean (Optional)
-     *             retrievable: Boolean (Optional)
-     *             stored: Boolean (Optional)
-     *             searchable: Boolean (Optional)
-     *             filterable: Boolean (Optional)
-     *             sortable: Boolean (Optional)
-     *             facetable: Boolean (Optional)
-     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
-     *             sensitivityLabel: Boolean (Optional)
-     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
-     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
-     *             dimensions: Integer (Optional)
-     *             vectorSearchProfile: String (Optional)
-     *             vectorEncoding: String(packedBit) (Optional)
-     *             synonymMaps (Optional): [
-     *                 String (Optional)
-     *             ]
-     *             fields (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *         }
-     *     ]
-     *     scoringProfiles (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             text (Optional): {
-     *                 weights (Required): {
-     *                     String: double (Required)
-     *                 }
-     *             }
-     *             functions (Optional): [
-     *                  (Optional){
-     *                     type: String (Required)
-     *                     fieldName: String (Required)
-     *                     boost: double (Required)
-     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
-     *                 }
-     *             ]
-     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
-     *         }
-     *     ]
-     *     defaultScoringProfile: String (Optional)
-     *     corsOptions (Optional): {
-     *         allowedOrigins (Required): [
-     *             String (Required)
-     *         ]
-     *         maxAgeInSeconds: Long (Optional)
-     *     }
-     *     suggesters (Optional): [
-     *          (Optional){
-     *             name: String (Required)
-     *             searchMode: String (Required)
-     *             sourceFields (Required): [
-     *                 String (Required)
-     *             ]
-     *         }
-     *     ]
-     *     analyzers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     tokenizers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     tokenFilters (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     charFilters (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     normalizers (Optional): [
-     *          (Optional){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     similarity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     semantic (Optional): {
-     *         defaultConfiguration: String (Optional)
-     *         configurations (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 prioritizedFields (Required): {
-     *                     titleField (Optional): {
-     *                         fieldName: String (Required)
-     *                     }
-     *                     prioritizedContentFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                     prioritizedKeywordsFields (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
-     *                 flightingOptIn: Boolean (Optional)
-     *             }
-     *         ]
-     *     }
-     *     vectorSearch (Optional): {
-     *         profiles (Optional): [
-     *              (Optional){
-     *                 name: String (Required)
-     *                 algorithm: String (Required)
-     *                 vectorizer: String (Optional)
-     *                 compression: String (Optional)
-     *             }
-     *         ]
-     *         algorithms (Optional): [
-     *              (Optional){
-     *                 kind: String(hnsw/exhaustiveKnn) (Required)
-     *                 name: String (Required)
-     *             }
-     *         ]
-     *         vectorizers (Optional): [
-     *              (Optional){
-     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
-     *                 name: String (Required)
-     *             }
-     *         ]
-     *         compressions (Optional): [
-     *              (Optional){
-     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
-     *                 name: String (Required)
-     *                 rescoringOptions (Optional): {
-     *                     enableRescoring: Boolean (Optional)
-     *                     defaultOversampling: Double (Optional)
-     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
-     *                 }
-     *                 truncationDimension: Integer (Optional)
-     *             }
-     *         ]
-     *     }
-     *     permissionFilterOption: String(enabled/disabled) (Optional)
-     *     purviewEnabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the index.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a search index definition, which describes the fields and search behavior of an index along
-     * with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getIndexWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getIndexWithResponse(name, requestOptions);
-    }
-
-    /**
      * Lists all indexes available for a search service.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1577,7 +865,7 @@ public final class SearchIndexClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1767,9 +1055,1861 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Creates a new search index.
+     * Creates a new search alias or updates an alias if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     indexes (Required): [
+     *         String (Required)
+     *     ]
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     indexes (Required): [
+     *         String (Required)
+     *     ]
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the alias.
+     * @param alias The definition of the alias to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createOrUpdateAliasWithResponse(String name, BinaryData alias, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateAliasWithResponse(name, alias, requestOptions);
+    }
+
+    /**
+     * Creates a new search alias or updates an alias if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param alias The definition of the alias to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchAlias> createOrUpdateAliasWithResponse(SearchAlias alias, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createOrUpdateAliasWithResponse(alias.getName(),
+            BinaryData.fromObject(alias), requestOptions), SearchAlias.class);
+    }
+
+    /**
+     * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
+     * option. The mapped index is untouched by this operation.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param name The name of the alias.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteAliasWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteAliasWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Lists all aliases available for a search service.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     indexes (Required): [
+     *         String (Required)
+     *     ]
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a List Aliases request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listAliases(RequestOptions requestOptions) {
+        return this.serviceClient.listAliases(requestOptions);
+    }
+
+    /**
+     * Creates a new knowledge base or updates a knowledge base if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     knowledgeSources (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     knowledgeSources (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge base.
+     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge base definition along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createOrUpdateKnowledgeBaseWithResponse(String name, BinaryData knowledgeBase,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateKnowledgeBaseWithResponse(name, knowledgeBase, requestOptions);
+    }
+
+    /**
+     * Creates a new knowledge base or updates a knowledge base if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge base definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeBase> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createOrUpdateKnowledgeBaseWithResponse(
+            knowledgeBase.getName(), BinaryData.fromObject(knowledgeBase), requestOptions), KnowledgeBase.class);
+    }
+
+    /**
+     * Deletes a knowledge base.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param name The name of the knowledge base.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteKnowledgeBaseWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Lists all knowledge bases available for a search service.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     knowledgeSources (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     models (Optional): [
+     *          (Optional){
+     *             kind: String(azureOpenAI) (Required)
+     *         }
+     *     ]
+     *     retrievalReasoningEffort (Optional): {
+     *         kind: String(minimal/low/medium) (Required)
+     *     }
+     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     description: String (Optional)
+     *     retrievalInstructions: String (Optional)
+     *     answerInstructions: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result from listing knowledge bases as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listKnowledgeBases(RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeBases(requestOptions);
+    }
+
+    /**
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the knowledge source.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createOrUpdateKnowledgeSourceWithResponse(String name, BinaryData knowledgeSource,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateKnowledgeSourceWithResponse(name, knowledgeSource, requestOptions);
+    }
+
+    /**
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createOrUpdateKnowledgeSourceWithResponse(
+            knowledgeSource.getName(), BinaryData.fromObject(knowledgeSource), requestOptions), KnowledgeSource.class);
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
+     * performed only if the ETag on the server matches this value.</td></tr>
+     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
+     * be performed only if the ETag on the server does not match this value.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteKnowledgeSourceWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return result from listing knowledge sources as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listKnowledgeSources(RequestOptions requestOptions) {
+        return this.serviceClient.listKnowledgeSources(requestOptions);
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     documentCount: long (Required)
+     *     storageSize: long (Required)
+     *     vectorIndexSize: long (Required)
+     * }
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listIndexStatsSummary(RequestOptions requestOptions) {
+        return this.serviceClient.listIndexStatsSummary(requestOptions);
+    }
+
+    /**
+     * Creates a new synonym map or updates a synonym map if it already exists.
+     *
+     * @param name The name of the synonym map.
+     * @param synonymMap The definition of the synonym map to create or update.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a synonym map definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SynonymMap createOrUpdateSynonymMap(String name, SynonymMap synonymMap, MatchConditions matchConditions) {
+        // Generated convenience method for createOrUpdateSynonymMapWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return createOrUpdateSynonymMapWithResponse(name, BinaryData.fromObject(synonymMap), requestOptions).getValue()
+            .toObject(SynonymMap.class);
+    }
+
+    /**
+     * Creates a new synonym map or updates a synonym map if it already exists.
+     *
+     * @param name The name of the synonym map.
+     * @param synonymMap The definition of the synonym map to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a synonym map definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SynonymMap createOrUpdateSynonymMap(String name, SynonymMap synonymMap) {
+        // Generated convenience method for createOrUpdateSynonymMapWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrUpdateSynonymMapWithResponse(name, BinaryData.fromObject(synonymMap), requestOptions).getValue()
+            .toObject(SynonymMap.class);
+    }
+
+    /**
+     * Creates a new synonym map or updates a synonym map if it already exists.
+     *
+     * @param synonymMap The definition of the synonym map to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a synonym map definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap) {
+        return createOrUpdateSynonymMap(synonymMap.getName(), synonymMap);
+    }
+
+    /**
+     * Deletes a synonym map.
+     *
+     * @param name The name of the synonym map.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSynonymMap(String name, MatchConditions matchConditions) {
+        // Generated convenience method for deleteSynonymMapWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteSynonymMapWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a synonym map.
+     *
+     * @param name The name of the synonym map.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteSynonymMap(String name) {
+        // Generated convenience method for deleteSynonymMapWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteSynonymMapWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Retrieves a synonym map definition.
+     *
+     * @param name The name of the synonym map.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a synonym map definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SynonymMap getSynonymMap(String name) {
+        // Generated convenience method for getSynonymMapWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return getSynonymMapWithResponseHiddenGenerated(name, requestOptions).getValue().toObject(SynonymMap.class);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListSynonymMapsResult getSynonymMaps(List<String> select) {
+        // Generated convenience method for getSynonymMapsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ListSynonymMapsResult getSynonymMaps() {
+        // Generated convenience method for getSynonymMapsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ListSynonymMapsResult listSynonymMaps() {
+        return getSynonymMaps();
+    }
+
+    /**
+     * Lists all synonym maps available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ListSynonymMapsResult> listSynonymMapsWithResponse(RequestOptions requestOptions) {
+        return convertResponse(getSynonymMapsWithResponse(requestOptions), ListSynonymMapsResult.class);
+    }
+
+    /**
+     * Lists the names of all synonym maps available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<String> listSynonymMapNames() {
+        return listSynonymMapNamesWithResponse().getValue();
+    }
+
+    /**
+     * Lists the names of all synonym maps available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List SynonymMaps request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<String>> listSynonymMapNamesWithResponse() {
+        Response<ListSynonymMapsResult> response
+            = listSynonymMapsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
+        return new SimpleResponse<>(response, response.getValue().getSynonymMaps().stream()
+            .map(SynonymMap::getName)
+            .collect(Collectors.toList()));
+    }
+
+    /**
+     * Creates a new synonym map.
+     *
+     * @param synonymMap The definition of the synonym map to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a synonym map definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SynonymMap createSynonymMap(SynonymMap synonymMap) {
+        // Generated convenience method for createSynonymMapWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return createSynonymMapWithResponseHiddenGenerated(BinaryData.fromObject(synonymMap), requestOptions).getValue()
+            .toObject(SynonymMap.class);
+    }
+
+    /**
+     * Creates a new search index or updates an index if it already exists.
+     *
+     * @param name The name of the index.
+     * @param index The definition of the index to create or update.
+     * @param allowIndexDowntime Allows new analyzers, tokenizers, token filters, or char filters to be added to an
+     * index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests
+     * to fail. Performance and write availability of the index can be impaired for several minutes after the index is
+     * updated, or longer for very large indexes.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SearchIndex createOrUpdateIndex(String name, SearchIndex index, Boolean allowIndexDowntime,
+        MatchConditions matchConditions) {
+        // Generated convenience method for createOrUpdateIndexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (allowIndexDowntime != null) {
+            requestOptions.addQueryParam("allowIndexDowntime", String.valueOf(allowIndexDowntime), false);
+        }
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return createOrUpdateIndexWithResponse(name, BinaryData.fromObject(index), requestOptions).getValue()
+            .toObject(SearchIndex.class);
+    }
+
+    /**
+     * Creates a new search index or updates an index if it already exists.
+     *
+     * @param index The definition of the index to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchIndex createOrUpdateIndex(SearchIndex index) {
+        return createOrUpdateIndex(index.getName(), index);
+    }
+
+    /**
+     * Creates a new search index or updates an index if it already exists.
+     *
+     * @param name The name of the index.
+     * @param index The definition of the index to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SearchIndex createOrUpdateIndex(String name, SearchIndex index) {
+        // Generated convenience method for createOrUpdateIndexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrUpdateIndexWithResponse(name, BinaryData.fromObject(index), requestOptions).getValue()
+            .toObject(SearchIndex.class);
+    }
+
+    /**
+     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
+     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
+     * source in case you need to re-build the index.
+     *
+     * @param name The name of the index.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIndex(String name, MatchConditions matchConditions) {
+        // Generated convenience method for deleteIndexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteIndexWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
+     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
+     * source in case you need to re-build the index.
+     *
+     * @param name The name of the index.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIndex(String name) {
+        // Generated convenience method for deleteIndexWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteIndexWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Retrieves an index definition.
+     *
+     * @param name The name of the index.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchIndex getIndex(String name) {
+        // Generated convenience method for getIndexWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return getIndexWithResponseHiddenGenerated(name, requestOptions).getValue().toObject(SearchIndex.class);
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     *
+     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
+     * property names, or '*' for all properties. The default is all properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndex> listIndexes(List<String> select) {
+        // Generated convenience method for listIndexes
+        RequestOptions requestOptions = new RequestOptions();
+        if (select != null) {
+            requestOptions.addQueryParam("$select",
+                select.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return serviceClient.listIndexes(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndex.class));
+    }
+
+    /**
+     * Lists all indexes available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchIndex> listIndexes() {
+        // Generated convenience method for listIndexes
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listIndexes(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndex.class));
+    }
+
+    /**
+     * Lists the names all indexes available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<String> listIndexNames() {
+        return listIndexes(Collections.singletonList("name")).mapPage(SearchIndex::getName);
+    }
+
+    /**
+     * Creates a new search index.
+     *
+     * @param index The definition of the index to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a search index definition, which describes the fields and search behavior of an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchIndex createIndex(SearchIndex index) {
+        // Generated convenience method for createIndexWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return createIndexWithResponseHiddenGenerated(BinaryData.fromObject(index), requestOptions).getValue()
+            .toObject(SearchIndex.class);
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param name The name of the index.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return statistics for a given index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GetIndexStatisticsResult getIndexStatistics(String name) {
+        // Generated convenience method for getIndexStatisticsWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return getIndexStatisticsWithResponseHiddenGenerated(name, requestOptions).getValue()
+            .toObject(GetIndexStatisticsResult.class);
+    }
+
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param name The name of the index.
+     * @param request The text and analyzer or analysis components to test.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of testing an analyzer on text.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeResult analyzeText(String name, AnalyzeTextOptions request) {
+        // Generated convenience method for analyzeTextWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return analyzeTextWithResponseHiddenGenerated(name, BinaryData.fromObject(request), requestOptions).getValue()
+            .toObject(AnalyzeResult.class);
+    }
+
+    /**
+     * Creates a new search alias or updates an alias if it already exists.
+     *
+     * @param name The name of the alias.
+     * @param alias The definition of the alias to create or update.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an index alias, which describes a mapping from the alias name to an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SearchAlias createOrUpdateAlias(String name, SearchAlias alias, MatchConditions matchConditions) {
+        // Generated convenience method for createOrUpdateAliasWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return createOrUpdateAliasWithResponse(name, BinaryData.fromObject(alias), requestOptions).getValue()
+            .toObject(SearchAlias.class);
+    }
+
+    /**
+     * Creates a new search alias or updates an alias if it already exists.
+     *
+     * @param alias The definition of the alias to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an index alias, which describes a mapping from the alias name to an index.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAlias createOrUpdateAlias(SearchAlias alias) {
+        return createOrUpdateAlias(alias.getName(), alias);
+    }
+
+    /**
+     * Creates a new search alias or updates an alias if it already exists.
+     *
+     * @param name The name of the alias.
+     * @param alias The definition of the alias to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an index alias, which describes a mapping from the alias name to an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SearchAlias createOrUpdateAlias(String name, SearchAlias alias) {
+        // Generated convenience method for createOrUpdateAliasWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrUpdateAliasWithResponse(name, BinaryData.fromObject(alias), requestOptions).getValue()
+            .toObject(SearchAlias.class);
+    }
+
+    /**
+     * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
+     * option. The mapped index is untouched by this operation.
+     *
+     * @param name The name of the alias.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAlias(String name, MatchConditions matchConditions) {
+        // Generated convenience method for deleteAliasWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteAliasWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
+     * option. The mapped index is untouched by this operation.
+     *
+     * @param name The name of the alias.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteAlias(String name) {
+        // Generated convenience method for deleteAliasWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteAliasWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Retrieves an alias definition.
+     *
+     * @param name The name of the alias.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an index alias, which describes a mapping from the alias name to an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAlias getAlias(String name) {
+        // Generated convenience method for getAliasWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return getAliasWithResponseHiddenGenerated(name, requestOptions).getValue().toObject(SearchAlias.class);
+    }
+
+    /**
+     * Lists all aliases available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Aliases request as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SearchAlias> listAliases() {
+        // Generated convenience method for listAliases
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listAliases(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchAlias.class));
+    }
+
+    /**
+     * Creates a new search alias.
+     *
+     * @param alias The definition of the alias to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an index alias, which describes a mapping from the alias name to an index.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchAlias createAlias(SearchAlias alias) {
+        // Generated convenience method for createAliasWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return createAliasWithResponseHiddenGenerated(BinaryData.fromObject(alias), requestOptions).getValue()
+            .toObject(SearchAlias.class);
+    }
+
+    /**
+     * Creates a new knowledge base or updates a knowledge base if it already exists.
+     *
+     * @param name The name of the knowledge base.
+     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KnowledgeBase createOrUpdateKnowledgeBase(String name, KnowledgeBase knowledgeBase,
+        MatchConditions matchConditions) {
+        // Generated convenience method for createOrUpdateKnowledgeBaseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return createOrUpdateKnowledgeBaseWithResponse(name, BinaryData.fromObject(knowledgeBase), requestOptions)
+            .getValue()
+            .toObject(KnowledgeBase.class);
+    }
+
+    /**
+     * Creates a new knowledge base or updates a knowledge base if it already exists.
+     *
+     * @param name The name of the knowledge base.
+     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KnowledgeBase createOrUpdateKnowledgeBase(String name, KnowledgeBase knowledgeBase) {
+        // Generated convenience method for createOrUpdateKnowledgeBaseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrUpdateKnowledgeBaseWithResponse(name, BinaryData.fromObject(knowledgeBase), requestOptions)
+            .getValue()
+            .toObject(KnowledgeBase.class);
+    }
+
+    /**
+     * Creates a new knowledge base or updates a knowledge base if it already exists.
+     *
+     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBase createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {
+        return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);
+    }
+
+    /**
+     * Deletes a knowledge base.
+     *
+     * @param name The name of the knowledge base.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteKnowledgeBase(String name, MatchConditions matchConditions) {
+        // Generated convenience method for deleteKnowledgeBaseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteKnowledgeBaseWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a knowledge base.
+     *
+     * @param name The name of the knowledge base.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteKnowledgeBase(String name) {
+        // Generated convenience method for deleteKnowledgeBaseWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteKnowledgeBaseWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Retrieves a knowledge base definition.
+     *
+     * @param name The name of the knowledge base.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBase getKnowledgeBase(String name) {
+        // Generated convenience method for getKnowledgeBaseWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return getKnowledgeBaseWithResponseHiddenGenerated(name, requestOptions).getValue()
+            .toObject(KnowledgeBase.class);
+    }
+
+    /**
+     * Lists all knowledge bases available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result from listing knowledge bases as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeBase> listKnowledgeBases() {
+        // Generated convenience method for listKnowledgeBases
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listKnowledgeBases(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(KnowledgeBase.class));
+    }
+
+    /**
+     * Creates a new knowledge base.
+     *
+     * @param knowledgeBase The definition of the knowledge base to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge base definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeBase createKnowledgeBase(KnowledgeBase knowledgeBase) {
+        // Generated convenience method for createKnowledgeBaseWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return createKnowledgeBaseWithResponseHiddenGenerated(BinaryData.fromObject(knowledgeBase), requestOptions)
+            .getValue()
+            .toObject(KnowledgeBase.class);
+    }
+
+    /**
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
+     *
+     * @param name The name of the knowledge source.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge source definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KnowledgeSource createOrUpdateKnowledgeSource(String name, KnowledgeSource knowledgeSource,
+        MatchConditions matchConditions) {
+        // Generated convenience method for createOrUpdateKnowledgeSourceWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        return createOrUpdateKnowledgeSourceWithResponse(name, BinaryData.fromObject(knowledgeSource), requestOptions)
+            .getValue()
+            .toObject(KnowledgeSource.class);
+    }
+
+    /**
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge source definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource createOrUpdateKnowledgeSource(KnowledgeSource knowledgeSource) {
+        return createOrUpdateKnowledgeSource(knowledgeSource.getName(), knowledgeSource);
+    }
+
+    /**
+     * Creates a new knowledge source or updates an knowledge source if it already exists.
+     *
+     * @param name The name of the knowledge source.
+     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge source definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KnowledgeSource createOrUpdateKnowledgeSource(String name, KnowledgeSource knowledgeSource) {
+        // Generated convenience method for createOrUpdateKnowledgeSourceWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return createOrUpdateKnowledgeSourceWithResponse(name, BinaryData.fromObject(knowledgeSource), requestOptions)
+            .getValue()
+            .toObject(KnowledgeSource.class);
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param matchConditions Specifies HTTP options for conditional requests.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteKnowledgeSource(String name, MatchConditions matchConditions) {
+        // Generated convenience method for deleteKnowledgeSourceWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
+        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifNoneMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
+        }
+        deleteKnowledgeSourceWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes an existing knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteKnowledgeSource(String name) {
+        // Generated convenience method for deleteKnowledgeSourceWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteKnowledgeSourceWithResponse(name, requestOptions).getValue();
+    }
+
+    /**
+     * Retrieves a knowledge source definition.
+     *
+     * @param name The name of the knowledge source.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge source definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource getKnowledgeSource(String name) {
+        // Generated convenience method for getKnowledgeSourceWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return getKnowledgeSourceWithResponseHiddenGenerated(name, requestOptions).getValue()
+            .toObject(KnowledgeSource.class);
+    }
+
+    /**
+     * Lists all knowledge sources available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result from listing knowledge sources as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<KnowledgeSource> listKnowledgeSources() {
+        // Generated convenience method for listKnowledgeSources
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listKnowledgeSources(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(KnowledgeSource.class));
+    }
+
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a knowledge source definition.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSource createKnowledgeSource(KnowledgeSource knowledgeSource) {
+        // Generated convenience method for createKnowledgeSourceWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return createKnowledgeSourceWithResponseHiddenGenerated(BinaryData.fromObject(knowledgeSource), requestOptions)
+            .getValue()
+            .toObject(KnowledgeSource.class);
+    }
+
+    /**
+     * Retrieves the status of a knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the status and synchronization history of a knowledge source.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KnowledgeSourceStatus getKnowledgeSourceStatus(String name) {
+        // Generated convenience method for getKnowledgeSourceStatusWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return getKnowledgeSourceStatusWithResponseHiddenGenerated(name, requestOptions).getValue()
+            .toObject(KnowledgeSourceStatus.class);
+    }
+
+    /**
+     * Gets service level statistics for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return service level statistics for a search service.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SearchServiceStatistics getServiceStatistics() {
+        // Generated convenience method for getServiceStatisticsWithResponseHiddenGenerated
+        RequestOptions requestOptions = new RequestOptions();
+        return getServiceStatisticsWithResponseHiddenGenerated(requestOptions).getValue()
+            .toObject(SearchServiceStatistics.class);
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> listIndexStatsSummary() {
+        // Generated convenience method for listIndexStatsSummary
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listIndexStatsSummary(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(IndexStatisticsSummary.class));
+    }
+
+    /**
+     * Retrieves a synonym map definition.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the synonym map.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a synonym map definition along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getSynonymMapWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getSynonymMapWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Retrieves a synonym map definition.
+     *
+     * @param name The name of the synonym map.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a synonym map definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SynonymMap> getSynonymMapWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getSynonymMapWithResponse(name, requestOptions), SynonymMap.class);
+    }
+
+    /**
+     * Creates a new synonym map.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param synonymMap The definition of the synonym map to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a synonym map definition along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createSynonymMapWithResponseHiddenGenerated(BinaryData synonymMap,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createSynonymMapWithResponse(synonymMap, requestOptions);
+    }
+
+    /**
+     * Creates a new synonym map.
+     *
+     * @param synonymMap The definition of the synonym map to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a synonym map definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createSynonymMapWithResponse(BinaryData.fromObject(synonymMap),
+            requestOptions), SynonymMap.class);
+    }
+
+    /**
+     * Retrieves an index definition.
+     * <p><strong>Response Body Schema</strong></p>
+     *
      * <pre>
      * {@code
      * {
@@ -1944,9 +3084,220 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     * 
+     *
+     * @param name The name of the index.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     * with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getIndexWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getIndexWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Retrieves an index definition.
+     *
+     * @param name The name of the index.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndex> getIndexWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getIndexWithResponse(name, requestOptions), SearchIndex.class);
+    }
+
+    /**
+     * Creates a new search index.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     fields (Required): [
+     *          (Required){
+     *             name: String (Required)
+     *             type: String(Edm.String/Edm.Int32/Edm.Int64/Edm.Double/Edm.Boolean/Edm.DateTimeOffset/Edm.GeographyPoint/Edm.ComplexType/Edm.Single/Edm.Half/Edm.Int16/Edm.SByte/Edm.Byte) (Required)
+     *             key: Boolean (Optional)
+     *             retrievable: Boolean (Optional)
+     *             stored: Boolean (Optional)
+     *             searchable: Boolean (Optional)
+     *             filterable: Boolean (Optional)
+     *             sortable: Boolean (Optional)
+     *             facetable: Boolean (Optional)
+     *             permissionFilter: String(userIds/groupIds/rbacScope) (Optional)
+     *             sensitivityLabel: Boolean (Optional)
+     *             analyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             searchAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             indexAnalyzer: String(ar.microsoft/ar.lucene/hy.lucene/bn.microsoft/eu.lucene/bg.microsoft/bg.lucene/ca.microsoft/ca.lucene/zh-Hans.microsoft/zh-Hans.lucene/zh-Hant.microsoft/zh-Hant.lucene/hr.microsoft/cs.microsoft/cs.lucene/da.microsoft/da.lucene/nl.microsoft/nl.lucene/en.microsoft/en.lucene/et.microsoft/fi.microsoft/fi.lucene/fr.microsoft/fr.lucene/gl.lucene/de.microsoft/de.lucene/el.microsoft/el.lucene/gu.microsoft/he.microsoft/hi.microsoft/hi.lucene/hu.microsoft/hu.lucene/is.microsoft/id.microsoft/id.lucene/ga.lucene/it.microsoft/it.lucene/ja.microsoft/ja.lucene/kn.microsoft/ko.microsoft/ko.lucene/lv.microsoft/lv.lucene/lt.microsoft/ml.microsoft/ms.microsoft/mr.microsoft/nb.microsoft/no.lucene/fa.lucene/pl.microsoft/pl.lucene/pt-BR.microsoft/pt-BR.lucene/pt-PT.microsoft/pt-PT.lucene/pa.microsoft/ro.microsoft/ro.lucene/ru.microsoft/ru.lucene/sr-cyrillic.microsoft/sr-latin.microsoft/sk.microsoft/sl.microsoft/es.microsoft/es.lucene/sv.microsoft/sv.lucene/ta.microsoft/te.microsoft/th.microsoft/th.lucene/tr.microsoft/tr.lucene/uk.microsoft/ur.microsoft/vi.microsoft/standard.lucene/standardasciifolding.lucene/keyword/pattern/simple/stop/whitespace) (Optional)
+     *             normalizer: String(asciifolding/elision/lowercase/standard/uppercase) (Optional)
+     *             dimensions: Integer (Optional)
+     *             vectorSearchProfile: String (Optional)
+     *             vectorEncoding: String(packedBit) (Optional)
+     *             synonymMaps (Optional): [
+     *                 String (Optional)
+     *             ]
+     *             fields (Optional): [
+     *                 (recursive schema, see above)
+     *             ]
+     *         }
+     *     ]
+     *     scoringProfiles (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             text (Optional): {
+     *                 weights (Required): {
+     *                     String: double (Required)
+     *                 }
+     *             }
+     *             functions (Optional): [
+     *                  (Optional){
+     *                     type: String (Required)
+     *                     fieldName: String (Required)
+     *                     boost: double (Required)
+     *                     interpolation: String(linear/constant/quadratic/logarithmic) (Optional)
+     *                 }
+     *             ]
+     *             functionAggregation: String(sum/average/minimum/maximum/firstMatching/product) (Optional)
+     *         }
+     *     ]
+     *     defaultScoringProfile: String (Optional)
+     *     corsOptions (Optional): {
+     *         allowedOrigins (Required): [
+     *             String (Required)
+     *         ]
+     *         maxAgeInSeconds: Long (Optional)
+     *     }
+     *     suggesters (Optional): [
+     *          (Optional){
+     *             name: String (Required)
+     *             searchMode: String (Required)
+     *             sourceFields (Required): [
+     *                 String (Required)
+     *             ]
+     *         }
+     *     ]
+     *     analyzers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     tokenFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     charFilters (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     normalizers (Optional): [
+     *          (Optional){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Required)
+     *         }
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     similarity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     semantic (Optional): {
+     *         defaultConfiguration: String (Optional)
+     *         configurations (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 prioritizedFields (Required): {
+     *                     titleField (Optional): {
+     *                         fieldName: String (Required)
+     *                     }
+     *                     prioritizedContentFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                     prioritizedKeywordsFields (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *                 rankingOrder: String(BoostedRerankerScore/RerankerScore) (Optional)
+     *                 flightingOptIn: Boolean (Optional)
+     *             }
+     *         ]
+     *     }
+     *     vectorSearch (Optional): {
+     *         profiles (Optional): [
+     *              (Optional){
+     *                 name: String (Required)
+     *                 algorithm: String (Required)
+     *                 vectorizer: String (Optional)
+     *                 compression: String (Optional)
+     *             }
+     *         ]
+     *         algorithms (Optional): [
+     *              (Optional){
+     *                 kind: String(hnsw/exhaustiveKnn) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         vectorizers (Optional): [
+     *              (Optional){
+     *                 kind: String(azureOpenAI/customWebApi/aiServicesVision/aml) (Required)
+     *                 name: String (Required)
+     *             }
+     *         ]
+     *         compressions (Optional): [
+     *              (Optional){
+     *                 kind: String(scalarQuantization/binaryQuantization) (Required)
+     *                 name: String (Required)
+     *                 rescoringOptions (Optional): {
+     *                     enableRescoring: Boolean (Optional)
+     *                     defaultOversampling: Double (Optional)
+     *                     rescoreStorageMethod: String(preserveOriginals/discardOriginals) (Optional)
+     *                 }
+     *                 truncationDimension: Integer (Optional)
+     *             }
+     *         ]
+     *     }
+     *     permissionFilterOption: String(enabled/disabled) (Optional)
+     *     purviewEnabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2133,14 +3484,32 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createIndexWithResponse(BinaryData index, RequestOptions requestOptions) {
+    Response<BinaryData> createIndexWithResponseHiddenGenerated(BinaryData index, RequestOptions requestOptions) {
         return this.serviceClient.createIndexWithResponse(index, requestOptions);
+    }
+
+    /**
+     * Creates a new search index.
+     *
+     * @param index The definition of the index to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndex> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createIndexWithResponse(BinaryData.fromObject(index), requestOptions),
+            SearchIndex.class);
     }
 
     /**
      * Returns statistics for the given index, including a document count and storage usage.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2161,14 +3530,32 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getIndexStatisticsWithResponse(String name, RequestOptions requestOptions) {
+    Response<BinaryData> getIndexStatisticsWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexStatisticsWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param name The name of the index.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return statistics for a given index along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetIndexStatisticsResult> getIndexStatisticsWithResponse(String name,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getIndexStatisticsWithResponse(name, requestOptions),
+            GetIndexStatisticsResult.class);
     }
 
     /**
      * Shows how an analyzer breaks text into tokens.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2185,9 +3572,9 @@ public final class SearchIndexClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2214,154 +3601,34 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeTextWithResponse(String name, BinaryData request,
+    Response<BinaryData> analyzeTextWithResponseHiddenGenerated(String name, BinaryData request,
         RequestOptions requestOptions) {
         return this.serviceClient.analyzeTextWithResponse(name, request, requestOptions);
     }
 
     /**
-     * Creates a new search alias or updates an alias if it already exists.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     indexes (Required): [
-     *         String (Required)
-     *     ]
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     indexes (Required): [
-     *         String (Required)
-     *     ]
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
+     * Shows how an analyzer breaks text into tokens.
      *
-     * @param name The name of the alias.
-     * @param alias The definition of the alias to create or update.
+     * @param name The name of the index.
+     * @param request The text and analyzer or analysis components to test.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with
-     * {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createOrUpdateAliasWithResponse(String name, BinaryData alias, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateAliasWithResponse(name, alias, requestOptions);
-    }
-
-    /**
-     * Creates a new search alias or updates an alias if it already exists.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     indexes (Required): [
-     *         String (Required)
-     *     ]
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     indexes (Required): [
-     *         String (Required)
-     *     ]
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param alias The definition of the alias to create or update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with
-     * {@link Response}.
+     * @return the result of testing an analyzer on text along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAlias> createOrUpdateAliasWithResponse(SearchAlias alias, RequestOptions requestOptions) {
-        Response<BinaryData> response = this.serviceClient.createOrUpdateAliasWithResponse(alias.getName(),
-            BinaryData.fromObject(alias), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(SearchAlias.class));
-    }
-
-    /**
-     * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
-     * option. The mapped index is untouched by this operation.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param name The name of the alias.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteAliasWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteAliasWithResponse(name, requestOptions);
+    public Response<AnalyzeResult> analyzeTextWithResponse(String name, AnalyzeTextOptions request,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.analyzeTextWithResponse(name, BinaryData.fromObject(request),
+            requestOptions), AnalyzeResult.class);
     }
 
     /**
      * Retrieves an alias definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2385,14 +3652,31 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAliasWithResponse(String name, RequestOptions requestOptions) {
+    Response<BinaryData> getAliasWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
         return this.serviceClient.getAliasWithResponse(name, requestOptions);
     }
 
     /**
-     * Lists all aliases available for a search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * Retrieves an alias definition.
+     *
+     * @param name The name of the alias.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchAlias> getAliasWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getAliasWithResponse(name, requestOptions), SearchAlias.class);
+    }
+
+    /**
+     * Creates a new search alias.
+     * <p><strong>Request Body Schema</strong></p>
+     *
      * <pre>
      * {@code
      * {
@@ -2405,37 +3689,8 @@ public final class SearchIndexClient {
      * }
      * </pre>
      *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a List Aliases request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAliases(RequestOptions requestOptions) {
-        return this.serviceClient.listAliases(requestOptions);
-    }
-
-    /**
-     * Creates a new search alias.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     indexes (Required): [
-     *         String (Required)
-     *     ]
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2459,256 +3714,32 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createAliasWithResponse(BinaryData alias, RequestOptions requestOptions) {
+    Response<BinaryData> createAliasWithResponseHiddenGenerated(BinaryData alias, RequestOptions requestOptions) {
         return this.serviceClient.createAliasWithResponse(alias, requestOptions);
     }
 
     /**
-     * Creates a new knowledge base or updates a knowledge base if it already exists.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     knowledgeSources (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     models (Optional): [
-     *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
-     *         }
-     *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     description: String (Optional)
-     *     retrievalInstructions: String (Optional)
-     *     answerInstructions: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     knowledgeSources (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     models (Optional): [
-     *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
-     *         }
-     *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     description: String (Optional)
-     *     retrievalInstructions: String (Optional)
-     *     answerInstructions: String (Optional)
-     * }
-     * }
-     * </pre>
+     * Creates a new search alias.
      *
-     * @param name The name of the knowledge base.
-     * @param knowledgeBase The definition of the knowledge base to create or update.
+     * @param alias The definition of the alias to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge base definition along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createOrUpdateKnowledgeBaseWithResponse(String name, BinaryData knowledgeBase,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateKnowledgeBaseWithResponse(name, knowledgeBase, requestOptions);
-    }
-
-    /**
-     * Creates a new knowledge base or updates a knowledge base if it already exists.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     knowledgeSources (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     models (Optional): [
-     *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
-     *         }
-     *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     description: String (Optional)
-     *     retrievalInstructions: String (Optional)
-     *     answerInstructions: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     knowledgeSources (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     models (Optional): [
-     *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
-     *         }
-     *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     description: String (Optional)
-     *     retrievalInstructions: String (Optional)
-     *     answerInstructions: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param knowledgeBase The definition of the knowledge base to create or update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge base definition along with {@link Response}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeBase> createOrUpdateKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
-        RequestOptions requestOptions) {
-        Response<BinaryData> response = this.serviceClient.createOrUpdateKnowledgeBaseWithResponse(
-            knowledgeBase.getName(), BinaryData.fromObject(knowledgeBase), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(KnowledgeBase.class));
-    }
-
-    /**
-     * Deletes a knowledge base.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param name The name of the knowledge base.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteKnowledgeBaseWithResponse(name, requestOptions);
+    public Response<SearchAlias> createAliasWithResponse(SearchAlias alias, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createAliasWithResponse(BinaryData.fromObject(alias), requestOptions),
+            SearchAlias.class);
     }
 
     /**
      * Retrieves a knowledge base definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2757,14 +3788,31 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
+    Response<BinaryData> getKnowledgeBaseWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeBaseWithResponse(name, requestOptions);
     }
 
     /**
-     * Lists all knowledge bases available for a search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * Retrieves a knowledge base definition.
+     *
+     * @param name The name of the knowledge base.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge base definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeBase> getKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getKnowledgeBaseWithResponse(name, requestOptions),
+            KnowledgeBase.class);
+    }
+
+    /**
+     * Creates a new knowledge base.
+     * <p><strong>Request Body Schema</strong></p>
+     *
      * <pre>
      * {@code
      * {
@@ -2803,63 +3851,8 @@ public final class SearchIndexClient {
      * }
      * </pre>
      *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result from listing knowledge bases as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listKnowledgeBases(RequestOptions requestOptions) {
-        return this.serviceClient.listKnowledgeBases(requestOptions);
-    }
-
-    /**
-     * Creates a new knowledge base.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     knowledgeSources (Required): [
-     *          (Required){
-     *             name: String (Required)
-     *         }
-     *     ]
-     *     models (Optional): [
-     *          (Optional){
-     *             kind: String(azureOpenAI) (Required)
-     *         }
-     *     ]
-     *     retrievalReasoningEffort (Optional): {
-     *         kind: String(minimal/low/medium) (Required)
-     *     }
-     *     outputMode: String(extractiveData/answerSynthesis) (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     description: String (Optional)
-     *     retrievalInstructions: String (Optional)
-     *     answerInstructions: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2908,197 +3901,33 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createKnowledgeBaseWithResponse(BinaryData knowledgeBase,
+    Response<BinaryData> createKnowledgeBaseWithResponseHiddenGenerated(BinaryData knowledgeBase,
         RequestOptions requestOptions) {
         return this.serviceClient.createKnowledgeBaseWithResponse(knowledgeBase, requestOptions);
     }
 
     /**
-     * Creates a new knowledge source or updates an knowledge source if it already exists.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
+     * Creates a new knowledge base.
      *
-     * @param name The name of the knowledge source.
-     * @param knowledgeSource The definition of the knowledge source to create or update.
+     * @param knowledgeBase The definition of the knowledge base to create.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge source definition along with {@link Response}.
+     * @return represents a knowledge base definition along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createOrUpdateKnowledgeSourceWithResponse(String name, BinaryData knowledgeSource,
+    public Response<KnowledgeBase> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateKnowledgeSourceWithResponse(name, knowledgeSource, requestOptions);
-    }
-
-    /**
-     * Creates a new knowledge source or updates an knowledge source if it already exists.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param knowledgeSource The definition of the knowledge source to create or update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge source definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeSource> createOrUpdateKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
-        RequestOptions requestOptions) {
-        Response<BinaryData> response = this.serviceClient.createOrUpdateKnowledgeSourceWithResponse(
-            knowledgeSource.getName(), BinaryData.fromObject(knowledgeSource), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(KnowledgeSource.class));
-    }
-
-    /**
-     * Deletes an existing knowledge source.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>If-Match</td><td>String</td><td>No</td><td>Defines the If-Match condition. The operation will be
-     * performed only if the ETag on the server matches this value.</td></tr>
-     * <tr><td>If-None-Match</td><td>String</td><td>No</td><td>Defines the If-None-Match condition. The operation will
-     * be performed only if the ETag on the server does not match this value.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * @param name The name of the knowledge source.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteKnowledgeSourceWithResponse(name, requestOptions);
+        return convertResponse(this.serviceClient.createKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase),
+            requestOptions), KnowledgeBase.class);
     }
 
     /**
      * Retrieves a knowledge source definition.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3132,14 +3961,31 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
+    Response<BinaryData> getKnowledgeSourceWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeSourceWithResponse(name, requestOptions);
     }
 
     /**
-     * Lists all knowledge sources available for a search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
+     * Retrieves a knowledge source definition.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> getKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getKnowledgeSourceWithResponse(name, requestOptions),
+            KnowledgeSource.class);
+    }
+
+    /**
+     * Creates a new knowledge source.
+     * <p><strong>Request Body Schema</strong></p>
+     *
      * <pre>
      * {@code
      * {
@@ -3163,48 +4009,8 @@ public final class SearchIndexClient {
      * }
      * </pre>
      *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return result from listing knowledge sources as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listKnowledgeSources(RequestOptions requestOptions) {
-        return this.serviceClient.listKnowledgeSources(requestOptions);
-    }
-
-    /**
-     * Creates a new knowledge source.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     kind: String(searchIndex/azureBlob/indexedSharePoint/indexedOneLake/web/remoteSharePoint) (Required)
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3238,15 +4044,33 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createKnowledgeSourceWithResponse(BinaryData knowledgeSource,
+    Response<BinaryData> createKnowledgeSourceWithResponseHiddenGenerated(BinaryData knowledgeSource,
         RequestOptions requestOptions) {
         return this.serviceClient.createKnowledgeSourceWithResponse(knowledgeSource, requestOptions);
     }
 
     /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createKnowledgeSourceWithResponse(
+            BinaryData.fromObject(knowledgeSource), requestOptions), KnowledgeSource.class);
+    }
+
+    /**
      * Retrieves the status of a knowledge source.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3284,14 +4108,33 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getKnowledgeSourceStatusWithResponse(String name, RequestOptions requestOptions) {
+    Response<BinaryData> getKnowledgeSourceStatusWithResponseHiddenGenerated(String name,
+        RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeSourceStatusWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Retrieves the status of a knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the status and synchronization history of a knowledge source along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSourceStatus> getKnowledgeSourceStatusWithResponse(String name,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getKnowledgeSourceStatusWithResponse(name, requestOptions),
+            KnowledgeSourceStatus.class);
     }
 
     /**
      * Gets service level statistics for a search service.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -3336,1136 +4179,23 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
+    Response<BinaryData> getServiceStatisticsWithResponseHiddenGenerated(RequestOptions requestOptions) {
         return this.serviceClient.getServiceStatisticsWithResponse(requestOptions);
     }
 
     /**
-     * Retrieves a summary of statistics for all indexes in the search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     documentCount: long (Required)
-     *     storageSize: long (Required)
-     *     vectorIndexSize: long (Required)
-     * }
-     * }
-     * </pre>
+     * Gets service level statistics for a search service.
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response from a request to retrieve stats summary of all indexes as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listIndexStatsSummary(RequestOptions requestOptions) {
-        return this.serviceClient.listIndexStatsSummary(requestOptions);
-    }
-
-    /**
-     * Creates a new synonym map or updates a synonym map if it already exists.
-     *
-     * @param name The name of the synonym map.
-     * @param synonymMap The definition of the synonym map to create or update.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SynonymMap createOrUpdateSynonymMap(String name, SynonymMap synonymMap, MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateSynonymMapWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateSynonymMapWithResponse(name, BinaryData.fromObject(synonymMap), requestOptions).getValue()
-            .toObject(SynonymMap.class);
-    }
-
-    /**
-     * Creates a new synonym map or updates a synonym map if it already exists.
-     *
-     * @param name The name of the synonym map.
-     * @param synonymMap The definition of the synonym map to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SynonymMap createOrUpdateSynonymMap(String name, SynonymMap synonymMap) {
-        // Generated convenience method for createOrUpdateSynonymMapWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateSynonymMapWithResponse(name, BinaryData.fromObject(synonymMap), requestOptions).getValue()
-            .toObject(SynonymMap.class);
-    }
-
-    /**
-     * Creates a new synonym map or updates a synonym map if it already exists.
-     *
-     * @param synonymMap The definition of the synonym map to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition.
+     * @return service level statistics for a search service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        return createOrUpdateSynonymMap(synonymMap.getName(), synonymMap);
-    }
-
-    /**
-     * Deletes a synonym map.
-     *
-     * @param name The name of the synonym map.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSynonymMap(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteSynonymMapWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteSynonymMapWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a synonym map.
-     *
-     * @param name The name of the synonym map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteSynonymMap(String name) {
-        // Generated convenience method for deleteSynonymMapWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteSynonymMapWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Retrieves a synonym map definition.
-     *
-     * @param name The name of the synonym map.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SynonymMap getSynonymMap(String name) {
-        // Generated convenience method for getSynonymMapWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSynonymMapWithResponse(name, requestOptions).getValue().toObject(SynonymMap.class);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSynonymMapsResult getSynonymMaps(List<String> select) {
-        // Generated convenience method for getSynonymMapsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ListSynonymMapsResult getSynonymMaps() {
-        // Generated convenience method for getSynonymMapsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getSynonymMapsWithResponse(requestOptions).getValue().toObject(ListSynonymMapsResult.class);
-    }
-
-    /**
-     * Lists all synonym maps available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListSynonymMapsResult listSynonymMaps() {
-        return getSynonymMaps();
-    }
-
-    /**
-     * Lists the names of all synonym maps available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List SynonymMaps request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<String> listSynonymMapNames() {
-        return getSynonymMaps(Collections.singletonList("name")).getSynonymMaps()
-            .stream()
-            .map(SynonymMap::getName)
-            .collect(Collectors.toList());
-    }
-
-    /**
-     * Creates a new synonym map.
-     *
-     * @param synonymMap The definition of the synonym map to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a synonym map definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SynonymMap createSynonymMap(SynonymMap synonymMap) {
-        // Generated convenience method for createSynonymMapWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createSynonymMapWithResponse(BinaryData.fromObject(synonymMap), requestOptions).getValue()
-            .toObject(SynonymMap.class);
-    }
-
-    /**
-     * Creates a new search index or updates an index if it already exists.
-     *
-     * @param name The name of the index.
-     * @param index The definition of the index to create or update.
-     * @param allowIndexDowntime Allows new analyzers, tokenizers, token filters, or char filters to be added to an
-     * index by taking the index offline for at least a few seconds. This temporarily causes indexing and query requests
-     * to fail. Performance and write availability of the index can be impaired for several minutes after the index is
-     * updated, or longer for very large indexes.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchIndex createOrUpdateIndex(String name, SearchIndex index, Boolean allowIndexDowntime,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateIndexWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (allowIndexDowntime != null) {
-            requestOptions.addQueryParam("allowIndexDowntime", String.valueOf(allowIndexDowntime), false);
-        }
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateIndexWithResponse(name, BinaryData.fromObject(index), requestOptions).getValue()
-            .toObject(SearchIndex.class);
-    }
-
-    /**
-     * Creates a new search index or updates an index if it already exists.
-     *
-     * @param index The definition of the index to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndex createOrUpdateIndex(SearchIndex index) {
-        return createOrUpdateIndex(index.getName(), index);
-    }
-
-    /**
-     * Creates a new search index or updates an index if it already exists.
-     *
-     * @param name The name of the index.
-     * @param index The definition of the index to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchIndex createOrUpdateIndex(String name, SearchIndex index) {
-        // Generated convenience method for createOrUpdateIndexWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateIndexWithResponse(name, BinaryData.fromObject(index), requestOptions).getValue()
-            .toObject(SearchIndex.class);
-    }
-
-    /**
-     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
-     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
-     * source in case you need to re-build the index.
-     *
-     * @param name The name of the index.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIndex(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteIndexWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteIndexWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option.
-     * Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data
-     * source in case you need to re-build the index.
-     *
-     * @param name The name of the index.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIndex(String name) {
-        // Generated convenience method for deleteIndexWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteIndexWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Retrieves an index definition.
-     *
-     * @param name The name of the index.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndex getIndex(String name) {
-        // Generated convenience method for getIndexWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getIndexWithResponse(name, requestOptions).getValue().toObject(SearchIndex.class);
-    }
-
-    /**
-     * Lists all indexes available for a search service.
-     *
-     * @param select Selects which top-level properties to retrieve. Specified as a comma-separated list of JSON
-     * property names, or '*' for all properties. The default is all properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchIndex> listIndexes(List<String> select) {
-        // Generated convenience method for listIndexes
-        RequestOptions requestOptions = new RequestOptions();
-        if (select != null) {
-            requestOptions.addQueryParam("$select",
-                select.stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(",")),
-                false);
-        }
-        return serviceClient.listIndexes(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndex.class));
-    }
-
-    /**
-     * Lists all indexes available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchIndex> listIndexes() {
-        // Generated convenience method for listIndexes
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listIndexes(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchIndex.class));
-    }
-
-    /**
-     * Lists the names all indexes available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Indexes request as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listIndexNames() {
-        return listIndexes(Collections.singletonList("name")).mapPage(SearchIndex::getName);
-    }
-
-    /**
-     * Creates a new search index.
-     *
-     * @param index The definition of the index to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a search index definition, which describes the fields and search behavior of an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchIndex createIndex(SearchIndex index) {
-        // Generated convenience method for createIndexWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createIndexWithResponse(BinaryData.fromObject(index), requestOptions).getValue()
-            .toObject(SearchIndex.class);
-    }
-
-    /**
-     * Returns statistics for the given index, including a document count and storage usage.
-     *
-     * @param name The name of the index.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return statistics for a given index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GetIndexStatisticsResult getIndexStatistics(String name) {
-        // Generated convenience method for getIndexStatisticsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getIndexStatisticsWithResponse(name, requestOptions).getValue().toObject(GetIndexStatisticsResult.class);
-    }
-
-    /**
-     * Shows how an analyzer breaks text into tokens.
-     *
-     * @param name The name of the index.
-     * @param request The text and analyzer or analysis components to test.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of testing an analyzer on text.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnalyzeResult analyzeText(String name, AnalyzeTextOptions request) {
-        // Generated convenience method for analyzeTextWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return analyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions).getValue()
-            .toObject(AnalyzeResult.class);
-    }
-
-    /**
-     * Creates a new search alias or updates an alias if it already exists.
-     *
-     * @param name The name of the alias.
-     * @param alias The definition of the alias to create or update.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchAlias createOrUpdateAlias(String name, SearchAlias alias, MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateAliasWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateAliasWithResponse(name, BinaryData.fromObject(alias), requestOptions).getValue()
-            .toObject(SearchAlias.class);
-    }
-
-    /**
-     * Creates a new search alias or updates an alias if it already exists.
-     *
-     * @param alias The definition of the alias to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAlias createOrUpdateAlias(SearchAlias alias) {
-        return createOrUpdateAlias(alias.getName(), alias);
-    }
-
-    /**
-     * Creates a new search alias or updates an alias if it already exists.
-     *
-     * @param name The name of the alias.
-     * @param alias The definition of the alias to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SearchAlias createOrUpdateAlias(String name, SearchAlias alias) {
-        // Generated convenience method for createOrUpdateAliasWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateAliasWithResponse(name, BinaryData.fromObject(alias), requestOptions).getValue()
-            .toObject(SearchAlias.class);
-    }
-
-    /**
-     * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
-     * option. The mapped index is untouched by this operation.
-     *
-     * @param name The name of the alias.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAlias(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteAliasWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteAliasWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
-     * option. The mapped index is untouched by this operation.
-     *
-     * @param name The name of the alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAlias(String name) {
-        // Generated convenience method for deleteAliasWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteAliasWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Retrieves an alias definition.
-     *
-     * @param name The name of the alias.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAlias getAlias(String name) {
-        // Generated convenience method for getAliasWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getAliasWithResponse(name, requestOptions).getValue().toObject(SearchAlias.class);
-    }
-
-    /**
-     * Lists all aliases available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Aliases request as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SearchAlias> listAliases() {
-        // Generated convenience method for listAliases
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listAliases(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(SearchAlias.class));
-    }
-
-    /**
-     * Creates a new search alias.
-     *
-     * @param alias The definition of the alias to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAlias createAlias(SearchAlias alias) {
-        // Generated convenience method for createAliasWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createAliasWithResponse(BinaryData.fromObject(alias), requestOptions).getValue()
-            .toObject(SearchAlias.class);
-    }
-
-    /**
-     * Creates a new knowledge base or updates a knowledge base if it already exists.
-     *
-     * @param name The name of the knowledge base.
-     * @param knowledgeBase The definition of the knowledge base to create or update.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge base definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KnowledgeBase createOrUpdateKnowledgeBase(String name, KnowledgeBase knowledgeBase,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateKnowledgeBaseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateKnowledgeBaseWithResponse(name, BinaryData.fromObject(knowledgeBase), requestOptions)
-            .getValue()
-            .toObject(KnowledgeBase.class);
-    }
-
-    /**
-     * Creates a new knowledge base or updates a knowledge base if it already exists.
-     *
-     * @param name The name of the knowledge base.
-     * @param knowledgeBase The definition of the knowledge base to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge base definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KnowledgeBase createOrUpdateKnowledgeBase(String name, KnowledgeBase knowledgeBase) {
-        // Generated convenience method for createOrUpdateKnowledgeBaseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateKnowledgeBaseWithResponse(name, BinaryData.fromObject(knowledgeBase), requestOptions)
-            .getValue()
-            .toObject(KnowledgeBase.class);
-    }
-
-    /**
-     * Creates a new knowledge base or updates a knowledge base if it already exists.
-     *
-     * @param knowledgeBase The definition of the knowledge base to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge base definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBase createOrUpdateKnowledgeBase(KnowledgeBase knowledgeBase) {
-        return createOrUpdateKnowledgeBase(knowledgeBase.getName(), knowledgeBase);
-    }
-
-    /**
-     * Deletes a knowledge base.
-     *
-     * @param name The name of the knowledge base.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteKnowledgeBase(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteKnowledgeBaseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteKnowledgeBaseWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a knowledge base.
-     *
-     * @param name The name of the knowledge base.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteKnowledgeBase(String name) {
-        // Generated convenience method for deleteKnowledgeBaseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteKnowledgeBaseWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Retrieves a knowledge base definition.
-     *
-     * @param name The name of the knowledge base.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge base definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBase getKnowledgeBase(String name) {
-        // Generated convenience method for getKnowledgeBaseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeBaseWithResponse(name, requestOptions).getValue().toObject(KnowledgeBase.class);
-    }
-
-    /**
-     * Lists all knowledge bases available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result from listing knowledge bases as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KnowledgeBase> listKnowledgeBases() {
-        // Generated convenience method for listKnowledgeBases
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listKnowledgeBases(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(KnowledgeBase.class));
-    }
-
-    /**
-     * Creates a new knowledge base.
-     *
-     * @param knowledgeBase The definition of the knowledge base to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge base definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeBase createKnowledgeBase(KnowledgeBase knowledgeBase) {
-        // Generated convenience method for createKnowledgeBaseWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions).getValue()
-            .toObject(KnowledgeBase.class);
-    }
-
-    /**
-     * Creates a new knowledge source or updates an knowledge source if it already exists.
-     *
-     * @param name The name of the knowledge source.
-     * @param knowledgeSource The definition of the knowledge source to create or update.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge source definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KnowledgeSource createOrUpdateKnowledgeSource(String name, KnowledgeSource knowledgeSource,
-        MatchConditions matchConditions) {
-        // Generated convenience method for createOrUpdateKnowledgeSourceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        return createOrUpdateKnowledgeSourceWithResponse(name, BinaryData.fromObject(knowledgeSource), requestOptions)
-            .getValue()
-            .toObject(KnowledgeSource.class);
-    }
-
-    /**
-     * Creates a new knowledge source or updates an knowledge source if it already exists.
-     *
-     * @param knowledgeSource The definition of the knowledge source to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge source definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeSource createOrUpdateKnowledgeSource(KnowledgeSource knowledgeSource) {
-        return createOrUpdateKnowledgeSource(knowledgeSource.getName(), knowledgeSource);
-    }
-
-    /**
-     * Creates a new knowledge source or updates an knowledge source if it already exists.
-     *
-     * @param name The name of the knowledge source.
-     * @param knowledgeSource The definition of the knowledge source to create or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge source definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KnowledgeSource createOrUpdateKnowledgeSource(String name, KnowledgeSource knowledgeSource) {
-        // Generated convenience method for createOrUpdateKnowledgeSourceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createOrUpdateKnowledgeSourceWithResponse(name, BinaryData.fromObject(knowledgeSource), requestOptions)
-            .getValue()
-            .toObject(KnowledgeSource.class);
-    }
-
-    /**
-     * Deletes an existing knowledge source.
-     *
-     * @param name The name of the knowledge source.
-     * @param matchConditions Specifies HTTP options for conditional requests.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteKnowledgeSource(String name, MatchConditions matchConditions) {
-        // Generated convenience method for deleteKnowledgeSourceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        String ifMatch = matchConditions == null ? null : matchConditions.getIfMatch();
-        String ifNoneMatch = matchConditions == null ? null : matchConditions.getIfNoneMatch();
-        if (ifMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
-        }
-        if (ifNoneMatch != null) {
-            requestOptions.setHeader(HttpHeaderName.IF_NONE_MATCH, ifNoneMatch);
-        }
-        deleteKnowledgeSourceWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes an existing knowledge source.
-     *
-     * @param name The name of the knowledge source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteKnowledgeSource(String name) {
-        // Generated convenience method for deleteKnowledgeSourceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        deleteKnowledgeSourceWithResponse(name, requestOptions).getValue();
-    }
-
-    /**
-     * Retrieves a knowledge source definition.
-     *
-     * @param name The name of the knowledge source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge source definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeSource getKnowledgeSource(String name) {
-        // Generated convenience method for getKnowledgeSourceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeSourceWithResponse(name, requestOptions).getValue().toObject(KnowledgeSource.class);
-    }
-
-    /**
-     * Lists all knowledge sources available for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result from listing knowledge sources as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KnowledgeSource> listKnowledgeSources() {
-        // Generated convenience method for listKnowledgeSources
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listKnowledgeSources(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(KnowledgeSource.class));
-    }
-
-    /**
-     * Creates a new knowledge source.
-     *
-     * @param knowledgeSource The definition of the knowledge source to create.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a knowledge source definition.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeSource createKnowledgeSource(KnowledgeSource knowledgeSource) {
-        // Generated convenience method for createKnowledgeSourceWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return createKnowledgeSourceWithResponse(BinaryData.fromObject(knowledgeSource), requestOptions).getValue()
-            .toObject(KnowledgeSource.class);
-    }
-
-    /**
-     * Retrieves the status of a knowledge source.
-     *
-     * @param name The name of the knowledge source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the status and synchronization history of a knowledge source.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public KnowledgeSourceStatus getKnowledgeSourceStatus(String name) {
-        // Generated convenience method for getKnowledgeSourceStatusWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeSourceStatusWithResponse(name, requestOptions).getValue()
-            .toObject(KnowledgeSourceStatus.class);
-    }
-
-    /**
-     * Gets service level statistics for a search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service level statistics for a search service.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchServiceStatistics getServiceStatistics() {
-        // Generated convenience method for getServiceStatisticsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return getServiceStatisticsWithResponse(requestOptions).getValue().toObject(SearchServiceStatistics.class);
-    }
-
-    /**
-     * Retrieves a summary of statistics for all indexes in the search service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a request to retrieve stats summary of all indexes as paginated response with
-     * {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IndexStatisticsSummary> listIndexStatsSummary() {
-        // Generated convenience method for listIndexStatsSummary
-        RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listIndexStatsSummary(requestOptions)
-            .mapPage(bodyItemValue -> bodyItemValue.toObject(IndexStatisticsSummary.class));
+    public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getServiceStatisticsWithResponse(requestOptions),
+            SearchServiceStatistics.class);
     }
 }

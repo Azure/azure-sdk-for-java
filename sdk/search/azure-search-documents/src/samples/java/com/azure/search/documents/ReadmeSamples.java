@@ -6,7 +6,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.DefaultAzureCredential;
@@ -114,7 +113,7 @@ public class ReadmeSamples {
                 .setKey(true)
                 .setFilterable(true)
                 .setSortable(true));
-        SEARCH_INDEX_CLIENT.createIndexWithResponse(BinaryData.fromObject(index), requestOptions);
+        SEARCH_INDEX_CLIENT.createIndexWithResponse(index, requestOptions);
         // Above three HttpHeader will be added in outgoing HttpRequest.
     }
 

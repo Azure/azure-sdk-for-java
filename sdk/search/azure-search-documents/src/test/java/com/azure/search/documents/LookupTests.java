@@ -14,7 +14,6 @@ import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.IndexActionType;
 import com.azure.search.documents.models.IndexDocumentsBatch;
-import com.azure.search.documents.models.LookupDocument;
 import com.azure.search.documents.testingmodels.Hotel;
 import com.azure.search.documents.testingmodels.HotelAddress;
 import com.azure.search.documents.testingmodels.HotelRoom;
@@ -801,7 +800,7 @@ public class LookupTests extends SearchTestBase {
             .create(asyncClient
                 .getDocumentWithResponse(key,
                     new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
-                .map(response -> response.getValue().toObject(LookupDocument.class).getAdditionalProperties()))
+                .map(response -> response.getValue().getAdditionalProperties()))
             .assertNext(actual -> comparator.accept(expected, actual))
             .verifyComplete();
     }
@@ -813,8 +812,7 @@ public class LookupTests extends SearchTestBase {
             .create(asyncClient
                 .getDocumentWithResponse(key,
                     new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
-                .map(response -> convertFromMapStringObject(
-                    response.getValue().toObject(LookupDocument.class).getAdditionalProperties(), converter)))
+                .map(response -> convertFromMapStringObject(response.getValue().getAdditionalProperties(), converter)))
             .assertNext(actual -> comparator.accept(expected, actual))
             .verifyComplete();
     }
@@ -836,7 +834,6 @@ public class LookupTests extends SearchTestBase {
             .getDocumentWithResponse(key,
                 new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
             .getValue()
-            .toObject(LookupDocument.class)
             .getAdditionalProperties();
         comparator.accept(expected, actual);
     }
@@ -848,7 +845,6 @@ public class LookupTests extends SearchTestBase {
             .getDocumentWithResponse(key,
                 new RequestOptions().addQueryParam("$select", String.join(",", selectedFields)))
             .getValue()
-            .toObject(LookupDocument.class)
             .getAdditionalProperties();
         comparator.accept(expected, convertFromMapStringObject(actual, converter));
     }

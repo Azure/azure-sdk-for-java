@@ -7,7 +7,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.search.documents.SearchClient;
@@ -162,14 +161,12 @@ public class IndexManagementTests extends SearchTestBase {
     @Test
     public void createAndGetIndexReturnsCorrectDefinitionWithResponseSync() {
         SearchIndex index = createTestIndex("hotel2");
-        SearchIndex created
-            = client.createIndexWithResponse(BinaryData.fromObject(index), null).getValue().toObject(SearchIndex.class);
+        SearchIndex created = client.createIndexWithResponse(index, null).getValue();
         indexesToDelete.add(created.getName());
 
         assertObjectEquals(index, created, true, "etag");
 
-        SearchIndex retrieved
-            = client.getIndexWithResponse(index.getName(), null).getValue().toObject(SearchIndex.class);
+        SearchIndex retrieved = client.getIndexWithResponse(index.getName(), null).getValue();
         assertObjectEquals(index, retrieved, true, "etag");
     }
 
@@ -177,9 +174,9 @@ public class IndexManagementTests extends SearchTestBase {
     public void createAndGetIndexReturnsCorrectDefinitionWithResponseAsync() {
         SearchIndex index = createTestIndex("hotel2");
 
-        StepVerifier.create(asyncClient.createIndexWithResponse(BinaryData.fromObject(index), null))
+        StepVerifier.create(asyncClient.createIndexWithResponse(index, null))
             .assertNext(response -> {
-                SearchIndex created = response.getValue().toObject(SearchIndex.class);
+                SearchIndex created = response.getValue();
                 indexesToDelete.add(created.getName());
 
                 assertObjectEquals(index, created, true, "etag");
@@ -187,8 +184,7 @@ public class IndexManagementTests extends SearchTestBase {
             .verifyComplete();
 
         StepVerifier.create(asyncClient.getIndexWithResponse(index.getName(), null))
-            .assertNext(
-                response -> assertObjectEquals(index, response.getValue().toObject(SearchIndex.class), true, "etag"))
+            .assertNext(response -> assertObjectEquals(index, response.getValue(), true, "etag"))
             .verifyComplete();
     }
 
@@ -350,7 +346,7 @@ public class IndexManagementTests extends SearchTestBase {
         Response<Void> deleteResponse = client.deleteIndexWithResponse(index.getName(), null);
         assertEquals(HttpURLConnection.HTTP_NOT_FOUND, deleteResponse.getStatusCode());
 
-        Response<BinaryData> createResponse = client.createIndexWithResponse(BinaryData.fromObject(index), null);
+        Response<SearchIndex> createResponse = client.createIndexWithResponse(index, null);
         assertEquals(HttpURLConnection.HTTP_CREATED, createResponse.getStatusCode());
 
         // Delete the same index twice
@@ -370,7 +366,7 @@ public class IndexManagementTests extends SearchTestBase {
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_NOT_FOUND, response.getStatusCode()))
             .verifyComplete();
 
-        StepVerifier.create(asyncClient.createIndexWithResponse(BinaryData.fromObject(index), null))
+        StepVerifier.create(asyncClient.createIndexWithResponse(index, null))
             .assertNext(response -> assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode()))
             .verifyComplete();
 
@@ -849,9 +845,7 @@ public class IndexManagementTests extends SearchTestBase {
         assertEquals(0, indexStatistics.getDocumentCount());
         assertEquals(0, indexStatistics.getStorageSize());
 
-        indexStatistics = client.getIndexStatisticsWithResponse(index.getName(), null)
-            .getValue()
-            .toObject(GetIndexStatisticsResult.class);
+        indexStatistics = client.getIndexStatisticsWithResponse(index.getName(), null).getValue();
         assertEquals(0, indexStatistics.getDocumentCount());
         assertEquals(0, indexStatistics.getStorageSize());
     }
@@ -868,9 +862,8 @@ public class IndexManagementTests extends SearchTestBase {
         }).verifyComplete();
 
         StepVerifier.create(asyncClient.getIndexStatisticsWithResponse(index.getName(), null)).assertNext(response -> {
-            GetIndexStatisticsResult indexStatistics = response.getValue().toObject(GetIndexStatisticsResult.class);
-            assertEquals(0, indexStatistics.getDocumentCount());
-            assertEquals(0, indexStatistics.getStorageSize());
+            assertEquals(0, response.getValue().getDocumentCount());
+            assertEquals(0, response.getValue().getStorageSize());
         }).verifyComplete();
     }
 
@@ -1106,12 +1099,12 @@ public class IndexManagementTests extends SearchTestBase {
     //    }
 
     @Test
-    public void testProductScoringAggregationSerialization() {
+    public void testProductScoringAggregationSerialization() throws IOException {
         ScoringProfile profile
             = new ScoringProfile("testProfile").setFunctionAggregation(ScoringFunctionAggregation.PRODUCT)
                 .setFunctions(new MagnitudeScoringFunction("rating", 2.0, new MagnitudeScoringParameters(1.0, 5.0)));
 
-        String json = BinaryData.fromObject(profile).toString();
+        String json = profile.toJsonString();
         assertTrue(json.contains("\"functionAggregation\":\"product\""));
     }
 

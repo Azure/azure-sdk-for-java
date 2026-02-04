@@ -48,6 +48,7 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -120,10 +121,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     @Test
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhraseWithResponseSync() {
         SearchIndexerSkillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
-        SearchIndexerSkillset skillset
-            = client.createSkillsetWithResponse(BinaryData.fromObject(expectedSkillset), null)
-                .getValue()
-                .toObject(SearchIndexerSkillset.class);
+        SearchIndexerSkillset skillset = client.createSkillsetWithResponse(expectedSkillset, null).getValue();
         skillsetsToDelete.add(skillset.getName());
 
         assertObjectEquals(expectedSkillset, skillset, true, "etag");
@@ -133,9 +131,9 @@ public class SkillsetManagementTests extends SearchTestBase {
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhraseWithResponseAsync() {
         SearchIndexerSkillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
 
-        StepVerifier.create(asyncClient.createSkillsetWithResponse(BinaryData.fromObject(expectedSkillset), null))
+        StepVerifier.create(asyncClient.createSkillsetWithResponse(expectedSkillset, null))
             .assertNext(response -> {
-                SearchIndexerSkillset skillset = response.getValue().toObject(SearchIndexerSkillset.class);
+                SearchIndexerSkillset skillset = response.getValue();
                 skillsetsToDelete.add(skillset.getName());
                 assertObjectEquals(expectedSkillset, skillset, true, "etag");
             })
@@ -348,8 +346,7 @@ public class SkillsetManagementTests extends SearchTestBase {
         client.createSkillset(expected);
         skillsetsToDelete.add(expected.getName());
 
-        SearchIndexerSkillset actual
-            = client.getSkillsetWithResponse(expected.getName(), null).getValue().toObject(SearchIndexerSkillset.class);
+        SearchIndexerSkillset actual = client.getSkillsetWithResponse(expected.getName(), null).getValue();
         assertObjectEquals(expected, actual, true, "etag");
     }
 
@@ -360,8 +357,7 @@ public class SkillsetManagementTests extends SearchTestBase {
         skillsetsToDelete.add(expected.getName());
 
         StepVerifier.create(asyncClient.getSkillsetWithResponse(expected.getName(), null))
-            .assertNext(response -> assertObjectEquals(expected,
-                response.getValue().toObject(SearchIndexerSkillset.class), true, "etag"))
+            .assertNext(response -> assertObjectEquals(expected, response.getValue(), true, "etag"))
             .verifyComplete();
     }
 
@@ -898,7 +894,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void contentUnderstandingSkillSerializesCorrectly() {
+    public void contentUnderstandingSkillSerializesCorrectly() throws IOException {
         ContentUnderstandingSkill skill = new ContentUnderstandingSkill(
             Collections.singletonList(new InputFieldMappingEntry("file_data").setSource("/document/file_data")),
             Collections.singletonList(new OutputFieldMappingEntry("text_sections").setTargetName("sections")))
@@ -909,7 +905,7 @@ public class SkillsetManagementTests extends SearchTestBase {
                     .setMaximumLength(2000)
                     .setOverlapLength(200));
 
-        String json = BinaryData.fromObject(skill).toString();
+        String json = skill.toJsonString();
 
         assertTrue(json.contains("\"@odata.type\":\"#Microsoft.Skills.Util.ContentUnderstandingSkill\""));
         assertTrue(json.contains("\"extractionOptions\":[\"images\",\"locationMetadata\"]"));

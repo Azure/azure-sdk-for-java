@@ -7,7 +7,6 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.util.BinaryData;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.search.documents.implementation.SearchUtils;
@@ -79,11 +78,11 @@ public class FacetAggregationTests extends SearchTestBase {
     }
 
     @Test
-    public void facetRequestSerializationWithAllMetrics() {
+    public void facetRequestSerializationWithAllMetrics() throws IOException {
         SearchOptions searchOptions = new SearchOptions().setFacets("Rating, metric: min", "Rating, metric: max",
             "Rating, metric: avg", "Rating, metric: sum", "Category, metric: cardinality");
 
-        String serialized = BinaryData.fromObject(SearchUtils.fromSearchOptions(searchOptions)).toString();
+        String serialized = SearchUtils.fromSearchOptions(searchOptions).toJsonString();
         assertTrue(serialized.contains("Rating, metric: min"), "Should serialize min metric");
         assertTrue(serialized.contains("Rating, metric: max"), "Should serialize max metric");
         assertTrue(serialized.contains("Rating, metric: avg"), "Should serialize avg metric");

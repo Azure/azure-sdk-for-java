@@ -47,11 +47,14 @@ import com.azure.search.documents.models.SearchPagedResponse;
 import com.azure.search.documents.models.SemanticErrorMode;
 import com.azure.search.documents.models.SuggestDocumentsResult;
 import com.azure.search.documents.models.SuggestOptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import static com.azure.search.documents.implementation.SearchUtils.mapResponse;
 
 /**
  * Initializes a new instance of the asynchronous SearchClient type.
@@ -106,29 +109,6 @@ public final class SearchAsyncClient {
      */
     public SearchServiceVersion getServiceVersion() {
         return serviceClient.getServiceVersion();
-    }
-
-    /**
-     * Queries the number of documents in the index.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * long
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a 64-bit integer along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDocumentCountWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentCountWithResponseAsync(requestOptions);
     }
 
     /**
@@ -254,7 +234,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -464,54 +444,6 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Retrieves a document from the index.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>List of field names to retrieve for the document;
-     * Any field not retrieved will be missing from the returned document. In the form of "," separated
-     * string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
-     * bypass document level permission checks for the query operation.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *      (Optional): {
-     *         String: Object (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param key The key of the document to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDocumentWithResponse(String key, RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentWithResponseAsync(key, requestOptions);
-    }
-
-    /**
      * Suggests documents in the index that match the given partial query text.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -547,7 +479,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -586,7 +518,7 @@ public final class SearchAsyncClient {
     /**
      * Sends a batch of document write actions to the index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -601,9 +533,9 @@ public final class SearchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -665,7 +597,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -710,9 +642,9 @@ public final class SearchAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Long> getDocumentCount() {
-        // Generated convenience method for getDocumentCountWithResponse
+        // Generated convenience method for getDocumentCountWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentCountWithResponse(requestOptions).flatMap(FluxUtil::toMono)
+        return getDocumentCountWithResponseHiddenGenerated(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Long.class));
     }
 
@@ -989,12 +921,23 @@ public final class SearchAsyncClient {
      * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(SearchOptions options) {
         return search(options, null);
     }
 
     /**
      * Searches for documents in the Azure AI Search index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p>
      * The {@link ContinuablePagedFlux} will iterate through search result pages until all search results are returned.
      * Each page is determined by the {@code $skip} and {@code $top} values and the Search service has a limit on the
@@ -1010,6 +953,7 @@ public final class SearchAsyncClient {
      * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedFlux search(SearchOptions options, RequestOptions requestOptions) {
         return new SearchPagedFlux(() -> (continuationToken, pageSize) -> {
             Mono<Response<BinaryData>> mono;
@@ -1053,7 +997,7 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LookupDocument> getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
         List<String> selectedFields) {
-        // Generated convenience method for getDocumentWithResponse
+        // Generated convenience method for getDocumentWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
@@ -1070,7 +1014,7 @@ public final class SearchAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
+        return getDocumentWithResponseHiddenGenerated(key, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
     }
 
@@ -1089,9 +1033,9 @@ public final class SearchAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LookupDocument> getDocument(String key) {
-        // Generated convenience method for getDocumentWithResponse
+        // Generated convenience method for getDocumentWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
+        return getDocumentWithResponseHiddenGenerated(key, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
     }
 
@@ -1390,7 +1334,7 @@ public final class SearchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1461,9 +1405,9 @@ public final class SearchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1676,7 +1620,7 @@ public final class SearchAsyncClient {
     /**
      * Suggests documents in the index that match the given partial query text.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1700,9 +1644,9 @@ public final class SearchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1737,7 +1681,7 @@ public final class SearchAsyncClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1756,9 +1700,9 @@ public final class SearchAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1848,8 +1792,7 @@ public final class SearchAsyncClient {
                 .setSelect(options.getSelect())
                 .setTop(options.getTop());
         BinaryData suggestPostRequest = BinaryData.fromObject(suggestPostRequestObj);
-        return suggestWithResponse(suggestPostRequest, requestOptions).map(
-            response -> new SimpleResponse<>(response, response.getValue().toObject(SuggestDocumentsResult.class)));
+        return mapResponse(suggestWithResponse(suggestPostRequest, requestOptions), SuggestDocumentsResult.class);
     }
 
     /**
@@ -1911,7 +1854,129 @@ public final class SearchAsyncClient {
                 .setSearchFields(options.getSearchFields())
                 .setTop(options.getTop());
         BinaryData autocompletePostRequest = BinaryData.fromObject(autocompletePostRequestObj);
-        return autocompleteWithResponse(autocompletePostRequest, requestOptions)
-            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(AutocompleteResult.class)));
+        return mapResponse(autocompleteWithResponse(autocompletePostRequest, requestOptions), AutocompleteResult.class);
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a 64-bit integer along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Long>> getDocumentCountWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getDocumentCountWithResponseAsync(requestOptions)
+            .map(response -> new SimpleResponse<>(response, Long.parseLong(response.getValue().toString())));
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * long
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a 64-bit integer along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> getDocumentCountWithResponseHiddenGenerated(RequestOptions requestOptions) {
+        return this.serviceClient.getDocumentCountWithResponseAsync(requestOptions);
+    }
+
+    /**
+     * Retrieves a document from the index.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>List of field names to retrieve for the document;
+     * Any field not retrieved will be missing from the returned document. In the form of "," separated
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     *
+     * @param key The key of the document to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<LookupDocument>> getDocumentWithResponse(String key, RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getDocumentWithResponseAsync(key, requestOptions), LookupDocument.class);
+    }
+
+    /**
+     * Retrieves a document from the index.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>List of field names to retrieve for the document;
+     * Any field not retrieved will be missing from the returned document. In the form of "," separated
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param key The key of the document to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a document retrieved via a document lookup operation along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> getDocumentWithResponseHiddenGenerated(String key, RequestOptions requestOptions) {
+        return this.serviceClient.getDocumentWithResponseAsync(key, requestOptions);
     }
 }

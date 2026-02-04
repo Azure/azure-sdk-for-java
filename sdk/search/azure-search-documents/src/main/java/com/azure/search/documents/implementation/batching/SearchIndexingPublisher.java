@@ -47,10 +47,8 @@ import static com.azure.search.documents.implementation.batching.SearchBatchingU
 
 /**
  * Internal helper class that manages sending automatic document batches to Azure Search Documents.
- *
- * @param <T> The type of document in the batch.
  */
-public final class SearchIndexingPublisher<T> {
+public final class SearchIndexingPublisher {
     private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingPublisher.class);
 
     private final SearchClient searchClient;

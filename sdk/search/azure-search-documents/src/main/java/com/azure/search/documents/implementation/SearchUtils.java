@@ -4,9 +4,14 @@ package com.azure.search.documents.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonSerializable;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchRequest;
+import reactor.core.publisher.Mono;
 
 /**
  * Implementation utilities helper class.
@@ -63,6 +68,13 @@ public final class SearchUtils {
             .setHybridSearch(options.getHybridSearch());
     }
 
+    /**
+     * Adds headers from {@link SearchOptions} to {@link RequestOptions}.
+     *
+     * @param requestOptions The {@link RequestOptions}.
+     * @param searchOptions The {@link SearchOptions}.
+     * @return The updated {@link RequestOptions}.
+     */
     public static RequestOptions addSearchHeaders(RequestOptions requestOptions, SearchOptions searchOptions) {
         // If SearchOptions is null or is both query source authorization and enable elevated read aren't set
         // return requestOptions as-is.
@@ -85,6 +97,34 @@ public final class SearchUtils {
         }
 
         return requestOptions;
+    }
+
+    /**
+     * Converts a {@link Response} of {@link BinaryData} to a {@link Response} of a specific type that extends
+     * {@link JsonSerializable}.
+     *
+     * @param <T> The type of the class extending {@link JsonSerializable}.
+     * @param response The {@link Response} of {@link BinaryData}.
+     * @param clazz The class type to convert to.
+     * @return The converted {@link Response}.
+     */
+    public static <T extends JsonSerializable<T>> Response<T> convertResponse(Response<BinaryData> response,
+        Class<T> clazz) {
+        return new SimpleResponse<>(response, response.getValue().toObject(clazz));
+    }
+
+    /**
+     * Maps a {@link Mono} of {@link Response} of {@link BinaryData} to a {@link Mono} of {@link Response} of a
+     * specific type that extends {@link JsonSerializable}.
+     *
+     * @param <T> The type of the class extending {@link JsonSerializable}.
+     * @param mono The {@link Mono} of {@link Response} of {@link BinaryData}.
+     * @param clazz The class type to convert to.
+     * @return The mapped {@link Mono} of {@link Response}.
+     */
+    public static <T extends JsonSerializable<T>> Mono<Response<T>> mapResponse(Mono<Response<BinaryData>> mono,
+        Class<T> clazz) {
+        return mono.map(response -> new SimpleResponse<>(response, response.getValue().toObject(clazz)));
     }
 
     private SearchUtils() {

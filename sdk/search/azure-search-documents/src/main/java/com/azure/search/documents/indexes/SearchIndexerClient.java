@@ -30,10 +30,12 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnecti
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.indexes.models.SkillNames;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static com.azure.search.documents.implementation.SearchUtils.convertResponse;
 
 /**
  * Initializes a new instance of the synchronous SearchIndexerClient type.
@@ -101,7 +103,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -142,9 +144,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -222,91 +224,6 @@ public final class SearchIndexerClient {
      * be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
      *
      * @param dataSource The definition of the datasource to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -320,9 +237,9 @@ public final class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerDataSourceConnection> createOrUpdateDataSourceConnectionWithResponse(
         SearchIndexerDataSourceConnection dataSource, RequestOptions requestOptions) {
-        Response<BinaryData> response = this.serviceClient.createOrUpdateDataSourceConnectionWithResponse(
-            dataSource.getName(), BinaryData.fromObject(dataSource), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(SearchIndexerDataSourceConnection.class));
+        return convertResponse(this.serviceClient.createOrUpdateDataSourceConnectionWithResponse(
+            dataSource.getName(), BinaryData.fromObject(dataSource), requestOptions),
+            SearchIndexerDataSourceConnection.class);
     }
 
     /**
@@ -352,66 +269,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Retrieves a datasource definition.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the datasource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a datasource definition, which can be used to configure an indexer along with
-     * {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDataSourceConnectionWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getDataSourceConnectionWithResponse(name, requestOptions);
-    }
-
-    /**
      * Lists all datasources available for a search service.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -423,7 +280,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -483,110 +340,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Creates a new datasource.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param dataSourceConnection The definition of the datasource to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a datasource definition, which can be used to configure an indexer along with
-     * {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createDataSourceConnectionWithResponse(dataSourceConnection, requestOptions);
-    }
-
-    /**
      * Resets the change tracking state associated with an indexer.
      *
      * @param name The name of the indexer.
@@ -606,7 +359,7 @@ public final class SearchIndexerClient {
     /**
      * Resync selective options from the datasource to be re-ingested by the indexer.".
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -651,7 +404,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -718,7 +471,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -797,9 +550,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -916,167 +669,6 @@ public final class SearchIndexerClient {
      * be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     dataSourceName: String (Required)
-     *     skillsetName: String (Optional)
-     *     targetIndexName: String (Required)
-     *     schedule (Optional): {
-     *         interval: Duration (Required)
-     *         startTime: OffsetDateTime (Optional)
-     *     }
-     *     parameters (Optional): {
-     *         batchSize: Integer (Optional)
-     *         maxFailedItems: Integer (Optional)
-     *         maxFailedItemsPerBatch: Integer (Optional)
-     *         configuration (Optional): {
-     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *             excludedFileNameExtensions: String (Optional)
-     *             indexedFileNameExtensions: String (Optional)
-     *             failOnUnsupportedContentType: Boolean (Optional)
-     *             failOnUnprocessableDocument: Boolean (Optional)
-     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
-     *             delimitedTextHeaders: String (Optional)
-     *             delimitedTextDelimiter: String (Optional)
-     *             firstLineContainsHeaders: Boolean (Optional)
-     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
-     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
-     *             documentRoot: String (Optional)
-     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
-     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
-     *             allowSkillsetToReadFileData: Boolean (Optional)
-     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
-     *             executionEnvironment: String(standard/private) (Optional)
-     *             queryTimeout: String (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     fieldMappings (Optional): [
-     *          (Optional){
-     *             sourceFieldName: String (Required)
-     *             targetFieldName: String (Optional)
-     *             mappingFunction (Optional): {
-     *                 name: String (Required)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     outputFieldMappings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     disabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     dataSourceName: String (Required)
-     *     skillsetName: String (Optional)
-     *     targetIndexName: String (Required)
-     *     schedule (Optional): {
-     *         interval: Duration (Required)
-     *         startTime: OffsetDateTime (Optional)
-     *     }
-     *     parameters (Optional): {
-     *         batchSize: Integer (Optional)
-     *         maxFailedItems: Integer (Optional)
-     *         maxFailedItemsPerBatch: Integer (Optional)
-     *         configuration (Optional): {
-     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *             excludedFileNameExtensions: String (Optional)
-     *             indexedFileNameExtensions: String (Optional)
-     *             failOnUnsupportedContentType: Boolean (Optional)
-     *             failOnUnprocessableDocument: Boolean (Optional)
-     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
-     *             delimitedTextHeaders: String (Optional)
-     *             delimitedTextDelimiter: String (Optional)
-     *             firstLineContainsHeaders: Boolean (Optional)
-     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
-     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
-     *             documentRoot: String (Optional)
-     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
-     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
-     *             allowSkillsetToReadFileData: Boolean (Optional)
-     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
-     *             executionEnvironment: String(standard/private) (Optional)
-     *             queryTimeout: String (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     fieldMappings (Optional): [
-     *          (Optional){
-     *             sourceFieldName: String (Required)
-     *             targetFieldName: String (Optional)
-     *             mappingFunction (Optional): {
-     *                 name: String (Required)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     outputFieldMappings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     disabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
      *
      * @param indexer The definition of the indexer to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1089,9 +681,8 @@ public final class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
         RequestOptions requestOptions) {
-        Response<BinaryData> response = this.serviceClient.createOrUpdateIndexerWithResponse(indexer.getName(),
-            BinaryData.fromObject(indexer), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(SearchIndexer.class));
+        return convertResponse(this.serviceClient.createOrUpdateIndexerWithResponse(indexer.getName(),
+            BinaryData.fromObject(indexer), requestOptions), SearchIndexer.class);
     }
 
     /**
@@ -1121,103 +712,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Retrieves an indexer definition.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     dataSourceName: String (Required)
-     *     skillsetName: String (Optional)
-     *     targetIndexName: String (Required)
-     *     schedule (Optional): {
-     *         interval: Duration (Required)
-     *         startTime: OffsetDateTime (Optional)
-     *     }
-     *     parameters (Optional): {
-     *         batchSize: Integer (Optional)
-     *         maxFailedItems: Integer (Optional)
-     *         maxFailedItemsPerBatch: Integer (Optional)
-     *         configuration (Optional): {
-     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *             excludedFileNameExtensions: String (Optional)
-     *             indexedFileNameExtensions: String (Optional)
-     *             failOnUnsupportedContentType: Boolean (Optional)
-     *             failOnUnprocessableDocument: Boolean (Optional)
-     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
-     *             delimitedTextHeaders: String (Optional)
-     *             delimitedTextDelimiter: String (Optional)
-     *             firstLineContainsHeaders: Boolean (Optional)
-     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
-     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
-     *             documentRoot: String (Optional)
-     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
-     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
-     *             allowSkillsetToReadFileData: Boolean (Optional)
-     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
-     *             executionEnvironment: String(standard/private) (Optional)
-     *             queryTimeout: String (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     fieldMappings (Optional): [
-     *          (Optional){
-     *             sourceFieldName: String (Required)
-     *             targetFieldName: String (Optional)
-     *             mappingFunction (Optional): {
-     *                 name: String (Required)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     outputFieldMappings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     disabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an indexer along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getIndexerWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getIndexerWithResponse(name, requestOptions);
-    }
-
-    /**
      * Lists all indexers available for a search service.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1229,7 +723,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1327,271 +821,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Creates a new indexer.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     dataSourceName: String (Required)
-     *     skillsetName: String (Optional)
-     *     targetIndexName: String (Required)
-     *     schedule (Optional): {
-     *         interval: Duration (Required)
-     *         startTime: OffsetDateTime (Optional)
-     *     }
-     *     parameters (Optional): {
-     *         batchSize: Integer (Optional)
-     *         maxFailedItems: Integer (Optional)
-     *         maxFailedItemsPerBatch: Integer (Optional)
-     *         configuration (Optional): {
-     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *             excludedFileNameExtensions: String (Optional)
-     *             indexedFileNameExtensions: String (Optional)
-     *             failOnUnsupportedContentType: Boolean (Optional)
-     *             failOnUnprocessableDocument: Boolean (Optional)
-     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
-     *             delimitedTextHeaders: String (Optional)
-     *             delimitedTextDelimiter: String (Optional)
-     *             firstLineContainsHeaders: Boolean (Optional)
-     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
-     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
-     *             documentRoot: String (Optional)
-     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
-     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
-     *             allowSkillsetToReadFileData: Boolean (Optional)
-     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
-     *             executionEnvironment: String(standard/private) (Optional)
-     *             queryTimeout: String (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     fieldMappings (Optional): [
-     *          (Optional){
-     *             sourceFieldName: String (Required)
-     *             targetFieldName: String (Optional)
-     *             mappingFunction (Optional): {
-     *                 name: String (Required)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     outputFieldMappings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     disabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     dataSourceName: String (Required)
-     *     skillsetName: String (Optional)
-     *     targetIndexName: String (Required)
-     *     schedule (Optional): {
-     *         interval: Duration (Required)
-     *         startTime: OffsetDateTime (Optional)
-     *     }
-     *     parameters (Optional): {
-     *         batchSize: Integer (Optional)
-     *         maxFailedItems: Integer (Optional)
-     *         maxFailedItemsPerBatch: Integer (Optional)
-     *         configuration (Optional): {
-     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
-     *             excludedFileNameExtensions: String (Optional)
-     *             indexedFileNameExtensions: String (Optional)
-     *             failOnUnsupportedContentType: Boolean (Optional)
-     *             failOnUnprocessableDocument: Boolean (Optional)
-     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
-     *             delimitedTextHeaders: String (Optional)
-     *             delimitedTextDelimiter: String (Optional)
-     *             firstLineContainsHeaders: Boolean (Optional)
-     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
-     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
-     *             documentRoot: String (Optional)
-     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
-     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
-     *             allowSkillsetToReadFileData: Boolean (Optional)
-     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
-     *             executionEnvironment: String(standard/private) (Optional)
-     *             queryTimeout: String (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     fieldMappings (Optional): [
-     *          (Optional){
-     *             sourceFieldName: String (Required)
-     *             targetFieldName: String (Optional)
-     *             mappingFunction (Optional): {
-     *                 name: String (Required)
-     *                 parameters (Optional): {
-     *                     String: Object (Required)
-     *                 }
-     *             }
-     *         }
-     *     ]
-     *     outputFieldMappings (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     disabled: Boolean (Optional)
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     cache (Optional): {
-     *         id: String (Optional)
-     *         storageConnectionString: String (Optional)
-     *         enableReprocessing: Boolean (Optional)
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param indexer The definition of the indexer to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an indexer along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createIndexerWithResponse(BinaryData indexer, RequestOptions requestOptions) {
-        return this.serviceClient.createIndexerWithResponse(indexer, requestOptions);
-    }
-
-    /**
-     * Returns the current status and execution history of an indexer.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     status: String(unknown/error/running) (Required)
-     *     runtime (Required): {
-     *         usedSeconds: long (Required)
-     *         remainingSeconds: Long (Optional)
-     *         beginningTime: OffsetDateTime (Required)
-     *         endingTime: OffsetDateTime (Required)
-     *     }
-     *     lastResult (Optional): {
-     *         status: String(transientFailure/success/inProgress/reset) (Required)
-     *         statusDetail: String(resetDocs/resync) (Optional)
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
-     *         errorMessage: String (Optional)
-     *         startTime: OffsetDateTime (Optional)
-     *         endTime: OffsetDateTime (Optional)
-     *         errors (Required): [
-     *              (Required){
-     *                 key: String (Optional)
-     *                 errorMessage: String (Required)
-     *                 statusCode: int (Required)
-     *                 name: String (Optional)
-     *                 details: String (Optional)
-     *                 documentationLink: String (Optional)
-     *             }
-     *         ]
-     *         warnings (Required): [
-     *              (Required){
-     *                 key: String (Optional)
-     *                 message: String (Required)
-     *                 name: String (Optional)
-     *                 details: String (Optional)
-     *                 documentationLink: String (Optional)
-     *             }
-     *         ]
-     *         itemsProcessed: int (Required)
-     *         itemsFailed: int (Required)
-     *         initialTrackingState: String (Optional)
-     *         finalTrackingState: String (Optional)
-     *     }
-     *     executionHistory (Required): [
-     *         (recursive schema, see above)
-     *     ]
-     *     limits (Required): {
-     *         maxRunTime: Duration (Optional)
-     *         maxDocumentExtractionSize: Long (Optional)
-     *         maxDocumentContentCharactersToExtract: Long (Optional)
-     *     }
-     *     currentState (Optional): {
-     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
-     *         allDocsInitialTrackingState: String (Optional)
-     *         allDocsFinalTrackingState: String (Optional)
-     *         resetDocsInitialTrackingState: String (Optional)
-     *         resetDocsFinalTrackingState: String (Optional)
-     *         resyncInitialTrackingState: String (Optional)
-     *         resyncFinalTrackingState: String (Optional)
-     *         resetDocumentKeys (Optional): [
-     *             String (Optional)
-     *         ]
-     *         resetDatasourceDocumentIds (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the current status and execution history of an indexer along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getIndexerStatusWithResponse(name, requestOptions);
-    }
-
-    /**
      * Creates a new skillset in a search service or updates the skillset if it already exists.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1613,7 +842,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1731,9 +960,9 @@ public final class SearchIndexerClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1889,245 +1118,6 @@ public final class SearchIndexerClient {
      * be performed only if the ETag on the server does not match this value.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     skills (Required): [
-     *          (Required){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             context: String (Optional)
-     *             inputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     source: String (Optional)
-     *                     sourceContext: String (Optional)
-     *                     inputs (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *             ]
-     *             outputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     targetName: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     cognitiveServices (Optional): {
-     *         &#64;odata.type: String (Required)
-     *         description: String (Optional)
-     *     }
-     *     knowledgeStore (Optional): {
-     *         storageConnectionString: String (Required)
-     *         projections (Required): [
-     *              (Required){
-     *                 tables (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Required)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         tableName: String (Required)
-     *                     }
-     *                 ]
-     *                 objects (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *                 files (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *             }
-     *         ]
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     indexProjections (Optional): {
-     *         selectors (Required): [
-     *              (Required){
-     *                 targetIndexName: String (Required)
-     *                 parentKeyFieldName: String (Required)
-     *                 sourceContext: String (Required)
-     *                 mappings (Required): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *         parameters (Optional): {
-     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     skills (Required): [
-     *          (Required){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             context: String (Optional)
-     *             inputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     source: String (Optional)
-     *                     sourceContext: String (Optional)
-     *                     inputs (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *             ]
-     *             outputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     targetName: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     cognitiveServices (Optional): {
-     *         &#64;odata.type: String (Required)
-     *         description: String (Optional)
-     *     }
-     *     knowledgeStore (Optional): {
-     *         storageConnectionString: String (Required)
-     *         projections (Required): [
-     *              (Required){
-     *                 tables (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Required)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         tableName: String (Required)
-     *                     }
-     *                 ]
-     *                 objects (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *                 files (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *             }
-     *         ]
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     indexProjections (Optional): {
-     *         selectors (Required): [
-     *              (Required){
-     *                 targetIndexName: String (Required)
-     *                 parentKeyFieldName: String (Required)
-     *                 sourceContext: String (Required)
-     *                 mappings (Required): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *         parameters (Optional): {
-     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
      *
      * @param skillset The skillset containing one or more skills to create or update in a search service.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2140,9 +1130,8 @@ public final class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
         RequestOptions requestOptions) {
-        Response<BinaryData> response = this.serviceClient.createOrUpdateSkillsetWithResponse(skillset.getName(),
-            BinaryData.fromObject(skillset), requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(SearchIndexerSkillset.class));
+        return convertResponse(this.serviceClient.createOrUpdateSkillsetWithResponse(skillset.getName(),
+            BinaryData.fromObject(skillset), requestOptions), SearchIndexerSkillset.class);
     }
 
     /**
@@ -2172,142 +1161,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Retrieves a skillset in a search service.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     skills (Required): [
-     *          (Required){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             context: String (Optional)
-     *             inputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     source: String (Optional)
-     *                     sourceContext: String (Optional)
-     *                     inputs (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *             ]
-     *             outputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     targetName: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     cognitiveServices (Optional): {
-     *         &#64;odata.type: String (Required)
-     *         description: String (Optional)
-     *     }
-     *     knowledgeStore (Optional): {
-     *         storageConnectionString: String (Required)
-     *         projections (Required): [
-     *              (Required){
-     *                 tables (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Required)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         tableName: String (Required)
-     *                     }
-     *                 ]
-     *                 objects (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *                 files (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *             }
-     *         ]
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     indexProjections (Optional): {
-     *         selectors (Required): [
-     *              (Required){
-     *                 targetIndexName: String (Required)
-     *                 parentKeyFieldName: String (Required)
-     *                 sourceContext: String (Required)
-     *                 mappings (Required): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *         parameters (Optional): {
-     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skillset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of skills along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getSkillsetWithResponse(name, requestOptions);
-    }
-
-    /**
      * List all skillsets in a search service.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -2319,7 +1172,7 @@ public final class SearchIndexerClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2456,265 +1309,9 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Creates a new skillset in a search service.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     skills (Required): [
-     *          (Required){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             context: String (Optional)
-     *             inputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     source: String (Optional)
-     *                     sourceContext: String (Optional)
-     *                     inputs (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *             ]
-     *             outputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     targetName: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     cognitiveServices (Optional): {
-     *         &#64;odata.type: String (Required)
-     *         description: String (Optional)
-     *     }
-     *     knowledgeStore (Optional): {
-     *         storageConnectionString: String (Required)
-     *         projections (Required): [
-     *              (Required){
-     *                 tables (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Required)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         tableName: String (Required)
-     *                     }
-     *                 ]
-     *                 objects (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *                 files (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *             }
-     *         ]
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     indexProjections (Optional): {
-     *         selectors (Required): [
-     *              (Required){
-     *                 targetIndexName: String (Required)
-     *                 parentKeyFieldName: String (Required)
-     *                 sourceContext: String (Required)
-     *                 mappings (Required): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *         parameters (Optional): {
-     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     skills (Required): [
-     *          (Required){
-     *             &#64;odata.type: String (Required)
-     *             name: String (Optional)
-     *             description: String (Optional)
-     *             context: String (Optional)
-     *             inputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     source: String (Optional)
-     *                     sourceContext: String (Optional)
-     *                     inputs (Optional): [
-     *                         (recursive schema, see above)
-     *                     ]
-     *                 }
-     *             ]
-     *             outputs (Required): [
-     *                  (Required){
-     *                     name: String (Required)
-     *                     targetName: String (Optional)
-     *                 }
-     *             ]
-     *         }
-     *     ]
-     *     cognitiveServices (Optional): {
-     *         &#64;odata.type: String (Required)
-     *         description: String (Optional)
-     *     }
-     *     knowledgeStore (Optional): {
-     *         storageConnectionString: String (Required)
-     *         projections (Required): [
-     *              (Required){
-     *                 tables (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Required)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         tableName: String (Required)
-     *                     }
-     *                 ]
-     *                 objects (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *                 files (Optional): [
-     *                      (Optional){
-     *                         referenceKeyName: String (Optional)
-     *                         generatedKeyName: String (Optional)
-     *                         source: String (Optional)
-     *                         sourceContext: String (Optional)
-     *                         inputs (Optional): [
-     *                             (recursive schema, see above)
-     *                         ]
-     *                         storageContainer: String (Required)
-     *                     }
-     *                 ]
-     *             }
-     *         ]
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *         parameters (Optional): {
-     *             synthesizeGeneratedKeyName: Boolean (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     indexProjections (Optional): {
-     *         selectors (Required): [
-     *              (Required){
-     *                 targetIndexName: String (Required)
-     *                 parentKeyFieldName: String (Required)
-     *                 sourceContext: String (Required)
-     *                 mappings (Required): [
-     *                     (recursive schema, see above)
-     *                 ]
-     *             }
-     *         ]
-     *         parameters (Optional): {
-     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
-     *              (Optional): {
-     *                 String: Object (Required)
-     *             }
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param skillset The skillset containing one or more skills to create in a search service.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of skills along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createSkillsetWithResponse(BinaryData skillset, RequestOptions requestOptions) {
-        return this.serviceClient.createSkillsetWithResponse(skillset, requestOptions);
-    }
-
-    /**
      * Reset an existing skillset in a search service.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -2881,9 +1478,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection getDataSourceConnection(String name) {
-        // Generated convenience method for getDataSourceConnectionWithResponse
+        // Generated convenience method for getDataSourceConnectionWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return getDataSourceConnectionWithResponse(name, requestOptions).getValue()
+        return getDataSourceConnectionWithResponseHiddenGenerated(name, requestOptions).getValue()
             .toObject(SearchIndexerDataSourceConnection.class);
     }
 
@@ -2903,6 +1500,32 @@ public final class SearchIndexerClient {
     }
 
     /**
+     * Lists all datasources available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ListDataSourcesResult> listDataSourceConnectionsWithResponse(RequestOptions requestOptions) {
+        return convertResponse(getDataSourceConnectionsWithResponse(requestOptions), ListDataSourcesResult.class);
+    }
+
+    /**
      * Lists the names of all datasources available for a search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2914,10 +1537,26 @@ public final class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listDataSourceConnectionNames() {
-        return getDataSourceConnections(Collections.singletonList("name")).getDataSources()
-            .stream()
+        return listDataSourceConnectionNamesWithResponse().getValue();
+    }
+
+    /**
+     * Lists the names of all datasources available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Datasources request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<String>> listDataSourceConnectionNamesWithResponse() {
+        Response<ListDataSourcesResult> response = listDataSourceConnectionsWithResponse(new RequestOptions()
+            .addQueryParam("$select", "name"));
+        return new SimpleResponse<>(response, response.getValue().getDataSources().stream()
             .map(SearchIndexerDataSourceConnection::getName)
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
     }
 
     /**
@@ -2982,11 +1621,10 @@ public final class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection
         createDataSourceConnection(SearchIndexerDataSourceConnection dataSourceConnection) {
-        // Generated convenience method for createDataSourceConnectionWithResponse
+        // Generated convenience method for createDataSourceConnectionWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return createDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection), requestOptions)
-            .getValue()
-            .toObject(SearchIndexerDataSourceConnection.class);
+        return createDataSourceConnectionWithResponseHiddenGenerated(BinaryData.fromObject(dataSourceConnection),
+            requestOptions).getValue().toObject(SearchIndexerDataSourceConnection.class);
     }
 
     /**
@@ -3236,9 +1874,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexer getIndexer(String name) {
-        // Generated convenience method for getIndexerWithResponse
+        // Generated convenience method for getIndexerWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexerWithResponse(name, requestOptions).getValue().toObject(SearchIndexer.class);
+        return getIndexerWithResponseHiddenGenerated(name, requestOptions).getValue().toObject(SearchIndexer.class);
     }
 
     /**
@@ -3285,6 +1923,31 @@ public final class SearchIndexerClient {
     }
 
     /**
+     * Lists all indexers available for a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ListIndexersResult> listIndexersWithResponse(RequestOptions requestOptions) {
+        return convertResponse(getIndexersWithResponse(requestOptions), ListIndexersResult.class);
+    }
+
+    /**
      * Lists all indexer names available for a search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3296,10 +1959,26 @@ public final class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listIndexerNames() {
-        return getIndexers(Collections.singletonList("name")).getIndexers()
-            .stream()
+        return listIndexerNamesWithResponse().getValue();
+    }
+
+    /**
+     * Lists all indexer names available for a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a List Indexers request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<String>> listIndexerNamesWithResponse() {
+        Response<ListIndexersResult> response
+            = listIndexersWithResponse(new RequestOptions().addQueryParam("$select", "name"));
+        return new SimpleResponse<>(response, response.getValue().getIndexers().stream()
             .map(SearchIndexer::getName)
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
     }
 
     /**
@@ -3335,9 +2014,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexer createIndexer(SearchIndexer indexer) {
-        // Generated convenience method for createIndexerWithResponse
+        // Generated convenience method for createIndexerWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return createIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions).getValue()
+        return createIndexerWithResponseHiddenGenerated(BinaryData.fromObject(indexer), requestOptions).getValue()
             .toObject(SearchIndexer.class);
     }
 
@@ -3356,9 +2035,10 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerStatus getIndexerStatus(String name) {
-        // Generated convenience method for getIndexerStatusWithResponse
+        // Generated convenience method for getIndexerStatusWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexerStatusWithResponse(name, requestOptions).getValue().toObject(SearchIndexerStatus.class);
+        return getIndexerStatusWithResponseHiddenGenerated(name, requestOptions).getValue()
+            .toObject(SearchIndexerStatus.class);
     }
 
     /**
@@ -3503,9 +2183,10 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset getSkillset(String name) {
-        // Generated convenience method for getSkillsetWithResponse
+        // Generated convenience method for getSkillsetWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return getSkillsetWithResponse(name, requestOptions).getValue().toObject(SearchIndexerSkillset.class);
+        return getSkillsetWithResponseHiddenGenerated(name, requestOptions).getValue()
+            .toObject(SearchIndexerSkillset.class);
     }
 
     /**
@@ -3570,6 +2251,32 @@ public final class SearchIndexerClient {
     }
 
     /**
+     * List all skillsets in a search service.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>Selects which top-level properties to retrieve.
+     * Specified as a comma-separated list of JSON property names, or '*' for all properties. The default is all
+     * properties. In the form of "," separated string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ListSkillsetsResult> listSkillsetsWithResponse(RequestOptions requestOptions) {
+        return convertResponse(getSkillsetsWithResponse(requestOptions), ListSkillsetsResult.class);
+    }
+
+    /**
      * List the names of all skillsets in a search service.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3581,10 +2288,26 @@ public final class SearchIndexerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> listSkillsetNames() {
-        return getSkillsets(Collections.singletonList("name")).getSkillsets()
-            .stream()
+        return listSkillsetNamesWithResponse().getValue();
+    }
+
+    /**
+     * List the names of all skillsets in a search service.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a list skillset request along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<String>> listSkillsetNamesWithResponse() {
+        Response<ListSkillsetsResult> response
+            = listSkillsetsWithResponse(new RequestOptions().addQueryParam("$select", "name"));
+        return new SimpleResponse<>(response, response.getValue().getSkillsets().stream()
             .map(SearchIndexerSkillset::getName)
-            .collect(Collectors.toList());
+            .collect(Collectors.toList()));
     }
 
     /**
@@ -3602,9 +2325,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset) {
-        // Generated convenience method for createSkillsetWithResponse
+        // Generated convenience method for createSkillsetWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions).getValue()
+        return createSkillsetWithResponseHiddenGenerated(BinaryData.fromObject(skillset), requestOptions).getValue()
             .toObject(SearchIndexerSkillset.class);
     }
 
@@ -3626,5 +2349,1047 @@ public final class SearchIndexerClient {
         // Generated convenience method for resetSkillsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         resetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions).getValue();
+    }
+
+    /**
+     * Retrieves a datasource definition.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the datasource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getDataSourceConnectionWithResponseHiddenGenerated(String name,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getDataSourceConnectionWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Retrieves a datasource definition.
+     *
+     * @param name The name of the datasource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerDataSourceConnection> getDataSourceConnectionWithResponse(String name,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getDataSourceConnectionWithResponse(name, requestOptions),
+            SearchIndexerDataSourceConnection.class);
+    }
+
+    /**
+     * Creates a new datasource.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param dataSourceConnection The definition of the datasource to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createDataSourceConnectionWithResponseHiddenGenerated(BinaryData dataSourceConnection,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createDataSourceConnectionWithResponse(dataSourceConnection, requestOptions);
+    }
+
+    /**
+     * Creates a new datasource.
+     *
+     * @param dataSourceConnection The definition of the datasource to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerDataSourceConnection> createDataSourceConnectionWithResponse(
+        SearchIndexerDataSourceConnection dataSourceConnection, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createDataSourceConnectionWithResponse(
+            BinaryData.fromObject(dataSourceConnection), requestOptions), SearchIndexerDataSourceConnection.class);
+    }
+
+    /**
+     * Retrieves an indexer definition.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the indexer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getIndexerWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getIndexerWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Retrieves an indexer definition.
+     *
+     * @param name The name of the indexer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexer> getIndexerWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getIndexerWithResponse(name, requestOptions), SearchIndexer.class);
+    }
+
+    /**
+     * Creates a new indexer.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     dataSourceName: String (Required)
+     *     skillsetName: String (Optional)
+     *     targetIndexName: String (Required)
+     *     schedule (Optional): {
+     *         interval: Duration (Required)
+     *         startTime: OffsetDateTime (Optional)
+     *     }
+     *     parameters (Optional): {
+     *         batchSize: Integer (Optional)
+     *         maxFailedItems: Integer (Optional)
+     *         maxFailedItemsPerBatch: Integer (Optional)
+     *         configuration (Optional): {
+     *             parsingMode: String(default/text/delimitedText/json/jsonArray/jsonLines/markdown) (Optional)
+     *             excludedFileNameExtensions: String (Optional)
+     *             indexedFileNameExtensions: String (Optional)
+     *             failOnUnsupportedContentType: Boolean (Optional)
+     *             failOnUnprocessableDocument: Boolean (Optional)
+     *             indexStorageMetadataOnlyForOversizedDocuments: Boolean (Optional)
+     *             delimitedTextHeaders: String (Optional)
+     *             delimitedTextDelimiter: String (Optional)
+     *             firstLineContainsHeaders: Boolean (Optional)
+     *             markdownParsingSubmode: String(oneToMany/oneToOne) (Optional)
+     *             markdownHeaderDepth: String(h1/h2/h3/h4/h5/h6) (Optional)
+     *             documentRoot: String (Optional)
+     *             dataToExtract: String(storageMetadata/allMetadata/contentAndMetadata) (Optional)
+     *             imageAction: String(none/generateNormalizedImages/generateNormalizedImagePerPage) (Optional)
+     *             allowSkillsetToReadFileData: Boolean (Optional)
+     *             pdfTextRotationAlgorithm: String(none/detectAngles) (Optional)
+     *             executionEnvironment: String(standard/private) (Optional)
+     *             queryTimeout: String (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     fieldMappings (Optional): [
+     *          (Optional){
+     *             sourceFieldName: String (Required)
+     *             targetFieldName: String (Optional)
+     *             mappingFunction (Optional): {
+     *                 name: String (Required)
+     *                 parameters (Optional): {
+     *                     String: Object (Required)
+     *                 }
+     *             }
+     *         }
+     *     ]
+     *     outputFieldMappings (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     disabled: Boolean (Optional)
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     cache (Optional): {
+     *         id: String (Optional)
+     *         storageConnectionString: String (Optional)
+     *         enableReprocessing: Boolean (Optional)
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param indexer The definition of the indexer to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createIndexerWithResponseHiddenGenerated(BinaryData indexer, RequestOptions requestOptions) {
+        return this.serviceClient.createIndexerWithResponse(indexer, requestOptions);
+    }
+
+    /**
+     * Creates a new indexer.
+     *
+     * @param indexer The definition of the indexer to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createIndexerWithResponse(BinaryData.fromObject(indexer),
+            requestOptions), SearchIndexer.class);
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     status: String(unknown/error/running) (Required)
+     *     runtime (Required): {
+     *         usedSeconds: long (Required)
+     *         remainingSeconds: Long (Optional)
+     *         beginningTime: OffsetDateTime (Required)
+     *         endingTime: OffsetDateTime (Required)
+     *     }
+     *     lastResult (Optional): {
+     *         status: String(transientFailure/success/inProgress/reset) (Required)
+     *         statusDetail: String(resetDocs/resync) (Optional)
+     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
+     *         errorMessage: String (Optional)
+     *         startTime: OffsetDateTime (Optional)
+     *         endTime: OffsetDateTime (Optional)
+     *         errors (Required): [
+     *              (Required){
+     *                 key: String (Optional)
+     *                 errorMessage: String (Required)
+     *                 statusCode: int (Required)
+     *                 name: String (Optional)
+     *                 details: String (Optional)
+     *                 documentationLink: String (Optional)
+     *             }
+     *         ]
+     *         warnings (Required): [
+     *              (Required){
+     *                 key: String (Optional)
+     *                 message: String (Required)
+     *                 name: String (Optional)
+     *                 details: String (Optional)
+     *                 documentationLink: String (Optional)
+     *             }
+     *         ]
+     *         itemsProcessed: int (Required)
+     *         itemsFailed: int (Required)
+     *         initialTrackingState: String (Optional)
+     *         finalTrackingState: String (Optional)
+     *     }
+     *     executionHistory (Required): [
+     *         (recursive schema, see above)
+     *     ]
+     *     limits (Required): {
+     *         maxRunTime: Duration (Optional)
+     *         maxDocumentExtractionSize: Long (Optional)
+     *         maxDocumentContentCharactersToExtract: Long (Optional)
+     *     }
+     *     currentState (Optional): {
+     *         mode: String(indexingAllDocs/indexingResetDocs/indexingResync) (Optional)
+     *         allDocsInitialTrackingState: String (Optional)
+     *         allDocsFinalTrackingState: String (Optional)
+     *         resetDocsInitialTrackingState: String (Optional)
+     *         resetDocsFinalTrackingState: String (Optional)
+     *         resyncInitialTrackingState: String (Optional)
+     *         resyncFinalTrackingState: String (Optional)
+     *         resetDocumentKeys (Optional): [
+     *             String (Optional)
+     *         ]
+     *         resetDatasourceDocumentIds (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the indexer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the current status and execution history of an indexer along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getIndexerStatusWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getIndexerStatusWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param name The name of the indexer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the current status and execution history of an indexer along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getIndexerStatusWithResponse(name, requestOptions),
+            SearchIndexerStatus.class);
+    }
+
+    /**
+     * Retrieves a skillset in a search service.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skillset.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getSkillsetWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getSkillsetWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Retrieves a skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerSkillset> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getSkillsetWithResponse(name, requestOptions),
+            SearchIndexerSkillset.class);
+    }
+
+    /**
+     * Creates a new skillset in a search service.
+     * <p><strong>Request Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     skills (Required): [
+     *          (Required){
+     *             &#64;odata.type: String (Required)
+     *             name: String (Optional)
+     *             description: String (Optional)
+     *             context: String (Optional)
+     *             inputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     source: String (Optional)
+     *                     sourceContext: String (Optional)
+     *                     inputs (Optional): [
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 }
+     *             ]
+     *             outputs (Required): [
+     *                  (Required){
+     *                     name: String (Required)
+     *                     targetName: String (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     ]
+     *     cognitiveServices (Optional): {
+     *         &#64;odata.type: String (Required)
+     *         description: String (Optional)
+     *     }
+     *     knowledgeStore (Optional): {
+     *         storageConnectionString: String (Required)
+     *         projections (Required): [
+     *              (Required){
+     *                 tables (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Required)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         tableName: String (Required)
+     *                     }
+     *                 ]
+     *                 objects (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *                 files (Optional): [
+     *                      (Optional){
+     *                         referenceKeyName: String (Optional)
+     *                         generatedKeyName: String (Optional)
+     *                         source: String (Optional)
+     *                         sourceContext: String (Optional)
+     *                         inputs (Optional): [
+     *                             (recursive schema, see above)
+     *                         ]
+     *                         storageContainer: String (Required)
+     *                     }
+     *                 ]
+     *             }
+     *         ]
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *         parameters (Optional): {
+     *             synthesizeGeneratedKeyName: Boolean (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     indexProjections (Optional): {
+     *         selectors (Required): [
+     *              (Required){
+     *                 targetIndexName: String (Required)
+     *                 parentKeyFieldName: String (Required)
+     *                 sourceContext: String (Required)
+     *                 mappings (Required): [
+     *                     (recursive schema, see above)
+     *                 ]
+     *             }
+     *         ]
+     *         parameters (Optional): {
+     *             projectionMode: String(skipIndexingParentDocuments/includeIndexingParentDocuments) (Optional)
+     *              (Optional): {
+     *                 String: Object (Required)
+     *             }
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param skillset The skillset containing one or more skills to create in a search service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> createSkillsetWithResponseHiddenGenerated(BinaryData skillset, RequestOptions requestOptions) {
+        return this.serviceClient.createSkillsetWithResponse(skillset, requestOptions);
+    }
+
+    /**
+     * Creates a new skillset in a search service.
+     *
+     * @param skillset The skillset containing one or more skills to create in a search service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createSkillsetWithResponse(BinaryData.fromObject(skillset),
+            requestOptions), SearchIndexerSkillset.class);
     }
 }

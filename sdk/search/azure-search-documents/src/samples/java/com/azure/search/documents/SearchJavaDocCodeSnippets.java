@@ -300,10 +300,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentsWithResponse() {
         // BEGIN: com.azure.search.documents.SearchClient.getDocumentWithResponse#String-RequestOptions
-        Response<BinaryData> resultResponse = SEARCH_CLIENT.getDocumentWithResponse("hotelId",
+        Response<LookupDocument> resultResponse = SEARCH_CLIENT.getDocumentWithResponse("hotelId",
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
-        LookupDocument document = resultResponse.getValue().toObject(LookupDocument.class);
+        LookupDocument document = resultResponse.getValue();
         document.getAdditionalProperties()
             .forEach((key, value) -> System.out.printf("Document key %s, Document value %s", key, value));
         // END: com.azure.search.documents.SearchClient.getDocumentWithResponse#String-RequestOptions
@@ -324,10 +324,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentCountWithResponse() {
         // BEGIN: com.azure.search.documents.SearchClient.getDocumentCountWithResponse#RequestOptions
-        Response<BinaryData> countResponse = SEARCH_CLIENT.getDocumentCountWithResponse(
+        Response<Long> countResponse = SEARCH_CLIENT.getDocumentCountWithResponse(
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
         System.out.println("The status code of the response is " + countResponse.getStatusCode());
-        System.out.printf("There are %d documents in service.", Long.parseLong(countResponse.getValue().toString()));
+        System.out.printf("There are %d documents in service.", countResponse.getValue());
         // END: com.azure.search.documents.SearchClient.getDocumentCountWithResponse#RequestOptions
     }
 
@@ -614,8 +614,7 @@ public class SearchJavaDocCodeSnippets {
         SEARCH_ASYNC_CLIENT.getDocumentWithResponse("hotelId", null)
             .subscribe(response -> {
                 System.out.println("The status code of the response is " + response.getStatusCode());
-                LookupDocument document = response.getValue().toObject(LookupDocument.class);
-                document.getAdditionalProperties()
+                response.getValue().getAdditionalProperties()
                     .forEach((key, value) -> System.out.printf("Document key %s, Document value %s", key, value));
             });
         // END: com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-RequestOptions
@@ -737,20 +736,19 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexClient#createIndexWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexClient#createIndexWithResponse(SearchIndex, RequestOptions)}.
      */
     public void createSearchIndexWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#SearchIndex-RequestOptions
         SearchIndex searchIndex = new SearchIndex("searchIndex",
             new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
             new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true));
 
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.createIndexWithResponse(BinaryData.fromObject(searchIndex),
+        Response<SearchIndex> response = SEARCH_INDEX_CLIENT.createIndexWithResponse(searchIndex,
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
-        SearchIndex responseIndex = response.getValue().toObject(SearchIndex.class);
         System.out.printf("The status code of the response is %s. The index name is %s.%n",
-            response.getStatusCode(), responseIndex.getName());
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#BinaryData-RequestOptions
+            response.getStatusCode(), response.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#SearchIndex-RequestOptions
     }
 
     /**
@@ -770,12 +768,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.getIndexWithResponse("searchIndex",
+        Response<SearchIndex> response = SEARCH_INDEX_CLIENT.getIndexWithResponse("searchIndex",
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchIndex index = response.getValue().toObject(SearchIndex.class);
         System.out.printf("The status code of the response is %s. The index name is %s.%n",
-            response.getStatusCode(), index.getName());
+            response.getStatusCode(), response.getValue().getName());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-RequestOptions
     }
 
@@ -795,9 +792,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexStatisticsWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getIndexStatisticsWithResponse#String-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.getIndexStatisticsWithResponse("searchIndex",
+        Response<GetIndexStatisticsResult> response = SEARCH_INDEX_CLIENT.getIndexStatisticsWithResponse("searchIndex",
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
-        GetIndexStatisticsResult statistics = response.getValue().toObject(GetIndexStatisticsResult.class);
+        GetIndexStatisticsResult statistics = response.getValue();
         System.out.printf("The status code of the response is %s.%n"
                 + "There are %d documents and storage size of %d available in 'searchIndex'.%n",
             response.getStatusCode(), statistics.getDocumentCount(), statistics.getStorageSize());
@@ -923,19 +920,18 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexClient#analyzeTextWithResponse(String, BinaryData, RequestOptions)}
+     * Code snippet for {@link SearchIndexClient#analyzeTextWithResponse(String, AnalyzeTextOptions, RequestOptions)}
      */
     public void analyzeTextResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.analyzeTextWithResponse#String-BinaryData-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.analyzeTextWithResponse("searchIndex",
-            BinaryData.fromObject(new AnalyzeTextOptions("The quick brown fox")
-                .setTokenizerName(LexicalTokenizerName.CLASSIC)),
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.analyzeTextWithResponse#String-AnalyzeTextOptions-RequestOptions
+        Response<AnalyzeResult> response = SEARCH_INDEX_CLIENT.analyzeTextWithResponse("searchIndex",
+            new AnalyzeTextOptions("The quick brown fox").setTokenizerName(LexicalTokenizerName.CLASSIC),
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
         System.out.println("The status code of the response is " + response.getStatusCode());
-        for (AnalyzedTokenInfo tokenInfo : response.getValue().toObject(AnalyzeResult.class).getTokens()) {
+        for (AnalyzedTokenInfo tokenInfo : response.getValue().getTokens()) {
             System.out.printf("The token emitted by the analyzer is %s.%n", tokenInfo.getToken());
         }
-        // END: com.azure.search.documents.indexes.SearchIndexClient.analyzeTextWithResponse#String-BinaryData-RequestOptions
+        // END: com.azure.search.documents.indexes.SearchIndexClient.analyzeTextWithResponse#String-AnalyzeTextOptions-RequestOptions
     }
 
     /**
@@ -952,19 +948,17 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexClient#createIndexWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexClient#createSynonymMapWithResponse(SynonymMap, RequestOptions)}.
      */
     public void createSynonymMapWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#BinaryData-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.createSynonymMapWithResponse(
-            BinaryData.fromObject(new SynonymMap("synonymMap",
-                "United States, United States of America, USA\nWashington, Wash. => WA")),
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#SynonymMap-RequestOptions
+        Response<SynonymMap> response = SEARCH_INDEX_CLIENT.createSynonymMapWithResponse(
+            new SynonymMap("synonymMap", "United States, United States of America, USA\nWashington, Wash. => WA"),
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
-        SynonymMap synonymMap = response.getValue().toObject(SynonymMap.class);
         System.out.printf("The status code of the response is %d.%n"
                 + "The synonym map name is %s. The ETag of synonym map is %s.%n", response.getStatusCode(),
-            synonymMap.getName(), synonymMap.getETag());
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#BinaryData-RequestOptions
+            response.getValue().getName(), response.getValue().getETag());
+        // END: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#SynonymMap-RequestOptions
     }
 
     /**
@@ -984,12 +978,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSynonymMapWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapWithResponse#String-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.getSynonymMapWithResponse("synonymMap",
+        Response<SynonymMap> response = SEARCH_INDEX_CLIENT.getSynonymMapWithResponse("synonymMap",
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
-        SynonymMap synonymMap = response.getValue().toObject(SynonymMap.class);
         System.out.printf("The status code of the response is %d.%n"
                 + "The synonym map name is %s. The ETag of synonym map is %s.%n", response.getStatusCode(),
-            synonymMap.getName(), synonymMap.getETag());
+            response.getValue().getName(), response.getValue().getETag());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapWithResponse#String-RequestOptions
     }
 
@@ -1115,11 +1108,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getServiceStatisticsWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getServiceStatisticsWithResponse#RequestOptions
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.getServiceStatisticsWithResponse(
+        Response<SearchServiceStatistics> response = SEARCH_INDEX_CLIENT.getServiceStatisticsWithResponse(
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
-        SearchServiceStatistics statistics = response.getValue().toObject(SearchServiceStatistics.class);
         System.out.printf("The status code of the response is %s.%nThere are %s search indexes in your service.%n",
-            response.getStatusCode(), statistics.getCounters().getIndexCounter());
+            response.getStatusCode(), response.getValue().getCounters().getIndexCounter());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getServiceStatisticsWithResponse#RequestOptions
     }
 
@@ -1154,21 +1146,18 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexAsyncClient#createIndexWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexAsyncClient#createIndexWithResponse(SearchIndex, RequestOptions)}.
      */
     public void createSearchIndexWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex-RequestOptions
         SearchIndex searchIndex = new SearchIndex("searchIndex",
             new SearchField("hotelId", SearchFieldDataType.STRING).setKey(true),
             new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true));
 
-        SEARCH_INDEX_ASYNC_CLIENT.createIndexWithResponse(BinaryData.fromObject(searchIndex), new RequestOptions())
-            .subscribe(response -> {
-                SearchIndex index = response.getValue().toObject(SearchIndex.class);
-                System.out.printf("The status code of the response is %s. The index name is %s.%n",
-                    response.getStatusCode(), index.getName());
-            });
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#BinaryData-RequestOptions
+        SEARCH_INDEX_ASYNC_CLIENT.createIndexWithResponse(searchIndex, new RequestOptions())
+            .subscribe(response -> System.out.printf("The status code of the response is %s. The index name is %s.%n",
+                response.getStatusCode(), response.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndexWithResponse#SearchIndex-RequestOptions
     }
 
     /**
@@ -1189,11 +1178,8 @@ public class SearchJavaDocCodeSnippets {
     public void getSearchIndexWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String-RequestOptions
         SEARCH_INDEX_ASYNC_CLIENT.getIndexWithResponse("searchIndex", new RequestOptions())
-            .subscribe(response -> {
-                SearchIndex index = response.getValue().toObject(SearchIndex.class);
-                System.out.printf("The status code of the response is %s. The index name is %s.%n",
-                    response.getStatusCode(), index.getName());
-            });
+            .subscribe(response -> System.out.printf("The status code of the response is %s. The index name is %s.%n",
+                response.getStatusCode(), response.getValue().getName()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String-RequestOptions
     }
 
@@ -1215,12 +1201,10 @@ public class SearchJavaDocCodeSnippets {
     public void getSearchIndexStatisticsWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String-RequestOptions
         SEARCH_INDEX_ASYNC_CLIENT.getIndexStatisticsWithResponse("searchIndex", new RequestOptions())
-            .subscribe(response -> {
-                GetIndexStatisticsResult statistics = response.getValue().toObject(GetIndexStatisticsResult.class);
-                System.out.printf("The status code of the response is %s.%n"
-                        + "There are %d documents and storage size of %d available in 'searchIndex'.%n",
-                    response.getStatusCode(), statistics.getDocumentCount(), statistics.getStorageSize());
-            });
+            .subscribe(response -> System.out.printf("The status code of the response is %s.%n"
+                    + "There are %d documents and storage size of %d available in 'searchIndex'.%n",
+                response.getStatusCode(), response.getValue().getDocumentCount(),
+                response.getValue().getStorageSize()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String-RequestOptions
     }
 
@@ -1327,19 +1311,16 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexAsyncClient#createSynonymMapWithResponse(BinaryData, RequestOptions)}
+     * Code snippet for {@link SearchIndexAsyncClient#createSynonymMapWithResponse(SynonymMap, RequestOptions)}
      */
     public void createSynonymMapWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#BinaryData-RequestOptions
-        SEARCH_INDEX_ASYNC_CLIENT.createSynonymMapWithResponse(BinaryData.fromObject(new SynonymMap("synonymMap",
-                "United States, United States of America, USA\nWashington, Wash. => WA")), new RequestOptions())
-            .subscribe(response -> {
-                SynonymMap synonymMap = response.getValue().toObject(SynonymMap.class);
-                System.out.printf("The status code of the response is %d.%n"
-                        + "The synonym map name is %s. The ETag of synonym map is %s.%n", response.getStatusCode(),
-                    synonymMap.getName(), synonymMap.getETag());
-            });
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap-RequestOptions
+        SEARCH_INDEX_ASYNC_CLIENT.createSynonymMapWithResponse(new SynonymMap("synonymMap",
+                "United States, United States of America, USA\nWashington, Wash. => WA"), new RequestOptions())
+            .subscribe(response -> System.out.printf("The status code of the response is %d.%n"
+                    + "The synonym map name is %s. The ETag of synonym map is %s.%n", response.getStatusCode(),
+                response.getValue().getName(), response.getValue().getETag()));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap-RequestOptions
     }
 
     /**
@@ -1360,12 +1341,9 @@ public class SearchJavaDocCodeSnippets {
     public void getSynonymMapWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMapWithResponse#String-RequestOptions
         SEARCH_INDEX_ASYNC_CLIENT.getSynonymMapWithResponse("synonymMap", new RequestOptions())
-            .subscribe(response -> {
-                SynonymMap synonymMap = response.getValue().toObject(SynonymMap.class);
-                System.out.printf("The status code of the response is %d.%n"
-                        + "The synonym map name is %s. The ETag of synonym map is %s.%n",
-                    response.getStatusCode(), synonymMap.getName(), synonymMap.getETag());
-            });
+            .subscribe(response -> System.out.printf("The status code of the response is %d.%n"
+                    + "The synonym map name is %s. The ETag of synonym map is %s.%n",
+                response.getStatusCode(), response.getValue().getName(), response.getValue().getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMapWithResponse#String-RequestOptions
     }
 
@@ -1468,12 +1446,9 @@ public class SearchJavaDocCodeSnippets {
     public void getServiceStatisticsWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse#RequestOptions
         SEARCH_INDEX_ASYNC_CLIENT.getServiceStatisticsWithResponse(new RequestOptions())
-            .subscribe(response -> {
-                SearchServiceStatistics statistics = response.getValue().toObject(SearchServiceStatistics.class);
-                System.out.printf(
-                    "The status code of the response is %s.%n" + "There are %s search indexes in your service.%n",
-                    response.getStatusCode(), statistics.getCounters().getIndexCounter());
-            });
+            .subscribe(response -> System.out.printf(
+                "The status code of the response is %s.%n" + "There are %s search indexes in your service.%n",
+                response.getStatusCode(), response.getValue().getCounters().getIndexCounter()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse#RequestOptions
     }
 
@@ -1504,19 +1479,17 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createIndexerWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexerClient#createIndexerWithResponse(SearchIndexer, RequestOptions)}.
      */
     public void createSearchIndexerWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#BinaryData-RequestOptions
-        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
-            "searchIndex");
-        Response<BinaryData> response = SEARCH_INDEXER_CLIENT.createIndexerWithResponse(
-            BinaryData.fromObject(searchIndexer), new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-RequestOptions
+        SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource", "searchIndex");
+        Response<SearchIndexer> response = SEARCH_INDEXER_CLIENT.createIndexerWithResponse(searchIndexer,
+            new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchIndexer indexer = response.getValue().toObject(SearchIndexer.class);
         System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
-            response.getStatusCode(), indexer.getName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#BinaryData-RequestOptions
+            response.getStatusCode(), response.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-RequestOptions
     }
 
     /**
@@ -1536,12 +1509,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexerWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEXER_CLIENT.getIndexerWithResponse(
+        Response<SearchIndexer> response = SEARCH_INDEXER_CLIENT.getIndexerWithResponse(
             "searchIndexer", new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchIndexer indexer = response.getValue().toObject(SearchIndexer.class);
         System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
-            response.getStatusCode(), indexer.getName());
+            response.getStatusCode(), response.getValue().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-RequestOptions
     }
 
@@ -1712,12 +1684,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getIndexerStatusWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEXER_CLIENT.getIndexerStatusWithResponse("searchIndexer",
+        Response<SearchIndexerStatus> response = SEARCH_INDEXER_CLIENT.getIndexerStatusWithResponse("searchIndexer",
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchIndexerStatus status = response.getValue().toObject(SearchIndexerStatus.class);
         System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
-            response.getStatusCode(), status.getStatus());
+            response.getStatusCode(), response.getValue().getStatus());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-RequestOptions
     }
 
@@ -1778,22 +1749,21 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createDataSourceConnectionWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexerClient#createDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection, RequestOptions)}.
      */
     public void createDataSourceWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-RequestOptions
         SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("dataSource",
             SearchIndexerDataSourceType.AZURE_BLOB,
             new DataSourceCredentials().setConnectionString("{connectionString}"),
             new SearchIndexerDataContainer("container"));
-        Response<BinaryData> response = SEARCH_INDEXER_CLIENT.createDataSourceConnectionWithResponse(
-            BinaryData.fromObject(dataSource), new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
+        Response<SearchIndexerDataSourceConnection> response
+            = SEARCH_INDEXER_CLIENT.createDataSourceConnectionWithResponse(dataSource,
+            new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchIndexerDataSourceConnection responseDataSource = response.getValue()
-            .toObject(SearchIndexerDataSourceConnection.class);
         System.out.printf("The status code of the response is %s. The data source name is %s.%n",
-            response.getStatusCode(), responseDataSource.getName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#BinaryData-RequestOptions
+            response.getStatusCode(), response.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-RequestOptions
     }
 
     /**
@@ -1813,14 +1783,12 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDataSourceWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-RequestOptions
-        Response<BinaryData> response =
+        Response<SearchIndexerDataSourceConnection> response =
             SEARCH_INDEXER_CLIENT.getDataSourceConnectionWithResponse("dataSource",
                 new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchIndexerDataSourceConnection dataSource = response.getValue()
-            .toObject(SearchIndexerDataSourceConnection.class);
         System.out.printf("The status code of the response is %s. The data source name is %s.%n",
-            response.getStatusCode(), dataSource.getName());
+            response.getStatusCode(), response.getValue().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-RequestOptions
     }
 
@@ -1948,10 +1916,10 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createSkillsetWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexerClient#createSkillsetWithResponse(SearchIndexerSkillset, RequestOptions)}.
      */
     public void createSearchIndexerSkillsetWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-RequestOptions
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry("image").setSource("/document/normalized_images/*"));
 
@@ -1965,14 +1933,13 @@ public class SearchJavaDocCodeSnippets {
                 .setName("myocr")
                 .setDescription("Extracts text (plain and structured) from image.")
                 .setContext("/document/normalized_images/*"));
-        Response<BinaryData> response =
-            SEARCH_INDEXER_CLIENT.createSkillsetWithResponse(BinaryData.fromObject(searchIndexerSkillset),
+        Response<SearchIndexerSkillset> response
+            = SEARCH_INDEXER_CLIENT.createSkillsetWithResponse(searchIndexerSkillset,
                 new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchIndexerSkillset skillset = response.getValue().toObject(SearchIndexerSkillset.class);
         System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
-            response.getStatusCode(), skillset.getName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#BinaryData-RequestOptions
+            response.getStatusCode(), response.getValue().getName());
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-RequestOptions
     }
 
     /**
@@ -1992,12 +1959,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexerSkillsetWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEXER_CLIENT.getSkillsetWithResponse(
+        Response<SearchIndexerSkillset> response = SEARCH_INDEXER_CLIENT.getSkillsetWithResponse(
             "searchIndexerSkillset", new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchIndexerSkillset skillset = response.getValue().toObject(SearchIndexerSkillset.class);
         System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
-            response.getStatusCode(), skillset.getName());
+            response.getStatusCode(), response.getValue().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-RequestOptions
     }
 
@@ -2141,20 +2107,16 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createIndexerWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexerAsyncClient#createIndexerWithResponse(SearchIndexer, RequestOptions)}.
      */
     public void createSearchIndexerWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer-RequestOptions
         SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
             "searchIndex");
-        SEARCH_INDEXER_ASYNC_CLIENT.createIndexerWithResponse(BinaryData.fromObject(searchIndexer),
-                new RequestOptions())
-            .subscribe(response -> {
-                SearchIndexer indexer = response.getValue().toObject(SearchIndexer.class);
-                System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
-                    response.getStatusCode(), indexer.getName());
-            });
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#BinaryData-RequestOptions
+        SEARCH_INDEXER_ASYNC_CLIENT.createIndexerWithResponse(searchIndexer, new RequestOptions())
+            .subscribe(response -> System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
+                response.getStatusCode(), response.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer-RequestOptions
     }
 
     /**
@@ -2175,11 +2137,8 @@ public class SearchJavaDocCodeSnippets {
     public void getSearchIndexerWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String-RequestOptions
         SEARCH_INDEXER_ASYNC_CLIENT.getIndexerWithResponse("searchIndexer", new RequestOptions())
-            .subscribe(response -> {
-                SearchIndexer indexer = response.getValue().toObject(SearchIndexer.class);
-                System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
-                    response.getStatusCode(), indexer.getName());
-            });
+            .subscribe(response -> System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
+                response.getStatusCode(), response.getValue().getName()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String-RequestOptions
     }
 
@@ -2328,11 +2287,8 @@ public class SearchJavaDocCodeSnippets {
     public void getIndexerStatusWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String-RequestOptions
         SEARCH_INDEXER_ASYNC_CLIENT.getIndexerStatusWithResponse("searchIndexer", new RequestOptions())
-            .subscribe(response -> {
-                SearchIndexerStatus status = response.getValue().toObject(SearchIndexerStatus.class);
-                System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
-                    response.getStatusCode(), status.getStatus());
-            });
+            .subscribe(response -> System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
+                response.getStatusCode(), response.getValue().getStatus()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String-RequestOptions
     }
 
@@ -2392,23 +2348,18 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createDataSourceConnectionWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexerAsyncClient#createDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection, RequestOptions)}.
      */
     public void createDataSourceWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-RequestOptions
         SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("dataSource",
             SearchIndexerDataSourceType.AZURE_BLOB,
             new DataSourceCredentials().setConnectionString("{connectionString}"),
             new SearchIndexerDataContainer("container"));
-        SEARCH_INDEXER_ASYNC_CLIENT.createDataSourceConnectionWithResponse(BinaryData.fromObject(dataSource),
-                new RequestOptions())
-            .subscribe(response -> {
-                SearchIndexerDataSourceConnection responseDataSource = response.getValue()
-                    .toObject(SearchIndexerDataSourceConnection.class);
-                System.out.printf("The status code of the response is %s. The data source name is %s.%n",
-                    response.getStatusCode(), responseDataSource.getName());
-            });
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#BinaryData-RequestOptions
+        SEARCH_INDEXER_ASYNC_CLIENT.createDataSourceConnectionWithResponse(dataSource, new RequestOptions())
+            .subscribe(response -> System.out.printf("The status code of the response is %s. The data source name is %s.%n",
+                response.getStatusCode(), response.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-RequestOptions
     }
 
     /**
@@ -2429,12 +2380,8 @@ public class SearchJavaDocCodeSnippets {
     public void getDataSourceWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String-RequestOptions
         SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnectionWithResponse("dataSource", new RequestOptions())
-            .subscribe(response -> {
-                SearchIndexerDataSourceConnection dataSource = response.getValue()
-                    .toObject(SearchIndexerDataSourceConnection.class);
-                System.out.printf("The status code of the response is %s. The data source name is %s.%n",
-                    response.getStatusCode(), dataSource.getName());
-            });
+            .subscribe(response -> System.out.printf("The status code of the response is %s. The data source name is %s.%n",
+                response.getStatusCode(), response.getValue().getName()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String-RequestOptions
     }
 
@@ -2544,10 +2491,10 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createSkillsetWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexerAsyncClient#createSkillsetWithResponse(SearchIndexerSkillset, RequestOptions)}.
      */
     public void createSearchIndexerSkillsetWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset-RequestOptions
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry("image").setSource("/document/normalized_images/*"));
 
@@ -2561,14 +2508,10 @@ public class SearchJavaDocCodeSnippets {
                 .setName("myocr")
                 .setDescription("Extracts text (plain and structured) from image.")
                 .setContext("/document/normalized_images/*"));
-        SEARCH_INDEXER_ASYNC_CLIENT.createSkillsetWithResponse(BinaryData.fromObject(searchIndexerSkillset),
-                new RequestOptions())
-            .subscribe(response -> {
-                SearchIndexerSkillset skillset = response.getValue().toObject(SearchIndexerSkillset.class);
-                System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
-                    response.getStatusCode(), skillset.getName());
-            });
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#BinaryData-RequestOptions
+        SEARCH_INDEXER_ASYNC_CLIENT.createSkillsetWithResponse(searchIndexerSkillset, new RequestOptions())
+            .subscribe(response -> System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
+                response.getStatusCode(), response.getValue().getName()));
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillsetWithResponse#SearchIndexerSkillset-RequestOptions
     }
 
     /**
@@ -2589,11 +2532,8 @@ public class SearchJavaDocCodeSnippets {
     public void getSearchIndexerSkillsetWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String-RequestOptions
         SEARCH_INDEXER_ASYNC_CLIENT.getSkillsetWithResponse("searchIndexerSkillset", new RequestOptions())
-            .subscribe(response -> {
-                SearchIndexerSkillset skillset = response.getValue().toObject(SearchIndexerSkillset.class);
-                System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
-                    response.getStatusCode(), skillset.getName());
-            });
+            .subscribe(response -> System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
+                response.getStatusCode(), response.getValue().getName()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String-RequestOptions
     }
 
@@ -2744,18 +2684,14 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexAsyncClient#createAliasWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexAsyncClient#createAliasWithResponse(SearchAlias, RequestOptions)}.
      */
     public void createAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#BinaryData-RequestOptions
-        SEARCH_INDEX_ASYNC_CLIENT.createAliasWithResponse(
-            BinaryData.fromObject(new SearchAlias("my-alias", "index-to-alias")), new RequestOptions())
-            .subscribe(response -> {
-                SearchAlias searchAlias = response.getValue().toObject(SearchAlias.class);
-                System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), searchAlias.getName(), searchAlias.getIndexes().get(0));
-            });
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias-RequestOptions
+        SEARCH_INDEX_ASYNC_CLIENT.createAliasWithResponse(new SearchAlias("my-alias", "index-to-alias"), new RequestOptions())
+            .subscribe(response -> System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
+                response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
+        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias-RequestOptions
     }
 
     /**
@@ -2770,18 +2706,17 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexClient#createAliasWithResponse(BinaryData, RequestOptions)}.
+     * Code snippet for {@link SearchIndexClient#createAliasWithResponse(SearchAlias, RequestOptions)}.
      */
     public void createAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#BinaryData-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.createAliasWithResponse(
-            BinaryData.fromObject(new SearchAlias("my-alias", "index-to-alias")),
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-RequestOptions
+        Response<SearchAlias> response = SEARCH_INDEX_CLIENT.createAliasWithResponse(
+            new SearchAlias("my-alias", "index-to-alias"),
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchAlias searchAlias = response.getValue().toObject(SearchAlias.class);
         System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), searchAlias.getName(), searchAlias.getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#BinaryData-RequestOptions
+            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
+        // END: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-RequestOptions
 
     }
 
@@ -2882,11 +2817,8 @@ public class SearchJavaDocCodeSnippets {
     public void getAliasWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String-RequestOptions
         SEARCH_INDEX_ASYNC_CLIENT.getAliasWithResponse("my-alias", new RequestOptions())
-            .subscribe(response -> {
-                SearchAlias searchAlias = response.getValue().toObject(SearchAlias.class);
-                System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), searchAlias.getName(), searchAlias.getIndexes().get(0));
-            });
+            .subscribe(response -> System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
+                response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String-RequestOptions
     }
 
@@ -2907,12 +2839,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getAliasWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-RequestOptions
-        Response<BinaryData> response = SEARCH_INDEX_CLIENT.getAliasWithResponse("my-alias",
+        Response<SearchAlias> response = SEARCH_INDEX_CLIENT.getAliasWithResponse("my-alias",
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
-        SearchAlias searchAlias = response.getValue().toObject(SearchAlias.class);
         System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), searchAlias.getName(), searchAlias.getIndexes().get(0));
+            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
         // END: com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-RequestOptions
     }
 

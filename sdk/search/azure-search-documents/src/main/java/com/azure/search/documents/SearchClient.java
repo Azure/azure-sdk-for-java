@@ -51,6 +51,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.implementation.SearchUtils.convertResponse;
+
 /**
  * Initializes a new instance of the synchronous SearchClient type.
  */
@@ -106,29 +108,6 @@ public final class SearchClient {
      */
     public SearchServiceVersion getServiceVersion() {
         return serviceClient.getServiceVersion();
-    }
-
-    /**
-     * Queries the number of documents in the index.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * long
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a 64-bit integer along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDocumentCountWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentCountWithResponse(requestOptions);
     }
 
     /**
@@ -254,7 +233,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -463,53 +442,6 @@ public final class SearchClient {
     }
 
     /**
-     * Retrieves a document from the index.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>List of field names to retrieve for the document;
-     * Any field not retrieved will be missing from the returned document. In the form of "," separated
-     * string.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
-     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
-     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
-     * bypass document level permission checks for the query operation.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *      (Optional): {
-     *         String: Object (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param key The key of the document to retrieve.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a document retrieved via a document lookup operation along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDocumentWithResponse(String key, RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentWithResponse(key, requestOptions);
-    }
-
-    /**
      * Suggests documents in the index that match the given partial query text.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -545,7 +477,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -583,7 +515,7 @@ public final class SearchClient {
     /**
      * Sends a batch of document write actions to the index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -598,9 +530,9 @@ public final class SearchClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -662,7 +594,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -707,9 +639,9 @@ public final class SearchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public long getDocumentCount() {
-        // Generated convenience method for getDocumentCountWithResponse
+        // Generated convenience method for getDocumentCountWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentCountWithResponse(requestOptions).getValue().toObject(Long.class);
+        return getDocumentCountWithResponseHiddenGenerated(requestOptions).getValue().toObject(Long.class);
     }
 
     /**
@@ -985,12 +917,23 @@ public final class SearchClient {
      * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(SearchOptions options) {
         return search(options, null);
     }
 
     /**
      * Searches for documents in the Azure AI Search index.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p>
      * The {@link ContinuablePagedIterable} will iterate through search result pages until all search results are
      * returned.
@@ -1008,6 +951,7 @@ public final class SearchClient {
      * {@link SearchPagedResponse} for each page containing HTTP response and count, facet, and coverage information.
      * @see <a href="https://docs.microsoft.com/rest/api/searchservice/Search-Documents">Search documents</a>
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public SearchPagedIterable search(SearchOptions options, RequestOptions requestOptions) {
         return new SearchPagedIterable(() -> (continuationToken, pageSize) -> {
             Response<BinaryData> response;
@@ -1052,7 +996,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LookupDocument getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
         List<String> selectedFields) {
-        // Generated convenience method for getDocumentWithResponse
+        // Generated convenience method for getDocumentWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
@@ -1069,7 +1013,7 @@ public final class SearchClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
+        return getDocumentWithResponseHiddenGenerated(key, requestOptions).getValue().toObject(LookupDocument.class);
     }
 
     /**
@@ -1087,9 +1031,9 @@ public final class SearchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LookupDocument getDocument(String key) {
-        // Generated convenience method for getDocumentWithResponse
+        // Generated convenience method for getDocumentWithResponseHiddenGenerated
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
+        return getDocumentWithResponseHiddenGenerated(key, requestOptions).getValue().toObject(LookupDocument.class);
     }
 
     /**
@@ -1385,7 +1329,7 @@ public final class SearchClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1456,9 +1400,9 @@ public final class SearchClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1670,7 +1614,7 @@ public final class SearchClient {
     /**
      * Suggests documents in the index that match the given partial query text.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1694,9 +1638,9 @@ public final class SearchClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1730,7 +1674,7 @@ public final class SearchClient {
     /**
      * Autocompletes incomplete query terms based on input text and matching terms in the index.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1749,9 +1693,9 @@ public final class SearchClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1838,8 +1782,7 @@ public final class SearchClient {
                 .setSelect(options.getSelect())
                 .setTop(options.getTop());
         BinaryData suggestPostRequest = BinaryData.fromObject(suggestPostRequestObj);
-        Response<BinaryData> response = suggestWithResponse(suggestPostRequest, requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(SuggestDocumentsResult.class));
+        return convertResponse(suggestWithResponse(suggestPostRequest, requestOptions), SuggestDocumentsResult.class);
     }
 
     /**
@@ -1901,7 +1844,127 @@ public final class SearchClient {
                 .setSearchFields(options.getSearchFields())
                 .setTop(options.getTop());
         BinaryData autocompletePostRequest = BinaryData.fromObject(autocompletePostRequestObj);
-        Response<BinaryData> response = autocompleteWithResponse(autocompletePostRequest, requestOptions);
-        return new SimpleResponse<>(response, response.getValue().toObject(AutocompleteResult.class));
+        return convertResponse(autocompleteWithResponse(autocompletePostRequest, requestOptions),
+            AutocompleteResult.class);
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a 64-bit integer along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Long> getDocumentCountWithResponse(RequestOptions requestOptions) {
+        Response<BinaryData> response = this.serviceClient.getDocumentCountWithResponse(requestOptions);
+        return new SimpleResponse<>(response, Long.parseLong(response.getValue().toString()));
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * long
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a 64-bit integer along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getDocumentCountWithResponseHiddenGenerated(RequestOptions requestOptions) {
+        return this.serviceClient.getDocumentCountWithResponse(requestOptions);
+    }
+
+    /**
+     * Retrieves a document from the index.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>List of field names to retrieve for the document;
+     * Any field not retrieved will be missing from the returned document. In the form of "," separated
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * @param key The key of the document to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a document retrieved via a document lookup operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LookupDocument> getDocumentWithResponse(String key, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getDocumentWithResponse(key, requestOptions), LookupDocument.class);
+    }
+
+    /**
+     * Retrieves a document from the index.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>List of field names to retrieve for the document;
+     * Any field not retrieved will be missing from the returned document. In the form of "," separated
+     * string.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>x-ms-query-source-authorization</td><td>String</td><td>No</td><td>Token identifying the user for which
+     * the query is being executed. This token is used to enforce security restrictions on documents.</td></tr>
+     * <tr><td>x-ms-enable-elevated-read</td><td>Boolean</td><td>No</td><td>A value that enables elevated read that
+     * bypass document level permission checks for the query operation.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Response Body Schema</strong></p>
+     *
+     * <pre>
+     * {@code
+     * {
+     *      (Optional): {
+     *         String: Object (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param key The key of the document to retrieve.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a document retrieved via a document lookup operation along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> getDocumentWithResponseHiddenGenerated(String key, RequestOptions requestOptions) {
+        return this.serviceClient.getDocumentWithResponse(key, requestOptions);
     }
 }
