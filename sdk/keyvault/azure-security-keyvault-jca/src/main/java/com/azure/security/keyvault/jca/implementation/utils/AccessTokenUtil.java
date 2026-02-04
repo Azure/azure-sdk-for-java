@@ -181,7 +181,7 @@ public final class AccessTokenUtil {
     public static boolean isWorkloadIdentityAvailable(String clientId, String tenantId) {
         String effectiveClientId = useDefaultIfBlank(clientId, () -> System.getenv(PROPERTY_AZURE_CLIENT_ID));
         String effectiveTenantId = useDefaultIfBlank(tenantId, () -> System.getenv(PROPERTY_AZURE_TENANT_ID));
-        
+
         return !isNullOrEmpty(System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE))
             && !isNullOrEmpty(effectiveClientId)
             && !isNullOrEmpty(effectiveTenantId);
@@ -206,8 +206,7 @@ public final class AccessTokenUtil {
         LOGGER.info("Getting access token using federated Workload Identity token");
 
         // Use environment variables as fallback
-        String effectiveTokenFilePath
-            = System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE);
+        String effectiveTokenFilePath = System.getenv(PROPERTY_AZURE_FEDERATED_TOKEN_FILE);
         String effectiveTenantId = useDefaultIfBlank(tenantId, () -> System.getenv(PROPERTY_AZURE_TENANT_ID));
         String effectiveClientId = useDefaultIfBlank(clientId, () -> System.getenv(PROPERTY_AZURE_CLIENT_ID));
 
