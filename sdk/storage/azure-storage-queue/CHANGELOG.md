@@ -10,24 +10,12 @@
 
 ### Other Changes
 
-## 12.28.2 (2026-02-04)
-
-## Features Added
-- Added `logCredentialChange()` to automatically log credential changes in
-    - `QueueClientBuilder`
-    - `QueueServiceClientBuilder`
+## 12.28.2 (Unreleased)
 
 ### Bugs Fixed
-- Updated credential validation from “single credential only” to “not ambiguous” validation.
-  BuilderHelper.buildPipeline() now calls `CredentialValidator.validateCredentialsNotAmbiguous()` instead of
-  CredentialValidator.validateSingleCredentialIsPresent()`. This ensures that when a principal-bound user delegation SAS
-  scenario is configured, both the Authorization header and SAS query parameters are used on requests, instead of SAS
-  being overridden. **New rule**: up to two credentials may be present only when
-  the combination is:
-    - TokenCredential + (AzureSasCredential XOR sasToken)
-    - All other two-credential combos (and 3+ credentials) are rejected.
-
-  This is a _potentially breaking_ change if users were incorrectly applying multiple credentials
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten. Credential changes will now be logged at the info level; invalid combinations of credentials
+  will throw an error.
 
 ## 12.28.1 (2026-01-29)
 

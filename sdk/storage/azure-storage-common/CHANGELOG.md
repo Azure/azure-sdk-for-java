@@ -10,12 +10,10 @@
 
 ### Other Changes
 
-## 12.32.2 (2026-02-04)
+## 12.32.2 (Unreleased)
 
 ### Features Added
-- Updated credential validation from “single credential only” to “not ambiguous” validation. New rule: up to two 
-credentials may be present only when the combination is: TokenCredential + (AzureSasCredential XOR sasToken)
-All other two-credential combos (and 3+ credentials) are rejected.
+- added `validateCredentialsNotAmbiguous()` to `CredentialValidator` class to check for valid credential combinations.
 
 ## 12.32.1 (2026-01-29)
 
