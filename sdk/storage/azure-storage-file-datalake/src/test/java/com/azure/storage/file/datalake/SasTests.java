@@ -607,7 +607,6 @@ public class SasTests extends DataLakeTestBase {
 
             Response<PathProperties> response
                 = client.getFileClient(pathName).getPropertiesWithResponse(null, null, Context.NONE);
-
             verifySasAndTokenInRequest(response);
         });
     }
