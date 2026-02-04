@@ -1,14 +1,707 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0 (2026-02-04)
 
-### Features Added
+- Azure Resource Manager Azure Stack Hci client library for Java. This package contains Microsoft Azure SDK for Azure Stack Hci Management SDK. Azure Stack HCI service. Package api-version 2026-02-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SkuList` was removed
 
-### Other Changes
+#### `models.EdgeDeviceListResult` was removed
+
+#### `models.UpdateRunList` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.ClusterList` was removed
+
+#### `models.UpdateSummariesList` was removed
+
+#### `models.ArcSettingList` was removed
+
+#### `models.SecuritySettingListResult` was removed
+
+#### `models.UpdateList` was removed
+
+#### `models.PublisherList` was removed
+
+#### `models.OfferList` was removed
+
+#### `models.ExtensionList` was removed
+
+#### `models.DeploymentSettingListResult` was removed
+
+#### `models.Publisher` was removed
+
+#### `models.Publishers` was removed
+
+#### `models.SoftwareAssuranceChangeRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.IsolatedVmAttestationConfiguration` was modified
+
+* `IsolatedVmAttestationConfiguration()` was changed to private access
+* `validate()` was removed
+
+#### `models.HciOsProfile` was modified
+
+* `HciOsProfile()` was changed to private access
+* `validate()` was removed
+
+#### `models.SoftwareAssuranceChangeRequest` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterNode` was modified
+
+* `ClusterNode()` was changed to private access
+* `java.lang.Float memoryInGiB()` -> `java.lang.Double memoryInGiB()`
+* `java.lang.Float coreCount()` -> `java.lang.Double coreCount()`
+* `java.lang.Float id()` -> `java.lang.Double id()`
+* `validate()` was removed
+
+#### `models.SwitchDetail` was modified
+
+* `SwitchDetail()` was changed to private access
+* `validate()` was removed
+
+#### `models.PrecheckResultTags` was modified
+
+* `validate()` was removed
+
+#### `models.HciEdgeDevice` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentData` was modified
+
+* `validate()` was removed
+
+#### `models.HciReportedProperties` was modified
+
+* `HciReportedProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.LogCollectionRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.HciEdgeDeviceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.SoftwareAssuranceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.Operation` was modified
+
+* `Operation()` was removed
+* `models.OperationDisplay display()` -> `models.OperationDisplay display()`
+* `withDisplay(models.OperationDisplay)` was removed
+* `models.ActionType actionType()` -> `models.ActionType actionType()`
+* `java.lang.Boolean isDataAction()` -> `java.lang.Boolean isDataAction()`
+* `models.Origin origin()` -> `models.Origin origin()`
+* `toJson(com.azure.json.JsonWriter)` was removed
+* `validate()` was removed
+* `fromJson(com.azure.json.JsonReader)` was removed
+* `java.lang.String name()` -> `java.lang.String name()`
+
+#### `models.ClusterDesiredProperties` was modified
+
+* `validate()` was removed
+
+#### `models.HciValidationFailureDetail` was modified
+
+* `HciValidationFailureDetail()` was changed to private access
+* `validate()` was removed
+
+#### `models.SecuritySetting$Update` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+#### `models.ArcSetting$Definition` was modified
+
+* `withConnectivityProperties(java.lang.Object)` was removed
+
+#### `models.ClusterReportedProperties` was modified
+
+* `ClusterReportedProperties()` was changed to private access
+* `validate()` was removed
+* `withDiagnosticLevel(models.DiagnosticLevel)` was removed
+
+#### `models.PhysicalNodes` was modified
+
+* `validate()` was removed
+
+#### `models.Storage` was modified
+
+* `validate()` was removed
+
+#### `models.EceDeploymentSecrets` was modified
+
+* `validate()` was removed
+
+#### `models.DeviceConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.ExtensionUpgradeParameters` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentCluster` was modified
+
+* `validate()` was removed
+
+#### `models.ExtensionPatchParameters` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentSettingHostNetwork` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentStep` was modified
+
+* `DeploymentStep()` was changed to private access
+* `validate()` was removed
+
+#### `models.EceActionStatus` was modified
+
+* `EceActionStatus()` was changed to private access
+* `validate()` was removed
+
+#### `models.Cluster` was modified
+
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.lang.Float trialDaysRemaining()` -> `java.lang.Double trialDaysRemaining()`
+
+#### `models.UploadCertificateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.LogCollectionRequest` was modified
+
+* `validate()` was removed
+
+#### `models.PerNodeState` was modified
+
+* `PerNodeState()` was changed to private access
+* `validate()` was removed
+
+#### `models.ScaleUnits` was modified
+
+* `validate()` was removed
+
+#### `models.ExtensionPatch` was modified
+
+* `validate()` was removed
+
+#### `models.OptionalServices` was modified
+
+* `validate()` was removed
+
+#### `models.HciEdgeDeviceAdapterPropertyOverrides` was modified
+
+* `HciEdgeDeviceAdapterPropertyOverrides()` was changed to private access
+* `validate()` was removed
+
+#### `models.DeploymentSettingStorageAdapterIpInfo` was modified
+
+* `validate()` was removed
+
+#### `models.SkuMappings` was modified
+
+* `SkuMappings()` was changed to private access
+* `withCatalogPlanId(java.lang.String)` was removed
+* `validate()` was removed
+* `withMarketplaceSkuVersions(java.util.List)` was removed
+* `withMarketplaceSkuId(java.lang.String)` was removed
+
+#### `models.ValidateRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SdnIntegration` was modified
+
+* `validate()` was removed
+
+#### `models.HciNetworkProfile` was modified
+
+* `HciNetworkProfile()` was changed to private access
+* `validate()` was removed
+
+#### `models.LogCollectionProperties` was modified
+
+* `validate()` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `validate()` was removed
+
+#### `models.InfrastructureNetwork` was modified
+
+* `validate()` was removed
+
+#### `models.HciEdgeDeviceArcExtension` was modified
+
+* `HciEdgeDeviceArcExtension()` was changed to private access
+* `validate()` was removed
+
+#### `models.ExtensionInstanceViewStatus` was modified
+
+* `ExtensionInstanceViewStatus()` was changed to private access
+* `validate()` was removed
+* `withCode(java.lang.String)` was removed
+* `withDisplayStatus(java.lang.String)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withLevel(models.StatusLevelTypes)` was removed
+* `withTime(java.time.OffsetDateTime)` was removed
+
+#### `models.NetworkController` was modified
+
+* `validate()` was removed
+
+#### `models.HciEdgeDeviceIntents` was modified
+
+* `HciEdgeDeviceIntents()` was changed to private access
+* `validate()` was removed
+
+#### `models.LogCollectionSession` was modified
+
+* `LogCollectionSession()` was changed to private access
+* `validate()` was removed
+
+#### `models.SwitchExtension` was modified
+
+* `SwitchExtension()` was changed to private access
+* `validate()` was removed
+
+#### `models.PerNodeRemoteSupportSession` was modified
+
+* `PerNodeRemoteSupportSession()` was changed to private access
+* `validate()` was removed
+
+#### `models.SbeDeploymentPackageInfo` was modified
+
+* `SbeDeploymentPackageInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.SecurityComplianceStatus` was modified
+
+* `SecurityComplianceStatus()` was changed to private access
+* `validate()` was removed
+
+#### `models.IpPools` was modified
+
+* `validate()` was removed
+
+#### `models.ReportedProperties` was modified
+
+* `validate()` was removed
+
+#### `models.RemoteSupportProperties` was modified
+
+* `validate()` was removed
+
+#### `models.QosPolicyOverrides` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentSettingVirtualSwitchConfigurationOverrides` was modified
+
+* `validate()` was removed
+
+#### `models.SbePartnerProperties` was modified
+
+* `validate()` was removed
+
+#### `models.NicDetail` was modified
+
+* `validate()` was removed
+
+#### `models.RawCertificateData` was modified
+
+* `validate()` was removed
+
+#### `models.HciNicDetail` was modified
+
+* `HciNicDetail()` was changed to private access
+* `validate()` was removed
+
+#### `models.EdgeDeviceProperties` was modified
+
+* `validate()` was removed
+
+#### `models.UpdatePrerequisite` was modified
+
+* `validate()` was removed
+
+#### `models.EceReportedProperties` was modified
+
+* `EceReportedProperties()` was changed to private access
+* `validate()` was removed
+
+#### `models.HciEdgeDeviceStorageNetworks` was modified
+
+* `HciEdgeDeviceStorageNetworks()` was changed to private access
+* `validate()` was removed
+
+#### `models.HciUpdate$Update` was modified
+
+* `withProgressPercentage(java.lang.Float)` was removed
+* `withPackageSizeInMb(java.lang.Float)` was removed
+
+#### `models.ArcSetting` was modified
+
+* `java.lang.Object connectivityProperties()` -> `models.ArcConnectivityProperties connectivityProperties()`
+
+#### `models.DeploymentSettingAdapterPropertyOverrides` was modified
+
+* `validate()` was removed
+
+#### `models.SbePartnerInfo` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentSettingIntents` was modified
+
+* `validate()` was removed
+
+#### `models.DefaultExtensionDetails` was modified
+
+* `DefaultExtensionDetails()` was changed to private access
+* `validate()` was removed
+
+#### `models.DeploymentSecuritySettings` was modified
+
+* `validate()` was removed
+
+#### `models.RemoteSupportRequest` was modified
+
+* `validate()` was removed
+
+#### `models.SecuritySetting$Definition` was modified
+
+* `withProvisioningState(models.ProvisioningState)` was removed
+
+#### `models.SbeCredentials` was modified
+
+* `validate()` was removed
+
+#### `models.ClusterPatch` was modified
+
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `validate()` was removed
+
+#### `models.HciUpdate$Definition` was modified
+
+* `withProgressPercentage(java.lang.Float)` was removed
+* `withPackageSizeInMb(java.lang.Float)` was removed
+
+#### `models.HciUpdate` was modified
+
+* `java.lang.Float packageSizeInMb()` -> `java.lang.Double packageSizeInMb()`
+* `java.lang.Float progressPercentage()` -> `java.lang.Double progressPercentage()`
+
+#### `models.ArcSetting$Update` was modified
+
+* `withConnectivityProperties(java.lang.Object)` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `validate()` was removed
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.Operations` was modified
+
+* `listWithResponse(com.azure.core.util.Context)` was removed
+* `models.OperationListResult list()` -> `com.azure.core.http.rest.PagedIterable list()`
+
+#### `models.ExtensionProfile` was modified
+
+* `ExtensionProfile()` was changed to private access
+* `validate()` was removed
+
+#### `models.HciEdgeDeviceHostNetwork` was modified
+
+* `HciEdgeDeviceHostNetwork()` was changed to private access
+* `validate()` was removed
+
+#### `models.HciEdgeDeviceStorageAdapterIpInfo` was modified
+
+* `HciEdgeDeviceStorageAdapterIpInfo()` was changed to private access
+* `validate()` was removed
+
+#### `models.SbeDeploymentInfo` was modified
+
+* `validate()` was removed
+
+#### `models.RemoteSupportNodeSettings` was modified
+
+* `RemoteSupportNodeSettings()` was changed to private access
+* `validate()` was removed
+
+#### `models.PrecheckResult` was modified
+
+* `validate()` was removed
+
+#### `AzureStackHciManager` was modified
+
+* `publishers()` was removed
+* `fluent.AzureStackHciClient serviceClient()` -> `fluent.AzureStackHciManagementClient serviceClient()`
+
+#### `models.DeploymentConfiguration` was modified
+
+* `validate()` was removed
+
+#### `models.HciEdgeDeviceVirtualSwitchConfigurationOverrides` was modified
+
+* `HciEdgeDeviceVirtualSwitchConfigurationOverrides()` was changed to private access
+* `validate()` was removed
+
+#### `models.RemoteSupportRequestProperties` was modified
+
+* `validate()` was removed
+
+#### `models.LogCollectionError` was modified
+
+* `LogCollectionError()` was changed to private access
+* `validate()` was removed
+
+#### `models.ArcSettingsPatch` was modified
+
+* `java.lang.Object connectivityProperties()` -> `models.ArcConnectivityProperties connectivityProperties()`
+* `validate()` was removed
+* `withConnectivityProperties(java.lang.Object)` was removed
+
+#### `models.PerNodeExtensionState` was modified
+
+* `PerNodeExtensionState()` was changed to private access
+* `validate()` was removed
+
+#### `models.ExtensionInstanceView` was modified
+
+* `ExtensionInstanceView()` was changed to private access
+* `withTypeHandlerVersion(java.lang.String)` was removed
+* `validate()` was removed
+* `withStatus(models.ExtensionInstanceViewStatus)` was removed
+* `withType(java.lang.String)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.PackageVersionInfo` was modified
+
+* `validate()` was removed
+
+#### `models.DeploymentSettingStorageNetworks` was modified
+
+* `validate()` was removed
+
+#### `models.Observability` was modified
+
+* `validate()` was removed
+
+### Features Added
+
+* `models.RemoteSupportSession` was added
+
+* `models.JobStatus` was added
+
+* `models.DnsServerConfig` was added
+
+* `models.HciEdgeDeviceJobProperties` was added
+
+* `models.HciHardwareProfile` was added
+
+* `models.ValidatedSolutionRecipes` was added
+
+* `models.HciEdgeDeviceJobType` was added
+
+* `models.ValidatedSolutionRecipeComponent` was added
+
+* `models.ReconcileArcSettingsRequest` was added
+
+* `models.ReconcileArcSettingsRequestProperties` was added
+
+* `models.LocalAvailabilityZones` was added
+
+* `models.EdgeDeviceJobs` was added
+
+* `models.ValidatedSolutionRecipeComponentMetadata` was added
+
+* `models.DnsZones` was added
+
+* `models.HciStorageProfile` was added
+
+* `models.ValidatedSolutionRecipeComponentPayload` was added
+
+* `models.ClusterPattern` was added
+
+* `models.ValidatedSolutionRecipeInfo` was added
+
+* `models.AssemblyInfo` was added
+
+* `models.SecretsLocationsChangeRequest` was added
+
+* `models.RemoteSupportAccessLevel` was added
+
+* `models.LogCollectionJobSession` was added
+
+* `models.ValidatedSolutionRecipeCapabilities` was added
+
+* `models.SecretsType` was added
+
+* `models.AssemblyInfoPayload` was added
+
+* `models.RemoteSupportJobReportedProperties` was added
+
+* `models.RemoteSupportJobNodeSettings` was added
+
+* `models.RdmaCapability` was added
+
+* `models.DeviceLogCollectionStatus` was added
+
+* `models.ValidatedSolutionRecipeContent` was added
+
+* `models.ServiceConfiguration` was added
+
+* `models.SecretsLocationDetails` was added
+
+* `models.ArcConnectivityProperties` was added
+
+* `models.HciRemoteSupportJobProperties` was added
+
+* `models.IdentityProvider` was added
+
+* `models.HardwareClass` was added
+
+* `models.ValidatedSolutionRecipeCapability` was added
+
+* `models.ServiceName` was added
+
+* `models.EdgeDeviceJob` was added
+
+* `models.LogCollectionReportedProperties` was added
+
+* `models.EdgeDeviceKind` was added
+
+* `models.ValidatedSolutionRecipeProperties` was added
+
+* `models.HciEdgeDeviceJob` was added
+
+* `models.ValidatedSolutionRecipe` was added
+
+* `models.HciCollectLogJobProperties` was added
+
+#### `models.DeploymentData` was modified
+
+* `withAssemblyInfo(models.AssemblyInfo)` was added
+* `identityProvider()` was added
+* `withLocalAvailabilityZones(java.util.List)` was added
+* `localAvailabilityZones()` was added
+* `isManagementCluster()` was added
+* `withIsManagementCluster(java.lang.Boolean)` was added
+* `withIdentityProvider(models.IdentityProvider)` was added
+* `assemblyInfo()` was added
+
+#### `models.HciReportedProperties` was modified
+
+* `storageProfile()` was added
+* `hardwareProfile()` was added
+
+#### `models.Operation` was modified
+
+* `innerModel()` was added
+
+#### `models.ArcSetting$Definition` was modified
+
+* `withConnectivityProperties(models.ArcConnectivityProperties)` was added
+
+#### `models.Clusters` was modified
+
+* `updateSecretsLocations(java.lang.String,java.lang.String,models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
+* `updateSecretsLocations(java.lang.String,java.lang.String,models.SecretsLocationsChangeRequest)` was added
+
+#### `models.ClusterReportedProperties` was modified
+
+* `msiExpirationTimeStamp()` was added
+* `hardwareClass()` was added
+
+#### `models.DeploymentCluster` was modified
+
+* `clusterPattern()` was added
+* `hardwareClass()` was added
+* `withClusterPattern(models.ClusterPattern)` was added
+
+#### `models.Cluster` was modified
+
+* `updateSecretsLocations(models.SecretsLocationsChangeRequest,com.azure.core.util.Context)` was added
+* `isManagementCluster()` was added
+* `identityProvider()` was added
+* `clusterPattern()` was added
+* `localAvailabilityZones()` was added
+* `updateSecretsLocations(models.SecretsLocationsChangeRequest)` was added
+* `secretsLocations()` was added
+
+#### `models.InfrastructureNetwork` was modified
+
+* `dnsZones()` was added
+* `withDnsZones(java.util.List)` was added
+* `dnsServerConfig()` was added
+* `withDnsServerConfig(models.DnsServerConfig)` was added
+
+#### `models.ArcSettings` was modified
+
+* `reconcile(java.lang.String,java.lang.String,java.lang.String,models.ReconcileArcSettingsRequest,com.azure.core.util.Context)` was added
+* `reconcile(java.lang.String,java.lang.String,java.lang.String,models.ReconcileArcSettingsRequest)` was added
+
+#### `models.HciNicDetail` was modified
+
+* `rdmaCapability()` was added
+
+#### `models.HciUpdate$Update` was modified
+
+* `withPackageSizeInMb(java.lang.Double)` was added
+* `withProgressPercentage(java.lang.Double)` was added
+
+#### `models.ArcSetting` was modified
+
+* `reconcile(models.ReconcileArcSettingsRequest)` was added
+* `reconcile(models.ReconcileArcSettingsRequest,com.azure.core.util.Context)` was added
+
+#### `models.HciUpdate$Definition` was modified
+
+* `withProgressPercentage(java.lang.Double)` was added
+* `withPackageSizeInMb(java.lang.Double)` was added
+
+#### `models.ArcSetting$Update` was modified
+
+* `withConnectivityProperties(models.ArcConnectivityProperties)` was added
+
+#### `models.Operations` was modified
+
+* `list(com.azure.core.util.Context)` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withSecretsLocations(java.util.List)` was added
+* `withLocalAvailabilityZones(java.util.List)` was added
+
+#### `AzureStackHciManager` was modified
+
+* `edgeDeviceJobs()` was added
+* `validatedSolutionRecipes()` was added
+
+#### `models.ArcSettingsPatch` was modified
+
+* `withConnectivityProperties(models.ArcConnectivityProperties)` was added
 
 ## 1.0.0-beta.5 (2024-08-26)
 
