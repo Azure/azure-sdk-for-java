@@ -36,3 +36,6 @@ steps:
         sbomEnabled: false
       ${{ else }}:
         sbomEnabled: ${{ parameters.SbomEnabled }}
+    env:
+      ManifestGeneratorTaskTimeoutInMinutes: 40
+      ManifestGeneratorTaskFailOnTimeout: false
