@@ -66,4 +66,35 @@ public final class ResponsesAsyncClient {
         params.additionalBodyProperties(additionalBodyProperties);
         return Mono.fromFuture(this.openAIResponsesClientAsync.create(params.build()));
     }
+
+    /**
+     * Creates a response with an agent conversation.
+     *
+     * @param agentReference The agent reference.
+     * @param params The parameters to create the response.
+     * @return The created Response.
+     */
+    public Mono<Response> createWithAgent(AgentReference agentReference,
+                                    ResponseCreateParams.Builder params) {
+        Objects.requireNonNull(agentReference, "agentReference cannot be null");
+        Objects.requireNonNull(params, "params cannot be null");
+
+        JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
+
+        Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
+        additionalBodyProperties.put("agent", agentRefJsonValue);
+
+        params.additionalBodyProperties(additionalBodyProperties);
+        return Mono.fromFuture(this.openAIResponsesClientAsync.create(params.build()));
+    }
+
+    /**
+     * Creates a response with an agent conversation.
+     *
+     * @param agentReference The agent reference.
+     * @return The created Response.
+     */
+    public Mono<Response> createWithAgent(AgentReference agentReference) {
+        return createWithAgent(agentReference, new ResponseCreateParams.Builder());
+    }
 }
