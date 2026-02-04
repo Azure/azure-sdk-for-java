@@ -39,6 +39,15 @@
 # PRLabel: %azure-spring
 /sdk/boms/spring-cloud-azure-dependencies/                         @saragluna @rujche @netyyyy @moarychan @Azure/azure-java-sdk
 
+# PRLabel: %common
+/.vscode/                                                          @alzimmermsft @Azure/azure-java-sdk @conniey @g2vinay @moarychan @netyyyy @raych1 @rujche @saragluna @srnagar
+
+# PRLabel: %common
+/common/perf-test-core/                                            @alzimmermsft @Azure/azure-java-sdk @g2vinay @srnagar
+
+# AzureSdkOwners:                                                  @alzimmermsft @srnagar
+# ServiceLabel: %common
+
 # ######## Core Libraries ########
 
 # PRLabel: %Azure.Core
@@ -220,15 +229,6 @@
 
 # ServiceLabel: %Cognitive - Translator
 # ServiceOwners:                                                   @jrjrguo @SG-MS @swmachan
-
-# PRLabel: %common
-/.vscode/                                                          @alzimmermsft @Azure/azure-java-sdk @conniey @g2vinay @moarychan @netyyyy @raych1 @rujche @saragluna @srnagar
-
-# PRLabel: %common
-/common/perf-test-core/                                            @alzimmermsft @Azure/azure-java-sdk @g2vinay @srnagar
-
-# AzureSdkOwners:                                                  @alzimmermsft @srnagar
-# ServiceLabel: %common
 
 # PRLabel: %Communication
 /sdk/communication/                                                @Azure/azure-java-sdk
