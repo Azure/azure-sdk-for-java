@@ -31,7 +31,6 @@ public class CodeInterpreterAgent {
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .serviceVersion(AgentsServiceVersion.V2025_11_15_PREVIEW)
             .endpoint(endpoint);
 
         AgentsClient agentsClient = builder.buildAgentsClient();
