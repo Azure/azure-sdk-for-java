@@ -14,7 +14,7 @@ class ConfigurationWithoutConnectionDetailsBean {
 
     private final AzureGlobalProperties azureGlobalProperties;
 
-    public ConfigurationWithoutConnectionDetailsBean(AzureGlobalProperties azureGlobalProperties) {
+    ConfigurationWithoutConnectionDetailsBean(AzureGlobalProperties azureGlobalProperties) {
         this.azureGlobalProperties = azureGlobalProperties;
     }
 
