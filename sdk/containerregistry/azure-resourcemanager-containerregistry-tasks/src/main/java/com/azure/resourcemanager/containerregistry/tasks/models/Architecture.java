@@ -24,7 +24,7 @@ public final class Architecture extends ExpandableStringEnum<Architecture> {
     /**
      * Static value 386 for Architecture.
      */
-    public static final Architecture THREE_EIGHT_SIX = fromString("386");
+    public static final Architecture X86_386 = fromString("386");
 
     /**
      * Static value arm for Architecture.
