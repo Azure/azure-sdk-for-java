@@ -76,15 +76,6 @@
 # Client Libraries
 ####################
 
-# PRLabel: %common
-/.vscode/                                                          @alzimmermsft @Azure/azure-java-sdk @conniey @g2vinay @moarychan @netyyyy @raych1 @rujche @saragluna @srnagar
-
-# PRLabel: %common
-/common/perf-test-core/                                            @alzimmermsft @Azure/azure-java-sdk @g2vinay @srnagar
-
-# AzureSdkOwners:                                                  @alzimmermsft @srnagar
-# ServiceLabel: %common
-
 # PRLabel: %AgriFood
 /sdk/agrifood/                                                     @Azure/azure-java-sdk
 
@@ -96,15 +87,6 @@
 
 # PRLabel: %AI Model Inference
 /sdk/ai/azure-ai-inference/                                        @Azure/azure-java-sdk @dargilco @glharper @trrwilson
-
-# PRLabel: %Voice Live
-/sdk/ai/azure-ai-voicelive/                                        @amber-yujueWang @rhurey @xitzhang
-
-# PRLabel: %Cognitive - Anomaly Detector
-/sdk/anomalydetector/                                              @Azure/azure-java-sdk @mengaims
-
-# ServiceLabel: %Cognitive - Anomaly Detector
-# ServiceOwners:                                                   @bowgong @yingqunpku
 
 # PRLabel: %App Configuration
 /sdk/appconfiguration/                                             @alzimmermsft @avanigupta @Azure/azure-java-sdk @mrm9084 @rossgrambo
@@ -125,6 +107,57 @@
 # ServiceLabel: %Attestation
 # ServiceOwners:                                                   @anilba06 @gkostal
 
+# PRLabel: %Azure Quantum
+/sdk/quantum/                                                      @Azure/azure-java-sdk @vxfield
+
+# PRLabel: %Azure SDK Tools
+/sdk/tools/                                                        @Azure/azure-java-sdk @jonathangiles @srnagar
+
+# PRLabel: %Azure SDK Tools
+/sdk/tools/azure-openrewrite-compiler-maven-plugin/                @Azure/azure-java-sdk @jairmyree @jonathangiles @samvaity @srnagar
+
+# PRLabel: %Azure SDK Tools
+/sdk/tools/azure-openrewrite/                                      @Azure/azure-java-sdk @jairmyree @jonathangiles @samvaity @srnagar
+
+# AzureSdkOwners:                                                  @jonathangiles @srnagar
+# ServiceLabel: %Azure SDK Tools
+
+# PRLabel: %azure-spring
+/sdk/identity/azure-identity-extensions/                           @Azure/azure-java-sdk @moarychan @netyyyy @rujche @saragluna
+
+# PRLabel: %azure-spring
+/sdk/keyvault/azure-security-keyvault-jca/                         @Azure/azure-java-sdk @moarychan @netyyyy @rujche @saragluna
+
+# PRLabel: %azure-spring
+/sdk/spring-experimental/                                          @Azure/azure-java-sdk @moarychan @netyyyy @rujche @saragluna
+
+# PRLabel: %azure-spring
+/sdk/spring/                                                       @Azure/azure-java-sdk @moarychan @netyyyy @rujche @saragluna
+
+# PRLabel: %azure-spring
+/sdk/spring/azure-spring-data-cosmos/                              @Azure/azure-cosmos-java-sdk-connectors @moarychan @netyyyy @rujche @saragluna
+
+# PRLabel: %azure-spring
+/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+
+# PRLabel: %azure-spring
+/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+
+# PRLabel: %azure-spring
+/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
+
+# AzureSdkOwners:                                                  @moarychan @netyyyy @rujche @saragluna
+# ServiceLabel: %azure-spring
+
+# PRLabel: %Azure.Identity
+/sdk/e2e/                                                          @Azure/azure-java-sdk @g2vinay @joshfree
+
+# PRLabel: %Azure.Identity
+/sdk/identity/                                                     @Azure/azure-java-sdk @Azure/azure-sdk-write-identity @g2vinay @joshfree
+
+# AzureSdkOwners:                                                  @g2vinay @joshfree
+# ServiceLabel: %Azure.Identity
+
 # PRLabel: %Batch
 /sdk/batch/                                                        @Azure/azure-java-sdk @dpwatrous @ReneOv-MSFT @skapur12 @wiboris
 
@@ -136,6 +169,66 @@
 
 # AzureSdkOwners:                                                  @alzimmermsft @jonathangiles @samvaity @srnagar @vcolin7
 # ServiceLabel: %clientcore
+
+# PRLabel: %Cognitive - Anomaly Detector
+/sdk/anomalydetector/                                              @Azure/azure-java-sdk @mengaims
+
+# ServiceLabel: %Cognitive - Anomaly Detector
+# ServiceOwners:                                                   @bowgong @yingqunpku
+
+# PRLabel: %Cognitive - Face
+/sdk/face/azure-ai-vision-face/                                    @Azure/azure-java-sdk @leareai
+
+# ServiceLabel: %Cognitive - Face
+# ServiceOwners:                                                   @dipidoo @JinyuID @SteveMSFT
+
+# ServiceLabel: %Cognitive - Face
+# ServiceOwners:                                                   @leareai
+
+# PRLabel: %Cognitive - Form Recognizer
+/sdk/formrecognizer/                                               @Azure/azure-java-sdk @samvaity
+
+# AzureSdkOwners:                                                  @samvaity
+# ServiceLabel: %Cognitive - Form Recognizer
+# ServiceOwners:                                                   @ctstone @vkurpad
+
+# PRLabel: %Cognitive - Health Insights
+/sdk/healthinsights/                                               @Azure/azure-java-sdk @koen-mertens @tomsft
+
+# PRLabel: %Cognitive - Metrics Advisor
+/sdk/metricsadvisor/                                               @anuchandy @Azure/azure-java-sdk @samvaity
+
+# AzureSdkOwners:                                                  @samvaity
+# ServiceLabel: %Cognitive - Metrics Advisor
+# ServiceOwners:                                                   @bowgong
+
+# PRLabel: %Cognitive - Personalizer
+/sdk/personalizer/                                                 @Azure/azure-java-sdk @sharathmalladi
+
+# ServiceLabel: %Cognitive - Personalizer
+# ServiceOwners:                                                   @sharathmalladi
+
+# PRLabel: %Cognitive - Text Analytics
+/sdk/textanalytics/                                                @Azure/azure-java-sdk @quentinRobinson @samvaity
+
+# AzureSdkOwners:                                                  @samvaity
+# ServiceLabel: %Cognitive - Text Analytics
+# ServiceOwners:                                                   @assafi
+
+# PRLabel: %Cognitive - Translator
+/sdk/translation/                                                  @Azure/azure-java-sdk @jrjrguo @SG-MS
+
+# ServiceLabel: %Cognitive - Translator
+# ServiceOwners:                                                   @jrjrguo @SG-MS @swmachan
+
+# PRLabel: %common
+/.vscode/                                                          @alzimmermsft @Azure/azure-java-sdk @conniey @g2vinay @moarychan @netyyyy @raych1 @rujche @saragluna @srnagar
+
+# PRLabel: %common
+/common/perf-test-core/                                            @alzimmermsft @Azure/azure-java-sdk @g2vinay @srnagar
+
+# AzureSdkOwners:                                                  @alzimmermsft @srnagar
+# ServiceLabel: %common
 
 # PRLabel: %Communication
 /sdk/communication/                                                @Azure/azure-java-sdk
@@ -164,14 +257,14 @@
 # PRLabel: %Communication - Phone Numbers
 /sdk/communication/azure-communication-phonenumbers/               @Azure/azure-java-sdk @besh2014 @gfeitosa-msft @ihuseynov-msft @ilyapaliakou-msft @kirill-linnik @phermanov-msft
 
+# PRLabel: %Communication - Resource Manager
+/sdk/communication/azure-resourcemanager-communication/            @Azure/azure-java-sdk
+
 # PRLabel: %Communication - Rooms
 /sdk/communication/azure-communication-rooms/                      @allchiang-msft @Azure/azure-java-sdk @mikehang-msft @minnieliu @paolamvhz @shwali-msft
 
 # PRLabel: %Communication - SMS
 /sdk/communication/azure-communication-sms/                        @Azure/azure-java-sdk @besh2014 @gfeitosa-msft @ilyapaliakou-msft @phermanov-msft
-
-# PRLabel: %Communication - Resource Manager
-/sdk/communication/azure-resourcemanager-communication/            @Azure/azure-java-sdk
 
 # PRLabel: %Confidential Ledger
 /sdk/confidentialledger/                                           @amruthashree18 @Azure/azure-java-sdk @musabbir
@@ -223,8 +316,8 @@
 # ServiceLabel: %Durable Task Scheduler
 # ServiceOwners:                                                   @berndverst @cgillum @kaibocai @philliphoff @RyanLettieri @torosent
 
-# PRLabel: %Azure.Identity
-/sdk/e2e/                                                          @Azure/azure-java-sdk @g2vinay @joshfree
+# PRLabel: %EngSys
+/sdk/template/                                                     @Azure/azure-java-sdk @raych1 @weshaggard
 
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                                    @Azure/azure-java-sdk @samvaity @srnagar
@@ -245,22 +338,6 @@
 # ServiceLabel: %Event Hubs
 # ServiceOwners:                                                   @axisc @hmlam @sjkwak
 
-# PRLabel: %Cognitive - Face
-/sdk/face/azure-ai-vision-face/                                    @Azure/azure-java-sdk @leareai
-
-# ServiceLabel: %Cognitive - Face
-# ServiceOwners:                                                   @dipidoo @JinyuID @SteveMSFT
-
-# ServiceLabel: %Cognitive - Face
-# ServiceOwners:                                                   @leareai
-
-# PRLabel: %Cognitive - Form Recognizer
-/sdk/formrecognizer/                                               @Azure/azure-java-sdk @samvaity
-
-# AzureSdkOwners:                                                  @samvaity
-# ServiceLabel: %Cognitive - Form Recognizer
-# ServiceOwners:                                                   @ctstone @vkurpad
-
 # PRLabel: %Health Deidentification
 /sdk/healthdataaiservices/                                         @alexathomases @Azure/azure-java-sdk @Azure/healthdatadeidentification
 
@@ -273,17 +350,11 @@
 # ServiceLabel: %Health Deidentification
 # ServiceOwners:                                                   @alexathomases @Azure/healthdatadeidentification
 
-# PRLabel: %Cognitive - Health Insights
-/sdk/healthinsights/                                               @Azure/azure-java-sdk @koen-mertens @tomsft
+# PRLabel: %Image Analysis
+/sdk/vision/azure-ai-vision-imageanalysis/                         @Azure/azure-java-sdk @dargilco @rhurey
 
-# PRLabel: %Azure.Identity
-/sdk/identity/                                                     @Azure/azure-java-sdk @Azure/azure-sdk-write-identity @g2vinay @joshfree
-
-# AzureSdkOwners:                                                  @g2vinay @joshfree
-# ServiceLabel: %Azure.Identity
-
-# PRLabel: %azure-spring
-/sdk/identity/azure-identity-extensions/                           @Azure/azure-java-sdk @moarychan @netyyyy @rujche @saragluna
+# ServiceLabel: %Image Analysis
+# ServiceOwners:                                                   @dargilco @rhurey
 
 # PRLabel: %KeyVault
 /sdk/keyvault/                                                     @Azure/azure-java-sdk @Azure/azure-sdk-write-keyvault
@@ -292,21 +363,11 @@
 # ServiceLabel: %KeyVault
 # ServiceOwners:                                                   @Azure/azure-sdk-write-keyvault @chen-karen
 
-# PRLabel: %azure-spring
-/sdk/keyvault/azure-security-keyvault-jca/                         @Azure/azure-java-sdk @moarychan @netyyyy @rujche @saragluna
-
 # PRLabel: %Load Testing
 /sdk/loadtesting/                                                  @Azure/azure-java-sdk @Harshan01 @mitsha-microsoft @ninallam @prativen
 
 # ServiceLabel: %Load Testing
 # ServiceOwners:                                                   @Harshan01 @mitsha-microsoft @ninallam @prativen
-
-# PRLabel: %Cognitive - Metrics Advisor
-/sdk/metricsadvisor/                                               @anuchandy @Azure/azure-java-sdk @samvaity
-
-# AzureSdkOwners:                                                  @samvaity
-# ServiceLabel: %Cognitive - Metrics Advisor
-# ServiceOwners:                                                   @bowgong
 
 # PRLabel: %Mixed Reality Authentication
 /sdk/mixedreality/azure-mixedreality-authentication/               @Azure/azure-java-sdk @RamonArguelles
@@ -316,12 +377,6 @@
 
 # PRLabel: %Monitor
 /sdk/monitor/azure-monitor-ingestion*/                             @Azure/azure-java-sdk @Azure/azure-sdk-write-monitor-data-plane @jairmyree @srnagar
-
-# PRLabel: %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/            @Azure/azure-java-sdk @harsimar @jeanbisutti @rajkumar-rangaraj @ramthi @trask @xiang17
-
-# PRLabel: %Monitor - Autoconfigure
-/sdk/monitor/azure-monitor-opentelemetry-exporter/                 @Azure/azure-java-sdk @harsimar @jeanbisutti @ramthi @trask
 
 # PRLabel: %Monitor
 /sdk/monitor/azure-monitor-query-logs/                             @Azure/azure-java-sdk @Azure/azure-sdk-write-monitor-query-logs
@@ -339,11 +394,20 @@
 # ServiceLabel: %Monitor
 # ServiceOwners:                                                   @AzmonActionG @AzmonAlerts @AzMonEssential @AzmonLogA @dadunl @SameergMS
 
-# PRLabel: %Operator Nexus - Network Cloud
-/sdk/networkcloud/                                                 @Azure/azure-java-sdk @Azure/azure-sdk-write-networkcloud
+# PRLabel: %Monitor - Autoconfigure
+/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/            @Azure/azure-java-sdk @harsimar @jeanbisutti @rajkumar-rangaraj @ramthi @trask @xiang17
 
-# ServiceLabel: %Operator Nexus - Network Cloud
-# ServiceOwners:                                                   @Azure/azure-sdk-write-networkcloud
+# PRLabel: %Monitor - Autoconfigure
+/sdk/monitor/azure-monitor-opentelemetry-exporter/                 @Azure/azure-java-sdk @harsimar @jeanbisutti @ramthi @trask
+
+# PRLabel: %Monitor - Spring
+/sdk/spring/spring-cloud-azure-starter-monitor-test                @Azure/azure-java-sdk @harsimar @jeanbisutti @moarychan @netyyyy @rajkumar-rangaraj @ramthi @rujche @saragluna @trask @xiang17
+
+# PRLabel: %Monitor - Spring
+/sdk/spring/spring-cloud-azure-starter-monitor                     @Azure/azure-java-sdk @harsimar @jeanbisutti @moarychan @netyyyy @rajkumar-rangaraj @ramthi @rujche @saragluna @trask @xiang17
+
+# AzureSdkOwners:                                                  @harsimar @jeanbisutti @rajkumar-rangaraj @ramthi @trask @xiang17
+# ServiceLabel: %Monitor - Spring
 
 # PRLabel: %Online Experimentation
 /sdk/onlineexperimentation/                                        @Azure/azure-java-sdk @Azure/azure-sdk-write-onlineexperimentation
@@ -360,20 +424,17 @@
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai/                                       @Azure/azure-java-sdk @jpalvarezl
 
-# PRLabel: %Cognitive - Personalizer
-/sdk/personalizer/                                                 @Azure/azure-java-sdk @sharathmalladi
+# PRLabel: %Operator Nexus - Network Cloud
+/sdk/networkcloud/                                                 @Azure/azure-java-sdk @Azure/azure-sdk-write-networkcloud
 
-# ServiceLabel: %Cognitive - Personalizer
-# ServiceOwners:                                                   @sharathmalladi
+# ServiceLabel: %Operator Nexus - Network Cloud
+# ServiceOwners:                                                   @Azure/azure-sdk-write-networkcloud
 
 # PRLabel: %Purview
 /sdk/purview/                                                      @Azure/azure-java-sdk @yifan-zhou922
 
 # ServiceLabel: %Purview
 # ServiceOwners:                                                   @yifan-zhou922
-
-# PRLabel: %Azure Quantum
-/sdk/quantum/                                                      @Azure/azure-java-sdk @vxfield
 
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                               @axisc @Azure/azure-java-sdk @hmlam @sjkwak
@@ -400,35 +461,12 @@
 # AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft
 # ServiceLabel: %Service Bus %Track 1
 
-# PRLabel: %azure-spring
-/sdk/spring-experimental/                                          @Azure/azure-java-sdk @moarychan @netyyyy @rujche @saragluna
+# PRLabel: %Speech Transcription
+/sdk/transcription/azure-ai-speech-transcription/                  @amber-yujueWang @Azure/azure-java-sdk @rhurey @xitzhang
 
-# PRLabel: %azure-spring
-/sdk/spring/                                                       @Azure/azure-java-sdk @moarychan @netyyyy @rujche @saragluna
-
-# PRLabel: %azure-spring
-/sdk/spring/azure-spring-data-cosmos/                              @Azure/azure-cosmos-java-sdk-connectors @moarychan @netyyyy @rujche @saragluna
-
-# PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-appconfiguration-config*/           @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
-
-# PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-feature-management*/                @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
-
-# PRLabel: %azure-spring
-/sdk/spring/spring-cloud-azure-starter-appconfiguration-config/    @avanigupta @Azure/azure-java-sdk @moarychan @mrm9084 @netyyyy @rossgrambo @rujche @saragluna
-
-# AzureSdkOwners:                                                  @moarychan @netyyyy @rujche @saragluna
-# ServiceLabel: %azure-spring
-
-# PRLabel: %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test                @Azure/azure-java-sdk @harsimar @jeanbisutti @moarychan @netyyyy @rajkumar-rangaraj @ramthi @rujche @saragluna @trask @xiang17
-
-# PRLabel: %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor                     @Azure/azure-java-sdk @harsimar @jeanbisutti @moarychan @netyyyy @rajkumar-rangaraj @ramthi @rujche @saragluna @trask @xiang17
-
-# AzureSdkOwners:                                                  @harsimar @jeanbisutti @rajkumar-rangaraj @ramthi @trask @xiang17
-# ServiceLabel: %Monitor - Spring
+# AzureSdkOwners:                                                  @amber-yujueWang @rhurey @xitzhang
+# ServiceLabel: %Speech Transcription
+# ServiceOwners:                                                   @amber-yujueWang @rhurey @xitzhang
 
 # PRLabel: %Storage
 /sdk/storage/                                                      @alzimmermsft @Azure/azure-java-sdk @browndav-msft @gunjansingh-msft @ibrandes @kyleknap @seanmcc-msft
@@ -450,46 +488,8 @@
 # ServiceLabel: %Tables
 # ServiceOwners:                                                   @klaaslanghout
 
-# PRLabel: %EngSys
-/sdk/template/                                                     @Azure/azure-java-sdk @raych1 @weshaggard
-
-# PRLabel: %Cognitive - Text Analytics
-/sdk/textanalytics/                                                @Azure/azure-java-sdk @quentinRobinson @samvaity
-
-# AzureSdkOwners:                                                  @samvaity
-# ServiceLabel: %Cognitive - Text Analytics
-# ServiceOwners:                                                   @assafi
-
-# PRLabel: %Azure SDK Tools
-/sdk/tools/                                                        @Azure/azure-java-sdk @jonathangiles @srnagar
-
-# PRLabel: %Azure SDK Tools
-/sdk/tools/azure-openrewrite-compiler-maven-plugin/                @Azure/azure-java-sdk @jairmyree @jonathangiles @samvaity @srnagar
-
-# PRLabel: %Azure SDK Tools
-/sdk/tools/azure-openrewrite/                                      @Azure/azure-java-sdk @jairmyree @jonathangiles @samvaity @srnagar
-
-# AzureSdkOwners:                                                  @jonathangiles @srnagar
-# ServiceLabel: %Azure SDK Tools
-
-# PRLabel: %Speech Transcription
-/sdk/transcription/azure-ai-speech-transcription/                  @amber-yujueWang @Azure/azure-java-sdk @rhurey @xitzhang
-
-# AzureSdkOwners:                                                  @amber-yujueWang @rhurey @xitzhang
-# ServiceLabel: %Speech Transcription
-# ServiceOwners:                                                   @amber-yujueWang @rhurey @xitzhang
-
-# PRLabel: %Cognitive - Translator
-/sdk/translation/                                                  @Azure/azure-java-sdk @jrjrguo @SG-MS
-
-# ServiceLabel: %Cognitive - Translator
-# ServiceOwners:                                                   @jrjrguo @SG-MS @swmachan
-
-# PRLabel: %Image Analysis
-/sdk/vision/azure-ai-vision-imageanalysis/                         @Azure/azure-java-sdk @dargilco @rhurey
-
-# ServiceLabel: %Image Analysis
-# ServiceOwners:                                                   @dargilco @rhurey
+# PRLabel: %Voice Live
+/sdk/ai/azure-ai-voicelive/                                        @amber-yujueWang @rhurey @xitzhang
 
 # PRLabel: %WebPubSub
 /sdk/webpubsub/azure-messaging-webpubsub-client/                   @Azure/azure-java-sdk @chenkennt @vicancy @zackliu
