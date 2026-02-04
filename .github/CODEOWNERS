@@ -341,12 +341,6 @@
 # PRLabel: %Health Deidentification
 /sdk/healthdataaiservices/                                         @alexathomases @Azure/azure-java-sdk @Azure/healthdatadeidentification
 
-# PRLabel: %Health Deidentification
-/sdk/healthdataaiservices/                                         @alexathomases @Azure/azure-java-sdk @Azure/healthdatadeidentification
-
-# ServiceLabel: %Health Deidentification
-# ServiceOwners:                                                   @alexathomases @Azure/healthdatadeidentification
-
 # ServiceLabel: %Health Deidentification
 # ServiceOwners:                                                   @alexathomases @Azure/healthdatadeidentification
 
