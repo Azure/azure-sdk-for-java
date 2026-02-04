@@ -94,7 +94,7 @@ public final class BuilderHelper {
         List<HttpPipelinePolicy> perRetryPolicies, Configuration configuration, DataLakeAudience audience,
         ClientLogger logger) {
 
-        CredentialValidator.validateSingleCredentialIsPresent(storageSharedKeyCredential, tokenCredential,
+        CredentialValidator.validateCredentialsNotAmbiguous(storageSharedKeyCredential, tokenCredential,
             azureSasCredential, null, logger);
 
         // Closest to API goes first, closest to wire goes last.
@@ -119,23 +119,20 @@ public final class BuilderHelper {
         }
         policies.add(new MetadataValidationPolicy());
 
-        HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {
-            credentialPolicy = new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-        } else if (tokenCredential != null) {
+            policies.add(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential));
+        }
+
+        if (tokenCredential != null) {
             // The endpoint scope for the BearerToken is the blob endpoint not dfs
             String scope = audience != null
                 ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
                 : Constants.STORAGE_SCOPE;
-            credentialPolicy = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
-        } else if (azureSasCredential != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
-        } else {
-            credentialPolicy = null;
+            policies.add(new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope));
         }
 
-        if (credentialPolicy != null) {
-            policies.add(credentialPolicy);
+        if (azureSasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
         }
 
         policies.addAll(perRetryPolicies);
@@ -263,5 +260,15 @@ public final class BuilderHelper {
             return context.addData(Constants.SKIP_ECHO_VALIDATION_KEY, headersToSkip);
         }
 
+    }
+
+    /**
+     * Logs information about credential changes in builders.
+     *
+     * @param logger The logger to use.
+     * @param newCredentialType The credential type being set.
+     */
+    public static void logCredentialChange(ClientLogger logger, String newCredentialType) {
+        logger.info("Credential set to '{}' when it was previously configured.", newCredentialType);
     }
 }
