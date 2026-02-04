@@ -1,6 +1,6 @@
 # Release History
 
-## 2.58.0 (2026-02-03)
+## 2.58.0 (2026-02-14)
 
 ### Breaking Changes
 
