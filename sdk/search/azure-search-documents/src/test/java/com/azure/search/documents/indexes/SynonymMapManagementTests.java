@@ -130,13 +130,11 @@ public class SynonymMapManagementTests extends SearchTestBase {
     @Test
     public void createSynonymMapReturnsCorrectDefinitionWithResponseAsync() {
         SynonymMap expectedSynonymMap = createTestSynonymMap();
-        StepVerifier.create(asyncClient.createSynonymMapWithResponse(expectedSynonymMap, null))
-            .assertNext(response -> {
-                SynonymMap synonymMap = response.getValue();
-                synonymMapsToDelete.add(synonymMap.getName());
-                assertSynonymMapsEqual(expectedSynonymMap, synonymMap);
-            })
-            .verifyComplete();
+        StepVerifier.create(asyncClient.createSynonymMapWithResponse(expectedSynonymMap, null)).assertNext(response -> {
+            SynonymMap synonymMap = response.getValue();
+            synonymMapsToDelete.add(synonymMap.getName());
+            assertSynonymMapsEqual(expectedSynonymMap, synonymMap);
+        }).verifyComplete();
 
         StepVerifier.create(asyncClient.getSynonymMapWithResponse(expectedSynonymMap.getName(), null))
             .assertNext(response -> assertSynonymMapsEqual(expectedSynonymMap, response.getValue()))

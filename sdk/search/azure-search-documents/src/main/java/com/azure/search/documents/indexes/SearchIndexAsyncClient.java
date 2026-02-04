@@ -1699,9 +1699,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> getSynonymMap(String name) {
-        // Generated convenience method for getSynonymMapWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSynonymMapWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetSynonymMapWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SynonymMap.class));
     }
 
@@ -1842,9 +1842,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
-        // Generated convenience method for createSynonymMapWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createSynonymMapWithResponseHiddenGenerated(BinaryData.fromObject(synonymMap), requestOptions)
+        return hiddenGeneratedcreateSynonymMapWithResponse(BinaryData.fromObject(synonymMap), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SynonymMap.class));
     }
@@ -1999,9 +1999,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndex> getIndex(String name) {
-        // Generated convenience method for getIndexWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetIndexWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndex.class));
     }
 
@@ -2119,9 +2119,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndex> createIndex(SearchIndex index) {
-        // Generated convenience method for createIndexWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createIndexWithResponseHiddenGenerated(BinaryData.fromObject(index), requestOptions)
+        return hiddenGeneratedcreateIndexWithResponse(BinaryData.fromObject(index), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndex.class));
     }
@@ -2141,9 +2141,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetIndexStatisticsResult> getIndexStatistics(String name) {
-        // Generated convenience method for getIndexStatisticsWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetIndexStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexStatisticsWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetIndexStatisticsWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(GetIndexStatisticsResult.class));
     }
 
@@ -2163,9 +2163,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeResult> analyzeText(String name, AnalyzeTextOptions request) {
-        // Generated convenience method for analyzeTextWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedanalyzeTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeTextWithResponseHiddenGenerated(name, BinaryData.fromObject(request), requestOptions)
+        return hiddenGeneratedanalyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(AnalyzeResult.class));
     }
@@ -2310,9 +2310,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAlias> getAlias(String name) {
-        // Generated convenience method for getAliasWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetAliasWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAliasWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetAliasWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchAlias.class));
     }
 
@@ -2362,9 +2362,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAlias> createAlias(SearchAlias alias) {
-        // Generated convenience method for createAliasWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateAliasWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAliasWithResponseHiddenGenerated(BinaryData.fromObject(alias), requestOptions)
+        return hiddenGeneratedcreateAliasWithResponse(BinaryData.fromObject(alias), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchAlias.class));
     }
@@ -2487,9 +2487,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeBase> getKnowledgeBase(String name) {
-        // Generated convenience method for getKnowledgeBaseWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetKnowledgeBaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeBaseWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetKnowledgeBaseWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class));
     }
 
@@ -2538,9 +2538,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeBase> createKnowledgeBase(KnowledgeBase knowledgeBase) {
-        // Generated convenience method for createKnowledgeBaseWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateKnowledgeBaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createKnowledgeBaseWithResponseHiddenGenerated(BinaryData.fromObject(knowledgeBase), requestOptions)
+        return hiddenGeneratedcreateKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeBase.class));
     }
@@ -2680,9 +2680,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSource> getKnowledgeSource(String name) {
-        // Generated convenience method for getKnowledgeSourceWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetKnowledgeSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeSourceWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetKnowledgeSourceWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSource.class));
     }
 
@@ -2731,9 +2731,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSource> createKnowledgeSource(KnowledgeSource knowledgeSource) {
-        // Generated convenience method for createKnowledgeSourceWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateKnowledgeSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createKnowledgeSourceWithResponseHiddenGenerated(BinaryData.fromObject(knowledgeSource), requestOptions)
+        return hiddenGeneratedcreateKnowledgeSourceWithResponse(BinaryData.fromObject(knowledgeSource), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSource.class));
     }
@@ -2754,9 +2754,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KnowledgeSourceStatus> getKnowledgeSourceStatus(String name) {
-        // Generated convenience method for getKnowledgeSourceStatusWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetKnowledgeSourceStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeSourceStatusWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetKnowledgeSourceStatusWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(KnowledgeSourceStatus.class));
     }
 
@@ -2773,9 +2773,9 @@ public final class SearchIndexAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchServiceStatistics> getServiceStatistics() {
-        // Generated convenience method for getServiceStatisticsWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetServiceStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getServiceStatisticsWithResponseHiddenGenerated(requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetServiceStatisticsWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchServiceStatistics.class));
     }
 
@@ -2828,6 +2828,246 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
+     * Creates a new synonym map.
+     *
+     * @param synonymMap The definition of the synonym map to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
+        RequestOptions requestOptions) {
+        return mapResponse(
+            this.serviceClient.createSynonymMapWithResponseAsync(BinaryData.fromObject(synonymMap), requestOptions),
+            SynonymMap.class);
+    }
+
+    /**
+     * Retrieves an index definition.
+     *
+     * @param name The name of the index.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndex>> getIndexWithResponse(String name, RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getIndexWithResponseAsync(name, requestOptions), SearchIndex.class);
+    }
+
+    /**
+     * Creates a new search index.
+     *
+     * @param index The definition of the index to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     * with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
+        return mapResponse(
+            this.serviceClient.createIndexWithResponseAsync(BinaryData.fromObject(index), requestOptions),
+            SearchIndex.class);
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param name The name of the index.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return statistics for a given index along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String name,
+        RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getIndexStatisticsWithResponseAsync(name, requestOptions),
+            GetIndexStatisticsResult.class);
+    }
+
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param name The name of the index.
+     * @param request The text and analyzer or analysis components to test.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of testing an analyzer on text along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<AnalyzeResult>> analyzeTextWithResponse(String name, AnalyzeTextOptions request,
+        RequestOptions requestOptions) {
+        return mapResponse(
+            this.serviceClient.analyzeTextWithResponseAsync(name, BinaryData.fromObject(request), requestOptions),
+            AnalyzeResult.class);
+    }
+
+    /**
+     * Retrieves an alias definition.
+     *
+     * @param name The name of the alias.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchAlias>> getAliasWithResponse(String name, RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getAliasWithResponseAsync(name, requestOptions), SearchAlias.class);
+    }
+
+    /**
+     * Creates a new search alias.
+     *
+     * @param alias The definition of the alias to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchAlias>> createAliasWithResponse(SearchAlias alias, RequestOptions requestOptions) {
+        return mapResponse(
+            this.serviceClient.createAliasWithResponseAsync(BinaryData.fromObject(alias), requestOptions),
+            SearchAlias.class);
+    }
+
+    /**
+     * Retrieves a knowledge base definition.
+     *
+     * @param name The name of the knowledge base.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge base definition along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getKnowledgeBaseWithResponseAsync(name, requestOptions),
+            KnowledgeBase.class);
+    }
+
+    /**
+     * Creates a new knowledge base.
+     *
+     * @param knowledgeBase The definition of the knowledge base to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge base definition along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
+        RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.createKnowledgeBaseWithResponseAsync(BinaryData.fromObject(knowledgeBase),
+            requestOptions), KnowledgeBase.class);
+    }
+
+    /**
+     * Retrieves a knowledge source definition.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> getKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getKnowledgeSourceWithResponseAsync(name, requestOptions),
+            KnowledgeSource.class);
+    }
+
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSource>> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.createKnowledgeSourceWithResponseAsync(
+            BinaryData.fromObject(knowledgeSource), requestOptions), KnowledgeSource.class);
+    }
+
+    /**
+     * Retrieves the status of a knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the status and synchronization history of a knowledge source along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KnowledgeSourceStatus>> getKnowledgeSourceStatusWithResponse(String name,
+        RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getKnowledgeSourceStatusWithResponseAsync(name, requestOptions),
+            KnowledgeSourceStatus.class);
+    }
+
+    /**
+     * Gets service level statistics for a search service.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return service level statistics for a search service along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getServiceStatisticsWithResponseAsync(requestOptions),
+            SearchServiceStatistics.class);
+    }
+
+    /**
      * Retrieves a synonym map definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2866,27 +3106,8 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getSynonymMapWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetSynonymMapWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getSynonymMapWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Creates a new synonym map.
-     *
-     * @param synonymMap The definition of the synonym map to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a synonym map definition along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
-        RequestOptions requestOptions) {
-        return mapResponse(
-            this.serviceClient.createSynonymMapWithResponseAsync(BinaryData.fromObject(synonymMap), requestOptions),
-            SynonymMap.class);
     }
 
     /**
@@ -2955,30 +3176,13 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createSynonymMapWithResponseHiddenGenerated(BinaryData synonymMap,
+    Mono<Response<BinaryData>> hiddenGeneratedcreateSynonymMapWithResponse(BinaryData synonymMap,
         RequestOptions requestOptions) {
         return this.serviceClient.createSynonymMapWithResponseAsync(synonymMap, requestOptions);
     }
 
     /**
      * Retrieves an index definition.
-     *
-     * @param name The name of the index.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a search index definition, which describes the fields and search behavior of an index along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndex>> getIndexWithResponse(String name, RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getIndexWithResponseAsync(name, requestOptions), SearchIndex.class);
-    }
-
-    /**
-     * Retrieves an index definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3167,27 +3371,8 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getIndexWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetIndexWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Creates a new search index.
-     *
-     * @param index The definition of the index to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a search index definition, which describes the fields and search behavior of an index along
-     * with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
-        return mapResponse(
-            this.serviceClient.createIndexWithResponseAsync(BinaryData.fromObject(index), requestOptions),
-            SearchIndex.class);
     }
 
     /**
@@ -3557,26 +3742,8 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createIndexWithResponseHiddenGenerated(BinaryData index, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedcreateIndexWithResponse(BinaryData index, RequestOptions requestOptions) {
         return this.serviceClient.createIndexWithResponseAsync(index, requestOptions);
-    }
-
-    /**
-     * Returns statistics for the given index, including a document count and storage usage.
-     *
-     * @param name The name of the index.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return statistics for a given index along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String name,
-        RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getIndexStatisticsWithResponseAsync(name, requestOptions),
-            GetIndexStatisticsResult.class);
     }
 
     /**
@@ -3603,30 +3770,9 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getIndexStatisticsWithResponseHiddenGenerated(String name,
+    Mono<Response<BinaryData>> hiddenGeneratedgetIndexStatisticsWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getIndexStatisticsWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Shows how an analyzer breaks text into tokens.
-     *
-     * @param name The name of the index.
-     * @param request The text and analyzer or analysis components to test.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of testing an analyzer on text along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AnalyzeResult>> analyzeTextWithResponse(String name, AnalyzeTextOptions request,
-        RequestOptions requestOptions) {
-        return mapResponse(
-            this.serviceClient.analyzeTextWithResponseAsync(name, BinaryData.fromObject(request), requestOptions),
-            AnalyzeResult.class);
     }
 
     /**
@@ -3679,30 +3825,13 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> analyzeTextWithResponseHiddenGenerated(String name, BinaryData request,
+    Mono<Response<BinaryData>> hiddenGeneratedanalyzeTextWithResponse(String name, BinaryData request,
         RequestOptions requestOptions) {
         return this.serviceClient.analyzeTextWithResponseAsync(name, request, requestOptions);
     }
 
     /**
      * Retrieves an alias definition.
-     *
-     * @param name The name of the alias.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAlias>> getAliasWithResponse(String name, RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getAliasWithResponseAsync(name, requestOptions), SearchAlias.class);
-    }
-
-    /**
-     * Retrieves an alias definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3728,31 +3857,12 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getAliasWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetAliasWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getAliasWithResponseAsync(name, requestOptions);
     }
 
     /**
      * Creates a new search alias.
-     *
-     * @param alias The definition of the alias to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with
-     * {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAlias>> createAliasWithResponse(SearchAlias alias, RequestOptions requestOptions) {
-        return mapResponse(
-            this.serviceClient.createAliasWithResponseAsync(BinaryData.fromObject(alias), requestOptions),
-            SearchAlias.class);
-    }
-
-    /**
-     * Creates a new search alias.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3792,30 +3902,12 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createAliasWithResponseHiddenGenerated(BinaryData alias, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedcreateAliasWithResponse(BinaryData alias, RequestOptions requestOptions) {
         return this.serviceClient.createAliasWithResponseAsync(alias, requestOptions);
     }
 
     /**
      * Retrieves a knowledge base definition.
-     *
-     * @param name The name of the knowledge base.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge base definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeBase>> getKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getKnowledgeBaseWithResponseAsync(name, requestOptions),
-            KnowledgeBase.class);
-    }
-
-    /**
-     * Retrieves a knowledge base definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3867,27 +3959,8 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getKnowledgeBaseWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeBaseWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Creates a new knowledge base.
-     *
-     * @param knowledgeBase The definition of the knowledge base to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge base definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeBase>> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
-        RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.createKnowledgeBaseWithResponseAsync(BinaryData.fromObject(knowledgeBase),
-            requestOptions), KnowledgeBase.class);
     }
 
     /**
@@ -3983,31 +4056,13 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createKnowledgeBaseWithResponseHiddenGenerated(BinaryData knowledgeBase,
+    Mono<Response<BinaryData>> hiddenGeneratedcreateKnowledgeBaseWithResponse(BinaryData knowledgeBase,
         RequestOptions requestOptions) {
         return this.serviceClient.createKnowledgeBaseWithResponseAsync(knowledgeBase, requestOptions);
     }
 
     /**
      * Retrieves a knowledge source definition.
-     *
-     * @param name The name of the knowledge source.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge source definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeSource>> getKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getKnowledgeSourceWithResponseAsync(name, requestOptions),
-            KnowledgeSource.class);
-    }
-
-    /**
-     * Retrieves a knowledge source definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -4044,28 +4099,9 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getKnowledgeSourceWithResponseHiddenGenerated(String name,
+    Mono<Response<BinaryData>> hiddenGeneratedgetKnowledgeSourceWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeSourceWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Creates a new knowledge source.
-     *
-     * @param knowledgeSource The definition of the knowledge source to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge source definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeSource>> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
-        RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.createKnowledgeSourceWithResponseAsync(
-            BinaryData.fromObject(knowledgeSource), requestOptions), KnowledgeSource.class);
     }
 
     /**
@@ -4131,28 +4167,9 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createKnowledgeSourceWithResponseHiddenGenerated(BinaryData knowledgeSource,
+    Mono<Response<BinaryData>> hiddenGeneratedcreateKnowledgeSourceWithResponse(BinaryData knowledgeSource,
         RequestOptions requestOptions) {
         return this.serviceClient.createKnowledgeSourceWithResponseAsync(knowledgeSource, requestOptions);
-    }
-
-    /**
-     * Retrieves the status of a knowledge source.
-     *
-     * @param name The name of the knowledge source.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the status and synchronization history of a knowledge source along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KnowledgeSourceStatus>> getKnowledgeSourceStatusWithResponse(String name,
-        RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getKnowledgeSourceStatusWithResponseAsync(name, requestOptions),
-            KnowledgeSourceStatus.class);
     }
 
     /**
@@ -4197,26 +4214,9 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getKnowledgeSourceStatusWithResponseHiddenGenerated(String name,
+    Mono<Response<BinaryData>> hiddenGeneratedgetKnowledgeSourceStatusWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeSourceStatusWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Gets service level statistics for a search service.
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return service level statistics for a search service along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getServiceStatisticsWithResponseAsync(requestOptions),
-            SearchServiceStatistics.class);
     }
 
     /**
@@ -4268,7 +4268,7 @@ public final class SearchIndexAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getServiceStatisticsWithResponseHiddenGenerated(RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetServiceStatisticsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getServiceStatisticsWithResponseAsync(requestOptions);
     }
 }

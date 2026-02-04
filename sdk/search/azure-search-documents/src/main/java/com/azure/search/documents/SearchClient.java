@@ -161,9 +161,9 @@ public final class SearchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public long getDocumentCount() {
-        // Generated convenience method for getDocumentCountWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetDocumentCountWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentCountWithResponseHiddenGenerated(requestOptions).getValue().toObject(Long.class);
+        return hiddenGeneratedgetDocumentCountWithResponse(requestOptions).getValue().toObject(Long.class);
     }
 
     /**
@@ -263,7 +263,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LookupDocument getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
         List<String> selectedFields) {
-        // Generated convenience method for getDocumentWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
@@ -280,7 +280,7 @@ public final class SearchClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getDocumentWithResponseHiddenGenerated(key, requestOptions).getValue().toObject(LookupDocument.class);
+        return hiddenGeneratedgetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
     }
 
     /**
@@ -298,9 +298,9 @@ public final class SearchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LookupDocument getDocument(String key) {
-        // Generated convenience method for getDocumentWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentWithResponseHiddenGenerated(key, requestOptions).getValue().toObject(LookupDocument.class);
+        return hiddenGeneratedgetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
     }
 
     /**
@@ -927,29 +927,6 @@ public final class SearchClient {
     }
 
     /**
-     * Queries the number of documents in the index.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * long
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a 64-bit integer along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getDocumentCountWithResponseHiddenGenerated(RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentCountWithResponse(requestOptions);
-    }
-
-    /**
      * Retrieves a document from the index.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -970,7 +947,7 @@ public final class SearchClient {
      * bypass document level permission checks for the query operation.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param key The key of the document to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -982,6 +959,29 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LookupDocument> getDocumentWithResponse(String key, RequestOptions requestOptions) {
         return convertResponse(this.serviceClient.getDocumentWithResponse(key, requestOptions), LookupDocument.class);
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * long
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a 64-bit integer along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> hiddenGeneratedgetDocumentCountWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getDocumentCountWithResponse(requestOptions);
     }
 
     /**
@@ -1027,7 +1027,7 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getDocumentWithResponseHiddenGenerated(String key, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetDocumentWithResponse(String key, RequestOptions requestOptions) {
         return this.serviceClient.getDocumentWithResponse(key, requestOptions);
     }
 }

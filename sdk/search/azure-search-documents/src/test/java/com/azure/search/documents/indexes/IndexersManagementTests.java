@@ -1060,9 +1060,8 @@ public class IndexersManagementTests extends SearchTestBase {
     public void updateIndexerIfNotChangedSucceedsWhenResourceUnchangedAsync() {
         SearchIndexer indexer = createBaseTestIndexerObject(sharedIndex.getName(), sharedDatasource.getName());
 
-        Mono<Tuple2<String, String>> createAndUpdateIndexerMono = searchIndexerAsyncClient
-            .createOrUpdateIndexerWithResponse(indexer, null)
-            .flatMap(response -> {
+        Mono<Tuple2<String, String>> createAndUpdateIndexerMono
+            = searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(indexer, null).flatMap(response -> {
                 SearchIndexer original = response.getValue();
                 String originalETag = original.getETag();
                 indexersToDelete.add(original.getName());

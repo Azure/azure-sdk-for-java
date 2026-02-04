@@ -552,8 +552,8 @@ public class DataSourceTests extends SearchTestBase {
             .verifyComplete();
 
         StepVerifier.create(asyncClient.getDataSourceConnectionWithResponse(dataSourceName, null))
-            .assertNext(response -> assertObjectEquals(expectedDataSource, response.getValue(), false, "etag",
-                "@odata.etag"))
+            .assertNext(
+                response -> assertObjectEquals(expectedDataSource, response.getValue(), false, "etag", "@odata.etag"))
             .verifyComplete();
 
         asyncClient.deleteDataSourceConnection(dataSourceName).block();

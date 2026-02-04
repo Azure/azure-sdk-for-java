@@ -131,13 +131,11 @@ public class SkillsetManagementTests extends SearchTestBase {
     public void createSkillsetReturnsCorrectDefinitionImageAnalysisKeyPhraseWithResponseAsync() {
         SearchIndexerSkillset expectedSkillset = createTestSkillsetImageAnalysisKeyPhrase();
 
-        StepVerifier.create(asyncClient.createSkillsetWithResponse(expectedSkillset, null))
-            .assertNext(response -> {
-                SearchIndexerSkillset skillset = response.getValue();
-                skillsetsToDelete.add(skillset.getName());
-                assertObjectEquals(expectedSkillset, skillset, true, "etag");
-            })
-            .verifyComplete();
+        StepVerifier.create(asyncClient.createSkillsetWithResponse(expectedSkillset, null)).assertNext(response -> {
+            SearchIndexerSkillset skillset = response.getValue();
+            skillsetsToDelete.add(skillset.getName());
+            assertObjectEquals(expectedSkillset, skillset, true, "etag");
+        }).verifyComplete();
     }
 
     @Test

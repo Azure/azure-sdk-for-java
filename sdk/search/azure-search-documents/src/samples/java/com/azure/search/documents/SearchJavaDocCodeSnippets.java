@@ -1759,7 +1759,7 @@ public class SearchJavaDocCodeSnippets {
             new SearchIndexerDataContainer("container"));
         Response<SearchIndexerDataSourceConnection> response
             = SEARCH_INDEXER_CLIENT.createDataSourceConnectionWithResponse(dataSource,
-            new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
+                new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
 
         System.out.printf("The status code of the response is %s. The data source name is %s.%n",
             response.getStatusCode(), response.getValue().getName());

@@ -1740,9 +1740,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap getSynonymMap(String name) {
-        // Generated convenience method for getSynonymMapWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSynonymMapWithResponseHiddenGenerated(name, requestOptions).getValue().toObject(SynonymMap.class);
+        return hiddenGeneratedgetSynonymMapWithResponse(name, requestOptions).getValue().toObject(SynonymMap.class);
     }
 
     /**
@@ -1879,9 +1879,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SynonymMap createSynonymMap(SynonymMap synonymMap) {
-        // Generated convenience method for createSynonymMapWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateSynonymMapWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createSynonymMapWithResponseHiddenGenerated(BinaryData.fromObject(synonymMap), requestOptions).getValue()
+        return hiddenGeneratedcreateSynonymMapWithResponse(BinaryData.fromObject(synonymMap), requestOptions).getValue()
             .toObject(SynonymMap.class);
     }
 
@@ -2027,9 +2027,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndex getIndex(String name) {
-        // Generated convenience method for getIndexWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexWithResponseHiddenGenerated(name, requestOptions).getValue().toObject(SearchIndex.class);
+        return hiddenGeneratedgetIndexWithResponse(name, requestOptions).getValue().toObject(SearchIndex.class);
     }
 
     /**
@@ -2110,9 +2110,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndex createIndex(SearchIndex index) {
-        // Generated convenience method for createIndexWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateIndexWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createIndexWithResponseHiddenGenerated(BinaryData.fromObject(index), requestOptions).getValue()
+        return hiddenGeneratedcreateIndexWithResponse(BinaryData.fromObject(index), requestOptions).getValue()
             .toObject(SearchIndex.class);
     }
 
@@ -2131,9 +2131,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public GetIndexStatisticsResult getIndexStatistics(String name) {
-        // Generated convenience method for getIndexStatisticsWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetIndexStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexStatisticsWithResponseHiddenGenerated(name, requestOptions).getValue()
+        return hiddenGeneratedgetIndexStatisticsWithResponse(name, requestOptions).getValue()
             .toObject(GetIndexStatisticsResult.class);
     }
 
@@ -2153,9 +2153,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeResult analyzeText(String name, AnalyzeTextOptions request) {
-        // Generated convenience method for analyzeTextWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedanalyzeTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return analyzeTextWithResponseHiddenGenerated(name, BinaryData.fromObject(request), requestOptions).getValue()
+        return hiddenGeneratedanalyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions).getValue()
             .toObject(AnalyzeResult.class);
     }
 
@@ -2291,9 +2291,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAlias getAlias(String name) {
-        // Generated convenience method for getAliasWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetAliasWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getAliasWithResponseHiddenGenerated(name, requestOptions).getValue().toObject(SearchAlias.class);
+        return hiddenGeneratedgetAliasWithResponse(name, requestOptions).getValue().toObject(SearchAlias.class);
     }
 
     /**
@@ -2330,9 +2330,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchAlias createAlias(SearchAlias alias) {
-        // Generated convenience method for createAliasWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateAliasWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createAliasWithResponseHiddenGenerated(BinaryData.fromObject(alias), requestOptions).getValue()
+        return hiddenGeneratedcreateAliasWithResponse(BinaryData.fromObject(alias), requestOptions).getValue()
             .toObject(SearchAlias.class);
     }
 
@@ -2469,9 +2469,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBase getKnowledgeBase(String name) {
-        // Generated convenience method for getKnowledgeBaseWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetKnowledgeBaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeBaseWithResponseHiddenGenerated(name, requestOptions).getValue()
+        return hiddenGeneratedgetKnowledgeBaseWithResponse(name, requestOptions).getValue()
             .toObject(KnowledgeBase.class);
     }
 
@@ -2509,9 +2509,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBase createKnowledgeBase(KnowledgeBase knowledgeBase) {
-        // Generated convenience method for createKnowledgeBaseWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateKnowledgeBaseWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createKnowledgeBaseWithResponseHiddenGenerated(BinaryData.fromObject(knowledgeBase), requestOptions)
+        return hiddenGeneratedcreateKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions)
             .getValue()
             .toObject(KnowledgeBase.class);
     }
@@ -2649,9 +2649,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeSource getKnowledgeSource(String name) {
-        // Generated convenience method for getKnowledgeSourceWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetKnowledgeSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeSourceWithResponseHiddenGenerated(name, requestOptions).getValue()
+        return hiddenGeneratedgetKnowledgeSourceWithResponse(name, requestOptions).getValue()
             .toObject(KnowledgeSource.class);
     }
 
@@ -2689,9 +2689,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeSource createKnowledgeSource(KnowledgeSource knowledgeSource) {
-        // Generated convenience method for createKnowledgeSourceWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateKnowledgeSourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createKnowledgeSourceWithResponseHiddenGenerated(BinaryData.fromObject(knowledgeSource), requestOptions)
+        return hiddenGeneratedcreateKnowledgeSourceWithResponse(BinaryData.fromObject(knowledgeSource), requestOptions)
             .getValue()
             .toObject(KnowledgeSource.class);
     }
@@ -2711,9 +2711,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeSourceStatus getKnowledgeSourceStatus(String name) {
-        // Generated convenience method for getKnowledgeSourceStatusWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetKnowledgeSourceStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getKnowledgeSourceStatusWithResponseHiddenGenerated(name, requestOptions).getValue()
+        return hiddenGeneratedgetKnowledgeSourceStatusWithResponse(name, requestOptions).getValue()
             .toObject(KnowledgeSourceStatus.class);
     }
 
@@ -2730,9 +2730,9 @@ public final class SearchIndexClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchServiceStatistics getServiceStatistics() {
-        // Generated convenience method for getServiceStatisticsWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetServiceStatisticsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getServiceStatisticsWithResponseHiddenGenerated(requestOptions).getValue()
+        return hiddenGeneratedgetServiceStatisticsWithResponse(requestOptions).getValue()
             .toObject(SearchServiceStatistics.class);
     }
 
@@ -2758,49 +2758,6 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves a synonym map definition.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     format: String (Required)
-     *     synonyms (Required): [
-     *         String (Required)
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the synonym map.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a synonym map definition along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getSynonymMapWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getSynonymMapWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves a synonym map definition.
      *
      * @param name The name of the synonym map.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2813,77 +2770,6 @@ public final class SearchIndexClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SynonymMap> getSynonymMapWithResponse(String name, RequestOptions requestOptions) {
         return convertResponse(this.serviceClient.getSynonymMapWithResponse(name, requestOptions), SynonymMap.class);
-    }
-
-    /**
-     * Creates a new synonym map.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     format: String (Required)
-     *     synonyms (Required): [
-     *         String (Required)
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     format: String (Required)
-     *     synonyms (Required): [
-     *         String (Required)
-     *     ]
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): {
-     *             &#64;odata.type: String (Required)
-     *         }
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param synonymMap The definition of the synonym map to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a synonym map definition along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createSynonymMapWithResponseHiddenGenerated(BinaryData synonymMap,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createSynonymMapWithResponse(synonymMap, requestOptions);
     }
 
     /**
@@ -2906,6 +2792,333 @@ public final class SearchIndexClient {
 
     /**
      * Retrieves an index definition.
+     *
+     * @param name The name of the index.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndex> getIndexWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getIndexWithResponse(name, requestOptions), SearchIndex.class);
+    }
+
+    /**
+     * Creates a new search index.
+     *
+     * @param index The definition of the index to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a search index definition, which describes the fields and search behavior of an index along
+     * with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndex> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createIndexWithResponse(BinaryData.fromObject(index), requestOptions),
+            SearchIndex.class);
+    }
+
+    /**
+     * Returns statistics for the given index, including a document count and storage usage.
+     *
+     * @param name The name of the index.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return statistics for a given index along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<GetIndexStatisticsResult> getIndexStatisticsWithResponse(String name,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getIndexStatisticsWithResponse(name, requestOptions),
+            GetIndexStatisticsResult.class);
+    }
+
+    /**
+     * Shows how an analyzer breaks text into tokens.
+     *
+     * @param name The name of the index.
+     * @param request The text and analyzer or analysis components to test.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the result of testing an analyzer on text along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeResult> analyzeTextWithResponse(String name, AnalyzeTextOptions request,
+        RequestOptions requestOptions) {
+        return convertResponse(
+            this.serviceClient.analyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions),
+            AnalyzeResult.class);
+    }
+
+    /**
+     * Retrieves an alias definition.
+     *
+     * @param name The name of the alias.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchAlias> getAliasWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getAliasWithResponse(name, requestOptions), SearchAlias.class);
+    }
+
+    /**
+     * Creates a new search alias.
+     *
+     * @param alias The definition of the alias to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchAlias> createAliasWithResponse(SearchAlias alias, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createAliasWithResponse(BinaryData.fromObject(alias), requestOptions),
+            SearchAlias.class);
+    }
+
+    /**
+     * Retrieves a knowledge base definition.
+     *
+     * @param name The name of the knowledge base.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge base definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeBase> getKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getKnowledgeBaseWithResponse(name, requestOptions),
+            KnowledgeBase.class);
+    }
+
+    /**
+     * Creates a new knowledge base.
+     *
+     * @param knowledgeBase The definition of the knowledge base to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge base definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeBase> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
+        RequestOptions requestOptions) {
+        return convertResponse(
+            this.serviceClient.createKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions),
+            KnowledgeBase.class);
+    }
+
+    /**
+     * Retrieves a knowledge source definition.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> getKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getKnowledgeSourceWithResponse(name, requestOptions),
+            KnowledgeSource.class);
+    }
+
+    /**
+     * Creates a new knowledge source.
+     *
+     * @param knowledgeSource The definition of the knowledge source to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a knowledge source definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSource> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.createKnowledgeSourceWithResponse(
+            BinaryData.fromObject(knowledgeSource), requestOptions), KnowledgeSource.class);
+    }
+
+    /**
+     * Retrieves the status of a knowledge source.
+     *
+     * @param name The name of the knowledge source.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the status and synchronization history of a knowledge source along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KnowledgeSourceStatus> getKnowledgeSourceStatusWithResponse(String name,
+        RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getKnowledgeSourceStatusWithResponse(name, requestOptions),
+            KnowledgeSourceStatus.class);
+    }
+
+    /**
+     * Gets service level statistics for a search service.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return service level statistics for a search service along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getServiceStatisticsWithResponse(requestOptions),
+            SearchServiceStatistics.class);
+    }
+
+    /**
+     * Retrieves a synonym map definition.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the synonym map.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a synonym map definition along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> hiddenGeneratedgetSynonymMapWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getSynonymMapWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Creates a new synonym map.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     format: String (Required)
+     *     synonyms (Required): [
+     *         String (Required)
+     *     ]
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): {
+     *             &#64;odata.type: String (Required)
+     *         }
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     * }
+     * }
+     * </pre>
+     *
+     * @param synonymMap The definition of the synonym map to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a synonym map definition along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> hiddenGeneratedcreateSynonymMapWithResponse(BinaryData synonymMap,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createSynonymMapWithResponse(synonymMap, requestOptions);
+    }
+
+    /**
+     * Retrieves an index definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -3094,25 +3307,8 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getIndexWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetIndexWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves an index definition.
-     *
-     * @param name The name of the index.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a search index definition, which describes the fields and search behavior of an index along
-     * with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndex> getIndexWithResponse(String name, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getIndexWithResponse(name, requestOptions), SearchIndex.class);
     }
 
     /**
@@ -3482,26 +3678,8 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createIndexWithResponseHiddenGenerated(BinaryData index, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedcreateIndexWithResponse(BinaryData index, RequestOptions requestOptions) {
         return this.serviceClient.createIndexWithResponse(index, requestOptions);
-    }
-
-    /**
-     * Creates a new search index.
-     *
-     * @param index The definition of the index to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a search index definition, which describes the fields and search behavior of an index along
-     * with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndex> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.createIndexWithResponse(BinaryData.fromObject(index), requestOptions),
-            SearchIndex.class);
     }
 
     /**
@@ -3528,26 +3706,8 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getIndexStatisticsWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetIndexStatisticsWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexStatisticsWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Returns statistics for the given index, including a document count and storage usage.
-     *
-     * @param name The name of the index.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return statistics for a given index along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GetIndexStatisticsResult> getIndexStatisticsWithResponse(String name,
-        RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getIndexStatisticsWithResponse(name, requestOptions),
-            GetIndexStatisticsResult.class);
     }
 
     /**
@@ -3599,32 +3759,12 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> analyzeTextWithResponseHiddenGenerated(String name, BinaryData request,
+    Response<BinaryData> hiddenGeneratedanalyzeTextWithResponse(String name, BinaryData request,
         RequestOptions requestOptions) {
         return this.serviceClient.analyzeTextWithResponse(name, request, requestOptions);
     }
 
     /**
-     * Shows how an analyzer breaks text into tokens.
-     *
-     * @param name The name of the index.
-     * @param request The text and analyzer or analysis components to test.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of testing an analyzer on text along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnalyzeResult> analyzeTextWithResponse(String name, AnalyzeTextOptions request,
-        RequestOptions requestOptions) {
-        return convertResponse(
-            this.serviceClient.analyzeTextWithResponse(name, BinaryData.fromObject(request), requestOptions),
-            AnalyzeResult.class);
-    }
-
-    /**
      * Retrieves an alias definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -3651,25 +3791,8 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getAliasWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetAliasWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getAliasWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves an alias definition.
-     *
-     * @param name The name of the alias.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAlias> getAliasWithResponse(String name, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getAliasWithResponse(name, requestOptions), SearchAlias.class);
     }
 
     /**
@@ -3713,26 +3836,8 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createAliasWithResponseHiddenGenerated(BinaryData alias, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedcreateAliasWithResponse(BinaryData alias, RequestOptions requestOptions) {
         return this.serviceClient.createAliasWithResponse(alias, requestOptions);
-    }
-
-    /**
-     * Creates a new search alias.
-     *
-     * @param alias The definition of the alias to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with
-     * {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAlias> createAliasWithResponse(SearchAlias alias, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.createAliasWithResponse(BinaryData.fromObject(alias), requestOptions),
-            SearchAlias.class);
     }
 
     /**
@@ -3787,25 +3892,8 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getKnowledgeBaseWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeBaseWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves a knowledge base definition.
-     *
-     * @param name The name of the knowledge base.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge base definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeBase> getKnowledgeBaseWithResponse(String name, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getKnowledgeBaseWithResponse(name, requestOptions),
-            KnowledgeBase.class);
     }
 
     /**
@@ -3900,31 +3988,12 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createKnowledgeBaseWithResponseHiddenGenerated(BinaryData knowledgeBase,
+    Response<BinaryData> hiddenGeneratedcreateKnowledgeBaseWithResponse(BinaryData knowledgeBase,
         RequestOptions requestOptions) {
         return this.serviceClient.createKnowledgeBaseWithResponse(knowledgeBase, requestOptions);
     }
 
     /**
-     * Creates a new knowledge base.
-     *
-     * @param knowledgeBase The definition of the knowledge base to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge base definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeBase> createKnowledgeBaseWithResponse(KnowledgeBase knowledgeBase,
-        RequestOptions requestOptions) {
-        return convertResponse(
-            this.serviceClient.createKnowledgeBaseWithResponse(BinaryData.fromObject(knowledgeBase), requestOptions),
-            KnowledgeBase.class);
-    }
-
-    /**
      * Retrieves a knowledge source definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -3961,25 +4030,8 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getKnowledgeSourceWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeSourceWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves a knowledge source definition.
-     *
-     * @param name The name of the knowledge source.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge source definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeSource> getKnowledgeSourceWithResponse(String name, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getKnowledgeSourceWithResponse(name, requestOptions),
-            KnowledgeSource.class);
     }
 
     /**
@@ -4044,27 +4096,9 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createKnowledgeSourceWithResponseHiddenGenerated(BinaryData knowledgeSource,
+    Response<BinaryData> hiddenGeneratedcreateKnowledgeSourceWithResponse(BinaryData knowledgeSource,
         RequestOptions requestOptions) {
         return this.serviceClient.createKnowledgeSourceWithResponse(knowledgeSource, requestOptions);
-    }
-
-    /**
-     * Creates a new knowledge source.
-     *
-     * @param knowledgeSource The definition of the knowledge source to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a knowledge source definition along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeSource> createKnowledgeSourceWithResponse(KnowledgeSource knowledgeSource,
-        RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.createKnowledgeSourceWithResponse(
-            BinaryData.fromObject(knowledgeSource), requestOptions), KnowledgeSource.class);
     }
 
     /**
@@ -4108,27 +4142,9 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getKnowledgeSourceStatusWithResponseHiddenGenerated(String name,
+    Response<BinaryData> hiddenGeneratedgetKnowledgeSourceStatusWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getKnowledgeSourceStatusWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves the status of a knowledge source.
-     *
-     * @param name The name of the knowledge source.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the status and synchronization history of a knowledge source along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KnowledgeSourceStatus> getKnowledgeSourceStatusWithResponse(String name,
-        RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getKnowledgeSourceStatusWithResponse(name, requestOptions),
-            KnowledgeSourceStatus.class);
     }
 
     /**
@@ -4179,23 +4195,7 @@ public final class SearchIndexClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getServiceStatisticsWithResponseHiddenGenerated(RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetServiceStatisticsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getServiceStatisticsWithResponse(requestOptions);
-    }
-
-    /**
-     * Gets service level statistics for a search service.
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return service level statistics for a search service along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getServiceStatisticsWithResponse(requestOptions),
-            SearchServiceStatistics.class);
     }
 }

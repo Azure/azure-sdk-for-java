@@ -128,13 +128,16 @@ public class SearchCustomizations extends Customization {
             .ifPresent(clazz -> clazz.getMethods().forEach(method -> {
                 if (method.isPublic()
                     && method.isAnnotationPresent("Generated")
+                    && method.getNameAsString().endsWith("WithResponse")
                     && method.getType().toString().contains("Response<BinaryData>")) {
                     String methodName = method.getNameAsString();
-                    method.setModifiers().setName(methodName + "HiddenGenerated");
+                    String newMethodName = "hiddenGenerated" + Character.toLowerCase(methodName.charAt(0))
+                        + methodName.substring(1);
+                    method.setModifiers().setName(newMethodName);
 
                     clazz.getMethodsByName(methodName.replace("WithResponse", "")).forEach(nonWithResponse -> {
                         String body = nonWithResponse.getBody().map(BlockStmt::toString).get();
-                        body = body.replace(methodName, methodName + "HiddenGenerated");
+                        body = body.replace(methodName, newMethodName);
                         nonWithResponse.setBody(StaticJavaParser.parseBlock(body));
                     });
                 }

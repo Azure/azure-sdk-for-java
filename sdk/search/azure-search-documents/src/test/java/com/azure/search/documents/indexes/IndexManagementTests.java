@@ -174,14 +174,12 @@ public class IndexManagementTests extends SearchTestBase {
     public void createAndGetIndexReturnsCorrectDefinitionWithResponseAsync() {
         SearchIndex index = createTestIndex("hotel2");
 
-        StepVerifier.create(asyncClient.createIndexWithResponse(index, null))
-            .assertNext(response -> {
-                SearchIndex created = response.getValue();
-                indexesToDelete.add(created.getName());
+        StepVerifier.create(asyncClient.createIndexWithResponse(index, null)).assertNext(response -> {
+            SearchIndex created = response.getValue();
+            indexesToDelete.add(created.getName());
 
-                assertObjectEquals(index, created, true, "etag");
-            })
-            .verifyComplete();
+            assertObjectEquals(index, created, true, "etag");
+        }).verifyComplete();
 
         StepVerifier.create(asyncClient.getIndexWithResponse(index.getName(), null))
             .assertNext(response -> assertObjectEquals(index, response.getValue(), true, "etag"))

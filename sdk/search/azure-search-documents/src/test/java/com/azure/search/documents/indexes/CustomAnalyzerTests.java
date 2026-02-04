@@ -296,9 +296,11 @@ public class CustomAnalyzerTests extends SearchTestBase {
         indexesToCleanup.add(index.getName());
 
         addAnalyzerToIndex(index, new StopAnalyzer("a2"));
-        SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndexWithResponse(index,
-                ifMatch(index.getETag()).addQueryParam("allowIndexDowntime", "true"))
-            .getValue();
+        SearchIndex updatedIndex
+            = searchIndexClient
+                .createOrUpdateIndexWithResponse(index,
+                    ifMatch(index.getETag()).addQueryParam("allowIndexDowntime", "true"))
+                .getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
     }

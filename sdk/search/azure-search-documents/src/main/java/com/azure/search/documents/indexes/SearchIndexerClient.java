@@ -1475,9 +1475,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection getDataSourceConnection(String name) {
-        // Generated convenience method for getDataSourceConnectionWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDataSourceConnectionWithResponseHiddenGenerated(name, requestOptions).getValue()
+        return hiddenGeneratedgetDataSourceConnectionWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerDataSourceConnection.class);
     }
 
@@ -1621,9 +1621,9 @@ public final class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection
         createDataSourceConnection(SearchIndexerDataSourceConnection dataSourceConnection) {
-        // Generated convenience method for createDataSourceConnectionWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createDataSourceConnectionWithResponseHiddenGenerated(BinaryData.fromObject(dataSourceConnection),
+        return hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection),
             requestOptions).getValue().toObject(SearchIndexerDataSourceConnection.class);
     }
 
@@ -1874,9 +1874,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexer getIndexer(String name) {
-        // Generated convenience method for getIndexerWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexerWithResponseHiddenGenerated(name, requestOptions).getValue().toObject(SearchIndexer.class);
+        return hiddenGeneratedgetIndexerWithResponse(name, requestOptions).getValue().toObject(SearchIndexer.class);
     }
 
     /**
@@ -2013,9 +2013,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexer createIndexer(SearchIndexer indexer) {
-        // Generated convenience method for createIndexerWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createIndexerWithResponseHiddenGenerated(BinaryData.fromObject(indexer), requestOptions).getValue()
+        return hiddenGeneratedcreateIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions).getValue()
             .toObject(SearchIndexer.class);
     }
 
@@ -2034,9 +2034,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerStatus getIndexerStatus(String name) {
-        // Generated convenience method for getIndexerStatusWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetIndexerStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexerStatusWithResponseHiddenGenerated(name, requestOptions).getValue()
+        return hiddenGeneratedgetIndexerStatusWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerStatus.class);
     }
 
@@ -2182,9 +2182,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset getSkillset(String name) {
-        // Generated convenience method for getSkillsetWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSkillsetWithResponseHiddenGenerated(name, requestOptions).getValue()
+        return hiddenGeneratedgetSkillsetWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerSkillset.class);
     }
 
@@ -2327,9 +2327,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset) {
-        // Generated convenience method for createSkillsetWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillsetWithResponseHiddenGenerated(BinaryData.fromObject(skillset), requestOptions).getValue()
+        return hiddenGeneratedcreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions).getValue()
             .toObject(SearchIndexerSkillset.class);
     }
 
@@ -2355,67 +2355,6 @@ public final class SearchIndexerClient {
 
     /**
      * Retrieves a datasource definition.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the datasource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a datasource definition, which can be used to configure an indexer along with
-     * {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getDataSourceConnectionWithResponseHiddenGenerated(String name,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getDataSourceConnectionWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves a datasource definition.
      *
      * @param name The name of the datasource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2431,110 +2370,6 @@ public final class SearchIndexerClient {
         RequestOptions requestOptions) {
         return convertResponse(this.serviceClient.getDataSourceConnectionWithResponse(name, requestOptions),
             SearchIndexerDataSourceConnection.class);
-    }
-
-    /**
-     * Creates a new datasource.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param dataSourceConnection The definition of the datasource to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a datasource definition, which can be used to configure an indexer along with
-     * {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createDataSourceConnectionWithResponseHiddenGenerated(BinaryData dataSourceConnection,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createDataSourceConnectionWithResponse(dataSourceConnection, requestOptions);
     }
 
     /**
@@ -2558,6 +2393,258 @@ public final class SearchIndexerClient {
 
     /**
      * Retrieves an indexer definition.
+     *
+     * @param name The name of the indexer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexer> getIndexerWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getIndexerWithResponse(name, requestOptions), SearchIndexer.class);
+    }
+
+    /**
+     * Creates a new indexer.
+     *
+     * @param indexer The definition of the indexer to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, RequestOptions requestOptions) {
+        return convertResponse(
+            this.serviceClient.createIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions),
+            SearchIndexer.class);
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param name The name of the indexer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the current status and execution history of an indexer along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getIndexerStatusWithResponse(name, requestOptions),
+            SearchIndexerStatus.class);
+    }
+
+    /**
+     * Retrieves a skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerSkillset> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
+        return convertResponse(this.serviceClient.getSkillsetWithResponse(name, requestOptions),
+            SearchIndexerSkillset.class);
+    }
+
+    /**
+     * Creates a new skillset in a search service.
+     *
+     * @param skillset The skillset containing one or more skills to create in a search service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+        RequestOptions requestOptions) {
+        return convertResponse(
+            this.serviceClient.createSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions),
+            SearchIndexerSkillset.class);
+    }
+
+    /**
+     * Retrieves a datasource definition.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the datasource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> hiddenGeneratedgetDataSourceConnectionWithResponse(String name,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getDataSourceConnectionWithResponse(name, requestOptions);
+    }
+
+    /**
+     * Creates a new datasource.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param dataSourceConnection The definition of the datasource to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with
+     * {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BinaryData> hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createDataSourceConnectionWithResponse(dataSourceConnection, requestOptions);
+    }
+
+    /**
+     * Retrieves an indexer definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2649,24 +2736,8 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getIndexerWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetIndexerWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexerWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves an indexer definition.
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an indexer along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexer> getIndexerWithResponse(String name, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getIndexerWithResponse(name, requestOptions), SearchIndexer.class);
     }
 
     /**
@@ -2843,26 +2914,8 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createIndexerWithResponseHiddenGenerated(BinaryData indexer, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedcreateIndexerWithResponse(BinaryData indexer, RequestOptions requestOptions) {
         return this.serviceClient.createIndexerWithResponse(indexer, requestOptions);
-    }
-
-    /**
-     * Creates a new indexer.
-     *
-     * @param indexer The definition of the indexer to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an indexer along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, RequestOptions requestOptions) {
-        return convertResponse(
-            this.serviceClient.createIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions),
-            SearchIndexer.class);
     }
 
     /**
@@ -2948,25 +3001,8 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getIndexerStatusWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexerStatusWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Returns the current status and execution history of an indexer.
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the current status and execution history of an indexer along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getIndexerStatusWithResponse(name, requestOptions),
-            SearchIndexerStatus.class);
     }
 
     /**
@@ -3101,25 +3137,8 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> getSkillsetWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedgetSkillsetWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getSkillsetWithResponse(name, requestOptions);
-    }
-
-    /**
-     * Retrieves a skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of skills along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerSkillset> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
-        return convertResponse(this.serviceClient.getSkillsetWithResponse(name, requestOptions),
-            SearchIndexerSkillset.class);
     }
 
     /**
@@ -3374,26 +3393,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> createSkillsetWithResponseHiddenGenerated(BinaryData skillset, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedcreateSkillsetWithResponse(BinaryData skillset, RequestOptions requestOptions) {
         return this.serviceClient.createSkillsetWithResponse(skillset, requestOptions);
-    }
-
-    /**
-     * Creates a new skillset in a search service.
-     *
-     * @param skillset The skillset containing one or more skills to create in a search service.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of skills along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset,
-        RequestOptions requestOptions) {
-        return convertResponse(
-            this.serviceClient.createSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions),
-            SearchIndexerSkillset.class);
     }
 }

@@ -1506,9 +1506,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> getDataSourceConnection(String name) {
-        // Generated convenience method for getDataSourceConnectionWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDataSourceConnectionWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetDataSourceConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
     }
 
@@ -1655,9 +1655,9 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection>
         createDataSourceConnection(SearchIndexerDataSourceConnection dataSourceConnection) {
-        // Generated convenience method for createDataSourceConnectionWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createDataSourceConnectionWithResponseHiddenGenerated(BinaryData.fromObject(dataSourceConnection),
+        return hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
     }
@@ -1923,9 +1923,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> getIndexer(String name) {
-        // Generated convenience method for getIndexerWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexerWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
     }
 
@@ -2066,9 +2066,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createIndexer(SearchIndexer indexer) {
-        // Generated convenience method for createIndexerWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createIndexerWithResponseHiddenGenerated(BinaryData.fromObject(indexer), requestOptions)
+        return hiddenGeneratedcreateIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
     }
@@ -2089,9 +2089,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerStatus> getIndexerStatus(String name) {
-        // Generated convenience method for getIndexerStatusWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetIndexerStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getIndexerStatusWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetIndexerStatusWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerStatus.class));
     }
 
@@ -2245,9 +2245,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> getSkillset(String name) {
-        // Generated convenience method for getSkillsetWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getSkillsetWithResponseHiddenGenerated(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetSkillsetWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
     }
 
@@ -2392,9 +2392,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createSkillset(SearchIndexerSkillset skillset) {
-        // Generated convenience method for createSkillsetWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedcreateSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createSkillsetWithResponseHiddenGenerated(BinaryData.fromObject(skillset), requestOptions)
+        return hiddenGeneratedcreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
     }
@@ -2423,67 +2423,6 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Retrieves a datasource definition.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the datasource.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getDataSourceConnectionWithResponseHiddenGenerated(String name,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getDataSourceConnectionWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Retrieves a datasource definition.
      *
      * @param name The name of the datasource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2499,110 +2438,6 @@ public final class SearchIndexerAsyncClient {
         RequestOptions requestOptions) {
         return mapResponse(this.serviceClient.getDataSourceConnectionWithResponseAsync(name, requestOptions),
             SearchIndexerDataSourceConnection.class);
-    }
-
-    /**
-     * Creates a new datasource.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     name: String (Required)
-     *     description: String (Optional)
-     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
-     *     subType: String (Optional)
-     *     credentials (Required): {
-     *         connectionString: String (Optional)
-     *     }
-     *     container (Required): {
-     *         name: String (Required)
-     *         query: String (Optional)
-     *     }
-     *     identity (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     indexerPermissionOptions (Optional): [
-     *         String(userIds/groupIds/rbacScope) (Optional)
-     *     ]
-     *     dataChangeDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     dataDeletionDetectionPolicy (Optional): {
-     *         &#64;odata.type: String (Required)
-     *     }
-     *     &#64;odata.etag: String (Optional)
-     *     encryptionKey (Optional): {
-     *         keyVaultKeyName: String (Required)
-     *         keyVaultKeyVersion: String (Optional)
-     *         keyVaultUri: String (Required)
-     *         accessCredentials (Optional): {
-     *             applicationId: String (Required)
-     *             applicationSecret: String (Optional)
-     *         }
-     *         identity (Optional): (recursive schema, see identity above)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param dataSourceConnection The definition of the datasource to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createDataSourceConnectionWithResponseHiddenGenerated(BinaryData dataSourceConnection,
-        RequestOptions requestOptions) {
-        return this.serviceClient.createDataSourceConnectionWithResponseAsync(dataSourceConnection, requestOptions);
     }
 
     /**
@@ -2626,6 +2461,261 @@ public final class SearchIndexerAsyncClient {
 
     /**
      * Retrieves an indexer definition.
+     *
+     * @param name The name of the indexer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexer>> getIndexerWithResponse(String name, RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getIndexerWithResponseAsync(name, requestOptions), SearchIndexer.class);
+    }
+
+    /**
+     * Creates a new indexer.
+     *
+     * @param indexer The definition of the indexer to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer,
+        RequestOptions requestOptions) {
+        return mapResponse(
+            this.serviceClient.createIndexerWithResponseAsync(BinaryData.fromObject(indexer), requestOptions),
+            SearchIndexer.class);
+    }
+
+    /**
+     * Returns the current status and execution history of an indexer.
+     *
+     * @param name The name of the indexer.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents the current status and execution history of an indexer along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String name,
+        RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getIndexerStatusWithResponseAsync(name, requestOptions),
+            SearchIndexerStatus.class);
+    }
+
+    /**
+     * Retrieves a skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexerSkillset>> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
+        return mapResponse(this.serviceClient.getSkillsetWithResponseAsync(name, requestOptions),
+            SearchIndexerSkillset.class);
+    }
+
+    /**
+     * Creates a new skillset in a search service.
+     *
+     * @param skillset The skillset containing one or more skills to create in a search service.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of skills along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+        RequestOptions requestOptions) {
+        return mapResponse(
+            this.serviceClient.createSkillsetWithResponseAsync(BinaryData.fromObject(skillset), requestOptions),
+            SearchIndexerSkillset.class);
+    }
+
+    /**
+     * Retrieves a datasource definition.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the datasource.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
+     * on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> hiddenGeneratedgetDataSourceConnectionWithResponse(String name,
+        RequestOptions requestOptions) {
+        return this.serviceClient.getDataSourceConnectionWithResponseAsync(name, requestOptions);
+    }
+
+    /**
+     * Creates a new datasource.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     name: String (Required)
+     *     description: String (Optional)
+     *     type: String(azuresql/cosmosdb/azureblob/azuretable/mysql/adlsgen2/onelake/sharepoint) (Required)
+     *     subType: String (Optional)
+     *     credentials (Required): {
+     *         connectionString: String (Optional)
+     *     }
+     *     container (Required): {
+     *         name: String (Required)
+     *         query: String (Optional)
+     *     }
+     *     identity (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     indexerPermissionOptions (Optional): [
+     *         String(userIds/groupIds/rbacScope) (Optional)
+     *     ]
+     *     dataChangeDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     dataDeletionDetectionPolicy (Optional): {
+     *         &#64;odata.type: String (Required)
+     *     }
+     *     &#64;odata.etag: String (Optional)
+     *     encryptionKey (Optional): {
+     *         keyVaultKeyName: String (Required)
+     *         keyVaultKeyVersion: String (Optional)
+     *         keyVaultUri: String (Required)
+     *         accessCredentials (Optional): {
+     *             applicationId: String (Required)
+     *             applicationSecret: String (Optional)
+     *         }
+     *         identity (Optional): (recursive schema, see identity above)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param dataSourceConnection The definition of the datasource to create.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
+     * on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createDataSourceConnectionWithResponseAsync(dataSourceConnection, requestOptions);
+    }
+
+    /**
+     * Retrieves an indexer definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -2717,24 +2807,8 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getIndexerWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetIndexerWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexerWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Retrieves an indexer definition.
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexer>> getIndexerWithResponse(String name, RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getIndexerWithResponseAsync(name, requestOptions), SearchIndexer.class);
     }
 
     /**
@@ -2911,28 +2985,9 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createIndexerWithResponseHiddenGenerated(BinaryData indexer,
+    Mono<Response<BinaryData>> hiddenGeneratedcreateIndexerWithResponse(BinaryData indexer,
         RequestOptions requestOptions) {
         return this.serviceClient.createIndexerWithResponseAsync(indexer, requestOptions);
-    }
-
-    /**
-     * Creates a new indexer.
-     *
-     * @param indexer The definition of the indexer to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an indexer along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer,
-        RequestOptions requestOptions) {
-        return mapResponse(
-            this.serviceClient.createIndexerWithResponseAsync(BinaryData.fromObject(indexer), requestOptions),
-            SearchIndexer.class);
     }
 
     /**
@@ -3019,27 +3074,8 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getIndexerStatusWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexerStatusWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Returns the current status and execution history of an indexer.
-     *
-     * @param name The name of the indexer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the current status and execution history of an indexer along with {@link Response} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String name,
-        RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getIndexerStatusWithResponseAsync(name, requestOptions),
-            SearchIndexerStatus.class);
     }
 
     /**
@@ -3174,25 +3210,8 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getSkillsetWithResponseHiddenGenerated(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetSkillsetWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getSkillsetWithResponseAsync(name, requestOptions);
-    }
-
-    /**
-     * Retrieves a skillset in a search service.
-     *
-     * @param name The name of the skillset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of skills along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerSkillset>> getSkillsetWithResponse(String name, RequestOptions requestOptions) {
-        return mapResponse(this.serviceClient.getSkillsetWithResponseAsync(name, requestOptions),
-            SearchIndexerSkillset.class);
     }
 
     /**
@@ -3447,27 +3466,8 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> createSkillsetWithResponseHiddenGenerated(BinaryData skillset,
+    Mono<Response<BinaryData>> hiddenGeneratedcreateSkillsetWithResponse(BinaryData skillset,
         RequestOptions requestOptions) {
         return this.serviceClient.createSkillsetWithResponseAsync(skillset, requestOptions);
-    }
-
-    /**
-     * Creates a new skillset in a search service.
-     *
-     * @param skillset The skillset containing one or more skills to create in a search service.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of skills along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset,
-        RequestOptions requestOptions) {
-        return mapResponse(
-            this.serviceClient.createSkillsetWithResponseAsync(BinaryData.fromObject(skillset), requestOptions),
-            SearchIndexerSkillset.class);
     }
 }

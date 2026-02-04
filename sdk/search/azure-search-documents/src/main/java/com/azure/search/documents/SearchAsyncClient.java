@@ -161,9 +161,9 @@ public final class SearchAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Long> getDocumentCount() {
-        // Generated convenience method for getDocumentCountWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetDocumentCountWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentCountWithResponseHiddenGenerated(requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetDocumentCountWithResponse(requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(Long.class));
     }
 
@@ -259,7 +259,7 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LookupDocument> getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
         List<String> selectedFields) {
-        // Generated convenience method for getDocumentWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
@@ -276,7 +276,7 @@ public final class SearchAsyncClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return getDocumentWithResponseHiddenGenerated(key, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
     }
 
@@ -295,9 +295,9 @@ public final class SearchAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LookupDocument> getDocument(String key) {
-        // Generated convenience method for getDocumentWithResponseHiddenGenerated
+        // Generated convenience method for hiddenGeneratedgetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getDocumentWithResponseHiddenGenerated(key, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedgetDocumentWithResponse(key, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(LookupDocument.class));
     }
 
@@ -931,29 +931,6 @@ public final class SearchAsyncClient {
     }
 
     /**
-     * Queries the number of documents in the index.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * long
-     * }
-     * </pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a 64-bit integer along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getDocumentCountWithResponseHiddenGenerated(RequestOptions requestOptions) {
-        return this.serviceClient.getDocumentCountWithResponseAsync(requestOptions);
-    }
-
-    /**
      * Retrieves a document from the index.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -987,6 +964,29 @@ public final class SearchAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LookupDocument>> getDocumentWithResponse(String key, RequestOptions requestOptions) {
         return mapResponse(this.serviceClient.getDocumentWithResponseAsync(key, requestOptions), LookupDocument.class);
+    }
+
+    /**
+     * Queries the number of documents in the index.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * long
+     * }
+     * </pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a 64-bit integer along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<BinaryData>> hiddenGeneratedgetDocumentCountWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.getDocumentCountWithResponseAsync(requestOptions);
     }
 
     /**
@@ -1033,7 +1033,7 @@ public final class SearchAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> getDocumentWithResponseHiddenGenerated(String key, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedgetDocumentWithResponse(String key, RequestOptions requestOptions) {
         return this.serviceClient.getDocumentWithResponseAsync(key, requestOptions);
     }
 }
