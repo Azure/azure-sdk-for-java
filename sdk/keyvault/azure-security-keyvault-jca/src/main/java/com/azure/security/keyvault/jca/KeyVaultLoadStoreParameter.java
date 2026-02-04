@@ -52,7 +52,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param keyVaultUri The Azure Key Vault URI.
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri) {
-        this(keyVaultUri, null, null, null, null, null);
+        this(new Builder(keyVaultUri));
     }
 
     /**
@@ -62,7 +62,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param managedIdentity The managed identity.
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri, String managedIdentity) {
-        this(keyVaultUri, null, null, null, managedIdentity, null);
+        this(new Builder(keyVaultUri).managedIdentity(managedIdentity));
     }
 
     /**
@@ -74,7 +74,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param clientSecret The client secret.
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
-        this(keyVaultUri, tenantId, clientId, clientSecret, null, null);
+        this(new Builder(keyVaultUri).tenantId(tenantId).clientId(clientId).clientSecret(clientSecret));
     }
 
     /**
@@ -88,28 +88,25 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity) {
-        this(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, null);
+        this(new Builder(keyVaultUri).tenantId(tenantId)
+            .clientId(clientId)
+            .clientSecret(clientSecret)
+            .managedIdentity(managedIdentity));
     }
 
     /**
-     * Constructor.
+     * Private constructor used by the builder.
      *
-     * @param keyVaultUri The Azure Key Vault URI.
-     * @param tenantId The tenant id.
-     * @param clientId The client id.
-     * @param clientSecret The client secret.
-     * @param managedIdentity The managed identity.
-     * @param accessToken The access token.
+     * @param builder The builder instance.
      */
-    public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
-        String managedIdentity, String accessToken) {
-
-        this.keyVaultUri = keyVaultUri;
-        this.tenantId = tenantId;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.managedIdentity = managedIdentity;
-        this.accessToken = accessToken;
+    private KeyVaultLoadStoreParameter(Builder builder) {
+        this.keyVaultUri = builder.keyVaultUri;
+        this.tenantId = builder.tenantId;
+        this.clientId = builder.clientId;
+        this.clientSecret = builder.clientSecret;
+        this.managedIdentity = builder.managedIdentity;
+        this.accessToken = builder.accessToken;
+        this.disableChallengeResourceVerification = builder.disableChallengeResourceVerification;
     }
 
     /**
@@ -192,5 +189,117 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public void disableChallengeResourceVerification() {
         disableChallengeResourceVerification = true;
+    }
+
+    /**
+     * Creates a new builder instance for constructing KeyVaultLoadStoreParameter.
+     *
+     * @param keyVaultUri The Azure Key Vault URI (required).
+     * @return A new builder instance.
+     */
+    public static Builder builder(String keyVaultUri) {
+        return new Builder(keyVaultUri);
+    }
+
+    /**
+     * Builder class for constructing KeyVaultLoadStoreParameter instances with a fluent API.
+     * This provides a clearer and more maintainable way to create instances compared to
+     * multiple overloaded constructors.
+     */
+    public static final class Builder {
+        private final String keyVaultUri;
+        private String tenantId;
+        private String clientId;
+        private String clientSecret;
+        private String managedIdentity;
+        private String accessToken;
+        private boolean disableChallengeResourceVerification = false;
+
+        /**
+         * Creates a new builder with the required Key Vault URI.
+         *
+         * @param keyVaultUri The Azure Key Vault URI (required).
+         */
+        private Builder(String keyVaultUri) {
+            if (keyVaultUri == null) {
+                throw new IllegalArgumentException("keyVaultUri cannot be null");
+            }
+            this.keyVaultUri = keyVaultUri;
+        }
+
+        /**
+         * Sets the tenant id for authentication.
+         *
+         * @param tenantId The tenant id.
+         * @return This builder instance.
+         */
+        public Builder tenantId(String tenantId) {
+            this.tenantId = tenantId;
+            return this;
+        }
+
+        /**
+         * Sets the client id for authentication.
+         *
+         * @param clientId The client id.
+         * @return This builder instance.
+         */
+        public Builder clientId(String clientId) {
+            this.clientId = clientId;
+            return this;
+        }
+
+        /**
+         * Sets the client secret for authentication.
+         *
+         * @param clientSecret The client secret.
+         * @return This builder instance.
+         */
+        public Builder clientSecret(String clientSecret) {
+            this.clientSecret = clientSecret;
+            return this;
+        }
+
+        /**
+         * Sets the managed identity for authentication.
+         *
+         * @param managedIdentity The user-assigned managed identity.
+         * @return This builder instance.
+         */
+        public Builder managedIdentity(String managedIdentity) {
+            this.managedIdentity = managedIdentity;
+            return this;
+        }
+
+        /**
+         * Sets the access token for authentication.
+         *
+         * @param accessToken The access token.
+         * @return This builder instance.
+         */
+        public Builder accessToken(String accessToken) {
+            this.accessToken = accessToken;
+            return this;
+        }
+
+        /**
+         * Disables verifying if the authentication challenge resource matches the Key Vault or
+         * Managed HSM domain. This verification is performed by default.
+         *
+         * @return This builder instance.
+         */
+        public Builder disableChallengeResourceVerification() {
+            this.disableChallengeResourceVerification = true;
+            return this;
+        }
+
+        /**
+         * Builds and returns a new KeyVaultLoadStoreParameter instance with the configured values.
+         *
+         * @return A new KeyVaultLoadStoreParameter instance.
+         */
+        public KeyVaultLoadStoreParameter build() {
+            return new KeyVaultLoadStoreParameter(this);
+        }
     }
 }
