@@ -46,7 +46,11 @@ class ServiceBusDockerComposeConnectionDetailsFactoryTests {
 
     @Test
     void contextLoads() {
-        this.senderClient.sendMessage(new ServiceBusMessage("Hello World!"));
+        // Wait for Service Bus emulator to be fully ready and queue entity to be available
+        // The emulator depends on SQL Edge and needs time to initialize the messaging entities
+        waitAtMost(Duration.ofSeconds(120)).pollInterval(Duration.ofSeconds(2)).untilAsserted(() -> {
+            this.senderClient.sendMessage(new ServiceBusMessage("Hello World!"));
+        });
 
         waitAtMost(Duration.ofSeconds(30)).pollDelay(Duration.ofSeconds(5)).untilAsserted(() -> {
             assertThat(Config.MESSAGES).hasSize(1);
