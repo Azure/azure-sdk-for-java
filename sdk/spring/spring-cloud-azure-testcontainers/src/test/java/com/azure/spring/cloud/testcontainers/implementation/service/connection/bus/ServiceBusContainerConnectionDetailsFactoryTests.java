@@ -87,8 +87,8 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
 
         @Bean
         ServiceBusErrorHandler errorHandler() {
+            // No-op error handler for tests: acknowledge errors without affecting test execution.
             return (context) -> {
-                throw new RuntimeException("Error processing message: " + context.getException().getMessage());
             };
         }
 

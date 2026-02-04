@@ -9,7 +9,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### New Features
 
-- Add ConnectionDetails for ServiceBus. [44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add ConnectionDetails for ServiceBus. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
 
 #### Bugs Fixed
 
@@ -28,7 +28,7 @@ This section includes changes in `spring-cloud-azure-docker-compose` module.
 
 #### New Features
 
-- Add ServiceBusDockerComposeConnectionDetailsFactory. [44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add ServiceBusDockerComposeConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
 
 ### Spring Cloud Azure Test Containers
 
@@ -36,7 +36,7 @@ This section includes changes in `spring-cloud-azure-testcontainers` module.
 
 #### New Features
 
-- Add ServiceBusContainerConnectionDetailsFactory. [44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add ServiceBusContainerConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
 
 ## 7.0.0-beta.1 (2025-12-23)
 - This release is compatible with Spring Boot 4.0.0. (Note: 4.0.x (x>0) should be supported, but they aren't tested with this release.)
