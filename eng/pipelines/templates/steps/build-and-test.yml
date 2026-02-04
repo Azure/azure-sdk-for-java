@@ -46,8 +46,6 @@ parameters:
     default: [ ]
 
 steps:
-  - template: /eng/pipelines/templates/steps/maven-authenticate.yml
-
   - task: Maven@4
     ${{ if eq(parameters.TestVersionSupport, 'true') }}:
       displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run'
