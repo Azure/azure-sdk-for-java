@@ -1011,7 +1011,7 @@
           versionGA: 7.0.0
           description: |-
             Microsoft's Spring Integration extension for Azure Storage Queue. Spring Integration extends
-            the Spring programming modoel to support well-known Enterprise Integration Patterns.
+            the Spring programming model to support well-known Enterprise Integration Patterns.
           type: spring
           links:
             javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-integration-azure-storage-queue/7.0.0/index.html
@@ -1581,7 +1581,7 @@
           versionGA: 7.0.0
           description: |-
             Microsoft's Spring Integration extension for Azure Event Hubs. Spring Integration extends
-            the Spring programming modoel to support well-known Enterprise Integration Patterns.
+            the Spring programming model to support well-known Enterprise Integration Patterns.
           type: spring
           links:
             javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-integration-azure-eventhubs/7.0.0/index.html
