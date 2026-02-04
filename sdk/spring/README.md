@@ -189,7 +189,7 @@ dependencyManagement {
 
 ## Spring Boot 3 Support
 
-The source code of Spring Cloud Azure for Spring Boot 3.x can be found on the [feature/spring-boot-3](https://github.com/Azure/azure-sdk-for-java/tree/feature/spring-boot-3) branch.
+[Spring Cloud Azure 6.1.0](https://repo1.maven.org/maven2/com/azure/spring/spring-cloud-azure-dependencies/6.1.0/) is the latest supported version of Spring Boot 3.x.
 
 #### Spring AOT and Spring native images
 
