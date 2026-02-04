@@ -387,7 +387,7 @@ public final class PromptAgentDefinition extends AgentDefinition {
      *
      * @return the toolChoice value.
      */
-    private BinaryData getToolChoice() {
+    private BinaryData getToolChoiceInternal() {
         return this.toolChoice;
     }
 
@@ -426,5 +426,31 @@ public final class PromptAgentDefinition extends AgentDefinition {
     public PromptAgentDefinition setToolChoice(ResponseCreateParams.ToolChoice toolChoice) {
         this.toolChoice = BinaryData.fromObject(toolChoice);
         return this;
+    }
+
+    /**
+     * Get the toolChoice property as a String: How the model should select which tool (or tools) to use when generating
+     * a response. See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @return the toolChoice value.
+     */
+    public String getToolChoiceAsString() {
+        if (this.toolChoice == null) {
+            return null;
+        }
+        return this.toolChoice.toString();
+    }
+
+    /**
+     * Get the toolChoice property as a ToolChoice: How the model should select which tool (or tools) to use when
+     * generating a response. See the `tools` parameter to see how to specify which tools the model can call.
+     *
+     * @return the toolChoice value.
+     */
+    public ResponseCreateParams.ToolChoice getToolChoice() {
+        if (this.toolChoice == null) {
+            return null;
+        }
+        return this.toolChoice.toObject(ResponseCreateParams.ToolChoice.class);
     }
 }

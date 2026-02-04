@@ -28,11 +28,11 @@ public class AgentsCustomizations extends Customization {
         customization.getClass("com.azure.ai.agents.models", "ContainerMemoryLimit").customizeAst(ast -> ast.getEnumByName("ContainerMemoryLimit")
             .ifPresent(clazz -> clazz.getEntries().stream()
                 .filter(entry -> "ONE_SIXG".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("ONE_SIX_G"))));
+                .forEach(entry -> entry.setName("SIXTEEN_G"))));
 
         customization.getClass("com.azure.ai.agents.models", "ContainerMemoryLimit").customizeAst(ast -> ast.getEnumByName("ContainerMemoryLimit")
             .ifPresent(clazz -> clazz.getEntries().stream()
-                .filter(entry -> "ONE_SIXG".equals(entry.getName().getIdentifier()))
-                .forEach(entry -> entry.setName("ONE_SIX_G"))));
+                .filter(entry -> "SIX_FOURG".equals(entry.getName().getIdentifier()))
+                .forEach(entry -> entry.setName("SIXTY_FOUR_G"))));
     }
 }

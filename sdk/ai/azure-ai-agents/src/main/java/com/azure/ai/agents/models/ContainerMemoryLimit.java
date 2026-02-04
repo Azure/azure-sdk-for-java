@@ -19,11 +19,11 @@ public enum ContainerMemoryLimit {
     /**
      * Enum value 16g.
      */
-    ONE_SIX_G("16g"),
+    SIXTEEN_G("16g"),
     /**
      * Enum value 64g.
      */
-    SIX_FOURG("64g");
+    SIXTY_FOUR_G("64g");
 
     /**
      * The actual serialized value for a ContainerMemoryLimit instance.
