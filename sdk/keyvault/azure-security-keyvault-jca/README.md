@@ -79,7 +79,7 @@ The JCA library provides support for Java Archive (JAR) signing, ensuring the in
 ## Examples
 
 ### Authentication Methods
-The JCA provider supports three authentication methods, which are automatically selected based on the configuration:
+The JCA provider supports four authentication methods, which are automatically selected based on the configuration priority:
 
 #### 1. Service Principal (Client Credentials)
 Use this method when you have explicit credentials (tenant ID, client ID, client secret):
@@ -90,7 +90,19 @@ System.setProperty("azure.keyvault.client-id", "<your-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<your-client-secret>");
 ```
 
-#### 2. Managed Identity
+#### 2. Workload Identity (AKS)
+Use this method when running in Azure Kubernetes Service with Workload Identity enabled. **Only set the Key Vault URI** - the federated credentials are automatically detected from environment variables (`AZURE_FEDERATED_TOKEN_FILE`, `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`) or can be explicitly set via system properties:
+```java
+// Automatic detection from environment variables
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+
+// Or explicitly set client ID and tenant ID via system properties
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<your-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<your-client-id>");
+```
+
+#### 3. Managed Identity
 Use this method when running on Azure services (VMs, App Service, Container Apps) with Managed Identity enabled. **Only set the Key Vault URI**:
 ```java
 // System-assigned managed identity
@@ -101,16 +113,11 @@ System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.managed-identity", "<managed-identity-object-id>");
 ```
 
-#### 3. Workload Identity (AKS)
-Use this method when running in Azure Kubernetes Service with Workload Identity enabled. **Only set the Key Vault URI** - the federated credentials are automatically detected from environment variables (`AZURE_FEDERATED_TOKEN_FILE`, `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`) or can be explicitly set via system properties:
+#### 4. Access Token
+Use this method when you have a pre-obtained bearer token:
 ```java
-// Automatic detection from environment variables
 System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
-
-// Or explicitly set client ID and tenant ID via system properties
-System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
-System.setProperty("azure.keyvault.tenant-id", "<your-tenant-id>");
-System.setProperty("azure.keyvault.client-id", "<your-client-id>");
+System.setProperty("azure.keyvault.access-token", "<your-access-token>");
 ```
 
 **Authentication Selection Logic:**
