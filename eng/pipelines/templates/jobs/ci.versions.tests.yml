@@ -45,8 +45,6 @@ jobs:
       # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
       - name: ArtifactsJson
         value: '${{ convertToJson(parameters.Artifacts) }}'
-      - name: SYSTEM_ACCESSTOKEN
-        value: $(System.AccessToken)
 
     pool:
       name: $(LINUXPOOL)

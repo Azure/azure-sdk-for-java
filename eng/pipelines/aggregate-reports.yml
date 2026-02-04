@@ -32,8 +32,6 @@ extends:
 
             variables:
               - template: /eng/pipelines/templates/variables/image.yml
-              - name: SYSTEM_ACCESSTOKEN
-                value: $(System.AccessToken)
               - name: ArtifactsJson
                 value: '${{ convertToJson(parameters.Artifacts) }}'
             pool:

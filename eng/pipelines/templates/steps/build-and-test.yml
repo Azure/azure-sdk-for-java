@@ -63,6 +63,7 @@ steps:
       publishJUnitResults: false
       goals: 'install'
     env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
 
@@ -85,6 +86,7 @@ steps:
       publishJUnitResults: false
       goals: 'clean install'
     env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
@@ -142,7 +144,9 @@ steps:
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
         goals: ${{ parameters.TestGoals }}
-      env: ${{ parameters.TestEnvVars }}
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        ${{ insert }}: ${{ parameters.TestEnvVars }}
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
@@ -163,6 +167,8 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     condition: eq(variables['RunAggregateReports'], 'true')
 
   - task: Maven@4
@@ -181,6 +187,8 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ parameters.PreTestRunSteps }}
@@ -239,7 +247,9 @@ steps:
         # lifecycle that test or verify targets would execute. The libraries were already
         # compiled and installed in the previous task, this tasks only runs tests.
         goals: ${{ parameters.TestGoals }}
-      env: ${{ parameters.TestEnvVars }}
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        ${{ insert }}: ${{ parameters.TestEnvVars }}
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - ${{ if eq(parameters.TestVersionSupport, 'true') }}:

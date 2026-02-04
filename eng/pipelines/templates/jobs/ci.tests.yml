@@ -81,8 +81,6 @@ jobs:
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
-      - name: SYSTEM_ACCESSTOKEN
-        value: $(System.AccessToken)
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
