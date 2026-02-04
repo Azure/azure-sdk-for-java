@@ -48,8 +48,6 @@ import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.io.File;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -211,9 +209,8 @@ public class SasAsyncClientTests extends BlobTestBase {
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
-            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
-
             // We need to get the object ID from the token credential used to authenticate the request
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
             String oid = getOidFromToken(tokenCredential);
             BlobServiceSasSignatureValues sasValues
                 = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
@@ -231,7 +228,9 @@ public class SasAsyncClientTests extends BlobTestBase {
                 return client.getPropertiesWithResponse(null);
             });
 
-            StepVerifier.create(response).assertNext(r -> assertResponseStatusCode(r, 200)).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
@@ -398,7 +397,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             BlobServiceSasSignatureValues sasValues
                 = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
 
-            Flux<BlobItem> response = getUserDelegationInfo().flatMapMany(key -> {
+            Mono<Response<BlobProperties>> response = getUserDelegationInfo().flatMap(key -> {
                 String sas = ccAsync.generateUserDelegationSas(sasValues, key);
 
                 // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
@@ -408,10 +407,12 @@ public class SasAsyncClientTests extends BlobTestBase {
                         .sasToken(sas)
                         .credential(tokenCredential)).buildAsyncClient();
 
-                return client.listBlobs();
+                return client.getBlobAsyncClient(blobName).getBlockBlobAsyncClient().getPropertiesWithResponse(null);
             });
 
-            StepVerifier.create(response).expectNextCount(1).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
@@ -697,7 +698,7 @@ public class SasAsyncClientTests extends BlobTestBase {
             }
 
             // Generate a sasClient that does not have an encryptionScope
-            sasClient = builder.sasToken(sas)
+            sasClient = getContainerClientBuilder(cc.getBlobContainerUrl()).sasToken(sas)
                 .encryptionScope(null)
                 .buildAsyncClient()
                 .getBlobAsyncClient(sharedKeyClient.getBlobName())
@@ -893,7 +894,7 @@ public class SasAsyncClientTests extends BlobTestBase {
     }
 
     @Test
-    public void accountSasOnEndpoint() throws IOException {
+    public void accountSasOnEndpoint() {
         AccountSasService service = new AccountSasService().setBlobAccess(true);
         AccountSasResourceType resourceType
             = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
@@ -912,11 +913,11 @@ public class SasAsyncClientTests extends BlobTestBase {
 
         StepVerifier.create(response).expectNextCount(1).verifyComplete();
 
-        BlobAsyncClient bc = getBlobAsyncClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryBlobServiceAsyncClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas);
-        File file = getRandomFile(256);
-        file.deleteOnExit();
-        StepVerifier.create(bc.uploadFromFile(file.toPath().toString(), true)).verifyComplete();
+        BlobAsyncClient bc = instrument(new BlobClientBuilder()
+            .endpoint(primaryBlobServiceAsyncClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas))
+                .buildAsyncClient();
+
+        StepVerifier.create(bc.getProperties()).expectNextCount(1).verifyComplete();
     }
 
     @Test
