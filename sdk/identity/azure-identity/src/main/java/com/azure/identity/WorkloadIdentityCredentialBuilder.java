@@ -50,7 +50,7 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
 public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<WorkloadIdentityCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredentialBuilder.class);
     private String tokenFilePath;
-    private boolean enableTokenProxy;
+    private boolean enableAzureProxy;
 
     /**
      * Creates an instance of a WorkloadIdentityCredentialBuilder.
@@ -76,10 +76,10 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
      * environment variables (AZURE_KUBERNETES_TOKEN_PROXY, AZURE_KUBERNETES_CA_FILE,
      * AZURE_KUBERNETES_CA_DATA, AZURE_KUBERNETES_SNI_NAME).
      *
-     * @return An updated instance of this builder with Azure token proxy enabled.
+     * @return An updated instance of this builder with Azure proxy enabled.
      */
-    public WorkloadIdentityCredentialBuilder enableAzureTokenProxy() {
-        this.enableTokenProxy = true;
+    public WorkloadIdentityCredentialBuilder enableAzureProxy() {
+        this.enableAzureProxy = true;
         return this;
     }
 
@@ -105,7 +105,7 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientIdInput, "Tenant ID",
             tenantIdInput, "Service Token File Path", federatedTokenFilePathInput);
 
-        if (enableTokenProxy) {
+        if (enableAzureProxy) {
             ProxyConfig proxyConfig = CustomTokenProxyConfiguration.parseAndValidate(configuration);
             if (proxyConfig != null) {
                 identityClientOptions.setHttpClient(new CustomTokenProxyHttpClient(proxyConfig));
