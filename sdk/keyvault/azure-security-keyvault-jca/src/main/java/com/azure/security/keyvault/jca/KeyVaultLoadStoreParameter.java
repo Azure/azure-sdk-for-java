@@ -151,7 +151,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      *
      * @return The access token.
      */
-    public String getAccessToken() {
+    String getAccessToken() {
         return accessToken;
     }
 
