@@ -279,8 +279,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
                 .verifyError(exception);
         } catch (IllegalArgumentException e) {
             //StepVerifier cant handle the error in the creation of BlobParallelUploadOptions
-            assertEquals(e.getMessage(),
-                "The value of the parameter 'length' should be between 0 and 9223372036854775807.");
+            assertEquals("The value of the parameter 'length' should be between 0 and 9223372036854775807.",
+                e.getMessage());
         }
     }
 
@@ -1347,7 +1347,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
     }
 
     @Test
-    public void setHTTPHeadersMin() throws NoSuchAlgorithmException {
+    public void setHTTPHeadersMin() {
         Mono<BlobProperties> response = bc.getProperties().flatMap(properties -> {
             BlobHttpHeaders headers;
             try {
@@ -1619,6 +1619,75 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
     private static Stream<Arguments> setTagsACSupplier() {
         return Stream.of(Arguments.of((String) null), Arguments.of("\"foo\" = 'bar'"));
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsSupplier")
+    public void setGetTagOptionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID) {
+        Map<String, String> t = new HashMap<>();
+
+        t.put("foo", "bar");
+
+        Mono<Response<Map<String, String>>> response = Mono
+            .zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls)
+            .flatMap(conditions -> {
+                BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
+                    .setIfNoneMatch(noneMatch)
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified);
+                return bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac))
+                    .then(bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac)));
+            });
+
+        StepVerifier.create(response).assertNext(r -> {
+            assertResponseStatusCode(r, 200);
+            assertEquals(t, r.getValue());
+        }).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void setTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        Map<String, String> t = new HashMap<>();
+
+        //The x-ms-if-tags-request header is not supported
+        t.put("notfoo", "notbar");
+
+        Mono<Response<Void>> response = setupBlobMatchCondition(bc, noneMatch).flatMap(condition -> {
+            BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+                .setIfMatch(match)
+                .setIfNoneMatch(convertNull(condition))
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setTagsConditions(tags);
+            return bc.setTagsWithResponse(new BlobSetTagsOptions(t).setRequestConditions(bac));
+        });
+
+        StepVerifier.create(response).verifyError(BlobStorageException.class);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.blob.BlobTestBase#allConditionsFailSupplier")
+    public void getTagOptionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
+        String leaseID, String tags) {
+        //The x-ms-if-tags-request header is not supported
+        Mono<Response<Map<String, String>>> response = setupBlobMatchCondition(bc, noneMatch).flatMap(condition -> {
+            BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseID)
+                .setIfMatch(match)
+                .setIfNoneMatch(convertNull(condition))
+                .setIfModifiedSince(modified)
+                .setIfUnmodifiedSince(unmodified)
+                .setTagsConditions(tags);
+            return bc.getTagsWithResponse(new BlobGetTagsOptions().setRequestConditions(bac));
+        });
+
+        StepVerifier.create(response).verifyError(BlobStorageException.class);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-07-07")
@@ -2751,7 +2820,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         specializedBlobClientBuilder.containerName(ccAsync.getBlobContainerName()).blobName(originalBlobName);
 
         BlockBlobAsyncClient blockBlobClient = specializedBlobClientBuilder.buildBlockBlobAsyncClient();
-        assertEquals(blockBlobClient.getBlobName(), originalBlobName);
+        assertEquals(originalBlobName, blockBlobClient.getBlobName());
 
         // see if the blob name will be properly encoded in the url
         String encodedName = Utility.urlEncode(originalBlobName);
@@ -2765,7 +2834,7 @@ public class BlobAsyncApiTests extends BlobTestBase {
         blobClientBuilder.containerName(ccAsync.getBlobContainerName()).blobName(originalBlobName);
 
         BlobAsyncClient blobClient = blobClientBuilder.buildAsyncClient();
-        assertEquals(blobClient.getBlobName(), originalBlobName);
+        assertEquals(originalBlobName, blobClient.getBlobName());
 
         // see if the blob name will be properly encoded in the url
         String encodedName = Utility.urlEncode(originalBlobName);
@@ -2880,6 +2949,22 @@ public class BlobAsyncApiTests extends BlobTestBase {
 
         //cleanup
         deleteFileShareWithoutDependency(shareName);
+    }
+
+    @Test
+    public void blobNameEncodingOnGetBlobUrl() {
+        BlobAsyncClient blobClient = ccAsync.getBlobAsyncClient("my blob");
+        String expectedEncodedBlobName = "my%20blob";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedBlobName));
+    }
+
+    @Test
+    void containerNameEncodingOnGetBlobUrl() {
+        BlobContainerAsyncClient containerClient
+            = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient("my container");
+        BlobAsyncClient blobClient = containerClient.getBlobAsyncClient(generateBlobName());
+        String expectedEncodedContainerName = "my%20container";
+        assertTrue(blobClient.getBlobUrl().contains(expectedEncodedContainerName));
     }
 
 }

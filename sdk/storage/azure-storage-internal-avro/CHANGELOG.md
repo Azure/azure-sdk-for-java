@@ -1,12 +1,49 @@
 # Release History
 
-## 12.17.0-beta.2 (Unreleased)
+## 12.19.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.18.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-common` from `12.32.0` to version `12.32.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 12.18.0 (2026-01-15)
+
+### Features Added
+- Added support for service version 2026-02-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
+
+## 12.18.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for service version 2026-02-06.
+
+## 12.17.0 (2025-10-21)
+
+### Features Added
+- Added support for service version 2025-11-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.30.0` to version `12.31.0`.
+- Upgraded `azure-core` from `1.55.5` to version `1.57.0`.
 
 ## 12.16.3 (2025-09-25)
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * sharedInsight.
+ * Represents a shared insight.
  */
 @Fluent
 public final class MicrosoftGraphSharedInsight extends MicrosoftGraphEntity {

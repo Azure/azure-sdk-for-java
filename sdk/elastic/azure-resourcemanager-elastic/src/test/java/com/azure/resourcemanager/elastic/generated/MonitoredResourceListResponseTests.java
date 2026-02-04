@@ -15,24 +15,28 @@ public final class MonitoredResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MonitoredResourceListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"id\":\"xmqci\",\"sendingLogs\":\"True\",\"reasonForLogsStatus\":\"khixuigdtopbo\"}],\"nextLink\":\"og\"}")
+            "{\"value\":[{\"id\":\"kpnpulexxbczwtr\",\"sendingLogs\":\"True\",\"reasonForLogsStatus\":\"zb\"},{\"id\":\"vsovmyokac\",\"sendingLogs\":\"True\",\"reasonForLogsStatus\":\"lhzdobp\"}],\"nextLink\":\"mflbv\"}")
             .toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("xmqci", model.value().get(0).id());
+        Assertions.assertEquals("kpnpulexxbczwtr", model.value().get(0).id());
         Assertions.assertEquals(SendingLogs.TRUE, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("khixuigdtopbo", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("og", model.nextLink());
+        Assertions.assertEquals("zb", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("mflbv", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredResourceListResponse model
-            = new MonitoredResourceListResponse().withValue(Arrays.asList(new MonitoredResourceInner().withId("xmqci")
+        MonitoredResourceListResponse model = new MonitoredResourceListResponse().withValue(Arrays.asList(
+            new MonitoredResourceInner().withId("kpnpulexxbczwtr")
                 .withSendingLogs(SendingLogs.TRUE)
-                .withReasonForLogsStatus("khixuigdtopbo"))).withNextLink("og");
+                .withReasonForLogsStatus("zb"),
+            new MonitoredResourceInner().withId("vsovmyokac")
+                .withSendingLogs(SendingLogs.TRUE)
+                .withReasonForLogsStatus("lhzdobp")))
+            .withNextLink("mflbv");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("xmqci", model.value().get(0).id());
+        Assertions.assertEquals("kpnpulexxbczwtr", model.value().get(0).id());
         Assertions.assertEquals(SendingLogs.TRUE, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("khixuigdtopbo", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("og", model.nextLink());
+        Assertions.assertEquals("zb", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("mflbv", model.nextLink());
     }
 }

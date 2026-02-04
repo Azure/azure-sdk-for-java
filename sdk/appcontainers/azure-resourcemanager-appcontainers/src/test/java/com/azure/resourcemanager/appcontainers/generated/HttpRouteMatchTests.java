@@ -11,26 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class HttpRouteMatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HttpRouteMatch model = BinaryData
-            .fromString(
-                "{\"prefix\":\"w\",\"path\":\"edenrexkxbhxv\",\"pathSeparatedPrefix\":\"nul\",\"caseSensitive\":false}")
+        HttpRouteMatch model = BinaryData.fromString(
+            "{\"prefix\":\"unjdx\",\"path\":\"lnkvxlx\",\"pathSeparatedPrefix\":\"glqivbgkcv\",\"caseSensitive\":true}")
             .toObject(HttpRouteMatch.class);
-        Assertions.assertEquals("w", model.prefix());
-        Assertions.assertEquals("edenrexkxbhxv", model.path());
-        Assertions.assertEquals("nul", model.pathSeparatedPrefix());
-        Assertions.assertFalse(model.caseSensitive());
+        Assertions.assertEquals("unjdx", model.prefix());
+        Assertions.assertEquals("lnkvxlx", model.path());
+        Assertions.assertEquals("glqivbgkcv", model.pathSeparatedPrefix());
+        Assertions.assertTrue(model.caseSensitive());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpRouteMatch model = new HttpRouteMatch().withPrefix("w")
-            .withPath("edenrexkxbhxv")
-            .withPathSeparatedPrefix("nul")
-            .withCaseSensitive(false);
+        HttpRouteMatch model = new HttpRouteMatch().withPrefix("unjdx")
+            .withPath("lnkvxlx")
+            .withPathSeparatedPrefix("glqivbgkcv")
+            .withCaseSensitive(true);
         model = BinaryData.fromObject(model).toObject(HttpRouteMatch.class);
-        Assertions.assertEquals("w", model.prefix());
-        Assertions.assertEquals("edenrexkxbhxv", model.path());
-        Assertions.assertEquals("nul", model.pathSeparatedPrefix());
-        Assertions.assertFalse(model.caseSensitive());
+        Assertions.assertEquals("unjdx", model.prefix());
+        Assertions.assertEquals("lnkvxlx", model.path());
+        Assertions.assertEquals("glqivbgkcv", model.pathSeparatedPrefix());
+        Assertions.assertTrue(model.caseSensitive());
     }
 }

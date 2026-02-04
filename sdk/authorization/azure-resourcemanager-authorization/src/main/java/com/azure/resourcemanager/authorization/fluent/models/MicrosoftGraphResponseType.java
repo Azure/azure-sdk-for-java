@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * responseType.
+ * Represents a response type.
  */
 public final class MicrosoftGraphResponseType extends ExpandableStringEnum<MicrosoftGraphResponseType> {
     /**

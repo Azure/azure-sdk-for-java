@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -20,6 +21,11 @@ public final class PrivateLinkResource extends ProxyResource {
      * Resource properties.
      */
     private PrivateLinkResourceProperties properties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -60,6 +66,15 @@ public final class PrivateLinkResource extends ProxyResource {
     public PrivateLinkResource withProperties(PrivateLinkResourceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -137,6 +152,8 @@ public final class PrivateLinkResource extends ProxyResource {
                     deserializedPrivateLinkResource.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedPrivateLinkResource.properties = PrivateLinkResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPrivateLinkResource.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

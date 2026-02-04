@@ -14,6 +14,8 @@ public interface ConnectedPartnerResources {
     /**
      * List of all active deployments that are associated with the marketplace subscription linked to the given monitor.
      * 
+     * A synchronous resource action.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,6 +27,8 @@ public interface ConnectedPartnerResources {
 
     /**
      * List of all active deployments that are associated with the marketplace subscription linked to the given monitor.
+     * 
+     * A synchronous resource action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.

@@ -20,22 +20,22 @@ import java.util.Map;
 @Fluent
 public final class OperationInner implements JsonSerializable<OperationInner> {
     /*
-     * The name of the operation being performed on this particular object.
+     * Name of the operation being performed on this particular object.
      */
     private String name;
 
     /*
-     * The localized display information for this particular operation or action.
+     * Localized display information for this particular operation or action.
      */
     private OperationDisplay display;
 
     /*
-     * Indicates whether the operation is a data action
+     * Indicates if the operation is a data action.
      */
     private Boolean isDataAction;
 
     /*
-     * The intended executor of the operation.
+     * Intended executor of the operation.
      */
     private OperationOrigin origin;
 
@@ -51,7 +51,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
-     * Get the name property: The name of the operation being performed on this particular object.
+     * Get the name property: Name of the operation being performed on this particular object.
      * 
      * @return the name value.
      */
@@ -60,7 +60,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
-     * Get the display property: The localized display information for this particular operation or action.
+     * Get the display property: Localized display information for this particular operation or action.
      * 
      * @return the display value.
      */
@@ -69,7 +69,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
-     * Get the isDataAction property: Indicates whether the operation is a data action.
+     * Get the isDataAction property: Indicates if the operation is a data action.
      * 
      * @return the isDataAction value.
      */
@@ -78,7 +78,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
-     * Set the isDataAction property: Indicates whether the operation is a data action.
+     * Set the isDataAction property: Indicates if the operation is a data action.
      * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationInner object itself.
@@ -89,7 +89,7 @@ public final class OperationInner implements JsonSerializable<OperationInner> {
     }
 
     /**
-     * Get the origin property: The intended executor of the operation.
+     * Get the origin property: Intended executor of the operation.
      * 
      * @return the origin value.
      */

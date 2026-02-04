@@ -12,7 +12,8 @@ import com.azure.core.util.Context;
  */
 public interface Organizations {
     /**
-     * List all the existing organizations.
+     * Lists all the New Relic organizations linked to your email address, helping you understand the existing
+     * organizations that have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -24,7 +25,8 @@ public interface Organizations {
     PagedIterable<OrganizationResource> list(String userEmail, String location);
 
     /**
-     * List all the existing organizations.
+     * Lists all the New Relic organizations linked to your email address, helping you understand the existing
+     * organizations that have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.

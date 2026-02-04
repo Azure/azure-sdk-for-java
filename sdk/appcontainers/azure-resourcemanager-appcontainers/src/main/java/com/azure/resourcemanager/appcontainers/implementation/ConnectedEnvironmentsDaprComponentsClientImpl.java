@@ -35,9 +35,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appcontainers.fluent.ConnectedEnvironmentsDaprComponentsClient;
-import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentDaprComponentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.DaprComponentInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
-import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentDaprComponentsCollection;
+import com.azure.resourcemanager.appcontainers.models.DaprComponentsCollection;
 import com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -79,7 +79,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ConnectedEnvironmentDaprComponentsCollection>> list(@HostParam("$host") String endpoint,
+        Mono<Response<DaprComponentsCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
@@ -89,7 +89,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Response<ConnectedEnvironmentDaprComponentsCollection> listSync(@HostParam("$host") String endpoint,
+        Response<DaprComponentsCollection> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
@@ -99,7 +99,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ConnectedEnvironmentDaprComponentInner>> get(@HostParam("$host") String endpoint,
+        Mono<Response<DaprComponentInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
@@ -110,7 +110,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents/{componentName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Response<ConnectedEnvironmentDaprComponentInner> getSync(@HostParam("$host") String endpoint,
+        Response<DaprComponentInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
@@ -126,7 +126,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
             @PathParam("componentName") String componentName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ConnectedEnvironmentDaprComponentInner daprComponentEnvelope,
+            @BodyParam("application/json") DaprComponentInner daprComponentEnvelope,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -138,7 +138,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("connectedEnvironmentName") String connectedEnvironmentName,
             @PathParam("componentName") String componentName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ConnectedEnvironmentDaprComponentInner daprComponentEnvelope,
+            @BodyParam("application/json") DaprComponentInner daprComponentEnvelope,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -189,7 +189,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<ConnectedEnvironmentDaprComponentsCollection>> listNext(
+        Mono<Response<DaprComponentsCollection>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -197,9 +197,8 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Response<ConnectedEnvironmentDaprComponentsCollection> listNextSync(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<DaprComponentsCollection> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -214,7 +213,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectedEnvironmentDaprComponentInner>> listSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<DaprComponentInner>> listSinglePageAsync(String resourceGroupName,
         String connectedEnvironmentName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -236,7 +235,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
                 resourceGroupName, connectedEnvironmentName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<ConnectedEnvironmentDaprComponentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<DaprComponentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -252,8 +251,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConnectedEnvironmentDaprComponentInner> listAsync(String resourceGroupName,
-        String connectedEnvironmentName) {
+    private PagedFlux<DaprComponentInner> listAsync(String resourceGroupName, String connectedEnvironmentName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, connectedEnvironmentName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
@@ -269,7 +267,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the Dapr Components for a connected environment along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ConnectedEnvironmentDaprComponentInner> listSinglePage(String resourceGroupName,
+    private PagedResponse<DaprComponentInner> listSinglePage(String resourceGroupName,
         String connectedEnvironmentName) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
@@ -291,7 +289,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
                     new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ConnectedEnvironmentDaprComponentsCollection> res
+        Response<DaprComponentsCollection> res
             = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
                 connectedEnvironmentName, this.client.getApiVersion(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -310,8 +308,8 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the Dapr Components for a connected environment along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ConnectedEnvironmentDaprComponentInner> listSinglePage(String resourceGroupName,
-        String connectedEnvironmentName, Context context) {
+    private PagedResponse<DaprComponentInner> listSinglePage(String resourceGroupName, String connectedEnvironmentName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -332,7 +330,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
                     new IllegalArgumentException("Parameter connectedEnvironmentName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ConnectedEnvironmentDaprComponentsCollection> res
+        Response<DaprComponentsCollection> res
             = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
                 connectedEnvironmentName, this.client.getApiVersion(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
@@ -350,8 +348,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConnectedEnvironmentDaprComponentInner> list(String resourceGroupName,
-        String connectedEnvironmentName) {
+    public PagedIterable<DaprComponentInner> list(String resourceGroupName, String connectedEnvironmentName) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, connectedEnvironmentName),
             nextLink -> listNextSinglePage(nextLink));
     }
@@ -368,8 +365,8 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the Dapr Components for a connected environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConnectedEnvironmentDaprComponentInner> list(String resourceGroupName,
-        String connectedEnvironmentName, Context context) {
+    public PagedIterable<DaprComponentInner> list(String resourceGroupName, String connectedEnvironmentName,
+        Context context) {
         return new PagedIterable<>(() -> listSinglePage(resourceGroupName, connectedEnvironmentName, context),
             nextLink -> listNextSinglePage(nextLink, context));
     }
@@ -386,7 +383,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return a dapr component along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConnectedEnvironmentDaprComponentInner>> getWithResponseAsync(String resourceGroupName,
+    private Mono<Response<DaprComponentInner>> getWithResponseAsync(String resourceGroupName,
         String connectedEnvironmentName, String componentName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -427,8 +424,8 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return a dapr component on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectedEnvironmentDaprComponentInner> getAsync(String resourceGroupName,
-        String connectedEnvironmentName, String componentName) {
+    private Mono<DaprComponentInner> getAsync(String resourceGroupName, String connectedEnvironmentName,
+        String componentName) {
         return getWithResponseAsync(resourceGroupName, connectedEnvironmentName, componentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -446,8 +443,8 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return a dapr component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConnectedEnvironmentDaprComponentInner> getWithResponse(String resourceGroupName,
-        String connectedEnvironmentName, String componentName, Context context) {
+    public Response<DaprComponentInner> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -488,8 +485,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return a dapr component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectedEnvironmentDaprComponentInner get(String resourceGroupName, String connectedEnvironmentName,
-        String componentName) {
+    public DaprComponentInner get(String resourceGroupName, String connectedEnvironmentName, String componentName) {
         return getWithResponse(resourceGroupName, connectedEnvironmentName, componentName, Context.NONE).getValue();
     }
 
@@ -509,8 +505,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String connectedEnvironmentName, String componentName,
-        ConnectedEnvironmentDaprComponentInner daprComponentEnvelope) {
+        String connectedEnvironmentName, String componentName, DaprComponentInner daprComponentEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -560,7 +555,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        String componentName, ConnectedEnvironmentDaprComponentInner daprComponentEnvelope) {
+        String componentName, DaprComponentInner daprComponentEnvelope) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -613,7 +608,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> createOrUpdateWithResponse(String resourceGroupName, String connectedEnvironmentName,
-        String componentName, ConnectedEnvironmentDaprComponentInner daprComponentEnvelope, Context context) {
+        String componentName, DaprComponentInner daprComponentEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -664,14 +659,13 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the {@link PollerFlux} for polling of dapr Component.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ConnectedEnvironmentDaprComponentInner>, ConnectedEnvironmentDaprComponentInner>
-        beginCreateOrUpdateAsync(String resourceGroupName, String connectedEnvironmentName, String componentName,
-            ConnectedEnvironmentDaprComponentInner daprComponentEnvelope) {
+    private PollerFlux<PollResult<DaprComponentInner>, DaprComponentInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String connectedEnvironmentName, String componentName,
+        DaprComponentInner daprComponentEnvelope) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
             connectedEnvironmentName, componentName, daprComponentEnvelope);
-        return this.client.<ConnectedEnvironmentDaprComponentInner, ConnectedEnvironmentDaprComponentInner>getLroResult(
-            mono, this.client.getHttpPipeline(), ConnectedEnvironmentDaprComponentInner.class,
-            ConnectedEnvironmentDaprComponentInner.class, this.client.getContext());
+        return this.client.<DaprComponentInner, DaprComponentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DaprComponentInner.class, DaprComponentInner.class, this.client.getContext());
     }
 
     /**
@@ -689,14 +683,12 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the {@link SyncPoller} for polling of dapr Component.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConnectedEnvironmentDaprComponentInner>, ConnectedEnvironmentDaprComponentInner>
-        beginCreateOrUpdate(String resourceGroupName, String connectedEnvironmentName, String componentName,
-            ConnectedEnvironmentDaprComponentInner daprComponentEnvelope) {
+    public SyncPoller<PollResult<DaprComponentInner>, DaprComponentInner> beginCreateOrUpdate(String resourceGroupName,
+        String connectedEnvironmentName, String componentName, DaprComponentInner daprComponentEnvelope) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName,
             componentName, daprComponentEnvelope);
-        return this.client.<ConnectedEnvironmentDaprComponentInner, ConnectedEnvironmentDaprComponentInner>getLroResult(
-            response, ConnectedEnvironmentDaprComponentInner.class, ConnectedEnvironmentDaprComponentInner.class,
-            Context.NONE);
+        return this.client.<DaprComponentInner, DaprComponentInner>getLroResult(response, DaprComponentInner.class,
+            DaprComponentInner.class, Context.NONE);
     }
 
     /**
@@ -715,14 +707,13 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the {@link SyncPoller} for polling of dapr Component.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ConnectedEnvironmentDaprComponentInner>, ConnectedEnvironmentDaprComponentInner>
-        beginCreateOrUpdate(String resourceGroupName, String connectedEnvironmentName, String componentName,
-            ConnectedEnvironmentDaprComponentInner daprComponentEnvelope, Context context) {
+    public SyncPoller<PollResult<DaprComponentInner>, DaprComponentInner> beginCreateOrUpdate(String resourceGroupName,
+        String connectedEnvironmentName, String componentName, DaprComponentInner daprComponentEnvelope,
+        Context context) {
         Response<BinaryData> response = createOrUpdateWithResponse(resourceGroupName, connectedEnvironmentName,
             componentName, daprComponentEnvelope, context);
-        return this.client.<ConnectedEnvironmentDaprComponentInner, ConnectedEnvironmentDaprComponentInner>getLroResult(
-            response, ConnectedEnvironmentDaprComponentInner.class, ConnectedEnvironmentDaprComponentInner.class,
-            context);
+        return this.client.<DaprComponentInner, DaprComponentInner>getLroResult(response, DaprComponentInner.class,
+            DaprComponentInner.class, context);
     }
 
     /**
@@ -740,9 +731,8 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return dapr Component on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConnectedEnvironmentDaprComponentInner> createOrUpdateAsync(String resourceGroupName,
-        String connectedEnvironmentName, String componentName,
-        ConnectedEnvironmentDaprComponentInner daprComponentEnvelope) {
+    private Mono<DaprComponentInner> createOrUpdateAsync(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, DaprComponentInner daprComponentEnvelope) {
         return beginCreateOrUpdateAsync(resourceGroupName, connectedEnvironmentName, componentName,
             daprComponentEnvelope).last().flatMap(this.client::getLroFinalResultOrError);
     }
@@ -762,9 +752,8 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return dapr Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectedEnvironmentDaprComponentInner createOrUpdate(String resourceGroupName,
-        String connectedEnvironmentName, String componentName,
-        ConnectedEnvironmentDaprComponentInner daprComponentEnvelope) {
+    public DaprComponentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, DaprComponentInner daprComponentEnvelope) {
         return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, daprComponentEnvelope)
             .getFinalResult();
     }
@@ -785,9 +774,8 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return dapr Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConnectedEnvironmentDaprComponentInner createOrUpdate(String resourceGroupName,
-        String connectedEnvironmentName, String componentName,
-        ConnectedEnvironmentDaprComponentInner daprComponentEnvelope, Context context) {
+    public DaprComponentInner createOrUpdate(String resourceGroupName, String connectedEnvironmentName,
+        String componentName, DaprComponentInner daprComponentEnvelope, Context context) {
         return beginCreateOrUpdate(resourceGroupName, connectedEnvironmentName, componentName, daprComponentEnvelope,
             context).getFinalResult();
     }
@@ -1177,7 +1165,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConnectedEnvironmentDaprComponentInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<DaprComponentInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1187,7 +1175,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConnectedEnvironmentDaprComponentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<DaprComponentInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1204,7 +1192,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the Dapr Components for a connected environment along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ConnectedEnvironmentDaprComponentInner> listNextSinglePage(String nextLink) {
+    private PagedResponse<DaprComponentInner> listNextSinglePage(String nextLink) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1215,7 +1203,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ConnectedEnvironmentDaprComponentsCollection> res
+        Response<DaprComponentsCollection> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
@@ -1234,7 +1222,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
      * @return the Dapr Components for a connected environment along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<ConnectedEnvironmentDaprComponentInner> listNextSinglePage(String nextLink, Context context) {
+    private PagedResponse<DaprComponentInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1245,7 +1233,7 @@ public final class ConnectedEnvironmentsDaprComponentsClientImpl implements Conn
                     "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<ConnectedEnvironmentDaprComponentsCollection> res
+        Response<DaprComponentsCollection> res
             = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);

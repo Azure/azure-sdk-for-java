@@ -537,6 +537,11 @@ public final class ConnectionCategory extends ExpandableStringEnum<ConnectionCat
     public static final ConnectionCategory MANAGED_ONLINE_ENDPOINT = fromString("ManagedOnlineEndpoint");
 
     /**
+     * Static value AzureStorageAccount for ConnectionCategory.
+     */
+    public static final ConnectionCategory AZURE_STORAGE_ACCOUNT = fromString("AzureStorageAccount");
+
+    /**
      * Creates a new instance of ConnectionCategory value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

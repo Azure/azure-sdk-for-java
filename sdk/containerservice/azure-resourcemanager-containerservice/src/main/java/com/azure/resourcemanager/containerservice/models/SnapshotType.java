@@ -17,11 +17,6 @@ public final class SnapshotType extends ExpandableStringEnum<SnapshotType> {
     public static final SnapshotType NODE_POOL = fromString("NodePool");
 
     /**
-     * Static value ManagedCluster for SnapshotType.
-     */
-    public static final SnapshotType MANAGED_CLUSTER = fromString("ManagedCluster");
-
-    /**
      * Creates a new instance of SnapshotType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

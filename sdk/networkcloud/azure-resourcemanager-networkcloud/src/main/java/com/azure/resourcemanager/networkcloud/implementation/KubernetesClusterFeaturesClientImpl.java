@@ -82,8 +82,8 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
         Mono<Response<KubernetesClusterFeatureList>> listByKubernetesCluster(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("kubernetesClusterName") String kubernetesClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("kubernetesClusterName") String kubernetesClusterName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/features")
@@ -92,8 +92,8 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
         Response<KubernetesClusterFeatureList> listByKubernetesClusterSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("kubernetesClusterName") String kubernetesClusterName, @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("kubernetesClusterName") String kubernetesClusterName, @QueryParam("$top") Integer top,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/features/{featureName}")
@@ -213,6 +213,9 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,8 +223,8 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KubernetesClusterFeatureInner>>
-        listByKubernetesClusterSinglePageAsync(String resourceGroupName, String kubernetesClusterName) {
+    private Mono<PagedResponse<KubernetesClusterFeatureInner>> listByKubernetesClusterSinglePageAsync(
+        String resourceGroupName, String kubernetesClusterName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -240,12 +243,35 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.listByKubernetesCluster(this.client.getEndpoint(), this.client.getApiVersion(),
-                    this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, accept, context))
+            .withContext(context -> service.listByKubernetesCluster(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName,
+                top, skipToken, accept, context))
             .<PagedResponse<KubernetesClusterFeatureInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List features for the Kubernetes cluster.
+     * 
+     * Get a list of features for the provided Kubernetes cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of features for the provided Kubernetes cluster as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<KubernetesClusterFeatureInner> listByKubernetesClusterAsync(String resourceGroupName,
+        String kubernetesClusterName, Integer top, String skipToken) {
+        return new PagedFlux<>(
+            () -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName, top, skipToken),
+            nextLink -> listByKubernetesClusterNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -263,7 +289,10 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubernetesClusterFeatureInner> listByKubernetesClusterAsync(String resourceGroupName,
         String kubernetesClusterName) {
-        return new PagedFlux<>(() -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedFlux<>(
+            () -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName, top, skipToken),
             nextLink -> listByKubernetesClusterNextSinglePageAsync(nextLink));
     }
 
@@ -274,6 +303,9 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -281,7 +313,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterFeatureInner> listByKubernetesClusterSinglePage(String resourceGroupName,
-        String kubernetesClusterName) {
+        String kubernetesClusterName, Integer top, String skipToken) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -301,9 +333,9 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
                 .log(new IllegalArgumentException("Parameter kubernetesClusterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<KubernetesClusterFeatureList> res
-            = service.listByKubernetesClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, accept, Context.NONE);
+        Response<KubernetesClusterFeatureList> res = service.listByKubernetesClusterSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, top,
+            skipToken, accept, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -315,6 +347,9 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,7 +358,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterFeatureInner> listByKubernetesClusterSinglePage(String resourceGroupName,
-        String kubernetesClusterName, Context context) {
+        String kubernetesClusterName, Integer top, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -343,9 +378,9 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
                 .log(new IllegalArgumentException("Parameter kubernetesClusterName is required and cannot be null."));
         }
         final String accept = "application/json";
-        Response<KubernetesClusterFeatureList> res
-            = service.listByKubernetesClusterSync(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, accept, context);
+        Response<KubernetesClusterFeatureList> res = service.listByKubernetesClusterSync(this.client.getEndpoint(),
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, top,
+            skipToken, accept, context);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
             res.getValue().nextLink(), null);
     }
@@ -365,7 +400,10 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterFeatureInner> listByKubernetesCluster(String resourceGroupName,
         String kubernetesClusterName) {
-        return new PagedIterable<>(() -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName),
+        final Integer top = null;
+        final String skipToken = null;
+        return new PagedIterable<>(
+            () -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName, top, skipToken),
             nextLink -> listByKubernetesClusterNextSinglePage(nextLink));
     }
 
@@ -376,6 +414,9 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kubernetesClusterName The name of the Kubernetes cluster.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -384,9 +425,9 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesClusterFeatureInner> listByKubernetesCluster(String resourceGroupName,
-        String kubernetesClusterName, Context context) {
+        String kubernetesClusterName, Integer top, String skipToken, Context context) {
         return new PagedIterable<>(
-            () -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName, context),
+            () -> listByKubernetesClusterSinglePage(resourceGroupName, kubernetesClusterName, top, skipToken, context),
             nextLink -> listByKubernetesClusterNextSinglePage(nextLink, context));
     }
 
@@ -1709,14 +1750,16 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     }
 
     /**
+     * List features for the Kubernetes cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterFeatureList represents the list of Kubernetes cluster feature resources along with
-     * {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a list of features for the provided Kubernetes cluster along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<KubernetesClusterFeatureInner>>
@@ -1738,14 +1781,15 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     }
 
     /**
+     * List features for the Kubernetes cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterFeatureList represents the list of Kubernetes cluster feature resources along with
-     * {@link PagedResponse}.
+     * @return a list of features for the provided Kubernetes cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterFeatureInner> listByKubernetesClusterNextSinglePage(String nextLink) {
@@ -1766,6 +1810,8 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
     }
 
     /**
+     * List features for the Kubernetes cluster.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1773,8 +1819,7 @@ public final class KubernetesClusterFeaturesClientImpl implements KubernetesClus
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kubernetesClusterFeatureList represents the list of Kubernetes cluster feature resources along with
-     * {@link PagedResponse}.
+     * @return a list of features for the provided Kubernetes cluster along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<KubernetesClusterFeatureInner> listByKubernetesClusterNextSinglePage(String nextLink,

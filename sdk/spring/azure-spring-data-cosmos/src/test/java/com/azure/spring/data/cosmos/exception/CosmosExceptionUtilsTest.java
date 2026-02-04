@@ -5,11 +5,11 @@ package com.azure.spring.data.cosmos.exception;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpStatus;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class CosmosExceptionUtilsTest {
 
@@ -133,6 +133,7 @@ public class CosmosExceptionUtilsTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testRequestEntityTooLargeException() {
         CosmosException cosmosException = BridgeInternal.createCosmosException(HttpStatus.PAYLOAD_TOO_LARGE.value(), "Request Entity Too Large Exception");
         assertThrows(CosmosRequestEntityTooLargeException.class, () -> {

@@ -32,10 +32,6 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
     public String etag() {
         return this.innerModel().etag();
     }
@@ -63,6 +59,10 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
 
     public CommitmentPlanProperties properties() {
         return this.innerModel().properties();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {

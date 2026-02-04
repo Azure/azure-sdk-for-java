@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * driveItemVersion.
+ * Represents a drive item version.
  */
 @Fluent
 public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItemVersion {

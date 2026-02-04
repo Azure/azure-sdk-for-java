@@ -12,17 +12,18 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Sku information related properties of a server.
+ * Compute information of a server.
  */
 @Fluent
 public final class ServerSku implements JsonSerializable<ServerSku> {
     /*
-     * The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
+     * Compute tier and size of the database server. This object is empty for an Azure Database for PostgreSQL single
+     * server.
      */
     private String name;
 
     /*
-     * The tier of the particular SKU, e.g. Burstable.
+     * Tier of the compute assigned to a server.
      */
     private SkuTier tier;
 
@@ -33,7 +34,8 @@ public final class ServerSku implements JsonSerializable<ServerSku> {
     }
 
     /**
-     * Get the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
+     * Get the name property: Compute tier and size of the database server. This object is empty for an Azure Database
+     * for PostgreSQL single server.
      * 
      * @return the name value.
      */
@@ -42,7 +44,8 @@ public final class ServerSku implements JsonSerializable<ServerSku> {
     }
 
     /**
-     * Set the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
+     * Set the name property: Compute tier and size of the database server. This object is empty for an Azure Database
+     * for PostgreSQL single server.
      * 
      * @param name the name value to set.
      * @return the ServerSku object itself.
@@ -53,7 +56,7 @@ public final class ServerSku implements JsonSerializable<ServerSku> {
     }
 
     /**
-     * Get the tier property: The tier of the particular SKU, e.g. Burstable.
+     * Get the tier property: Tier of the compute assigned to a server.
      * 
      * @return the tier value.
      */
@@ -62,7 +65,7 @@ public final class ServerSku implements JsonSerializable<ServerSku> {
     }
 
     /**
-     * Set the tier property: The tier of the particular SKU, e.g. Burstable.
+     * Set the tier property: Tier of the compute assigned to a server.
      * 
      * @param tier the tier value to set.
      * @return the ServerSku object itself.

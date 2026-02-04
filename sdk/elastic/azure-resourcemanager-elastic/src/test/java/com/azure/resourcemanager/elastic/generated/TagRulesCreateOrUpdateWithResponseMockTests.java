@@ -6,15 +6,14 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.FilteringTag;
 import com.azure.resourcemanager.elastic.models.LogRules;
 import com.azure.resourcemanager.elastic.models.MonitoringTagRules;
 import com.azure.resourcemanager.elastic.models.MonitoringTagRulesProperties;
-import com.azure.resourcemanager.elastic.models.ProvisioningState;
 import com.azure.resourcemanager.elastic.models.TagAction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -27,33 +26,33 @@ public final class TagRulesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendActivityLogs\":false,\"filteringTags\":[{\"name\":\"nyga\",\"value\":\"idb\",\"action\":\"Include\"},{\"name\":\"pxllrx\",\"value\":\"jmoadsuv\",\"action\":\"Include\"}]}},\"id\":\"wdmjsjqbjhhyx\",\"name\":\"rw\",\"type\":\"yc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[{\"name\":\"waekrrjreafxtsgu\",\"value\":\"jglikkxwslolb\",\"action\":\"Include\"},{\"name\":\"zlmvfelfktgp\",\"value\":\"rpw\",\"action\":\"Include\"},{\"name\":\"noigbrnjwmwk\",\"value\":\"bsazejjoqka\",\"action\":\"Exclude\"}]}},\"id\":\"xttaugzxnfaaz\",\"name\":\"xdtnkdmkqjjlw\",\"type\":\"envrkpyouaibrebq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MonitoringTagRules response = manager.tagRules()
-            .define("fatkld")
-            .withExistingMonitor("kzikfjawneaivxwc", "elpcirelsfeaenwa")
-            .withProperties(new MonitoringTagRulesProperties().withProvisioningState(ProvisioningState.DELETING)
-                .withLogRules(new LogRules().withSendAadLogs(true)
-                    .withSendSubscriptionLogs(false)
-                    .withSendActivityLogs(false)
-                    .withFilteringTags(Arrays.asList(new FilteringTag().withName("sphyoulpjrvxa")
-                        .withValue("rvimjwosytxitcsk")
-                        .withAction(TagAction.INCLUDE)))))
+            .define("bnhlmc")
+            .withExistingMonitor("gsopbyrqufegxu", "wz")
+            .withProperties(new MonitoringTagRulesProperties().withLogRules(new LogRules().withSendAadLogs(true)
+                .withSendSubscriptionLogs(false)
+                .withSendActivityLogs(true)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("ixkwmyijejveg")
+                        .withValue("bpnaixexccbdre")
+                        .withAction(TagAction.EXCLUDE),
+                    new FilteringTag().withName("exdrrvqahqkg").withValue("pwijnhy").withAction(TagAction.INCLUDE)))))
             .create();
 
-        Assertions.assertEquals(ProvisioningState.FAILED, response.properties().provisioningState());
-        Assertions.assertEquals(true, response.properties().logRules().sendAadLogs());
-        Assertions.assertEquals(false, response.properties().logRules().sendSubscriptionLogs());
-        Assertions.assertEquals(false, response.properties().logRules().sendActivityLogs());
-        Assertions.assertEquals("nyga", response.properties().logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("idb", response.properties().logRules().filteringTags().get(0).value());
+        Assertions.assertFalse(response.properties().logRules().sendAadLogs());
+        Assertions.assertTrue(response.properties().logRules().sendSubscriptionLogs());
+        Assertions.assertTrue(response.properties().logRules().sendActivityLogs());
+        Assertions.assertEquals("waekrrjreafxtsgu", response.properties().logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("jglikkxwslolb", response.properties().logRules().filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.INCLUDE, response.properties().logRules().filteringTags().get(0).action());
     }
 }

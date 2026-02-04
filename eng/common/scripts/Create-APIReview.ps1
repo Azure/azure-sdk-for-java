@@ -4,15 +4,13 @@ Param (
   [array] $ArtifactList,
   [Parameter(Mandatory=$True)]
   [string] $ArtifactPath,
-  [Parameter(Mandatory=$True)]
-  [string] $APIKey,
   [string] $SourceBranch,
   [string] $DefaultBranch,
   [string] $RepoName,
   [string] $BuildId,
   [string] $PackageName = "",
   [string] $ConfigFileDir = "",
-  [string] $APIViewUri = "https://apiview.dev/AutoReview",
+  [string] $APIViewUri = "https://apiview.dev/autoreview",
   [string] $ArtifactName = "packages",
   [bool] $MarkPackageAsShipped = $false,
   [Parameter(Mandatory=$False)]
@@ -20,11 +18,30 @@ Param (
 )
 
 Set-StrictMode -Version 3
+
 . (Join-Path $PSScriptRoot common.ps1)
 . (Join-Path $PSScriptRoot Helpers ApiView-Helpers.ps1)
 
+# Get Bearer token for APIView authentication
+# In Azure DevOps, this uses the service connection's Managed Identity/Service Principal
+function Get-ApiViewBearerToken()
+{
+    try {
+        $tokenResponse = az account get-access-token --resource "api://apiview" --output json 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "Failed to acquire access token: $tokenResponse"
+            return $null
+        }
+        return ($tokenResponse | ConvertFrom-Json).accessToken
+    }
+    catch {
+        Write-Error "Failed to acquire access token: $($_.Exception.Message)"
+        return $null
+    }
+}
+
 # Submit API review request and return status whether current revision is approved or pending or failed to create review
-function Upload-SourceArtifact($filePath, $apiLabel, $releaseStatus, $packageVersion)
+function Upload-SourceArtifact($filePath, $apiLabel, $releaseStatus, $packageVersion, $packageType)
 {
     Write-Host "File path: $filePath"
     $fileName = Split-Path -Leaf $filePath
@@ -61,6 +78,13 @@ function Upload-SourceArtifact($filePath, $apiLabel, $releaseStatus, $packageVer
     $multipartContent.Add($releaseTagParamContent)
     Write-Host "Request param, setReleaseTag: $MarkPackageAsShipped"
 
+    $packageTypeParam = [System.Net.Http.Headers.ContentDispositionHeaderValue]::new("form-data")
+    $packageTypeParam.Name = "packageType"
+    $packageTypeParamContent = [System.Net.Http.StringContent]::new($packageType)
+    $packageTypeParamContent.Headers.ContentDisposition = $packageTypeParam
+    $multipartContent.Add($packageTypeParamContent)
+    Write-Host "Request param, packageType: $packageType"
+
     if ($releaseStatus -and ($releaseStatus -ne "Unreleased"))
     {
         $compareAllParam = [System.Net.Http.Headers.ContentDispositionHeaderValue]::new("form-data")
@@ -71,9 +95,17 @@ function Upload-SourceArtifact($filePath, $apiLabel, $releaseStatus, $packageVer
         Write-Host "Request param, compareAllRevisions: true"
     }
 
-    $uri = "${APIViewUri}/UploadAutoReview"
+    $uri = "${APIViewUri}/upload"
+    
+    # Get Bearer token for authentication
+    $bearerToken = Get-ApiViewBearerToken
+    if (-not $bearerToken) {
+        Write-Error "Failed to acquire Bearer token for APIView authentication."
+        return [System.Net.HttpStatusCode]::Unauthorized
+    }
+    
     $headers = @{
-        "ApiKey" = $apiKey;
+        "Authorization" = "Bearer $bearerToken";
         "content-type" = "multipart/form-data"
     }
 
@@ -85,44 +117,62 @@ function Upload-SourceArtifact($filePath, $apiLabel, $releaseStatus, $packageVer
     }
     catch
     {
-        Write-Host "Exception details: $($_.Exception.Response)"
+        Write-Host "ERROR: API request failed" -ForegroundColor Red
+        Write-Host "Status Code: $($_.Exception.Response.StatusCode.Value__)" -ForegroundColor Yellow
+        Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Yellow
+        if ($_.ErrorDetails.Message) {
+            Write-Host "Details: $($_.ErrorDetails.Message)" -ForegroundColor Yellow
+        }
         $StatusCode = $_.Exception.Response.StatusCode
     }
 
     return $StatusCode
 }
 
-function Upload-ReviewTokenFile($packageName, $apiLabel, $releaseStatus, $reviewFileName, $packageVersion, $filePath)
+function Upload-ReviewTokenFile($packageName, $apiLabel, $releaseStatus, $reviewFileName, $packageVersion, $filePath, $packageType)
 {
     Write-Host "Original File path: $filePath"
     $fileName = Split-Path -Leaf $filePath
     Write-Host "OriginalFile name: $fileName"
 
     $params = "buildId=${BuildId}&artifactName=${ArtifactName}&originalFilePath=${fileName}&reviewFilePath=${reviewFileName}"
-    $params += "&label=${apiLabel}&repoName=${RepoName}&packageName=${packageName}&project=internal&packageVersion=${packageVersion}"
+    $params +="&label=${apiLabel}&repoName=${RepoName}&packageName=${packageName}&project=internal&packageVersion=${packageVersion}&packageType=${packageType}"
     if($MarkPackageAsShipped) {
         $params += "&setReleaseTag=true"
     }
-    $uri = "${APIViewUri}/CreateApiReview?${params}"
+    $uri = "${APIViewUri}/create?${params}"
     if ($releaseStatus -and ($releaseStatus -ne "Unreleased"))
     {
         $uri += "&compareAllRevisions=true"
     }
 
     Write-Host "Request to APIView: $uri"
+    
+    # Get Bearer token for authentication
+    $bearerToken = Get-ApiViewBearerToken
+    if (-not $bearerToken) {
+        Write-Error "Failed to acquire Bearer token for APIView authentication."
+        return [System.Net.HttpStatusCode]::Unauthorized
+    }
+    
     $headers = @{
-        "ApiKey" = $APIKey;
+        "Authorization" = "Bearer $bearerToken"
     }
 
     try
     {
-        $Response = Invoke-WebRequest -Method 'GET' -Uri $uri -Headers $headers
+        $Response = Invoke-WebRequest -Method 'POST' -Uri $uri -Headers $headers
         Write-Host "API review: $($Response.Content)"
         $StatusCode = $Response.StatusCode
     }
     catch
     {
-        Write-Host "Exception details: $($_.Exception)"
+        Write-Host "ERROR: API request failed" -ForegroundColor Red
+        Write-Host "Status Code: $($_.Exception.Response.StatusCode.Value__)" -ForegroundColor Yellow
+        Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Yellow
+        if ($_.ErrorDetails.Message) {
+            Write-Host "Details: $($_.ErrorDetails.Message)" -ForegroundColor Yellow
+        }
         $StatusCode = $_.Exception.Response.StatusCode
     }
 
@@ -146,17 +196,18 @@ function Get-APITokenFileName($packageName)
 function Submit-APIReview($packageInfo, $packagePath)
 {
     $apiLabel = "Source Branch:${SourceBranch}"
+    $packageType = $packageInfo.SdkType
 
     # Get generated review token file if present
     # APIView processes request using different API if token file is already generated
     $reviewTokenFileName =  Get-APITokenFileName $packageInfo.ArtifactName
     if ($reviewTokenFileName) {
         Write-Host "Uploading review token file $reviewTokenFileName to APIView."
-        return Upload-ReviewTokenFile $packageInfo.ArtifactName $apiLabel $packageInfo.ReleaseStatus $reviewTokenFileName $packageInfo.Version $packagePath
+        return Upload-ReviewTokenFile $packageInfo.ArtifactName $apiLabel $packageInfo.ReleaseStatus $reviewTokenFileName $packageInfo.Version $packagePath $packageType
     }
     else {
         Write-Host "Uploading $packagePath to APIView."
-        return Upload-SourceArtifact $packagePath $apiLabel $packageInfo.ReleaseStatus $packageInfo.Version
+        return Upload-SourceArtifact $packagePath $apiLabel $packageInfo.ReleaseStatus $packageInfo.Version $packageType
     }
 }
 
@@ -355,7 +406,8 @@ elseif ($ArtifactList -and $ArtifactList.Count -gt 0) {
 elseif ($PackageInfoFiles -and $PackageInfoFiles.Count -gt 0) {
     # Lowest Priority: Direct PackageInfoFiles (new method)
     Write-Host "Using PackageInfoFiles parameter with $($PackageInfoFiles.Count) files"
-    $ProcessedPackageInfoFiles = $PackageInfoFiles  # Use as-is
+    # Filter out empty strings or whitespace-only entries
+    $ProcessedPackageInfoFiles = @($PackageInfoFiles | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
 }
 else {
     Write-Error "No package information provided. Please provide either 'PackageName', 'ArtifactList', or 'PackageInfoFiles' parameters."
@@ -364,7 +416,7 @@ else {
 
 # Validate that we have package info files to process
 if (-not $ProcessedPackageInfoFiles -or $ProcessedPackageInfoFiles.Count -eq 0) {
-    Write-Error "No package info files found after processing parameters."
+    Write-Error "No package info files found after processing parameters. Or PackageInfoFiles parameter contains only empty or whitespace entries, please check the artifact settings."
     exit 1
 }
 

@@ -12,27 +12,27 @@ public final class ReplicaContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicaContainer model = BinaryData.fromString(
-            "{\"name\":\"mfqwa\",\"containerId\":\"nqnm\",\"ready\":false,\"started\":false,\"restartCount\":706743032,\"runningState\":\"Running\",\"runningStateDetails\":\"bjwgnyfus\",\"logStreamEndpoint\":\"svtui\",\"execEndpoint\":\"hajqglcfh\",\"debugEndpoint\":\"rqryxynqn\"}")
+            "{\"name\":\"sxkm\",\"containerId\":\"a\",\"ready\":true,\"started\":true,\"restartCount\":1968525947,\"runningState\":\"Terminated\",\"runningStateDetails\":\"tsgumhj\",\"logStreamEndpoint\":\"ikkx\",\"execEndpoint\":\"lo\"}")
             .toObject(ReplicaContainer.class);
-        Assertions.assertEquals("mfqwa", model.name());
-        Assertions.assertEquals("nqnm", model.containerId());
-        Assertions.assertFalse(model.ready());
-        Assertions.assertFalse(model.started());
-        Assertions.assertEquals(706743032, model.restartCount());
+        Assertions.assertEquals("sxkm", model.name());
+        Assertions.assertEquals("a", model.containerId());
+        Assertions.assertTrue(model.ready());
+        Assertions.assertTrue(model.started());
+        Assertions.assertEquals(1968525947, model.restartCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaContainer model = new ReplicaContainer().withName("mfqwa")
-            .withContainerId("nqnm")
-            .withReady(false)
-            .withStarted(false)
-            .withRestartCount(706743032);
+        ReplicaContainer model = new ReplicaContainer().withName("sxkm")
+            .withContainerId("a")
+            .withReady(true)
+            .withStarted(true)
+            .withRestartCount(1968525947);
         model = BinaryData.fromObject(model).toObject(ReplicaContainer.class);
-        Assertions.assertEquals("mfqwa", model.name());
-        Assertions.assertEquals("nqnm", model.containerId());
-        Assertions.assertFalse(model.ready());
-        Assertions.assertFalse(model.started());
-        Assertions.assertEquals(706743032, model.restartCount());
+        Assertions.assertEquals("sxkm", model.name());
+        Assertions.assertEquals("a", model.containerId());
+        Assertions.assertTrue(model.ready());
+        Assertions.assertTrue(model.started());
+        Assertions.assertEquals(1968525947, model.restartCount());
     }
 }

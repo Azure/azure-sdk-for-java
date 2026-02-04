@@ -13,7 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface Servers {
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -24,7 +24,7 @@ public interface Servers {
     void deleteByResourceGroup(String resourceGroupName, String serverName);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -36,7 +36,7 @@ public interface Servers {
     void delete(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -44,24 +44,24 @@ public interface Servers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server along with {@link Response}.
+     * @return information about an existing server along with {@link Response}.
      */
     Response<Server> getByResourceGroupWithResponse(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server.
+     * @return information about an existing server.
      */
     Server getByResourceGroup(String resourceGroupName, String serverName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +72,7 @@ public interface Servers {
     PagedIterable<Server> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the servers in a given resource group.
+     * Lists all servers in a resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -84,7 +84,7 @@ public interface Servers {
     PagedIterable<Server> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -93,7 +93,7 @@ public interface Servers {
     PagedIterable<Server> list();
 
     /**
-     * List all the servers in a given subscription.
+     * Lists all servers in a subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +104,7 @@ public interface Servers {
     PagedIterable<Server> list(Context context);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -115,11 +115,11 @@ public interface Servers {
     void restart(String resourceGroupName, String serverName);
 
     /**
-     * Restarts a server.
+     * Restarts PostgreSQL database engine in a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
-     * @param parameters The parameters for restarting a server.
+     * @param parameters Parameters to restart a server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,7 +128,7 @@ public interface Servers {
     void restart(String resourceGroupName, String serverName, RestartParameter parameters, Context context);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -139,7 +139,7 @@ public interface Servers {
     void start(String resourceGroupName, String serverName);
 
     /**
-     * Starts a server.
+     * Starts a stopped server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -174,30 +174,30 @@ public interface Servers {
     void stop(String resourceGroupName, String serverName, Context context);
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server along with {@link Response}.
+     * @return information about an existing server along with {@link Response}.
      */
     Server getById(String id);
 
     /**
-     * Gets information about a server.
+     * Gets information about an existing server.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a server along with {@link Response}.
+     * @return information about an existing server along with {@link Response}.
      */
     Response<Server> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +207,7 @@ public interface Servers {
     void deleteById(String id);
 
     /**
-     * Deletes a server.
+     * Deletes or drops an existing server.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

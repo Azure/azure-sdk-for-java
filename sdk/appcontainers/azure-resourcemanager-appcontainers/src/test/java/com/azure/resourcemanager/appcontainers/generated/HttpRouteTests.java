@@ -14,26 +14,26 @@ public final class HttpRouteTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpRoute model = BinaryData.fromString(
-            "{\"match\":{\"prefix\":\"wnjkgvfn\",\"path\":\"aursqftibtyi\",\"pathSeparatedPrefix\":\"yvp\",\"caseSensitive\":false},\"action\":{\"prefixRewrite\":\"pnqn\"}}")
+            "{\"match\":{\"prefix\":\"kfkyjp\",\"path\":\"pbpssdfpp\",\"pathSeparatedPrefix\":\"gt\",\"caseSensitive\":true},\"action\":{\"prefixRewrite\":\"tvczkcnyxr\"}}")
             .toObject(HttpRoute.class);
-        Assertions.assertEquals("wnjkgvfn", model.match().prefix());
-        Assertions.assertEquals("aursqftibtyi", model.match().path());
-        Assertions.assertEquals("yvp", model.match().pathSeparatedPrefix());
-        Assertions.assertFalse(model.match().caseSensitive());
-        Assertions.assertEquals("pnqn", model.action().prefixRewrite());
+        Assertions.assertEquals("kfkyjp", model.match().prefix());
+        Assertions.assertEquals("pbpssdfpp", model.match().path());
+        Assertions.assertEquals("gt", model.match().pathSeparatedPrefix());
+        Assertions.assertTrue(model.match().caseSensitive());
+        Assertions.assertEquals("tvczkcnyxr", model.action().prefixRewrite());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpRoute model = new HttpRoute().withMatch(new HttpRouteMatch().withPrefix("wnjkgvfn")
-            .withPath("aursqftibtyi")
-            .withPathSeparatedPrefix("yvp")
-            .withCaseSensitive(false)).withAction(new HttpRouteAction().withPrefixRewrite("pnqn"));
+        HttpRoute model = new HttpRoute().withMatch(new HttpRouteMatch().withPrefix("kfkyjp")
+            .withPath("pbpssdfpp")
+            .withPathSeparatedPrefix("gt")
+            .withCaseSensitive(true)).withAction(new HttpRouteAction().withPrefixRewrite("tvczkcnyxr"));
         model = BinaryData.fromObject(model).toObject(HttpRoute.class);
-        Assertions.assertEquals("wnjkgvfn", model.match().prefix());
-        Assertions.assertEquals("aursqftibtyi", model.match().path());
-        Assertions.assertEquals("yvp", model.match().pathSeparatedPrefix());
-        Assertions.assertFalse(model.match().caseSensitive());
-        Assertions.assertEquals("pnqn", model.action().prefixRewrite());
+        Assertions.assertEquals("kfkyjp", model.match().prefix());
+        Assertions.assertEquals("pbpssdfpp", model.match().path());
+        Assertions.assertEquals("gt", model.match().pathSeparatedPrefix());
+        Assertions.assertTrue(model.match().caseSensitive());
+        Assertions.assertEquals("tvczkcnyxr", model.action().prefixRewrite());
     }
 }

@@ -12,22 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class OrganizationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OrganizationProperties model = BinaryData.fromString(
-            "{\"organizationId\":\"utduqktapspwgcu\",\"organizationName\":\"tumkdosvqwhbm\",\"billingSource\":\"NEWRELIC\"}")
+        OrganizationProperties model = BinaryData
+            .fromString("{\"organizationId\":\"q\",\"organizationName\":\"ol\",\"billingSource\":\"NEWRELIC\"}")
             .toObject(OrganizationProperties.class);
-        Assertions.assertEquals("utduqktapspwgcu", model.organizationId());
-        Assertions.assertEquals("tumkdosvqwhbm", model.organizationName());
+        Assertions.assertEquals("q", model.organizationId());
+        Assertions.assertEquals("ol", model.organizationName());
         Assertions.assertEquals(BillingSource.NEWRELIC, model.billingSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationProperties model = new OrganizationProperties().withOrganizationId("utduqktapspwgcu")
-            .withOrganizationName("tumkdosvqwhbm")
+        OrganizationProperties model = new OrganizationProperties().withOrganizationId("q")
+            .withOrganizationName("ol")
             .withBillingSource(BillingSource.NEWRELIC);
         model = BinaryData.fromObject(model).toObject(OrganizationProperties.class);
-        Assertions.assertEquals("utduqktapspwgcu", model.organizationId());
-        Assertions.assertEquals("tumkdosvqwhbm", model.organizationName());
+        Assertions.assertEquals("q", model.organizationId());
+        Assertions.assertEquals("ol", model.organizationName());
         Assertions.assertEquals(BillingSource.NEWRELIC, model.billingSource());
     }
 }

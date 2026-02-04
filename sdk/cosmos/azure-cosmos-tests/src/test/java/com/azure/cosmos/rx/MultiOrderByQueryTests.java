@@ -16,8 +16,8 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections4.ComparatorUtils;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -110,17 +110,19 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @AfterClass(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterMethod(groups = { "query" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "query" }, timeOut = SETUP_TIMEOUT)
     public void before_MultiOrderByQueryTests() throws Exception {
+        documents = new ArrayList<>();
         client = getClientBuilder().buildAsyncClient();
         documentCollection = getSharedMultiPartitionCosmosContainerWithCompositeAndSpatialIndexes(client);
         truncateCollection(documentCollection);
 
+        expectCount(documentCollection, 0);
         int numberOfDocuments = 4;
 
         Random random = new Random();
@@ -160,6 +162,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
         }
 
         voidBulkInsertBlocking(documentCollection, documents);
+        expectCount(documentCollection, documents.size());
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }

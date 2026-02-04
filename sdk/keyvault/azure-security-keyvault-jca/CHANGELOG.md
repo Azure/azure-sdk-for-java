@@ -3,11 +3,13 @@
 ## 2.11.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for bearer token authentication via the `azure.keyvault.access-token` system property. This allows users to provide a pre-obtained access token for authentication, enabling multi-factor authentication scenarios without requiring client ID and client secret. Authentication priority order is: Managed Identity > Access Token > Client Credentials.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 - Fixed the NPE where the token object was not returned when the credential information was incorrect.
+- Fixed an issue where release-specific classes from BouncyCastle were not properly shaded for Java 9 and above, leading to potential class loading issues in multi-release JARs. ([#47127](https://github.com/Azure/azure-sdk-for-java/pull/47127))
 
 ### Other Changes
 - Included the `org.brotli:dec` library in the list of shaded dependencies to avoid issues when generating and publishing docs to MSLearn.

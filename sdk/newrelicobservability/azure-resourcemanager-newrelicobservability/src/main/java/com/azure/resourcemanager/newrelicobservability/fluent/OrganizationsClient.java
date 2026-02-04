@@ -15,7 +15,8 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.Organizatio
  */
 public interface OrganizationsClient {
     /**
-     * List all the existing organizations.
+     * Lists all the New Relic organizations linked to your email address, helping you understand the existing
+     * organizations that have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
@@ -28,7 +29,8 @@ public interface OrganizationsClient {
     PagedIterable<OrganizationResourceInner> list(String userEmail, String location);
 
     /**
-     * List all the existing organizations.
+     * Lists all the New Relic organizations linked to your email address, helping you understand the existing
+     * organizations that have been created.
      * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.

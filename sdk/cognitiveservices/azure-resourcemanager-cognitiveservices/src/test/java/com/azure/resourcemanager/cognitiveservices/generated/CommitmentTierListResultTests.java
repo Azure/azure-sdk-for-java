@@ -12,15 +12,15 @@ public final class CommitmentTierListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommitmentTierListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"fqkquj\",\"value\":[{\"kind\":\"yonobgl\",\"skuName\":\"cq\",\"hostingModel\":\"Web\",\"planType\":\"mgyudxytlmoyrxv\",\"tier\":\"u\",\"maxCount\":397011465,\"quota\":{\"quantity\":6647430761528361934,\"unit\":\"dzhlrq\"},\"cost\":{\"commitmentMeterId\":\"ck\",\"overageMeterId\":\"lhrxsbkyvpyc\"}},{\"kind\":\"uzbpzkafku\",\"skuName\":\"crnwbmeh\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"v\",\"tier\":\"srtslhspkdeem\",\"maxCount\":441408788,\"quota\":{\"quantity\":1461011233299690621,\"unit\":\"vt\"},\"cost\":{\"commitmentMeterId\":\"mqkrhahvljuahaqu\",\"overageMeterId\":\"dhmdua\"}},{\"kind\":\"exq\",\"skuName\":\"fadmws\",\"hostingModel\":\"Web\",\"planType\":\"vxpvgomz\",\"tier\":\"misgwbnb\",\"maxCount\":2092849341,\"quota\":{\"quantity\":2980894048729421181,\"unit\":\"baliourqhakauha\"},\"cost\":{\"commitmentMeterId\":\"fwxosowzxcu\",\"overageMeterId\":\"cjooxdjebwpucwwf\"}},{\"kind\":\"vbvmeu\",\"skuName\":\"ivyhzceuojgjrwju\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"wmcdytdxwi\",\"tier\":\"nrjawgqwg\",\"maxCount\":369820426,\"quota\":{\"quantity\":7904939230383834932,\"unit\":\"bkpyc\"},\"cost\":{\"commitmentMeterId\":\"wndnhj\",\"overageMeterId\":\"uwhvylwzbtdhxujz\"}}]}")
+            "{\"nextLink\":\"xpvgo\",\"value\":[{\"kind\":\"misgwbnb\",\"skuName\":\"ldawkzbaliourqha\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"ashsfwxos\",\"tier\":\"z\",\"maxCount\":1177990560,\"quota\":{\"quantity\":8073809250590062964,\"unit\":\"oxdjebwpuc\"},\"cost\":{\"commitmentMeterId\":\"vo\",\"overageMeterId\":\"vmeueci\"}}]}")
             .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("fqkquj", model.nextLink());
+        Assertions.assertEquals("xpvgo", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("fqkquj");
+        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("xpvgo");
         model = BinaryData.fromObject(model).toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("fqkquj", model.nextLink());
+        Assertions.assertEquals("xpvgo", model.nextLink());
     }
 }

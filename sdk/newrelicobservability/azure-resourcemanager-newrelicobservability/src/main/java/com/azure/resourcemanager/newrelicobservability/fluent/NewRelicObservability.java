@@ -61,6 +61,13 @@ public interface NewRelicObservability {
     AccountsClient getAccounts();
 
     /**
+     * Gets the SaaSClient object to access its operations.
+     * 
+     * @return the SaaSClient object.
+     */
+    SaaSClient getSaaS();
+
+    /**
      * Gets the MonitorsClient object to access its operations.
      * 
      * @return the MonitorsClient object.
@@ -96,16 +103,16 @@ public interface NewRelicObservability {
     ConnectedPartnerResourcesClient getConnectedPartnerResources();
 
     /**
-     * Gets the TagRulesClient object to access its operations.
-     * 
-     * @return the TagRulesClient object.
-     */
-    TagRulesClient getTagRules();
-
-    /**
      * Gets the MonitoredSubscriptionsClient object to access its operations.
      * 
      * @return the MonitoredSubscriptionsClient object.
      */
     MonitoredSubscriptionsClient getMonitoredSubscriptions();
+
+    /**
+     * Gets the TagRulesClient object to access its operations.
+     * 
+     * @return the TagRulesClient object.
+     */
+    TagRulesClient getTagRules();
 }

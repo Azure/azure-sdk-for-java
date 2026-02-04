@@ -12,8 +12,8 @@ public final class NodeTypeListSkuResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeTypeListSkuResult model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"dlgzibthostgkt\",\"sku\":{\"name\":\"dxeclzedqbcvh\",\"tier\":\"h\"},\"capacity\":{\"minimum\":751350709,\"maximum\":695028965,\"default\":1774431759,\"scaleType\":\"Automatic\"}}],\"nextLink\":\"fbumlkx\"}")
+            "{\"value\":[{\"resourceType\":\"uxxpshne\",\"sku\":{\"name\":\"lfg\",\"tier\":\"qubkw\"},\"capacity\":{\"minimum\":2030075200,\"maximum\":83851075,\"default\":1559984904,\"scaleType\":\"None\"}},{\"resourceType\":\"bazpjuohmi\",\"sku\":{\"name\":\"lnorwmdu\",\"tier\":\"pklvxw\"},\"capacity\":{\"minimum\":1917702529,\"maximum\":1521698279,\"default\":181907688,\"scaleType\":\"Automatic\"}},{\"resourceType\":\"isze\",\"sku\":{\"name\":\"bjcrxgibbdaxco\",\"tier\":\"ozauorsukokwb\"},\"capacity\":{\"minimum\":650795079,\"maximum\":2075854063,\"default\":1945545527,\"scaleType\":\"Automatic\"}}],\"nextLink\":\"zlrphwzs\"}")
             .toObject(NodeTypeListSkuResult.class);
-        Assertions.assertEquals("fbumlkx", model.nextLink());
+        Assertions.assertEquals("zlrphwzs", model.nextLink());
     }
 }

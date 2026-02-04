@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * usageDetails.
+ * Represents an usage details.
  */
 @Fluent
 public final class MicrosoftGraphUsageDetails implements JsonSerializable<MicrosoftGraphUsageDetails> {

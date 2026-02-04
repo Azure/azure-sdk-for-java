@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Flux;
@@ -169,5 +170,9 @@ public class ReplicatedResourceClient {
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
         this.transportClient.configureFaultInjectorProvider(injectorProvider);
+    }
+
+    public void registerTransportClientInterceptor(ITransportClientInterceptor transportClientInterceptor) {
+        this.transportClient.registerTransportClientInterceptor(transportClientInterceptor);
     }
 }

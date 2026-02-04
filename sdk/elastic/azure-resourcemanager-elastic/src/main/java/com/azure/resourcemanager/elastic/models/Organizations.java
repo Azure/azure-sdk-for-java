@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
  */
 public interface Organizations {
     /**
-     * Fetch User API Key from internal database, if it was generated and stored while creating the Elasticsearch
-     * Organization.
+     * Fetch the User API Key from the internal database, if it was generated and stored during the creation of the
+     * Elasticsearch Organization.
      * 
      * @param body Email Id parameter of the User Organization, of which the API Key must be returned.
      * @param context The context to associate with this operation.
@@ -26,8 +26,8 @@ public interface Organizations {
     Response<UserApiKeyResponse> getApiKeyWithResponse(UserEmailId body, Context context);
 
     /**
-     * Fetch User API Key from internal database, if it was generated and stored while creating the Elasticsearch
-     * Organization.
+     * Fetch the User API Key from the internal database, if it was generated and stored during the creation of the
+     * Elasticsearch Organization.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -37,24 +37,51 @@ public interface Organizations {
     UserApiKeyResponse getApiKey();
 
     /**
-     * Get Elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     * Retrieve mapping details between the Elastic Organization and Azure Subscription for the logged-in user.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return elastic Organization To Azure Subscription Mapping details for the logged-in user along with
-     * {@link Response}.
+     * @return the Azure Subscription ID to which the Organization of the logged in user belongs and gets billed into
+     * along with {@link Response}.
      */
     Response<ElasticOrganizationToAzureSubscriptionMappingResponse>
         getElasticToAzureSubscriptionMappingWithResponse(Context context);
 
     /**
-     * Get Elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     * Retrieve mapping details between the Elastic Organization and Azure Subscription for the logged-in user.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     * @return the Azure Subscription ID to which the Organization of the logged in user belongs and gets billed into.
      */
     ElasticOrganizationToAzureSubscriptionMappingResponse getElasticToAzureSubscriptionMapping();
+
+    /**
+     * Resubscribe the Elasticsearch Organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return monitor resource.
+     */
+    ElasticMonitorResource resubscribe(String resourceGroupName, String monitorName);
+
+    /**
+     * Resubscribe the Elasticsearch Organization.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param body Resubscribe Properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return monitor resource.
+     */
+    ElasticMonitorResource resubscribe(String resourceGroupName, String monitorName, ResubscribeProperties body,
+        Context context);
 }

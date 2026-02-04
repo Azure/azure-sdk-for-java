@@ -19,12 +19,13 @@ import java.util.List;
 @Fluent
 public final class CacheRulesListResult implements JsonSerializable<CacheRulesListResult> {
     /*
-     * The list of cache rules.
+     * The list of cache rules. Since this list may be incomplete, the nextLink field should be used to request the next
+     * list of cache rules.
      */
     private List<CacheRuleInner> value;
 
     /*
-     * If provided, client must use NextLink URI to request next list of cache rules.
+     * The URI that can be used to request the next list of cache rules.
      */
     private String nextLink;
 
@@ -35,7 +36,8 @@ public final class CacheRulesListResult implements JsonSerializable<CacheRulesLi
     }
 
     /**
-     * Get the value property: The list of cache rules.
+     * Get the value property: The list of cache rules. Since this list may be incomplete, the nextLink field should be
+     * used to request the next list of cache rules.
      * 
      * @return the value value.
      */
@@ -44,7 +46,8 @@ public final class CacheRulesListResult implements JsonSerializable<CacheRulesLi
     }
 
     /**
-     * Set the value property: The list of cache rules.
+     * Set the value property: The list of cache rules. Since this list may be incomplete, the nextLink field should be
+     * used to request the next list of cache rules.
      * 
      * @param value the value value to set.
      * @return the CacheRulesListResult object itself.
@@ -55,7 +58,7 @@ public final class CacheRulesListResult implements JsonSerializable<CacheRulesLi
     }
 
     /**
-     * Get the nextLink property: If provided, client must use NextLink URI to request next list of cache rules.
+     * Get the nextLink property: The URI that can be used to request the next list of cache rules.
      * 
      * @return the nextLink value.
      */
@@ -64,7 +67,7 @@ public final class CacheRulesListResult implements JsonSerializable<CacheRulesLi
     }
 
     /**
-     * Set the nextLink property: If provided, client must use NextLink URI to request next list of cache rules.
+     * Set the nextLink property: The URI that can be used to request the next list of cache rules.
      * 
      * @param nextLink the nextLink value to set.
      * @return the CacheRulesListResult object itself.

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.elastic.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.MonitoredResource;
@@ -23,20 +23,20 @@ public final class MonitoredResourcesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"id\":\"ggbhcohfwds\",\"sendingLogs\":\"True\",\"reasonForLogsStatus\":\"ljuti\"}]}";
+            = "{\"value\":[{\"id\":\"nkbykutwpfhp\",\"sendingLogs\":\"True\",\"reasonForLogsStatus\":\"r\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticManager manager = ElasticManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<MonitoredResource> response
-            = manager.monitoredResources().list("quuvxzxcl", "ithhqzon", com.azure.core.util.Context.NONE);
+            = manager.monitoredResources().list("aldsy", "uximerqfobw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ggbhcohfwds", response.iterator().next().id());
+        Assertions.assertEquals("nkbykutwpfhp", response.iterator().next().id());
         Assertions.assertEquals(SendingLogs.TRUE, response.iterator().next().sendingLogs());
-        Assertions.assertEquals("ljuti", response.iterator().next().reasonForLogsStatus());
+        Assertions.assertEquals("r", response.iterator().next().reasonForLogsStatus());
     }
 }

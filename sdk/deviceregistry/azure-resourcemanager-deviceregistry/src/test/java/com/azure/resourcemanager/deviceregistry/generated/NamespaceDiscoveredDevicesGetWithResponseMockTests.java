@@ -22,7 +22,7 @@ public final class NamespaceDiscoveredDevicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"externalDeviceId\":\"gjiuqhibto\",\"endpoints\":{\"inbound\":{\"zpofoiyjwpfilk\":{\"endpointType\":\"wjedmurrxxgew\",\"address\":\"ktvqylkmqpzoy\",\"version\":\"fbcgwgcloxoebqin\",\"supportedAuthenticationMethods\":[\"Anonymous\",\"Anonymous\"],\"additionalConfiguration\":\"fujqlafcba\",\"lastUpdatedOn\":\"2021-08-29T21:34:19Z\"}},\"outbound\":{\"assigned\":{\"viauogphua\":{\"address\":\"holvdn\"},\"ukyefchnmnahmnxh\":{\"address\":\"tvt\"}}}},\"manufacturer\":\"jqirwrw\",\"model\":\"oxffif\",\"operatingSystem\":\"wrsnewmozqvbu\",\"operatingSystemVersion\":\"ma\",\"attributes\":{},\"discoveryId\":\"ycxhxzgaztta\",\"version\":792314735002365352,\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"mfqhppubowse\",\"name\":\"dfgkmtdh\"},\"location\":\"ngb\",\"tags\":{\"obkauxofsh\":\"uahokq\",\"whslwkoj\":\"phwpnulaiywzej\",\"rpqaf\":\"llndnpd\"},\"id\":\"fugsnnfhyetefy\",\"name\":\"oc\",\"type\":\"ctfjgtixr\"}";
+            = "{\"properties\":{\"externalDeviceId\":\"bv\",\"endpoints\":{\"inbound\":{\"tbw\":{\"endpointType\":\"y\",\"address\":\"rhpw\",\"version\":\"ddei\",\"supportedAuthenticationMethods\":[\"Anonymous\",\"Anonymous\"],\"additionalConfiguration\":\"gkkumuikjcj\",\"lastUpdatedOn\":\"2021-05-27T02:24:48Z\"}},\"outbound\":{\"assigned\":{\"ikytwvczcswka\":{\"address\":\"qowxwcom\"},\"yfdvlvhbwrnfxtgd\":{\"address\":\"ve\"}}}},\"manufacturer\":\"qthe\",\"model\":\"mnaoy\",\"operatingSystem\":\"kcoeqswank\",\"operatingSystemVersion\":\"ytmhdroznnhdrlkt\",\"attributes\":{},\"discoveryId\":\"sggux\",\"version\":3084216658070710977,\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"ywaeeczgf\",\"name\":\"ukklelss\"},\"location\":\"lycsxz\",\"tags\":{\"sqplpvmjcd\":\"srlsmd\"},\"id\":\"ewbidyvteowxv\",\"name\":\"piudeugfsxzecpa\",\"type\":\"wkufykhvuhxepm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,33 +32,30 @@ public final class NamespaceDiscoveredDevicesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NamespaceDiscoveredDevice response = manager.namespaceDiscoveredDevices()
-            .getWithResponse("uqudtcvclxyn", "dkvgfabuiyjibuzp", "dugneiknp", com.azure.core.util.Context.NONE)
+            .getWithResponse("xog", "ggsvoujkxibdaf", "rkmdyom", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ngb", response.location());
-        Assertions.assertEquals("uahokq", response.tags().get("obkauxofsh"));
-        Assertions.assertEquals("gjiuqhibto", response.properties().externalDeviceId());
-        Assertions.assertEquals("wjedmurrxxgew",
-            response.properties().endpoints().inbound().get("zpofoiyjwpfilk").endpointType());
-        Assertions.assertEquals("ktvqylkmqpzoy",
-            response.properties().endpoints().inbound().get("zpofoiyjwpfilk").address());
-        Assertions.assertEquals("fbcgwgcloxoebqin",
-            response.properties().endpoints().inbound().get("zpofoiyjwpfilk").version());
+        Assertions.assertEquals("lycsxz", response.location());
+        Assertions.assertEquals("srlsmd", response.tags().get("sqplpvmjcd"));
+        Assertions.assertEquals("bv", response.properties().externalDeviceId());
+        Assertions.assertEquals("y", response.properties().endpoints().inbound().get("tbw").endpointType());
+        Assertions.assertEquals("rhpw", response.properties().endpoints().inbound().get("tbw").address());
+        Assertions.assertEquals("ddei", response.properties().endpoints().inbound().get("tbw").version());
         Assertions.assertEquals(AuthenticationMethod.ANONYMOUS,
-            response.properties().endpoints().inbound().get("zpofoiyjwpfilk").supportedAuthenticationMethods().get(0));
-        Assertions.assertEquals("fujqlafcba",
-            response.properties().endpoints().inbound().get("zpofoiyjwpfilk").additionalConfiguration());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T21:34:19Z"),
-            response.properties().endpoints().inbound().get("zpofoiyjwpfilk").lastUpdatedOn());
-        Assertions.assertEquals("holvdn",
-            response.properties().endpoints().outbound().assigned().get("viauogphua").address());
-        Assertions.assertEquals("jqirwrw", response.properties().manufacturer());
-        Assertions.assertEquals("oxffif", response.properties().model());
-        Assertions.assertEquals("wrsnewmozqvbu", response.properties().operatingSystem());
-        Assertions.assertEquals("ma", response.properties().operatingSystemVersion());
-        Assertions.assertEquals("ycxhxzgaztta", response.properties().discoveryId());
-        Assertions.assertEquals(792314735002365352L, response.properties().version());
-        Assertions.assertEquals("mfqhppubowse", response.extendedLocation().type());
-        Assertions.assertEquals("dfgkmtdh", response.extendedLocation().name());
+            response.properties().endpoints().inbound().get("tbw").supportedAuthenticationMethods().get(0));
+        Assertions.assertEquals("gkkumuikjcj",
+            response.properties().endpoints().inbound().get("tbw").additionalConfiguration());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-27T02:24:48Z"),
+            response.properties().endpoints().inbound().get("tbw").lastUpdatedOn());
+        Assertions.assertEquals("qowxwcom",
+            response.properties().endpoints().outbound().assigned().get("ikytwvczcswka").address());
+        Assertions.assertEquals("qthe", response.properties().manufacturer());
+        Assertions.assertEquals("mnaoy", response.properties().model());
+        Assertions.assertEquals("kcoeqswank", response.properties().operatingSystem());
+        Assertions.assertEquals("ytmhdroznnhdrlkt", response.properties().operatingSystemVersion());
+        Assertions.assertEquals("sggux", response.properties().discoveryId());
+        Assertions.assertEquals(3084216658070710977L, response.properties().version());
+        Assertions.assertEquals("ywaeeczgf", response.extendedLocation().type());
+        Assertions.assertEquals("ukklelss", response.extendedLocation().name());
     }
 }

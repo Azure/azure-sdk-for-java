@@ -11,8 +11,8 @@ import com.azure.resourcemanager.appservice.models.StaticSiteCustomDomainRequest
  */
 public final class StaticSitesValidateCustomDomainCanBeAddedToStaticSiteSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/ValidateStaticSiteCustomDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * ValidateStaticSiteCustomDomain.json
      */
     /**
      * Sample code: Validate a custom domain for a static site.

@@ -11,17 +11,17 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Represents capability of a storage tier.
+ * Capability of a storage tier.
  */
 @Immutable
 public final class StorageTierCapability extends CapabilityBase {
     /*
-     * Name to represent Storage tier capability
+     * Name of the storage tier.
      */
     private String name;
 
     /*
-     * Supported IOPS for this storage tier
+     * Supported IOPS for the storage tier.
      */
     private Integer iops;
 
@@ -42,7 +42,7 @@ public final class StorageTierCapability extends CapabilityBase {
     }
 
     /**
-     * Get the name property: Name to represent Storage tier capability.
+     * Get the name property: Name of the storage tier.
      * 
      * @return the name value.
      */
@@ -51,7 +51,7 @@ public final class StorageTierCapability extends CapabilityBase {
     }
 
     /**
-     * Get the iops property: Supported IOPS for this storage tier.
+     * Get the iops property: Supported IOPS for the storage tier.
      * 
      * @return the iops value.
      */

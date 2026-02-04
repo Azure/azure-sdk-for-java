@@ -38,6 +38,9 @@ public interface KubernetesClustersClient {
      * 
      * Get a list of Kubernetes clusters in the provided subscription.
      * 
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,7 +49,7 @@ public interface KubernetesClustersClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KubernetesClusterInner> list(Context context);
+    PagedIterable<KubernetesClusterInner> list(Integer top, String skipToken, Context context);
 
     /**
      * List Kubernetes clusters in the resource group.
@@ -69,6 +72,9 @@ public interface KubernetesClustersClient {
      * Get a list of Kubernetes clusters in the provided resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param skipToken The opaque token that the server returns to indicate where to continue listing resources from.
+     * This is used for paging through large result sets.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +83,8 @@ public interface KubernetesClustersClient {
      * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<KubernetesClusterInner> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<KubernetesClusterInner> listByResourceGroup(String resourceGroupName, Integer top, String skipToken,
+        Context context);
 
     /**
      * Retrieve the Kubernetes cluster.

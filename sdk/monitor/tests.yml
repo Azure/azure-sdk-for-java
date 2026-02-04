@@ -8,9 +8,6 @@ extends:
       - name: azure-monitor-ingestion
         groupId: com.azure
         safeName: azuremonitoringestion
-      - name: azure-monitor-query
-        groupId: com.azure
-        safeName: azuremonitorquery
       - name: azure-monitor-query-logs
         groupId: com.azure
         safeName: azuremonitorquerylogs

@@ -66,6 +66,17 @@ public final class FileDatasetVersion extends DatasetVersion {
      */
     @Generated
     @Override
+    public FileDatasetVersion setConnectionName(String connectionName) {
+        super.setConnectionName(connectionName);
+        this.updatedProperties.add("connectionName");
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
     public FileDatasetVersion setDescription(String description) {
         super.setDescription(description);
         this.updatedProperties.add("description");
@@ -191,16 +202,5 @@ public final class FileDatasetVersion extends DatasetVersion {
             }
             return deserializedFileDatasetVersion;
         });
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public FileDatasetVersion setConnectionName(String connectionName) {
-        super.setConnectionName(connectionName);
-        this.updatedProperties.add("connectionName");
-        return this;
     }
 }

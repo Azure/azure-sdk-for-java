@@ -13,21 +13,21 @@ public final class NodeTypeNatConfigTests {
     public void testDeserialize() throws Exception {
         NodeTypeNatConfig model = BinaryData
             .fromString(
-                "{\"backendPort\":148831092,\"frontendPortRangeStart\":1083346406,\"frontendPortRangeEnd\":1621053169}")
+                "{\"backendPort\":709721668,\"frontendPortRangeStart\":40609312,\"frontendPortRangeEnd\":1077701136}")
             .toObject(NodeTypeNatConfig.class);
-        Assertions.assertEquals(148831092, model.backendPort());
-        Assertions.assertEquals(1083346406, model.frontendPortRangeStart());
-        Assertions.assertEquals(1621053169, model.frontendPortRangeEnd());
+        Assertions.assertEquals(709721668, model.backendPort());
+        Assertions.assertEquals(40609312, model.frontendPortRangeStart());
+        Assertions.assertEquals(1077701136, model.frontendPortRangeEnd());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeTypeNatConfig model = new NodeTypeNatConfig().withBackendPort(148831092)
-            .withFrontendPortRangeStart(1083346406)
-            .withFrontendPortRangeEnd(1621053169);
+        NodeTypeNatConfig model = new NodeTypeNatConfig().withBackendPort(709721668)
+            .withFrontendPortRangeStart(40609312)
+            .withFrontendPortRangeEnd(1077701136);
         model = BinaryData.fromObject(model).toObject(NodeTypeNatConfig.class);
-        Assertions.assertEquals(148831092, model.backendPort());
-        Assertions.assertEquals(1083346406, model.frontendPortRangeStart());
-        Assertions.assertEquals(1621053169, model.frontendPortRangeEnd());
+        Assertions.assertEquals(709721668, model.backendPort());
+        Assertions.assertEquals(40609312, model.frontendPortRangeStart());
+        Assertions.assertEquals(1077701136, model.frontendPortRangeEnd());
     }
 }

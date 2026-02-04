@@ -68,6 +68,13 @@ public interface ElasticManagementClient {
     ElasticVersionsClient getElasticVersions();
 
     /**
+     * Gets the MonitoredSubscriptionsClient object to access its operations.
+     * 
+     * @return the MonitoredSubscriptionsClient object.
+     */
+    MonitoredSubscriptionsClient getMonitoredSubscriptions();
+
+    /**
      * Gets the MonitoredResourcesClient object to access its operations.
      * 
      * @return the MonitoredResourcesClient object.

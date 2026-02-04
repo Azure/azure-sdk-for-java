@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * team.
+ * Represents a team.
  */
 @Fluent
 public final class MicrosoftGraphTeamInner extends MicrosoftGraphEntity {

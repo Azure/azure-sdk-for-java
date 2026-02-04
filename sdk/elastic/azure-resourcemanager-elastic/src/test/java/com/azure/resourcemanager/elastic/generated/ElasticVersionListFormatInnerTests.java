@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticVersionListFormatInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticVersionListFormatInner model = BinaryData.fromString("{\"properties\":{\"version\":\"wndeicbtwnp\"}}")
+        ElasticVersionListFormatInner model = BinaryData.fromString("{\"properties\":{\"version\":\"uigdtopbobjog\"}}")
             .toObject(ElasticVersionListFormatInner.class);
-        Assertions.assertEquals("wndeicbtwnp", model.properties().version());
+        Assertions.assertEquals("uigdtopbobjog", model.properties().version());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticVersionListFormatInner model = new ElasticVersionListFormatInner()
-            .withProperties(new ElasticVersionListProperties().withVersion("wndeicbtwnp"));
+            .withProperties(new ElasticVersionListProperties().withVersion("uigdtopbobjog"));
         model = BinaryData.fromObject(model).toObject(ElasticVersionListFormatInner.class);
-        Assertions.assertEquals("wndeicbtwnp", model.properties().version());
+        Assertions.assertEquals("uigdtopbobjog", model.properties().version());
     }
 }

@@ -76,20 +76,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
     }
 
     /**
-     * Api Version.
-     */
-    private final String apiVersion;
-
-    /**
-     * Gets Api Version.
-     * 
-     * @return the apiVersion value.
-     */
-    public String getApiVersion() {
-        return this.apiVersion;
-    }
-
-    /**
      * The HTTP pipeline to send requests through.
      */
     private final HttpPipeline httpPipeline;
@@ -570,7 +556,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-11-01";
         this.appServiceCertificateOrders = new AppServiceCertificateOrdersClientImpl(this);
         this.certificateOrdersDiagnostics = new CertificateOrdersDiagnosticsClientImpl(this);
         this.certificateRegistrationProviders = new CertificateRegistrationProvidersClientImpl(this);

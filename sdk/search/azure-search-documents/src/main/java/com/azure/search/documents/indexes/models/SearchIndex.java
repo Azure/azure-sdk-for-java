@@ -132,6 +132,13 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     private SearchIndexPermissionFilterOption permissionFilterOption;
 
     /*
+     * A value indicating whether the index is leveraging Purview-specific features. This property defaults to false and
+     * cannot be changed after index creation.
+     */
+    @Generated
+    private Boolean purviewEnabled;
+
+    /*
      * The ETag of the index.
      */
     @Generated
@@ -532,6 +539,30 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
     }
 
     /**
+     * Get the purviewEnabled property: A value indicating whether the index is leveraging Purview-specific features.
+     * This property defaults to false and cannot be changed after index creation.
+     *
+     * @return the purviewEnabled value.
+     */
+    @Generated
+    public Boolean isPurviewEnabled() {
+        return this.purviewEnabled;
+    }
+
+    /**
+     * Set the purviewEnabled property: A value indicating whether the index is leveraging Purview-specific features.
+     * This property defaults to false and cannot be changed after index creation.
+     *
+     * @param purviewEnabled the purviewEnabled value to set.
+     * @return the SearchIndex object itself.
+     */
+    @Generated
+    public SearchIndex setPurviewEnabled(Boolean purviewEnabled) {
+        this.purviewEnabled = purviewEnabled;
+        return this;
+    }
+
+    /**
      * Get the eTag property: The ETag of the index.
      *
      * @return the eTag value.
@@ -579,6 +610,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
         jsonWriter.writeJsonField("vectorSearch", this.vectorSearch);
         jsonWriter.writeStringField("permissionFilterOption",
             this.permissionFilterOption == null ? null : this.permissionFilterOption.toString());
+        jsonWriter.writeBooleanField("purviewEnabled", this.purviewEnabled);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
         return jsonWriter.writeEndObject();
     }
@@ -613,6 +645,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
             SemanticSearch semanticSearch = null;
             VectorSearch vectorSearch = null;
             SearchIndexPermissionFilterOption permissionFilterOption = null;
+            Boolean purviewEnabled = null;
             String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -652,6 +685,8 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                     vectorSearch = VectorSearch.fromJson(reader);
                 } else if ("permissionFilterOption".equals(fieldName)) {
                     permissionFilterOption = SearchIndexPermissionFilterOption.fromString(reader.getString());
+                } else if ("purviewEnabled".equals(fieldName)) {
+                    purviewEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("@odata.etag".equals(fieldName)) {
                     eTag = reader.getString();
                 } else {
@@ -676,6 +711,7 @@ public final class SearchIndex implements JsonSerializable<SearchIndex> {
                 deserializedSearchIndex.semanticSearch = semanticSearch;
                 deserializedSearchIndex.vectorSearch = vectorSearch;
                 deserializedSearchIndex.permissionFilterOption = permissionFilterOption;
+                deserializedSearchIndex.purviewEnabled = purviewEnabled;
                 deserializedSearchIndex.eTag = eTag;
                 return deserializedSearchIndex;
             }

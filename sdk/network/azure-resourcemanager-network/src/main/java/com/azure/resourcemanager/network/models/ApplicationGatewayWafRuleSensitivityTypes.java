@@ -13,11 +13,6 @@ import java.util.Collection;
 public final class ApplicationGatewayWafRuleSensitivityTypes
     extends ExpandableStringEnum<ApplicationGatewayWafRuleSensitivityTypes> {
     /**
-     * Static value None for ApplicationGatewayWafRuleSensitivityTypes.
-     */
-    public static final ApplicationGatewayWafRuleSensitivityTypes NONE = fromString("None");
-
-    /**
      * Static value Low for ApplicationGatewayWafRuleSensitivityTypes.
      */
     public static final ApplicationGatewayWafRuleSensitivityTypes LOW = fromString("Low");

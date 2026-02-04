@@ -18,49 +18,36 @@ import java.io.IOException;
 @Fluent
 public final class NetworkAttachment implements JsonSerializable<NetworkAttachment> {
     /*
-     * The resource ID of the associated network attached to the virtual machine.
-     * It can be one of cloudServicesNetwork, l3Network, l2Network or trunkedNetwork resources.
+     * The resource ID of the associated network attached to the virtual machine. It can be one of cloudServicesNetwork,
+     * l3Network, l2Network or trunkedNetwork resources.
      */
     private String attachedNetworkId;
 
     /*
-     * The indicator of whether this is the default gateway.
-     * Only one of the attached networks (including the CloudServicesNetwork attachment) for a single machine may be
-     * specified as True.
+     * The indicator of whether this is the default gateway. Only one of the attached networks (including the
+     * CloudServicesNetwork attachment) for a single machine may be specified as True.
      */
     private DefaultGateway defaultGateway;
 
     /*
-     * The IP allocation mechanism for the virtual machine.
-     * Dynamic and Static are only valid for l3Network which may also specify Disabled.
-     * Otherwise, Disabled is the only permitted value.
+     * The IP allocation mechanism for the virtual machine. Dynamic and Static are only valid for l3Network which may
+     * also specify Disabled. Otherwise, Disabled is the only permitted value.
      */
     private VirtualMachineIpAllocationMethod ipAllocationMethod;
 
     /*
-     * The IPv4 address of the virtual machine.
-     * 
-     * This field is used only if the attached network has IPAllocationType of IPV4 or DualStack.
-     * 
-     * If IPAllocationMethod is:
-     * Static - this field must contain a user specified IPv4 address from within the subnet specified in the attached
-     * network.
-     * Dynamic - this field is read-only, but will be populated with an address from within the subnet specified in the
-     * attached network.
-     * Disabled - this field will be empty.
+     * The IPv4 address of the virtual machine. This field is used only if the attached network has IPAllocationType of
+     * IPV4 or DualStack. If IPAllocationMethod is: Static - this field must contain a user specified IPv4 address from
+     * within the subnet specified in the attached network. Dynamic - this field is read-only, but will be populated
+     * with an address from within the subnet specified in the attached network. Disabled - this field will be empty.
      */
     private String ipv4Address;
 
     /*
-     * The IPv6 address of the virtual machine.
-     * 
-     * This field is used only if the attached network has IPAllocationType of IPV6 or DualStack.
-     * 
-     * If IPAllocationMethod is:
-     * Static - this field must contain an IPv6 address range from within the range specified in the attached network.
-     * Dynamic - this field is read-only, but will be populated with an range from within the subnet specified in the
-     * attached network.
-     * Disabled - this field will be empty.
+     * The IPv6 address of the virtual machine. This field is used only if the attached network has IPAllocationType of
+     * IPV6 or DualStack. If IPAllocationMethod is: Static - this field must contain an IPv6 address range from within
+     * the range specified in the attached network. Dynamic - this field is read-only, but will be populated with an
+     * range from within the subnet specified in the attached network. Disabled - this field will be empty.
      */
     private String ipv6Address;
 
@@ -70,11 +57,10 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     private String macAddress;
 
     /*
-     * The associated network's interface name.
-     * If specified, the network attachment name has a maximum length of 15 characters and must be unique to this
-     * virtual machine.
-     * If the user doesn’t specify this value, the default interface name of the network resource will be used.
-     * For a CloudServicesNetwork resource, this name will be ignored.
+     * The associated network's interface name. If specified, the network attachment name has a maximum length of 15
+     * characters and must be unique to this virtual machine. If the user doesn’t specify this value, the default
+     * interface name of the network resource will be used. For a CloudServicesNetwork resource, this name will be
+     * ignored.
      */
     private String networkAttachmentName;
 
@@ -85,8 +71,8 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Get the attachedNetworkId property: The resource ID of the associated network attached to the virtual machine.
-     * It can be one of cloudServicesNetwork, l3Network, l2Network or trunkedNetwork resources.
+     * Get the attachedNetworkId property: The resource ID of the associated network attached to the virtual machine. It
+     * can be one of cloudServicesNetwork, l3Network, l2Network or trunkedNetwork resources.
      * 
      * @return the attachedNetworkId value.
      */
@@ -95,8 +81,8 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Set the attachedNetworkId property: The resource ID of the associated network attached to the virtual machine.
-     * It can be one of cloudServicesNetwork, l3Network, l2Network or trunkedNetwork resources.
+     * Set the attachedNetworkId property: The resource ID of the associated network attached to the virtual machine. It
+     * can be one of cloudServicesNetwork, l3Network, l2Network or trunkedNetwork resources.
      * 
      * @param attachedNetworkId the attachedNetworkId value to set.
      * @return the NetworkAttachment object itself.
@@ -107,9 +93,8 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Get the defaultGateway property: The indicator of whether this is the default gateway.
-     * Only one of the attached networks (including the CloudServicesNetwork attachment) for a single machine may be
-     * specified as True.
+     * Get the defaultGateway property: The indicator of whether this is the default gateway. Only one of the attached
+     * networks (including the CloudServicesNetwork attachment) for a single machine may be specified as True.
      * 
      * @return the defaultGateway value.
      */
@@ -118,9 +103,8 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Set the defaultGateway property: The indicator of whether this is the default gateway.
-     * Only one of the attached networks (including the CloudServicesNetwork attachment) for a single machine may be
-     * specified as True.
+     * Set the defaultGateway property: The indicator of whether this is the default gateway. Only one of the attached
+     * networks (including the CloudServicesNetwork attachment) for a single machine may be specified as True.
      * 
      * @param defaultGateway the defaultGateway value to set.
      * @return the NetworkAttachment object itself.
@@ -131,9 +115,8 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Get the ipAllocationMethod property: The IP allocation mechanism for the virtual machine.
-     * Dynamic and Static are only valid for l3Network which may also specify Disabled.
-     * Otherwise, Disabled is the only permitted value.
+     * Get the ipAllocationMethod property: The IP allocation mechanism for the virtual machine. Dynamic and Static are
+     * only valid for l3Network which may also specify Disabled. Otherwise, Disabled is the only permitted value.
      * 
      * @return the ipAllocationMethod value.
      */
@@ -142,9 +125,8 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Set the ipAllocationMethod property: The IP allocation mechanism for the virtual machine.
-     * Dynamic and Static are only valid for l3Network which may also specify Disabled.
-     * Otherwise, Disabled is the only permitted value.
+     * Set the ipAllocationMethod property: The IP allocation mechanism for the virtual machine. Dynamic and Static are
+     * only valid for l3Network which may also specify Disabled. Otherwise, Disabled is the only permitted value.
      * 
      * @param ipAllocationMethod the ipAllocationMethod value to set.
      * @return the NetworkAttachment object itself.
@@ -155,15 +137,10 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Get the ipv4Address property: The IPv4 address of the virtual machine.
-     * 
-     * This field is used only if the attached network has IPAllocationType of IPV4 or DualStack.
-     * 
-     * If IPAllocationMethod is:
-     * Static - this field must contain a user specified IPv4 address from within the subnet specified in the attached
-     * network.
-     * Dynamic - this field is read-only, but will be populated with an address from within the subnet specified in the
-     * attached network.
+     * Get the ipv4Address property: The IPv4 address of the virtual machine. This field is used only if the attached
+     * network has IPAllocationType of IPV4 or DualStack. If IPAllocationMethod is: Static - this field must contain a
+     * user specified IPv4 address from within the subnet specified in the attached network. Dynamic - this field is
+     * read-only, but will be populated with an address from within the subnet specified in the attached network.
      * Disabled - this field will be empty.
      * 
      * @return the ipv4Address value.
@@ -173,15 +150,10 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Set the ipv4Address property: The IPv4 address of the virtual machine.
-     * 
-     * This field is used only if the attached network has IPAllocationType of IPV4 or DualStack.
-     * 
-     * If IPAllocationMethod is:
-     * Static - this field must contain a user specified IPv4 address from within the subnet specified in the attached
-     * network.
-     * Dynamic - this field is read-only, but will be populated with an address from within the subnet specified in the
-     * attached network.
+     * Set the ipv4Address property: The IPv4 address of the virtual machine. This field is used only if the attached
+     * network has IPAllocationType of IPV4 or DualStack. If IPAllocationMethod is: Static - this field must contain a
+     * user specified IPv4 address from within the subnet specified in the attached network. Dynamic - this field is
+     * read-only, but will be populated with an address from within the subnet specified in the attached network.
      * Disabled - this field will be empty.
      * 
      * @param ipv4Address the ipv4Address value to set.
@@ -193,15 +165,11 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Get the ipv6Address property: The IPv6 address of the virtual machine.
-     * 
-     * This field is used only if the attached network has IPAllocationType of IPV6 or DualStack.
-     * 
-     * If IPAllocationMethod is:
-     * Static - this field must contain an IPv6 address range from within the range specified in the attached network.
-     * Dynamic - this field is read-only, but will be populated with an range from within the subnet specified in the
-     * attached network.
-     * Disabled - this field will be empty.
+     * Get the ipv6Address property: The IPv6 address of the virtual machine. This field is used only if the attached
+     * network has IPAllocationType of IPV6 or DualStack. If IPAllocationMethod is: Static - this field must contain an
+     * IPv6 address range from within the range specified in the attached network. Dynamic - this field is read-only,
+     * but will be populated with an range from within the subnet specified in the attached network. Disabled - this
+     * field will be empty.
      * 
      * @return the ipv6Address value.
      */
@@ -210,15 +178,11 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Set the ipv6Address property: The IPv6 address of the virtual machine.
-     * 
-     * This field is used only if the attached network has IPAllocationType of IPV6 or DualStack.
-     * 
-     * If IPAllocationMethod is:
-     * Static - this field must contain an IPv6 address range from within the range specified in the attached network.
-     * Dynamic - this field is read-only, but will be populated with an range from within the subnet specified in the
-     * attached network.
-     * Disabled - this field will be empty.
+     * Set the ipv6Address property: The IPv6 address of the virtual machine. This field is used only if the attached
+     * network has IPAllocationType of IPV6 or DualStack. If IPAllocationMethod is: Static - this field must contain an
+     * IPv6 address range from within the range specified in the attached network. Dynamic - this field is read-only,
+     * but will be populated with an range from within the subnet specified in the attached network. Disabled - this
+     * field will be empty.
      * 
      * @param ipv6Address the ipv6Address value to set.
      * @return the NetworkAttachment object itself.
@@ -239,11 +203,10 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Get the networkAttachmentName property: The associated network's interface name.
-     * If specified, the network attachment name has a maximum length of 15 characters and must be unique to this
-     * virtual machine.
-     * If the user doesn’t specify this value, the default interface name of the network resource will be used.
-     * For a CloudServicesNetwork resource, this name will be ignored.
+     * Get the networkAttachmentName property: The associated network's interface name. If specified, the network
+     * attachment name has a maximum length of 15 characters and must be unique to this virtual machine. If the user
+     * doesn’t specify this value, the default interface name of the network resource will be used. For a
+     * CloudServicesNetwork resource, this name will be ignored.
      * 
      * @return the networkAttachmentName value.
      */
@@ -252,11 +215,10 @@ public final class NetworkAttachment implements JsonSerializable<NetworkAttachme
     }
 
     /**
-     * Set the networkAttachmentName property: The associated network's interface name.
-     * If specified, the network attachment name has a maximum length of 15 characters and must be unique to this
-     * virtual machine.
-     * If the user doesn’t specify this value, the default interface name of the network resource will be used.
-     * For a CloudServicesNetwork resource, this name will be ignored.
+     * Set the networkAttachmentName property: The associated network's interface name. If specified, the network
+     * attachment name has a maximum length of 15 characters and must be unique to this virtual machine. If the user
+     * doesn’t specify this value, the default interface name of the network resource will be used. For a
+     * CloudServicesNetwork resource, this name will be ignored.
      * 
      * @param networkAttachmentName the networkAttachmentName value to set.
      * @return the NetworkAttachment object itself.

@@ -12,47 +12,47 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * storage size in MB capability.
+ * Storage size (in MB) capability.
  */
 @Immutable
 public final class StorageMbCapability extends CapabilityBase {
     /*
-     * Supported IOPS
+     * Minimum IOPS supported by the storage size.
      */
     private Integer supportedIops;
 
     /*
-     * Maximum IOPS supported by this #Vcores or PremiumV2_LRS Storage Size
+     * Maximum IOPS supported by the storage size.
      */
     private Integer supportedMaximumIops;
 
     /*
-     * Storage size in MB
+     * Minimum supported size (in MB) of storage.
      */
     private Long storageSizeMb;
 
     /*
-     * Maximum value of Storage size in MB
+     * Maximum supported size (in MB) of storage.
      */
     private Long maximumStorageSizeMb;
 
     /*
-     * Values of throughput in MB/s
+     * Minimum supported throughput (in MB/s) of storage.
      */
     private Integer supportedThroughput;
 
     /*
-     * Maximum values of throughput in MB/s
+     * Maximum supported throughput (in MB/s) of storage.
      */
     private Integer supportedMaximumThroughput;
 
     /*
-     * Default tier for IOPS
+     * Default IOPS for this tier and storage size.
      */
     private String defaultIopsTier;
 
     /*
-     * List of available options to upgrade the storage performance
+     * List of all supported storage tiers for this tier and storage size.
      */
     private List<StorageTierCapability> supportedIopsTiers;
 
@@ -73,7 +73,7 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedIops property: Supported IOPS.
+     * Get the supportedIops property: Minimum IOPS supported by the storage size.
      * 
      * @return the supportedIops value.
      */
@@ -82,7 +82,7 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedMaximumIops property: Maximum IOPS supported by this #Vcores or PremiumV2_LRS Storage Size.
+     * Get the supportedMaximumIops property: Maximum IOPS supported by the storage size.
      * 
      * @return the supportedMaximumIops value.
      */
@@ -91,7 +91,7 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
-     * Get the storageSizeMb property: Storage size in MB.
+     * Get the storageSizeMb property: Minimum supported size (in MB) of storage.
      * 
      * @return the storageSizeMb value.
      */
@@ -100,7 +100,7 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
-     * Get the maximumStorageSizeMb property: Maximum value of Storage size in MB.
+     * Get the maximumStorageSizeMb property: Maximum supported size (in MB) of storage.
      * 
      * @return the maximumStorageSizeMb value.
      */
@@ -109,7 +109,7 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedThroughput property: Values of throughput in MB/s.
+     * Get the supportedThroughput property: Minimum supported throughput (in MB/s) of storage.
      * 
      * @return the supportedThroughput value.
      */
@@ -118,7 +118,7 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedMaximumThroughput property: Maximum values of throughput in MB/s.
+     * Get the supportedMaximumThroughput property: Maximum supported throughput (in MB/s) of storage.
      * 
      * @return the supportedMaximumThroughput value.
      */
@@ -127,7 +127,7 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
-     * Get the defaultIopsTier property: Default tier for IOPS.
+     * Get the defaultIopsTier property: Default IOPS for this tier and storage size.
      * 
      * @return the defaultIopsTier value.
      */
@@ -136,7 +136,7 @@ public final class StorageMbCapability extends CapabilityBase {
     }
 
     /**
-     * Get the supportedIopsTiers property: List of available options to upgrade the storage performance.
+     * Get the supportedIopsTiers property: List of all supported storage tiers for this tier and storage size.
      * 
      * @return the supportedIopsTiers value.
      */

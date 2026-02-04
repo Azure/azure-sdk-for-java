@@ -16,8 +16,8 @@ import java.util.Map;
  */
 public final class WebAppsDeployWorkflowArtifactsSlotSamples {
     /*
-     * x-ms-original-file:
-     * specification/web/resource-manager/Microsoft.Web/stable/2024-11-01/examples/PostDeployWorkflowArtifactsSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/AppService/stable/2025-03-01/examples/
+     * PostDeployWorkflowArtifactsSlot.json
      */
     /**
      * Sample code: Deploys workflow artifacts slot.

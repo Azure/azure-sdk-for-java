@@ -49,24 +49,23 @@ public class AppConfigurationReplicaClientFactory {
     }
 
     /**
-     * Returns available replica clients for a given configuration store.
-     * 
-     * @param originEndpoint identifier of the store (primary endpoint)
-     * @return list of available replica clients for the store
+     * Gets the next active replica client for a given origin endpoint.
+     *
+     * @param originEndpoint the origin configuration store endpoint
+     * @param useLastActive whether to use the last active client if available
+     * @return the next active AppConfigurationReplicaClient
      */
-    List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint) {
-        return getAvailableClients(originEndpoint, false);
+    AppConfigurationReplicaClient getNextActiveClient(String originEndpoint, boolean useLastActive) {
+        return CONNECTIONS.get(originEndpoint).getNextActiveClient(useLastActive);
     }
 
     /**
-     * Returns available replica clients for a given configuration store with current client preference.
+     * Finds the currently active clients for a given origin endpoint.
      * 
-     * @param originEndpoint identifier of the store (primary endpoint)
-     * @param useCurrent whether to prefer the currently active client
-     * @return list of available replica clients for the store
+     * @param originEndpoint the origin configuration store endpoint
      */
-    List<AppConfigurationReplicaClient> getAvailableClients(String originEndpoint, Boolean useCurrent) {
-        return CONNECTIONS.get(originEndpoint).getAvailableClients(useCurrent);
+    void findActiveClients(String originEndpoint) {
+        CONNECTIONS.get(originEndpoint).findActiveClients();
     }
 
     /**

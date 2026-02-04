@@ -26,7 +26,7 @@ public final class MetricAlertStatusProperties implements JsonSerializable<Metri
     private Map<String, String> dimensions;
 
     /*
-     * status value
+     * Status value
      */
     private String status;
 
@@ -62,7 +62,7 @@ public final class MetricAlertStatusProperties implements JsonSerializable<Metri
     }
 
     /**
-     * Get the status property: status value.
+     * Get the status property: Status value.
      * 
      * @return the status value.
      */
@@ -71,7 +71,7 @@ public final class MetricAlertStatusProperties implements JsonSerializable<Metri
     }
 
     /**
-     * Set the status property: status value.
+     * Set the status property: Status value.
      * 
      * @param status the status value to set.
      * @return the MetricAlertStatusProperties object itself.

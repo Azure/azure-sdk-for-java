@@ -17,8 +17,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
+import com.azure.spring.cloud.appconfiguration.config.implementation.configuration.WatchedConfigurationSettings;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
-import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
@@ -29,6 +29,18 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 public class AppConfigurationRefreshUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationRefreshUtil.class);
+
+    private static final String FEATURE_FLAG_PREFIX = ".appconfig.featureflag/*";
+
+    /**
+     * Functional interface for refresh operations that can throw AppConfigurationStatusException.
+     */
+    @FunctionalInterface
+    private interface RefreshOperation {
+
+        void execute(AppConfigurationReplicaClient client, RefreshEventData eventData, Context context)
+            throws AppConfigurationStatusException;
+    }
 
     /**
      * Checks all configured stores to determine if any configurations need to be refreshed.
@@ -67,61 +79,46 @@ public class AppConfigurationRefreshUtil {
                 if ((notification.getPrimaryToken() != null
                     && StringUtils.hasText(notification.getPrimaryToken().getName()))
                     || (notification.getSecondaryToken() != null
-                        && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                        && StringUtils.hasText(notification.getSecondaryToken().getName()))) {
                     pushRefresh = true;
                 }
                 Context context = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
 
-                List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(originEndpoint);
+                clientFactory.findActiveClients(originEndpoint);
 
                 if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
-                    for (AppConfigurationReplicaClient client : clients) {
-                        try {
-                            refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(),
-                                eventData, replicaLookUp, context);
-                            if (eventData.getDoRefresh()) {
-                                clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
-                                return eventData;
-                            }
-                            // If check didn't throw an error other clients don't need to be checked.
-                            break;
-                        } catch (HttpResponseException e) {
-                            LOGGER.warn(
-                                "Failed to connect to App Configuration store {} during configuration refresh check. "
-                                    + "Status: {}, Message: {}",
-                                client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
-
-                            clientFactory.backoffClient(originEndpoint, client.getEndpoint());
-                        }
+                    RefreshEventData result = executeRefreshWithRetry(
+                        clientFactory,
+                        originEndpoint,
+                        (client, data, ctx) -> refreshWithTime(client, StateHolder.getState(originEndpoint),
+                            monitor.getRefreshInterval(), data, replicaLookUp, ctx),
+                        eventData,
+                        context,
+                        "configuration refresh check");
+                    if (result != null) {
+                        return result;
                     }
                 } else {
-                    LOGGER.debug("Skipping configuration refresh check for " + originEndpoint);
+                    LOGGER.debug("Skipping configuration refresh check for {}", originEndpoint);
                 }
 
                 FeatureFlagStore featureStore = connection.getFeatureFlagStore();
 
                 if (featureStore.getEnabled() && StateHolder.getStateFeatureFlag(originEndpoint) != null) {
-                    for (AppConfigurationReplicaClient client : clients) {
-                        try {
-                            refreshWithTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(originEndpoint),
-                                monitor.getFeatureFlagRefreshInterval(), eventData, replicaLookUp, context);
-                            if (eventData.getDoRefresh()) {
-                                clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
-                                return eventData;
-                            }
-                            // If check didn't throw an error other clients don't need to be checked.
-                            break;
-                        } catch (HttpResponseException e) {
-                            LOGGER.warn(
-                                "Failed to connect to App Configuration store {} during feature flag refresh check. "
-                                    + "Status: {}, Message: {}",
-                                client.getEndpoint(), e.getResponse().getStatusCode(), e.getMessage());
-
-                            clientFactory.backoffClient(originEndpoint, client.getEndpoint());
-                        }
+                    RefreshEventData result = executeRefreshWithRetry(
+                        clientFactory,
+                        originEndpoint,
+                        (client, data, ctx) -> refreshWithTimeFeatureFlags(client,
+                            StateHolder.getStateFeatureFlag(originEndpoint),
+                            monitor.getFeatureFlagRefreshInterval(), data, replicaLookUp, ctx),
+                        eventData,
+                        context,
+                        "feature flag refresh check");
+                    if (result != null) {
+                        return result;
                     }
                 } else {
-                    LOGGER.debug("Skipping feature flag refresh check for " + originEndpoint);
+                    LOGGER.debug("Skipping feature flag refresh check for {}", originEndpoint);
                 }
 
             }
@@ -131,6 +128,47 @@ public class AppConfigurationRefreshUtil {
             throw e;
         }
         return eventData;
+    }
+
+    /**
+     * Executes a refresh operation with automatic retry logic across replica clients.
+     *
+     * @param clientFactory factory for accessing App Configuration clients
+     * @param originEndpoint the endpoint of the origin configuration store
+     * @param operation the refresh operation to execute
+     * @param eventData the refresh event data to update
+     * @param context the operation context
+     * @param checkType description of the check type for logging (e.g., "configuration refresh check")
+     * @return the eventData if refresh is needed, null otherwise
+     */
+    private RefreshEventData executeRefreshWithRetry(
+        AppConfigurationReplicaClientFactory clientFactory,
+        String originEndpoint,
+        RefreshOperation operation,
+        RefreshEventData eventData,
+        Context context,
+        String checkType) {
+        AppConfigurationReplicaClient client = clientFactory.getNextActiveClient(originEndpoint, false);
+
+        while (client != null) {
+            try {
+                operation.execute(client, eventData, context);
+                if (eventData.getDoRefresh()) {
+                    clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
+                    return eventData;
+                }
+                // If check didn't throw an error, other clients don't need to be checked.
+                break;
+            } catch (HttpResponseException e) {
+                LOGGER.warn(
+                    "Failed to connect to App Configuration store {} during {}. Status: {}, Message: {}",
+                    client.getEndpoint(), checkType, e.getResponse().getStatusCode(), e.getMessage());
+
+                clientFactory.backoffClient(originEndpoint, client.getEndpoint());
+                client = clientFactory.getNextActiveClient(originEndpoint, false);
+            }
+        }
+        return null;
     }
 
     /**
@@ -153,7 +191,7 @@ public class AppConfigurationRefreshUtil {
     /**
      * Performs a feature flag refresh check for a specific store client. This method is used for refresh failure
      * scenarios only.
-     * 
+     *
      * @param featureStoreEnabled whether feature store is enabled
      * @param client the client for checking refresh status
      * @param context the operation context
@@ -167,7 +205,7 @@ public class AppConfigurationRefreshUtil {
         if (featureStoreEnabled && StateHolder.getStateFeatureFlag(endpoint) != null) {
             refreshWithoutTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(endpoint), eventData, context);
         } else {
-            LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
+            LOGGER.debug("Skipping feature flag refresh check for {}", endpoint);
         }
         return eventData.getDoRefresh();
     }
@@ -189,7 +227,15 @@ public class AppConfigurationRefreshUtil {
         throws AppConfigurationStatusException {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
-            refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
+
+            // Check watched configuration settings first if configured
+            List<WatchedConfigurationSettings> watchedSettings = state.getCollectionWatchKeys();
+            if (watchedSettings != null && !watchedSettings.isEmpty()) {
+                refreshWithoutTimeWatchedConfigurationSettings(client, watchedSettings, eventData, context);
+            } else {
+                // Fall back to traditional watch key monitoring
+                refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
+            }
 
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
@@ -222,6 +268,34 @@ public class AppConfigurationRefreshUtil {
     }
 
     /**
+     * Checks configuration watched configuration settings for etag changes without time validation. This method
+     * immediately checks all watched configuration settings selectors for changes regardless of refresh intervals.
+     *
+     * @param client the App Configuration client to use for checking
+     * @param watchedSettings the list of watched configuration settings to watch for changes
+     * @param eventData the refresh event data to update if changes are detected
+     * @param context the operation context
+     * @throws AppConfigurationStatusException if there's an error during the refresh check
+     */
+    private static void refreshWithoutTimeWatchedConfigurationSettings(AppConfigurationReplicaClient client,
+        List<WatchedConfigurationSettings> watchedSettings, RefreshEventData eventData, Context context)
+        throws AppConfigurationStatusException {
+        for (WatchedConfigurationSettings watchedSetting : watchedSettings) {
+            if (client.checkWatchKeys(watchedSetting.getSettingSelector(), context)) {
+                String eventDataInfo = watchedSetting.getSettingSelector().getKeyFilter();
+
+                // Only one refresh event needs to be called to update all of the
+                // stores, not one for each.
+                LOGGER.info("Configuration Refresh Event triggered by watched configuration settings: {}",
+                    eventDataInfo);
+
+                eventData.setMessage(eventDataInfo);
+                return;
+            }
+        }
+    }
+
+    /**
      * Checks feature flag refresh triggers with time-based validation. Only performs the refresh check if the refresh
      * interval has elapsed.
      *
@@ -240,15 +314,13 @@ public class AppConfigurationRefreshUtil {
         if (date.isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
 
-            for (FeatureFlags featureFlags : state.getWatchKeys()) {
+            for (WatchedConfigurationSettings featureFlags : state.getWatchKeys()) {
                 if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
-                    String eventDataInfo = ".appconfig.featureflag/*";
-
-                    // Only one refresh Event needs to be call to update all of the
+                    // Only one refresh event needs to be called to update all of the
                     // stores, not one for each.
-                    LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+                    LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PREFIX);
 
-                    eventData.setMessage(eventDataInfo);
+                    eventData.setMessage(FEATURE_FLAG_PREFIX);
                     return;
                 }
 
@@ -271,15 +343,13 @@ public class AppConfigurationRefreshUtil {
     private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagState watchKeys,
         RefreshEventData eventData, Context context) throws AppConfigurationStatusException {
 
-        for (FeatureFlags featureFlags : watchKeys.getWatchKeys()) {
+        for (WatchedConfigurationSettings featureFlags : watchKeys.getWatchKeys()) {
             if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
-                String eventDataInfo = ".appconfig.featureflag/*";
-
-                // Only one refresh Event needs to be call to update all of the
+                // Only one refresh event needs to be called to update all of the
                 // stores, not one for each.
-                LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+                LOGGER.info("Configuration Refresh Event triggered by {}", FEATURE_FLAG_PREFIX);
 
-                eventData.setMessage(eventDataInfo);
+                eventData.setMessage(FEATURE_FLAG_PREFIX);
             }
 
         }
@@ -287,7 +357,7 @@ public class AppConfigurationRefreshUtil {
 
     /**
      * Checks the etag values between watched and current configuration settings to determine if a refresh is needed.
-     * 
+     *
      * @param watchSetting the configuration setting being watched for changes
      * @param currentTriggerConfiguration the current configuration setting from the store
      * @param endpoint the endpoint of the configuration store
@@ -308,9 +378,9 @@ public class AppConfigurationRefreshUtil {
 
             String eventDataInfo = watchSetting.getKey();
 
-            // Only one refresh Event needs to be call to update all of the
+            // Only one refresh event needs to be called to update all of the
             // stores, not one for each.
-            LOGGER.info("Configuration Refresh Event triggered by " + eventDataInfo);
+            LOGGER.info("Configuration Refresh Event triggered by {}", eventDataInfo);
             eventData.setMessage(eventDataInfo);
         }
     }
@@ -320,7 +390,7 @@ public class AppConfigurationRefreshUtil {
      */
     static class RefreshEventData {
 
-        private static final String MSG_TEMPLATE = "Some keys matching %s has been updated since last check.";
+        private static final String MSG_TEMPLATE = "Some keys matching %s have been updated since last check.";
 
         private String message;
 
@@ -335,7 +405,7 @@ public class AppConfigurationRefreshUtil {
 
         /**
          * Sets the refresh message using the standard message template.
-         * 
+         *
          * @param prefix the prefix to include in the message (typically a key name)
          * @return this RefreshEventData instance for method chaining
          */
@@ -346,7 +416,7 @@ public class AppConfigurationRefreshUtil {
 
         /**
          * Sets the full refresh message and marks that a refresh should occur.
-         * 
+         *
          * @param message the complete message describing the refresh event
          * @return this RefreshEventData instance for method chaining
          */
@@ -358,7 +428,7 @@ public class AppConfigurationRefreshUtil {
 
         /**
          * Gets the refresh event message.
-         * 
+         *
          * @return the message describing what triggered the refresh
          */
         public String getMessage() {
@@ -367,7 +437,7 @@ public class AppConfigurationRefreshUtil {
 
         /**
          * Indicates whether a refresh should be performed.
-         * 
+         *
          * @return true if a refresh is needed, false otherwise
          */
         public boolean getDoRefresh() {

@@ -22,6 +22,11 @@ import java.util.Map;
 @Fluent
 public final class ElasticMonitorResourceInner extends Resource {
     /*
+     * The kind of the Elastic resource - observability, security, search etc.
+     */
+    private String kind;
+
+    /*
      * SKU of the monitor resource.
      */
     private ResourceSku sku;
@@ -60,6 +65,26 @@ public final class ElasticMonitorResourceInner extends Resource {
      * Creates an instance of ElasticMonitorResourceInner class.
      */
     public ElasticMonitorResourceInner() {
+    }
+
+    /**
+     * Get the kind property: The kind of the Elastic resource - observability, security, search etc.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The kind of the Elastic resource - observability, security, search etc.
+     * 
+     * @param kind the kind value to set.
+     * @return the ElasticMonitorResourceInner object itself.
+     */
+    public ElasticMonitorResourceInner withKind(String kind) {
+        this.kind = kind;
+        return this;
     }
 
     /**
@@ -204,6 +229,7 @@ public final class ElasticMonitorResourceInner extends Resource {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("location", location());
         jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind);
         jsonWriter.writeJsonField("sku", this.sku);
         jsonWriter.writeJsonField("properties", this.properties);
         jsonWriter.writeJsonField("identity", this.identity);
@@ -237,6 +263,8 @@ public final class ElasticMonitorResourceInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedElasticMonitorResourceInner.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedElasticMonitorResourceInner.kind = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedElasticMonitorResourceInner.sku = ResourceSku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {

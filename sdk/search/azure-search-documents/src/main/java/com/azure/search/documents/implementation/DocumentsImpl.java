@@ -94,6 +94,7 @@ public final class DocumentsImpl {
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
+            @HeaderParam("x-ms-enable-elevated-read") Boolean xMsEnableElevatedRead,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchRequest searchRequest,
             Context context);
 
@@ -104,6 +105,7 @@ public final class DocumentsImpl {
             @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
+            @HeaderParam("x-ms-enable-elevated-read") Boolean xMsEnableElevatedRead,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchRequest searchRequest,
             Context context);
 
@@ -115,6 +117,7 @@ public final class DocumentsImpl {
             @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
+            @HeaderParam("x-ms-enable-elevated-read") Boolean xMsEnableElevatedRead,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/docs('{key}')")
@@ -125,6 +128,7 @@ public final class DocumentsImpl {
             @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @HeaderParam("x-ms-query-source-authorization") String xMsQuerySourceAuthorization,
+            @HeaderParam("x-ms-enable-elevated-read") Boolean xMsEnableElevatedRead,
             @HeaderParam("Accept") String accept, Context context);
 
         @Post("/docs/search.post.suggest")
@@ -283,6 +287,8 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -292,9 +298,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(SearchRequest searchRequest,
-        String xMsQuerySourceAuthorization, RequestOptions requestOptions) {
+        String xMsQuerySourceAuthorization, Boolean xMsEnableElevatedRead, RequestOptions requestOptions) {
         return FluxUtil.withContext(context -> searchPostWithResponseAsync(searchRequest, xMsQuerySourceAuthorization,
-            requestOptions, context));
+            xMsEnableElevatedRead, requestOptions, context));
     }
 
     /**
@@ -303,6 +309,8 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,7 +321,8 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchDocumentsResult>> searchPostWithResponseAsync(SearchRequest searchRequest,
-        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
+        String xMsQuerySourceAuthorization, Boolean xMsEnableElevatedRead, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -321,7 +330,7 @@ public final class DocumentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(),
-            xMsClientRequestId, xMsQuerySourceAuthorization, accept, searchRequest, context);
+            xMsClientRequestId, xMsQuerySourceAuthorization, xMsEnableElevatedRead, accept, searchRequest, context);
     }
 
     /**
@@ -330,6 +339,8 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -338,9 +349,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions) {
-        return searchPostWithResponseAsync(searchRequest, xMsQuerySourceAuthorization, requestOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        Boolean xMsEnableElevatedRead, RequestOptions requestOptions) {
+        return searchPostWithResponseAsync(searchRequest, xMsQuerySourceAuthorization, xMsEnableElevatedRead,
+            requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -349,6 +360,8 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,9 +371,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchDocumentsResult> searchPostAsync(SearchRequest searchRequest, String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions, Context context) {
-        return searchPostWithResponseAsync(searchRequest, xMsQuerySourceAuthorization, requestOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        Boolean xMsEnableElevatedRead, RequestOptions requestOptions, Context context) {
+        return searchPostWithResponseAsync(searchRequest, xMsQuerySourceAuthorization, xMsEnableElevatedRead,
+            requestOptions, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -369,6 +382,8 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -378,7 +393,8 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchDocumentsResult> searchPostWithResponse(SearchRequest searchRequest,
-        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
+        String xMsQuerySourceAuthorization, Boolean xMsEnableElevatedRead, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -386,8 +402,8 @@ public final class DocumentsImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.searchPostSync(this.client.getEndpoint(), this.client.getIndexName(),
-            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, accept, searchRequest,
-            context);
+            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, xMsEnableElevatedRead, accept,
+            searchRequest, context);
     }
 
     /**
@@ -396,6 +412,8 @@ public final class DocumentsImpl {
      * @param searchRequest The definition of the Search request.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -404,9 +422,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchDocumentsResult searchPost(SearchRequest searchRequest, String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions) {
-        return searchPostWithResponse(searchRequest, xMsQuerySourceAuthorization, requestOptions, Context.NONE)
-            .getValue();
+        Boolean xMsEnableElevatedRead, RequestOptions requestOptions) {
+        return searchPostWithResponse(searchRequest, xMsQuerySourceAuthorization, xMsEnableElevatedRead, requestOptions,
+            Context.NONE).getValue();
     }
 
     /**
@@ -417,6 +435,8 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -426,9 +446,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Map<String, Object>>> getWithResponseAsync(String key, List<String> selectedFields,
-        String xMsQuerySourceAuthorization, RequestOptions requestOptions) {
-        return FluxUtil.withContext(
-            context -> getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization, requestOptions, context));
+        String xMsQuerySourceAuthorization, Boolean xMsEnableElevatedRead, RequestOptions requestOptions) {
+        return FluxUtil.withContext(context -> getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization,
+            xMsEnableElevatedRead, requestOptions, context));
     }
 
     /**
@@ -439,6 +459,8 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,7 +471,8 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Map<String, Object>>> getWithResponseAsync(String key, List<String> selectedFields,
-        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
+        String xMsQuerySourceAuthorization, Boolean xMsEnableElevatedRead, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -462,7 +485,8 @@ public final class DocumentsImpl {
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
         return service.get(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
-            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, accept, context);
+            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, xMsEnableElevatedRead, accept,
+            context);
     }
 
     /**
@@ -473,6 +497,8 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -481,9 +507,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields,
-        String xMsQuerySourceAuthorization, RequestOptions requestOptions) {
-        return getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization, requestOptions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String xMsQuerySourceAuthorization, Boolean xMsEnableElevatedRead, RequestOptions requestOptions) {
+        return getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization, xMsEnableElevatedRead,
+            requestOptions).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -494,6 +520,8 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -503,9 +531,10 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Map<String, Object>> getAsync(String key, List<String> selectedFields,
-        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization, requestOptions, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        String xMsQuerySourceAuthorization, Boolean xMsEnableElevatedRead, RequestOptions requestOptions,
+        Context context) {
+        return getWithResponseAsync(key, selectedFields, xMsQuerySourceAuthorization, xMsEnableElevatedRead,
+            requestOptions, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -516,6 +545,8 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,7 +556,8 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Map<String, Object>> getWithResponse(String key, List<String> selectedFields,
-        String xMsQuerySourceAuthorization, RequestOptions requestOptions, Context context) {
+        String xMsQuerySourceAuthorization, Boolean xMsEnableElevatedRead, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=none";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -538,7 +570,8 @@ public final class DocumentsImpl {
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
         return service.getSync(this.client.getEndpoint(), this.client.getIndexName(), key, selectedFieldsConverted,
-            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, accept, context);
+            this.client.getApiVersion(), xMsClientRequestId, xMsQuerySourceAuthorization, xMsEnableElevatedRead, accept,
+            context);
     }
 
     /**
@@ -549,6 +582,8 @@ public final class DocumentsImpl {
      * from the returned document.
      * @param xMsQuerySourceAuthorization Token identifying the user for which the query is being executed. This token
      * is used to enforce security restrictions on documents.
+     * @param xMsEnableElevatedRead A value that enables elevated read that bypass document level permission checks for
+     * the query operation.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -557,9 +592,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Map<String, Object> get(String key, List<String> selectedFields, String xMsQuerySourceAuthorization,
-        RequestOptions requestOptions) {
-        return getWithResponse(key, selectedFields, xMsQuerySourceAuthorization, requestOptions, Context.NONE)
-            .getValue();
+        Boolean xMsEnableElevatedRead, RequestOptions requestOptions) {
+        return getWithResponse(key, selectedFields, xMsQuerySourceAuthorization, xMsEnableElevatedRead, requestOptions,
+            Context.NONE).getValue();
     }
 
     /**

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.iotoperations.generated;
  */
 public final class InstanceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2025-07-01-preview/Instance_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-10-01/Instance_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Instance_Get.

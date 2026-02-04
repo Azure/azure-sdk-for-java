@@ -21,7 +21,7 @@ public final class RaiBlocklistItemsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"etag\":\"so\",\"tags\":{\"kb\":\"ux\",\"mskdch\":\"ctvtf\",\"kzaz\":\"aiubavlzwpvgmfa\",\"rokzrthqetwpq\":\"gokedgjqafkm\"},\"properties\":{\"pattern\":\"aoznq\",\"isRegex\":true},\"id\":\"iezeagm\",\"name\":\"eituugedhfpjs\",\"type\":\"lzmb\"}";
+            = "{\"etag\":\"rdcgu\",\"tags\":{\"lttjzgcz\":\"tmdylperp\",\"esrgvtshuvftwai\":\"cmfpfbodet\",\"pdxxzetwwz\":\"muqkevzgjypanhx\"},\"properties\":{\"pattern\":\"tnxlkfhglhr\",\"isRegex\":false},\"id\":\"wecr\",\"name\":\"nhpcselqx\",\"type\":\"vppqi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class RaiBlocklistItemsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         RaiBlocklistItem response = manager.raiBlocklistItems()
-            .getWithResponse("ztjctibpvbkae", "xsmzygdf", "akw", "eivmak", com.azure.core.util.Context.NONE)
+            .getWithResponse("ewqkjvxprwpxs", "ohutxlcsk", "tezuug", "gzlf", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ux", response.tags().get("kb"));
-        Assertions.assertEquals("aoznq", response.properties().pattern());
-        Assertions.assertTrue(response.properties().isRegex());
+        Assertions.assertEquals("tmdylperp", response.tags().get("lttjzgcz"));
+        Assertions.assertEquals("tnxlkfhglhr", response.properties().pattern());
+        Assertions.assertFalse(response.properties().isRegex());
     }
 }

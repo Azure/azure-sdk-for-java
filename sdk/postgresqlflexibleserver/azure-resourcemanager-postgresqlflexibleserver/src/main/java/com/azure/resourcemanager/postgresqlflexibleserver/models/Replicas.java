@@ -12,7 +12,7 @@ import com.azure.core.util.Context;
  */
 public interface Replicas {
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
@@ -24,7 +24,7 @@ public interface Replicas {
     PagedIterable<Server> listByServer(String resourceGroupName, String serverName);
 
     /**
-     * List all the replicas for a given server.
+     * Lists all read replicas of a server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.

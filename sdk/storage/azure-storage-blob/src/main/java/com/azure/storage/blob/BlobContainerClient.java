@@ -53,6 +53,7 @@ import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -232,7 +233,7 @@ public final class BlobContainerClient {
      * @return the URL.
      */
     public String getBlobContainerUrl() {
-        return azureBlobStorage.getUrl() + "/" + containerName;
+        return azureBlobStorage.getUrl() + "/" + Utility.urlEncode(containerName);
     }
 
     /**
@@ -1025,7 +1026,9 @@ public final class BlobContainerClient {
             if (options != null) {
                 finalOptions.setMaxResultsPerPage(options.getMaxResultsPerPage())
                     .setPrefix(options.getPrefix())
+                    .setStartFrom(options.getStartFrom())
                     .setDetails(options.getDetails());
+
             }
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
@@ -1040,7 +1043,8 @@ public final class BlobContainerClient {
             Callable<ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>> operation
                 = () -> this.azureBlobStorage.getContainers()
                     .listBlobFlatSegmentWithResponse(containerName, finalOptions.getPrefix(), nextMarker,
-                        finalOptions.getMaxResultsPerPage(), include, null, null, Context.NONE);
+                        finalOptions.getMaxResultsPerPage(), include, finalOptions.getStartFrom(), null, null,
+                        Context.NONE);
 
             ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse> response
                 = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);
@@ -1158,7 +1162,8 @@ public final class BlobContainerClient {
             if (options != null) {
                 finalOptions.setMaxResultsPerPage(options.getMaxResultsPerPage())
                     .setPrefix(options.getPrefix())
-                    .setDetails(options.getDetails());
+                    .setDetails(options.getDetails())
+                    .setStartFrom(options.getStartFrom());
             }
             /*
             If pageSize was not set in a .byPage(int) method, the page size from options will be preserved.
@@ -1184,7 +1189,7 @@ public final class BlobContainerClient {
         Callable<ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation
             = () -> azureBlobStorage.getContainers()
                 .listBlobHierarchySegmentWithResponse(containerName, delimiter, options.getPrefix(), marker,
-                    options.getMaxResultsPerPage(), include, null, null, Context.NONE);
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE);
 
         ResponseBase<ContainersListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response
             = StorageImplUtils.sendRequest(operation, timeout, BlobStorageException.class);

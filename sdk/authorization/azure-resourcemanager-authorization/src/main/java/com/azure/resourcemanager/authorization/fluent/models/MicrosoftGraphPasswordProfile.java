@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * passwordProfile.
+ * Represents a password profile.
  */
 @Fluent
 public final class MicrosoftGraphPasswordProfile implements JsonSerializable<MicrosoftGraphPasswordProfile> {

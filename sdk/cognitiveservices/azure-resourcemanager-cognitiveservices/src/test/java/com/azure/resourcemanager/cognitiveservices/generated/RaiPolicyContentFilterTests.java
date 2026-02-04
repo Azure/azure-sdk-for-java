@@ -14,27 +14,27 @@ public final class RaiPolicyContentFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RaiPolicyContentFilter model = BinaryData.fromString(
-            "{\"name\":\"rykqgaifmvikl\",\"enabled\":false,\"severityThreshold\":\"Medium\",\"blocking\":true,\"source\":\"Prompt\"}")
+            "{\"name\":\"er\",\"enabled\":true,\"severityThreshold\":\"Medium\",\"blocking\":false,\"source\":\"Prompt\"}")
             .toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("rykqgaifmvikl", model.name());
-        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("er", model.name());
+        Assertions.assertTrue(model.enabled());
         Assertions.assertEquals(ContentLevel.MEDIUM, model.severityThreshold());
-        Assertions.assertTrue(model.blocking());
+        Assertions.assertFalse(model.blocking());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("rykqgaifmvikl")
-            .withEnabled(false)
+        RaiPolicyContentFilter model = new RaiPolicyContentFilter().withName("er")
+            .withEnabled(true)
             .withSeverityThreshold(ContentLevel.MEDIUM)
-            .withBlocking(true)
+            .withBlocking(false)
             .withSource(RaiPolicyContentSource.PROMPT);
         model = BinaryData.fromObject(model).toObject(RaiPolicyContentFilter.class);
-        Assertions.assertEquals("rykqgaifmvikl", model.name());
-        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("er", model.name());
+        Assertions.assertTrue(model.enabled());
         Assertions.assertEquals(ContentLevel.MEDIUM, model.severityThreshold());
-        Assertions.assertTrue(model.blocking());
+        Assertions.assertFalse(model.blocking());
         Assertions.assertEquals(RaiPolicyContentSource.PROMPT, model.source());
     }
 }

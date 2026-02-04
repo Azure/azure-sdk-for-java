@@ -50,6 +50,7 @@ import com.azure.storage.blob.options.BlobContainerCreateOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
@@ -220,7 +221,7 @@ public final class BlobContainerAsyncClient {
      * @return the URL.
      */
     public String getBlobContainerUrl() {
-        return azureBlobStorage.getUrl() + "/" + containerName;
+        return azureBlobStorage.getUrl() + "/" + Utility.urlEncode(containerName);
     }
 
     /**
@@ -1169,9 +1170,10 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobFlatSegmentWithResponseAsync(containerName, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
     }
 
@@ -1298,7 +1300,8 @@ public final class BlobContainerAsyncClient {
                     // Note that this prefers the value passed to .byPage(int) over the value on the options
                     finalOptions = new ListBlobsOptions().setMaxResultsPerPage(pageSize)
                         .setPrefix(options.getPrefix())
-                        .setDetails(options.getDetails());
+                        .setDetails(options.getDetails())
+                        .setStartFrom(options.getStartFrom());
                 }
             } else {
                 finalOptions = options;
@@ -1334,9 +1337,10 @@ public final class BlobContainerAsyncClient {
         ArrayList<ListBlobsIncludeItem> include
             = options.getDetails().toList().isEmpty() ? null : options.getDetails().toList();
 
-        return StorageImplUtils.applyOptionalTimeout(this.azureBlobStorage.getContainers()
-            .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
-                options.getMaxResultsPerPage(), include, null, null, Context.NONE),
+        return StorageImplUtils.applyOptionalTimeout(
+            this.azureBlobStorage.getContainers()
+                .listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, options.getPrefix(), marker,
+                    options.getMaxResultsPerPage(), include, options.getStartFrom(), null, null, Context.NONE),
             timeout);
     }
 

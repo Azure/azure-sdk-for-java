@@ -1,14 +1,28 @@
 ## Release History
 
-### 4.41.0-beta.1 (Unreleased)
+### 4.43.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added transactional batch support. See [PR 47478](https://github.com/Azure/azure-sdk-for-java/pull/47478) and [PR 47697](https://github.com/Azure/azure-sdk-for-java/pull/47697) and [47803](https://github.com/Azure/azure-sdk-for-java/pull/47803)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue for micro batch stream query where feed range starts with null or incorrect initial offset. **NOTE: This issue only happens when a partition split happened during initial offset calculation stage. - See [47742](https://github.com/Azure/azure-sdk-for-java/pull/47742)
+* Fixed `java.lang.ClassCastException` during bulk write operations for write strategy `ItemPatch` or `ItemPatchIfExists`. - See [47748](https://github.com/Azure/azure-sdk-for-java/pull/47748)
 
 #### Other Changes
+
+### 4.42.0 (2025-12-09)
+
+#### Other Changes
+* Enabled hostname validation for RNTBD connections to backend - [PR 47111](https://github.com/Azure/azure-sdk-for-java/pull/47111)
+
+### 4.41.0 (2025-10-21)
+
+#### Features Added
+* Added support `spark.cosmos.write.strategy` value `ItemPatchIfExists` which allows gracefully ignoring documents/patch-instructions when the document does not exist (anymore). - See [47034](https://github.com/Azure/azure-sdk-for-java/pull/47034)
+* Added support to optionally omit info about spark environment and/or machine-info for driver/executors from `UserAgent` header via new config `spark.cosmos.userAgent.format` (allowed values are `SparkEnvAndWorkers` (default value), `OnlySparkEnv` and `NoSparkEnv`.  - See [47047](https://github.com/Azure/azure-sdk-for-java/pull/47047)
 
 ### 4.40.0 (2025-09-27)
 

@@ -11,8 +11,9 @@ import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
  */
 public final class DomainsCheckAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2024-11-01/examples/
-     * CheckDomainAvailability.json
+     * x-ms-original-file:
+     * specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/stable/2024-11-
+     * 01/examples/CheckDomainAvailability.json
      */
     /**
      * Sample code: Check domain availability.

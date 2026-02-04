@@ -12,27 +12,27 @@ public final class CompanyInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CompanyInfo model = BinaryData.fromString(
-            "{\"domain\":\"u\",\"business\":\"krlkhbzhfepg\",\"employeesNumber\":\"qex\",\"state\":\"ocxscpaierhhbcs\",\"country\":\"ummajtjaod\"}")
+            "{\"domain\":\"npime\",\"business\":\"stxgc\",\"employeesNumber\":\"dg\",\"state\":\"ajrmvdjwzrlovmc\",\"country\":\"hijco\"}")
             .toObject(CompanyInfo.class);
-        Assertions.assertEquals("u", model.domain());
-        Assertions.assertEquals("krlkhbzhfepg", model.business());
-        Assertions.assertEquals("qex", model.employeesNumber());
-        Assertions.assertEquals("ocxscpaierhhbcs", model.state());
-        Assertions.assertEquals("ummajtjaod", model.country());
+        Assertions.assertEquals("npime", model.domain());
+        Assertions.assertEquals("stxgc", model.business());
+        Assertions.assertEquals("dg", model.employeesNumber());
+        Assertions.assertEquals("ajrmvdjwzrlovmc", model.state());
+        Assertions.assertEquals("hijco", model.country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CompanyInfo model = new CompanyInfo().withDomain("u")
-            .withBusiness("krlkhbzhfepg")
-            .withEmployeesNumber("qex")
-            .withState("ocxscpaierhhbcs")
-            .withCountry("ummajtjaod");
+        CompanyInfo model = new CompanyInfo().withDomain("npime")
+            .withBusiness("stxgc")
+            .withEmployeesNumber("dg")
+            .withState("ajrmvdjwzrlovmc")
+            .withCountry("hijco");
         model = BinaryData.fromObject(model).toObject(CompanyInfo.class);
-        Assertions.assertEquals("u", model.domain());
-        Assertions.assertEquals("krlkhbzhfepg", model.business());
-        Assertions.assertEquals("qex", model.employeesNumber());
-        Assertions.assertEquals("ocxscpaierhhbcs", model.state());
-        Assertions.assertEquals("ummajtjaod", model.country());
+        Assertions.assertEquals("npime", model.domain());
+        Assertions.assertEquals("stxgc", model.business());
+        Assertions.assertEquals("dg", model.employeesNumber());
+        Assertions.assertEquals("ajrmvdjwzrlovmc", model.state());
+        Assertions.assertEquals("hijco", model.country());
     }
 }

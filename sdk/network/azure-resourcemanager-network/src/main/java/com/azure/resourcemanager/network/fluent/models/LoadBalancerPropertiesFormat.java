@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.InboundNatPool;
+import com.azure.resourcemanager.network.models.LoadBalancerScope;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import java.io.IOException;
 import java.util.List;
@@ -71,6 +72,11 @@ public final class LoadBalancerPropertiesFormat implements JsonSerializable<Load
      * The provisioning state of the load balancer resource.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * Indicates the scope of the load balancer: external (Public) or internal (Private).
+     */
+    private LoadBalancerScope scope;
 
     /**
      * Creates an instance of LoadBalancerPropertiesFormat class.
@@ -256,6 +262,26 @@ public final class LoadBalancerPropertiesFormat implements JsonSerializable<Load
     }
 
     /**
+     * Get the scope property: Indicates the scope of the load balancer: external (Public) or internal (Private).
+     * 
+     * @return the scope value.
+     */
+    public LoadBalancerScope scope() {
+        return this.scope;
+    }
+
+    /**
+     * Set the scope property: Indicates the scope of the load balancer: external (Public) or internal (Private).
+     * 
+     * @param scope the scope value to set.
+     * @return the LoadBalancerPropertiesFormat object itself.
+     */
+    public LoadBalancerPropertiesFormat withScope(LoadBalancerScope scope) {
+        this.scope = scope;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -302,6 +328,7 @@ public final class LoadBalancerPropertiesFormat implements JsonSerializable<Load
         jsonWriter.writeArrayField("inboundNatPools", this.inboundNatPools,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("outboundRules", this.outboundRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("scope", this.scope == null ? null : this.scope.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -352,6 +379,8 @@ public final class LoadBalancerPropertiesFormat implements JsonSerializable<Load
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedLoadBalancerPropertiesFormat.provisioningState
                         = ProvisioningState.fromString(reader.getString());
+                } else if ("scope".equals(fieldName)) {
+                    deserializedLoadBalancerPropertiesFormat.scope = LoadBalancerScope.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * locationUniqueIdType.
+ * Represents a location unique id type.
  */
 public final class MicrosoftGraphLocationUniqueIdType extends ExpandableStringEnum<MicrosoftGraphLocationUniqueIdType> {
     /**

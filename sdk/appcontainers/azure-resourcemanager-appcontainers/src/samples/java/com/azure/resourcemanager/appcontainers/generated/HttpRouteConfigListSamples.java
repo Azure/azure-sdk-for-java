@@ -9,16 +9,15 @@ package com.azure.resourcemanager.appcontainers.generated;
  */
 public final class HttpRouteConfigListSamples {
     /*
-     * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/ContainerApps/preview/2025-02-02-preview/examples/
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/ContainerApps/stable/2025-07-01/examples/
      * HttpRouteConfig_ListByManagedEnvironment.json
      */
     /**
-     * Sample code: List Managed Http Routes by Managed Environment.
+     * Sample code: List Http Route Configs by Managed Environment.
      * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void listManagedHttpRoutesByManagedEnvironment(
+    public static void listHttpRouteConfigsByManagedEnvironment(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager.httpRouteConfigs().list("examplerg", "testcontainerenv", com.azure.core.util.Context.NONE);
     }

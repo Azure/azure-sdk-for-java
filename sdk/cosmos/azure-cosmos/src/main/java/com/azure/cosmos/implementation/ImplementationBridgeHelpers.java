@@ -33,6 +33,7 @@ import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.batch.TransactionalBatchRetryPolicy;
 import com.azure.cosmos.implementation.clienttelemetry.AttributeNamingScheme;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
@@ -42,6 +43,7 @@ import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnect
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.interceptor.ITransportClientInterceptor;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
@@ -400,6 +402,7 @@ public class ImplementationBridgeHelpers {
 
             void setPartitionKeyDefinition(CosmosChangeFeedRequestOptions changeFeedRequestOptions, PartitionKeyDefinition partitionKeyDefinition);
             Map<String, Object> getProperties(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
+            CosmosChangeFeedRequestOptions disableSplitHandling(CosmosChangeFeedRequestOptions changeFeedRequestOptions);
         }
     }
 
@@ -1165,6 +1168,20 @@ public class ImplementationBridgeHelpers {
             CosmosBatchRequestOptions setHeader(CosmosBatchRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosBatchRequestOptions cosmosItemRequestOptions);
             CosmosBatchRequestOptions clone(CosmosBatchRequestOptions toBeCloned);
+            CosmosBatchRequestOptions setThroughputControlGroupName(
+              CosmosBatchRequestOptions cosmosBatchRequestOptions,
+              String throughputControlGroupName);
+            CosmosBatchRequestOptions setEndToEndOperationLatencyPolicyConfig(
+              CosmosBatchRequestOptions cosmosBatchRequestOptions,
+              CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy);
+            CosmosBatchRequestOptions setOperationContextAndListenerTuple(
+              CosmosBatchRequestOptions cosmosBatchRequestOptions,
+              OperationContextAndListenerTuple operationContextAndListenerTuple);
+            CosmosBatchRequestOptions setDisableRetryForThrottledBatchRequest(
+                CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                boolean disableRetryForThrottledBatchRequest
+            );
+            boolean shouldDisableRetryForThrottledBatchRequest(CosmosBatchRequestOptions cosmosBatchRequestOptions);
         }
     }
 
@@ -1273,6 +1290,8 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchAccessor {
             List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch);
+            CosmosBatch setRetryPolicy(CosmosBatch cosmosBatch, TransactionalBatchRetryPolicy transactionalBatchRetryPolicy);
+            TransactionalBatchRetryPolicy getRetryPolicy(CosmosBatch cosmosBatch);
         }
     }
 
@@ -1470,6 +1489,10 @@ public class ImplementationBridgeHelpers {
             CosmosItemSerializer getEffectiveItemSerializer(
                 CosmosAsyncClient client,
                 CosmosItemSerializer requestOptionsItemSerializer);
+
+            void registerTransportClientInterceptor(
+                CosmosAsyncClient cosmosAsyncClient,
+                ITransportClientInterceptor transportClientInterceptor);
         }
     }
 
@@ -1591,6 +1614,7 @@ public class ImplementationBridgeHelpers {
             List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException);
             void setRequestUri(CosmosException cosmosException, Uri requestUri);
             Uri getRequestUri(CosmosException cosmosException);
+            void setSubStatusCode(CosmosException cosmosException, int subStatusCode);
         }
     }
 

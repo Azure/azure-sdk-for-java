@@ -10,9 +10,11 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.MigrationsClient;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationResourceInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Migration;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationListFilter;
-import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationResource;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.MigrationNameAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Migrations;
 
 public final class MigrationsImpl implements Migrations {
@@ -28,67 +30,91 @@ public final class MigrationsImpl implements Migrations {
         this.serviceManager = serviceManager;
     }
 
-    public Response<MigrationResource> getWithResponse(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, String migrationName, Context context) {
-        Response<MigrationResourceInner> inner = this.serviceClient()
-            .getWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context);
+    public Response<Migration> getWithResponse(String resourceGroupName, String serverName, String migrationName,
+        Context context) {
+        Response<MigrationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, migrationName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new MigrationResourceImpl(inner.getValue(), this.manager()));
+                new MigrationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public MigrationResource get(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName) {
-        MigrationResourceInner inner
-            = this.serviceClient().get(subscriptionId, resourceGroupName, targetDbServerName, migrationName);
+    public Migration get(String resourceGroupName, String serverName, String migrationName) {
+        MigrationInner inner = this.serviceClient().get(resourceGroupName, serverName, migrationName);
         if (inner != null) {
-            return new MigrationResourceImpl(inner, this.manager());
+            return new MigrationImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public Response<Void> deleteWithResponse(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName, Context context) {
-        return this.serviceClient()
-            .deleteWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context);
-    }
-
-    public void delete(String subscriptionId, String resourceGroupName, String targetDbServerName,
-        String migrationName) {
-        this.serviceClient().delete(subscriptionId, resourceGroupName, targetDbServerName, migrationName);
-    }
-
-    public PagedIterable<MigrationResource> listByTargetServer(String subscriptionId, String resourceGroupName,
-        String targetDbServerName) {
-        PagedIterable<MigrationResourceInner> inner
-            = this.serviceClient().listByTargetServer(subscriptionId, resourceGroupName, targetDbServerName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<MigrationResource> listByTargetServer(String subscriptionId, String resourceGroupName,
-        String targetDbServerName, MigrationListFilter migrationListFilter, Context context) {
-        PagedIterable<MigrationResourceInner> inner = this.serviceClient()
-            .listByTargetServer(subscriptionId, resourceGroupName, targetDbServerName, migrationListFilter, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationResourceImpl(inner1, this.manager()));
-    }
-
-    public MigrationResource getById(String id) {
-        String subscriptionId = ResourceManagerUtils.getValueFromIdByName(id, "subscriptions");
-        if (subscriptionId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'subscriptions'.", id)));
+    public Response<Migration> cancelWithResponse(String resourceGroupName, String serverName, String migrationName,
+        Context context) {
+        Response<MigrationInner> inner
+            = this.serviceClient().cancelWithResponse(resourceGroupName, serverName, migrationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MigrationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
         }
+    }
+
+    public Migration cancel(String resourceGroupName, String serverName, String migrationName) {
+        MigrationInner inner = this.serviceClient().cancel(resourceGroupName, serverName, migrationName);
+        if (inner != null) {
+            return new MigrationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<Migration> listByTargetServer(String resourceGroupName, String serverName) {
+        PagedIterable<MigrationInner> inner = this.serviceClient().listByTargetServer(resourceGroupName, serverName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Migration> listByTargetServer(String resourceGroupName, String serverName,
+        MigrationListFilter migrationListFilter, Context context) {
+        PagedIterable<MigrationInner> inner
+            = this.serviceClient().listByTargetServer(resourceGroupName, serverName, migrationListFilter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MigrationImpl(inner1, this.manager()));
+    }
+
+    public Response<MigrationNameAvailability> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String serverName, MigrationNameAvailabilityInner parameters, Context context) {
+        Response<MigrationNameAvailabilityInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(resourceGroupName, serverName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MigrationNameAvailabilityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MigrationNameAvailability checkNameAvailability(String resourceGroupName, String serverName,
+        MigrationNameAvailabilityInner parameters) {
+        MigrationNameAvailabilityInner inner
+            = this.serviceClient().checkNameAvailability(resourceGroupName, serverName, parameters);
+        if (inner != null) {
+            return new MigrationNameAvailabilityImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Migration getById(String id) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String targetDbServerName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (targetDbServerName == null) {
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
+        if (serverName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
@@ -97,23 +123,17 @@ public final class MigrationsImpl implements Migrations {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'migrations'.", id)));
         }
-        return this.getWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, Context.NONE)
-            .getValue();
+        return this.getWithResponse(resourceGroupName, serverName, migrationName, Context.NONE).getValue();
     }
 
-    public Response<MigrationResource> getByIdWithResponse(String id, Context context) {
-        String subscriptionId = ResourceManagerUtils.getValueFromIdByName(id, "subscriptions");
-        if (subscriptionId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'subscriptions'.", id)));
-        }
+    public Response<Migration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String targetDbServerName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (targetDbServerName == null) {
+        String serverName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
+        if (serverName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
         }
@@ -122,55 +142,7 @@ public final class MigrationsImpl implements Migrations {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'migrations'.", id)));
         }
-        return this.getWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context);
-    }
-
-    public void deleteById(String id) {
-        String subscriptionId = ResourceManagerUtils.getValueFromIdByName(id, "subscriptions");
-        if (subscriptionId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'subscriptions'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetDbServerName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (targetDbServerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String migrationName = ResourceManagerUtils.getValueFromIdByName(id, "migrations");
-        if (migrationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'migrations'.", id)));
-        }
-        this.deleteWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, Context.NONE);
-    }
-
-    public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String subscriptionId = ResourceManagerUtils.getValueFromIdByName(id, "subscriptions");
-        if (subscriptionId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'subscriptions'.", id)));
-        }
-        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
-        if (resourceGroupName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
-        }
-        String targetDbServerName = ResourceManagerUtils.getValueFromIdByName(id, "flexibleServers");
-        if (targetDbServerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'flexibleServers'.", id)));
-        }
-        String migrationName = ResourceManagerUtils.getValueFromIdByName(id, "migrations");
-        if (migrationName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'migrations'.", id)));
-        }
-        return this.deleteWithResponse(subscriptionId, resourceGroupName, targetDbServerName, migrationName, context);
+        return this.getWithResponse(resourceGroupName, serverName, migrationName, context);
     }
 
     private MigrationsClient serviceClient() {
@@ -181,7 +153,7 @@ public final class MigrationsImpl implements Migrations {
         return this.serviceManager;
     }
 
-    public MigrationResourceImpl define(String name) {
-        return new MigrationResourceImpl(name, this.manager());
+    public MigrationImpl define(String name) {
+        return new MigrationImpl(name, this.manager());
     }
 }

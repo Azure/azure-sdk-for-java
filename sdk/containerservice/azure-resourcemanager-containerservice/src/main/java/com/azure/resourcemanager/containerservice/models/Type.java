@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The week index. Specifies on which instance of the allowed days specified in daysOfWeek the maintenance occurs.
+ * The week index. Specifies on which week of the month the dayOfWeek applies.
  */
 public final class Type extends ExpandableStringEnum<Type> {
     /**

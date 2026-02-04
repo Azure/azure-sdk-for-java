@@ -28,6 +28,8 @@ public final class MonitorsSwitchBillingHeaders {
         String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
         if (retryAfter != null) {
             this.retryAfter = Integer.parseInt(retryAfter);
+        } else {
+            this.retryAfter = null;
         }
     }
 

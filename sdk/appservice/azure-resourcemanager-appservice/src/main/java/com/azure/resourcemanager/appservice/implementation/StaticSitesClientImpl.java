@@ -105,7 +105,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "WebSiteManagementCli")
+    @ServiceInterface(name = "WebSiteManagementClientStaticSites")
     public interface StaticSitesService {
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/previewStaticSiteWorkflowFile")
@@ -1033,11 +1033,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSitesWorkflowPreviewRequest.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.previewWorkflow(this.client.getEndpoint(), location, this.client.getSubscriptionId(),
-                    this.client.getApiVersion(), staticSitesWorkflowPreviewRequest, accept, context))
+            .withContext(context -> service.previewWorkflow(this.client.getEndpoint(), location,
+                this.client.getSubscriptionId(), apiVersion, staticSitesWorkflowPreviewRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1076,10 +1076,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSitesWorkflowPreviewRequest.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.previewWorkflow(this.client.getEndpoint(), location, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), staticSitesWorkflowPreviewRequest, accept, context);
+        return service.previewWorkflow(this.client.getEndpoint(), location, this.client.getSubscriptionId(), apiVersion,
+            staticSitesWorkflowPreviewRequest, accept, context);
     }
 
     /**
@@ -1160,10 +1161,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .<PagedResponse<StaticSiteArmResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1190,11 +1192,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1286,10 +1287,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteArmResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1322,11 +1324,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -1429,10 +1432,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1467,10 +1471,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -1564,10 +1569,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteEnvelope, accept, context))
+                this.client.getSubscriptionId(), apiVersion, staticSiteEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1609,10 +1615,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, staticSiteEnvelope, accept, context);
     }
 
     /**
@@ -1813,10 +1820,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1851,10 +1859,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
+            apiVersion, accept, context);
     }
 
     /**
@@ -2038,10 +2047,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteEnvelope, accept, context))
+                this.client.getSubscriptionId(), apiVersion, staticSiteEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2083,10 +2093,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, staticSiteEnvelope, accept, context);
     }
 
     /**
@@ -2183,10 +2194,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteUsers(this.client.getEndpoint(), resourceGroupName, name,
-                authprovider, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                authprovider, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteUserArmResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2228,11 +2240,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listStaticSiteUsers(this.client.getEndpoint(), resourceGroupName, name, authprovider,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2355,10 +2368,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteStaticSiteUser(this.client.getEndpoint(), resourceGroupName, name,
-                authprovider, userid, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                authprovider, userid, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2401,10 +2415,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteStaticSiteUser(this.client.getEndpoint(), resourceGroupName, name, authprovider, userid,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2513,11 +2528,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteUserEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateStaticSiteUser(this.client.getEndpoint(), resourceGroupName, name,
-                authprovider, userid, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                staticSiteUserEnvelope, accept, context))
+                authprovider, userid, this.client.getSubscriptionId(), apiVersion, staticSiteUserEnvelope, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2568,10 +2584,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteUserEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateStaticSiteUser(this.client.getEndpoint(), resourceGroupName, name, authprovider, userid,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteUserEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, staticSiteUserEnvelope, accept, context);
     }
 
     /**
@@ -2673,10 +2690,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStaticSiteBuilds(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteBuildArmResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2714,11 +2732,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getStaticSiteBuilds(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -2832,10 +2851,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name,
-                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2875,10 +2895,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -2975,10 +2996,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name,
-                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3018,10 +3040,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3225,11 +3248,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             appSettings.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateStaticSiteBuildAppSettings(this.client.getEndpoint(),
-                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                appSettings, accept, context))
+                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), apiVersion, appSettings,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3276,11 +3300,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             appSettings.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateStaticSiteBuildAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept,
-            context);
+            environmentName, this.client.getSubscriptionId(), apiVersion, appSettings, accept, context);
     }
 
     /**
@@ -3389,11 +3413,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             appSettings.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateStaticSiteBuildFunctionAppSettings(this.client.getEndpoint(),
-                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                appSettings, accept, context))
+                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), apiVersion, appSettings,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3440,11 +3465,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             appSettings.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateStaticSiteBuildFunctionAppSettings(this.client.getEndpoint(), resourceGroupName,
-            name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept,
-            context);
+            name, environmentName, this.client.getSubscriptionId(), apiVersion, appSettings, accept, context);
     }
 
     /**
@@ -3546,10 +3571,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBuildDatabaseConnections(this.client.getEndpoint(), resourceGroupName,
-                name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DatabaseConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -3590,11 +3616,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getBuildDatabaseConnections(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -3712,11 +3739,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName,
-                name, environmentName, databaseConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                name, environmentName, databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3760,10 +3788,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -3873,11 +3902,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             databaseConnectionRequestEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateBuildDatabaseConnection(this.client.getEndpoint(),
                 resourceGroupName, name, environmentName, databaseConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), databaseConnectionRequestEnvelope, accept, context))
+                apiVersion, databaseConnectionRequestEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -3931,10 +3961,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             databaseConnectionRequestEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), apiVersion,
             databaseConnectionRequestEnvelope, accept, context);
     }
 
@@ -4046,11 +4077,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName,
-                name, environmentName, databaseConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                name, environmentName, databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4093,11 +4125,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -4206,11 +4238,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             databaseConnectionRequestEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName,
-                name, environmentName, databaseConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), databaseConnectionRequestEnvelope, accept, context))
+                name, environmentName, databaseConnectionName, this.client.getSubscriptionId(), apiVersion,
+                databaseConnectionRequestEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4264,10 +4297,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             databaseConnectionRequestEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), apiVersion,
             databaseConnectionRequestEnvelope, accept, context);
     }
 
@@ -4380,11 +4414,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBuildDatabaseConnectionWithDetails(this.client.getEndpoint(),
                 resourceGroupName, name, environmentName, databaseConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4428,11 +4463,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBuildDatabaseConnectionWithDetails(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -4529,10 +4564,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteBuildFunctions(this.client.getEndpoint(), resourceGroupName,
-                name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -4576,11 +4612,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listStaticSiteBuildFunctions(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -4703,10 +4740,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteBuildAppSettings(this.client.getEndpoint(), resourceGroupName,
-                name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4746,10 +4784,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listStaticSiteBuildAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            environmentName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -4848,11 +4887,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteBuildFunctionAppSettings(this.client.getEndpoint(),
-                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -4892,10 +4931,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listStaticSiteBuildFunctionAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            environmentName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -4993,11 +5033,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBuildDatabaseConnectionsWithDetails(this.client.getEndpoint(),
-                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DatabaseConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -5038,11 +5078,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getBuildDatabaseConnectionsWithDetails(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -5160,11 +5201,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getUserProvidedFunctionAppsForStaticSiteBuild(this.client.getEndpoint(),
-                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -5209,11 +5250,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getUserProvidedFunctionAppsForStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name,
-                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                environmentName, this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -5349,11 +5391,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getUserProvidedFunctionAppForStaticSiteBuild(this.client.getEndpoint(),
-                resourceGroupName, name, environmentName, functionAppName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, environmentName, functionAppName, this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5400,11 +5443,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getUserProvidedFunctionAppForStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
+            environmentName, functionAppName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -5525,12 +5568,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteUserProvidedFunctionEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.registerUserProvidedFunctionAppWithStaticSiteBuild(
                 this.client.getEndpoint(), resourceGroupName, name, environmentName, functionAppName, isForced,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteUserProvidedFunctionEnvelope,
-                accept, context))
+                this.client.getSubscriptionId(), apiVersion, staticSiteUserProvidedFunctionEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5589,11 +5632,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteUserProvidedFunctionEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.registerUserProvidedFunctionAppWithStaticSiteBuild(this.client.getEndpoint(), resourceGroupName,
-            name, environmentName, functionAppName, isForced, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), staticSiteUserProvidedFunctionEnvelope, accept, context);
+            name, environmentName, functionAppName, isForced, this.client.getSubscriptionId(), apiVersion,
+            staticSiteUserProvidedFunctionEnvelope, accept, context);
     }
 
     /**
@@ -5944,11 +5988,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.detachUserProvidedFunctionAppFromStaticSiteBuild(this.client.getEndpoint(),
-                resourceGroupName, name, environmentName, functionAppName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, environmentName, functionAppName, this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -5993,11 +6038,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.detachUserProvidedFunctionAppFromStaticSiteBuild(this.client.getEndpoint(), resourceGroupName,
-            name, environmentName, functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            name, environmentName, functionAppName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -6107,10 +6152,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteZipDeploymentEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createZipDeploymentForStaticSiteBuild(this.client.getEndpoint(),
-                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                resourceGroupName, name, environmentName, this.client.getSubscriptionId(), apiVersion,
                 staticSiteZipDeploymentEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -6160,11 +6206,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteZipDeploymentEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createZipDeploymentForStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            staticSiteZipDeploymentEnvelope, accept, context);
+            environmentName, this.client.getSubscriptionId(), apiVersion, staticSiteZipDeploymentEnvelope, accept,
+            context);
     }
 
     /**
@@ -6392,11 +6439,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             appSettings.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.createOrUpdateStaticSiteAppSettings(this.client.getEndpoint(), resourceGroupName,
-                    name, this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept, context))
+            .withContext(context -> service.createOrUpdateStaticSiteAppSettings(this.client.getEndpoint(),
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, appSettings, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6437,10 +6484,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             appSettings.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateStaticSiteAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept, context);
+            this.client.getSubscriptionId(), apiVersion, appSettings, accept, context);
     }
 
     /**
@@ -6535,10 +6583,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBasicAuth(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -6577,11 +6626,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listBasicAuth(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -6697,10 +6747,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBasicAuth(this.client.getEndpoint(), resourceGroupName, name,
-                basicAuthName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                basicAuthName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6740,10 +6791,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getBasicAuth(this.client.getEndpoint(), resourceGroupName, name, basicAuthName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -6848,11 +6900,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             basicAuthEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateBasicAuth(this.client.getEndpoint(), resourceGroupName, name,
-                basicAuthName, this.client.getSubscriptionId(), this.client.getApiVersion(), basicAuthEnvelope, accept,
-                context))
+                basicAuthName, this.client.getSubscriptionId(), apiVersion, basicAuthEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -6900,10 +6952,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             basicAuthEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateBasicAuth(this.client.getEndpoint(), resourceGroupName, name, basicAuthName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), basicAuthEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, basicAuthEnvelope, accept, context);
     }
 
     /**
@@ -7007,11 +7060,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             appSettings.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateStaticSiteFunctionAppSettings(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings,
-                accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, appSettings, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7052,10 +7105,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             appSettings.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateStaticSiteFunctionAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept, context);
+            this.client.getSubscriptionId(), apiVersion, appSettings, accept, context);
     }
 
     /**
@@ -7158,11 +7212,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteUserRolesInvitationEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createUserRolesInvitationLink(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                staticSiteUserRolesInvitationEnvelope, accept, context))
+                name, this.client.getSubscriptionId(), apiVersion, staticSiteUserRolesInvitationEnvelope, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7206,11 +7261,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteUserRolesInvitationEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createUserRolesInvitationLink(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteUserRolesInvitationEnvelope, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, staticSiteUserRolesInvitationEnvelope, accept, context);
     }
 
     /**
@@ -7307,10 +7362,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteCustomDomains(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -7349,11 +7405,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listStaticSiteCustomDomains(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -7469,10 +7526,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getStaticSiteCustomDomain(this.client.getEndpoint(), resourceGroupName,
-                name, domainName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, domainName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7512,10 +7570,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getStaticSiteCustomDomain(this.client.getEndpoint(), resourceGroupName, name, domainName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -7621,10 +7680,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteCustomDomainRequestPropertiesEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateStaticSiteCustomDomain(this.client.getEndpoint(),
-                resourceGroupName, name, domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                resourceGroupName, name, domainName, this.client.getSubscriptionId(), apiVersion,
                 staticSiteCustomDomainRequestPropertiesEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -7675,11 +7735,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteCustomDomainRequestPropertiesEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateStaticSiteCustomDomain(this.client.getEndpoint(), resourceGroupName, name,
-            domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            staticSiteCustomDomainRequestPropertiesEnvelope, accept, context);
+            domainName, this.client.getSubscriptionId(), apiVersion, staticSiteCustomDomainRequestPropertiesEnvelope,
+            accept, context);
     }
 
     /**
@@ -7926,10 +7987,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteStaticSiteCustomDomain(this.client.getEndpoint(), resourceGroupName,
-                name, domainName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, domainName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -7968,10 +8030,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteStaticSiteCustomDomain(this.client.getEndpoint(), resourceGroupName, name, domainName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -8179,10 +8242,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteCustomDomainRequestPropertiesEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.validateCustomDomainCanBeAddedToStaticSite(this.client.getEndpoint(),
-                resourceGroupName, name, domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                resourceGroupName, name, domainName, this.client.getSubscriptionId(), apiVersion,
                 staticSiteCustomDomainRequestPropertiesEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -8232,11 +8296,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteCustomDomainRequestPropertiesEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.validateCustomDomainCanBeAddedToStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            staticSiteCustomDomainRequestPropertiesEnvelope, accept, context);
+            domainName, this.client.getSubscriptionId(), apiVersion, staticSiteCustomDomainRequestPropertiesEnvelope,
+            accept, context);
     }
 
     /**
@@ -8466,10 +8531,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDatabaseConnections(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DatabaseConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -8505,11 +8571,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getDatabaseConnections(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -8614,10 +8681,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-                databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -8656,10 +8724,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name, databaseConnectionName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -8760,11 +8829,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             databaseConnectionRequestEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdateDatabaseConnection(this.client.getEndpoint(),
-                resourceGroupName, name, databaseConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), databaseConnectionRequestEnvelope, accept, context))
+                resourceGroupName, name, databaseConnectionName, this.client.getSubscriptionId(), apiVersion,
+                databaseConnectionRequestEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -8813,11 +8883,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             databaseConnectionRequestEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdateDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            databaseConnectionRequestEnvelope, accept, context);
+            databaseConnectionName, this.client.getSubscriptionId(), apiVersion, databaseConnectionRequestEnvelope,
+            accept, context);
     }
 
     /**
@@ -8918,10 +8989,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-                databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -8959,10 +9031,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deleteDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -9060,11 +9133,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             databaseConnectionRequestEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-                databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                databaseConnectionRequestEnvelope, accept, context))
+                databaseConnectionName, this.client.getSubscriptionId(), apiVersion, databaseConnectionRequestEnvelope,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -9113,11 +9187,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             databaseConnectionRequestEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            databaseConnectionRequestEnvelope, accept, context);
+            databaseConnectionName, this.client.getSubscriptionId(), apiVersion, databaseConnectionRequestEnvelope,
+            accept, context);
     }
 
     /**
@@ -9219,11 +9294,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getDatabaseConnectionWithDetails(this.client.getEndpoint(),
-                resourceGroupName, name, databaseConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.getDatabaseConnectionWithDetails(this.client.getEndpoint(), resourceGroupName, name,
+                    databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -9262,10 +9338,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getDatabaseConnectionWithDetails(this.client.getEndpoint(), resourceGroupName, name,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            databaseConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -9352,10 +9429,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.detachStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -9390,10 +9468,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.detachStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -9574,10 +9653,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteFunctions(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -9616,11 +9696,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listStaticSiteFunctions(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -9731,10 +9812,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteAppSettings(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -9769,10 +9851,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listStaticSiteAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -9859,10 +9942,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteConfiguredRoles(this.client.getEndpoint(), resourceGroupName,
-                name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -9897,10 +9981,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listStaticSiteConfiguredRoles(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -9987,10 +10072,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteFunctionAppSettings(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -10025,10 +10111,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listStaticSiteFunctionAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -10115,10 +10202,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listStaticSiteSecrets(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -10153,10 +10241,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listStaticSiteSecrets(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -10243,10 +10332,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPrivateEndpointConnectionList(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -10284,11 +10374,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getPrivateEndpointConnectionList(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -10406,11 +10497,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName,
-                name, privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                name, privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -10452,11 +10543,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
-            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
+            privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -10564,11 +10655,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             privateEndpointWrapper.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.approveOrRejectPrivateEndpointConnection(this.client.getEndpoint(),
-                resourceGroupName, name, privateEndpointConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), privateEndpointWrapper, accept, context))
+                resourceGroupName, name, privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion,
+                privateEndpointWrapper, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -10617,11 +10709,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             privateEndpointWrapper.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.approveOrRejectPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
-            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            privateEndpointWrapper, accept, context);
+            privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, privateEndpointWrapper, accept,
+            context);
     }
 
     /**
@@ -10862,11 +10955,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deletePrivateEndpointConnection(this.client.getEndpoint(),
-                resourceGroupName, name, privateEndpointConnectionName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+            .withContext(
+                context -> service.deletePrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
+                    privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -10906,11 +11000,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.deletePrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
-            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
+            privateEndpointConnectionName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -11113,10 +11207,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getPrivateLinkResources(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -11152,10 +11247,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getPrivateLinkResources(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -11249,10 +11345,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             resetPropertiesEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetStaticSiteApiKey(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), resetPropertiesEnvelope, accept, context))
+                this.client.getSubscriptionId(), apiVersion, resetPropertiesEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -11294,10 +11391,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             resetPropertiesEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetStaticSiteApiKey(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), resetPropertiesEnvelope, accept, context);
+            this.client.getSubscriptionId(), apiVersion, resetPropertiesEnvelope, accept, context);
     }
 
     /**
@@ -11388,10 +11486,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDatabaseConnectionsWithDetails(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<DatabaseConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -11427,11 +11526,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getDatabaseConnectionsWithDetails(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -11535,10 +11635,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getUserProvidedFunctionAppsForStaticSite(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                resourceGroupName, name, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -11578,11 +11679,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getUserProvidedFunctionAppsForStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -11701,11 +11803,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getUserProvidedFunctionAppForStaticSite(this.client.getEndpoint(),
-                resourceGroupName, name, functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                resourceGroupName, name, functionAppName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -11747,10 +11849,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getUserProvidedFunctionAppForStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            functionAppName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -11863,11 +11966,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteUserProvidedFunctionEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.registerUserProvidedFunctionAppWithStaticSite(this.client.getEndpoint(),
-                resourceGroupName, name, functionAppName, isForced, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), staticSiteUserProvidedFunctionEnvelope, accept, context))
+                resourceGroupName, name, functionAppName, isForced, this.client.getSubscriptionId(), apiVersion,
+                staticSiteUserProvidedFunctionEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -11921,10 +12025,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteUserProvidedFunctionEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.registerUserProvidedFunctionAppWithStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            functionAppName, isForced, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            functionAppName, isForced, this.client.getSubscriptionId(), apiVersion,
             staticSiteUserProvidedFunctionEnvelope, accept, context);
     }
 
@@ -12252,11 +12357,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.detachUserProvidedFunctionAppFromStaticSite(this.client.getEndpoint(),
-                resourceGroupName, name, functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                resourceGroupName, name, functionAppName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -12296,10 +12401,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.detachUserProvidedFunctionAppFromStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            functionAppName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -12399,11 +12505,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteZipDeploymentEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createZipDeploymentForStaticSite(this.client.getEndpoint(),
-                resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                staticSiteZipDeploymentEnvelope, accept, context))
+            .withContext(
+                context -> service.createZipDeploymentForStaticSite(this.client.getEndpoint(), resourceGroupName, name,
+                    this.client.getSubscriptionId(), apiVersion, staticSiteZipDeploymentEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -12446,11 +12553,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteZipDeploymentEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createZipDeploymentForStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteZipDeploymentEnvelope, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, staticSiteZipDeploymentEnvelope, accept, context);
     }
 
     /**
@@ -12670,11 +12777,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.validateBackend(this.client.getEndpoint(), resourceGroupName, name,
-                linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                staticSiteLinkedBackendEnvelope, accept, context))
+                linkedBackendName, this.client.getSubscriptionId(), apiVersion, staticSiteLinkedBackendEnvelope, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -12720,11 +12828,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.validateBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteLinkedBackendEnvelope, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, staticSiteLinkedBackendEnvelope, accept, context);
     }
 
     /**
@@ -12937,10 +13045,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.validateBackendForBuild(this.client.getEndpoint(), resourceGroupName, name,
-                environmentName, linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                environmentName, linkedBackendName, this.client.getSubscriptionId(), apiVersion,
                 staticSiteLinkedBackendEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -12992,11 +13101,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.validateBackendForBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            staticSiteLinkedBackendEnvelope, accept, context);
+            linkedBackendName, this.client.getSubscriptionId(), apiVersion, staticSiteLinkedBackendEnvelope, accept,
+            context);
     }
 
     /**
@@ -13205,10 +13315,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLinkedBackends(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -13245,11 +13356,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getLinkedBackends(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
+                apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -13356,10 +13468,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLinkedBackendsForBuild(this.client.getEndpoint(), resourceGroupName,
-                name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                name, environmentName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>map(
                 res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                     res.getValue().value(), res.getValue().nextLink(), null))
@@ -13401,11 +13514,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getLinkedBackendsForBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+                this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -13517,10 +13631,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLinkedBackend(this.client.getEndpoint(), resourceGroupName, name,
-                linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+                linkedBackendName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -13559,10 +13674,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getLinkedBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -13659,11 +13775,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.linkBackend(this.client.getEndpoint(), resourceGroupName, name,
-                linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                staticSiteLinkedBackendEnvelope, accept, context))
+            .withContext(
+                context -> service.linkBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
+                    this.client.getSubscriptionId(), apiVersion, staticSiteLinkedBackendEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -13710,11 +13827,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.linkBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteLinkedBackendEnvelope, accept,
-            context);
+            this.client.getSubscriptionId(), apiVersion, staticSiteLinkedBackendEnvelope, accept, context);
     }
 
     /**
@@ -13922,11 +14039,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.unlinkBackend(this.client.getEndpoint(), resourceGroupName, name,
-                linkedBackendName, isCleaningAuthConfig, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                linkedBackendName, isCleaningAuthConfig, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -13965,10 +14082,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.unlinkBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
-            isCleaningAuthConfig, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            isCleaningAuthConfig, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -14064,11 +14182,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getLinkedBackendForBuild(this.client.getEndpoint(), resourceGroupName, name,
-                environmentName, linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                accept, context))
+                environmentName, linkedBackendName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -14112,10 +14230,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getLinkedBackendForBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+            linkedBackendName, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -14223,10 +14342,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.linkBackendToBuild(this.client.getEndpoint(), resourceGroupName, name,
-                environmentName, linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                environmentName, linkedBackendName, this.client.getSubscriptionId(), apiVersion,
                 staticSiteLinkedBackendEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -14279,11 +14399,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.linkBackendToBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            staticSiteLinkedBackendEnvelope, accept, context);
+            linkedBackendName, this.client.getSubscriptionId(), apiVersion, staticSiteLinkedBackendEnvelope, accept,
+            context);
     }
 
     /**
@@ -14511,11 +14632,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.unlinkBackendFromBuild(this.client.getEndpoint(), resourceGroupName, name,
-                environmentName, linkedBackendName, isCleaningAuthConfig, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context))
+                environmentName, linkedBackendName, isCleaningAuthConfig, this.client.getSubscriptionId(), apiVersion,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -14559,11 +14681,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2025-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.unlinkBackendFromBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            linkedBackendName, isCleaningAuthConfig, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
+            linkedBackendName, isCleaningAuthConfig, this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
@@ -14627,6 +14749,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Get all Static Sites for a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14652,6 +14776,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Get all Static Sites for a subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14678,6 +14804,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets all static sites in the specified resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14705,6 +14833,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets all static sites in the specified resource group.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14732,6 +14862,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the list of users of a static site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14761,6 +14893,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the list of users of a static site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14789,6 +14923,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets all static site builds for a particular static site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14818,6 +14954,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets all static site builds for a particular static site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14846,6 +14984,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns overviews of database connections for a static site build
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14874,6 +15014,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns overviews of database connections for a static site build
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14902,6 +15044,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the functions of a particular static site build.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14931,6 +15075,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the functions of a particular static site build.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14959,6 +15105,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns details of database connections for a static site build
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -14988,6 +15136,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns details of database connections for a static site build
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15016,6 +15166,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the details of the user provided function apps registered with a static site build
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15046,6 +15198,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the details of the user provided function apps registered with a static site build
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15075,6 +15229,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the basic auth properties for a static site as a collection.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15104,6 +15260,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the basic auth properties for a static site as a collection.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15132,6 +15290,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets all static site custom domains for a particular static site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15161,6 +15321,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets all static site custom domains for a particular static site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15189,6 +15351,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns overviews of database connections for a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15217,6 +15381,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns overviews of database connections for a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15245,6 +15411,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the functions of a static site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15275,6 +15443,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the functions of a static site.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15303,6 +15473,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the list of private endpoint connections associated with a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15332,6 +15504,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the list of private endpoint connections associated with a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15359,6 +15533,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns details of database connections for a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15388,6 +15564,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns details of database connections for a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15416,6 +15594,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the details of the user provided function apps registered with a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15446,6 +15626,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Gets the details of the user provided function apps registered with a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15475,6 +15657,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns details of all backends linked to a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15504,6 +15688,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns details of all backends linked to a static site
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15532,6 +15718,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns details of all backends linked to a static site build
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -15562,6 +15750,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     }
 
     /**
+     * Returns details of all backends linked to a static site build
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

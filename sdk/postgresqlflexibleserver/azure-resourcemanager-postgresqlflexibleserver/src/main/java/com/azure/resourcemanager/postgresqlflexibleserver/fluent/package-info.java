@@ -4,8 +4,8 @@
 
 /**
  * Package containing the service clients for PostgreSqlManagementClient.
- * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL
- * resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and
- * configurations with new business model.
+ * The Azure Database for PostgreSQL management API provides create, read, update, and delete functionality for Azure
+ * PostgreSQL resources including servers, databases, firewall rules, network configuration, security alert policies,
+ * log files and configurations with new business model.
  */
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent;

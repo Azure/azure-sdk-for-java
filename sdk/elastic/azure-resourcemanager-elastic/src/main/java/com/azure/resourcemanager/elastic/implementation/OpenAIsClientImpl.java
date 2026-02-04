@@ -29,6 +29,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.OpenAIsClient;
 import com.azure.resourcemanager.elastic.fluent.models.OpenAIIntegrationRPModelInner;
 import com.azure.resourcemanager.elastic.fluent.models.OpenAIIntegrationStatusResponseInner;
@@ -64,7 +65,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ElasticManagementCli")
+    @ServiceInterface(name = "ElasticManagementClientOpenAIs")
     public interface OpenAIsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations")
@@ -76,10 +77,29 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OpenAIIntegrationRPModelListResponse> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OpenAIIntegrationRPModelInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("integrationName") String integrationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OpenAIIntegrationRPModelInner> getSync(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @PathParam("integrationName") String integrationName, @HeaderParam("Accept") String accept,
@@ -97,10 +117,31 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OpenAIIntegrationRPModelInner> createOrUpdateSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("integrationName") String integrationName,
+            @BodyParam("application/json") OpenAIIntegrationRPModelInner body, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("integrationName") String integrationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<Void> deleteSync(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @PathParam("integrationName") String integrationName, @HeaderParam("Accept") String accept,
@@ -117,16 +158,35 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations/{integrationName}/getStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OpenAIIntegrationStatusResponseInner> getStatusSync(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("integrationName") String integrationName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OpenAIIntegrationRPModelListResponse>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<OpenAIIntegrationRPModelListResponse> listNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * List OpenAI integration rule for a given monitor resource.
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -163,45 +223,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * List OpenAI integration rule for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OpenAIIntegrationRPModelInner>> listSinglePageAsync(String resourceGroupName,
-        String monitorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-                resourceGroupName, monitorName, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List OpenAI integration rule for a given monitor resource.
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -217,7 +240,47 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * List OpenAI integration rule for a given monitor resource.
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<OpenAIIntegrationRPModelInner> listSinglePage(String resourceGroupName, String monitorName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<OpenAIIntegrationRPModelListResponse> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -225,17 +288,40 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation as paginated response with {@link PagedFlux}.
+     * @return response of a list operation along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OpenAIIntegrationRPModelInner> listAsync(String resourceGroupName, String monitorName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<OpenAIIntegrationRPModelInner> listSinglePage(String resourceGroupName, String monitorName,
         Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<OpenAIIntegrationRPModelListResponse> res
+            = service.listSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
-     * List OpenAI integration rule for a given monitor resource.
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -246,11 +332,13 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenAIIntegrationRPModelInner> list(String resourceGroupName, String monitorName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, monitorName));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
-     * List OpenAI integration rule for a given monitor resource.
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -263,11 +351,12 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<OpenAIIntegrationRPModelInner> list(String resourceGroupName, String monitorName,
         Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, monitorName, context));
+        return new PagedIterable<>(() -> listSinglePage(resourceGroupName, monitorName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
-     * Get OpenAI integration rule for a given monitor resource.
+     * Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -275,8 +364,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration rule for a given monitor resource along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return detailed information about OpenAI integration rules for a given Elastic monitor resource along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OpenAIIntegrationRPModelInner>> getWithResponseAsync(String resourceGroupName,
@@ -308,48 +397,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Get OpenAI integration rule for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration rule for a given monitor resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OpenAIIntegrationRPModelInner>> getWithResponseAsync(String resourceGroupName,
-        String monitorName, String integrationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (integrationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter integrationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, monitorName, integrationName, accept, context);
-    }
-
-    /**
-     * Get OpenAI integration rule for a given monitor resource.
+     * Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -357,7 +405,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration rule for a given monitor resource on successful completion of {@link Mono}.
+     * @return detailed information about OpenAI integration rules for a given Elastic monitor resource on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OpenAIIntegrationRPModelInner> getAsync(String resourceGroupName, String monitorName,
@@ -367,7 +416,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Get OpenAI integration rule for a given monitor resource.
+     * Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -376,16 +425,41 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration rule for a given monitor resource along with {@link Response}.
+     * @return detailed information about OpenAI integration rules for a given Elastic monitor resource along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenAIIntegrationRPModelInner> getWithResponse(String resourceGroupName, String monitorName,
         String integrationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, monitorName, integrationName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (integrationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter integrationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, integrationName, accept, context);
     }
 
     /**
-     * Get OpenAI integration rule for a given monitor resource.
+     * Get detailed information about OpenAI integration rules for a given Elastic monitor resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -393,7 +467,7 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration rule for a given monitor resource.
+     * @return detailed information about OpenAI integration rules for a given Elastic monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIIntegrationRPModelInner get(String resourceGroupName, String monitorName, String integrationName) {
@@ -401,7 +475,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Create or update a OpenAI integration rule for a given monitor resource.
+     * Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -447,52 +522,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Create or update a OpenAI integration rule for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capture properties of Open AI resource Integration along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OpenAIIntegrationRPModelInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String monitorName, String integrationName, OpenAIIntegrationRPModelInner body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (integrationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter integrationName is required and cannot be null."));
-        }
-        if (body != null) {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, integrationName, body, accept, context);
-    }
-
-    /**
-     * Create or update a OpenAI integration rule for a given monitor resource.
+     * Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -511,7 +542,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Create or update a OpenAI integration rule for a given monitor resource.
+     * Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -526,11 +558,39 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenAIIntegrationRPModelInner> createOrUpdateWithResponse(String resourceGroupName,
         String monitorName, String integrationName, OpenAIIntegrationRPModelInner body, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, monitorName, integrationName, body, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (integrationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter integrationName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, integrationName, body, accept, context);
     }
 
     /**
-     * Create or update a OpenAI integration rule for a given monitor resource.
+     * Create or update an OpenAI integration rule for a given Elastic monitor resource, enabling advanced AI-driven
+     * observability and monitoring.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -549,7 +609,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Delete OpenAI integration rule for a given monitor resource.
+     * Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and
+     * monitoring capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -589,47 +650,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Delete OpenAI integration rule for a given monitor resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
-        String integrationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (integrationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter integrationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, monitorName, integrationName, accept, context);
-    }
-
-    /**
-     * Delete OpenAI integration rule for a given monitor resource.
+     * Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and
+     * monitoring capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -646,7 +668,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Delete OpenAI integration rule for a given monitor resource.
+     * Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and
+     * monitoring capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -660,11 +683,36 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String monitorName, String integrationName,
         Context context) {
-        return deleteWithResponseAsync(resourceGroupName, monitorName, integrationName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (integrationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter integrationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, integrationName, accept, context);
     }
 
     /**
-     * Delete OpenAI integration rule for a given monitor resource.
+     * Delete an OpenAI integration rule for a given Elastic monitor resource, removing AI-driven observability and
+     * monitoring capabilities.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -679,7 +727,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Get OpenAI integration status for a given integration.
+     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -687,8 +736,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OpenAIIntegrationStatusResponseInner>> getStatusWithResponseAsync(String resourceGroupName,
@@ -720,48 +769,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Get OpenAI integration status for a given integration.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param integrationName OpenAI Integration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OpenAIIntegrationStatusResponseInner>> getStatusWithResponseAsync(String resourceGroupName,
-        String monitorName, String integrationName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (monitorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
-        }
-        if (integrationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter integrationName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getStatus(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, monitorName, integrationName, accept, context);
-    }
-
-    /**
-     * Get OpenAI integration status for a given integration.
+     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -769,7 +778,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration on successful completion of {@link Mono}.
+     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OpenAIIntegrationStatusResponseInner> getStatusAsync(String resourceGroupName, String monitorName,
@@ -779,7 +789,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
-     * Get OpenAI integration status for a given integration.
+     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -788,16 +799,42 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration along with {@link Response}.
+     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OpenAIIntegrationStatusResponseInner> getStatusWithResponse(String resourceGroupName,
         String monitorName, String integrationName, Context context) {
-        return getStatusWithResponseAsync(resourceGroupName, monitorName, integrationName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (monitorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter monitorName is required and cannot be null."));
+        }
+        if (integrationName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter integrationName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getStatusSync(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, integrationName, accept, context);
     }
 
     /**
-     * Get OpenAI integration status for a given integration.
+     * Get the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
@@ -805,7 +842,8 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return openAI integration status for a given integration.
+     * @return the status of OpenAI integration for a given Elastic monitor resource, ensuring optimal observability and
+     * performance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIIntegrationStatusResponseInner getStatus(String resourceGroupName, String monitorName,
@@ -814,6 +852,9 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -839,6 +880,39 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
     }
 
     /**
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
+     * 
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<OpenAIIntegrationRPModelInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<OpenAIIntegrationRPModelListResponse> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all OpenAI integration rules for a given Elastic monitor resource, helping you manage AI-driven
+     * observability and monitoring.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -846,22 +920,25 @@ public final class OpenAIsClientImpl implements OpenAIsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return response of a list operation along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OpenAIIntegrationRPModelInner>> listNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<OpenAIIntegrationRPModelInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<OpenAIIntegrationRPModelListResponse> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenAIsClientImpl.class);
 }

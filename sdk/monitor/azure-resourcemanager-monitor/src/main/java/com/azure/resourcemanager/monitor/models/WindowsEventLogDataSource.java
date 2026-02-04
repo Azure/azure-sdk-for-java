@@ -31,6 +31,11 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
     private List<String> xPathQueries;
 
     /*
+     * The KQL query to transform the data source. This is a deprecated property and will be removed in future versions.
+     */
+    private String transformKql;
+
+    /*
      * A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      */
@@ -87,6 +92,28 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
     }
 
     /**
+     * Get the transformKql property: The KQL query to transform the data source. This is a deprecated property and will
+     * be removed in future versions.
+     * 
+     * @return the transformKql value.
+     */
+    public String transformKql() {
+        return this.transformKql;
+    }
+
+    /**
+     * Set the transformKql property: The KQL query to transform the data source. This is a deprecated property and will
+     * be removed in future versions.
+     * 
+     * @param transformKql the transformKql value to set.
+     * @return the WindowsEventLogDataSource object itself.
+     */
+    public WindowsEventLogDataSource withTransformKql(String transformKql) {
+        this.transformKql = transformKql;
+        return this;
+    }
+
+    /**
      * Get the name property: A friendly name for the data source.
      * This name should be unique across all data sources (regardless of type) within the data collection rule.
      * 
@@ -125,6 +152,7 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
         jsonWriter.writeArrayField("streams", this.streams,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("xPathQueries", this.xPathQueries, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("transformKql", this.transformKql);
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -151,6 +179,8 @@ public final class WindowsEventLogDataSource implements JsonSerializable<Windows
                 } else if ("xPathQueries".equals(fieldName)) {
                     List<String> xPathQueries = reader.readArray(reader1 -> reader1.getString());
                     deserializedWindowsEventLogDataSource.xPathQueries = xPathQueries;
+                } else if ("transformKql".equals(fieldName)) {
+                    deserializedWindowsEventLogDataSource.transformKql = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     deserializedWindowsEventLogDataSource.name = reader.getString();
                 } else {
