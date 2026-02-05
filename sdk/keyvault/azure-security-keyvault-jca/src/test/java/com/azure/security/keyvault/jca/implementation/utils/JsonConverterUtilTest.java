@@ -52,7 +52,7 @@ public class JsonConverterUtilTest {
 
     @Test
     void testFromJsonWithTokenResponseBody() {
-        AccessToken accessToken = null;
+        AccessToken accessToken;
         try {
             accessToken = JsonConverterUtil.fromJson(AccessToken::fromJson, DUMMY_TOKEN_RESPONSE_BODY);
         } catch (IOException e) {

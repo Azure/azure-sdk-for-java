@@ -26,7 +26,6 @@ import java.security.cert.CertificateFactory;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public final class CertificateUtil {
     private static final String BEGIN_CERTIFICATE = "-----BEGIN CERTIFICATE-----";
@@ -98,11 +97,7 @@ public final class CertificateUtil {
 
     public static Certificate[] loadX509CertificatesFromFile(InputStream inputStream) throws CertificateException {
         CertificateFactory factory = CertificateFactory.getInstance("X.509");
-        return factory.generateCertificates(inputStream)
-            .stream()
-            .map(o -> (Certificate) o)
-            .collect(Collectors.toList())
-            .toArray(new Certificate[0]);
+        return factory.generateCertificates(inputStream).toArray(new Certificate[0]);
     }
 
     public static String getCertificateNameFromCertificateItemId(String id) {

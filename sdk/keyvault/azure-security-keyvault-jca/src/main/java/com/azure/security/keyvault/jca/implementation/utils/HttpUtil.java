@@ -3,34 +3,25 @@
 package com.azure.security.keyvault.jca.implementation.utils;
 
 import com.azure.security.keyvault.jca.implementation.JreKeyStoreFactory;
-import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.client5.http.classic.methods.HttpPost;
-import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
-import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.ContentType;
-import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.config.RegistryBuilder;
-import org.apache.hc.core5.http.io.HttpClientResponseHandler;
-import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.apache.hc.core5.ssl.SSLContexts;
 
-import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
-import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -59,27 +50,26 @@ public final class HttpUtil {
     private static final Logger LOGGER = Logger.getLogger(HttpUtil.class.getName());
 
     public static String get(String uri, Map<String, String> headers) {
-        String result = null;
-
-        try (CloseableHttpClient client = buildClient()) {
-            HttpGet httpGet = new HttpGet(uri);
+        HttpURLConnection connection = null;
+        try {
+            connection = openConnection(uri);
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(true);
 
             if (headers != null) {
-                headers.forEach(httpGet::addHeader);
+                headers.forEach(connection::setRequestProperty);
             }
+            connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
 
-            httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
-
-            result = client.execute(httpGet, createResponseHandler());
+            return readResponseBody(connection);
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to finish the HTTP GET request.", ioe);
+            return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
-
-        return result;
-    }
-
-    public static String post(String uri, String body, String contentType) {
-        return post(uri, null, body, contentType);
     }
 
     public static String getUserAgentPrefix() {
@@ -95,98 +85,105 @@ public final class HttpUtil {
     }
 
     public static String post(String uri, Map<String, String> headers, String body, String contentType) {
-        String result = null;
-
-        try (CloseableHttpClient client = buildClient()) {
-            HttpPost httpPost = new HttpPost(uri);
-
-            httpPost.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
+        HttpURLConnection connection = null;
+        try {
+            connection = openConnection(uri);
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
 
             if (headers != null) {
-                headers.forEach(httpPost::addHeader);
-                httpPost.addHeader("Content-Type", contentType);
+                headers.forEach(connection::setRequestProperty);
+            }
+            if (contentType != null) {
+                connection.setRequestProperty("Content-Type", contentType);
+            }
+            connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
+            try (OutputStream outputStream = connection.getOutputStream()) {
+                outputStream.write(body.getBytes(StandardCharsets.UTF_8));
             }
 
-            httpPost.setEntity(new StringEntity(body, ContentType.create(contentType)));
-
-            result = client.execute(httpPost, createResponseHandler());
+            int status = connection.getResponseCode();
+            if (status >= 200 && status < 300) {
+                return readResponseBody(connection);
+            } else {
+                LOGGER.log(SEVERE, createErrorMessage(status));
+                return "";
+            }
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to finish the HTTP POST request.", ioe);
+            return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
-
-        return result;
     }
 
-    public static ClassicHttpResponse getWithResponse(String uri, Map<String, String> headers) {
-        ClassicHttpResponse result = null;
+    private static String createErrorMessage(int status) {
+        return "Fail to get response from Key Vault because return http status code is " + status + ". It can be "
+            + "caused by missing permissions or roles. To know how to add permissions or roles, see "
+            + "https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#prerequisites.";
+    }
 
-        try (CloseableHttpClient client = buildClient()) {
-            HttpGet httpGet = new HttpGet(uri);
+    @SuppressWarnings("StringOperationCanBeSimplified")
+    private static String readResponseBody(HttpURLConnection connection) throws IOException {
+        InputStream responseBody
+            = (connection.getInputStream() != null) ? connection.getInputStream() : connection.getErrorStream();
 
-            if (headers != null) {
-                headers.forEach(httpGet::addHeader);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[4096];
+        int read;
+        while ((read = responseBody.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, read);
+        }
+
+        return new String(outputStream.toByteArray(), StandardCharsets.UTF_8);
+    }
+
+    public static Map<String, List<String>> getWithResponseHeadersOnlyReturn(String uri) {
+        HttpURLConnection connection = null;
+        try {
+            connection = openConnection(uri);
+            connection.setRequestMethod("GET");
+            connection.setDoOutput(true);
+
+            connection.setRequestProperty(USER_AGENT_KEY, USER_AGENT_VALUE);
+
+            if (connection.getResponseCode() == 401) {
+                return null;
+            } else {
+                return connection.getHeaderFields();
             }
-
-            httpGet.addHeader(USER_AGENT_KEY, USER_AGENT_VALUE);
-
-            result = client.execute(httpGet, createResponseHandlerForAuthChallenge());
         } catch (IOException ioe) {
             LOGGER.log(WARNING, "Unable to finish the HTTP GET request.", ioe);
+            return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
-
-        return result;
     }
 
-    private static HttpClientResponseHandler<String> createResponseHandler() {
-        return (ClassicHttpResponse response) -> {
-            int status = response.getCode();
-            String result;
-
-            if (status >= 200 && status < 300) {
-                HttpEntity entity = response.getEntity();
-                result = entity != null ? EntityUtils.toString(entity) : null;
-            } else {
-                String errorMessage = "Fail to get response from Key Vault because return http status code is " + status
-                    + ". It "
-                    + "can be caused by missing permissions or roles. To know how to add permissions or roles, see "
-                    + "https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca#prerequisites.";
-                LOGGER.log(SEVERE, errorMessage);
-                throw new RuntimeException(errorMessage);
+    private static HttpURLConnection openConnection(String uri) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection) URI.create(uri).toURL().openConnection();
+            if (connection instanceof HttpsURLConnection) {
+                try {
+                    TrustManagerFactory trustManagerFactory
+                        = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+                    trustManagerFactory.init(JreKeyStoreFactory.getDefaultKeyStore());
+                    SSLContext sslContext = SSLContext.getInstance("TLS");
+                    sslContext.init(null, trustManagerFactory.getTrustManagers(), null);
+                    ((HttpsURLConnection) connection).setSSLSocketFactory(sslContext.getSocketFactory());
+                } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
+                    LOGGER.log(WARNING, "Unable to build the SSL context.", e);
+                }
             }
 
-            return result;
-        };
-    }
-
-    private static HttpClientResponseHandler<ClassicHttpResponse> createResponseHandlerForAuthChallenge() {
-        return (ClassicHttpResponse response) -> {
-            int status = response.getCode();
-
-            return status == 401 ? response : null;
-        };
-    }
-
-    private static CloseableHttpClient buildClient() {
-        KeyStore keyStore = JreKeyStoreFactory.getDefaultKeyStore();
-
-        SSLContext sslContext = null;
-
-        try {
-            sslContext = SSLContexts.custom().loadTrustMaterial(keyStore, null).build();
-        } catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
-            LOGGER.log(WARNING, "Unable to build the SSL context.", e);
+            return connection;
+        } catch (IOException ex) {
+            throw new UncheckedIOException(ex);
         }
-
-        SSLConnectionSocketFactory sslConnectionSocketFactory
-            = new SSLConnectionSocketFactory(sslContext, (HostnameVerifier) null);
-
-        PoolingHttpClientConnectionManager manager
-            = new PoolingHttpClientConnectionManager(RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                .register("https", sslConnectionSocketFactory)
-                .build());
-
-        return HttpClients.custom().setConnectionManager(manager).build();
     }
 
     public static String validateUri(String uri, String propertyName) {

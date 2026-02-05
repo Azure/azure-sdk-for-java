@@ -52,10 +52,10 @@ public class KeyVaultCertificatesTest {
 
     @Test
     public void testRefreshAndGetAliasByCertificate() {
-        Assertions.assertEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
+        Assertions.assertEquals("myalias", keyVaultCertificates.refreshAndGetAliasByCertificate(certificate));
         Assertions.assertEquals(keyVaultCertificates.getCertificates().get("myalias"), certificate);
         when(keyVaultClient.getAliases()).thenReturn(null);
-        Assertions.assertNotEquals(keyVaultCertificates.refreshAndGetAliasByCertificate(certificate), "myalias");
+        Assertions.assertNotEquals("myalias", keyVaultCertificates.refreshAndGetAliasByCertificate(certificate));
         Assertions.assertNull(keyVaultCertificates.getCertificates().get("myalias"));
     }
 

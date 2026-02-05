@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.DEFAULT_USER_AGENT_VALUE_PREFIX;
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.VERSION;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HttpUtilTest {
 

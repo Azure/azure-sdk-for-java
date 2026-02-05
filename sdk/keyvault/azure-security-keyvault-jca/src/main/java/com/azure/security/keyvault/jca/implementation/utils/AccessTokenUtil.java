@@ -3,7 +3,6 @@
 package com.azure.security.keyvault.jca.implementation.utils;
 
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
-import org.apache.hc.core5.http.ClassicHttpResponse;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +11,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -91,8 +91,10 @@ public final class AccessTokenUtil {
 
         /*
          * App Service 2017-09-01: MSI_ENDPOINT, MSI_SECRET
-         * Azure Container App 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER, see more from https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=cli%2Chttp#rest-endpoint-reference
-         * Azure Virtual Machine 2018-02-01, see more from https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#get-a-token-using-http
+         * Azure Container App 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER, see more from
+         * https://learn.microsoft.com/azure/container-apps/managed-identity?tabs=cli%2Chttp#rest-endpoint-reference
+         * Azure Virtual Machine 2018-02-01, see more from
+         * https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#get-a-token-using-http
          */
         if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource, identity);
@@ -125,15 +127,9 @@ public final class AccessTokenUtil {
 
         AccessToken result = null;
 
-        StringBuilder oauth2Url = new StringBuilder();
-
-        if (aadAuthenticationUrl == null) {
-            oauth2Url.append(OAUTH2_TOKEN_BASE_URL).append(tenantId).append("/");
-        } else {
-            oauth2Url.append(addTrailingSlashIfRequired(aadAuthenticationUrl));
-        }
-
-        oauth2Url.append(OAUTH2_TOKEN_POSTFIX);
+        String oauth2Url = (aadAuthenticationUrl == null)
+            ? OAUTH2_TOKEN_BASE_URL + tenantId + "/" + OAUTH2_TOKEN_POSTFIX
+            : addTrailingSlashIfRequired(aadAuthenticationUrl) + OAUTH2_TOKEN_POSTFIX;
 
         String encodedClientSecret = "";
 
@@ -143,17 +139,10 @@ public final class AccessTokenUtil {
             LOGGER.log(WARNING, "Failed to encode client secret for access token request", e);
         }
 
-        StringBuilder requestBody = new StringBuilder();
+        String requestBody = GRANT_TYPE_FRAGMENT + CLIENT_ID_FRAGMENT + clientId + CLIENT_SECRET_FRAGMENT
+            + encodedClientSecret + RESOURCE_FRAGMENT + resource;
 
-        requestBody.append(GRANT_TYPE_FRAGMENT)
-            .append(CLIENT_ID_FRAGMENT)
-            .append(clientId)
-            .append(CLIENT_SECRET_FRAGMENT)
-            .append(encodedClientSecret)
-            .append(RESOURCE_FRAGMENT)
-            .append(resource);
-
-        String body = HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+        String body = HttpUtil.post(oauth2Url, null, requestBody, "application/x-www-form-urlencoded");
 
         if (body != null) {
             try {
@@ -180,17 +169,13 @@ public final class AccessTokenUtil {
         LOGGER.info("Getting access token using managed identity based on MSI_SECRET");
 
         AccessToken result = null;
-        StringBuilder url = new StringBuilder();
-
-        url.append(System.getenv("MSI_ENDPOINT"))
-            .append("?api-version=2017-09-01")
-            .append(RESOURCE_FRAGMENT)
-            .append(resource);
-
+        String url;
         if (clientId != null) {
-            url.append("&clientid=").append(clientId);
-
+            url = System.getenv("MSI_ENDPOINT") + "?api-version=2017-09-01" + RESOURCE_FRAGMENT + resource
+                + "&clientid=" + clientId;
             LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
+        } else {
+            url = System.getenv("MSI_ENDPOINT") + "?api-version=2017-09-01" + RESOURCE_FRAGMENT + resource;
         }
 
         HashMap<String, String> headers = new HashMap<>();
@@ -198,7 +183,7 @@ public final class AccessTokenUtil {
         headers.put("Metadata", "true");
         headers.put("Secret", System.getenv("MSI_SECRET"));
 
-        String body = HttpUtil.get(url.toString(), headers);
+        String body = HttpUtil.get(url, headers);
 
         if (body != null) {
             try {
@@ -237,9 +222,9 @@ public final class AccessTokenUtil {
             LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
         }
 
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = Collections.emptyMap();
         if (System.getenv(PROPERTY_IDENTITY_HEADER) != null && !System.getenv(PROPERTY_IDENTITY_HEADER).isEmpty()) {
-            headers.put("X-IDENTITY-HEADER", System.getenv(PROPERTY_IDENTITY_HEADER));
+            headers = Collections.singletonMap("X-IDENTITY-HEADER", System.getenv(PROPERTY_IDENTITY_HEADER));
         }
 
         String body = HttpUtil.get(url.toString(), headers);
@@ -282,11 +267,7 @@ public final class AccessTokenUtil {
             url.append("&object_id=").append(identity);
         }
 
-        HashMap<String, String> headers = new HashMap<>();
-
-        headers.put("Metadata", "true");
-
-        String body = HttpUtil.get(url.toString(), headers);
+        String body = HttpUtil.get(url.toString(), Collections.singletonMap("Metadata", "true"));
 
         if (body != null) {
             try {
@@ -305,14 +286,15 @@ public final class AccessTokenUtil {
         LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
         LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri);
 
-        ClassicHttpResponse response = HttpUtil.getWithResponse(resourceUri, null);
+        Map<String, List<String>> headers = HttpUtil.getWithResponseHeadersOnlyReturn(resourceUri);
 
-        if (response == null) {
+        if (headers == null) {
             throw new IllegalStateException("Could not obtain login URI to retrieve access token from.");
         }
 
+        List<String> wwwAuthenticates = headers.get(WWW_AUTHENTICATE);
         Map<String, String> challengeAttributes
-            = extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
+            = extractChallengeAttributes(wwwAuthenticates == null ? null : wwwAuthenticates.get(0));
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -373,7 +355,7 @@ public final class AccessTokenUtil {
         for (String pair : attributes) {
             String[] keyValue = pair.split("=");
 
-            attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
+            attributeMap.put(keyValue[0].replace("\"", ""), keyValue[1].replace("\"", ""));
         }
 
         LOGGER.exiting("AccessTokenUtil", "extractChallengeAttributes", attributeMap);
@@ -391,7 +373,7 @@ public final class AccessTokenUtil {
     private static boolean isBearerChallenge(String authenticateHeader) {
         return authenticateHeader != null
             && !authenticateHeader.isEmpty()
-            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT));
+            && BEARER_TOKEN_PREFIX.regionMatches(true, 0, authenticateHeader, 0, BEARER_TOKEN_PREFIX.length());
     }
 
     /**

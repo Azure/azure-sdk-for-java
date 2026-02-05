@@ -6,13 +6,15 @@ package com.azure.security.keyvault.jca.implementation.certificates;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.FileSystems;
+
 public class SpecificPathCertificatesTest {
 
     SpecificPathCertificates specificPathCertificates;
 
     public static String getFilePath(String packageName) {
         String filepath = "\\src\\test\\resources\\" + packageName;
-        return System.getProperty("user.dir") + filepath.replace("\\", System.getProperty("file.separator"));
+        return System.getProperty("user.dir") + filepath.replace("\\", FileSystems.getDefault().getSeparator());
     }
 
     @Test
