@@ -23,6 +23,7 @@ class ConfigurationWithoutConnectionDetailsBean {
     }
 
     @Bean
+    @ConditionalOnMissingBean
     @ConfigurationProperties(AzureServiceBusProperties.PREFIX)
     AzureServiceBusProperties azureServiceBusProperties() {
         return AzureGlobalPropertiesUtils.loadProperties(azureGlobalProperties, new AzureServiceBusProperties());
