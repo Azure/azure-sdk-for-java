@@ -82,9 +82,9 @@ public interface ResourceManagementClient {
     ResourceGroupsClient getResourceGroups();
 
     /**
-     * Gets the TagsOperationsClient object to access its operations.
+     * Gets the TagOperationsClient object to access its operations.
      * 
-     * @return the TagsOperationsClient object.
+     * @return the TagOperationsClient object.
      */
-    TagsOperationsClient getTagsOperations();
+    TagOperationsClient getTagOperations();
 }

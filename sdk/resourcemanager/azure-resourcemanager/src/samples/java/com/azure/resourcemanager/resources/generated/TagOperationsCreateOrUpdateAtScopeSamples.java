@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for TagsOperation CreateOrUpdateAtScope.
+ * Samples for TagOperations CreateOrUpdateAtScope.
  */
-public final class TagsOperationCreateOrUpdateAtScopeSamples {
+public final class TagOperationsCreateOrUpdateAtScopeSamples {
     /*
      * x-ms-original-file:
      * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/PutTagsResource
@@ -27,7 +27,7 @@ public final class TagsOperationCreateOrUpdateAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagsOperations()
+            .getTagOperations()
             .createOrUpdateAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
                 new TagsResourceInner().withProperties(
@@ -49,7 +49,7 @@ public final class TagsOperationCreateOrUpdateAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagsOperations()
+            .getTagOperations()
             .createOrUpdateAtScope("subscriptions/00000000-0000-0000-0000-000000000000",
                 new TagsResourceInner().withProperties(
                     new Tags().withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),

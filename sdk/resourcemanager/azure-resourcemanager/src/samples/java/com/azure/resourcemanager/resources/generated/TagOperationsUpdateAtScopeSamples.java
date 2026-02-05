@@ -11,9 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for TagsOperation UpdateAtScope.
+ * Samples for TagOperations UpdateAtScope.
  */
-public final class TagsOperationUpdateAtScopeSamples {
+public final class TagOperationsUpdateAtScopeSamples {
     /*
      * x-ms-original-file:
      * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
@@ -28,7 +28,7 @@ public final class TagsOperationUpdateAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagsOperations()
+            .getTagOperations()
             .updateAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
                 new TagsPatchResource().withOperation(TagsPatchOperation.REPLACE)
@@ -51,7 +51,7 @@ public final class TagsOperationUpdateAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagsOperations()
+            .getTagOperations()
             .updateAtScope("subscriptions/00000000-0000-0000-0000-000000000000",
                 new TagsPatchResource().withOperation(TagsPatchOperation.REPLACE)
                     .withProperties(new Tags()

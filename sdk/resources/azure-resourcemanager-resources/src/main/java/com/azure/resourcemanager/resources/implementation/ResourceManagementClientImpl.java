@@ -14,7 +14,7 @@ import com.azure.resourcemanager.resources.fluent.ProvidersClient;
 import com.azure.resourcemanager.resources.fluent.ResourceGroupsClient;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
 import com.azure.resourcemanager.resources.fluent.ResourcesClient;
-import com.azure.resourcemanager.resources.fluent.TagsOperationsClient;
+import com.azure.resourcemanager.resources.fluent.TagOperationsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -178,17 +178,17 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
     }
 
     /**
-     * The TagsOperationsClient object to access its operations.
+     * The TagOperationsClient object to access its operations.
      */
-    private final TagsOperationsClient tagsOperations;
+    private final TagOperationsClient tagOperations;
 
     /**
-     * Gets the TagsOperationsClient object to access its operations.
+     * Gets the TagOperationsClient object to access its operations.
      * 
-     * @return the TagsOperationsClient object.
+     * @return the TagOperationsClient object.
      */
-    public TagsOperationsClient getTagsOperations() {
-        return this.tagsOperations;
+    public TagOperationsClient getTagOperations() {
+        return this.tagOperations;
     }
 
     /**
@@ -215,6 +215,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient imple
         this.providerResourceTypes = new ProviderResourceTypesClientImpl(this);
         this.resources = new ResourcesClientImpl(this);
         this.resourceGroups = new ResourceGroupsClientImpl(this);
-        this.tagsOperations = new TagsOperationsClientImpl(this);
+        this.tagOperations = new TagOperationsClientImpl(this);
     }
 }

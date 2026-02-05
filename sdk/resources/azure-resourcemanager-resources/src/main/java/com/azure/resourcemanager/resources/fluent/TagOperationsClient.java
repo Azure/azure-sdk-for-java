@@ -22,9 +22,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in TagsOperationsClient.
+ * An instance of this class provides access to all the operations defined in TagOperationsClient.
  */
-public interface TagsOperationsClient {
+public interface TagOperationsClient {
     /**
      * Deletes a predefined tag value for a predefined tag name.
      * 

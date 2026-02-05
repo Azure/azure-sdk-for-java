@@ -5,9 +5,9 @@
 package com.azure.resourcemanager.resources.generated;
 
 /**
- * Samples for TagsOperation DeleteAtScope.
+ * Samples for TagOperations DeleteAtScope.
  */
-public final class TagsOperationDeleteAtScopeSamples {
+public final class TagOperationsDeleteAtScopeSamples {
     /*
      * x-ms-original-file:
      * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
@@ -22,7 +22,7 @@ public final class TagsOperationDeleteAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagsOperations()
+            .getTagOperations()
             .deleteAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
                 com.azure.core.util.Context.NONE);
@@ -42,7 +42,7 @@ public final class TagsOperationDeleteAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagsOperations()
+            .getTagOperations()
             .deleteAtScope("subscriptions/00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }

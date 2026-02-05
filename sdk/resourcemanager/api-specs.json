@@ -141,7 +141,7 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/resources/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2025-04 --enable-sync-stack=false",
+    "args": "--tag=package-resources-2025-04 --enable-sync-stack=false --rename-operation-group=Tags:TagOperations",
     "note": "Remove `final` from `ResourceReference`, as it is used as superclass in deploymentstacks."
   },
   "deployments": {
