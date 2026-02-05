@@ -74,7 +74,7 @@
   },
   "features": {
     "dir": "../resources/azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
+    "source": "specification/resources/resource-manager/Microsoft.Features/features/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-features-2021-07 --metadata-suffix=feature --enable-sync-stack=false"
   },
@@ -94,7 +94,7 @@
   },
   "locks": {
     "dir": "../resources/azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
+    "source": "specification/resources/resource-manager/Microsoft.Authorization/locks/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-locks-2017-04 --metadata-suffix=lock --enable-sync-stack=false"
   },
@@ -113,7 +113,7 @@
   },
   "policy": {
     "dir": "../resources/azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
+    "source": "specification/resources/resource-manager/Microsoft.Authorization/policy/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-policy-2025-03-java --metadata-suffix=policy --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
     "note": "Remove policyVariables.json and policyVariableValues.json from tag, as they are still in preview."
@@ -139,7 +139,7 @@
   },
   "resources": {
     "dir": "../resources/azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
+    "source": "specification/resources/resource-manager/Microsoft.Resources/resources/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-resources-2025-04 --enable-sync-stack=false",
     "note": "Remove `final` from `ResourceReference`, as it is used as superclass in deploymentstacks."
@@ -184,7 +184,7 @@
   },
   "subscriptions": {
     "dir": "../resources/azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
+    "source": "specification/resources/resource-manager/Microsoft.Resources/subscriptions/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-subscriptions-2022-12 --metadata-suffix=subscription --modelerfour.lenient-model-deduplication --name-for-ungrouped-operations=ResourceName --remove-operation-group=Operations --enable-sync-stack=false"
   },
@@ -202,13 +202,13 @@
   },
   "changes": {
     "dir": "../resources/azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
+    "source": "specification/resources/resource-manager/Microsoft.Resources/changes/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-changes-2022-05 --metadata-suffix=change --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType --enable-sync-stack=false"
   },
   "databoundaries": {
     "dir": "../resources/azure-resourcemanager-resources",
-    "source": "specification/resources/resource-manager/readme.md",
+    "source": "specification/resources/resource-manager/Microsoft.Resources/databoundaries/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-databoundaries-2024-08 --title=DataBoundariesManagementClient --metadata-suffix=databoundary --remove-operation-group=Operations --enable-sync-stack=false"
   }
