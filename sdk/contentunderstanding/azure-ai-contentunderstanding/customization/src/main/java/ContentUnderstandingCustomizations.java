@@ -625,27 +625,46 @@ public class ContentUnderstandingCustomizations extends Customization {
                 ast.getClassByName(clientClassName).ifPresent(clazz -> {
                     for (MethodDeclaration method : clazz.getMethods()) {
                         String name = method.getNameAsString();
-                        int paramCount = method.getParameters().size();
+                        // Match methods that have a parameter (String stringEncoding) by name and type
+                        boolean hasStringEncodingParam = method.getParameters().stream()
+                            .anyMatch(p -> "stringEncoding".equals(p.getNameAsString())
+                                && ("String".equals(p.getType().asString()) || "java.lang.String".equals(p.getType().asString())));
 
-                        // Hide 1-param beginAnalyze (useless - creates empty AnalyzeRequest1)
-                        if ("beginAnalyze".equals(name) && paramCount == 1) {
-                            method.removeModifier(Modifier.Keyword.PUBLIC);
-                        }
-                        // Hide 2-param beginAnalyze (has stringEncoding parameter)
-                        else if ("beginAnalyze".equals(name) && paramCount == 2) {
-                            method.removeModifier(Modifier.Keyword.PUBLIC);
-                        }
-                        // Hide 5-param beginAnalyze (has stringEncoding parameter)
-                        else if ("beginAnalyze".equals(name) && paramCount == 5) {
-                            method.removeModifier(Modifier.Keyword.PUBLIC);
-                        }
-                        // Remove 3-param beginAnalyzeBinary (stringEncoding) to avoid signature conflict
-                        else if ("beginAnalyzeBinary".equals(name) && paramCount == 3) {
-                            method.remove();
-                        }
-                        // Hide 6-param beginAnalyzeBinary (has stringEncoding parameter)
-                        else if ("beginAnalyzeBinary".equals(name) && paramCount == 6) {
-                            method.removeModifier(Modifier.Keyword.PUBLIC);
+                        if ("beginAnalyze".equals(name)) {
+                            // Hide useless 1-param overload beginAnalyze(String analyzerId) that creates empty AnalyzeRequest1
+                            if (method.getParameters().size() == 1) {
+                                String paramType = method.getParameters().get(0).getType().asString();
+                                String paramName = method.getParameters().get(0).getNameAsString();
+                                boolean isStringAnalyzerId = ("String".equals(paramType) || "java.lang.String".equals(paramType))
+                                    && "analyzerId".equals(paramName);
+                                if (isStringAnalyzerId) {
+                                    method.removeModifier(Modifier.Keyword.PUBLIC);
+                                }
+                            }
+                            // Hide any beginAnalyze that has (String stringEncoding) parameter
+                            else if (hasStringEncodingParam) {
+                                method.removeModifier(Modifier.Keyword.PUBLIC);
+                            }
+                        } else if ("beginAnalyzeBinary".equals(name)) {
+                            // Remove overload beginAnalyzeBinary(String analyzerId, BinaryData binaryInput, String stringEncoding) to avoid signature conflict with our 2-param
+                            if (method.getParameters().size() == 3) {
+                                String t0 = method.getParameters().get(0).getType().asString();
+                                String t1 = method.getParameters().get(1).getType().asString();
+                                String t2 = method.getParameters().get(2).getType().asString();
+                                String n0 = method.getParameters().get(0).getNameAsString();
+                                String n1 = method.getParameters().get(1).getNameAsString();
+                                String n2 = method.getParameters().get(2).getNameAsString();
+                                boolean isString = "String".equals(t0) || "java.lang.String".equals(t0);
+                                boolean isBinaryData = "BinaryData".equals(t1) || "com.azure.core.util.BinaryData".equals(t1);
+                                boolean isStringEncoding = "String".equals(t2) || "java.lang.String".equals(t2);
+                                if (isString && "analyzerId".equals(n0) && isBinaryData && "binaryInput".equals(n1) && isStringEncoding && "stringEncoding".equals(n2)) {
+                                    method.remove();
+                                }
+                            }
+                            // Hide any other beginAnalyzeBinary that has (String stringEncoding) parameter (e.g. 6-param)
+                            else if (hasStringEncodingParam) {
+                                method.removeModifier(Modifier.Keyword.PUBLIC);
+                            }
                         }
                     }
                 }));
