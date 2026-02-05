@@ -36,6 +36,8 @@ steps:
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
@@ -66,5 +68,7 @@ steps:
         goals: 'javadoc:jar'
       ${{ else }}:
         goals: 'javadoc:jar codesnippet:verify-codesnippet spotless:check'
+    env:
+      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
