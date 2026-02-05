@@ -22,8 +22,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.support.MessageBuilder;
 
 import java.time.Duration;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
@@ -82,7 +82,7 @@ class ServiceBusDockerComposeConnectionDetailsFactoryTests {
         AzureServiceBusMessagingAutoConfiguration.class})
     static class Config {
 
-        private static final Set<String> MESSAGES = new HashSet<>();
+        private static final Set<String> MESSAGES = ConcurrentHashMap.newKeySet();
 
         @Bean
         ServiceBusRecordMessageListener processMessage() {
