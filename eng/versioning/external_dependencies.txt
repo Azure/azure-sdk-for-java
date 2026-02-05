@@ -397,6 +397,8 @@ springboot4_org.testcontainers:junit-jupiter;1.21.3
 springboot4_org.testcontainers:azure;1.21.3
 springboot4_jakarta.annotation:jakarta.annotation-api;3.0.0
 springboot4_ch.qos.logback:logback-classic;1.5.25
+springboot4_org.awaitility:awaitility;4.3.0
+springboot4_com.microsoft.sqlserver:mssql-jdbc;13.2.1.jre11
 # Used for Spring version updates
 springboot4_org.springframework.boot:spring-boot-dependencies;4.0.2
 springboot4_org.springframework.cloud:spring-cloud-dependencies;2025.1.0
