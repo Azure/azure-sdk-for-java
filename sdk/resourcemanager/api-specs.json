@@ -115,7 +115,7 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Authorization/policy/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-policy-2025-03-java --metadata-suffix=policy --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
+    "args": "--tag=package-policy-2025-03-java --metadata-suffix=policy --modelerfour.lenient-model-deduplication=true --rename-model=UserAssignedIdentitiesValue:IdentityUserAssignedIdentitiesValue --enable-sync-stack=false",
     "note": "Remove policyVariables.json and policyVariableValues.json from tag, as they are still in preview."
   },
   "privatedns": {
