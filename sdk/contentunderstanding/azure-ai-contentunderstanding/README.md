@@ -51,9 +51,11 @@ After creating your Microsoft Foundry resource, you must grant yourself the **Co
 
 #### Step 2: Deploy required models
 
-**Important:** The prebuilt and custom analyzers require large language model deployments. You must deploy at least these models before using prebuilt analyzers and custom analyzers:
+**Important:** Many prebuilt and custom analyzers require large language model (LLM) and embedding deployments. You must deploy at least these models before using those analyzers:
 - `prebuilt-documentSearch`, `prebuilt-imageSearch`, `prebuilt-audioSearch`, `prebuilt-videoSearch` require **gpt-4.1-mini** and **text-embedding-3-large**
 - Other prebuilt analyzers like `prebuilt-invoice`, `prebuilt-receipt` require **gpt-4.1** and **text-embedding-3-large**
+
+**No LLM or embeddings required:** The analyzers **prebuilt-read** and **prebuilt-layout** do not use LLMs or embedding models. You can use them without deploying or configuring any models.
 
 To deploy a model:
 
@@ -151,9 +153,8 @@ Or run it directly from your IDE by executing the `main` method in `Sample00_Upd
 After the script runs successfully, you can use prebuilt analyzers like `prebuilt-invoice` or `prebuilt-documentSearch`. For more examples and sample code, see the [Examples](#examples) section.
 
 If you encounter errors:
-- **Deployment Not Found**: Check that deployment names in environment variables match exactly what you created in Foundry.
 - **Access Denied**: Ensure you have the **Cognitive Services User** role assignment.
-
+- **Deployment Not Found**: Check that deployment names in environment variables match exactly what you created in Foundry.
 ### Adding the package to your product
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-contentunderstanding;current})
@@ -346,17 +347,15 @@ mvn exec:java \
 
 **Option B: DefaultAzureCredential authentication**
 
-If you don't set `CONTENTUNDERSTANDING_KEY`, the sample will use `DefaultAzureCredential`. In this case, you need to include the test classpath scope to access the `azure-identity` dependency:
+If you don't set `CONTENTUNDERSTANDING_KEY`, the sample will use `DefaultAzureCredential`. Ensure you're authenticated (e.g. `az login`).
 
 ```bash
 # Set environment variables (no CONTENTUNDERSTANDING_KEY set)
 export CONTENTUNDERSTANDING_ENDPOINT="https://<your-resource-name>.services.ai.azure.com/"
-# Ensure you're authenticated (e.g., az login)
 
-# Run a sample (DefaultAzureCredential - test scope required)
+# Run a sample (DefaultAzureCredential)
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
-  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 ```
 
@@ -366,29 +365,23 @@ mvn exec:java \
 # Analyze document from URL
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample02_AnalyzeUrl" \
-  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 
 # Analyze document from binary file
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample01_AnalyzeBinary" \
-  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 
 # Analyze invoice
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample03_AnalyzeInvoice" \
-  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 
 # Create a custom analyzer
 mvn exec:java \
   -Dexec.mainClass="com.azure.ai.contentunderstanding.samples.Sample04_CreateAnalyzer" \
-  -Dexec.classpathScope=test \
   -Dexec.cleanupDaemonThreads=false
 ```
-
-**Note:** If you always use API key authentication (always set `CONTENTUNDERSTANDING_KEY`), you can omit `-Dexec.classpathScope=test` from the commands above. However, including it doesn't hurt and ensures samples work regardless of which authentication method is used.
 
 ## Troubleshooting
 
