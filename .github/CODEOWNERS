@@ -212,7 +212,7 @@
 /sdk/personalizer/                                                 @Azure/azure-java-sdk @sharathmalladi
 
 # ServiceLabel: %Cognitive - Personalizer
-# ServiceOwners:                                                   @sharathmalladi
+# ServiceOwners:                                                   @Azure/azure-java-sdk
 
 # PRLabel: %Cognitive - Text Analytics
 /sdk/textanalytics/                                                @Azure/azure-java-sdk @quentinRobinson @samvaity
