@@ -136,9 +136,12 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * Set the access token.
      *
      * @param accessToken The access token.
+     *
+     * @return The KeyVaultLoadStoreParameter.
      */
-    public void setAccessToken(String accessToken) {
+    public KeyVaultLoadStoreParameter setAccessToken(String accessToken) {
         this.accessToken = accessToken;
+        return this;
     }
 
     /**
