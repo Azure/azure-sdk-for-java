@@ -15,7 +15,7 @@ import java.io.IOException;
  * The resource Id model.
  */
 @Immutable
-public final class ResourceReference implements JsonSerializable<ResourceReference> {
+public class ResourceReference implements JsonSerializable<ResourceReference> {
     /*
      * The fully qualified Azure resource ID.
      */
@@ -49,7 +49,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Get the id property: The fully qualified Azure resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -58,7 +58,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Get the extension property: The extension the resource was deployed with.
-     * 
+     *
      * @return the extension value.
      */
     public DeploymentExtensionDefinition extension() {
@@ -67,7 +67,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Get the resourceType property: The resource type.
-     * 
+     *
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -76,7 +76,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Get the identifiers property: The extensible resource identifiers.
-     * 
+     *
      * @return the identifiers value.
      */
     public Object identifiers() {
@@ -85,7 +85,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Get the apiVersion property: The API version the resource was deployed with.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -94,7 +94,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -114,7 +114,7 @@ public final class ResourceReference implements JsonSerializable<ResourceReferen
 
     /**
      * Reads an instance of ResourceReference from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of ResourceReference if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
