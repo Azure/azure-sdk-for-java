@@ -11,7 +11,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsRequestInfo;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -536,13 +535,20 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
             this.validateFaultInjectionRuleApplied(
                 cosmosDiagnostics,
                 operationType,
-                HttpConstants.StatusCodes.OK,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
                 timeoutRuleId,
                 true
             );
 
             assertThinClientEndpointUsed(cosmosDiagnostics);
+
+            // Validate end-to-end latency and final status code from CosmosDiagnosticsContext
+            CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics.getDiagnosticsContext();
+            AssertionsForClassTypes.assertThat(diagnosticsContext).isNotNull();
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getDuration()).isNotNull();
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(8));
+            AssertionsForClassTypes.assertThat(diagnosticsContext.getStatusCode()).isBetween(HttpConstants.StatusCodes.OK, HttpConstants.StatusCodes.NOT_MODIFIED);
 
         } finally {
             timeoutRule.disable();
