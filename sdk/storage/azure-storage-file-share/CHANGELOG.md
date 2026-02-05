@@ -9,6 +9,12 @@
 
   This is a _potentially breaking_ change if users were incorrectly applying multiple credentials
 
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.1` to `12.33.2` in `azure-storage-blob`.
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
+
 ## 12.29.1 (2026-01-29)
 
 ### Other Changes

@@ -1,14 +1,12 @@
 # Release History
 
-## 12.0.0-beta.35 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.0.0-beta.35 (2026-02-05)
 
 ### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.1` to `12.33.2` in `azure-storage-blob`.
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
 
 ## 12.0.0-beta.34 (2026-01-15)
 
