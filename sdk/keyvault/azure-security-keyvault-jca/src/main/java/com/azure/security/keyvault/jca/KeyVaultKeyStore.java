@@ -185,7 +185,8 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         KeyVaultLoadStoreParameter keyVaultLoadStoreParameter = new KeyVaultLoadStoreParameter(
             System.getProperty("azure.keyvault.uri"), System.getProperty("azure.keyvault.tenant-id"),
             System.getProperty("azure.keyvault.client-id"), System.getProperty("azure.keyvault.client-secret"),
-            System.getProperty("azure.keyvault.managed-identity"), System.getProperty("azure.keyvault.access-token"));
+            System.getProperty("azure.keyvault.managed-identity"));
+        keyVaultLoadStoreParameter.setAccessToken(System.getProperty("azure.keyvault.access-token"));
 
         if (Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"))) {
             keyVaultLoadStoreParameter.disableChallengeResourceVerification();
