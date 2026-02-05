@@ -48,4 +48,16 @@ public class StringBasedCosmosQueryUnitTest {
         String result3 = (String) method.invoke(sbcq, args3);
         assertThat(result3).isEqualTo(expectedResult);
     }
+
+    @Test
+    public void testTextBlockCountQuery() {
+        String countQuery = """
+                    SELECT VALUE COUNT(1)
+                    FROM a
+                    WHERE a.city = @city
+                    AND a.state = @state
+            """;
+        boolean result = StringBasedCosmosQuery.isCountQuery(countQuery, long.class);
+        assertThat(result).isTrue();
+    }
 }
