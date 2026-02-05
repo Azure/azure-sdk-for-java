@@ -28,8 +28,6 @@ public class CodeInterpreterAgent {
     public static void main(String[] args) {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_ENDPOINT");
         String model = Configuration.getGlobalConfiguration().get("AZURE_AGENTS_MODEL");
-        System.out.println("Using endpoint: " + endpoint);
-        System.out.println("Using model: " + model);
 
         AgentsClientBuilder builder = new AgentsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
