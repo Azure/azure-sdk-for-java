@@ -55,21 +55,50 @@ import org.slf4j.Logger;
  * <p><b>Content/array/object field extensions</b> — Scenario: Reading document fields
  * (ContentField and subtypes StringField, NumberField, DateField, ObjectField, ArrayField) without
  * casting to each subtype or manually navigating getValueObject()/getValueArray().</p>
+ * <p>ContentField.getValue() — get typed value without casting to StringField/NumberField/etc.:</p>
  * <pre>{@code
- * // Before: Cast to subtype and call type-specific getters.
+ * // Before: Cast to subtype and call type-specific getter, then print.
  * ContentField customerNameField = content.getFields().get("CustomerName");
- * String name = customerNameField instanceof StringField
+ * String customerName = customerNameField instanceof StringField
  *     ? ((StringField) customerNameField).getValueString() : null;
+ * System.out.println("Customer: " + customerName);
+ *
+ * // After: getValue() returns the typed value; no cast needed for console output.
+ * ContentField customerNameField = content.getFields().get("CustomerName");
+ * System.out.println("Customer: " + (customerNameField != null ? customerNameField.getValue() : null));
+ * }</pre>
+ * <p>ObjectField.getFieldOrDefault() — navigate nested object by name:</p>
+ * <pre>{@code
+ * // Before: Use getValueObject() and map lookup; cast to NumberField for value.
  * ContentField totalField = content.getFields().get("TotalAmount");
  * ObjectField totalObj = (ObjectField) totalField;
  * ContentField amountField = totalObj.getValueObject() != null ? totalObj.getValueObject().get("Amount") : null;
  * Double amount = amountField instanceof NumberField ? ((NumberField) amountField).getValueNumber() : null;
  *
- * // After: ContentField.getValue() returns typed value; ObjectField.getFieldOrDefault(name); ArrayField.size()/get(i).
- * String name = customerNameField != null ? (String) customerNameField.getValue() : null;
+ * // After: getFieldOrDefault(name); then getValue() for the typed value.
+ * ContentField totalField = content.getFields().get("TotalAmount");
+ * ObjectField totalObj = (ObjectField) totalField;
  * ContentField amountField = totalObj.getFieldOrDefault("Amount");
  * Double amount = amountField != null ? (Double) amountField.getValue() : null;
- * // ArrayField: lineItems.size(); ContentField item = lineItems.get(i);
+ * }</pre>
+ * <p>ArrayField.size() and get(i) — iterate array elements without getValueArray():</p>
+ * <pre>{@code
+ * // Before: Call getValueArray() and use List size/get; null-check the list.
+ * ContentField lineItemsField = content.getFields().get("LineItems");
+ * ArrayField lineItems = (ArrayField) lineItemsField;
+ * int count = lineItems.getValueArray() != null ? lineItems.getValueArray().size() : 0;
+ * for (int i = 0; i < count; i++) {
+ *     ContentField item = lineItems.getValueArray().get(i);
+ *     // use item...
+ * }
+ *
+ * // After: size() and get(i) convenience methods; get(i) throws IndexOutOfBoundsException if out of range.
+ * ContentField lineItemsField = content.getFields().get("LineItems");
+ * ArrayField lineItems = (ArrayField) lineItemsField;
+ * for (int i = 0; i < lineItems.size(); i++) {
+ *     ContentField item = lineItems.get(i);
+ *     // use item...
+ * }
  * }</pre>
  *
  * <p><b>beginAnalyze / beginAnalyzeBinary without stringEncoding</b> — Scenario: Start analyze
@@ -351,11 +380,6 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Customize client methods to:
-     * 1. Hide methods with stringEncoding parameter (make them package-private)
-     * 2. Add simplified overloads that use "utf16" as default
-     */
-    /**
      * Add static accessor helper for setting operationId on ContentAnalyzerAnalyzeOperationStatus
      */
     private void addStaticAccessorForOperationId(LibraryCustomization customization, Logger logger) {
@@ -631,8 +655,9 @@ public class ContentUnderstandingCustomizations extends Customization {
     // =================== Update Convenience Methods ===================
 
     /**
-     * Make ContentUnderstandingDefaults constructor public to allow creating instances
-     * for the updateDefaults convenience method.
+     * EMITTER-FIX: Make ContentUnderstandingDefaults constructor public so that
+     * updateDefaults convenience methods can create and use instances (generated code
+     * assumes a public constructor; without this, updateDefaults would not compile).
      */
     private void customizeContentUnderstandingDefaults(LibraryCustomization customization, Logger logger) {
         logger.info("Customizing ContentUnderstandingDefaults to make constructor public and remove @Immutable");
@@ -658,7 +683,7 @@ public class ContentUnderstandingCustomizations extends Customization {
     }
 
     /**
-     * Add convenience methods for updateDefaults that accept typed objects
+     * EMITTER-FIX: Add convenience methods for updateDefaults that accept typed objects
      * instead of BinaryData. This is equivalent to C# Update Operations in ContentUnderstandingClient.Customizations.cs
      *
      * Note: TypeSpec auto-generates updateAnalyzer convenience methods, so we only add updateDefaults here.
@@ -755,10 +780,10 @@ public class ContentUnderstandingCustomizations extends Customization {
 
     /**
      * Add beginAnalyzeBinary convenience overloads without stringEncoding.
-     * Adds 2-param, 3-param, and 5-param overloads that default utf16.
+     * Adds 2-param and 5-param overloads that default utf16.
      */
     private void addBeginAnalyzeBinaryConvenienceOverloads(LibraryCustomization customization, Logger logger) {
-        logger.info("Adding beginAnalyzeBinary convenience overloads (2/3/5 param)");
+        logger.info("Adding beginAnalyzeBinary convenience overloads (2/5 param)");
 
         // Sync client
         customization.getClass(PACKAGE_NAME, "ContentUnderstandingClient").customizeAst(ast -> {
@@ -779,25 +804,6 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "return beginAnalyzeBinary(analyzerId, binaryInput, null, \"application/octet-stream\", null); }"));
-
-                // 3-param: analyzerId, binaryInput, inputRange
-                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("BinaryData", "binaryInput")
-                    .addParameter("String", "inputRange")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from binary input. Uses default content type (application/octet-stream), "
-                        + "default string encoding (utf16), and service default processing location."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
-                        .addBlockTag("param", "inputRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio visual uses milliseconds.")
-                        .addBlockTag("return", "the {@link SyncPoller} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, inputRange, \"application/octet-stream\", null); }"));
 
                 // 5-param: analyzerId, binaryInput, inputRange, contentType, processingLocation
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
@@ -846,25 +852,6 @@ public class ContentUnderstandingCustomizations extends Customization {
                         .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
                     .setBody(StaticJavaParser.parseBlock("{"
                         + "return beginAnalyzeBinary(analyzerId, binaryInput, null, \"application/octet-stream\", null); }"));
-
-                // 3-param: analyzerId, binaryInput, inputRange
-                clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)
-                    .setType("PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>")
-                    .addParameter("String", "analyzerId")
-                    .addParameter("BinaryData", "binaryInput")
-                    .addParameter("String", "inputRange")
-                    .addAnnotation(StaticJavaParser.parseAnnotation("@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)"))
-                    .setJavadocComment(new Javadoc(JavadocDescription.parseText(
-                        "Extract content and fields from binary input. Uses default content type (application/octet-stream), "
-                        + "default string encoding (utf16), and service default processing location."))
-                        .addBlockTag("param", "analyzerId The unique identifier of the analyzer.")
-                        .addBlockTag("param", "binaryInput The binary content of the document to analyze.")
-                        .addBlockTag("param", "inputRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio visual uses milliseconds.")
-                        .addBlockTag("return", "the {@link PollerFlux} for polling of the analyze operation.")
-                        .addBlockTag("throws", "IllegalArgumentException thrown if parameters fail the validation.")
-                        .addBlockTag("throws", "HttpResponseException thrown if the request is rejected by server."))
-                    .setBody(StaticJavaParser.parseBlock("{"
-                        + "return beginAnalyzeBinary(analyzerId, binaryInput, inputRange, \"application/octet-stream\", null); }"));
 
                 // 5-param: analyzerId, binaryInput, inputRange, contentType, processingLocation
                 clazz.addMethod("beginAnalyzeBinary", Modifier.Keyword.PUBLIC)

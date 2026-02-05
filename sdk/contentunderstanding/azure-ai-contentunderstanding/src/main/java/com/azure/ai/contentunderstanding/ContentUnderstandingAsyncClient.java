@@ -2019,24 +2019,6 @@ public final class ContentUnderstandingAsyncClient {
     }
 
     /**
-     * Extract content and fields from binary input. Uses default content type (application/octet-stream), default
-     * string encoding (utf16), and service default processing location.
-     *
-     * @param analyzerId The unique identifier of the analyzer.
-     * @param binaryInput The binary content of the document to analyze.
-     * @param inputRange Range of the input to analyze (ex. 1-3,5,9-). Document content uses 1-based page numbers; audio
-     * visual uses milliseconds.
-     * @return the {@link PollerFlux} for polling of the analyze operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinary(String analyzerId,
-        BinaryData binaryInput, String inputRange) {
-        return beginAnalyzeBinary(analyzerId, binaryInput, inputRange, "application/octet-stream", null);
-    }
-
-    /**
      * Extract content and fields from binary input. Uses default string encoding (utf16).
      *
      * @param analyzerId The unique identifier of the analyzer.
