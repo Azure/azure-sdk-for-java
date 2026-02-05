@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-## 12.28.2 (Unreleased)
+## 12.28.2 (2026-02-05)
 
 ### Bugs Fixed
 - Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials

@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-## 12.32.2 (Unreleased)
+## 12.32.2 (2026-02-05)
 
 ### Other Changes
 
