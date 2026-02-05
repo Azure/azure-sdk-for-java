@@ -37,37 +37,29 @@
   <!-- Repositories definitions -->
   <repositories>
     <repository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>daily</updatePolicy>
-      </snapshots>
+      <id>central</id>
+      
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      
     </repository>
   </repositories>
 
   <pluginRepositories>
     <pluginRepository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
+      <id>central</id>
+      
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      
     </pluginRepository>
   </pluginRepositories>
 
   <distributionManagement>
     <snapshotRepository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <uniqueVersion>true</uniqueVersion>
-      <layout>default</layout>
+      <id>central</id>
+      
+      <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-java/maven/v1</url>
+      
+      
     </snapshotRepository>
     <site>
       <id>azure-java-build-docs</id>
