@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class ResourceGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
      * ForceDeleteVMsInResourceGroup.json
      */
     /**
@@ -27,7 +28,8 @@ public final class ResourceGroupsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
      * ForceDeleteVMsAndVMSSInResourceGroup.json
      */
     /**

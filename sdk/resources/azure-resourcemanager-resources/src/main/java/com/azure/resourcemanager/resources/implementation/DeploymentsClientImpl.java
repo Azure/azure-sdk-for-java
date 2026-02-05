@@ -82,7 +82,7 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DeploymentsManagemen")
+    @ServiceInterface(name = "DeploymentsManagementClientDeployments")
     public interface DeploymentsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
@@ -8174,7 +8174,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments at the given scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listAtScopeNextSinglePageAsync(String nextLink) {
@@ -8201,7 +8202,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments at the given scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listAtScopeNextSinglePageAsync(String nextLink,
@@ -8227,7 +8229,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments at the tenant scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listAtTenantScopeNextSinglePageAsync(String nextLink) {
@@ -8254,7 +8257,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments at the tenant scope along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listAtTenantScopeNextSinglePageAsync(String nextLink,
@@ -8280,7 +8284,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments for a management group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>>
@@ -8309,7 +8314,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments for a management group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listAtManagementGroupScopeNextSinglePageAsync(String nextLink,
@@ -8335,7 +8341,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments for a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listAtSubscriptionScopeNextSinglePageAsync(String nextLink) {
@@ -8363,7 +8370,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments for a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listAtSubscriptionScopeNextSinglePageAsync(String nextLink,
@@ -8389,7 +8397,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments for a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -8417,7 +8426,8 @@ public final class DeploymentsClientImpl implements InnerSupportsGet<DeploymentE
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deployments along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the deployments for a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeploymentExtendedInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

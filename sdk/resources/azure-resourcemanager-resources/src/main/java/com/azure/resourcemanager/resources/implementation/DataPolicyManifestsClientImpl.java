@@ -60,7 +60,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "PolicyClientDataPoli")
+    @ServiceInterface(name = "PolicyClientDataPolicyManifests")
     public interface DataPolicyManifestsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Authorization/dataPolicyManifests/{policyMode}")
@@ -357,6 +357,8 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
+     * Retrieves data policy manifests
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -382,6 +384,8 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
+     * Retrieves data policy manifests
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

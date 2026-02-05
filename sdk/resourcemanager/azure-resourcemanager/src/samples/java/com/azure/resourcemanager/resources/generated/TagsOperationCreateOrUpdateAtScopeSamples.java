@@ -4,19 +4,19 @@
 
 package com.azure.resourcemanager.resources.generated;
 
+import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
 import com.azure.resourcemanager.resources.models.Tags;
-import com.azure.resourcemanager.resources.models.TagsPatchOperation;
-import com.azure.resourcemanager.resources.models.TagsPatchResource;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for TagOperations UpdateAtScope.
+ * Samples for TagsOperation CreateOrUpdateAtScope.
  */
-public final class TagOperationsUpdateAtScopeSamples {
+public final class TagsOperationCreateOrUpdateAtScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/PatchTagsResource.json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/PutTagsResource
+     * .json
      */
     /**
      * Sample code: Update tags on a resource.
@@ -27,19 +27,18 @@ public final class TagOperationsUpdateAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagOperations()
-            .updateAtScope(
+            .getTagsOperations()
+            .createOrUpdateAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
-                new TagsPatchResource().withOperation(TagsPatchOperation.REPLACE)
-                    .withProperties(new Tags()
-                        .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),
+                new TagsResourceInner().withProperties(
+                    new Tags().withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/PatchTagsSubscription.
-     * json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
+     * PutTagsSubscription.json
      */
     /**
      * Sample code: Update tags on a subscription.
@@ -50,11 +49,10 @@ public final class TagOperationsUpdateAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagOperations()
-            .updateAtScope("subscriptions/00000000-0000-0000-0000-000000000000",
-                new TagsPatchResource().withOperation(TagsPatchOperation.REPLACE)
-                    .withProperties(new Tags()
-                        .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),
+            .getTagsOperations()
+            .createOrUpdateAtScope("subscriptions/00000000-0000-0000-0000-000000000000",
+                new TagsResourceInner().withProperties(
+                    new Tags().withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),
                 com.azure.core.util.Context.NONE);
     }
 

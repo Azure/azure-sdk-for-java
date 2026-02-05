@@ -74,7 +74,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementCl")
+    @ServiceInterface(name = "ResourceManagementClientResources")
     public interface ResourcesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
@@ -3487,7 +3487,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the resources for a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -3515,7 +3516,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the resources for a resource group along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
@@ -3541,7 +3543,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the resources in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(String nextLink) {
@@ -3567,7 +3570,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return all the resources in a subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(String nextLink,

@@ -28,8 +28,9 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsCreateSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createPolicyAssignmentWithResourceSelectors.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createPolicyAssignmentWithResourceSelectors.json
      */
     /**
      * Sample code: Create or update a policy assignment with resource selectors.
@@ -56,8 +57,40 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createPolicyAssignment.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createPolicyAssignmentWithEnrollEnforcement.json
+     */
+    /**
+     * Sample code: Create or update a policy assignment to enforce policy effect only on enrolled resources during
+     * resource creation or update.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        createOrUpdateAPolicyAssignmentToEnforcePolicyEffectOnlyOnEnrolledResourcesDuringResourceCreationOrUpdate(
+            com.azure.resourcemanager.AzureResourceManager azure) throws IOException {
+        azure.genericResources()
+            .manager()
+            .policyClient()
+            .getPolicyAssignments()
+            .createWithResponse("subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "EnforceNamingEnroll",
+                new PolicyAssignmentInner().withDisplayName("Enforce resource naming rules")
+                    .withPolicyDefinitionId(
+                        "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming")
+                    .withParameters(mapOf("prefix", new ParameterValuesValue().withValue("DeptA"), "suffix",
+                        new ParameterValuesValue().withValue("-LC")))
+                    .withDescription("Force resource names to begin with given DeptA and end with -LC")
+                    .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
+                    .withEnforcementMode(EnforcementMode.ENROLL),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createPolicyAssignment.json
      */
     /**
      * Sample code: Create or update a policy assignment.
@@ -85,8 +118,9 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createPolicyAssignmentWithIdentity.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createPolicyAssignmentWithIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a system assigned identity.
@@ -115,8 +149,9 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createPolicyAssignmentNonComplianceMessages.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createPolicyAssignmentNonComplianceMessages.json
      */
     /**
      * Sample code: Create or update a policy assignment with multiple non-compliance messages.
@@ -144,8 +179,9 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createPolicyAssignmentWithUserAssignedIdentity.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createPolicyAssignmentWithUserAssignedIdentity.json
      */
     /**
      * Sample code: Create or update a policy assignment with a user assigned identity.
@@ -177,8 +213,9 @@ public final class PolicyAssignmentsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createPolicyAssignmentWithOverrides.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createPolicyAssignmentWithOverrides.json
      */
     /**
      * Sample code: Create or update a policy assignment with overrides.
@@ -195,20 +232,29 @@ public final class PolicyAssignmentsCreateSamples {
                 new PolicyAssignmentInner().withDisplayName("Limit the resource location and resource SKU")
                     .withPolicyDefinitionId(
                         "/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement")
+                    .withDefinitionVersion("1.*.*")
                     .withDescription("Limit the resource location and resource SKU")
                     .withMetadata(SerializerFactory.createDefaultManagementSerializerAdapter()
                         .deserialize("{\"assignedBy\":\"Special Someone\"}", Object.class, SerializerEncoding.JSON))
-                    .withOverrides(Arrays.asList(new OverrideModel().withKind(OverrideKind.POLICY_EFFECT)
-                        .withValue("Audit")
-                        .withSelectors(
-                            Arrays.asList(new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
-                                .withIn(Arrays.asList("Limit_Skus", "Limit_Locations")))))),
+                    .withOverrides(
+                        Arrays
+                            .asList(
+                                new OverrideModel().withKind(OverrideKind.POLICY_EFFECT)
+                                    .withValue("Audit")
+                                    .withSelectors(Arrays
+                                        .asList(new Selector().withKind(SelectorKind.POLICY_DEFINITION_REFERENCE_ID)
+                                            .withIn(Arrays.asList("Limit_Skus", "Limit_Locations")))),
+                                new OverrideModel().withKind(OverrideKind.DEFINITION_VERSION)
+                                    .withValue("2.*.*")
+                                    .withSelectors(Arrays.asList(new Selector().withKind(SelectorKind.RESOURCE_LOCATION)
+                                        .withIn(Arrays.asList("eastUSEuap", "centralUSEuap")))))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createPolicyAssignmentWithoutEnforcement.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createPolicyAssignmentWithoutEnforcement.json
      */
     /**
      * Sample code: Create or update a policy assignment without enforcing policy effect during resource creation or

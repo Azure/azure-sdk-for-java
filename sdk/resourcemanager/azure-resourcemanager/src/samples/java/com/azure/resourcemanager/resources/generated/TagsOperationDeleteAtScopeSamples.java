@@ -5,12 +5,13 @@
 package com.azure.resourcemanager.resources.generated;
 
 /**
- * Samples for TagOperations DeleteAtScope.
+ * Samples for TagsOperation DeleteAtScope.
  */
-public final class TagOperationsDeleteAtScopeSamples {
+public final class TagsOperationDeleteAtScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/DeleteTagsResource.json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
+     * DeleteTagsResource.json
      */
     /**
      * Sample code: Update tags on a resource.
@@ -21,7 +22,7 @@ public final class TagOperationsDeleteAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagOperations()
+            .getTagsOperations()
             .deleteAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
                 com.azure.core.util.Context.NONE);
@@ -29,8 +30,8 @@ public final class TagOperationsDeleteAtScopeSamples {
 
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/DeleteTagsSubscription.
-     * json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
+     * DeleteTagsSubscription.json
      */
     /**
      * Sample code: Update tags on a subscription.
@@ -41,7 +42,7 @@ public final class TagOperationsDeleteAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagOperations()
+            .getTagsOperations()
             .deleteAtScope("subscriptions/00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }

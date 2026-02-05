@@ -10,8 +10,8 @@ package com.azure.resourcemanager.resources.generated;
 public final class PolicyExemptionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Authorization/preview/2022-07-01-preview/examples/
-     * deletePolicyExemption.json
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * preview/2022-07-01-preview/examples/deletePolicyExemption.json
      */
     /**
      * Sample code: Delete a policy exemption.

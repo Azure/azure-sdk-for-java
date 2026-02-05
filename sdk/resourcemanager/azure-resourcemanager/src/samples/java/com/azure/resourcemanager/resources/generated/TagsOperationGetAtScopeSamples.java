@@ -5,12 +5,13 @@
 package com.azure.resourcemanager.resources.generated;
 
 /**
- * Samples for TagOperations GetAtScope.
+ * Samples for TagsOperation GetAtScope.
  */
-public final class TagOperationsGetAtScopeSamples {
+public final class TagsOperationGetAtScopeSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/GetTagsResource.json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/GetTagsResource
+     * .json
      */
     /**
      * Sample code: Get tags on a resource.
@@ -21,7 +22,7 @@ public final class TagOperationsGetAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagOperations()
+            .getTagsOperations()
             .getAtScopeWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
                 com.azure.core.util.Context.NONE);
@@ -29,7 +30,8 @@ public final class TagOperationsGetAtScopeSamples {
 
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2025-04-01/examples/GetTagsSubscription.json
+     * specification/resources/resource-manager/Microsoft.Resources/resources/stable/2025-04-01/examples/
+     * GetTagsSubscription.json
      */
     /**
      * Sample code: Get tags on a subscription.
@@ -40,7 +42,7 @@ public final class TagOperationsGetAtScopeSamples {
         azure.genericResources()
             .manager()
             .serviceClient()
-            .getTagOperations()
+            .getTagsOperations()
             .getAtScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000",
                 com.azure.core.util.Context.NONE);
     }

@@ -65,7 +65,7 @@ public final class SubscriptionFeatureRegistrationsClientImpl
      * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "FeatureClientSubscri")
+    @ServiceInterface(name = "FeatureClientSubscriptionFeatureRegistrations")
     public interface SubscriptionFeatureRegistrationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Features/featureProviders/{providerNamespace}/subscriptionFeatureRegistrations/{featureName}")

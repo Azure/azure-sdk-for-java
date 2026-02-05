@@ -10,7 +10,7 @@ package com.azure.resourcemanager.resources.generated;
 public final class ChangesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2022-05-01/examples/GetChange.json
+     * specification/resources/resource-manager/Microsoft.Resources/changes/stable/2022-05-01/examples/GetChange.json
      */
     /**
      * Sample code: GetChange.

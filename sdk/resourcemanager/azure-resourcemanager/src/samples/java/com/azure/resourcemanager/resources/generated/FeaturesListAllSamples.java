@@ -10,8 +10,8 @@ package com.azure.resourcemanager.resources.generated;
 public final class FeaturesListAllSamples {
     /*
      * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/listSubscriptionFeatures.
-     * json
+     * specification/resources/resource-manager/Microsoft.Features/features/stable/2021-07-01/examples/
+     * listSubscriptionFeatures.json
      */
     /**
      * Sample code: List subscription Features.

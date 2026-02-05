@@ -59,7 +59,7 @@ public final class TenantsClientImpl implements TenantsClient {
      * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "SubscriptionClientTe")
+    @ServiceInterface(name = "SubscriptionClientTenants")
     public interface TenantsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/tenants")
@@ -180,7 +180,7 @@ public final class TenantsClientImpl implements TenantsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Ids information along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the tenants for your account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TenantIdDescriptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -206,7 +206,7 @@ public final class TenantsClientImpl implements TenantsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Ids information along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the tenants for your account along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TenantIdDescriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {

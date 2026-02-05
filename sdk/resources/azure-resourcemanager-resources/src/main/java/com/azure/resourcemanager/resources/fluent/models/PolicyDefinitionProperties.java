@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.resources.models.ExternalEvaluationEnforcementSettings;
 import com.azure.resourcemanager.resources.models.ParameterDefinitionsValue;
 import com.azure.resourcemanager.resources.models.PolicyType;
 import java.io.IOException;
@@ -65,6 +66,11 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
      * A list of available versions for this policy definition.
      */
     private List<String> versions;
+
+    /*
+     * The details of the source of external evaluation results required by the policy during enforcement evaluation.
+     */
+    private ExternalEvaluationEnforcementSettings externalEvaluationEnforcementSettings;
 
     /**
      * Creates an instance of PolicyDefinitionProperties class.
@@ -259,6 +265,29 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
     }
 
     /**
+     * Get the externalEvaluationEnforcementSettings property: The details of the source of external evaluation results
+     * required by the policy during enforcement evaluation.
+     * 
+     * @return the externalEvaluationEnforcementSettings value.
+     */
+    public ExternalEvaluationEnforcementSettings externalEvaluationEnforcementSettings() {
+        return this.externalEvaluationEnforcementSettings;
+    }
+
+    /**
+     * Set the externalEvaluationEnforcementSettings property: The details of the source of external evaluation results
+     * required by the policy during enforcement evaluation.
+     * 
+     * @param externalEvaluationEnforcementSettings the externalEvaluationEnforcementSettings value to set.
+     * @return the PolicyDefinitionProperties object itself.
+     */
+    public PolicyDefinitionProperties withExternalEvaluationEnforcementSettings(
+        ExternalEvaluationEnforcementSettings externalEvaluationEnforcementSettings) {
+        this.externalEvaluationEnforcementSettings = externalEvaluationEnforcementSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -270,6 +299,9 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
                     e.validate();
                 }
             });
+        }
+        if (externalEvaluationEnforcementSettings() != null) {
+            externalEvaluationEnforcementSettings().validate();
         }
     }
 
@@ -292,6 +324,7 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("version", this.version);
         jsonWriter.writeArrayField("versions", this.versions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("externalEvaluationEnforcementSettings", this.externalEvaluationEnforcementSettings);
         return jsonWriter.writeEndObject();
     }
 
@@ -331,6 +364,9 @@ public final class PolicyDefinitionProperties implements JsonSerializable<Policy
                 } else if ("versions".equals(fieldName)) {
                     List<String> versions = reader.readArray(reader1 -> reader1.getString());
                     deserializedPolicyDefinitionProperties.versions = versions;
+                } else if ("externalEvaluationEnforcementSettings".equals(fieldName)) {
+                    deserializedPolicyDefinitionProperties.externalEvaluationEnforcementSettings
+                        = ExternalEvaluationEnforcementSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

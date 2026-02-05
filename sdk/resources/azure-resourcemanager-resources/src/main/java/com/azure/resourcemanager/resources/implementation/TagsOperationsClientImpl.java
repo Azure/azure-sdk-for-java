@@ -32,7 +32,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.resources.fluent.TagOperationsClient;
+import com.azure.resourcemanager.resources.fluent.TagsOperationsClient;
 import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
 import com.azure.resourcemanager.resources.fluent.models.TagValueInner;
 import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
@@ -43,13 +43,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in TagOperationsClient.
+ * An instance of this class provides access to all the operations defined in TagsOperationsClient.
  */
-public final class TagOperationsClientImpl implements TagOperationsClient {
+public final class TagsOperationsClientImpl implements TagsOperationsClient {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final TagOperationsService service;
+    private final TagsOperationsService service;
 
     /**
      * The service client containing this operation class.
@@ -57,23 +57,23 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     private final ResourceManagementClientImpl client;
 
     /**
-     * Initializes an instance of TagOperationsClientImpl.
+     * Initializes an instance of TagsOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    TagOperationsClientImpl(ResourceManagementClientImpl client) {
+    TagsOperationsClientImpl(ResourceManagementClientImpl client) {
         this.service
-            = RestProxy.create(TagOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            = RestProxy.create(TagsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ResourceManagementClientTagOperations to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for ResourceManagementClientTagsOperations to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "ResourceManagementCl")
-    public interface TagOperationsService {
+    @ServiceInterface(name = "ResourceManagementClientTagsOperations")
+    public interface TagsOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({ 200, 204 })
@@ -1536,6 +1536,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
+     * Gets a summary of tag usage under the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1561,6 +1563,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
     }
 
     /**
+     * Gets a summary of tag usage under the subscription.
+     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

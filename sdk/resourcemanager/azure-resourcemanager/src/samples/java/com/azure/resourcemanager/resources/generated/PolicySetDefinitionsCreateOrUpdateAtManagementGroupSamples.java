@@ -20,8 +20,9 @@ import java.util.Map;
  */
 public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createOrUpdatePolicySetDefinitionWithGroupsAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition with groups at management group level.
@@ -66,8 +67,9 @@ public final class PolicySetDefinitionsCreateOrUpdateAtManagementGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
-     * createOrUpdatePolicySetDefinitionAtManagementGroup.json
+     * x-ms-original-file:
+     * 2b3c430bff9474d80080498090d71caf3fafcb75/specification/resources/resource-manager/Microsoft.Authorization/policy/
+     * stable/2025-03-01/examples/createOrUpdatePolicySetDefinitionAtManagementGroup.json
      */
     /**
      * Sample code: Create or update a policy set definition at management group level.
