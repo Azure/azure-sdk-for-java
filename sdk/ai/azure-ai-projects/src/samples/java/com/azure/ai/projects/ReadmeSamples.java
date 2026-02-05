@@ -39,10 +39,8 @@ public final class ReadmeSamples {
         // END: com.azure.ai.projects.evaluationsClientInit
 
         // BEGIN: com.azure.ai.projects.openAIClient
-        AIProjectClientBuilder projectsBuilder = new AIProjectClientBuilder();
-
-        OpenAIClient openAIClient = projectsBuilder.buildOpenAIClient();
-        OpenAIClientAsync openAIClientAsync = projectsBuilder.buildOpenAIAsyncClient();
+        OpenAIClient openAIClient = builder.buildOpenAIClient();
+        OpenAIClientAsync openAIClientAsync = builder.buildOpenAIAsyncClient();
         // END: com.azure.ai.projects.openAIClient
 
         // BEGIN: com.azure.ai.projects.agentsSubClients
