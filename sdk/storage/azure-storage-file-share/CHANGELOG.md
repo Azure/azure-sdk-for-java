@@ -7,8 +7,6 @@
   were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
   info level; invalid combinations of credentials will throw an error.
 
-  This is a _potentially breaking_ change if users were incorrectly applying multiple credentials
-
 ### Other Changes
 
 #### Dependency Updates
