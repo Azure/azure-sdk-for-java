@@ -54,7 +54,7 @@ public final class InputItemFunctionToolCall extends InputItem {
      * `incomplete`. Populated when items are returned via API.
      */
     @Generated
-    private ItemResourceFunctionToolCallResourceStatus status;
+    private OutputItemFunctionToolCallStatus status;
 
     /**
      * Creates an instance of InputItemFunctionToolCall class.
@@ -140,7 +140,7 @@ public final class InputItemFunctionToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemResourceFunctionToolCallResourceStatus getStatus() {
+    public OutputItemFunctionToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -177,7 +177,7 @@ public final class InputItemFunctionToolCall extends InputItem {
             String arguments = null;
             InputItemType type = InputItemType.FUNCTION_CALL;
             String id = null;
-            ItemResourceFunctionToolCallResourceStatus status = null;
+            OutputItemFunctionToolCallStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -192,7 +192,7 @@ public final class InputItemFunctionToolCall extends InputItem {
                 } else if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ItemResourceFunctionToolCallResourceStatus.fromString(reader.getString());
+                    status = OutputItemFunctionToolCallStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -214,7 +214,7 @@ public final class InputItemFunctionToolCall extends InputItem {
      * @return the InputItemFunctionToolCall object itself.
      */
     @Generated
-    public InputItemFunctionToolCall setStatus(ItemResourceFunctionToolCallResourceStatus status) {
+    public InputItemFunctionToolCall setStatus(OutputItemFunctionToolCallStatus status) {
         this.status = status;
         return this;
     }

@@ -5,13 +5,18 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for ItemResourceCodeInterpreterToolCallStatus.
+ * Defines values for OutputItemFileSearchToolCallStatus.
  */
-public enum ItemResourceCodeInterpreterToolCallStatus {
+public enum OutputItemFileSearchToolCallStatus {
     /**
      * Enum value in_progress.
      */
     IN_PROGRESS("in_progress"),
+
+    /**
+     * Enum value searching.
+     */
+    SEARCHING("searching"),
 
     /**
      * Enum value completed.
@@ -24,36 +29,31 @@ public enum ItemResourceCodeInterpreterToolCallStatus {
     INCOMPLETE("incomplete"),
 
     /**
-     * Enum value interpreting.
-     */
-    INTERPRETING("interpreting"),
-
-    /**
      * Enum value failed.
      */
     FAILED("failed");
 
     /**
-     * The actual serialized value for a ItemResourceCodeInterpreterToolCallStatus instance.
+     * The actual serialized value for a OutputItemFileSearchToolCallStatus instance.
      */
     private final String value;
 
-    ItemResourceCodeInterpreterToolCallStatus(String value) {
+    OutputItemFileSearchToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ItemResourceCodeInterpreterToolCallStatus instance.
+     * Parses a serialized value to a OutputItemFileSearchToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ItemResourceCodeInterpreterToolCallStatus object, or null if unable to parse.
+     * @return the parsed OutputItemFileSearchToolCallStatus object, or null if unable to parse.
      */
-    public static ItemResourceCodeInterpreterToolCallStatus fromString(String value) {
+    public static OutputItemFileSearchToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ItemResourceCodeInterpreterToolCallStatus[] items = ItemResourceCodeInterpreterToolCallStatus.values();
-        for (ItemResourceCodeInterpreterToolCallStatus item : items) {
+        OutputItemFileSearchToolCallStatus[] items = OutputItemFileSearchToolCallStatus.values();
+        for (OutputItemFileSearchToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

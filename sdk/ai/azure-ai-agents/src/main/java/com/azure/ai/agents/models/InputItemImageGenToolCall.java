@@ -34,7 +34,7 @@ public final class InputItemImageGenToolCall extends InputItem {
      * The status of the image generation call.
      */
     @Generated
-    private final ItemResourceImageGenToolCallStatus status;
+    private final OutputItemImageGenToolCallStatus status;
 
     /*
      * The result property.
@@ -69,7 +69,7 @@ public final class InputItemImageGenToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemResourceImageGenToolCallStatus getStatus() {
+    public OutputItemImageGenToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -110,7 +110,7 @@ public final class InputItemImageGenToolCall extends InputItem {
     public static InputItemImageGenToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            ItemResourceImageGenToolCallStatus status = null;
+            OutputItemImageGenToolCallStatus status = null;
             String result = null;
             InputItemType type = InputItemType.IMAGE_GENERATION_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -119,7 +119,7 @@ public final class InputItemImageGenToolCall extends InputItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ItemResourceImageGenToolCallStatus.fromString(reader.getString());
+                    status = OutputItemImageGenToolCallStatus.fromString(reader.getString());
                 } else if ("result".equals(fieldName)) {
                     result = reader.getString();
                 } else if ("type".equals(fieldName)) {
@@ -143,7 +143,7 @@ public final class InputItemImageGenToolCall extends InputItem {
      * @param result the result value to set.
      */
     @Generated
-    public InputItemImageGenToolCall(String id, ItemResourceImageGenToolCallStatus status, String result) {
+    public InputItemImageGenToolCall(String id, OutputItemImageGenToolCallStatus status, String result) {
         this.id = id;
         this.status = status;
         this.result = result;

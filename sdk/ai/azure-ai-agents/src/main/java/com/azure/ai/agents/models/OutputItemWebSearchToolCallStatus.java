@@ -5,13 +5,18 @@
 package com.azure.ai.agents.models;
 
 /**
- * Defines values for ItemReasoningItemStatus.
+ * Defines values for OutputItemWebSearchToolCallStatus.
  */
-public enum ItemReasoningItemStatus {
+public enum OutputItemWebSearchToolCallStatus {
     /**
      * Enum value in_progress.
      */
     IN_PROGRESS("in_progress"),
+
+    /**
+     * Enum value searching.
+     */
+    SEARCHING("searching"),
 
     /**
      * Enum value completed.
@@ -19,31 +24,31 @@ public enum ItemReasoningItemStatus {
     COMPLETED("completed"),
 
     /**
-     * Enum value incomplete.
+     * Enum value failed.
      */
-    INCOMPLETE("incomplete");
+    FAILED("failed");
 
     /**
-     * The actual serialized value for a ItemReasoningItemStatus instance.
+     * The actual serialized value for a OutputItemWebSearchToolCallStatus instance.
      */
     private final String value;
 
-    ItemReasoningItemStatus(String value) {
+    OutputItemWebSearchToolCallStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ItemReasoningItemStatus instance.
+     * Parses a serialized value to a OutputItemWebSearchToolCallStatus instance.
      * 
      * @param value the serialized value to parse.
-     * @return the parsed ItemReasoningItemStatus object, or null if unable to parse.
+     * @return the parsed OutputItemWebSearchToolCallStatus object, or null if unable to parse.
      */
-    public static ItemReasoningItemStatus fromString(String value) {
+    public static OutputItemWebSearchToolCallStatus fromString(String value) {
         if (value == null) {
             return null;
         }
-        ItemReasoningItemStatus[] items = ItemReasoningItemStatus.values();
-        for (ItemReasoningItemStatus item : items) {
+        OutputItemWebSearchToolCallStatus[] items = OutputItemWebSearchToolCallStatus.values();
+        for (OutputItemWebSearchToolCallStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

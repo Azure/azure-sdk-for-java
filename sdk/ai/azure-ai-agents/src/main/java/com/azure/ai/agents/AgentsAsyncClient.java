@@ -11,13 +11,13 @@ import com.azure.ai.agents.implementation.models.CreateAgentVersionRequest1;
 import com.azure.ai.agents.implementation.models.UpdateAgentFromManifestRequest1;
 import com.azure.ai.agents.implementation.models.UpdateAgentRequest1;
 import com.azure.ai.agents.models.AgentDefinition;
+import com.azure.ai.agents.models.AgentDefinitionFeatureKeys;
 import com.azure.ai.agents.models.AgentDetails;
 import com.azure.ai.agents.models.AgentKind;
 import com.azure.ai.agents.models.AgentVersionDetails;
 import com.azure.ai.agents.models.ContainerLogKind;
 import com.azure.ai.agents.models.DeleteAgentResponse;
 import com.azure.ai.agents.models.DeleteAgentVersionResponse;
-import com.azure.ai.agents.models.FoundryPreviewOptInKeys;
 import com.azure.ai.agents.models.PageOrder;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -130,8 +130,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources.</td></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
+     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -199,14 +200,6 @@ public final class AgentsAsyncClient {
 
     /**
      * Deletes a specific version of an agent.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -457,8 +450,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources.</td></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
+     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
@@ -530,6 +524,15 @@ public final class AgentsAsyncClient {
     /**
      * Updates the agent by adding a new version if there are any changes to the agent definition.
      * If no changes, returns the existing agent version.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
+     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -660,14 +663,6 @@ public final class AgentsAsyncClient {
 
     /**
      * Creates an agent from a manifest.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Beta</td><td>BinaryData</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -954,40 +949,6 @@ public final class AgentsAsyncClient {
         return createAgentVersionFromManifestWithResponse(agentName, createAgentVersionFromManifestRequest1,
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
-    }
-
-    /**
-     * Updates the agent by adding a new version if there are any changes to the agent definition.
-     * If no changes, returns the existing agent version.
-     *
-     * @param agentName The name of the agent to retrieve.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition, Map<String, String> metadata,
-        String description) {
-        // Generated convenience method for updateAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        UpdateAgentRequest1 updateAgentRequest1Obj
-            = new UpdateAgentRequest1(definition).setMetadata(metadata).setDescription(description);
-        BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
-        return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
     }
 
     /**
@@ -1282,9 +1243,9 @@ public final class AgentsAsyncClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>Foundry-Beta</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
-     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=v1", "HostedAgents=v1",
-     * "WorkflowAgents=v1", "Evaluations=v1", "RedTeams=v1", "Insights=v1", "MemoryStores=v1".</td></tr>
+     * <tr><td>Foundry-Features</td><td>String</td><td>No</td><td>A feature flag opt-in required when using preview
+     * operations or modifying persisted preview resources. Allowed values: "ContainerAgents=V1Preview",
+     * "HostedAgents=V1Preview", "WorkflowAgents=V1Preview".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
@@ -1341,222 +1302,6 @@ public final class AgentsAsyncClient {
     public Mono<Void> streamAgentContainerLogs(String agentName, String agentVersion) {
         // Generated convenience method for streamAgentContainerLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Creates the agent.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
-     * resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> createAgent(String name, AgentDefinition definition, BinaryData foundryBeta,
-        Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentRequest1 createAgentRequest1Obj
-            = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
-        if (foundryBeta != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
-        }
-        return createAgentWithResponse(createAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Creates an agent from a manifest.
-     *
-     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param manifestId The manifest ID to import the agent version from.
-     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
-     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
-     * resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentDetails> createAgentFromManifest(String name, String manifestId,
-        Map<String, BinaryData> parameterValues, BinaryData foundryBeta, Map<String, String> metadata,
-        String description) {
-        // Generated convenience method for createAgentFromManifestWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
-            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues).setMetadata(metadata)
-                .setDescription(description);
-        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
-        if (foundryBeta != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
-        }
-        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
-    }
-
-    /**
-     * Create a new agent version.
-     *
-     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
-     * - Must start and end with alphanumeric characters,
-     * - Can contain hyphens in the middle
-     * - Must not exceed 63 characters.
-     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
-     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
-     * resources.
-     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
-     * useful for storing additional information about the object in a structured
-     * format, and querying for objects via API or the dashboard.
-     *
-     * Keys are strings with a maximum length of 64 characters. Values are strings
-     * with a maximum length of 512 characters.
-     * @param description A human-readable description of the agent.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
-        BinaryData foundryBeta, Map<String, String> metadata, String description) {
-        // Generated convenience method for createAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        CreateAgentVersionRequest1 createAgentVersionRequest1Obj
-            = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
-        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
-        if (foundryBeta != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
-        }
-        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
-    }
-
-    /**
-     * Deletes a specific version of an agent.
-     *
-     * @param agentName The name of the agent to delete.
-     * @param agentVersion The version of the agent to delete.
-     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
-     * resources.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted agent version Object on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeleteAgentVersionResponse> deleteAgentVersion(String agentName, String agentVersion,
-        BinaryData foundryBeta) {
-        // Generated convenience method for deleteAgentVersionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryBeta != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), String.valueOf(foundryBeta));
-        }
-        return deleteAgentVersionWithResponse(agentName, agentVersion, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(DeleteAgentVersionResponse.class));
-    }
-
-    /**
-     * Container log entry streamed from the container as text chunks.
-     * Each chunk is a UTF-8 string that may be either a plain text log line
-     * or a JSON-formatted log entry, depending on the type of container log being streamed.
-     * Clients should treat each chunk as opaque text and, if needed, attempt
-     * to parse it as JSON based on their logging requirements.
-     *
-     * For system logs, the format is JSON with the following structure:
-     * {"TimeStamp":"2025-12-15T16:51:33Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Connecting
-     * to the events collector...","Reason":"StartingGettingEvents","EventSource":"ContainerAppController","Count":1}
-     * {"TimeStamp":"2025-12-15T16:51:34Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Successfully
-     * connected to events server","Reason":"ConnectedToEventsServer","EventSource":"ContainerAppController","Count":1}
-     *
-     * For console logs, the format is plain text as emitted by the container's stdout/stderr.
-     * 2025-12-15T08:43:48.72656 Connecting to the container 'agent-container'...
-     * 2025-12-15T08:43:48.75451 Successfully Connected to container: 'agent-container' [Revision:
-     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b', Replica:
-     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b-6898b9c89f-mpkjc']
-     * 2025-12-15T08:33:59.0671054Z stdout F INFO: 127.0.0.1:42588 - "GET /readiness HTTP/1.1" 200 OK
-     * 2025-12-15T08:34:29.0649033Z stdout F INFO: 127.0.0.1:60246 - "GET /readiness HTTP/1.1" 200 OK
-     * 2025-12-15T08:34:59.0644467Z stdout F INFO: 127.0.0.1:43994 - "GET /readiness HTTP/1.1" 200 OK.
-     *
-     * @param agentName The name of the agent.
-     * @param agentVersion The version of the agent.
-     * @param foundryBeta A feature flag opt-in required when using preview operations or modifying persisted preview
-     * resources.
-     * @param kind console returns container stdout/stderr, system returns container app event stream. defaults to
-     * console.
-     * @param replicaName When omitted, the server chooses the first replica for console logs. Required to target a
-     * specific replica.
-     * @param tail Number of trailing lines returned. Enforced to 1-300. Defaults to 20.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> streamAgentContainerLogs(String agentName, String agentVersion,
-        FoundryPreviewOptInKeys foundryBeta, ContainerLogKind kind, String replicaName, Integer tail) {
-        // Generated convenience method for streamAgentContainerLogsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (foundryBeta != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Beta"), foundryBeta.toString());
-        }
-        if (kind != null) {
-            requestOptions.addQueryParam("kind", kind.toString(), false);
-        }
-        if (replicaName != null) {
-            requestOptions.addQueryParam("replica_name", replicaName, false);
-        }
-        if (tail != null) {
-            requestOptions.addQueryParam("tail", String.valueOf(tail), false);
-        }
         return streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).flatMap(FluxUtil::toMono);
     }
 
@@ -1626,5 +1371,226 @@ public final class AgentsAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAgents(RequestOptions requestOptions) {
         return this.serviceClient.listAgentsAsync(requestOptions);
+    }
+
+    /**
+     * Creates an agent from a manifest.
+     *
+     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param manifestId The manifest ID to import the agent version from.
+     * @param parameterValues The inputs to the manifest that will result in a fully materialized Agent.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentDetails> createAgentFromManifest(String name, String manifestId,
+        Map<String, BinaryData> parameterValues, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentFromManifestWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentFromManifestRequest1 createAgentFromManifestRequest1Obj
+            = new CreateAgentFromManifestRequest1(name, manifestId, parameterValues).setMetadata(metadata)
+                .setDescription(description);
+        BinaryData createAgentFromManifestRequest1 = BinaryData.fromObject(createAgentFromManifestRequest1Obj);
+        return createAgentFromManifestWithResponse(createAgentFromManifestRequest1, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
+    }
+
+    /**
+     * Creates the agent.
+     *
+     * @param name The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentDetails> createAgent(String name, AgentDefinition definition,
+        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentRequest1 createAgentRequest1Obj
+            = new CreateAgentRequest1(name, definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentRequest1 = BinaryData.fromObject(createAgentRequest1Obj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createAgentWithResponse(createAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
+    }
+
+    /**
+     * Updates the agent by adding a new version if there are any changes to the agent definition.
+     * If no changes, returns the existing agent version.
+     *
+     * @param agentName The name of the agent to retrieve.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentDetails> updateAgent(String agentName, AgentDefinition definition,
+        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+        // Generated convenience method for updateAgentWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        UpdateAgentRequest1 updateAgentRequest1Obj
+            = new UpdateAgentRequest1(definition).setMetadata(metadata).setDescription(description);
+        BinaryData updateAgentRequest1 = BinaryData.fromObject(updateAgentRequest1Obj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return updateAgentWithResponse(agentName, updateAgentRequest1, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentDetails.class));
+    }
+
+    /**
+     * Create a new agent version.
+     *
+     * @param agentName The unique name that identifies the agent. Name can be used to retrieve/update/delete the agent.
+     * - Must start and end with alphanumeric characters,
+     * - Can contain hyphens in the middle
+     * - Must not exceed 63 characters.
+     * @param definition The agent definition. This can be a workflow, hosted agent, or a simple agent definition.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param metadata Set of 16 key-value pairs that can be attached to an object. This can be
+     * useful for storing additional information about the object in a structured
+     * format, and querying for objects via API or the dashboard.
+     *
+     * Keys are strings with a maximum length of 64 characters. Values are strings
+     * with a maximum length of 512 characters.
+     * @param description A human-readable description of the agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AgentVersionDetails> createAgentVersion(String agentName, AgentDefinition definition,
+        AgentDefinitionFeatureKeys foundryFeatures, Map<String, String> metadata, String description) {
+        // Generated convenience method for createAgentVersionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        CreateAgentVersionRequest1 createAgentVersionRequest1Obj
+            = new CreateAgentVersionRequest1(definition).setMetadata(metadata).setDescription(description);
+        BinaryData createAgentVersionRequest1 = BinaryData.fromObject(createAgentVersionRequest1Obj);
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        return createAgentVersionWithResponse(agentName, createAgentVersionRequest1, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AgentVersionDetails.class));
+    }
+
+    /**
+     * Container log entry streamed from the container as text chunks.
+     * Each chunk is a UTF-8 string that may be either a plain text log line
+     * or a JSON-formatted log entry, depending on the type of container log being streamed.
+     * Clients should treat each chunk as opaque text and, if needed, attempt
+     * to parse it as JSON based on their logging requirements.
+     *
+     * For system logs, the format is JSON with the following structure:
+     * {"TimeStamp":"2025-12-15T16:51:33Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Connecting
+     * to the events collector...","Reason":"StartingGettingEvents","EventSource":"ContainerAppController","Count":1}
+     * {"TimeStamp":"2025-12-15T16:51:34Z","Type":"Normal","ContainerAppName":null,"RevisionName":null,"ReplicaName":null,"Msg":"Successfully
+     * connected to events server","Reason":"ConnectedToEventsServer","EventSource":"ContainerAppController","Count":1}
+     *
+     * For console logs, the format is plain text as emitted by the container's stdout/stderr.
+     * 2025-12-15T08:43:48.72656 Connecting to the container 'agent-container'...
+     * 2025-12-15T08:43:48.75451 Successfully Connected to container: 'agent-container' [Revision:
+     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b', Replica:
+     * 'je90fe655aa742ef9a188b9fd14d6764--7tca06b-6898b9c89f-mpkjc']
+     * 2025-12-15T08:33:59.0671054Z stdout F INFO: 127.0.0.1:42588 - "GET /readiness HTTP/1.1" 200 OK
+     * 2025-12-15T08:34:29.0649033Z stdout F INFO: 127.0.0.1:60246 - "GET /readiness HTTP/1.1" 200 OK
+     * 2025-12-15T08:34:59.0644467Z stdout F INFO: 127.0.0.1:43994 - "GET /readiness HTTP/1.1" 200 OK.
+     *
+     * @param agentName The name of the agent.
+     * @param agentVersion The version of the agent.
+     * @param foundryFeatures A feature flag opt-in required when using preview operations or modifying persisted
+     * preview resources.
+     * @param kind console returns container stdout/stderr, system returns container app event stream. defaults to
+     * console.
+     * @param replicaName When omitted, the server chooses the first replica for console logs. Required to target a
+     * specific replica.
+     * @param tail Number of trailing lines returned. Enforced to 1-300. Defaults to 20.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> streamAgentContainerLogs(String agentName, String agentVersion,
+        AgentDefinitionFeatureKeys foundryFeatures, ContainerLogKind kind, String replicaName, Integer tail) {
+        // Generated convenience method for streamAgentContainerLogsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (foundryFeatures != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Foundry-Features"), foundryFeatures.toString());
+        }
+        if (kind != null) {
+            requestOptions.addQueryParam("kind", kind.toString(), false);
+        }
+        if (replicaName != null) {
+            requestOptions.addQueryParam("replica_name", replicaName, false);
+        }
+        if (tail != null) {
+            requestOptions.addQueryParam("tail", String.valueOf(tail), false);
+        }
+        return streamAgentContainerLogsWithResponse(agentName, agentVersion, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

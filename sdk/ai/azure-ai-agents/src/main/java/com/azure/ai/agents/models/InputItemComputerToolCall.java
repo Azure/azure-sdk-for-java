@@ -55,7 +55,7 @@ public final class InputItemComputerToolCall extends InputItem {
      * `incomplete`. Populated when items are returned via API.
      */
     @Generated
-    private final ItemResourceComputerToolCallStatus status;
+    private final OutputItemComputerToolCallStatus status;
 
     /**
      * Get the type property: The type property.
@@ -115,7 +115,7 @@ public final class InputItemComputerToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemResourceComputerToolCallStatus getStatus() {
+    public OutputItemComputerToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -152,7 +152,7 @@ public final class InputItemComputerToolCall extends InputItem {
             String callId = null;
             ComputerAction action = null;
             List<ComputerCallSafetyCheckParam> pendingSafetyChecks = null;
-            ItemResourceComputerToolCallStatus status = null;
+            OutputItemComputerToolCallStatus status = null;
             InputItemType type = InputItemType.COMPUTER_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -166,7 +166,7 @@ public final class InputItemComputerToolCall extends InputItem {
                 } else if ("pending_safety_checks".equals(fieldName)) {
                     pendingSafetyChecks = reader.readArray(reader1 -> ComputerCallSafetyCheckParam.fromJson(reader1));
                 } else if ("status".equals(fieldName)) {
-                    status = ItemResourceComputerToolCallStatus.fromString(reader.getString());
+                    status = OutputItemComputerToolCallStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else {
@@ -191,7 +191,7 @@ public final class InputItemComputerToolCall extends InputItem {
      */
     @Generated
     public InputItemComputerToolCall(String id, String callId, ComputerAction action,
-        List<ComputerCallSafetyCheckParam> pendingSafetyChecks, ItemResourceComputerToolCallStatus status) {
+        List<ComputerCallSafetyCheckParam> pendingSafetyChecks, OutputItemComputerToolCallStatus status) {
         this.id = id;
         this.callId = callId;
         this.action = action;

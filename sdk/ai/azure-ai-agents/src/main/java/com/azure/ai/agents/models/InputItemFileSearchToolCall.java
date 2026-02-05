@@ -37,7 +37,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
      * `searching`, `incomplete` or `failed`,
      */
     @Generated
-    private final ItemResourceFileSearchToolCallStatus status;
+    private final OutputItemFileSearchToolCallStatus status;
 
     /*
      * The queries used to search for files.
@@ -79,7 +79,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemResourceFileSearchToolCallStatus getStatus() {
+    public OutputItemFileSearchToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -143,7 +143,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
     public static InputItemFileSearchToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            ItemResourceFileSearchToolCallStatus status = null;
+            OutputItemFileSearchToolCallStatus status = null;
             List<String> queries = null;
             InputItemType type = InputItemType.FILE_SEARCH_CALL;
             List<FileSearchToolCallResults> results = null;
@@ -153,7 +153,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    status = ItemResourceFileSearchToolCallStatus.fromString(reader.getString());
+                    status = OutputItemFileSearchToolCallStatus.fromString(reader.getString());
                 } else if ("queries".equals(fieldName)) {
                     queries = reader.readArray(reader1 -> reader1.getString());
                 } else if ("type".equals(fieldName)) {
@@ -180,7 +180,7 @@ public final class InputItemFileSearchToolCall extends InputItem {
      * @param queries the queries value to set.
      */
     @Generated
-    public InputItemFileSearchToolCall(String id, ItemResourceFileSearchToolCallStatus status, List<String> queries) {
+    public InputItemFileSearchToolCall(String id, OutputItemFileSearchToolCallStatus status, List<String> queries) {
         this.id = id;
         this.status = status;
         this.queries = queries;

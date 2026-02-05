@@ -46,7 +46,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
      * The status of the local shell call.
      */
     @Generated
-    private final ItemResourceLocalShellToolCallStatus status;
+    private final OutputItemLocalShellToolCallStatus status;
 
     /**
      * Get the type property: The type property.
@@ -95,7 +95,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemResourceLocalShellToolCallStatus getStatus() {
+    public OutputItemLocalShellToolCallStatus getStatus() {
         return this.status;
     }
 
@@ -129,7 +129,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
             String id = null;
             String callId = null;
             LocalShellExecAction action = null;
-            ItemResourceLocalShellToolCallStatus status = null;
+            OutputItemLocalShellToolCallStatus status = null;
             InputItemType type = InputItemType.LOCAL_SHELL_CALL;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -141,7 +141,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
                 } else if ("action".equals(fieldName)) {
                     action = LocalShellExecAction.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    status = ItemResourceLocalShellToolCallStatus.fromString(reader.getString());
+                    status = OutputItemLocalShellToolCallStatus.fromString(reader.getString());
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else {
@@ -165,7 +165,7 @@ public final class InputItemLocalShellToolCall extends InputItem {
      */
     @Generated
     public InputItemLocalShellToolCall(String id, String callId, LocalShellExecAction action,
-        ItemResourceLocalShellToolCallStatus status) {
+        OutputItemLocalShellToolCallStatus status) {
         this.id = id;
         this.callId = callId;
         this.action = action;

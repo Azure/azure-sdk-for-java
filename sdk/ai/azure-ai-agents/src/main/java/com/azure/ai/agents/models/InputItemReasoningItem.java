@@ -57,7 +57,7 @@ public final class InputItemReasoningItem extends InputItem {
      * `incomplete`. Populated when items are returned via API.
      */
     @Generated
-    private ItemReasoningItemStatus status;
+    private OutputItemReasoningItemStatus status;
 
     /**
      * Creates an instance of InputItemReasoningItem class.
@@ -153,7 +153,7 @@ public final class InputItemReasoningItem extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemReasoningItemStatus getStatus() {
+    public OutputItemReasoningItemStatus getStatus() {
         return this.status;
     }
 
@@ -190,7 +190,7 @@ public final class InputItemReasoningItem extends InputItem {
             InputItemType type = InputItemType.REASONING;
             String encryptedContent = null;
             List<ReasoningTextContent> content = null;
-            ItemReasoningItemStatus status = null;
+            OutputItemReasoningItemStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -205,7 +205,7 @@ public final class InputItemReasoningItem extends InputItem {
                 } else if ("content".equals(fieldName)) {
                     content = reader.readArray(reader1 -> ReasoningTextContent.fromJson(reader1));
                 } else if ("status".equals(fieldName)) {
-                    status = ItemReasoningItemStatus.fromString(reader.getString());
+                    status = OutputItemReasoningItemStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -227,7 +227,7 @@ public final class InputItemReasoningItem extends InputItem {
      * @return the InputItemReasoningItem object itself.
      */
     @Generated
-    public InputItemReasoningItem setStatus(ItemReasoningItemStatus status) {
+    public InputItemReasoningItem setStatus(OutputItemReasoningItemStatus status) {
         this.status = status;
         return this;
     }

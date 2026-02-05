@@ -40,7 +40,7 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
      * The status property.
      */
     @Generated
-    private ItemResourceLocalShellToolCallOutputStatus status;
+    private ItemLocalShellToolCallOutputStatus status;
 
     /**
      * Creates an instance of InputItemLocalShellToolCallOutput class.
@@ -91,7 +91,7 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
      * @return the status value.
      */
     @Generated
-    public ItemResourceLocalShellToolCallOutputStatus getStatus() {
+    public ItemLocalShellToolCallOutputStatus getStatus() {
         return this.status;
     }
 
@@ -124,7 +124,7 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
             String id = null;
             String output = null;
             InputItemType type = InputItemType.LOCAL_SHELL_CALL_OUTPUT;
-            ItemResourceLocalShellToolCallOutputStatus status = null;
+            ItemLocalShellToolCallOutputStatus status = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -135,7 +135,7 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
                 } else if ("type".equals(fieldName)) {
                     type = InputItemType.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
-                    status = ItemResourceLocalShellToolCallOutputStatus.fromString(reader.getString());
+                    status = ItemLocalShellToolCallOutputStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -155,7 +155,7 @@ public final class InputItemLocalShellToolCallOutput extends InputItem {
      * @return the InputItemLocalShellToolCallOutput object itself.
      */
     @Generated
-    public InputItemLocalShellToolCallOutput setStatus(ItemResourceLocalShellToolCallOutputStatus status) {
+    public InputItemLocalShellToolCallOutput setStatus(ItemLocalShellToolCallOutputStatus status) {
         this.status = status;
         return this;
     }
