@@ -438,15 +438,17 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 queryItemFaultInjectionRule.disable();
             }
 
-            cosmosAsyncClient
-                .getDatabase(dbname)
-                .delete()
-                .onErrorResume(throwable -> {
-                    logger.warn("Failed to delete database {}", dbname, throwable);
-                    return Mono.empty();
-                })
-                .block();
-            safeClose(cosmosAsyncClient);
+            if (cosmosAsyncClient != null) {
+                cosmosAsyncClient
+                    .getDatabase(dbname)
+                    .delete()
+                    .onErrorResume(throwable -> {
+                        logger.warn("Failed to delete database {}", dbname, throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+                safeClose(cosmosAsyncClient);
+            }
         }
     }
 
