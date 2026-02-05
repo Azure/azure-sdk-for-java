@@ -148,7 +148,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
             .authorityHost(serverBaseUrl)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -177,7 +177,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
             .authorityHost(serverBaseUrl)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -206,7 +206,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
             .authorityHost(serverBaseUrl)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -236,7 +236,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(nonExistentTokenFile.toString())
             .configuration(configuration)
             .authorityHost(serverBaseUrl)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -268,7 +268,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
                 .tokenFilePath(tokenFilePath.toString())
                 .configuration(configuration)
                 .authorityHost(serverBaseUrl)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .disableInstanceDiscovery()
                 .build();
 
@@ -298,7 +298,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
                 .tokenFilePath(tokenFilePath.toString())
                 .configuration(configuration)
                 .authorityHost(httpProxyUrl)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .disableInstanceDiscovery()
                 .build();
 
@@ -328,7 +328,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
                 .tokenFilePath(tokenFilePath.toString())
                 .configuration(configuration)
                 .authorityHost(malformedUrl)
-                .enableAzureTokenProxy()
+                .enableAzureProxy()
                 .disableInstanceDiscovery()
                 .build();
 
@@ -357,7 +357,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
             .authorityHost(unreachableProxyUrl)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -387,7 +387,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(emptyTokenFile.toString())
             .configuration(configuration)
             .authorityHost(serverBaseUrl)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -417,7 +417,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
             .authorityHost(proxyUrlWithEncoding)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -460,7 +460,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
             .authorityHost(serverBaseUrl)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 
@@ -510,7 +510,7 @@ public class WorkloadIdentityCredentialIdentityBindingTest {
             .tokenFilePath(tokenFilePath.toString())
             .configuration(configuration)
             .authorityHost(serverBaseUrl)
-            .enableAzureTokenProxy()
+            .enableAzureProxy()
             .disableInstanceDiscovery()
             .build();
 

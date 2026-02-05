@@ -9,9 +9,10 @@ import reactor.core.scheduler.Schedulers;
 public class CosmosSchedulers {
     private final static String COSMOS_PARALLEL_THREAD_NAME =  "cosmos-parallel";
     private final static String TRANSPORT_RESPONSE_BOUNDED_ELASTIC_THREAD_NAME = "transport-response-bounded-elastic";
+    private final static String TRANSACTIONAL_BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME = "transactional_bulk-executor-bounded-elastic";
+    private final static String TRANSACTIONAL_BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC_THREAD_NAME = "transactional_bulk-executor-flush-bounded-elastic";
     private final static String BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME = "bulk-executor-bounded-elastic";
     private final static String BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC_THREAD_NAME = "bulk-executor-flush-bounded-elastic";
-    private final static String CLIENT_TELEMETRY_BOUNDED_ELASTIC_THREAD_NAME = "client-telemetry-bounded-elastic";
     private final static String OPEN_CONNECTIONS_BOUNDED_ELASTIC_THREAD_NAME = "open-connections-bounded-elastic";
     private final static String ASYNC_CACHE_BACKGROUND_REFRESH_THREAD_NAME = "async-cache-background-refresh-bounded-elastic";
     private final static String FAULT_INJECTION_CONNECTION_ERROR_THREAD_NAME = "fault-injection-connection-error-bounded-elastic";
@@ -35,6 +36,23 @@ public class CosmosSchedulers {
         true
     );
 
+    // Custom bounded elastic scheduler process transactional bulk execution tasks
+    public final static Scheduler TRANSACTIONAL_BULK_EXECUTOR_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+        2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        TRANSACTIONAL_BULK_EXECUTOR_BOUNDED_ELASTIC_THREAD_NAME,
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+        true
+    );
+
+    public final static Scheduler TRANSACTIONAL_BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
+        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
+        TRANSACTIONAL_BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC_THREAD_NAME,
+        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
+        true
+    );
+
     // Custom bounded elastic scheduler process bulk execution tasks
     public final static Scheduler BULK_EXECUTOR_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
         2 * Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
@@ -48,14 +66,6 @@ public class CosmosSchedulers {
         Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
         Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
         BULK_EXECUTOR_FLUSH_BOUNDED_ELASTIC_THREAD_NAME,
-        TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
-        true
-    );
-
-    public final static Scheduler CLIENT_TELEMETRY_BOUNDED_ELASTIC = Schedulers.newBoundedElastic(
-        Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE,
-        Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE,
-        CLIENT_TELEMETRY_BOUNDED_ELASTIC_THREAD_NAME,
         TTL_FOR_SCHEDULER_WORKER_IN_SECONDS,
         true
     );

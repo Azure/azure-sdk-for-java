@@ -431,8 +431,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the networkData property: Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
-     * property will be used in preference to this property.
+     * Get the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+     * networkDataContent property will be used in preference to this property.
      * 
      * @return the networkData value.
      */
@@ -441,8 +441,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the networkData property: Deprecated: The Base64 encoded cloud-init network data. The networkDataContent
-     * property will be used in preference to this property.
+     * Set the networkData property: Field Deprecated: The Base64 encoded cloud-init network data. The
+     * networkDataContent property will be used in preference to this property.
      * 
      * @param networkData the networkData value to set.
      * @return the VirtualMachineInner object itself.
@@ -570,8 +570,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Get the userData property: Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will
-     * be used in preference to this property.
+     * Get the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent
+     * property will be used in preference to this property.
      * 
      * @return the userData value.
      */
@@ -580,8 +580,8 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
-     * Set the userData property: Deprecated: The Base64 encoded cloud-init user data. The userDataContent property will
-     * be used in preference to this property.
+     * Set the userData property: Field Deprecated: The Base64 encoded cloud-init user data. The userDataContent
+     * property will be used in preference to this property.
      * 
      * @param userData the userData value to set.
      * @return the VirtualMachineInner object itself.

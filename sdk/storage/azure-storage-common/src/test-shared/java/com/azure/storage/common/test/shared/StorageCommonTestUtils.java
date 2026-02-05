@@ -10,6 +10,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -51,6 +52,7 @@ import java.util.zip.CRC32;
 
 import static java.util.Base64.getUrlDecoder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This class contains utility methods for Storage tests.
@@ -421,5 +423,17 @@ public final class StorageCommonTestUtils {
             return matcher.group(1);
         }
         throw new RuntimeException("Could not find oid in token");
+    }
+
+    public static <T> void verifySasAndTokenInRequest(Response<T> response) {
+        assertResponseStatusCode(response, 200);
+        //assert sas token exists in URL + auth header exists
+        assertTrue(response.getRequest().getHeaders().stream().anyMatch(h -> h.getName().equals("Authorization")));
+        assertTrue(response.getRequest().getUrl().toString().contains("sv=" + Constants.SAS_SERVICE_VERSION));
+    }
+
+    public static <T> Response<T> assertResponseStatusCode(Response<T> response, int expectedStatusCode) {
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        return response;
     }
 }

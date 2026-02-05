@@ -69,7 +69,7 @@ import java.util.stream.Collectors;
 /**
  * Template class of reactive cosmos
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "deprecation"})
 public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReactiveCosmosTemplate.class);

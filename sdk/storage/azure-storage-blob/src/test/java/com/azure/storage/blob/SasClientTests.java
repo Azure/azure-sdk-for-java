@@ -42,6 +42,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -192,10 +194,10 @@ public class SasClientTests extends BlobTestBase {
             BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true);
             OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
 
-            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
-
             // We need to get the object ID from the token credential used to authenticate the request
+            TokenCredential tokenCredential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
             String oid = getOidFromToken(tokenCredential);
+
             BlobServiceSasSignatureValues sasValues
                 = new BlobServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
             String sas = sasClient.generateUserDelegationSas(sasValues, getUserDelegationInfo());
@@ -208,7 +210,7 @@ public class SasClientTests extends BlobTestBase {
                     .getBlockBlobClient();
 
             Response<BlobProperties> response = client.getPropertiesWithResponse(null, null, Context.NONE);
-            assertResponseStatusCode(response, 200);
+            verifySasAndTokenInRequest(response);
         });
     }
 
@@ -350,7 +352,11 @@ public class SasClientTests extends BlobTestBase {
                 .sasToken(sas)
                 .credential(tokenCredential)).buildClient();
 
-            assertDoesNotThrow(() -> client.listBlobs().iterator().hasNext());
+            Response<BlobProperties> response = client.getBlobClient(blobName)
+                .getBlockBlobClient()
+                .getPropertiesWithResponse(null, null, Context.NONE);
+
+            verifySasAndTokenInRequest(response);
         });
     }
 
@@ -621,7 +627,7 @@ public class SasClientTests extends BlobTestBase {
         }
 
         // Generate a sasClient that does not have an encryptionScope
-        sasClient = builder.sasToken(sas)
+        sasClient = getContainerClientBuilder(cc.getBlobContainerUrl()).sasToken(sas)
             .encryptionScope(null)
             .buildClient()
             .getBlobClient(sharedKeyClient.getBlobName())
@@ -805,7 +811,7 @@ public class SasClientTests extends BlobTestBase {
     }
 
     @Test
-    public void accountSasOnEndpoint() throws IOException {
+    public void accountSasOnEndpoint() {
         AccountSasService service = new AccountSasService().setBlobAccess(true);
         AccountSasResourceType resourceType
             = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
@@ -816,18 +822,18 @@ public class SasClientTests extends BlobTestBase {
         String sas = primaryBlobServiceClient.generateAccountSas(sasValues);
 
         BlobServiceClient sc = getServiceClient(primaryBlobServiceClient.getAccountUrl() + "?" + sas);
-        sc.createBlobContainer(generateContainerName());
+        assertDoesNotThrow(() -> sc.createBlobContainer(generateContainerName()));
 
         BlobContainerClient cc
             = getContainerClientBuilder(primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "?" + sas)
                 .buildClient();
         assertDoesNotThrow(cc::getProperties);
 
-        BlobClient bc = getBlobClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas);
-        File file = getRandomFile(256);
-        file.deleteOnExit();
-        assertDoesNotThrow(() -> bc.uploadFromFile(file.toPath().toString(), true));
+        BlobClient bc = instrument(new BlobClientBuilder()
+            .endpoint(primaryBlobServiceClient.getAccountUrl() + "/" + containerName + "/" + blobName + "?" + sas))
+                .buildClient();
+
+        assertDoesNotThrow(bc::getProperties);
     }
 
     @Test

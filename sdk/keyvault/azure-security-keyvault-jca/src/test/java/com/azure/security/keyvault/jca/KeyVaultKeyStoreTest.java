@@ -31,11 +31,12 @@ public class KeyVaultKeyStoreTest {
     public static void setEnvironmentProperty() {
         PropertyConvertorUtils.putEnvironmentPropertyToSystemPropertyForKeyVaultJca();
         keystore = new KeyVaultKeyStore();
-        KeyVaultLoadStoreParameter parameter
-            = new KeyVaultLoadStoreParameter(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"),
-                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"),
-                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"),
-                PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"));
+        KeyVaultLoadStoreParameter parameter = KeyVaultLoadStoreParameter
+            .createBuilder(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_ENDPOINT"))
+            .tenantId(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_TENANT_ID"))
+            .clientId(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_ID"))
+            .clientSecret(PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CLIENT_SECRET"))
+            .build();
         certificateName = PropertyConvertorUtils.getPropertyValue("AZURE_KEYVAULT_CERTIFICATE_NAME");
         keystore.engineLoad(parameter);
     }

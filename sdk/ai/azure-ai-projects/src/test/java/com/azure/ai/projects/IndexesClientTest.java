@@ -16,40 +16,11 @@ import static com.azure.ai.projects.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 @Disabled("Disabled for lack of recordings. Needs to be enabled on the Public Preview release.")
 public class IndexesClientTest extends ClientTestBase {
 
-    private AIProjectClientBuilder clientBuilder;
-    private IndexesClient indexesClient;
-
-    private void setup(HttpClient httpClient) {
-        clientBuilder = getClientBuilder(httpClient);
-        indexesClient = clientBuilder.buildIndexesClient();
-    }
-
-    /**
-     * Helper method to verify an Index has valid properties.
-     * @param index The index to validate
-     * @param expectedName The expected name of the index, or null if no specific name is expected
-     * @param expectedVersion The expected version of the index, or null if no specific version is expected
-     */
-    private void assertValidIndex(Index index, String expectedName, String expectedVersion) {
-        Assertions.assertNotNull(index);
-        Assertions.assertNotNull(index.getName());
-        Assertions.assertNotNull(index.getVersion());
-        Assertions.assertNotNull(index.getType());
-
-        if (expectedName != null) {
-            Assertions.assertEquals(expectedName, index.getName());
-        }
-
-        if (expectedVersion != null) {
-            Assertions.assertEquals(expectedVersion, index.getVersion());
-        }
-    }
-
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListIndexes(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListIndexes(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         // Verify that listing indexes returns results
         Iterable<Index> indexes = indexesClient.listLatest();
@@ -72,8 +43,8 @@ public class IndexesClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testListIndexVersions(HttpClient httpClient) {
-        setup(httpClient);
+    public void testListIndexVersions(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
 
@@ -103,8 +74,8 @@ public class IndexesClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testGetIndex(HttpClient httpClient) {
-        setup(httpClient);
+    public void testGetIndex(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");
@@ -129,8 +100,8 @@ public class IndexesClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testCreateOrUpdateIndex(HttpClient httpClient) {
-        setup(httpClient);
+    public void testCreateOrUpdateIndex(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         // Configuration for creating/updating an index
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
@@ -168,8 +139,8 @@ public class IndexesClientTest extends ClientTestBase {
     @Disabled
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.projects.TestUtils#getTestParameters")
-    public void testDeleteIndex(HttpClient httpClient) {
-        setup(httpClient);
+    public void testDeleteIndex(HttpClient httpClient, AIProjectsServiceVersion serviceVersion) {
+        IndexesClient indexesClient = getIndexesClient(httpClient, serviceVersion);
 
         String indexName = Configuration.getGlobalConfiguration().get("TEST_INDEX_NAME", "test-index");
         String indexVersion = Configuration.getGlobalConfiguration().get("TEST_INDEX_VERSION", "1.0");

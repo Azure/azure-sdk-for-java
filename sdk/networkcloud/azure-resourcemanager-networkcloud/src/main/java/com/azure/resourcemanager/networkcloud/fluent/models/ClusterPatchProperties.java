@@ -44,8 +44,8 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     private String clusterLocation;
 
     /*
-     * Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the cluster
-     * during Arc Appliance installation.
+     * Field Deprecated: Use managed identity to provide cluster privileges. The service principal to be used by the
+     * cluster during Arc Appliance installation.
      */
     private ServicePrincipalInformation clusterServicePrincipal;
 
@@ -62,8 +62,8 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     private ValidationThreshold computeDeploymentThreshold;
 
     /*
-     * The list of rack definitions for the compute racks in a multi-rack
-     * cluster, or an empty list in a single-rack cluster.
+     * The list of rack definitions for the compute racks in a multi-rack cluster, or an empty list in a single-rack
+     * cluster.
      */
     private List<RackDefinition> computeRackDefinitions;
 
@@ -166,8 +166,8 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     }
 
     /**
-     * Get the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
-     * service principal to be used by the cluster during Arc Appliance installation.
+     * Get the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster privileges.
+     * The service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @return the clusterServicePrincipal value.
      */
@@ -176,8 +176,8 @@ public final class ClusterPatchProperties implements JsonSerializable<ClusterPat
     }
 
     /**
-     * Set the clusterServicePrincipal property: Deprecated: Use managed identity to provide cluster privileges. The
-     * service principal to be used by the cluster during Arc Appliance installation.
+     * Set the clusterServicePrincipal property: Field Deprecated: Use managed identity to provide cluster privileges.
+     * The service principal to be used by the cluster during Arc Appliance installation.
      * 
      * @param clusterServicePrincipal the clusterServicePrincipal value to set.
      * @return the ClusterPatchProperties object itself.
