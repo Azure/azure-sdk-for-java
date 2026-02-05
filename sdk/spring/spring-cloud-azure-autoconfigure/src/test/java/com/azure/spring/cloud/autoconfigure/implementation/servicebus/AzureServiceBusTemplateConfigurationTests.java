@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
@@ -23,7 +24,8 @@ import static org.mockito.Mockito.mock;
 class AzureServiceBusTemplateConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureServiceBusMessagingAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class, AzureServiceBusMessagingAutoConfiguration.class))
+        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new);
 
     @Test
     void testAzureServiceBusDisabled() {
@@ -55,7 +57,6 @@ class AzureServiceBusTemplateConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);
                 assertThat(context).hasSingleBean(ServiceBusTemplate.class);
@@ -74,7 +75,6 @@ class AzureServiceBusTemplateConfigurationTests {
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.servicebus.entity-type=QUEUE"
             )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertServiceBusTemplate(context, ServiceBusEntityType.QUEUE);
             });
@@ -88,7 +88,6 @@ class AzureServiceBusTemplateConfigurationTests {
                 "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.servicebus.producer.entity-type=topic"
             )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertServiceBusTemplate(context, ServiceBusEntityType.TOPIC);
             });
