@@ -429,7 +429,6 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .verify();
 
             // delete the database
-            cosmosAsyncClient.getDatabase(dbname).delete().block();
         } finally {
             if (readItemFaultInjectionRule != null) {
                 readItemFaultInjectionRule.disable();
