@@ -1,5 +1,13 @@
 # Release History
 
+## 12.32.2 (2026-02-05)
+
+### Other Changes
+
+#### Credential Validation
+- added `validateCredentialsNotAmbiguous()` to `CredentialValidator` class check for valid credential combinations and 
+throw errors for invalid credential combinations. This is for internal use only.
+
 ## 12.32.1 (2026-01-29)
 
 ### Other Changes
