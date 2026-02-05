@@ -509,8 +509,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 return 1;
             }
 
-            value += 1;
-            return value;
+            return value + 1;
         });
 
         this.diagnosticsClientConfig = new DiagnosticsClientConfig();
