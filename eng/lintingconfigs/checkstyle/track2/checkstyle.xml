@@ -421,7 +421,6 @@
 
     <module name="io.clientcore.linting.extensions.checkstyle.checks.StepVerifierCheck"/>
 
-    <!-- CUSTOM CHECKS -->
     <!-- Validates that classes implementing JsonSerializable or XmlSerializable have required serialization methods -->
     <module name="io.clientcore.linting.extensions.checkstyle.checks.SerializableMethodsCheck"/>
   </module>
