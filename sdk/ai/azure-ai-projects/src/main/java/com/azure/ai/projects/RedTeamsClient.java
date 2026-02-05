@@ -48,7 +48,7 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansi_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
@@ -94,7 +94,7 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansi_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
@@ -139,7 +139,7 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansi_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
@@ -169,7 +169,7 @@ public final class RedTeamsClient {
      *     displayName: String (Optional)
      *     numTurns: Integer (Optional)
      *     attackStrategies (Optional): [
-     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansii_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
+     *         String(easy/moderate/difficult/ascii_art/ascii_smuggler/atbash/base64/binary/caesar/character_space/jailbreak/ansi_attack/character_swap/suffix_append/string_join/unicode_confusable/unicode_substitution/diacritic/flip/leetspeak/rot13/morse/url/baseline/indirect_jailbreak/tense/multi_turn/crescendo) (Optional)
      *     ]
      *     simulationOnly: Boolean (Optional)
      *     riskCategories (Optional): [
