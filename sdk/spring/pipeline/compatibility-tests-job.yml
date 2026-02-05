@@ -77,6 +77,8 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       - script: |
           python -m pip install termcolor
         displayName: 'Install python module'
@@ -111,4 +113,6 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: 'clean install -Pdev '
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 

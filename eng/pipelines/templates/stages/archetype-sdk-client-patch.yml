@@ -135,6 +135,8 @@ extends:
                 jdkVersionOption: ${{ parameters.JavaBuildVersion }}
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
+              env:
+                SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
             - task: PowerShell@2
               displayName: 'Verify Required Maven Artifacts'

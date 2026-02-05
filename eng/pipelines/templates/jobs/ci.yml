@@ -290,9 +290,6 @@ jobs:
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
-    variables:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)

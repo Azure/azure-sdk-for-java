@@ -40,4 +40,6 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: 'clean verify -Pmonitor'
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 

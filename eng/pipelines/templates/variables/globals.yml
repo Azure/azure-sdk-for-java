@@ -1,8 +1,4 @@
 variables:
-  # Pass System.AccessToken to environment for Maven authentication with Azure Artifacts
-  # eng/settings.xml uses ${env.SYSTEM_ACCESSTOKEN} to authenticate
-  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-
   DocWardenVersion: '0.7.2'
   # This is the default Java build version. It's the version used to build the shipping libraries, Spotbugs etc.
   JavaBuildVersion: '1.25'

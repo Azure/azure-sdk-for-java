@@ -100,6 +100,8 @@ extends:
                   jdkVersionOption: $(JavaBuildVersion)
                   jdkArchitectureOption: 'x64'
                   publishJUnitResults: false
+                env:
+                  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
                 condition: and(succeeded(), eq(variables['RunLinting'], 'true'))
 
               - task: PowerShell@2

@@ -13,9 +13,6 @@ jobs:
   - job: 'BuildAndValidate'
     displayName: 'Build and Validate'
 
-    variables:
-      SYSTEM_ACCESSTOKEN: $(System.AccessToken)
-
     templateContext:
       outputs:
         - output: pipelineArtifact
@@ -70,6 +67,8 @@ jobs:
             jdkVersionOption: $(JavaBuildVersion)
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
+          env:
+            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 
       - task: PowerShell@2
         displayName: 'Copy artifacts to staging'
