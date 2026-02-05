@@ -154,7 +154,7 @@
     "dir": "../resources/azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/Microsoft.Resources/deploymentStacks/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-2024-03 --metadata-suffix=deploymentstacks --enable-sync-stack=false"
+    "args": "--tag=package-2024-03-java --metadata-suffix=deploymentstacks --enable-sync-stack=false"
   },
   "search": {
     "dir": "../search/azure-resourcemanager-search",
