@@ -189,10 +189,7 @@
 /sdk/face/azure-ai-vision-face/                                    @Azure/azure-java-sdk @leareai
 
 # ServiceLabel: %Cognitive - Face
-# ServiceOwners:                                                   @dipidoo @JinyuID @SteveMSFT
-
-# ServiceLabel: %Cognitive - Face
-# ServiceOwners:                                                   @leareai
+# ServiceOwners:                                                   @dipidoo @JinyuID @leareai @SteveMSFT
 
 # PRLabel: %Cognitive - Form Recognizer
 /sdk/formrecognizer/                                               @Azure/azure-java-sdk @samvaity
@@ -449,9 +446,11 @@
 # PRLabel: %Service Bus %Track 1
 /sdk/servicebus/microsoft-azure-servicebus/                        @Azure/azure-java-sdk @EldertGrootenboer @skarri-microsoft @vinaysurya
 
-# AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft
 # ServiceLabel: %Service Bus
 # ServiceOwners:                                                   @EldertGrootenboer @skarri-microsoft
+
+# AzureSdkOwners:                                                  @EldertGrootenboer @skarri-microsoft
+# ServiceLabel: %Service Bus %Track 1
 
 # PRLabel: %Speech Transcription
 /sdk/transcription/azure-ai-speech-transcription/                  @amber-yujueWang @Azure/azure-java-sdk @rhurey @xitzhang
