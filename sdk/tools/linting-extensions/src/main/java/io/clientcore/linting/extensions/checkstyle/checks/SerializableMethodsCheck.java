@@ -1,0 +1,171 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package io.clientcore.linting.extensions.checkstyle.checks;
+
+import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
+import com.puppycrawl.tools.checkstyle.api.DetailAST;
+import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Validates serialization method completeness for JsonSerializable and XmlSerializable implementations.
+ */
+public class SerializableMethodsCheck extends AbstractCheck {
+    static final String ERR_NO_TO_JSON = "Class implementing JsonSerializable must provide a toJson method.";
+    static final String ERR_NO_FROM_JSON = "Class implementing JsonSerializable must provide a static fromJson method.";
+    static final String ERR_NO_TO_XML = "Class implementing XmlSerializable must provide a toXml method.";
+    static final String ERR_NO_FROM_XML = "Class implementing XmlSerializable must provide a static fromXml method.";
+
+    private List<TypeSnapshot> snapshotArchive;
+
+    @Override
+    public int[] getDefaultTokens() {
+        return getRequiredTokens();
+    }
+
+    @Override
+    public int[] getAcceptableTokens() {
+        return getRequiredTokens();
+    }
+
+    @Override
+    public int[] getRequiredTokens() {
+        return new int[] { TokenTypes.CLASS_DEF, TokenTypes.METHOD_DEF };
+    }
+
+    @Override
+    public void beginTree(DetailAST rootNode) {
+        snapshotArchive = new ArrayList<>();
+    }
+
+    @Override
+    public void visitToken(DetailAST currentNode) {
+        int tokenKind = currentNode.getType();
+
+        if (tokenKind == TokenTypes.CLASS_DEF) {
+            TypeSnapshot snapshot = captureTypeSnapshot(currentNode);
+            snapshotArchive.add(snapshot);
+        } else if (tokenKind == TokenTypes.METHOD_DEF) {
+            integrateMethodIntoSnapshot(currentNode);
+        }
+    }
+
+    @Override
+    public void leaveToken(DetailAST currentNode) {
+        if (currentNode.getType() == TokenTypes.CLASS_DEF) {
+            performSnapshotAudit(currentNode);
+        }
+    }
+
+    private TypeSnapshot captureTypeSnapshot(DetailAST classNode) {
+        TypeSnapshot snapshot = new TypeSnapshot();
+        snapshot.classNode = classNode;
+
+        DetailAST interfaceSection = classNode.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
+        if (interfaceSection != null) {
+            digestInterfaceSection(interfaceSection, snapshot);
+        }
+
+        return snapshot;
+    }
+
+    private void digestInterfaceSection(DetailAST interfaceSection, TypeSnapshot snapshot) {
+        DetailAST cursor = interfaceSection.getFirstChild();
+
+        while (cursor != null) {
+            if (cursor.getType() == TokenTypes.IDENT) {
+                String interfaceLabel = cursor.getText();
+
+                if ("JsonSerializable".equals(interfaceLabel)) {
+                    snapshot.mandatesJson = true;
+                } else if ("XmlSerializable".equals(interfaceLabel)) {
+                    snapshot.mandatesXml = true;
+                }
+            }
+            cursor = cursor.getNextSibling();
+        }
+    }
+
+    private void integrateMethodIntoSnapshot(DetailAST methodNode) {
+        if (snapshotArchive.isEmpty()) {
+            return;
+        }
+
+        TypeSnapshot latestSnapshot = snapshotArchive.get(snapshotArchive.size() - 1);
+
+        if (!latestSnapshot.mandatesJson && !latestSnapshot.mandatesXml) {
+            return;
+        }
+
+        DetailAST nameNode = methodNode.findFirstToken(TokenTypes.IDENT);
+        if (nameNode == null) {
+            return;
+        }
+
+        String methodLabel = nameNode.getText();
+        boolean markedStatic = probeForStaticMarker(methodNode);
+
+        latestSnapshot.digestMethod(methodLabel, markedStatic);
+    }
+
+    private boolean probeForStaticMarker(DetailAST methodNode) {
+        DetailAST modifierBlock = methodNode.findFirstToken(TokenTypes.MODIFIERS);
+
+        if (modifierBlock == null) {
+            return false;
+        }
+
+        return modifierBlock.findFirstToken(TokenTypes.LITERAL_STATIC) != null;
+    }
+
+    private void performSnapshotAudit(DetailAST classNode) {
+        if (snapshotArchive.isEmpty()) {
+            return;
+        }
+
+        TypeSnapshot snapshot = snapshotArchive.remove(snapshotArchive.size() - 1);
+
+        if (snapshot.mandatesJson) {
+            if (!snapshot.observedToJson) {
+                log(classNode, ERR_NO_TO_JSON);
+            }
+            if (!snapshot.observedFromJson) {
+                log(classNode, ERR_NO_FROM_JSON);
+            }
+        }
+
+        if (snapshot.mandatesXml) {
+            if (!snapshot.observedToXml) {
+                log(classNode, ERR_NO_TO_XML);
+            }
+            if (!snapshot.observedFromXml) {
+                log(classNode, ERR_NO_FROM_XML);
+            }
+        }
+    }
+
+    private static class TypeSnapshot {
+        DetailAST classNode;
+        boolean mandatesJson;
+        boolean mandatesXml;
+        boolean observedToJson;
+        boolean observedFromJson;
+        boolean observedToXml;
+        boolean observedFromXml;
+
+        void digestMethod(String methodLabel, boolean markedStatic) {
+            if ("toJson".equals(methodLabel)) {
+                observedToJson = true;
+            } else if ("fromJson".equals(methodLabel) && markedStatic) {
+                observedFromJson = true;
+            } else if ("toXml".equals(methodLabel)) {
+                observedToXml = true;
+            } else if ("fromXml".equals(methodLabel) && markedStatic) {
+                observedFromXml = true;
+            }
+        }
+    }
+}
