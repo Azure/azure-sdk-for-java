@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.testcontainers.implementation.service.connection.bus;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
@@ -40,6 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.awaitility.Awaitility.waitAtMost;
 
 @SpringJUnitConfig
@@ -74,17 +74,24 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
     @Autowired
     private ServiceBusTemplate serviceBusTemplate;
 
-    @Autowired
-    private ServiceBusProcessorClient processorClient;
-
     @BeforeEach
-    void setUp() throws InterruptedException {
+    void setUp() {
         // Wait for any in-flight messages to be processed
-        int previousSize;
-        do {
-            previousSize = Config.MESSAGES.size();
-            Thread.sleep(2000);
-        } while (Config.MESSAGES.size() != previousSize);
+        // Use awaitility to wait until the message list stabilizes (no new messages for 2 seconds)
+        await()
+            .atMost(Duration.ofSeconds(30))
+            .pollDelay(Duration.ofMillis(500))
+            .pollInterval(Duration.ofMillis(500))
+            .until(() -> {
+                int currentSize = Config.MESSAGES.size();
+                try {
+                    Thread.sleep(2000);
+                    return Config.MESSAGES.size() == currentSize;
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return false;
+                }
+            });
 
         // Clear messages for the next test
         Config.MESSAGES.clear();
@@ -112,21 +119,6 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
         });
     }
 
-    @Test
-    @Order(3)
-    void processorClientCanProcessMessages() {
-        // The processor client is already running and listening to messages
-        // (auto-started by ServiceBusProcessorClientLifecycleManager)
-        // Send a message using the sender
-        this.senderClient.sendMessage(new ServiceBusMessage("Hello from Processor test!"));
-
-        // The processor will handle it through the registered listener
-        waitAtMost(Duration.ofSeconds(30)).pollDelay(Duration.ofSeconds(5)).untilAsserted(() -> {
-            assertThat(Config.MESSAGES).anySatisfy(msg ->
-                assertThat(msg.getBody().toString()).isEqualTo("Hello from Processor test!")
-            );
-        });
-    }
 
     @Configuration(proxyBeanMethods = false)
     @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class,

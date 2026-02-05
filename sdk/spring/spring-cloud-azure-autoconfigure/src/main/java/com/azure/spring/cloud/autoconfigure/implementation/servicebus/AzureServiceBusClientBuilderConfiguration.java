@@ -13,6 +13,7 @@ import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStr
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -21,8 +22,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass(ServiceBusClientBuilder.class)
 @Import(AzureServiceBusPropertiesConfiguration.class)
+@ConditionalOnClass(ServiceBusClientBuilder.class)
+@ConditionalOnBean(AzureServiceBusProperties.class)
 class AzureServiceBusClientBuilderConfiguration {
 
     private final AzureServiceBusProperties serviceBusProperties;

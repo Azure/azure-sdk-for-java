@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
  */
 @Configuration(proxyBeanMethods = false)
 @Import(AzureServiceBusPropertiesConfiguration.class)
+@ConditionalOnBean(AzureServiceBusProperties.class)
 class AzureServiceBusProducerClientConfiguration {
 
     @Bean

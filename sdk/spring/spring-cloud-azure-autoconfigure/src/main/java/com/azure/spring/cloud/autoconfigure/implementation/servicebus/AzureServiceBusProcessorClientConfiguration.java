@@ -31,7 +31,8 @@ import org.springframework.util.StringUtils;
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnBean({ ServiceBusRecordMessageListener.class, ServiceBusErrorHandler.class })
+@ConditionalOnBean({ ServiceBusRecordMessageListener.class,
+    ServiceBusErrorHandler.class, AzureServiceBusProperties.class })
 @Import({
     AzureServiceBusPropertiesConfiguration.class,
     AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class,
