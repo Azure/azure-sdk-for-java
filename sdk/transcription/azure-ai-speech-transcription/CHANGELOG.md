@@ -2,10 +2,6 @@
 
 ## 1.0.0-beta.2 (2026-02-05)
 
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed `EnhancedModeOptions` to properly serialize the `enabled` field in JSON requests, enabling translation and other enhanced mode features to work correctly.
