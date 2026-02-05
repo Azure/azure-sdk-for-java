@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2026-02-05)
 
 ### Features Added
 
@@ -8,7 +8,11 @@
 
 ### Bugs Fixed
 
+- Fixed `EnhancedModeOptions` to properly serialize the `enabled` field in JSON requests, enabling translation and other enhanced mode features to work correctly.
+
 ### Other Changes
+
+- Updated enhanced mode samples to demonstrate transcribe, translate, prompt tuning, and diarization scenarios.
 
 ## 1.0.0-beta.1 (2026-01-05)
 
