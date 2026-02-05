@@ -233,7 +233,7 @@
     "com.azure.ai.projects.models.FieldMapping": "Azure.AI.Projects.FieldMapping",
     "com.azure.ai.projects.models.FileDatasetVersion": "Azure.AI.Projects.FileDatasetVersion",
     "com.azure.ai.projects.models.FolderDatasetVersion": "Azure.AI.Projects.FolderDatasetVersion",
-    "com.azure.ai.projects.models.FoundryPreviewOptInKeys": "Azure.AI.Projects.FoundryPreviewOptInKeys",
+    "com.azure.ai.projects.models.FoundryFeaturesOptInKeys": "Azure.AI.Projects.FoundryFeaturesOptInKeys",
     "com.azure.ai.projects.models.HourlyRecurrenceSchedule": "Azure.AI.Projects.HourlyRecurrenceSchedule",
     "com.azure.ai.projects.models.HumanEvaluationRuleAction": "Azure.AI.Projects.HumanEvaluationRuleAction",
     "com.azure.ai.projects.models.Index": "Azure.AI.Projects.Index",

@@ -88,7 +88,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listVersions(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @HeaderParam("Accept") String accept,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/evaluators/{name}/versions")
@@ -99,7 +99,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listVersionsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @HeaderParam("Accept") String accept,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/evaluators")
@@ -109,7 +109,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLatestVersions(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluators")
@@ -119,7 +119,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listLatestVersionsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluators/{name}/versions/{version}")
@@ -130,7 +130,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @PathParam("version") String version,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/evaluators/{name}/versions/{version}")
@@ -141,7 +141,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @PathParam("version") String version,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/evaluators/{name}/versions/{version}")
@@ -152,7 +152,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @PathParam("version") String version,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             RequestOptions requestOptions, Context context);
 
         @Delete("/evaluators/{name}/versions/{version}")
@@ -163,7 +163,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @PathParam("version") String version,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             RequestOptions requestOptions, Context context);
 
         @Post("/evaluators/{name}/versions")
@@ -174,7 +174,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
             RequestOptions requestOptions, Context context);
 
@@ -186,7 +186,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> createVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData evaluatorVersion,
             RequestOptions requestOptions, Context context);
 
@@ -198,7 +198,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateVersion(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @PathParam("version") String version,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
 
@@ -210,7 +210,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateVersionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @PathParam("version") String version,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @PathParam("version") String version,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData evaluatorVersion, RequestOptions requestOptions, Context context);
 
@@ -221,7 +221,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listVersionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -231,7 +231,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listVersionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -242,7 +242,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listLatestVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @HeaderParam("Accept") String accept,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -252,7 +252,7 @@ public final class EvaluatorsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listLatestVersionsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
@@ -324,11 +324,11 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listVersionsSinglePageAsync(String name, RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), name, foundryBeta, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -474,10 +474,10 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listVersionsSinglePage(String name, RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryBeta, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -623,11 +623,11 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLatestVersionsSinglePageAsync(RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listLatestVersions(this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(), foundryBeta, accept, requestOptions, context))
+                this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -771,10 +771,10 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLatestVersionsSinglePage(RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         Response<BinaryData> res = service.listLatestVersionsSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), foundryBeta, accept, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
@@ -913,10 +913,11 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryBeta, version, accept, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.getVersion(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
+                foundryFeatures, version, accept, requestOptions, context));
     }
 
     /**
@@ -978,10 +979,10 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return service.getVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            foundryBeta, version, accept, requestOptions, Context.NONE);
+            foundryFeatures, version, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1000,9 +1001,9 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteVersionWithResponseAsync(String name, String version,
         RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         return FluxUtil.withContext(context -> service.deleteVersion(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), name, foundryBeta, version, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), name, foundryFeatures, version, requestOptions, context));
     }
 
     /**
@@ -1020,9 +1021,9 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteVersionWithResponse(String name, String version, RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         return service.deleteVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            foundryBeta, version, requestOptions, Context.NONE);
+            foundryFeatures, version, requestOptions, Context.NONE);
     }
 
     /**
@@ -1129,12 +1130,12 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createVersionWithResponseAsync(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.createVersion(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                name, foundryBeta, contentType, accept, evaluatorVersion, requestOptions, context));
+                name, foundryFeatures, contentType, accept, evaluatorVersion, requestOptions, context));
     }
 
     /**
@@ -1241,11 +1242,11 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createVersionWithResponse(String name, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.createVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            foundryBeta, contentType, accept, evaluatorVersion, requestOptions, Context.NONE);
+            foundryFeatures, contentType, accept, evaluatorVersion, requestOptions, Context.NONE);
     }
 
     /**
@@ -1353,12 +1354,12 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateVersionWithResponseAsync(String name, String version,
         BinaryData evaluatorVersion, RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(
             context -> service.updateVersion(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                name, foundryBeta, version, contentType, accept, evaluatorVersion, requestOptions, context));
+                name, foundryFeatures, version, contentType, accept, evaluatorVersion, requestOptions, context));
     }
 
     /**
@@ -1466,11 +1467,11 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateVersionWithResponse(String name, String version, BinaryData evaluatorVersion,
         RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         return service.updateVersionSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), name,
-            foundryBeta, version, contentType, accept, evaluatorVersion, requestOptions, Context.NONE);
+            foundryFeatures, version, contentType, accept, evaluatorVersion, requestOptions, Context.NONE);
     }
 
     /**
@@ -1532,11 +1533,11 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVersionsNext(nextLink, this.client.getEndpoint(), foundryBeta, accept,
-                requestOptions, context))
+            .withContext(context -> service.listVersionsNext(nextLink, this.client.getEndpoint(), foundryFeatures,
+                accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
@@ -1598,9 +1599,9 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listVersionsNextSync(nextLink, this.client.getEndpoint(), foundryBeta,
+        Response<BinaryData> res = service.listVersionsNextSync(nextLink, this.client.getEndpoint(), foundryFeatures,
             accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
@@ -1665,10 +1666,10 @@ public final class EvaluatorsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BinaryData>> listLatestVersionsNextSinglePageAsync(String nextLink,
         RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listLatestVersionsNext(nextLink, this.client.getEndpoint(), foundryBeta,
+            .withContext(context -> service.listLatestVersionsNext(nextLink, this.client.getEndpoint(), foundryFeatures,
                 accept, requestOptions, context))
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
@@ -1731,10 +1732,10 @@ public final class EvaluatorsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listLatestVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
-        final String foundryBeta = "Evaluations=v1";
+        final String foundryFeatures = "Evaluations=V1Preview";
         final String accept = "application/json";
-        Response<BinaryData> res = service.listLatestVersionsNextSync(nextLink, this.client.getEndpoint(), foundryBeta,
-            accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.listLatestVersionsNextSync(nextLink, this.client.getEndpoint(),
+            foundryFeatures, accept, requestOptions, Context.NONE);
         return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
             getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }

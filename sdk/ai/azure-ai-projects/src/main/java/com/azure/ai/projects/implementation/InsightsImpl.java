@@ -88,7 +88,7 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> generate(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData insight, RequestOptions requestOptions, Context context);
 
@@ -99,7 +99,7 @@ public final class InsightsImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> generateSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Beta") String foundryBeta,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Foundry-Features") String foundryFeatures,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData insight, RequestOptions requestOptions, Context context);
 
@@ -230,7 +230,7 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateWithResponseAsync(BinaryData insight, RequestOptions requestOptions) {
-        final String foundryBeta = "Insights=v1";
+        final String foundryFeatures = "Insights=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -249,7 +249,7 @@ public final class InsightsImpl {
         });
         return FluxUtil.withContext(
             context -> service.generate(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-                foundryBeta, contentType, accept, insight, requestOptionsLocal, context));
+                foundryFeatures, contentType, accept, insight, requestOptionsLocal, context));
     }
 
     /**
@@ -317,7 +317,7 @@ public final class InsightsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateWithResponse(BinaryData insight, RequestOptions requestOptions) {
-        final String foundryBeta = "Insights=v1";
+        final String foundryFeatures = "Insights=V1Preview";
         final String contentType = "application/json";
         final String accept = "application/json";
         RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
@@ -335,7 +335,7 @@ public final class InsightsImpl {
             }
         });
         return service.generateSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            foundryBeta, contentType, accept, insight, requestOptionsLocal, Context.NONE);
+            foundryFeatures, contentType, accept, insight, requestOptionsLocal, Context.NONE);
     }
 
     /**

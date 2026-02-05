@@ -39,75 +39,6 @@ public final class InsightsClient {
     }
 
     /**
-     * Generate Insights.
-     * <p><strong>Header Parameters</strong></p>
-     * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
-     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
-     * HTTP-date</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     metadata (Required): {
-     *         createdAt: OffsetDateTime (Required)
-     *         completedAt: OffsetDateTime (Optional)
-     *     }
-     *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
-     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
-     *     }
-     *     result (Optional): {
-     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Required)
-     *     metadata (Required): {
-     *         createdAt: OffsetDateTime (Required)
-     *         completedAt: OffsetDateTime (Optional)
-     *     }
-     *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
-     *     displayName: String (Optional, Required on create)
-     *     request (Optional, Required on create): {
-     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
-     *     }
-     *     result (Optional): {
-     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
-     *     }
-     * }
-     * }
-     * </pre>
-     *
-     * @param insight Complete evaluation configuration including data source, evaluators, and result settings.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body for cluster insights along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateWithResponse(BinaryData insight, RequestOptions requestOptions) {
-        return this.serviceClient.generateWithResponse(insight, requestOptions);
-    }
-
-    /**
      * Get a specific insight by Id.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -201,26 +132,6 @@ public final class InsightsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
         return this.serviceClient.list(requestOptions);
-    }
-
-    /**
-     * Generate Insights.
-     *
-     * @param insight Complete evaluation configuration including data source, evaluators, and result settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body for cluster insights.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Insight generate(Insight insight) {
-        // Generated convenience method for generateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return generateWithResponse(BinaryData.fromObject(insight), requestOptions).getValue().toObject(Insight.class);
     }
 
     /**
@@ -323,5 +234,94 @@ public final class InsightsClient {
         // Generated convenience method for list
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.list(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Insight.class));
+    }
+
+    /**
+     * Generate Insights.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>repeatability-request-id</td><td>String</td><td>No</td><td>Repeatability request ID header</td></tr>
+     * <tr><td>repeatability-first-sent</td><td>String</td><td>No</td><td>Repeatability first sent header as
+     * HTTP-date</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     metadata (Required): {
+     *         createdAt: OffsetDateTime (Required)
+     *         completedAt: OffsetDateTime (Optional)
+     *     }
+     *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
+     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
+     *     }
+     *     result (Optional): {
+     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Required)
+     *     metadata (Required): {
+     *         createdAt: OffsetDateTime (Required)
+     *         completedAt: OffsetDateTime (Optional)
+     *     }
+     *     state: String(NotStarted/Running/Succeeded/Failed/Canceled) (Required)
+     *     displayName: String (Optional, Required on create)
+     *     request (Optional, Required on create): {
+     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
+     *     }
+     *     result (Optional): {
+     *         type: String(EvaluationRunClusterInsight/AgentClusterInsight/EvaluationComparison) (Required)
+     *     }
+     * }
+     * }
+     * </pre>
+     *
+     * @param insight Complete evaluation configuration including data source, evaluators, and result settings.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body for cluster insights along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> generateWithResponse(BinaryData insight, RequestOptions requestOptions) {
+        return this.serviceClient.generateWithResponse(insight, requestOptions);
+    }
+
+    /**
+     * Generate Insights.
+     *
+     * @param insight Complete evaluation configuration including data source, evaluators, and result settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body for cluster insights.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Insight generate(Insight insight) {
+        // Generated convenience method for generateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return generateWithResponse(BinaryData.fromObject(insight), requestOptions).getValue().toObject(Insight.class);
     }
 }

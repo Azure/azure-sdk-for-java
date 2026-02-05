@@ -170,7 +170,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getRun(@HostParam("endpoint") String endpoint,
             @PathParam("schedule_id") String scheduleId, @PathParam("run_id") String runId,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{schedule_id}/runs/{run_id}")
@@ -181,7 +181,7 @@ public final class SchedulesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("schedule_id") String scheduleId, @PathParam("run_id") String runId,
-            @HeaderParam("Foundry-Beta") String foundryBeta, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Foundry-Features") String foundryFeatures, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/schedules/{id}/runs")
@@ -778,10 +778,10 @@ public final class SchedulesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRunWithResponseAsync(String scheduleId, String runId,
         RequestOptions requestOptions) {
-        final String foundryBeta = "Insights=v1";
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getRun(this.client.getEndpoint(), scheduleId, runId, foundryBeta,
-            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.getRun(this.client.getEndpoint(), scheduleId, runId,
+            foundryFeatures, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -814,9 +814,9 @@ public final class SchedulesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getRunWithResponse(String scheduleId, String runId, RequestOptions requestOptions) {
-        final String foundryBeta = "Insights=v1";
+        final String foundryFeatures = "Insights=V1Preview";
         final String accept = "application/json";
-        return service.getRunSync(this.client.getEndpoint(), scheduleId, runId, foundryBeta,
+        return service.getRunSync(this.client.getEndpoint(), scheduleId, runId, foundryFeatures,
             this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
