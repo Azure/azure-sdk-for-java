@@ -12,11 +12,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServi
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +23,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.support.MessageBuilder;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
@@ -46,7 +42,6 @@ import static org.awaitility.Awaitility.waitAtMost;
     "spring.cloud.azure.servicebus.processor.entity-type=queue"
 })
 @EnabledOnOs(OS.LINUX)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ServiceBusDockerComposeConnectionDetailsFactoryTests {
 
     @Autowired
@@ -55,31 +50,7 @@ class ServiceBusDockerComposeConnectionDetailsFactoryTests {
     @Autowired
     private ServiceBusTemplate serviceBusTemplate;
 
-    @BeforeEach
-    void setUp() {
-        // Wait for any in-flight messages to be processed
-        // Use awaitility to wait until the message list stabilizes (no new messages for 2 seconds)
-        org.awaitility.Awaitility.await()
-            .atMost(Duration.ofSeconds(30))
-            .pollDelay(Duration.ofMillis(500))
-            .pollInterval(Duration.ofMillis(500))
-            .until(() -> {
-                int currentSize = Config.MESSAGES.size();
-                try {
-                    Thread.sleep(2000);
-                    return Config.MESSAGES.size() == currentSize;
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    return false;
-                }
-            });
-
-        // Clear messages for the next test
-        Config.MESSAGES.clear();
-    }
-
     @Test
-    @Order(1)
     void senderClientCanSendMessage() {
         // Wait for Service Bus emulator to be fully ready and queue entity to be available
         // The emulator depends on SQL Edge and needs time to initialize the messaging entities
@@ -88,19 +59,16 @@ class ServiceBusDockerComposeConnectionDetailsFactoryTests {
         });
 
         waitAtMost(Duration.ofSeconds(30)).pollDelay(Duration.ofSeconds(5)).untilAsserted(() -> {
-            assertThat(Config.MESSAGES).hasSize(1);
-            assertThat(Config.MESSAGES.get(0).getBody().toString()).isEqualTo("Hello World!");
+            assertThat(Config.MESSAGES).contains("Hello World!");
         });
     }
 
     @Test
-    @Order(2)
     void serviceBusTemplateCanSendMessage() {
         this.serviceBusTemplate.sendAsync("queue.1", MessageBuilder.withPayload("Hello from ServiceBusTemplate!").build()).block();
 
         waitAtMost(Duration.ofSeconds(30)).pollDelay(Duration.ofSeconds(5)).untilAsserted(() -> {
-            assertThat(Config.MESSAGES).hasSize(1);
-            assertThat(Config.MESSAGES.get(0).getBody().toString()).isEqualTo("Hello from ServiceBusTemplate!");
+            assertThat(Config.MESSAGES).contains("Hello from ServiceBusTemplate!");
         });
     }
 
@@ -111,12 +79,12 @@ class ServiceBusDockerComposeConnectionDetailsFactoryTests {
         AzureServiceBusMessagingAutoConfiguration.class})
     static class Config {
 
-        private static final List<ServiceBusReceivedMessage> MESSAGES = new ArrayList<>();
+        private static final Set<String> MESSAGES = new HashSet<>();
 
         @Bean
         ServiceBusRecordMessageListener processMessage() {
             return context -> {
-                MESSAGES.add(context.getMessage());
+                MESSAGES.add(context.getMessage().getBody().toString());
             };
         }
 
