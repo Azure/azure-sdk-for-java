@@ -1,16 +1,6 @@
 # Release History
 
-## 12.33.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 12.32.2 (Unreleased)
+## 12.32.2 (2026-02-05)
 
 ### Other Changes
 
@@ -26,6 +16,7 @@ throw errors for invalid credential combinations. This is for internal use only.
 
 - Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
 - Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
 
 ## 12.32.0 (2026-01-15)
 
