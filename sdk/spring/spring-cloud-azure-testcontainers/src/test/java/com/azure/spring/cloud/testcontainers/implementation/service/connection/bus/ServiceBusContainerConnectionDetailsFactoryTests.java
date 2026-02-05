@@ -69,7 +69,10 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
 
     @Test
     void senderClientCanSendMessage() {
-        this.senderClient.sendMessage(new ServiceBusMessage("Hello World!"));
+        // Wait for Service Bus emulator to be fully ready and queue entity to be available
+        waitAtMost(Duration.ofSeconds(120)).pollInterval(Duration.ofSeconds(2)).untilAsserted(() -> {
+            this.senderClient.sendMessage(new ServiceBusMessage("Hello World!"));
+        });
 
         waitAtMost(Duration.ofSeconds(30)).untilAsserted(() -> {
             assertThat(Config.MESSAGES).contains("Hello World!");
@@ -78,7 +81,10 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
 
     @Test
     void serviceBusTemplateCanSendMessage() {
-        this.serviceBusTemplate.sendAsync("queue.1", MessageBuilder.withPayload("Hello from ServiceBusTemplate!").build()).block();
+        // Wait for Service Bus emulator to be fully ready and queue entity to be available
+        waitAtMost(Duration.ofSeconds(120)).pollInterval(Duration.ofSeconds(2)).untilAsserted(() -> {
+            this.serviceBusTemplate.sendAsync("queue.1", MessageBuilder.withPayload("Hello from ServiceBusTemplate!").build()).block();
+        });
 
         waitAtMost(Duration.ofSeconds(30)).untilAsserted(() -> {
             assertThat(Config.MESSAGES).contains("Hello from ServiceBusTemplate!");

@@ -64,7 +64,11 @@ class ServiceBusDockerComposeConnectionDetailsFactoryTests {
 
     @Test
     void serviceBusTemplateCanSendMessage() {
-        this.serviceBusTemplate.sendAsync("queue.1", MessageBuilder.withPayload("Hello from ServiceBusTemplate!").build()).block();
+        // Wait for Service Bus emulator to be fully ready and queue entity to be available
+        // The emulator depends on SQL Edge and needs time to initialize the messaging entities
+        waitAtMost(Duration.ofSeconds(120)).pollInterval(Duration.ofSeconds(2)).untilAsserted(() -> {
+            this.serviceBusTemplate.sendAsync("queue.1", MessageBuilder.withPayload("Hello from ServiceBusTemplate!").build()).block();
+        });
 
         waitAtMost(Duration.ofSeconds(30)).pollDelay(Duration.ofSeconds(5)).untilAsserted(() -> {
             assertThat(Config.MESSAGES).contains("Hello from ServiceBusTemplate!");
