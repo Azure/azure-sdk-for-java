@@ -10,6 +10,13 @@
 
 ### Other Changes
 
+## 12.33.2 (Unreleased)
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
 ## 12.33.1 (2026-01-29)
 
 ### Other Changes

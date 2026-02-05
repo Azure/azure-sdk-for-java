@@ -4,6 +4,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
@@ -46,6 +47,7 @@ import java.util.Iterator;
 import java.util.stream.Stream;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -145,7 +147,8 @@ public class SasTests extends DataLakeTestBase {
                 .sasToken(sas)
                 .credential(tokenCredential)).buildFileClient();
 
-            assertDoesNotThrow(() -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            Response<PathProperties> response = client.getPropertiesWithResponse(null, null, Context.NONE);
+            verifySasAndTokenInRequest(response);
         });
     }
 
@@ -247,7 +250,8 @@ public class SasTests extends DataLakeTestBase {
                     .sasToken(sas)
                     .credential(tokenCredential)).buildDirectoryClient();
 
-            assertDoesNotThrow(() -> client.getPropertiesWithResponse(null, null, Context.NONE));
+            Response<PathProperties> response = client.getPropertiesWithResponse(null, null, Context.NONE);
+            verifySasAndTokenInRequest(response);
         });
     }
 
@@ -601,7 +605,9 @@ public class SasTests extends DataLakeTestBase {
                     .sasToken(sas)
                     .credential(tokenCredential)).buildClient();
 
-            assertDoesNotThrow(() -> client.listPaths().iterator().hasNext());
+            Response<PathProperties> response
+                = client.getFileClient(pathName).getPropertiesWithResponse(null, null, Context.NONE);
+            verifySasAndTokenInRequest(response);
         });
     }
 
