@@ -2,12 +2,6 @@
 
 ## 2.54.0 (2026-02-06)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 - Updated `api-version` of policy to `2025-03-01`.
