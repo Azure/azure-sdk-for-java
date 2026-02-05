@@ -182,19 +182,16 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
         throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
 
         KeyStore keyStore = KeyStore.getInstance(KeyVaultJcaProvider.PROVIDER_NAME);
-        KeyVaultLoadStoreParameter.Builder builder
-            = KeyVaultLoadStoreParameter.createBuilder(System.getProperty("azure.keyvault.uri"))
-                .tenantId(System.getProperty("azure.keyvault.tenant-id"))
-                .clientId(System.getProperty("azure.keyvault.client-id"))
-                .clientSecret(System.getProperty("azure.keyvault.client-secret"))
-                .managedIdentity(System.getProperty("azure.keyvault.managed-identity"))
-                .accessToken(System.getProperty("azure.keyvault.access-token"));
+        KeyVaultLoadStoreParameter keyVaultLoadStoreParameter = new KeyVaultLoadStoreParameter(
+            System.getProperty("azure.keyvault.uri"), System.getProperty("azure.keyvault.tenant-id"),
+            System.getProperty("azure.keyvault.client-id"), System.getProperty("azure.keyvault.client-secret"),
+            System.getProperty("azure.keyvault.managed-identity"), System.getProperty("azure.keyvault.access-token"));
 
         if (Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"))) {
-            builder.disableChallengeResourceVerification();
+            keyVaultLoadStoreParameter.disableChallengeResourceVerification();
         }
 
-        keyStore.load(builder.build());
+        keyStore.load(keyVaultLoadStoreParameter);
 
         return keyStore;
     }
