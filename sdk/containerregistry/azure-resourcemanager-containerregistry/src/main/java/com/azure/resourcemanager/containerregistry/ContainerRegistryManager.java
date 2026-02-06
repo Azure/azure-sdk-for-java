@@ -122,7 +122,9 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      * Gets the current instance of ContainerRegistryManager's tasks.
      *
      * @return the tasks of the current instance of ContainerRegistryManager.
+     * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
      */
+    @Deprecated
     public RegistryTasks containerRegistryTasks() {
         if (this.tasks == null) {
             this.tasks = new RegistryTasksImpl(this);
@@ -134,7 +136,9 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      * Gets the current instance of ContainerRegistryManager's registry task runs.
      *
      * @return the registry task runs of the current instance of ContainerRegistryManager.
+     * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
      */
+    @Deprecated
     public RegistryTaskRuns registryTaskRuns() {
         if (this.registryTaskRuns == null) {
             this.registryTaskRuns = new RegistryTaskRunsImpl(this);
@@ -147,7 +151,9 @@ public final class ContainerRegistryManager extends Manager<ContainerRegistryMan
      * based on Azure REST API.
      *
      * @return wrapped inner task client.
+     * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
      */
+    @Deprecated
     public ContainerRegistryTasksManagementClient taskClient() {
         return taskClient;
     }

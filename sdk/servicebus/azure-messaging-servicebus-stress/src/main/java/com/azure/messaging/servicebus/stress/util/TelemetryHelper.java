@@ -105,7 +105,7 @@ public class TelemetryHelper {
         Cpu.registerObservers(otel);
         MemoryPools.registerObservers(otel);
         Threads.registerObservers(otel);
-        GarbageCollector.registerObservers(otel);
+        GarbageCollector.registerObservers(otel, false); // false disables the capture of the GC cause
         OpenTelemetryAppender.install(otel);
 
         return otel;

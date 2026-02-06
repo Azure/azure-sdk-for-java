@@ -8,8 +8,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import reactor.core.publisher.Mono;
 
-/** Interface to define the RegistryTasks collection. */
-@Fluent()
+/**
+ *  Interface to define the RegistryTasks collection.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
+ */
+@Deprecated
+@Fluent
 public interface RegistryTasks extends SupportsCreating<RegistryTask.DefinitionStages.Blank> {
     /**
      * Lists the tasks in a registry asynchronously.
