@@ -758,28 +758,6 @@
 # ServiceLabel: %Migrate
 # ServiceOwners:                                                   @shijojoy
 
-# PRLabel: %Models Repository
-/sdk/modelsrepository/                                             @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft @Azure/azure-java-sdk
-
-# PRLabel: %Monitor
-/sdk/monitor/azure-monitor-ingestion*/                             @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
-
-# ServiceLabel: %Monitor
-# AzureSdkOwners:                                                  @srnagar @jairmyree
-# ServiceOwners:                                                   @SameergMS @dadunl @AzMonEssential @AzmonAlerts @AzmonActionG @AzmonLogA
-
-# PRLabel: %Monitor
-/sdk/monitor/azure-monitor-query/                                  @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
-
-# PRLabel: %Monitor
-/sdk/monitor/azure-monitor-query-logs/                             @Azure/azure-sdk-write-monitor-query-logs @Azure/azure-java-sdk
-
-# PRLabel: %Monitor
-/sdk/monitor/azure-monitor-query-metrics/                          @Azure/azure-sdk-write-monitor-query-metrics @Azure/azure-java-sdk
-
-# PRLabel: %Monitor
-/sdk/monitor/azure-monitor-query-perf/                             @srnagar @jairmyree @Azure/azure-sdk-write-monitor-data-plane @Azure/azure-java-sdk
-
 # ServiceLabel: %Monitor - ApplicationInsights
 # ServiceOwners:                                                   @regexrowboat
 
