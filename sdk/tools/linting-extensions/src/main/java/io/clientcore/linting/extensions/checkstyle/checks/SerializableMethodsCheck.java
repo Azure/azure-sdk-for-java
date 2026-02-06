@@ -11,15 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Validates serialization method completeness for JsonSerializable and XmlSerializable implementations.
+ * Verifies that classes implementing JsonSerializable or XmlSerializable provide a static fromJson or fromXml method.
  */
 public class SerializableMethodsCheck extends AbstractCheck {
-    static final String ERR_NO_TO_JSON = "Class implementing JsonSerializable must provide a toJson method.";
     static final String ERR_NO_FROM_JSON = "Class implementing JsonSerializable must provide a static fromJson method.";
-    static final String ERR_NO_TO_XML = "Class implementing XmlSerializable must provide a toXml method.";
     static final String ERR_NO_FROM_XML = "Class implementing XmlSerializable must provide a static fromXml method.";
 
     private List<TypeSnapshot> snapshotArchive;
+
+    public SerializableMethodsCheck() {
+    }
 
     @Override
     public int[] getDefaultTokens() {
@@ -78,11 +79,10 @@ public class SerializableMethodsCheck extends AbstractCheck {
         while (cursor != null) {
             if (cursor.getType() == TokenTypes.IDENT) {
                 String interfaceLabel = cursor.getText();
-
                 if ("JsonSerializable".equals(interfaceLabel)) {
-                    snapshot.mandatesJson = true;
+                    snapshot.implementsJsonSerializable = true;
                 } else if ("XmlSerializable".equals(interfaceLabel)) {
-                    snapshot.mandatesXml = true;
+                    snapshot.implementsXmlSerializable = true;
                 }
             }
             cursor = cursor.getNextSibling();
@@ -96,7 +96,7 @@ public class SerializableMethodsCheck extends AbstractCheck {
 
         TypeSnapshot latestSnapshot = snapshotArchive.get(snapshotArchive.size() - 1);
 
-        if (!latestSnapshot.mandatesJson && !latestSnapshot.mandatesXml) {
+        if (!latestSnapshot.implementsJsonSerializable && !latestSnapshot.implementsXmlSerializable) {
             return;
         }
 
@@ -128,41 +128,25 @@ public class SerializableMethodsCheck extends AbstractCheck {
 
         TypeSnapshot snapshot = snapshotArchive.remove(snapshotArchive.size() - 1);
 
-        if (snapshot.mandatesJson) {
-            if (!snapshot.observedToJson) {
-                log(classNode, ERR_NO_TO_JSON);
-            }
-            if (!snapshot.observedFromJson) {
-                log(classNode, ERR_NO_FROM_JSON);
-            }
+        if (snapshot.implementsJsonSerializable && !snapshot.observedFromJson) {
+            log(classNode, ERR_NO_FROM_JSON);
         }
 
-        if (snapshot.mandatesXml) {
-            if (!snapshot.observedToXml) {
-                log(classNode, ERR_NO_TO_XML);
-            }
-            if (!snapshot.observedFromXml) {
-                log(classNode, ERR_NO_FROM_XML);
-            }
+        if (snapshot.implementsXmlSerializable && !snapshot.observedFromXml) {
+            log(classNode, ERR_NO_FROM_XML);
         }
     }
 
     private static class TypeSnapshot {
         DetailAST classNode;
-        boolean mandatesJson;
-        boolean mandatesXml;
-        boolean observedToJson;
+        boolean implementsJsonSerializable;
+        boolean implementsXmlSerializable;
         boolean observedFromJson;
-        boolean observedToXml;
         boolean observedFromXml;
 
         void digestMethod(String methodLabel, boolean markedStatic) {
-            if ("toJson".equals(methodLabel)) {
-                observedToJson = true;
-            } else if ("fromJson".equals(methodLabel) && markedStatic) {
+            if ("fromJson".equals(methodLabel) && markedStatic) {
                 observedFromJson = true;
-            } else if ("toXml".equals(methodLabel)) {
-                observedToXml = true;
             } else if ("fromXml".equals(methodLabel) && markedStatic) {
                 observedFromXml = true;
             }

@@ -13,8 +13,6 @@ import java.io.File;
 
 import static io.clientcore.linting.extensions.checkstyle.checks.SerializableMethodsCheck.ERR_NO_FROM_JSON;
 import static io.clientcore.linting.extensions.checkstyle.checks.SerializableMethodsCheck.ERR_NO_FROM_XML;
-import static io.clientcore.linting.extensions.checkstyle.checks.SerializableMethodsCheck.ERR_NO_TO_JSON;
-import static io.clientcore.linting.extensions.checkstyle.checks.SerializableMethodsCheck.ERR_NO_TO_XML;
 
 /**
  * Tests {@link SerializableMethodsCheck}.
@@ -47,30 +45,11 @@ public class SerializableMethodsCheckTest extends AbstractModuleTestSupport {
     }
 
     @Test
-    public void jsonSerializableMissingToJson() throws Exception {
-        File testFile = TestUtils.createCheckFile("jsonMissingTo", "package com.azure;",
-            "public class JsonMissingTo implements JsonSerializable {",
-            "    public static JsonMissingTo fromJson() { return null; }", "}");
-
-        String[] expectedErrors = { "2:1: " + ERR_NO_TO_JSON };
-        verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
-    }
-
-    @Test
     public void jsonSerializableMissingFromJson() throws Exception {
         File testFile = TestUtils.createCheckFile("jsonMissingFrom", "package com.azure;",
             "public class JsonMissingFrom implements JsonSerializable {", "    public void toJson() {}", "}");
 
         String[] expectedErrors = { "2:1: " + ERR_NO_FROM_JSON };
-        verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
-    }
-
-    @Test
-    public void jsonSerializableMissingBothMethods() throws Exception {
-        File testFile = TestUtils.createCheckFile("jsonMissingBoth", "package com.azure;",
-            "public class JsonMissingBoth implements JsonSerializable {", "}");
-
-        String[] expectedErrors = { "2:1: " + ERR_NO_TO_JSON, "2:1: " + ERR_NO_FROM_JSON };
         verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
     }
 
@@ -94,30 +73,11 @@ public class SerializableMethodsCheckTest extends AbstractModuleTestSupport {
     }
 
     @Test
-    public void xmlSerializableMissingToXml() throws Exception {
-        File testFile = TestUtils.createCheckFile("xmlMissingTo", "package com.azure;",
-            "public class XmlMissingTo implements XmlSerializable {",
-            "    public static XmlMissingTo fromXml() { return null; }", "}");
-
-        String[] expectedErrors = { "2:1: " + ERR_NO_TO_XML };
-        verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
-    }
-
-    @Test
     public void xmlSerializableMissingFromXml() throws Exception {
         File testFile = TestUtils.createCheckFile("xmlMissingFrom", "package com.azure;",
             "public class XmlMissingFrom implements XmlSerializable {", "    public void toXml() {}", "}");
 
         String[] expectedErrors = { "2:1: " + ERR_NO_FROM_XML };
-        verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
-    }
-
-    @Test
-    public void xmlSerializableMissingBothMethods() throws Exception {
-        File testFile = TestUtils.createCheckFile("xmlMissingBoth", "package com.azure;",
-            "public class XmlMissingBoth implements XmlSerializable {", "}");
-
-        String[] expectedErrors = { "2:1: " + ERR_NO_TO_XML, "2:1: " + ERR_NO_FROM_XML };
         verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
     }
 
@@ -146,11 +106,7 @@ public class SerializableMethodsCheckTest extends AbstractModuleTestSupport {
         File testFile = TestUtils.createCheckFile("bothMissing", "package com.azure;",
             "public class BothMissing implements JsonSerializable, XmlSerializable {", "}");
 
-        String[] expectedErrors = {
-            "2:1: " + ERR_NO_TO_JSON,
-            "2:1: " + ERR_NO_FROM_JSON,
-            "2:1: " + ERR_NO_TO_XML,
-            "2:1: " + ERR_NO_FROM_XML };
+        String[] expectedErrors = { "2:1: " + ERR_NO_FROM_JSON, "2:1: " + ERR_NO_FROM_XML };
         verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
     }
 
@@ -160,7 +116,7 @@ public class SerializableMethodsCheckTest extends AbstractModuleTestSupport {
             "public class BothMissingJson implements JsonSerializable, XmlSerializable {", "    public void toXml() {}",
             "    public static BothMissingJson fromXml() { return null; }", "}");
 
-        String[] expectedErrors = { "2:1: " + ERR_NO_TO_JSON, "2:1: " + ERR_NO_FROM_JSON };
+        String[] expectedErrors = { "2:1: " + ERR_NO_FROM_JSON };
         verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
     }
 
@@ -170,7 +126,7 @@ public class SerializableMethodsCheckTest extends AbstractModuleTestSupport {
             "public class BothMissingXml implements JsonSerializable, XmlSerializable {", "    public void toJson() {}",
             "    public static BothMissingXml fromJson() { return null; }", "}");
 
-        String[] expectedErrors = { "2:1: " + ERR_NO_TO_XML, "2:1: " + ERR_NO_FROM_XML };
+        String[] expectedErrors = { "2:1: " + ERR_NO_FROM_XML };
         verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
     }
 
@@ -196,7 +152,7 @@ public class SerializableMethodsCheckTest extends AbstractModuleTestSupport {
         File testFile = TestUtils.createCheckFile("nestedMissing", "package com.azure;", "public class OuterClass {",
             "    public static class InnerClass implements JsonSerializable {", "    }", "}");
 
-        String[] expectedErrors = { "3:5: " + ERR_NO_TO_JSON, "3:5: " + ERR_NO_FROM_JSON };
+        String[] expectedErrors = { "3:5: " + ERR_NO_FROM_JSON };
         verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
     }
 
