@@ -46,6 +46,7 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String IS_ASYNC = "isAsync";
     private static final String CONTEXT = "Context";
     private static final String REQUEST_OPTIONS = "RequestOptions";
+    private static final String REQUEST_CONTEXT = "RequestContext";
 
     private static final String RESPONSE_BRACKET = "Response<";
     private static final String MONO_BRACKET = "Mono<";
@@ -77,7 +78,7 @@ public class ServiceClientCheck extends AbstractCheck {
     private static final String ASYNC_CONTEXT_ERROR
         = "Asynchronous method with annotation @ServiceMethod must not have ''%s'' as a method parameter.";
     private static final String SYNC_CONTEXT_ERROR
-        = "Synchronous method with annotation @ServiceMethod must have ''%s'' or ''%s'' as a method parameter.";
+        = "Synchronous method with annotation @ServiceMethod must have ''%s'', ''%s'' or ''%s'' as a method parameter.";
 
     // Add all imported classes into a map, key is the name of class and value is the full package path of class.
     private final Map<String, String> simpleClassNameToQualifiedNameMap = new HashMap<>();
@@ -399,6 +400,15 @@ public class ServiceClientCheck extends AbstractCheck {
                 return paramTypeIdentToken != null && REQUEST_OPTIONS.equals(paramTypeIdentToken.getText());
             }).isPresent();
 
+        boolean containsRequestContextParameter = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
+            if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
+                return false;
+            }
+            final DetailAST paramTypeIdentToken
+                = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
+            return paramTypeIdentToken != null && REQUEST_CONTEXT.equals(paramTypeIdentToken.getText());
+        }).isPresent();
+
         if (containsContextParameter) {
             // MONO and PagedFlux return type implies Asynchronous method
             if (returnType.startsWith(MONO_BRACKET)
@@ -406,11 +416,11 @@ public class ServiceClientCheck extends AbstractCheck {
                 || returnType.startsWith(POLLER_FLUX_BRACKET)) {
                 log(methodDefToken, String.format(ASYNC_CONTEXT_ERROR, CONTEXT));
             }
-        } else if (!containsRequestOptionsParameter) {
+        } else if (!(containsRequestOptionsParameter || containsRequestContextParameter)) {
             // Context or RequestOptions should be passed in as an argument to all public methods
             // annotated with @ServiceMethod that return Response<T> in sync clients.
             if (returnType.startsWith(RESPONSE_BRACKET)) {
-                log(methodDefToken, String.format(SYNC_CONTEXT_ERROR, CONTEXT, REQUEST_OPTIONS));
+                log(methodDefToken, String.format(SYNC_CONTEXT_ERROR, CONTEXT, REQUEST_OPTIONS, REQUEST_CONTEXT));
             }
         }
     }
