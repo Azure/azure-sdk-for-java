@@ -161,7 +161,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdContainer);
+        cleanUpContainer(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(
             DEFAULT_NUM_DOCUMENTS_PER_PKEY,

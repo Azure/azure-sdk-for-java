@@ -266,7 +266,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
         try {
-            truncateCollection(createdCollection);
+            cleanUpContainer(createdCollection);
         } catch (Throwable throwable) {
             throwable = Exceptions.unwrap(throwable);
             if (!(throwable instanceof CosmosException)) {

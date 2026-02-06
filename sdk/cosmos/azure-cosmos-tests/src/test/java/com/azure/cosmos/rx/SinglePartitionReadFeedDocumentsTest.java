@@ -55,7 +55,7 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     public void before_SinglePartitionReadFeedDocumentsTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedSinglePartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         List<InternalObjectNode> docDefList = new ArrayList<>();
 

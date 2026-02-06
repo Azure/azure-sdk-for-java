@@ -672,7 +672,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
         String containerName = "roundTripsContainer-" + UUID.randomUUID();
         createdDatabase.createContainer(containerName,
             "/mypk",

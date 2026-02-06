@@ -245,77 +245,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected static void cleanUpContainer(CosmosAsyncContainer cosmosContainer) {
-        CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
-        String cosmosContainerId = cosmosContainerProperties.getId();
-        logger.info("Truncating collection {} ...", cosmosContainerId);
-        List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
-        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setCosmosEndToEndOperationLatencyPolicyConfig(
-            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
-                .build()
-        );
-        options.setMaxDegreeOfParallelism(-1);
-        int maxItemCount = 100;
-
-        Flux<CosmosItemOperation> deleteOperations =
-            cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
-                .byPage(maxItemCount)
-                .publishOn(Schedulers.parallel())
-                .flatMap(page -> Flux.fromIterable(page.getResults()))
-                .map(doc -> {
-                    PartitionKey partitionKey;
-                    if (paths != null && !paths.isEmpty()) {
-                        List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                        Object propertyValue = doc.getObjectByPath(pkPath);
-                        if (propertyValue == null) {
-                            partitionKey = PartitionKey.NONE;
-                        } else {
-                            partitionKey = new PartitionKey(propertyValue);
-                        }
-                    } else {
-                        partitionKey = new PartitionKey(null);
-                    }
-
-                    return CosmosBulkOperations.getDeleteItemOperation(doc.getId(), partitionKey);
-                });
-
-        CosmosBulkExecutionOptions bulkOptions = new CosmosBulkExecutionOptions();
-        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-            .getCosmosBulkExecutionOptionsAccessor()
-            .getImpl(bulkOptions)
-            .setCosmosEndToEndLatencyPolicyConfig(
-                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
-                    .build());
-
-        cosmosContainer.executeBulkOperations(deleteOperations, bulkOptions)
-            .flatMap(response -> {
-                if (response.getException() != null) {
-                    Exception ex = response.getException();
-                    if (ex instanceof CosmosException) {
-                        CosmosException cosmosException = (CosmosException) ex;
-                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
-                            && cosmosException.getSubStatusCode() == 0) {
-                            return Mono.empty();
-                        }
-                    }
-                    return Mono.error(ex);
-                }
-                if (response.getResponse() != null
-                    && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    return Mono.empty();
-                }
-                return Mono.just(response);
-            })
-            .blockLast();
-    }
-
-    protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
 
         try {
             int i = 0;
             while (i < 100) {
                 try {
-                    truncateCollectionInternal(cosmosContainer);
+                    cleanUpContainerInternal(cosmosContainer);
                     return;
                 } catch (CosmosException exception) {
                     if (exception.getStatusCode() != HttpConstants.StatusCodes.TOO_MANY_REQUESTS
@@ -357,7 +292,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         assertThat(counts.get(0)).isEqualTo(expectedCount);
     }
 
-    private static void truncateCollectionInternal(CosmosAsyncContainer cosmosContainer) {
+    private static void cleanUpContainerInternal(CosmosAsyncContainer cosmosContainer) {
         CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
         String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);

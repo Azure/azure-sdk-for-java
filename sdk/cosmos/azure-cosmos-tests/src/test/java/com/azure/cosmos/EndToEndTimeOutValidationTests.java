@@ -62,7 +62,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
         try {
             createdContainer = getSharedMultiPartitionCosmosContainer(client);
-            truncateCollection(createdContainer);
+            cleanUpContainer(createdContainer);
 
             createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
 

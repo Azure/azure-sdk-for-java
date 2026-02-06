@@ -83,7 +83,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     public void before_ReadFeedDocumentsTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         List<InternalObjectNode> docDefList = new ArrayList<>();
 

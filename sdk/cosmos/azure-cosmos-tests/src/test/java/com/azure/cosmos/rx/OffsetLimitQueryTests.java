@@ -344,7 +344,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         bulkInsert();
 
