@@ -39,7 +39,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
     /**
      * Stores the access token.
      */
-    private final String accessToken;
+    private String accessToken;
 
     /**
      * Stores a flag indicating if challenge resource verification shall be disabled.
@@ -52,7 +52,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param keyVaultUri The Azure Key Vault URI.
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri) {
-        this(keyVaultUri, null, null, null, null, null);
+        this(keyVaultUri, null, null, null, null);
     }
 
     /**
@@ -62,7 +62,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param managedIdentity The managed identity.
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri, String managedIdentity) {
-        this(keyVaultUri, null, null, null, managedIdentity, null);
+        this(keyVaultUri, null, null, null, managedIdentity);
     }
 
     /**
@@ -74,7 +74,7 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      * @param clientSecret The client secret.
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
-        this(keyVaultUri, tenantId, clientId, clientSecret, null, null);
+        this(keyVaultUri, tenantId, clientId, clientSecret, null);
     }
 
     /**
@@ -88,28 +88,11 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity) {
-        this(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, null);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param keyVaultUri The Azure Key Vault URI.
-     * @param tenantId The tenant id.
-     * @param clientId The client id.
-     * @param clientSecret The client secret.
-     * @param managedIdentity The managed identity.
-     * @param accessToken The access token.
-     */
-    public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
-        String managedIdentity, String accessToken) {
-
         this.keyVaultUri = keyVaultUri;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.managedIdentity = managedIdentity;
-        this.accessToken = accessToken;
     }
 
     /**
@@ -147,6 +130,18 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public String getManagedIdentity() {
         return managedIdentity;
+    }
+
+    /**
+     * Set the access token.
+     *
+     * @param accessToken The access token.
+     *
+     * @return The KeyVaultLoadStoreParameter.
+     */
+    public KeyVaultLoadStoreParameter setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+        return this;
     }
 
     /**

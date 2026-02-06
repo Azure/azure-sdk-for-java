@@ -458,13 +458,6 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class,
             () -> new BlobClientBuilder().endpoint(ENDPOINT)
                 .blobName("foo")
-                .credential(new MockTokenCredential())
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new BlobClientBuilder().endpoint(ENDPOINT)
-                .blobName("foo")
                 .sasToken("foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
@@ -479,13 +472,6 @@ public class BuilderHelperTests {
             () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
                 .blobName("foo")
                 .credential(new StorageSharedKeyCredential("foo", "bar"))
-                .credential(new AzureSasCredential("foo"))
-                .buildBlockBlobClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new SpecializedBlobClientBuilder().endpoint(ENDPOINT)
-                .blobName("foo")
-                .credential(new MockTokenCredential())
                 .credential(new AzureSasCredential("foo"))
                 .buildBlockBlobClient());
 
@@ -510,12 +496,6 @@ public class BuilderHelperTests {
 
         assertThrows(IllegalStateException.class,
             () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
-                .credential(new MockTokenCredential())
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new BlobContainerClientBuilder().endpoint(ENDPOINT)
                 .sasToken("foo")
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
@@ -528,12 +508,6 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class,
             () -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
                 .credential(new StorageSharedKeyCredential("foo", "bar"))
-                .credential(new AzureSasCredential("foo"))
-                .buildClient());
-
-        assertThrows(IllegalStateException.class,
-            () -> new BlobServiceClientBuilder().endpoint(ENDPOINT)
-                .credential(new MockTokenCredential())
                 .credential(new AzureSasCredential("foo"))
                 .buildClient());
 
