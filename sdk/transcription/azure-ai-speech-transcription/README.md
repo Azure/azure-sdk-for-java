@@ -28,7 +28,7 @@ Use the client library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-speech-transcription</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -229,8 +229,7 @@ byte[] audioData = Files.readAllBytes(Paths.get("path/to/audio.wav"));
 AudioFileDetails audioFileDetails = new AudioFileDetails(BinaryData.fromBytes(audioData));
 
 PhraseListOptions phraseListOptions = new PhraseListOptions()
-    .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"))
-    .setBiasingWeight(5.0);
+    .setPhrases(java.util.Arrays.asList("Azure", "Cognitive Services"));
 
 TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
     .setPhraseListOptions(phraseListOptions);

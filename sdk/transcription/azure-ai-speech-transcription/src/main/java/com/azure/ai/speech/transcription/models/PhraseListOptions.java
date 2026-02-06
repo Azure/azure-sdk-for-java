@@ -25,7 +25,7 @@ public final class PhraseListOptions implements JsonSerializable<PhraseListOptio
     private List<String> phrases;
 
     /*
-     * Biasing weight for phrase list (1.0 to 20.0).
+     * Biasing weight for phrase list (0.0-2.0).
      */
     @Generated
     private Double biasingWeight;
@@ -60,7 +60,7 @@ public final class PhraseListOptions implements JsonSerializable<PhraseListOptio
     }
 
     /**
-     * Get the biasingWeight property: Biasing weight for phrase list (1.0 to 20.0).
+     * Get the biasingWeight property: Biasing weight for phrase list (0.0-2.0).
      *
      * @return the biasingWeight value.
      */
@@ -70,7 +70,7 @@ public final class PhraseListOptions implements JsonSerializable<PhraseListOptio
     }
 
     /**
-     * Set the biasingWeight property: Biasing weight for phrase list (1.0 to 20.0).
+     * Set the biasingWeight property: Biasing weight for phrase list (0.0-2.0).
      *
      * @param biasingWeight the biasingWeight value to set.
      * @return the PhraseListOptions object itself.

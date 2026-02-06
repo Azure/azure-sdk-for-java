@@ -7,8 +7,12 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import reactor.core.publisher.Mono;
 
-/** An immutable client-side representation of collection of Azure registry task runs. */
-@Fluent()
+/**
+ * An immutable client-side representation of collection of Azure registry task runs.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
+ */
+@Deprecated
+@Fluent
 public interface RegistryTaskRuns {
     /**
      * The function that begins the steps to schedule a run.

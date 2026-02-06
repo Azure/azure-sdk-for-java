@@ -6,6 +6,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -33,14 +34,17 @@ final class CustomValidationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        url = context.getHttpRequest().getUrl();
-        Mono<byte[]> asyncBytes = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
-            .map(LocalStorageTelemetryPipelineListener::ungzip);
-        asyncBytes.subscribe(value -> {
-            actualTelemetryItems.addAll(deserialize(value));
-            countDown.countDown();
-        });
-        return next.process();
+        URL requestUrl = context.getHttpRequest().getUrl();
+        if (requestUrl.getPath().contains("/v2.1/track")) {
+            url = requestUrl;
+            Mono<byte[]> asyncBytes = FluxUtil.collectBytesInByteBufferStream(context.getHttpRequest().getBody())
+                .map(LocalStorageTelemetryPipelineListener::ungzip);
+            asyncBytes.subscribe(value -> {
+                actualTelemetryItems.addAll(deserialize(value));
+                countDown.countDown();
+            });
+        }
+        return Mono.just(new MockHttpResponse(context.getHttpRequest(), 200));
     }
 
     // Copied from com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils.java

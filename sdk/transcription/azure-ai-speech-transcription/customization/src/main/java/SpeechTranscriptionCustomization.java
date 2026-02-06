@@ -123,6 +123,7 @@ public class SpeechTranscriptionCustomization extends Customization {
      * Customize EnhancedModeOptions to hide the enabled property from the public API.
      * The enabled property is automatically set to true in the constructor.
      * Both isEnabled() getter and setEnabled() setter are removed from the public API.
+     * The toJson() method is customized to serialize the enabled field.
      *
      * @param packageCustomization the package customization
      */
@@ -144,12 +145,23 @@ public class SpeechTranscriptionCustomization extends Customization {
                             new Javadoc(parseText(
                                 "Creates an instance of EnhancedModeOptions class with enhanced mode automatically enabled.")));
                     });
-                
+
                 // Remove isEnabled() getter to hide enabled from public API
                 clazz.getMethodsByName("isEnabled").forEach(method -> method.remove());
-                
+
                 // Remove ALL setEnabled() methods to hide enabled from public API
                 clazz.getMethodsByName("setEnabled").forEach(method -> method.remove());
+
+                // Customize toJson() to serialize the enabled field
+                clazz.getMethodsByName("toJson").forEach(method -> {
+                    method.setBody(parseBlock(
+                        "{ jsonWriter.writeStartObject(); "
+                        + "jsonWriter.writeBooleanField(\"enabled\", this.enabled); "
+                        + "jsonWriter.writeStringField(\"task\", this.task); "
+                        + "jsonWriter.writeStringField(\"targetLanguage\", this.targetLanguage); "
+                        + "jsonWriter.writeArrayField(\"prompt\", this.prompts, (writer, element) -> writer.writeString(element)); "
+                        + "return jsonWriter.writeEndObject(); }"));
+                });
             });
         });
     }
