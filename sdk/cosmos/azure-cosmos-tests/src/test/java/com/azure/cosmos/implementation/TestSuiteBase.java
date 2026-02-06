@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.CosmosException;
@@ -178,177 +179,123 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
     protected static void truncateCollection(DocumentCollection collection) {
         logger.info("Truncating DocumentCollection {} ...", collection.getId());
-        AsyncDocumentClient houseKeepingClient = createGatewayHouseKeepingDocumentClient().build();
-        try {
-            List<String> paths = collection.getPartitionKey().getPaths();
+        List<String> paths = collection.getPartitionKey().getPaths();
 
-            try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
-                .key(TestConfigurations.MASTER_KEY)
-                .endpoint(TestConfigurations.HOST)
-                .buildAsyncClient()) {
-                CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-                options.setMaxDegreeOfParallelism(-1);
-                QueryFeedOperationState state = new QueryFeedOperationState(
-                    cosmosClient,
-                    "truncateCollection",
-                    collection.getSelfLink(),
-                    collection.getId(),
-                    ResourceType.Document,
-                    OperationType.Query,
-                    null,
-                    options,
-                    new CosmosPagedFluxOptions()
-                );
+        try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient()) {
 
-                ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setMaxDegreeOfParallelism(-1);
 
-                logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
+            ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 100);
 
-                String altLink = collection.getAltLink();
-                String[] altLinkSegments = altLink.split("/");
-                // altLink format: dbs/{dbName}/colls/{collName}
-                String databaseName = altLinkSegments[1];
-                String containerName = altLinkSegments[3];
+            logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
-                Flux<CosmosItemOperation> deleteOperations =
-                    houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", state, Document.class)
-                                      .publishOn(Schedulers.parallel())
-                                      .flatMap(page -> Flux.fromIterable(page.getResults()))
-                                      .map(doc -> {
-                                          PartitionKey partitionKey;
-                                          if (paths != null && !paths.isEmpty()) {
-                                              List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                                              Object propertyValue = doc.getObjectByPath(pkPath);
-                                              if (propertyValue == null) {
-                                                  propertyValue = Undefined.value();
-                                              }
-                                              partitionKey = new PartitionKey(propertyValue);
-                                          } else {
-                                              partitionKey = PartitionKey.NONE;
-                                          }
+            String altLink = collection.getAltLink();
+            String[] altLinkSegments = altLink.split("/");
+            // altLink format: dbs/{dbName}/colls/{collName}
+            String databaseName = altLinkSegments[1];
+            String containerName = altLinkSegments[3];
 
-                                          return CosmosBulkOperations.getDeleteItemOperation(doc.getId(), partitionKey);
-                                      });
+            CosmosAsyncContainer container = cosmosClient.getDatabase(databaseName).getContainer(containerName);
 
-                CosmosBulkExecutionOptions bulkOptions = new CosmosBulkExecutionOptions();
-                ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-                    .getCosmosBulkExecutionOptionsAccessor()
-                    .getImpl(bulkOptions)
-                    .setCosmosEndToEndLatencyPolicyConfig(
-                        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
-                            .build());
+            Flux<CosmosItemOperation> deleteOperations =
+                container
+                    .queryItems( "SELECT * FROM root", Document.class)
+                    .byPage()
+                    .publishOn(Schedulers.parallel())
+                    .flatMap(page -> Flux.fromIterable(page.getResults()))
+                    .map(doc -> {
+                        PartitionKey partitionKey;
+                        if (paths != null && !paths.isEmpty()) {
+                            List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                            Object propertyValue = doc.getObjectByPath(pkPath);
+                            if (propertyValue == null) {
+                                propertyValue = Undefined.value();
+                            }
+                            partitionKey = new PartitionKey(propertyValue);
+                        } else {
+                            partitionKey = PartitionKey.NONE;
+                        }
 
-                cosmosClient.getDatabase(databaseName)
-                            .getContainer(containerName)
-                            .executeBulkOperations(deleteOperations, bulkOptions)
-                            .flatMap(response -> {
-                                if (response.getException() != null) {
-                                    Exception ex = response.getException();
-                                    if (ex instanceof CosmosException) {
-                                        CosmosException cosmosException = (CosmosException) ex;
-                                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
-                                            && cosmosException.getSubStatusCode() == 0) {
-                                            return Mono.empty();
-                                        }
+                        return CosmosBulkOperations.getDeleteItemOperation(doc.getId(), partitionKey);
+                    });
+
+            CosmosBulkExecutionOptions bulkOptions = new CosmosBulkExecutionOptions();
+            ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .getImpl(bulkOptions)
+                .setCosmosEndToEndLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
+                        .build());
+
+            cosmosClient.getDatabase(databaseName)
+                        .getContainer(containerName)
+                        .executeBulkOperations(deleteOperations, bulkOptions)
+                        .flatMap(response -> {
+                            if (response.getException() != null) {
+                                Exception ex = response.getException();
+                                if (ex instanceof CosmosException) {
+                                    CosmosException cosmosException = (CosmosException) ex;
+                                    if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
+                                        && cosmosException.getSubStatusCode() == 0) {
+                                        return Mono.empty();
                                     }
-                                    return Mono.error(ex);
                                 }
-                                if (response.getResponse() != null
-                                    && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                                    return Mono.empty();
-                                }
-                                if (response.getResponse() != null
-                                    && !response.getResponse().isSuccessStatusCode()) {
-                                    return Mono.error(new IllegalStateException(
-                                        "Bulk delete operation failed with status code " + response.getResponse().getStatusCode()));
-                                }
-                                return Mono.just(response);
-                            })
-                            .blockLast();
+                                return Mono.error(ex);
+                            }
+                            if (response.getResponse() != null
+                                && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                                return Mono.empty();
+                            }
+                            if (response.getResponse() != null
+                                && !response.getResponse().isSuccessStatusCode()) {
+                                return Mono.error(new IllegalStateException(
+                                    "Bulk delete operation failed with status code " + response.getResponse().getStatusCode()));
+                            }
+                            return Mono.just(response);
+                        })
+                        .blockLast();
 
-                logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
+            logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
 
-                state = new QueryFeedOperationState(
-                    cosmosClient,
-                    "truncateTriggers",
-                    collection.getSelfLink(),
-                    collection.getId(),
-                    ResourceType.Document,
-                    OperationType.Query,
-                    null,
-                    options,
-                    new CosmosPagedFluxOptions()
-                );
-                houseKeepingClient.queryTriggers(collection.getSelfLink(), "SELECT * FROM root", state)
-                                  .publishOn(Schedulers.parallel())
-                                  .flatMap(page -> Flux.fromIterable(page.getResults()))
-                                  .flatMap(trigger -> {
-                                      RequestOptions requestOptions = new RequestOptions();
+            container
+                .getScripts()
+                .queryTriggers("SELECT * FROM root", new CosmosQueryRequestOptions())
+                .byPage()
+                .publishOn(Schedulers.parallel())
+                .flatMap(page -> Flux.fromIterable(page.getResults()))
+                .flatMap(trigger -> container.getScripts().getTrigger(trigger.getId()).delete()).then().block();
 
-                                      //                    if (paths != null && !paths.isEmpty()) {
-                                      //                        Object propertyValue = trigger.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-                                      //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-                                      //                    }
+            logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
 
-                                      return houseKeepingClient.deleteTrigger(trigger.getSelfLink(), requestOptions);
-                                  }).then().block();
+            container
+                .getScripts()
+                .queryStoredProcedures("SELECT * FROM root", new CosmosQueryRequestOptions())
+                .byPage()
+                .publishOn(Schedulers.parallel())
+                .flatMap(page -> Flux.fromIterable(page.getResults()))
+                .flatMap(storedProcedure -> {
+                    return container.getScripts().getStoredProcedure(storedProcedure.getId()).delete();
+                })
+                .then()
+                .block();
 
-                logger.info("Truncating DocumentCollection {} storedProcedures ...", collection.getId());
+            logger.info("Truncating DocumentCollection {} udfs ...", collection.getId());
 
-                state = new QueryFeedOperationState(
-                    cosmosClient,
-                    "truncateStoredProcs",
-                    collection.getSelfLink(),
-                    collection.getId(),
-                    ResourceType.Document,
-                    OperationType.Query,
-                    null,
-                    options,
-                    new CosmosPagedFluxOptions()
-                );
-                houseKeepingClient.queryStoredProcedures(collection.getSelfLink(), "SELECT * FROM root", state)
-                                  .publishOn(Schedulers.parallel())
-                                  .flatMap(page -> Flux.fromIterable(page.getResults()))
-                                  .flatMap(storedProcedure -> {
-                                      RequestOptions requestOptions = new RequestOptions();
-
-                                      //                    if (paths != null && !paths.isEmpty()) {
-                                      //                        Object propertyValue = storedProcedure.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-                                      //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-                                      //                    }
-
-                                      return houseKeepingClient.deleteStoredProcedure(storedProcedure.getSelfLink(), requestOptions);
-                                  }).then().block();
-
-                logger.info("Truncating DocumentCollection {} udfs ...", collection.getId());
-
-                state = new QueryFeedOperationState(
-                    cosmosClient,
-                    "truncateUserDefinedFunctions",
-                    collection.getSelfLink(),
-                    collection.getId(),
-                    ResourceType.Document,
-                    OperationType.Query,
-                    null,
-                    options,
-                    new CosmosPagedFluxOptions()
-                );
-                houseKeepingClient.queryUserDefinedFunctions(collection.getSelfLink(), "SELECT * FROM root", state)
-                                  .publishOn(Schedulers.parallel())
-                                  .flatMap(page -> Flux.fromIterable(page.getResults()))
-                                  .flatMap(udf -> {
-                                      RequestOptions requestOptions = new RequestOptions();
-
-                                      //                    if (paths != null && !paths.isEmpty()) {
-                                      //                        Object propertyValue = udf.getObjectByPath(PathParser.getPathParts(paths.get(0)));
-                                      //                        requestOptions.partitionKey(new PartitionKey(propertyValue));
-                                      //                    }
-
-                                      return houseKeepingClient.deleteUserDefinedFunction(udf.getSelfLink(), requestOptions);
-                                  }).then().block();
-            }
-        } finally {
-            houseKeepingClient.close();
+            container
+                .getScripts()
+                .queryUserDefinedFunctions("SELECT * FROM root", new CosmosQueryRequestOptions())
+                .byPage()
+                .publishOn(Schedulers.parallel()).flatMap(page -> Flux.fromIterable(page.getResults()))
+                .flatMap(udf -> {
+                    RequestOptions requestOptions = new RequestOptions();
+                    return container.getScripts().getUserDefinedFunction(udf.getId()).delete();
+                })
+                .then()
+                .block();
         }
 
         logger.info("Finished truncating DocumentCollection {}.", collection.getId());
