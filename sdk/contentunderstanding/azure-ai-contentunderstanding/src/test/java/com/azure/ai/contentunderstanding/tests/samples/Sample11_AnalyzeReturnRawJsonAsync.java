@@ -38,7 +38,7 @@ public class Sample11_AnalyzeReturnRawJsonAsync extends ContentUnderstandingClie
 
         // BEGIN:ContentUnderstandingAnalyzeReturnRawJsonAsync
         // Load local test file
-        Path filePath = Paths.get("src/test/resources/sample_invoice.pdf");
+        Path filePath = Paths.get("src/samples/resources/sample_invoice.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
 
         // Prepare request body with binary data using JSON format

@@ -38,7 +38,7 @@ public class Sample01_AnalyzeBinary extends ContentUnderstandingClientTestBase {
     public void testAnalyzeBinary() throws IOException {
 
         // Load the sample file
-        String filePath = "src/test/resources/sample_invoice.pdf";
+        String filePath = "src/samples/resources/sample_invoice.pdf";
         Path path = Paths.get(filePath);
 
         byte[] fileBytes;

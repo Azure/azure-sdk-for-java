@@ -37,7 +37,7 @@ public class Sample11_AnalyzeReturnRawJson extends ContentUnderstandingClientTes
 
         // BEGIN:ContentUnderstandingAnalyzeReturnRawJson
         // Load local test file
-        Path filePath = Paths.get("src/test/resources/sample_invoice.pdf");
+        Path filePath = Paths.get("src/samples/resources/sample_invoice.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
 
         // Prepare request body with binary data using JSON format

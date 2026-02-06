@@ -40,7 +40,7 @@ public class Sample10_AnalyzeConfigs extends ContentUnderstandingClientTestBase 
 
         // BEGIN:ContentUnderstandingAnalyzeWithConfigs
         // Load local sample file
-        Path filePath = Paths.get("src/test/resources/sample_document_features.pdf");
+        Path filePath = Paths.get("src/samples/resources/sample_document_features.pdf");
         byte[] fileBytes = Files.readAllBytes(filePath);
         BinaryData binaryData = BinaryData.fromBytes(fileBytes);
 
