@@ -923,11 +923,10 @@ public class SasAsyncTests extends DataLakeTestBase {
 
                     String sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, r);
 
-                    DataLakeFileAsyncClient client
-                        = new DataLakePathClientBuilder().endpoint(sasClient.getFileUrl())
-                            .sasToken(sasWithPermissions)
-                            .addPolicy(getAddHeadersAndQueryPolicy(requestHeaders, requestQueryParams))
-                            .buildFileAsyncClient();
+                    DataLakeFileAsyncClient client = new DataLakePathClientBuilder().endpoint(sasClient.getFileUrl())
+                        .sasToken(sasWithPermissions)
+                        .addPolicy(getAddHeadersAndQueryPolicy(requestHeaders, requestQueryParams))
+                        .buildFileAsyncClient();
 
                     return client.getProperties();
                 });
