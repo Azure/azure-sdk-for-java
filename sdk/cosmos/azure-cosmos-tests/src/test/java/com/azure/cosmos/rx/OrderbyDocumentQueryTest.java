@@ -644,7 +644,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
     }
 
-    public List<InternalObjectNode> bulkInsert(CosmosAsyncContainer cosmosContainer, List<Map<String, Object>> keyValuePropsList) {
+    public List<InternalObjectNode> bulkInsertDocs(CosmosAsyncContainer cosmosContainer, List<Map<String, Object>> keyValuePropsList) {
 
         ArrayList<InternalObjectNode> result = new ArrayList<InternalObjectNode>();
 
@@ -740,7 +740,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         props = new HashMap<>();
         keyValuePropsList.add(props);
 
-        createdDocuments = bulkInsert(createdCollection, keyValuePropsList);
+        createdDocuments = bulkInsertDocs(createdCollection, keyValuePropsList);
 
         for(int i = 0; i < 10; i++) {
             Map<String, Object> p = new HashMap<>();

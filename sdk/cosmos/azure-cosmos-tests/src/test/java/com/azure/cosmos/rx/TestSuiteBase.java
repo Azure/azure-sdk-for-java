@@ -30,6 +30,7 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
@@ -49,6 +50,7 @@ import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosResponse;
@@ -100,7 +102,6 @@ import static org.mockito.Mockito.spy;
 
 public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
-    private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     protected static final int TIMEOUT = 40000;
@@ -665,34 +666,60 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return BridgeInternal.getProperties(cosmosContainer.createItem(item, options).block());
     }
 
-    public <T> Flux<CosmosItemResponse<T>> bulkInsert(CosmosAsyncContainer cosmosContainer,
-                                                      List<T> documentDefinitionList,
-                                                      int concurrencyLevel) {
+    public <T> Flux<CosmosBulkOperationResponse<Object>> bulkInsert(CosmosAsyncContainer cosmosContainer,
+                                                                     List<T> documentDefinitionList) {
 
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
-            .setCosmosEndToEndOperationLatencyPolicyConfig(
-                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
-                    .build()
-            );
-        List<Mono<CosmosItemResponse<T>>> result =
-            new ArrayList<>(documentDefinitionList.size());
+        CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
+        PartitionKeyDefinition pkDef = cosmosContainerProperties.getPartitionKeyDefinition();
+
+        List<CosmosItemOperation> operations = new ArrayList<>(documentDefinitionList.size());
         for (T docDef : documentDefinitionList) {
-            result.add(cosmosContainer.createItem(docDef, options));
+            InternalObjectNode internalNode = InternalObjectNode.fromObjectToInternalObjectNode(docDef);
+            PartitionKey partitionKey = PartitionKeyHelper.extractPartitionKeyFromDocument(internalNode, pkDef);
+            if (partitionKey == null) {
+                partitionKey = PartitionKey.NONE;
+            }
+            operations.add(CosmosBulkOperations.getCreateItemOperation(docDef, partitionKey));
         }
 
-        return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
+        CosmosBulkExecutionOptions bulkOptions = new CosmosBulkExecutionOptions();
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getImpl(bulkOptions)
+            .setCosmosEndToEndLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
+                    .build());
+
+        return cosmosContainer
+            .executeBulkOperations(Flux.fromIterable(operations), bulkOptions)
+            .flatMap(response -> {
+                if (response.getException() != null) {
+                    Exception ex = response.getException();
+                    if (ex instanceof CosmosException) {
+                        CosmosException cosmosException = (CosmosException) ex;
+                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.CONFLICT
+                            && cosmosException.getSubStatusCode() == 0) {
+                            return Mono.empty();
+                        }
+                    }
+                    return Mono.error(ex);
+                }
+                return Mono.just(response);
+            });
     }
+
     public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
                                                          List<T> documentDefinitionList) {
-        return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
+        bulkInsert(cosmosContainer, documentDefinitionList)
             .publishOn(Schedulers.parallel())
-            .map(itemResponse -> itemResponse.getItem())
-            .collectList()
+            .then()
             .block();
+
+        return documentDefinitionList;
     }
 
     public <T> void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer, List<T> documentDefinitionList) {
-        bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
+        bulkInsert(cosmosContainer, documentDefinitionList)
             .publishOn(Schedulers.parallel())
             .then()
             .block();
