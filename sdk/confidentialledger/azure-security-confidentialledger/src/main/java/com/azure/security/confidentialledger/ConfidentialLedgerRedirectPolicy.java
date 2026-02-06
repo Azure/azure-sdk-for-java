@@ -34,9 +34,11 @@ import java.util.Set;
  *       Confidential Ledger host (same-origin check)</li>
  * </ul>
  *
- * <p>The Authorization header is only preserved when the redirect target has the same host as the
- * original request. If the redirect goes to a different host, the Authorization header is stripped
- * for security.</p>
+ * <p>The Authorization header is preserved when the redirect target is a trusted Confidential
+ * Ledger destination — specifically when the redirect host is the same as or a subdomain of the
+ * original host (e.g., {@code accledger-2.myledger.confidential-ledger.azure.com} is a subdomain
+ * of {@code myledger.confidential-ledger.azure.com}). If the redirect goes to an unrelated host,
+ * the Authorization header is stripped for security.</p>
  *
  * <p>This class is intended to be used internally by the Confidential Ledger client builders.</p>
  */
@@ -154,11 +156,11 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
         redirectRequest.setUrl(redirectUrl);
 
         if (savedAuthHeader != null) {
-            if (isSameOrigin(originalRequest.getUrl().toString(), redirectUrl)) {
-                // Re-add the saved Authorization header for same-origin redirects.
+            if (isTrustedRedirect(originalRequest.getUrl().toString(), redirectUrl)) {
+                // Re-add the saved Authorization header for trusted ACL redirects.
                 redirectRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, savedAuthHeader);
             } else {
-                LOGGER.atVerbose().log("Redirect target is a different host; stripping Authorization header.");
+                LOGGER.atVerbose().log("Redirect target is not a trusted host; stripping Authorization header.");
                 redirectRequest.getHeaders().remove(HttpHeaderName.AUTHORIZATION);
             }
         }
@@ -175,26 +177,35 @@ public final class ConfidentialLedgerRedirectPolicy implements HttpPipelinePolic
     }
 
     /**
-     * Checks if two URLs share the same scheme and host (same-origin check).
+     * Checks if the redirect target is a trusted Confidential Ledger destination.
+     *
+     * <p>Confidential Ledger redirects from the load-balanced endpoint
+     * (e.g., {@code myledger.confidential-ledger.azure.com}) to a specific node
+     * (e.g., {@code accledger-2.myledger.confidential-ledger.azure.com:16385}).
+     * The node hostname is a subdomain of the original host, so a simple host equality check
+     * would incorrectly treat this as cross-origin. This method checks that the redirect target
+     * shares the same scheme and that the redirect host is either the same as or a subdomain of
+     * the original host, which covers the ACL node redirect pattern.</p>
      */
-    private static boolean isSameOrigin(String originalUrl, String redirectUrl) {
+    private static boolean isTrustedRedirect(String originalUrl, String redirectUrl) {
         try {
             URL original = new URL(originalUrl);
             URL redirect = new URL(redirectUrl);
-            return original.getProtocol().equalsIgnoreCase(redirect.getProtocol())
-                && original.getHost().equalsIgnoreCase(redirect.getHost())
-                && getEffectivePort(original) == getEffectivePort(redirect);
+
+            if (!original.getProtocol().equalsIgnoreCase(redirect.getProtocol())) {
+                return false;
+            }
+
+            String originalHost = original.getHost().toLowerCase(java.util.Locale.ROOT);
+            String redirectHost = redirect.getHost().toLowerCase(java.util.Locale.ROOT);
+
+            // Exact host match or the redirect host is a subdomain of the original host.
+            // e.g., accledger-2.myledger.confidential-ledger.azure.com is a subdomain of
+            //        myledger.confidential-ledger.azure.com
+            return redirectHost.equals(originalHost) || redirectHost.endsWith("." + originalHost);
         } catch (MalformedURLException e) {
-            LOGGER.atWarning().log("Failed to parse URL for same-origin check; stripping Authorization header.");
+            LOGGER.atWarning().log("Failed to parse URL for trusted redirect check; stripping Authorization header.");
             return false;
         }
-    }
-
-    private static int getEffectivePort(URL url) {
-        int port = url.getPort();
-        if (port == -1) {
-            return url.getDefaultPort();
-        }
-        return port;
     }
 }

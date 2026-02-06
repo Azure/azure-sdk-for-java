@@ -292,7 +292,8 @@ public class ConfidentialLedgerRedirectPolicyTest {
 
     @Test
     public void authorizationPreservedWhenPortsDiffer() throws Exception {
-        // Different port = different origin, auth should be stripped
+        // Same host with different port — auth should be preserved because
+        // Confidential Ledger nodes use non-standard ports (e.g., 16385).
         String redirectUrlDifferentPort = "https://ledger.confidential-ledger.azure.com:8443/primary";
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals(ORIGINAL_URL)) {
@@ -311,8 +312,8 @@ public class ConfidentialLedgerRedirectPolicyTest {
         try (HttpResponse response = pipeline.send(request).block()) {
             assertNotNull(response);
             assertEquals(200, response.getStatusCode());
-            // Different port means different origin — auth should be stripped
-            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+            // Same host, different port — trusted redirect, auth preserved.
+            assertEquals(AUTH_TOKEN, response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
         }
     }
 
@@ -370,6 +371,114 @@ public class ConfidentialLedgerRedirectPolicyTest {
             assertEquals(3, httpClient.getCount());
             // Auth should be preserved through all same-origin redirects
             assertEquals(AUTH_TOKEN, response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
+    }
+
+    @Test
+    public void authorizationPreservedOnSubdomainRedirect() throws Exception {
+        // ACL redirects from the load-balanced endpoint to a specific node subdomain with a different port.
+        // e.g., ledger.confidential-ledger.azure.com -> accledger-2.ledger.confidential-ledger.azure.com:16385
+        String subdomainRedirectUrl = "https://accledger-2.ledger.confidential-ledger.azure.com:16385/app/transactions";
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals(ORIGINAL_URL)) {
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.LOCATION, subdomainRedirectUrl);
+                return Mono.just(new MockHttpResponse(request, 307, headers));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = createPipeline(httpClient);
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL(ORIGINAL_URL));
+        request.getHeaders().set(HttpHeaderName.AUTHORIZATION, AUTH_TOKEN);
+
+        try (HttpResponse response = pipeline.send(request).block()) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+            assertEquals(2, httpClient.getCount());
+            // Subdomain of original host — trusted redirect, auth preserved.
+            assertEquals(AUTH_TOKEN, response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
+    }
+
+    @Test
+    public void authorizationPreservedOnSubdomainRedirectSync() throws Exception {
+        String subdomainRedirectUrl = "https://accledger-2.ledger.confidential-ledger.azure.com:16385/app/transactions";
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals(ORIGINAL_URL)) {
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.LOCATION, subdomainRedirectUrl);
+                return Mono.just(new MockHttpResponse(request, 307, headers));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = createPipeline(httpClient);
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL(ORIGINAL_URL));
+        request.getHeaders().set(HttpHeaderName.AUTHORIZATION, AUTH_TOKEN);
+
+        try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals(2, httpClient.getCount());
+            assertEquals(AUTH_TOKEN, response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
+    }
+
+    @Test
+    public void authorizationStrippedOnUnrelatedHostRedirect() throws Exception {
+        // Redirect to a completely different host that is not a subdomain — auth should be stripped.
+        String unrelatedUrl = "https://malicious.example.com/steal-token";
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals(ORIGINAL_URL)) {
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.LOCATION, unrelatedUrl);
+                return Mono.just(new MockHttpResponse(request, 307, headers));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = createPipeline(httpClient);
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL(ORIGINAL_URL));
+        request.getHeaders().set(HttpHeaderName.AUTHORIZATION, AUTH_TOKEN);
+
+        try (HttpResponse response = pipeline.send(request).block()) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
+        }
+    }
+
+    @Test
+    public void authorizationStrippedOnPartialHostMatchRedirect() throws Exception {
+        // "evil-ledger.confidential-ledger.azure.com" ends with the original host string
+        // but is NOT a subdomain of "ledger.confidential-ledger.azure.com" (no dot separator).
+        // This verifies the subdomain check uses "." + originalHost.
+        String partialMatchUrl = "https://evil-ledger.confidential-ledger.azure.com/target";
+        // Use a shorter original so the partial match is meaningful
+        String shortOriginal = "https://myacl.azure.com";
+        String evilRedirect = "https://notmyacl.azure.com/steal";
+        RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
+            if (request.getUrl().toString().equals(shortOriginal)) {
+                HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.LOCATION, evilRedirect);
+                return Mono.just(new MockHttpResponse(request, 307, headers));
+            } else {
+                return Mono.just(new MockHttpResponse(request, 200));
+            }
+        });
+
+        HttpPipeline pipeline = createPipeline(httpClient);
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, new URL(shortOriginal));
+        request.getHeaders().set(HttpHeaderName.AUTHORIZATION, AUTH_TOKEN);
+
+        try (HttpResponse response = pipeline.send(request).block()) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+            // "notmyacl.azure.com" is not a subdomain of "myacl.azure.com" — auth stripped.
+            assertNull(response.getRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
         }
     }
 
