@@ -1,0 +1,22 @@
+{
+  "UserConfig": {
+    "NamespaceConfig": [
+      {
+        "Type": "EventHub",
+        "Name": "eventhubsns",
+        "Entities": [
+          {
+            "Name": "eh1",
+            "PartitionCount": "2",
+            "ConsumerGroups": [
+              { "Name": "$Default" }
+            ]
+          }
+        ]
+      }
+    ],
+    "LoggingConfig": {
+      "Type": "File"
+    }
+  }
+}

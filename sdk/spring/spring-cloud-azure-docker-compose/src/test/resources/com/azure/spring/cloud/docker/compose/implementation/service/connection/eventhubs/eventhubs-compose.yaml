@@ -1,0 +1,17 @@
+services:
+  eventhubs:
+    image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest
+    pull_policy: always
+    volumes:
+      - "./Config.json:/Eventhubs_Emulator/ConfigFiles/Config.json"
+    ports:
+      - "5672"
+    environment:
+      ACCEPT_EULA: Y
+    networks:
+      eh-emulator:
+        aliases:
+          - "eh-emulator"
+
+networks:
+    eh-emulator:

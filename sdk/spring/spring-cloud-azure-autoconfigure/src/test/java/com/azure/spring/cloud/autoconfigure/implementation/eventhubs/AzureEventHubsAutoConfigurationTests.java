@@ -280,4 +280,20 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
             });
     }
 
+    @Test
+    void configureWithConnectionDetails() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + connectionString
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails.class, CustomAzureEventHubsConnectionDetails::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                assertEquals(CustomAzureEventHubsConnectionDetails.CONNECTION_STRING, properties.getConnectionString());
+            });
+    }
+
 }
