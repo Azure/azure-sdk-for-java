@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosNettyLeakDetectorFactory;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.DocumentClientTest;
@@ -19,7 +21,10 @@ import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.IndexingPolicy;
@@ -199,24 +204,62 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
                 logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
-                houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", state, Document.class)
-                                  .publishOn(Schedulers.parallel())
-                                  .flatMap(page -> Flux.fromIterable(page.getResults()))
-                                  .flatMap(doc -> {
-                                      RequestOptions requestOptions = new RequestOptions();
+                String altLink = collection.getAltLink();
+                String[] altLinkSegments = altLink.split("/");
+                // altLink format: dbs/{dbName}/colls/{collName}
+                String databaseName = altLinkSegments[1];
+                String containerName = altLinkSegments[3];
 
-                                      if (paths != null && !paths.isEmpty()) {
-                                          List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                                          Object propertyValue = doc.getObjectByPath(pkPath);
-                                          if (propertyValue == null) {
-                                              propertyValue = Undefined.value();
+                Flux<CosmosItemOperation> deleteOperations =
+                    houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", state, Document.class)
+                                      .publishOn(Schedulers.parallel())
+                                      .flatMap(page -> Flux.fromIterable(page.getResults()))
+                                      .map(doc -> {
+                                          PartitionKey partitionKey;
+                                          if (paths != null && !paths.isEmpty()) {
+                                              List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                                              Object propertyValue = doc.getObjectByPath(pkPath);
+                                              if (propertyValue == null) {
+                                                  propertyValue = Undefined.value();
+                                              }
+                                              partitionKey = new PartitionKey(propertyValue);
+                                          } else {
+                                              partitionKey = PartitionKey.NONE;
                                           }
 
-                                          requestOptions.setPartitionKey(new PartitionKey(propertyValue));
-                                      }
+                                          return CosmosBulkOperations.getDeleteItemOperation(doc.getId(), partitionKey);
+                                      });
 
-                                      return houseKeepingClient.deleteDocument(doc.getSelfLink(), requestOptions);
-                                  }).then().block();
+                CosmosBulkExecutionOptions bulkOptions = new CosmosBulkExecutionOptions();
+                ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                    .getCosmosBulkExecutionOptionsAccessor()
+                    .getImpl(bulkOptions)
+                    .setCosmosEndToEndLatencyPolicyConfig(
+                        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
+                            .build());
+
+                cosmosClient.getDatabase(databaseName)
+                            .getContainer(containerName)
+                            .executeBulkOperations(deleteOperations, bulkOptions)
+                            .flatMap(response -> {
+                                if (response.getException() != null) {
+                                    Exception ex = response.getException();
+                                    if (ex instanceof CosmosException) {
+                                        CosmosException cosmosException = (CosmosException) ex;
+                                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
+                                            && cosmosException.getSubStatusCode() == 0) {
+                                            return Mono.empty();
+                                        }
+                                    }
+                                    return Mono.error(ex);
+                                }
+                                if (response.getResponse() != null
+                                    && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                                    return Mono.empty();
+                                }
+                                return Mono.just(response);
+                            })
+                            .blockLast();
 
                 logger.info("Truncating DocumentCollection {} triggers ...", collection.getId());
 

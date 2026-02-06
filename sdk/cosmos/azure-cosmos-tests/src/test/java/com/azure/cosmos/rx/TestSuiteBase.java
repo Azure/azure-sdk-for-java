@@ -45,8 +45,11 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
@@ -253,29 +256,56 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         options.setMaxDegreeOfParallelism(-1);
         int maxItemCount = 100;
 
-        cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
-            .byPage(maxItemCount)
-            .publishOn(Schedulers.parallel())
-            .flatMap(page -> Flux.fromIterable(page.getResults()))
-            .flatMap(doc -> {
-
-                PartitionKey partitionKey = null;
-
-                Object propertyValue = null;
-                if (paths != null && !paths.isEmpty()) {
-                    List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                    propertyValue = doc.getObjectByPath(pkPath);
-                    if (propertyValue == null) {
-                        partitionKey = PartitionKey.NONE;
+        Flux<CosmosItemOperation> deleteOperations =
+            cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
+                .byPage(maxItemCount)
+                .publishOn(Schedulers.parallel())
+                .flatMap(page -> Flux.fromIterable(page.getResults()))
+                .map(doc -> {
+                    PartitionKey partitionKey;
+                    if (paths != null && !paths.isEmpty()) {
+                        List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                        Object propertyValue = doc.getObjectByPath(pkPath);
+                        if (propertyValue == null) {
+                            partitionKey = PartitionKey.NONE;
+                        } else {
+                            partitionKey = new PartitionKey(propertyValue);
+                        }
                     } else {
-                        partitionKey = new PartitionKey(propertyValue);
+                        partitionKey = new PartitionKey(null);
                     }
-                } else {
-                    partitionKey = new PartitionKey(null);
-                }
 
-                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
-            }).then().block();
+                    return CosmosBulkOperations.getDeleteItemOperation(doc.getId(), partitionKey);
+                });
+
+        CosmosBulkExecutionOptions bulkOptions = new CosmosBulkExecutionOptions();
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getImpl(bulkOptions)
+            .setCosmosEndToEndLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
+                    .build());
+
+        cosmosContainer.executeBulkOperations(deleteOperations, bulkOptions)
+            .flatMap(response -> {
+                if (response.getException() != null) {
+                    Exception ex = response.getException();
+                    if (ex instanceof CosmosException) {
+                        CosmosException cosmosException = (CosmosException) ex;
+                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
+                            && cosmosException.getSubStatusCode() == 0) {
+                            return Mono.empty();
+                        }
+                    }
+                    return Mono.error(ex);
+                }
+                if (response.getResponse() != null
+                    && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                    return Mono.empty();
+                }
+                return Mono.just(response);
+            })
+            .blockLast();
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
@@ -341,29 +371,57 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("Truncating collection {} documents ...", cosmosContainer.getId());
 
-        cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
-                       .byPage(maxItemCount)
-                       .publishOn(Schedulers.parallel())
-                       .flatMap(page -> Flux.fromIterable(page.getResults()))
-                       .flatMap(doc -> {
-
-                           PartitionKey partitionKey = null;
-
-                           Object propertyValue = null;
-                           if (paths != null && !paths.isEmpty()) {
-                               List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                               propertyValue = doc.getObjectByPath(pkPath);
-                               if (propertyValue == null) {
-                                   partitionKey = PartitionKey.NONE;
+        Flux<CosmosItemOperation> deleteOperations =
+            cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
+                           .byPage(maxItemCount)
+                           .publishOn(Schedulers.parallel())
+                           .flatMap(page -> Flux.fromIterable(page.getResults()))
+                           .map(doc -> {
+                               PartitionKey partitionKey;
+                               if (paths != null && !paths.isEmpty()) {
+                                   List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                                   Object propertyValue = doc.getObjectByPath(pkPath);
+                                   if (propertyValue == null) {
+                                       partitionKey = PartitionKey.NONE;
+                                   } else {
+                                       partitionKey = new PartitionKey(propertyValue);
+                                   }
                                } else {
-                                   partitionKey = new PartitionKey(propertyValue);
+                                   partitionKey = new PartitionKey(null);
                                }
-                           } else {
-                               partitionKey = new PartitionKey(null);
-                           }
 
-                           return cosmosContainer.deleteItem(doc.getId(), partitionKey);
-                       }).then().block();
+                               return CosmosBulkOperations.getDeleteItemOperation(doc.getId(), partitionKey);
+                           });
+
+        CosmosBulkExecutionOptions truncateBulkOptions = new CosmosBulkExecutionOptions();
+        ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+            .getCosmosBulkExecutionOptionsAccessor()
+            .getImpl(truncateBulkOptions)
+            .setCosmosEndToEndLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(65))
+                    .build());
+
+        cosmosContainer
+            .executeBulkOperations(deleteOperations, truncateBulkOptions)
+            .flatMap(response -> {
+                if (response.getException() != null) {
+                    Exception ex = response.getException();
+                    if (ex instanceof CosmosException) {
+                        CosmosException cosmosException = (CosmosException) ex;
+                        if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND
+                            && cosmosException.getSubStatusCode() == 0) {
+                            return Mono.empty();
+                        }
+                    }
+                    return Mono.error(ex);
+                }
+                if (response.getResponse() != null
+                    && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+                    return Mono.empty();
+                }
+                return Mono.just(response);
+            })
+            .blockLast();
 
         expectCount(cosmosContainer, 0);
 
