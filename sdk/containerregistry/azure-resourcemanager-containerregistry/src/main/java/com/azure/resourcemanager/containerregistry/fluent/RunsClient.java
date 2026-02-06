@@ -21,7 +21,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in RunsClient.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
  */
+@Deprecated
 public interface RunsClient {
     /**
      * Gets all the runs for a registry.
