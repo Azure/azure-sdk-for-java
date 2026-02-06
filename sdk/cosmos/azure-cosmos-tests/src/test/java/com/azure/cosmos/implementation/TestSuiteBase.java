@@ -257,6 +257,11 @@ public abstract class TestSuiteBase extends DocumentClientTest {
                                     && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                                     return Mono.empty();
                                 }
+                                if (response.getResponse() != null
+                                    && !response.getResponse().isSuccessStatusCode()) {
+                                    return Mono.error(new IllegalStateException(
+                                        "Bulk delete operation failed with status code " + response.getResponse().getStatusCode()));
+                                }
                                 return Mono.just(response);
                             })
                             .blockLast();

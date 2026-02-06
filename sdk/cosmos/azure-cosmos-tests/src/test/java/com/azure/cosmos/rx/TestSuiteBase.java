@@ -323,7 +323,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                        partitionKey = new PartitionKey(propertyValue);
                                    }
                                } else {
-                                   partitionKey = new PartitionKey(null);
+                                   partitionKey = PartitionKey.NONE;
                                }
 
                                return CosmosBulkOperations.getDeleteItemOperation(doc.getId(), partitionKey);
@@ -354,6 +354,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 if (response.getResponse() != null
                     && response.getResponse().getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                     return Mono.empty();
+                }
+                if (response.getResponse() != null
+                    && !response.getResponse().isSuccessStatusCode()) {
+                    return Mono.error(new IllegalStateException(
+                        "Bulk delete operation failed with status code " + response.getResponse().getStatusCode()));
                 }
                 return Mono.just(response);
             })
@@ -639,18 +644,31 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                     }
                     return Mono.error(ex);
                 }
+                if (response.getResponse() != null
+                    && !response.getResponse().isSuccessStatusCode()
+                    && response.getResponse().getStatusCode() != HttpConstants.StatusCodes.CONFLICT) {
+                    return Mono.error(new IllegalStateException(
+                        "Bulk insert operation failed with status code " + response.getResponse().getStatusCode()));
+                }
                 return Mono.just(response);
             });
     }
 
+    @SuppressWarnings("unchecked")
     public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
                                                          List<T> documentDefinitionList) {
-        bulkInsert(cosmosContainer, documentDefinitionList)
-            .publishOn(Schedulers.parallel())
-            .then()
-            .block();
+        if (documentDefinitionList == null || documentDefinitionList.isEmpty()) {
+            return documentDefinitionList;
+        }
 
-        return documentDefinitionList;
+        Class<T> clazz = (Class<T>) documentDefinitionList.get(0).getClass();
+
+        return bulkInsert(cosmosContainer, documentDefinitionList)
+            .publishOn(Schedulers.parallel())
+            .filter(response -> response.getResponse() != null)
+            .map(response -> response.getResponse().getItem(clazz))
+            .collectList()
+            .block();
     }
 
     public <T> void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer, List<T> documentDefinitionList) {
