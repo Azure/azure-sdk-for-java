@@ -27,12 +27,12 @@ public class SasImplUtilsTests {
 
     @Test
     public void formatRequestHeadersNullReturnsNull() {
-        assertNull(SasImplUtils.formatRequestHeaders(null, null));
+        assertNull(SasImplUtils.formatRequestHeaders(null, false));
     }
 
     @Test
     public void formatRequestHeadersEmptyReturnsNull() {
-        assertNull(SasImplUtils.formatRequestHeaders(requestHeaders, null));
+        assertNull(SasImplUtils.formatRequestHeaders(requestHeaders, false));
     }
 
     @Test
@@ -90,12 +90,12 @@ public class SasImplUtilsTests {
 
     @Test
     public void formatRequestQueryParamsNullReturnsNull() {
-        assertNull(SasImplUtils.formatRequestQueryParameters(null, null));
+        assertNull(SasImplUtils.formatRequestQueryParameters(null, false));
     }
 
     @Test
     public void formatRequestQueryParamsEmptyReturnsNull() {
-        assertNull(SasImplUtils.formatRequestQueryParameters(requestQueryParams, null));
+        assertNull(SasImplUtils.formatRequestQueryParameters(requestQueryParams, false));
     }
 
     @Test

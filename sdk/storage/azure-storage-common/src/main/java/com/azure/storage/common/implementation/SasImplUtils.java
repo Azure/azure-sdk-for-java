@@ -131,18 +131,25 @@ public class SasImplUtils {
      * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas#version-2026-04-06-and-later-blob-storage-and-data-lake-storage">
      *     Version 2026-04-06 and later (Blob Storage and Data Lake Storage)</a>
      */
-
-    public static String formatRequestHeaders(Map<String, String> requestHeaders, Boolean includeKeyValues) {
+    public static String formatRequestHeaders(Map<String, String> requestHeaders, boolean includeKeyValues) {
         if (requestHeaders == null || requestHeaders.isEmpty()) {
             return null;
         }
+
+        // Ensure deterministic ordering by header name for SAS signing.
+        List<String> sortedKeys = new ArrayList<>(requestHeaders.keySet());
+        sortedKeys.sort(String::compareTo);
+
         if (includeKeyValues) {
             StringBuilder sb = new StringBuilder();
-            requestHeaders.forEach((key, value) -> sb.append(key).append(":").append(value).append("\n"));
+            for (String key : sortedKeys) {
+                String value = requestHeaders.get(key);
+                sb.append(key).append(':').append(value).append('\n');
+            }
             return sb.toString();
         }
-        return String.join(",", requestHeaders.keySet());
 
+        return String.join(",", sortedKeys);
     }
 
     /**
@@ -157,16 +164,25 @@ public class SasImplUtils {
      *     Version 2026-04-06 and later (Blob Storage and Data Lake Storage)</a>
      */
     public static String formatRequestQueryParameters(Map<String, String> requestQueryParameters,
-        Boolean includeKeyValues) {
+        boolean includeKeyValues) {
         if (requestQueryParameters == null || requestQueryParameters.isEmpty()) {
             return null;
         }
+
+        // Ensure deterministic ordering by parameter name for SAS signing.
+        List<String> sortedKeys = new ArrayList<>(requestQueryParameters.keySet());
+        sortedKeys.sort(String::compareTo);
+
         if (includeKeyValues) {
             StringBuilder sb = new StringBuilder();
-            requestQueryParameters.forEach((key, value) -> sb.append("\n").append(key).append(":").append(value));
+            for (String key : sortedKeys) {
+                String value = requestQueryParameters.get(key);
+                sb.append('\n').append(key).append(':').append(value);
+            }
             return sb.toString();
         }
-        return String.join(",", requestQueryParameters.keySet());
+
+        return String.join(",", sortedKeys);
     }
 
     /**
