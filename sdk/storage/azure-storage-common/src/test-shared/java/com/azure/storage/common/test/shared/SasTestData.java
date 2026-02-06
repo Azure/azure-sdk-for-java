@@ -105,19 +105,45 @@ public class SasTestData {
         return this;
     }
 
-    public OffsetDateTime getStartTime() { return startTime; }
-    public String getIdentifier() { return identifier; }
-    public SasIpRange getIpRange() { return ipRange; }
-    public SasProtocol getProtocol() { return protocol; }
-    public String getSnapshotId() { return snapshotId; }
-    public String getCacheControl() { return cacheControl; }
-    public String getDisposition() { return disposition; }
-    public String getEncoding() { return encoding; }
-    public String getLanguage() { return language; }
-    public String getType() { return type; }
-    public String getVersionId() { return versionId; }
-    public String getEncryptionScope() { return encryptionScope; }
-    public String getExpectedStringToSign() { return expectedStringToSign; }
+    public OffsetDateTime getStartTime() {
+        return startTime;
+    }
+    public String getIdentifier() {
+        return identifier;
+    }
+    public SasIpRange getIpRange() {
+        return ipRange;
+    }
+    public SasProtocol getProtocol() {
+        return protocol;
+    }
+    public String getSnapshotId() {
+        return snapshotId;
+    }
+    public String getCacheControl() {
+        return cacheControl;
+    }
+    public String getDisposition() {
+        return disposition;
+    }
+    public String getEncoding() {
+        return encoding;
+    }
+    public String getLanguage() {
+        return language;
+    }
+    public String getType() {
+        return type;
+    }
+    public String getVersionId() {
+        return versionId;
+    }
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+    public String getExpectedStringToSign() {
+        return expectedStringToSign;
+    }
 
     /**
      * Converts to Arguments for regular SAS tests.
