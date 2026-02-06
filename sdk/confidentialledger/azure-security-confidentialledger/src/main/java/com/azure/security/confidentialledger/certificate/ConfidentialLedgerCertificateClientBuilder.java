@@ -33,7 +33,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.security.confidentialledger.ConfidentialLedgerRedirectPolicy;
 import com.azure.security.confidentialledger.certificate.implementation.ConfidentialLedgerCertificateClientImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -305,7 +304,6 @@ public final class ConfidentialLedgerCertificateClientBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.add(new ConfidentialLedgerRedirectPolicy());
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
