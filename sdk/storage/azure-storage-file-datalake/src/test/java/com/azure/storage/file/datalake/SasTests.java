@@ -893,7 +893,7 @@ public class SasTests extends DataLakeTestBase {
 
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-04-06")
     public void dataLakeFileSystemDynamicUserDelegationSas() {
         liveTestScenarioWithRetry(() -> {
             // Define request headers and query parameters
