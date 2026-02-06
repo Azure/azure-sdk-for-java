@@ -1,16 +1,12 @@
 # Release History
 
-## 12.27.0-beta.1 (Unreleased)
+## 12.27.0-beta.1 (2026-02-06)
 
 ### Features Added
+- Added support for Dynamic User Delegation SAS.
+- Added support for service version 2026-04-06.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 12.26.2 (Unreleased)
+## 12.26.2 (2026-02-05)
 
 ### Bugs Fixed
 - Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
