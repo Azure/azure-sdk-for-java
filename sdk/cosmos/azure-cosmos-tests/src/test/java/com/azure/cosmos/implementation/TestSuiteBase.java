@@ -180,7 +180,6 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
     protected static void truncateCollection(DocumentCollection collection) {
         logger.info("Truncating DocumentCollection {} ...", collection.getId());
-        List<String> paths = collection.getPartitionKey().getPaths();
 
         try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
             .key(TestConfigurations.MASTER_KEY)
@@ -209,15 +208,8 @@ public abstract class TestSuiteBase extends DocumentClientTest {
                     .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .map(doc -> {
-                        PartitionKey partitionKey;
-                        if (paths != null && !paths.isEmpty()) {
-                            List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                            Object propertyValue = doc.getObjectByPath(pkPath);
-                            if (propertyValue == null) {
-                                propertyValue = Undefined.value();
-                            }
-                            partitionKey = new PartitionKey(propertyValue);
-                        } else {
+                        PartitionKey partitionKey = PartitionKeyHelper.extractPartitionKeyFromDocument(doc, collection.getPartitionKey());
+                        if (partitionKey == null) {
                             partitionKey = PartitionKey.NONE;
                         }
 

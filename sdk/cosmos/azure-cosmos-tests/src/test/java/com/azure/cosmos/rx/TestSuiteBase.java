@@ -31,7 +31,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
-import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -296,7 +295,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
         String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);
-        List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setCosmosEndToEndOperationLatencyPolicyConfig(
             new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
@@ -313,16 +311,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                            .publishOn(Schedulers.parallel())
                            .flatMap(page -> Flux.fromIterable(page.getResults()))
                            .map(doc -> {
-                               PartitionKey partitionKey;
-                               if (paths != null && !paths.isEmpty()) {
-                                   List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                                   Object propertyValue = doc.getObjectByPath(pkPath);
-                                   if (propertyValue == null) {
-                                       partitionKey = PartitionKey.NONE;
-                                   } else {
-                                       partitionKey = new PartitionKey(propertyValue);
-                                   }
-                               } else {
+                               PartitionKey partitionKey =
+                                   PartitionKeyHelper.extractPartitionKeyFromDocument(
+                                       doc,
+                                       cosmosContainerProperties.getPartitionKeyDefinition());
+
+                               if (partitionKey == null) {
                                    partitionKey = PartitionKey.NONE;
                                }
 
