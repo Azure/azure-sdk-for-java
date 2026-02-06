@@ -4,6 +4,8 @@
 
 /**
  * Package containing the classes for ElasticSanManagementClient.
- * (missing-service-description) Add service description.
+ * Elastic SAN is a fully integrated solution that simplifies deploying, scaling, managing, and configuring a storage
+ * area network (SAN). It also offers built-in cloud capabilities like high availability. Elastic SAN works with many
+ * types of compute resources, such as Azure Virtual Machines, Azure VMware Solution, and Azure Kubernetes Service.
  */
 package com.azure.resourcemanager.elasticsan;

@@ -1,7 +1,8 @@
 # Release History
 
-## 1.2.0 (2026-01-29)
+## 1.2.0 (2026-02-06)
 
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK. Elastic SAN is a fully integrated solution that simplifies deploying, scaling, managing, and configuring a storage area network (SAN). It also offers built-in cloud capabilities like high availability. Elastic SAN works with many types of compute resources, such as Azure Virtual Machines, Azure VMware Solution, and Azure Kubernetes Service. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK. (missing-service-description) Add service description. Package api-version 2025-09-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
@@ -62,8 +63,8 @@
 
 #### `models.ElasticSanUpdate` was modified
 
-* `autoScaleProperties()` was added
 * `withAutoScaleProperties(models.AutoScaleProperties)` was added
+* `autoScaleProperties()` was added
 
 #### `models.ElasticSan` was modified
 
@@ -71,9 +72,9 @@
 
 #### `models.Volumes` was modified
 
+* `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList)` was added
 * `preRestore(java.lang.String,java.lang.String,java.lang.String,models.DiskSnapshotList)` was added
 * `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList,com.azure.core.util.Context)` was added
-* `preBackup(java.lang.String,java.lang.String,java.lang.String,models.VolumeNameList)` was added
 * `preRestore(java.lang.String,java.lang.String,java.lang.String,models.DiskSnapshotList,com.azure.core.util.Context)` was added
 
 #### `models.ElasticSan$Definition` was modified

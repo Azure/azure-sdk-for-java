@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for ElasticSan Management</name>
-  <description>This package contains Microsoft Azure SDK for ElasticSan Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. (missing-service-description) Add service description. Package api-version 2025-09-01.</description>
+  <description>This package contains Microsoft Azure SDK for ElasticSan Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Elastic SAN is a fully integrated solution that simplifies deploying, scaling, managing, and configuring a storage area network (SAN). It also offers built-in cloud capabilities like high availability. Elastic SAN works with many types of compute resources, such as Azure Virtual Machines, Azure VMware Solution, and Azure Kubernetes Service. Package api-version 2025-09-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,7 +45,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
-    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
