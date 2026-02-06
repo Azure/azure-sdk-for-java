@@ -17,27 +17,24 @@ import java.io.IOException;
 @Fluent
 public final class ActionOnUnmanage implements JsonSerializable<ActionOnUnmanage> {
     /*
-     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach
-     * will leave the resource in it's current state.
+     * Specifies an action for a newly unmanaged resource.
      */
-    private DeploymentStacksDeleteDetachEnum resources;
+    private UnmanageActionResourceMode resources;
 
     /*
-     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach
-     * will leave the resource in it's current state.
+     * Specifies an action for a newly unmanaged resource group.
      */
-    private DeploymentStacksDeleteDetachEnum resourceGroups;
+    private UnmanageActionResourceGroupMode resourceGroups;
 
     /*
-     * Specifies an action for a newly unmanaged resource. Delete will attempt to delete the resource from Azure. Detach
-     * will leave the resource in it's current state.
+     * Specifies an action for a newly unmanaged resource management group.
      */
-    private DeploymentStacksDeleteDetachEnum managementGroups;
+    private UnmanageActionManagementGroupMode managementGroups;
 
     /*
      * Some resources do not support deletion. This flag will denote how the stack should handle those resources.
      */
-    private DeploymentStacksResourcesWithoutDeleteSupportEnum resourcesWithoutDeleteSupport;
+    private ResourcesWithoutDeleteSupportAction resourcesWithoutDeleteSupport;
 
     /**
      * Creates an instance of ActionOnUnmanage class.
@@ -46,67 +43,61 @@ public final class ActionOnUnmanage implements JsonSerializable<ActionOnUnmanage
     }
 
     /**
-     * Get the resources property: Specifies an action for a newly unmanaged resource. Delete will attempt to delete the
-     * resource from Azure. Detach will leave the resource in it's current state.
+     * Get the resources property: Specifies an action for a newly unmanaged resource.
      * 
      * @return the resources value.
      */
-    public DeploymentStacksDeleteDetachEnum resources() {
+    public UnmanageActionResourceMode resources() {
         return this.resources;
     }
 
     /**
-     * Set the resources property: Specifies an action for a newly unmanaged resource. Delete will attempt to delete the
-     * resource from Azure. Detach will leave the resource in it's current state.
+     * Set the resources property: Specifies an action for a newly unmanaged resource.
      * 
      * @param resources the resources value to set.
      * @return the ActionOnUnmanage object itself.
      */
-    public ActionOnUnmanage withResources(DeploymentStacksDeleteDetachEnum resources) {
+    public ActionOnUnmanage withResources(UnmanageActionResourceMode resources) {
         this.resources = resources;
         return this;
     }
 
     /**
-     * Get the resourceGroups property: Specifies an action for a newly unmanaged resource. Delete will attempt to
-     * delete the resource from Azure. Detach will leave the resource in it's current state.
+     * Get the resourceGroups property: Specifies an action for a newly unmanaged resource group.
      * 
      * @return the resourceGroups value.
      */
-    public DeploymentStacksDeleteDetachEnum resourceGroups() {
+    public UnmanageActionResourceGroupMode resourceGroups() {
         return this.resourceGroups;
     }
 
     /**
-     * Set the resourceGroups property: Specifies an action for a newly unmanaged resource. Delete will attempt to
-     * delete the resource from Azure. Detach will leave the resource in it's current state.
+     * Set the resourceGroups property: Specifies an action for a newly unmanaged resource group.
      * 
      * @param resourceGroups the resourceGroups value to set.
      * @return the ActionOnUnmanage object itself.
      */
-    public ActionOnUnmanage withResourceGroups(DeploymentStacksDeleteDetachEnum resourceGroups) {
+    public ActionOnUnmanage withResourceGroups(UnmanageActionResourceGroupMode resourceGroups) {
         this.resourceGroups = resourceGroups;
         return this;
     }
 
     /**
-     * Get the managementGroups property: Specifies an action for a newly unmanaged resource. Delete will attempt to
-     * delete the resource from Azure. Detach will leave the resource in it's current state.
+     * Get the managementGroups property: Specifies an action for a newly unmanaged resource management group.
      * 
      * @return the managementGroups value.
      */
-    public DeploymentStacksDeleteDetachEnum managementGroups() {
+    public UnmanageActionManagementGroupMode managementGroups() {
         return this.managementGroups;
     }
 
     /**
-     * Set the managementGroups property: Specifies an action for a newly unmanaged resource. Delete will attempt to
-     * delete the resource from Azure. Detach will leave the resource in it's current state.
+     * Set the managementGroups property: Specifies an action for a newly unmanaged resource management group.
      * 
      * @param managementGroups the managementGroups value to set.
      * @return the ActionOnUnmanage object itself.
      */
-    public ActionOnUnmanage withManagementGroups(DeploymentStacksDeleteDetachEnum managementGroups) {
+    public ActionOnUnmanage withManagementGroups(UnmanageActionManagementGroupMode managementGroups) {
         this.managementGroups = managementGroups;
         return this;
     }
@@ -117,7 +108,7 @@ public final class ActionOnUnmanage implements JsonSerializable<ActionOnUnmanage
      * 
      * @return the resourcesWithoutDeleteSupport value.
      */
-    public DeploymentStacksResourcesWithoutDeleteSupportEnum resourcesWithoutDeleteSupport() {
+    public ResourcesWithoutDeleteSupportAction resourcesWithoutDeleteSupport() {
         return this.resourcesWithoutDeleteSupport;
     }
 
@@ -128,8 +119,8 @@ public final class ActionOnUnmanage implements JsonSerializable<ActionOnUnmanage
      * @param resourcesWithoutDeleteSupport the resourcesWithoutDeleteSupport value to set.
      * @return the ActionOnUnmanage object itself.
      */
-    public ActionOnUnmanage withResourcesWithoutDeleteSupport(
-        DeploymentStacksResourcesWithoutDeleteSupportEnum resourcesWithoutDeleteSupport) {
+    public ActionOnUnmanage
+        withResourcesWithoutDeleteSupport(ResourcesWithoutDeleteSupportAction resourcesWithoutDeleteSupport) {
         this.resourcesWithoutDeleteSupport = resourcesWithoutDeleteSupport;
         return this;
     }
@@ -167,17 +158,16 @@ public final class ActionOnUnmanage implements JsonSerializable<ActionOnUnmanage
                 reader.nextToken();
 
                 if ("resources".equals(fieldName)) {
-                    deserializedActionOnUnmanage.resources
-                        = DeploymentStacksDeleteDetachEnum.fromString(reader.getString());
+                    deserializedActionOnUnmanage.resources = UnmanageActionResourceMode.fromString(reader.getString());
                 } else if ("resourceGroups".equals(fieldName)) {
                     deserializedActionOnUnmanage.resourceGroups
-                        = DeploymentStacksDeleteDetachEnum.fromString(reader.getString());
+                        = UnmanageActionResourceGroupMode.fromString(reader.getString());
                 } else if ("managementGroups".equals(fieldName)) {
                     deserializedActionOnUnmanage.managementGroups
-                        = DeploymentStacksDeleteDetachEnum.fromString(reader.getString());
+                        = UnmanageActionManagementGroupMode.fromString(reader.getString());
                 } else if ("resourcesWithoutDeleteSupport".equals(fieldName)) {
                     deserializedActionOnUnmanage.resourcesWithoutDeleteSupport
-                        = DeploymentStacksResourcesWithoutDeleteSupportEnum.fromString(reader.getString());
+                        = ResourcesWithoutDeleteSupportAction.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

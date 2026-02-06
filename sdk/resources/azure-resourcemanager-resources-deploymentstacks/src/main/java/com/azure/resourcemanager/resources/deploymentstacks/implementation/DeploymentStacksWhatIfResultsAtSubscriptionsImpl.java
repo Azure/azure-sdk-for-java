@@ -11,10 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.DeploymentStacksWhatIfResultsAtSubscriptionsClient;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStacksWhatIfResultInner;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResult;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultsAtSubscriptions;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 
 public final class DeploymentStacksWhatIfResultsAtSubscriptionsImpl
     implements DeploymentStacksWhatIfResultsAtSubscriptions {
@@ -87,10 +89,10 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionsImpl
     }
 
     public Response<Void> deleteWithResponse(String deploymentStacksWhatIfResultName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         return this.serviceClient()
             .deleteWithResponse(deploymentStacksWhatIfResultName, unmanageActionResources, unmanageActionResourceGroups,

@@ -11,10 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.DeploymentStacksWhatIfResultsAtManagementGroupsClient;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStacksWhatIfResultInner;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResult;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultsAtManagementGroups;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 
 public final class DeploymentStacksWhatIfResultsAtManagementGroupsImpl
     implements DeploymentStacksWhatIfResultsAtManagementGroups {
@@ -89,10 +91,10 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsImpl
     }
 
     public Response<Void> deleteWithResponse(String managementGroupId, String deploymentStacksWhatIfResultName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         return this.serviceClient()
             .deleteWithResponse(managementGroupId, deploymentStacksWhatIfResultName, unmanageActionResources,

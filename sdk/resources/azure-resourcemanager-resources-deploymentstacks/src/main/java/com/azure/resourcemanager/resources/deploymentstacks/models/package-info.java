@@ -4,7 +4,5 @@
 
 /**
  * Package containing the data models for DeploymentStacksManagementClient.
- * The APIs listed in this specification can be used to manage Deployment stack resources through the Azure Resource
- * Manager.
  */
 package com.azure.resourcemanager.resources.deploymentstacks.models;

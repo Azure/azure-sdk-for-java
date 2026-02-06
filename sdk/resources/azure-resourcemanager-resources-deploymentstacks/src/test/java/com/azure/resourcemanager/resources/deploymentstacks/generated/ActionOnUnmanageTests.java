@@ -6,8 +6,10 @@ package com.azure.resourcemanager.resources.deploymentstacks.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resources.deploymentstacks.models.ActionOnUnmanage;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import org.junit.jupiter.api.Assertions;
 
 public final class ActionOnUnmanageTests {
@@ -16,24 +18,22 @@ public final class ActionOnUnmanageTests {
         ActionOnUnmanage model = BinaryData.fromString(
             "{\"resources\":\"detach\",\"resourceGroups\":\"delete\",\"managementGroups\":\"detach\",\"resourcesWithoutDeleteSupport\":\"fail\"}")
             .toObject(ActionOnUnmanage.class);
-        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DETACH, model.resources());
-        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE, model.resourceGroups());
-        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DETACH, model.managementGroups());
-        Assertions.assertEquals(DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL,
-            model.resourcesWithoutDeleteSupport());
+        Assertions.assertEquals(UnmanageActionResourceMode.DETACH, model.resources());
+        Assertions.assertEquals(UnmanageActionResourceGroupMode.DELETE, model.resourceGroups());
+        Assertions.assertEquals(UnmanageActionManagementGroupMode.DETACH, model.managementGroups());
+        Assertions.assertEquals(ResourcesWithoutDeleteSupportAction.FAIL, model.resourcesWithoutDeleteSupport());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActionOnUnmanage model = new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DETACH)
-            .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-            .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH)
-            .withResourcesWithoutDeleteSupport(DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL);
+        ActionOnUnmanage model = new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DETACH)
+            .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+            .withManagementGroups(UnmanageActionManagementGroupMode.DETACH)
+            .withResourcesWithoutDeleteSupport(ResourcesWithoutDeleteSupportAction.FAIL);
         model = BinaryData.fromObject(model).toObject(ActionOnUnmanage.class);
-        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DETACH, model.resources());
-        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DELETE, model.resourceGroups());
-        Assertions.assertEquals(DeploymentStacksDeleteDetachEnum.DETACH, model.managementGroups());
-        Assertions.assertEquals(DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL,
-            model.resourcesWithoutDeleteSupport());
+        Assertions.assertEquals(UnmanageActionResourceMode.DETACH, model.resources());
+        Assertions.assertEquals(UnmanageActionResourceGroupMode.DELETE, model.resourceGroups());
+        Assertions.assertEquals(UnmanageActionManagementGroupMode.DETACH, model.managementGroups());
+        Assertions.assertEquals(ResourcesWithoutDeleteSupportAction.FAIL, model.resourcesWithoutDeleteSupport());
     }
 }

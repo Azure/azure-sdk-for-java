@@ -17,8 +17,10 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentSta
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackTemplateDefinition;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackValidateResult;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacks;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 
 public final class DeploymentStacksImpl implements DeploymentStacks {
     private static final ClientLogger LOGGER = new ClientLogger(DeploymentStacksImpl.class);
@@ -92,10 +94,10 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
     }
 
     public void delete(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         this.serviceClient()
             .delete(resourceGroupName, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
@@ -204,11 +206,10 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
         this.serviceClient().deleteAtSubscription(deploymentStackName);
     }
 
-    public void deleteAtSubscription(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+    public void deleteAtSubscription(String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         this.serviceClient()
             .deleteAtSubscription(deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
@@ -319,10 +320,10 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
     }
 
     public void deleteAtManagementGroup(String managementGroupId, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         this.serviceClient()
             .deleteAtManagementGroup(managementGroupId, deploymentStackName, unmanageActionResources,
@@ -392,20 +393,20 @@ public final class DeploymentStacksImpl implements DeploymentStacks {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'deploymentStacks'.", id)));
         }
-        DeploymentStacksDeleteDetachEnum localUnmanageActionResources = null;
-        DeploymentStacksDeleteDetachEnum localUnmanageActionResourceGroups = null;
-        DeploymentStacksDeleteDetachEnum localUnmanageActionManagementGroups = null;
-        DeploymentStacksResourcesWithoutDeleteSupportEnum localUnmanageActionResourcesWithoutDeleteSupport = null;
+        UnmanageActionResourceMode localUnmanageActionResources = null;
+        UnmanageActionResourceGroupMode localUnmanageActionResourceGroups = null;
+        UnmanageActionManagementGroupMode localUnmanageActionManagementGroups = null;
+        ResourcesWithoutDeleteSupportAction localUnmanageActionResourcesWithoutDeleteSupport = null;
         Boolean localBypassStackOutOfSyncError = null;
         this.delete(resourceGroupName, deploymentStackName, localUnmanageActionResources,
             localUnmanageActionResourceGroups, localUnmanageActionManagementGroups,
             localUnmanageActionResourcesWithoutDeleteSupport, localBypassStackOutOfSyncError, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+    public void deleteByIdWithResponse(String id, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

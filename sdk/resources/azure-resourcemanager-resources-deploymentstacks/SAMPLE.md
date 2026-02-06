@@ -56,7 +56,9 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExt
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,10 +86,9 @@ public final class DeploymentStacksCreateOrUpdateAtManagementGroupSamples {
                             new DeploymentExtensionConfig().withAdditionalProperties(
                                 mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
                                     new DeploymentExtensionConfigItem().withValue("config1Value")))))
-                        .withActionOnUnmanage(
-                            new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                                .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                                .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                        .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                            .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                            .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
                         .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                             .withExcludedPrincipals(Arrays.asList("principal"))
                             .withExcludedActions(Arrays.asList("action"))
@@ -121,7 +122,9 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExt
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,9 +154,9 @@ public final class DeploymentStacksCreateOrUpdateAtResourceGroupSamples {
                     new DeploymentExtensionConfig().withAdditionalProperties(
                         mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
                             new DeploymentExtensionConfigItem().withValue("config1Value")))))
-                .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                    .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                    .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                    .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                    .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
                 .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                     .withExcludedPrincipals(Arrays.asList("principal"))
                     .withExcludedActions(Arrays.asList("action"))
@@ -186,7 +189,9 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExt
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -214,10 +219,9 @@ public final class DeploymentStacksCreateOrUpdateAtSubscriptionSamples {
                             new DeploymentExtensionConfig().withAdditionalProperties(
                                 mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
                                     new DeploymentExtensionConfigItem().withValue("config1Value")))))
-                        .withActionOnUnmanage(
-                            new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                                .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                                .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                        .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                            .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                            .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
                         .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                             .withExcludedPrincipals(Arrays.asList("principal"))
                             .withExcludedActions(Arrays.asList("action"))
@@ -532,8 +536,10 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -553,20 +559,22 @@ public final class DeploymentStacksValidateStackAtManagementGroupSamples {
     public static void validateAManagementGroupDeploymentStack(
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
-            .validateStackAtManagementGroup("myMg", "simpleDeploymentStack", new DeploymentStackInner()
-                .withProperties(new DeploymentStackProperties()
-                    .withTemplateLink(
-                        new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DETACH)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DETACH)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
-                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
-                        .withExcludedPrincipals(Arrays.asList("principal"))
-                        .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)))
-                .withLocation("eastus")
-                .withTags(mapOf("tagkey", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
+            .validateStackAtManagementGroup("myMg", "simpleDeploymentStack",
+                new DeploymentStackInner()
+                    .withProperties(new DeploymentStackProperties()
+                        .withTemplateLink(
+                            new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                        .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
+                        .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DETACH)
+                            .withResourceGroups(UnmanageActionResourceGroupMode.DETACH)
+                            .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
+                        .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
+                            .withExcludedPrincipals(Arrays.asList("principal"))
+                            .withExcludedActions(Arrays.asList("action"))
+                            .withApplyToChildScopes(false)))
+                    .withLocation("eastus")
+                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -592,8 +600,10 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -618,9 +628,9 @@ public final class DeploymentStacksValidateStackAtResourceGroupSamples {
                     .withTemplateLink(
                         new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
                     .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DELETE))
+                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                        .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                        .withManagementGroups(UnmanageActionManagementGroupMode.DELETE))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                         .withExcludedPrincipals(Arrays.asList("principal"))
                         .withExcludedActions(Arrays.asList("action"))
@@ -652,8 +662,10 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -673,20 +685,22 @@ public final class DeploymentStacksValidateStackAtSubscriptionSamples {
     public static void validateASubscriptionDeploymentStack(
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
-            .validateStackAtSubscription("simpleDeploymentStack", new DeploymentStackInner()
-                .withProperties(new DeploymentStackProperties()
-                    .withTemplateLink(
-                        new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DELETE))
-                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
-                        .withExcludedPrincipals(Arrays.asList("principal"))
-                        .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)))
-                .withLocation("eastus")
-                .withTags(mapOf("tagkey", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
+            .validateStackAtSubscription("simpleDeploymentStack",
+                new DeploymentStackInner()
+                    .withProperties(new DeploymentStackProperties()
+                        .withTemplateLink(
+                            new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                        .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
+                        .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                            .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                            .withManagementGroups(UnmanageActionManagementGroupMode.DELETE))
+                        .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
+                            .withExcludedPrincipals(Arrays.asList("principal"))
+                            .withExcludedActions(Arrays.asList("action"))
+                            .withApplyToChildScopes(false)))
+                    .withLocation("eastus")
+                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -712,9 +726,11 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfig;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultProperties;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -743,9 +759,9 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupCreateOrUpdateS
                         new DeploymentExtensionConfig().withAdditionalProperties(
                             mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
                                 new DeploymentExtensionConfigItem().withValue("config1Value")))))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                        .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                        .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
                     .withDeploymentStackResourceId(
                         "/providers/Microsoft.Management/managementGroups/myMg/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
@@ -868,9 +884,11 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfig;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultProperties;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -901,9 +919,9 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupCreateOrUpdateSam
                     new DeploymentExtensionConfig().withAdditionalProperties(
                         mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
                             new DeploymentExtensionConfigItem().withValue("config1Value")))))
-                .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                    .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                    .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                    .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                    .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
                 .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
                 .withDeploymentStackResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")
@@ -1029,9 +1047,11 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfig;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultProperties;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -1060,9 +1080,9 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionCreateOrUpdateSamp
                         new DeploymentExtensionConfig().withAdditionalProperties(
                             mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
                                 new DeploymentExtensionConfigItem().withValue("config1Value")))))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                        .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                        .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
                     .withDeploymentStackResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")

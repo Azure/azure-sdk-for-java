@@ -1,34 +1,38 @@
 # Release History
 
-## 1.1.0 (2026-01-28)
+## 1.1.0 (2026-02-06)
 
+- Azure Resource Manager Deployment Stacks client library for Java. This package contains Microsoft Azure SDK for Deployment Stacks Management SDK.  Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 - Azure Resource Manager Deployment Stacks client library for Java. This package contains Microsoft Azure SDK for Deployment Stacks Management SDK. The APIs listed in this specification can be used to manage Deployment stack resources through the Azure Resource Manager. Package api-version 2025-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
-
-#### `models.UnmanageActionResourceGroupMode` was removed
-
-#### `models.UnmanageActionManagementGroupMode` was removed
 
 #### `models.AzureResourceBase` was removed
 
 #### `models.DeploymentStackListResult` was removed
 
-#### `models.UnmanageActionResourceMode` was removed
+#### `models.DeploymentStacksDeleteDetachEnum` was removed
 
 #### `models.DeploymentStackProperties` was modified
 
 * `validate()` was removed
+* `withError(com.azure.core.management.exception.ManagementError)` was removed
 
 #### `models.DeploymentStacks` was modified
 
 * `deleteAtSubscription(java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,java.lang.Boolean,com.azure.core.util.Context)` was removed
+* `deleteAtManagementGroup(java.lang.String,java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,java.lang.Boolean,com.azure.core.util.Context)` was removed
 * `deleteByIdWithResponse(java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,java.lang.Boolean,com.azure.core.util.Context)` was removed
 * `delete(java.lang.String,java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,java.lang.Boolean,com.azure.core.util.Context)` was removed
-* `deleteAtManagementGroup(java.lang.String,java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,java.lang.Boolean,com.azure.core.util.Context)` was removed
 
 #### `models.ActionOnUnmanage` was modified
 
+* `withResourceGroups(models.DeploymentStacksDeleteDetachEnum)` was removed
+* `models.DeploymentStacksDeleteDetachEnum resources()` -> `models.UnmanageActionResourceMode resources()`
+* `models.DeploymentStacksDeleteDetachEnum resourceGroups()` -> `models.UnmanageActionResourceGroupMode resourceGroups()`
+* `withManagementGroups(models.DeploymentStacksDeleteDetachEnum)` was removed
+* `models.DeploymentStacksDeleteDetachEnum managementGroups()` -> `models.UnmanageActionManagementGroupMode managementGroups()`
+* `withResources(models.DeploymentStacksDeleteDetachEnum)` was removed
 * `validate()` was removed
 
 #### `models.DenySettings` was modified
@@ -48,15 +52,15 @@
 #### `models.DeploymentStackValidateProperties` was modified
 
 * `DeploymentStackValidateProperties()` was changed to private access
-* `withCorrelationId(java.lang.String)` was removed
+* `withDeploymentScope(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
 * `validate()` was removed
+* `withDenySettings(models.DenySettings)` was removed
+* `withActionOnUnmanage(models.ActionOnUnmanage)` was removed
+* `withParameters(java.util.Map)` was removed
+* `withCorrelationId(java.lang.String)` was removed
 * `withTemplateLink(models.DeploymentStacksTemplateLink)` was removed
 * `withValidatedResources(java.util.List)` was removed
-* `withParameters(java.util.Map)` was removed
-* `withDescription(java.lang.String)` was removed
-* `withActionOnUnmanage(models.ActionOnUnmanage)` was removed
-* `withDeploymentScope(java.lang.String)` was removed
-* `withDenySettings(models.DenySettings)` was removed
 
 #### `models.DeploymentParameter` was modified
 
@@ -73,9 +77,9 @@
 #### `models.ManagedResourceReference` was modified
 
 * `ManagedResourceReference()` was changed to private access
+* `withStatus(models.ResourceStatusMode)` was removed
 * `withDenyStatus(models.DenyStatusMode)` was removed
 * `validate()` was removed
-* `withStatus(models.ResourceStatusMode)` was removed
 
 #### `models.ResourceReference` was modified
 
@@ -103,6 +107,8 @@
 
 * `models.DeploymentStacksWhatIfResourceChange` was added
 
+* `models.ResourcesWithoutDeleteSupportAction` was added
+
 * `models.DeploymentStacksWhatIfResult$DefinitionStages` was added
 
 * `models.DeploymentStacksWhatIfResultsAtResourceGroups` was added
@@ -129,8 +135,6 @@
 
 * `models.DeploymentStacksChangeBaseDeploymentStacksManagementStatus` was added
 
-* `models.DeploymentStacksResourcesWithoutDeleteSupportEnum` was added
-
 * `models.ValidationLevel` was added
 
 * `models.DeploymentStacksChangeDeltaRecord` was added
@@ -155,64 +159,67 @@
 
 #### `models.DeploymentStackProperties` was modified
 
-* `withExternalInputs(java.util.Map)` was added
-* `extensionConfigs()` was added
-* `withExternalInputDefinitions(java.util.Map)` was added
-* `validationLevel()` was added
-* `deploymentExtensions()` was added
-* `withValidationLevel(models.ValidationLevel)` was added
 * `externalInputs()` was added
+* `deploymentExtensions()` was added
+* `withExternalInputs(java.util.Map)` was added
+* `withExternalInputDefinitions(java.util.Map)` was added
+* `withValidationLevel(models.ValidationLevel)` was added
 * `withExtensionConfigs(java.util.Map)` was added
+* `extensionConfigs()` was added
 * `externalInputDefinitions()` was added
+* `validationLevel()` was added
 
 #### `models.DeploymentStacks` was modified
 
-* `deleteByIdWithResponse(java.lang.String,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksResourcesWithoutDeleteSupportEnum,java.lang.Boolean,com.azure.core.util.Context)` was added
-* `deleteAtSubscription(java.lang.String,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksResourcesWithoutDeleteSupportEnum,java.lang.Boolean,com.azure.core.util.Context)` was added
-* `delete(java.lang.String,java.lang.String,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksResourcesWithoutDeleteSupportEnum,java.lang.Boolean,com.azure.core.util.Context)` was added
-* `deleteAtManagementGroup(java.lang.String,java.lang.String,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksDeleteDetachEnum,models.DeploymentStacksResourcesWithoutDeleteSupportEnum,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `deleteAtManagementGroup(java.lang.String,java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,models.ResourcesWithoutDeleteSupportAction,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `delete(java.lang.String,java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,models.ResourcesWithoutDeleteSupportAction,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `deleteAtSubscription(java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,models.ResourcesWithoutDeleteSupportAction,java.lang.Boolean,com.azure.core.util.Context)` was added
+* `deleteByIdWithResponse(java.lang.String,models.UnmanageActionResourceMode,models.UnmanageActionResourceGroupMode,models.UnmanageActionManagementGroupMode,models.ResourcesWithoutDeleteSupportAction,java.lang.Boolean,com.azure.core.util.Context)` was added
 
 #### `models.ActionOnUnmanage` was modified
 
 * `resourcesWithoutDeleteSupport()` was added
-* `withResourcesWithoutDeleteSupport(models.DeploymentStacksResourcesWithoutDeleteSupportEnum)` was added
+* `withManagementGroups(models.UnmanageActionManagementGroupMode)` was added
+* `withResources(models.UnmanageActionResourceMode)` was added
+* `withResourceGroups(models.UnmanageActionResourceGroupMode)` was added
+* `withResourcesWithoutDeleteSupport(models.ResourcesWithoutDeleteSupportAction)` was added
 
 #### `models.ResourceReferenceExtended` was modified
 
-* `extension()` was added
-* `identifiers()` was added
 * `apiVersion()` was added
+* `identifiers()` was added
 * `type()` was added
+* `extension()` was added
 
 #### `DeploymentStacksManager` was modified
 
-* `deploymentStacksWhatIfResultsAtSubscriptions()` was added
-* `deploymentStacksWhatIfResultsAtResourceGroups()` was added
 * `deploymentStacksWhatIfResultsAtManagementGroups()` was added
+* `deploymentStacksWhatIfResultsAtResourceGroups()` was added
+* `deploymentStacksWhatIfResultsAtSubscriptions()` was added
 
 #### `models.DeploymentStackValidateProperties` was modified
 
-* `deploymentExtensions()` was added
 * `validationLevel()` was added
+* `deploymentExtensions()` was added
 
 #### `models.DeploymentParameter` was modified
 
-* `withExpression(java.lang.String)` was added
 * `expression()` was added
+* `withExpression(java.lang.String)` was added
 
 #### `models.ManagedResourceReference` was modified
 
+* `identifiers()` was added
 * `apiVersion()` was added
 * `type()` was added
-* `identifiers()` was added
 * `extension()` was added
 
 #### `models.ResourceReference` was modified
 
 * `apiVersion()` was added
+* `extension()` was added
 * `identifiers()` was added
 * `type()` was added
-* `extension()` was added
 
 ## 1.0.0 (2025-07-10)
 

@@ -104,10 +104,10 @@ public interface DeploymentStacksWhatIfResultsAtSubscriptions {
      * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String deploymentStacksWhatIfResultName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context);
 
     /**

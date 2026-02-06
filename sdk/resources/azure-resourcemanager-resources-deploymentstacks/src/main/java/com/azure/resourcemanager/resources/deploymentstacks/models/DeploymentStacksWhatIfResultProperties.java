@@ -156,17 +156,6 @@ public final class DeploymentStacksWhatIfResultProperties
     }
 
     /**
-     * Set the error property: The error detail.
-     * 
-     * @param error the error value to set.
-     * @return the DeploymentStacksWhatIfResultProperties object itself.
-     */
-    public DeploymentStacksWhatIfResultProperties withError(ManagementError error) {
-        this.error = error;
-        return this;
-    }
-
-    /**
      * Get the template property: The template content. You use this element when you want to pass the template syntax
      * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string.
      * Use either the templateLink property or the template property, but not both.
@@ -554,7 +543,6 @@ public final class DeploymentStacksWhatIfResultProperties
         jsonWriter.writeJsonField("denySettings", this.denySettings);
         jsonWriter.writeStringField("deploymentStackResourceId", this.deploymentStackResourceId);
         jsonWriter.writeStringField("retentionInterval", CoreUtils.durationToStringWithDays(this.retentionInterval));
-        jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeMapField("template", this.template, (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeJsonField("templateLink", this.templateLink);
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));

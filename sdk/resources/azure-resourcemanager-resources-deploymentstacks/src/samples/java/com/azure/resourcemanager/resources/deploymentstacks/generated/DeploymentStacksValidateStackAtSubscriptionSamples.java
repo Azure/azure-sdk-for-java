@@ -10,8 +10,10 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,20 +33,22 @@ public final class DeploymentStacksValidateStackAtSubscriptionSamples {
     public static void validateASubscriptionDeploymentStack(
         com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager manager) {
         manager.deploymentStacks()
-            .validateStackAtSubscription("simpleDeploymentStack", new DeploymentStackInner()
-                .withProperties(new DeploymentStackProperties()
-                    .withTemplateLink(
-                        new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                    .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DELETE))
-                    .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
-                        .withExcludedPrincipals(Arrays.asList("principal"))
-                        .withExcludedActions(Arrays.asList("action"))
-                        .withApplyToChildScopes(false)))
-                .withLocation("eastus")
-                .withTags(mapOf("tagkey", "fakeTokenPlaceholder")), com.azure.core.util.Context.NONE);
+            .validateStackAtSubscription("simpleDeploymentStack",
+                new DeploymentStackInner()
+                    .withProperties(new DeploymentStackProperties()
+                        .withTemplateLink(
+                            new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
+                        .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
+                        .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                            .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                            .withManagementGroups(UnmanageActionManagementGroupMode.DELETE))
+                        .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
+                            .withExcludedPrincipals(Arrays.asList("principal"))
+                            .withExcludedActions(Arrays.asList("action"))
+                            .withApplyToChildScopes(false)))
+                    .withLocation("eastus")
+                    .withTags(mapOf("tagkey", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

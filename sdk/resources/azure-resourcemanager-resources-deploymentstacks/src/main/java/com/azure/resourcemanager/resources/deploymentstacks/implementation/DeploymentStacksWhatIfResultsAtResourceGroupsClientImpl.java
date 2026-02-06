@@ -36,8 +36,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.DeploymentStacksWhatIfResultsAtResourceGroupsClient;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStacksWhatIfResultInner;
 import com.azure.resourcemanager.resources.deploymentstacks.implementation.models.DeploymentStacksWhatIfResultListResult;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -144,10 +146,10 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentStacksWhatIfResultName") String deploymentStacksWhatIfResultName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -158,10 +160,10 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentStacksWhatIfResultName") String deploymentStacksWhatIfResultName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -592,10 +594,10 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName,
-        String deploymentStacksWhatIfResultName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStacksWhatIfResultName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -618,10 +620,10 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String deploymentStacksWhatIfResultName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         return deleteWithResponseAsync(resourceGroupName, deploymentStacksWhatIfResultName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -649,10 +651,10 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String deploymentStacksWhatIfResultName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, deploymentStacksWhatIfResultName,
@@ -672,10 +674,10 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentStacksWhatIfResultName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         deleteWithResponse(resourceGroupName, deploymentStacksWhatIfResultName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,

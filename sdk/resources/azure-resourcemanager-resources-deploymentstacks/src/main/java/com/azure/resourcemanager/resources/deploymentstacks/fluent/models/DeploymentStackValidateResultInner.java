@@ -115,7 +115,6 @@ public final class DeploymentStackValidateResultInner implements JsonSerializabl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeJsonField("properties", this.properties);
         return jsonWriter.writeEndObject();
     }

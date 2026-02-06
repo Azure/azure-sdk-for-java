@@ -10,8 +10,10 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,9 +38,9 @@ public final class DeploymentStacksValidateStackAtResourceGroupSamples {
                     .withTemplateLink(
                         new DeploymentStacksTemplateLink().withUri("https://example.com/exampleTemplate.json"))
                     .withParameters(mapOf("parameter1", new DeploymentParameter().withValue("a string")))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DELETE))
+                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                        .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                        .withManagementGroups(UnmanageActionManagementGroupMode.DELETE))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                         .withExcludedPrincipals(Arrays.asList("principal"))
                         .withExcludedActions(Arrays.asList("action"))

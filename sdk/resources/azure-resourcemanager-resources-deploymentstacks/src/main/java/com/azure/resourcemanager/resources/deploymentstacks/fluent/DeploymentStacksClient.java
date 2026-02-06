@@ -14,8 +14,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackInner;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackTemplateDefinitionInner;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackValidateResultInner;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 
 /**
  * An instance of this class provides access to all the operations defined in DeploymentStacksClient.
@@ -239,10 +241,10 @@ public interface DeploymentStacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context);
 
     /**
@@ -278,10 +280,10 @@ public interface DeploymentStacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context);
 
     /**
@@ -513,10 +515,10 @@ public interface DeploymentStacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context);
 
     /**
@@ -549,10 +551,10 @@ public interface DeploymentStacksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void deleteAtSubscription(String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+    void deleteAtSubscription(String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context);
 
     /**
@@ -584,7 +586,7 @@ public interface DeploymentStacksClient {
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -599,7 +601,7 @@ public interface DeploymentStacksClient {
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -612,7 +614,7 @@ public interface DeploymentStacksClient {
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -624,7 +626,7 @@ public interface DeploymentStacksClient {
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -638,7 +640,7 @@ public interface DeploymentStacksClient {
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -655,7 +657,7 @@ public interface DeploymentStacksClient {
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @param context The context to associate with this operation.
@@ -673,7 +675,7 @@ public interface DeploymentStacksClient {
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,7 +691,7 @@ public interface DeploymentStacksClient {
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @param context The context to associate with this operation.
@@ -705,7 +707,7 @@ public interface DeploymentStacksClient {
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -720,7 +722,7 @@ public interface DeploymentStacksClient {
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @param context The context to associate with this operation.
@@ -736,7 +738,7 @@ public interface DeploymentStacksClient {
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -751,7 +753,7 @@ public interface DeploymentStacksClient {
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @param context The context to associate with this operation.
@@ -768,7 +770,7 @@ public interface DeploymentStacksClient {
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -783,7 +785,7 @@ public interface DeploymentStacksClient {
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -800,17 +802,17 @@ public interface DeploymentStacksClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context);
 
     /**
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -823,7 +825,7 @@ public interface DeploymentStacksClient {
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -839,16 +841,16 @@ public interface DeploymentStacksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void deleteAtManagementGroup(String managementGroupId, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context);
 
     /**
      * Exports the template used to create the Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -863,7 +865,7 @@ public interface DeploymentStacksClient {
     /**
      * Exports the template used to create the Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

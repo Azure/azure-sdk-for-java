@@ -10,8 +10,10 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.resources.deploymentstacks.DeploymentStacksManager;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
@@ -30,9 +32,9 @@ public final class DeploymentStacksWhatIfResultsAtResourceGroupsDeleteWithRespon
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.deploymentStacksWhatIfResultsAtResourceGroups()
-            .deleteWithResponse("ol", "dahzxctobg", DeploymentStacksDeleteDetachEnum.DELETE,
-                DeploymentStacksDeleteDetachEnum.DETACH, DeploymentStacksDeleteDetachEnum.DELETE,
-                DeploymentStacksResourcesWithoutDeleteSupportEnum.FAIL, false, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("ol", "dahzxctobg", UnmanageActionResourceMode.DELETE,
+                UnmanageActionResourceGroupMode.DETACH, UnmanageActionManagementGroupMode.DELETE,
+                ResourcesWithoutDeleteSupportAction.FAIL, false, com.azure.core.util.Context.NONE);
 
     }
 }

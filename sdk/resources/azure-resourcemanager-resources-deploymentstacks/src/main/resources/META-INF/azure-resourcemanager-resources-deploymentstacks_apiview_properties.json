@@ -92,12 +92,10 @@
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksChangeDeltaDenySettings": "Microsoft.Resources.DeploymentStacks.DeploymentStacksChangeDelta",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksChangeDeltaRecord": "Microsoft.Resources.DeploymentStacks.DeploymentStacksChangeDelta",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDebugSetting": "Microsoft.Resources.DeploymentStacks.DeploymentStacksDebugSetting",
-    "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum": "Microsoft.Resources.DeploymentStacks.DeploymentStacksDeleteDetachEnum",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDiagnostic": "Microsoft.Resources.DeploymentStacks.DeploymentStacksDiagnostic",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDiagnosticLevel": "Microsoft.Resources.DeploymentStacks.DeploymentStacksDiagnosticLevel",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksManagementStatus": "Microsoft.Resources.DeploymentStacks.DeploymentStacksManagementStatus",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksParametersLink": "Microsoft.Resources.DeploymentStacks.DeploymentStacksParametersLink",
-    "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum": "Microsoft.Resources.DeploymentStacks.DeploymentStacksResourcesWithoutDeleteSupportEnum",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink": "Microsoft.Resources.DeploymentStacks.DeploymentStacksTemplateLink",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfChange": "Microsoft.Resources.DeploymentStacks.DeploymentStacksWhatIfChange",
     "com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfChangeCertainty": "Microsoft.Resources.DeploymentStacks.DeploymentStacksWhatIfChangeCertainty",
@@ -113,6 +111,10 @@
     "com.azure.resourcemanager.resources.deploymentstacks.models.ResourceReference": "Microsoft.Resources.DeploymentStacks.ResourceReference",
     "com.azure.resourcemanager.resources.deploymentstacks.models.ResourceReferenceExtended": "Microsoft.Resources.DeploymentStacks.ResourceReferenceExtended",
     "com.azure.resourcemanager.resources.deploymentstacks.models.ResourceStatusMode": "Microsoft.Resources.DeploymentStacks.ResourceStatusMode",
+    "com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction": "Microsoft.Resources.DeploymentStacks.ResourcesWithoutDeleteSupportAction",
+    "com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode": "Microsoft.Resources.DeploymentStacks.UnmanageActionManagementGroupMode",
+    "com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode": "Microsoft.Resources.DeploymentStacks.UnmanageActionResourceGroupMode",
+    "com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode": "Microsoft.Resources.DeploymentStacks.UnmanageActionResourceMode",
     "com.azure.resourcemanager.resources.deploymentstacks.models.ValidationLevel": "Microsoft.Resources.DeploymentStacks.ValidationLevel"
   }
 }

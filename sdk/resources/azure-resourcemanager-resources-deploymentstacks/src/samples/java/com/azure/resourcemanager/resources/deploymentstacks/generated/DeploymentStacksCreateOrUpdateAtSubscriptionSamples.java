@@ -12,7 +12,9 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExt
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentParameter;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStackProperties;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,10 +42,9 @@ public final class DeploymentStacksCreateOrUpdateAtSubscriptionSamples {
                             new DeploymentExtensionConfig().withAdditionalProperties(
                                 mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
                                     new DeploymentExtensionConfigItem().withValue("config1Value")))))
-                        .withActionOnUnmanage(
-                            new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                                .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                                .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                        .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                            .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                            .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
                         .withDenySettings(new DenySettings().withMode(DenySettingsMode.DENY_DELETE)
                             .withExcludedPrincipals(Arrays.asList("principal"))
                             .withExcludedActions(Arrays.asList("action"))

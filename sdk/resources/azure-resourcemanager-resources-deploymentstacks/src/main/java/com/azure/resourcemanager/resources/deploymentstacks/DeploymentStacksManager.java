@@ -44,8 +44,6 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to DeploymentStacksManager.
- * The APIs listed in this specification can be used to manage Deployment stack resources through the Azure Resource
- * Manager.
  */
 public final class DeploymentStacksManager {
     private DeploymentStacksWhatIfResultsAtResourceGroups deploymentStacksWhatIfResultsAtResourceGroups;

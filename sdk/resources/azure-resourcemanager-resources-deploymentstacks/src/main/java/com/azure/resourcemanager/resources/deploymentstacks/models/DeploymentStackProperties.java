@@ -175,17 +175,6 @@ public final class DeploymentStackProperties implements JsonSerializable<Deploym
     }
 
     /**
-     * Set the error property: The error detail.
-     * 
-     * @param error the error value to set.
-     * @return the DeploymentStackProperties object itself.
-     */
-    public DeploymentStackProperties withError(ManagementError error) {
-        this.error = error;
-        return this;
-    }
-
-    /**
      * Get the template property: The template content. You use this element when you want to pass the template syntax
      * directly in the request rather than link to an existing template. It can be a JObject or well-formed JSON string.
      * Use either the templateLink property or the template property, but not both.
@@ -599,7 +588,6 @@ public final class DeploymentStackProperties implements JsonSerializable<Deploym
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("actionOnUnmanage", this.actionOnUnmanage);
         jsonWriter.writeJsonField("denySettings", this.denySettings);
-        jsonWriter.writeJsonField("error", this.error);
         if (this.template != null) {
             jsonWriter.writeUntypedField("template", this.template);
         }

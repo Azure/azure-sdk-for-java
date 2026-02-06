@@ -38,8 +38,10 @@ import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.Deploy
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackTemplateDefinitionInner;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStackValidateResultInner;
 import com.azure.resourcemanager.resources.deploymentstacks.implementation.models.DeploymentStackListResult;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -162,10 +164,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -176,10 +178,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -281,10 +283,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         Mono<Response<Flux<ByteBuffer>>> deleteAtSubscription(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -294,10 +296,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         Response<BinaryData> deleteAtSubscriptionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -397,10 +399,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         Mono<Response<Flux<ByteBuffer>>> deleteAtManagementGroup(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -410,10 +412,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
         Response<BinaryData> deleteAtManagementGroupSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
             @PathParam("deploymentStackName") String deploymentStackName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -1058,10 +1060,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1091,10 +1093,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, deploymentStackName, unmanageActionResources,
@@ -1123,10 +1125,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteWithResponse(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, deploymentStackName, unmanageActionResources,
@@ -1154,10 +1156,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -1179,10 +1181,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -1211,10 +1213,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -1235,10 +1237,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -1267,10 +1269,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         Response<BinaryData> response = deleteWithResponse(resourceGroupName, deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -1298,10 +1300,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return beginDeleteAsync(resourceGroupName, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -1321,10 +1323,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         return beginDeleteAsync(resourceGroupName, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -1343,10 +1345,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         beginDelete(resourceGroupName, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
             unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError)
@@ -1373,10 +1375,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         beginDelete(resourceGroupName, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
             unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
@@ -1981,10 +1983,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteAtSubscriptionWithResponseAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return FluxUtil
             .withContext(context -> service.deleteAtSubscription(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -2013,10 +2015,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteAtSubscriptionWithResponse(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return service.deleteAtSubscriptionSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
@@ -2044,10 +2046,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteAtSubscriptionWithResponse(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         return service.deleteAtSubscriptionSync(this.client.getEndpoint(), this.client.getApiVersion(),
             this.client.getSubscriptionId(), deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
@@ -2074,10 +2076,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionWithResponseAsync(deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -2098,10 +2100,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionAsync(String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtSubscriptionWithResponseAsync(deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -2129,10 +2131,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         Response<BinaryData> response = deleteAtSubscriptionWithResponse(deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -2152,10 +2154,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         Response<BinaryData> response = deleteAtSubscriptionWithResponse(deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -2183,10 +2185,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscription(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         Response<BinaryData> response = deleteAtSubscriptionWithResponse(deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -2213,10 +2215,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAtSubscriptionAsync(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return beginDeleteAtSubscriptionAsync(deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -2235,10 +2237,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAtSubscriptionAsync(String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         return beginDeleteAtSubscriptionAsync(deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -2256,10 +2258,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtSubscription(String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         beginDeleteAtSubscription(deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
             unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError)
@@ -2284,11 +2286,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteAtSubscription(String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+    public void deleteAtSubscription(String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         beginDeleteAtSubscription(deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
             unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport, bypassStackOutOfSyncError,
@@ -2365,7 +2366,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2386,7 +2387,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2402,7 +2403,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2421,7 +2422,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2436,7 +2437,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2457,7 +2458,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2472,7 +2473,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2490,7 +2491,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2510,7 +2511,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2525,7 +2526,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2542,7 +2543,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2566,7 +2567,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2587,7 +2588,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @param context The context to associate with this operation.
@@ -2609,7 +2610,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2632,7 +2633,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2654,7 +2655,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @param context The context to associate with this operation.
@@ -2677,7 +2678,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2696,7 +2697,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2715,7 +2716,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Runs preflight validation on the Deployment stack template at the specified scope to verify its acceptance to
      * Azure Resource Manager.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack The content of the action request.
      * @param context The context to associate with this operation.
@@ -2734,7 +2735,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2757,7 +2758,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2777,7 +2778,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @param context The context to associate with this operation.
@@ -2798,7 +2799,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2819,7 +2820,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2839,7 +2840,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @param context The context to associate with this operation.
@@ -2860,7 +2861,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2878,7 +2879,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2896,7 +2897,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param deploymentStack Resource create parameters.
      * @param context The context to associate with this operation.
@@ -2916,7 +2917,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -2932,10 +2933,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteAtManagementGroupWithResponseAsync(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return FluxUtil
             .withContext(context -> service.deleteAtManagementGroup(this.client.getEndpoint(),
@@ -2949,7 +2950,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -2965,10 +2966,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteAtManagementGroupWithResponse(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return service.deleteAtManagementGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             managementGroupId, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
@@ -2980,7 +2981,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -2997,10 +2998,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> deleteAtManagementGroupWithResponse(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         return service.deleteAtManagementGroupSync(this.client.getEndpoint(), this.client.getApiVersion(),
             managementGroupId, deploymentStackName, unmanageActionResources, unmanageActionResourceGroups,
@@ -3012,7 +3013,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -3028,10 +3029,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupAsync(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtManagementGroupWithResponseAsync(managementGroupId,
             deploymentStackName, unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -3044,7 +3045,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3054,10 +3055,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupAsync(String managementGroupId,
         String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         Mono<Response<Flux<ByteBuffer>>> mono = deleteAtManagementGroupWithResponseAsync(managementGroupId,
             deploymentStackName, unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -3070,7 +3071,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -3086,10 +3087,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         Response<BinaryData> response = deleteAtManagementGroupWithResponse(managementGroupId, deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -3101,7 +3102,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3111,10 +3112,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
         String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         Response<BinaryData> response = deleteAtManagementGroupWithResponse(managementGroupId, deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -3126,7 +3127,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -3143,10 +3144,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroup(String managementGroupId,
-        String deploymentStackName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStackName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         Response<BinaryData> response = deleteAtManagementGroupWithResponse(managementGroupId, deploymentStackName,
             unmanageActionResources, unmanageActionResourceGroups, unmanageActionManagementGroups,
@@ -3158,7 +3159,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -3174,10 +3175,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return beginDeleteAtManagementGroupAsync(managementGroupId, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -3188,7 +3189,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3197,10 +3198,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAtManagementGroupAsync(String managementGroupId, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         return beginDeleteAtManagementGroupAsync(managementGroupId, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -3211,7 +3212,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3219,10 +3220,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String managementGroupId, String deploymentStackName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         beginDeleteAtManagementGroup(managementGroupId, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -3233,7 +3234,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -3249,10 +3250,10 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteAtManagementGroup(String managementGroupId, String deploymentStackName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         beginDeleteAtManagementGroup(managementGroupId, deploymentStackName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -3262,7 +3263,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Exports the template used to create the Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3283,7 +3284,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Exports the template used to create the Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3300,7 +3301,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Exports the template used to create the Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3319,7 +3320,7 @@ public final class DeploymentStacksClientImpl implements DeploymentStacksClient 
     /**
      * Exports the template used to create the Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStackName Name of the deployment stack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

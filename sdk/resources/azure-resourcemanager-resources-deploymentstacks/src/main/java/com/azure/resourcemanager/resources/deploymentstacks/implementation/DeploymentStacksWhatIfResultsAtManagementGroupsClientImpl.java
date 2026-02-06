@@ -36,8 +36,10 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.DeploymentStacksWhatIfResultsAtManagementGroupsClient;
 import com.azure.resourcemanager.resources.deploymentstacks.fluent.models.DeploymentStacksWhatIfResultInner;
 import com.azure.resourcemanager.resources.deploymentstacks.implementation.models.DeploymentStacksWhatIfResultListResult;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksResourcesWithoutDeleteSupportEnum;
+import com.azure.resourcemanager.resources.deploymentstacks.models.ResourcesWithoutDeleteSupportAction;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -136,10 +138,10 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("managementGroupId") String managementGroupId,
             @PathParam("deploymentStacksWhatIfResultName") String deploymentStacksWhatIfResultName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
@@ -149,10 +151,10 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("managementGroupId") String managementGroupId,
             @PathParam("deploymentStacksWhatIfResultName") String deploymentStacksWhatIfResultName,
-            @QueryParam("unmanageAction.Resources") DeploymentStacksDeleteDetachEnum unmanageActionResources,
-            @QueryParam("unmanageAction.ResourceGroups") DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-            @QueryParam("unmanageAction.ManagementGroups") DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+            @QueryParam("unmanageAction.Resources") UnmanageActionResourceMode unmanageActionResources,
+            @QueryParam("unmanageAction.ResourceGroups") UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+            @QueryParam("unmanageAction.ManagementGroups") UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+            @QueryParam("unmanageAction.ResourcesWithoutDeleteSupport") ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
             @QueryParam("bypassStackOutOfSyncError") Boolean bypassStackOutOfSyncError, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -193,7 +195,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -214,7 +216,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -231,7 +233,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,7 +252,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -265,7 +267,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -286,7 +288,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -302,7 +304,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -320,7 +322,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -339,7 +341,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -354,7 +356,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -371,7 +373,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -393,7 +395,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,7 +415,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -434,7 +436,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -456,7 +458,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -477,7 +479,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -499,7 +501,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,7 +519,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -534,7 +536,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -554,7 +556,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -570,10 +572,10 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String managementGroupId,
-        String deploymentStacksWhatIfResultName, DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        String deploymentStacksWhatIfResultName, UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError) {
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -587,7 +589,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -596,10 +598,10 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String managementGroupId, String deploymentStacksWhatIfResultName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         return deleteWithResponseAsync(managementGroupId, deploymentStacksWhatIfResultName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -610,7 +612,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -627,10 +629,10 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String managementGroupId, String deploymentStacksWhatIfResultName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context) {
         return service.deleteSync(this.client.getEndpoint(), this.client.getApiVersion(), managementGroupId,
             deploymentStacksWhatIfResultName, unmanageActionResources, unmanageActionResourceGroups,
@@ -642,7 +644,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -650,10 +652,10 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String managementGroupId, String deploymentStacksWhatIfResultName) {
-        final DeploymentStacksDeleteDetachEnum unmanageActionResources = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups = null;
-        final DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups = null;
-        final DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport = null;
+        final UnmanageActionResourceMode unmanageActionResources = null;
+        final UnmanageActionResourceGroupMode unmanageActionResourceGroups = null;
+        final UnmanageActionManagementGroupMode unmanageActionManagementGroups = null;
+        final ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport = null;
         final Boolean bypassStackOutOfSyncError = null;
         deleteWithResponse(managementGroupId, deploymentStacksWhatIfResultName, unmanageActionResources,
             unmanageActionResourceGroups, unmanageActionManagementGroups, unmanageActionResourcesWithoutDeleteSupport,
@@ -663,7 +665,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -683,7 +685,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -700,7 +702,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -719,7 +721,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -739,7 +741,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -757,7 +759,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -777,7 +779,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -794,7 +796,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -809,7 +811,7 @@ public final class DeploymentStacksWhatIfResultsAtManagementGroupsClientImpl
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

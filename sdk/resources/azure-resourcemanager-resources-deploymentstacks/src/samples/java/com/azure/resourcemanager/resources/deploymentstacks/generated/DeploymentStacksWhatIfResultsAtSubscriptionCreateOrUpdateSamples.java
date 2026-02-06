@@ -10,9 +10,11 @@ import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettings;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DenySettingsMode;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfig;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentExtensionConfigItem;
-import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksDeleteDetachEnum;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksTemplateLink;
 import com.azure.resourcemanager.resources.deploymentstacks.models.DeploymentStacksWhatIfResultProperties;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionManagementGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceGroupMode;
+import com.azure.resourcemanager.resources.deploymentstacks.models.UnmanageActionResourceMode;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,9 +43,9 @@ public final class DeploymentStacksWhatIfResultsAtSubscriptionCreateOrUpdateSamp
                         new DeploymentExtensionConfig().withAdditionalProperties(
                             mapOf("configTwo", new DeploymentExtensionConfigItem().withValue(true), "configOne",
                                 new DeploymentExtensionConfigItem().withValue("config1Value")))))
-                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withResourceGroups(DeploymentStacksDeleteDetachEnum.DELETE)
-                        .withManagementGroups(DeploymentStacksDeleteDetachEnum.DETACH))
+                    .withActionOnUnmanage(new ActionOnUnmanage().withResources(UnmanageActionResourceMode.DELETE)
+                        .withResourceGroups(UnmanageActionResourceGroupMode.DELETE)
+                        .withManagementGroups(UnmanageActionManagementGroupMode.DETACH))
                     .withDenySettings(new DenySettings().withMode(DenySettingsMode.NONE).withApplyToChildScopes(false))
                     .withDeploymentStackResourceId(
                         "/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack")

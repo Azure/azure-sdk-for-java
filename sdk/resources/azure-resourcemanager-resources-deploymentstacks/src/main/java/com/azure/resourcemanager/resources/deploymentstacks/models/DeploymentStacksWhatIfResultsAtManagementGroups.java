@@ -16,7 +16,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +30,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
     /**
      * Gets the Deployment stack with the given name.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +42,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -54,7 +54,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
     /**
      * Lists Deployment stacks at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -67,7 +67,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,7 +81,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
     /**
      * Creates or updates a Deployment stack at the specified scope.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param resource Resource create parameters.
      * @param context The context to associate with this operation.
@@ -97,7 +97,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param unmanageActionResources Flag to indicate delete rather than detach for unmanaged resources.
      * @param unmanageActionResourceGroups Flag to indicate delete rather than detach for unmanaged resource groups.
@@ -113,17 +113,17 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
      * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String managementGroupId, String deploymentStacksWhatIfResultName,
-        DeploymentStacksDeleteDetachEnum unmanageActionResources,
-        DeploymentStacksDeleteDetachEnum unmanageActionResourceGroups,
-        DeploymentStacksDeleteDetachEnum unmanageActionManagementGroups,
-        DeploymentStacksResourcesWithoutDeleteSupportEnum unmanageActionResourcesWithoutDeleteSupport,
+        UnmanageActionResourceMode unmanageActionResources,
+        UnmanageActionResourceGroupMode unmanageActionResourceGroups,
+        UnmanageActionManagementGroupMode unmanageActionManagementGroups,
+        ResourcesWithoutDeleteSupportAction unmanageActionResourcesWithoutDeleteSupport,
         Boolean bypassStackOutOfSyncError, Context context);
 
     /**
      * Deletes a Deployment stack by name at the specified scope. When operation completes, status code 200 returned
      * without content.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,7 +134,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,7 +146,7 @@ public interface DeploymentStacksWhatIfResultsAtManagementGroups {
     /**
      * Returns property-level changes that will be made by the deployment if executed.
      * 
-     * @param managementGroupId The name of the management group. The name is case insensitive.
+     * @param managementGroupId The management group ID.
      * @param deploymentStacksWhatIfResultName Name of the deployment stack what-if result.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
