@@ -69,7 +69,9 @@ private class BulkWriter
   // so multiplying by cpuCount in the default config is too aggressive
   private val maxPendingOperations = writeConfig.bulkMaxPendingOperations
     .getOrElse(DefaultMaxPendingOperationPerCore)
-  private val maxConcurrentPartitions = writeConfig.maxConcurrentCosmosPartitions match {
+
+  private val bulkExecutionConfigs = writeConfig.bulkExecutionConfigs.get.asInstanceOf[CosmosWriteBulkExecutionConfigs]
+  private val maxConcurrentPartitions = bulkExecutionConfigs.maxConcurrentCosmosPartitions match {
     // using the provided maximum of concurrent partitions per Spark partition on the input data
     // multiplied by 2 to leave space for partition splits during ingestion
     case Some(configuredMaxConcurrentPartitions) => 2 * configuredMaxConcurrentPartitions
@@ -146,20 +148,20 @@ private class BulkWriter
 
   ThroughputControlHelper.populateThroughputControlGroupName(cosmosBulkExecutionOptions, writeConfig.throughputControlConfig)
 
-  writeConfig.maxMicroBatchPayloadSizeInBytes match {
+  bulkExecutionConfigs.maxMicroBatchPayloadSizeInBytes match {
     case Some(customMaxMicroBatchPayloadSizeInBytes) =>
       cosmosBulkExecutionOptionsImpl
         .setMaxMicroBatchPayloadSizeInBytes(customMaxMicroBatchPayloadSizeInBytes)
     case None =>
   }
 
-  writeConfig.initialMicroBatchSize match {
+  bulkExecutionConfigs.initialMicroBatchSize match {
     case Some(customInitialMicroBatchSize) =>
       cosmosBulkExecutionOptions.setInitialMicroBatchSize(Math.max(1, customInitialMicroBatchSize))
     case None =>
   }
 
-  writeConfig.maxMicroBatchSize match {
+  bulkExecutionConfigs.maxMicroBatchSize match {
     case Some(customMaxMicroBatchSize) =>
      cosmosBulkExecutionOptions.setMaxMicroBatchSize(
        Math.max(
@@ -267,7 +269,7 @@ private class BulkWriter
 
       // We start from using the bulk batch size and interval and concurrency
       // If in the future, there is a need to separate the configuration, can re-consider
-      val bulkBatchSize = writeConfig.maxMicroBatchSize match {
+      val bulkBatchSize = bulkExecutionConfigs.maxMicroBatchSize match {
         case Some(customMaxMicroBatchSize) => Math.min(
           BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST,
           Math.max(1, customMaxMicroBatchSize))
