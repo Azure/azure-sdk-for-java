@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -252,8 +253,11 @@ public abstract class TestSuiteBase extends DocumentClientTest {
                             }
                             if (response.getResponse() != null
                                 && !response.getResponse().isSuccessStatusCode()) {
-                                return Mono.error(new IllegalStateException(
-                                    "Bulk delete operation failed with status code " + response.getResponse().getStatusCode()));
+                                CosmosException bulkException = BridgeInternal.createCosmosException(
+                                    response.getResponse().getStatusCode(),
+                                    "Bulk delete operation failed with status code " + response.getResponse().getStatusCode());
+                                BridgeInternal.setSubStatusCode(bulkException, response.getResponse().getSubStatusCode());
+                                return Mono.error(bulkException);
                             }
                             return Mono.just(response);
                         })
