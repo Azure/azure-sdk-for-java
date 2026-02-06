@@ -33,6 +33,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.security.confidentialledger.ConfidentialLedgerRedirectPolicy;
 import com.azure.security.confidentialledger.certificate.implementation.ConfidentialLedgerCertificateClientImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -301,6 +302,7 @@ public final class ConfidentialLedgerCertificateClientBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
+        policies.add(new ConfidentialLedgerRedirectPolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
