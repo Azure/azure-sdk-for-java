@@ -10,12 +10,18 @@
 
 ### Other Changes
 
-## 12.26.2 (Unreleased)
+## 12.26.2 (2026-02-05)
 
 ### Bugs Fixed
 - Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
   were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the 
   info level; invalid combinations of credentials will throw an error.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.1` to `12.33.2` in `azure-storage-blob`.
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
 
 ## 12.26.1 (2026-01-29)
 
