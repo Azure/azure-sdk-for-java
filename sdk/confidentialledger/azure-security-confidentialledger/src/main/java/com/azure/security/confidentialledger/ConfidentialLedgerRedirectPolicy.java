@@ -30,15 +30,17 @@ import java.util.Set;
  *
  * <ul>
  *   <li>Following redirects for all HTTP methods including POST</li>
- *   <li>Preserving the Authorization header when the redirect stays within the same
- *       Confidential Ledger host (same-origin check)</li>
+ *   <li>Preserving the Authorization header when the redirect target shares the same scheme and
+ *       the same host or a subdomain of the original Confidential Ledger endpoint</li>
  * </ul>
  *
  * <p>The Authorization header is preserved when the redirect target is a trusted Confidential
- * Ledger destination — specifically when the redirect host is the same as or a subdomain of the
- * original host (e.g., {@code accledger-2.myledger.confidential-ledger.azure.com} is a subdomain
- * of {@code myledger.confidential-ledger.azure.com}). If the redirect goes to an unrelated host,
- * the Authorization header is stripped for security.</p>
+ * Ledger destination — specifically when the redirect URL has the same scheme and the redirect
+ * host is the same as, or a subdomain of, the original host (e.g.,
+ * {@code accledger-2.myledger.confidential-ledger.azure.com} is a subdomain of
+ * {@code myledger.confidential-ledger.azure.com}). The port is not considered as part of this
+ * trust decision; if the redirect goes to an unrelated host, the Authorization header is
+ * stripped for security.</p>
  *
  * <p>This class is intended to be used internally by the Confidential Ledger client builders.</p>
  */
