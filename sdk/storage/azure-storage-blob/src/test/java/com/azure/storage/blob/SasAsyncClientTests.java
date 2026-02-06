@@ -992,7 +992,7 @@ public class SasAsyncClientTests extends BlobTestBase {
     // RBAC replication lag
     @Test
     @LiveOnly
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-04-06")
     public void blobDynamicUserDelegationSas() {
         liveTestScenarioWithRetry(() -> {
             // Create container and blob using OAuth service client

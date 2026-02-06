@@ -210,8 +210,8 @@ public class UserDelegationSasTestData extends SasTestData {
     }
 
     /*
-    We test string to sign functionality directly related toUserDelegation sas specific parameters
-    */
+     * We test string-to-sign functionality directly related to user delegation SAS-specific parameters.
+     */
     public static Stream<Arguments> blobSasImplUtilStringToSignUserDelegationKeySupplier() {
         // Use LinkedHashMap to ensure deterministic iteration order
         Map<String, String> singleHeader = new LinkedHashMap<>();
