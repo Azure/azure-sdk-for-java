@@ -259,9 +259,9 @@ public class DataLakeSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_HEADERS,
-            formatRequestHeaders(this.requestHeaders, true));
+            formatRequestHeaders(this.requestHeaders, false));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
-            formatRequestQueryParameters(this.requestQueryParameters, true));
+            formatRequestQueryParameters(this.requestQueryParameters, false));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, this.contentDisposition);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);

@@ -169,7 +169,6 @@ public class SasImplUtils {
         return String.join(",", requestQueryParameters.keySet());
     }
 
-
     /**
      * Formats a list of keys into a comma separated string.
      *

@@ -42,6 +42,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -888,6 +889,86 @@ public class SasTests extends DataLakeTestBase {
         assertDoesNotThrow(
             () -> instrument(new DataLakeServiceClientBuilder().endpoint(fileSystemUrl + "?" + sas)).buildClient()
                 .getProperties());
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void dataLakeFileSystemDynamicUserDelegationSas() {
+        liveTestScenarioWithRetry(() -> {
+            // Define request headers and query parameters
+            Map<String, String> requestHeaders = new HashMap<>();
+            requestHeaders.put("foo$", "bar!");
+            requestHeaders.put("company", "msft");
+            requestHeaders.put("city", "redmond,atlanta,reston");
+
+            Map<String, String> requestQueryParams = new HashMap<>();
+            requestQueryParams.put("hello$", "world!");
+            requestQueryParams.put("check", "spelling");
+            requestQueryParams.put("firstName", "john,Tim");
+
+            // Generate user delegation SAS with request headers and query params
+            FileSystemSasPermission permissions = new FileSystemSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime);
+            key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+            key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setRequestHeaders(requestHeaders)
+                    .setRequestQueryParameters(requestQueryParams);
+
+            String sasWithPermissions = dataLakeFileSystemClient.generateUserDelegationSas(sasValues, key);
+
+            DataLakeFileClient client
+                = new DataLakeFileSystemClientBuilder().endpoint(dataLakeFileSystemClient.getFileSystemUrl())
+                    .sasToken(sasWithPermissions)
+                    .addPolicy(getAddHeadersAndQueryPolicy(requestHeaders, requestQueryParams))
+                    .buildClient()
+                    .getFileClient(pathName);
+
+            assertDoesNotThrow(() -> client.getProperties());
+        });
+    }
+
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2026-02-06")
+    public void dataLakeFileDynamicUserDelegationSas() {
+        liveTestScenarioWithRetry(() -> {
+            // Define request headers and query parameters
+            Map<String, String> requestHeaders = new HashMap<>();
+            requestHeaders.put("foo$", "bar!");
+            requestHeaders.put("company", "msft");
+            requestHeaders.put("city", "redmond,atlanta,reston");
+
+            Map<String, String> requestQueryParams = new HashMap<>();
+            requestQueryParams.put("hello$", "world!");
+            requestQueryParams.put("check", "spelling");
+            requestQueryParams.put("firstName", "john,Tim");
+
+            // Generate user delegation SAS with request headers and query params
+            PathSasPermission permissions = new PathSasPermission().setReadPermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            UserDelegationKey key = getOAuthServiceClient().getUserDelegationKey(null, expiryTime);
+            key.setSignedObjectId(testResourceNamer.recordValueFromConfig(key.getSignedObjectId()));
+            key.setSignedTenantId(testResourceNamer.recordValueFromConfig(key.getSignedTenantId()));
+
+            DataLakeServiceSasSignatureValues sasValues
+                = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setRequestHeaders(requestHeaders)
+                    .setRequestQueryParameters(requestQueryParams);
+
+            String sasWithPermissions = sasClient.generateUserDelegationSas(sasValues, key);
+
+            DataLakeFileClient client = new DataLakePathClientBuilder().endpoint(sasClient.getFileUrl())
+                .sasToken(sasWithPermissions)
+                .addPolicy(getAddHeadersAndQueryPolicy(requestHeaders, requestQueryParams))
+                .buildFileClient();
+
+            assertDoesNotThrow(() -> client.getProperties());
+        });
     }
 
 }

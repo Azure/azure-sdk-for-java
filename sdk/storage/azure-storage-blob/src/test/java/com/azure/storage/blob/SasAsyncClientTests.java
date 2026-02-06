@@ -997,7 +997,8 @@ public class SasAsyncClientTests extends BlobTestBase {
         liveTestScenarioWithRetry(() -> {
             // Create container and blob using OAuth service client
             BlobServiceAsyncClient oauthService = getOAuthServiceAsyncClient();
-            BlobContainerAsyncClient oauthContainer = oauthService.getBlobContainerAsyncClient(cc.getBlobContainerName());
+            BlobContainerAsyncClient oauthContainer
+                = oauthService.getBlobContainerAsyncClient(cc.getBlobContainerName());
             BlobAsyncClient oauthBlob = oauthContainer.getBlobAsyncClient(blobName);
 
             // Define request headers and query parameters
@@ -1026,7 +1027,7 @@ public class SasAsyncClientTests extends BlobTestBase {
                 String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTenantId());
                 r.setSignedTenantId(keyTid);
 
-                String blobToken = ccAsync.generateUserDelegationSas(sasValues, r);
+                String blobToken = sasClient.generateUserDelegationSas(sasValues, r);
 
                 // Create blob client with SAS token and custom policy
                 BlobAsyncClient identityBlob = new BlobClientBuilder().endpoint(oauthBlob.getBlobUrl())

@@ -202,7 +202,7 @@ public class BlobSasImplUtil {
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
-        final String stringToSign = stringToSign(delegationKey, canonicalName, true);
+        final String stringToSign = stringToSign(delegationKey, canonicalName);
         StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
         String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 
@@ -367,7 +367,7 @@ public class BlobSasImplUtil {
         }
     }
 
-    private String stringToSign(final UserDelegationKey key, String canonicalName, Boolean includeValuesInPairs) {
+    private String stringToSign(final UserDelegationKey key, String canonicalName) {
         String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
         if (VERSION.compareTo(BlobServiceVersion.V2019_12_12.getVersion()) <= 0) {
             return String.join("\n", this.permissions == null ? "" : this.permissions,
@@ -476,10 +476,10 @@ public class BlobSasImplUtil {
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,
                 versionSegment == null ? "" : versionSegment, this.encryptionScope == null ? "" : this.encryptionScope,
-                this.requestHeaders == null ? "" : formatRequestHeaders(this.requestHeaders, includeValuesInPairs),
+                this.requestHeaders == null ? "" : formatRequestHeaders(this.requestHeaders, true),
                 this.requestQueryParameters == null
                     ? ""
-                    : formatRequestQueryParameters(this.requestQueryParameters, includeValuesInPairs),
+                    : formatRequestQueryParameters(this.requestQueryParameters, true),
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,
