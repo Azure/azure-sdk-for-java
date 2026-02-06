@@ -12,6 +12,7 @@ import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocket;
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.Security;
 
@@ -47,8 +48,8 @@ public class ServerSSLSample {
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
             String body = "Hello, this is server.";
-            String response =
-                "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
+            String response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+                + body.getBytes(StandardCharsets.UTF_8).length + "\r\nConnection: close\r\n\r\n" + body;
 
             out.write(response);
             out.flush();

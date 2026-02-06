@@ -10,7 +10,7 @@ public class KeyVaultKeylessRsa256Signature extends KeyVaultKeylessRsaSignature 
     /**
      * Algorithm name used by this implementation.
      */
-    public static String ALGORITHM_NAME = "SHA256withRSA";
+    public static final String ALGORITHM_NAME = "SHA256withRSA";
 
     @Override
     public String getAlgorithmName() {

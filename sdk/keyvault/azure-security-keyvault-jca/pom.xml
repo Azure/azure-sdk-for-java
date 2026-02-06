@@ -76,6 +76,13 @@
       <version>1.17.7</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <!-- For some reason upgrading past Mockito 4.6.1 requires this to be added. -->
+    <dependency>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-annotations</artifactId>
+      <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-annotations;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <!-- JUnit -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

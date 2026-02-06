@@ -16,7 +16,7 @@ public class KeyVaultKeylessRsaSsaPssSignature extends KeyVaultKeylessRsaSignatu
     /**
      * Algorithm name used by this implementation.
      */
-    public static String ALGORITHM_NAME = "RSASSA-PSS";
+    public static final String ALGORITHM_NAME = "RSASSA-PSS";
 
     @Override
     public String getAlgorithmName() {

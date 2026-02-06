@@ -128,7 +128,7 @@ public final class HttpUtil {
     @SuppressWarnings("StringOperationCanBeSimplified")
     private static String readResponseBody(HttpURLConnection connection) throws IOException {
         InputStream responseBody
-            = (connection.getInputStream() != null) ? connection.getInputStream() : connection.getErrorStream();
+            = (connection.getErrorStream() != null) ? connection.getErrorStream() : connection.getInputStream();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[4096];

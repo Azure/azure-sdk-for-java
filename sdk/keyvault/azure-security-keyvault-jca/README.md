@@ -131,8 +131,8 @@ while (true) {
     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
     String body = "Hello, this is server.";
-    String response =
-        "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
+    String response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+        + body.getBytes(StandardCharsets.UTF_8).length + "\r\nConnection: close\r\n\r\n" + body;
 
     out.write(response);
     out.flush();
@@ -156,34 +156,35 @@ Security.addProvider(provider);
 
 KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-SSLContext sslContext = SSLContexts
-    .custom()
-    .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
-    .build();
-
-SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-    sslContext, (hostname, session) -> true);
-
-PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-    RegistryBuilder.<ConnectionSocketFactory>create()
-        .register("https", sslConnectionSocketFactory)
-        .build());
+// This section initializing SSLContext can be replaced with implementation specific consumption of 'KeyStore',
+// if the library being used has convenience methods for that.
+SSLContext sslContext = SSLContext.getInstance("TLS");
+TrustManager[] trustManagers = SampleUtils.loadTrustMaterial(keyStore);
+sslContext.init(null, trustManagers, null);
 
 String result = null;
+HttpsURLConnection connection = null;
+try {
+    // openConnection will return HttpsURLConnection when the protocol is 'https'.
+    connection = (HttpsURLConnection) URI.create("https://localhost:8765").toURL().openConnection();
 
-try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-    HttpGet httpGet = new HttpGet("https://localhost:8765");
-    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-        int status = response.getCode();
-        String result1 = "Not success";
-        if (status == 200) {
-            result1 = EntityUtils.toString(response.getEntity());
-        }
-        return result1;
-    };
-    result = client.execute(httpGet, responseHandler);
+    // Have the HttpsURLConnection use the SSLSocketFactory returned by SSLContext.
+    connection.setSSLSocketFactory(sslContext.getSocketFactory());
+
+    connection.setRequestMethod("GET");
+    int status = connection.getResponseCode();
+    if (status == 200) {
+        result = SampleUtils.readResponse(connection);
+    } else {
+        result = "Not success";
+    }
 } catch (IOException ioe) {
     ioe.printStackTrace();
+    result = "Not success";
+} finally {
+    if (connection != null) {
+        connection.disconnect();
+    }
 }
 System.out.println(result);
 ```
@@ -229,8 +230,8 @@ while (true) {
     BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
     String body = "Hello, this is server.";
-    String response =
-        "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
+    String response = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: "
+        + body.getBytes(StandardCharsets.UTF_8).length + "\r\nConnection: close\r\n\r\n" + body;
 
     out.write(response);
     out.flush();
@@ -259,35 +260,36 @@ System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id
 System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
 KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
-SSLContext sslContext = SSLContexts
-    .custom()
-    .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
-    .loadKeyMaterial(keyStore, "".toCharArray())
-    .build();
-
-SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
-    sslContext, (hostname, session) -> true);
-
-PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
-    RegistryBuilder.<ConnectionSocketFactory>create()
-        .register("https", sslConnectionSocketFactory)
-        .build());
+// This section initializing SSLContext can be replaced with implementation specific consumption of 'KeyStore',
+// if the library being used has convenience methods for that.
+SSLContext sslContext = SSLContext.getInstance("TLS");
+TrustManager[] trustManagers = SampleUtils.loadTrustMaterial(keyStore);
+KeyManager[] keyManagers = SampleUtils.loadKeyMaterial(keyStore, "".toCharArray());
+sslContext.init(keyManagers, trustManagers, null);
 
 String result = null;
+HttpsURLConnection connection = null;
+try {
+    // openConnection will return HttpsURLConnection when the protocol is 'https'.
+    connection = (HttpsURLConnection) URI.create("https://localhost:8765").toURL().openConnection();
 
-try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-    HttpGet httpGet = new HttpGet("https://localhost:8765");
-    HttpClientResponseHandler<String> responseHandler = (ClassicHttpResponse response) -> {
-        int status = response.getCode();
-        String result1 = "Not success";
-        if (status == 200) {
-            result1 = EntityUtils.toString(response.getEntity());
-        }
-        return result1;
-    };
-    result = client.execute(httpGet, responseHandler);
+    // Have the HttpsURLConnection use the SSLSocketFactory returned by SSLContext.
+    connection.setSSLSocketFactory(sslContext.getSocketFactory());
+
+    connection.setRequestMethod("GET");
+    int status = connection.getResponseCode();
+    if (status == 200) {
+        result = SampleUtils.readResponse(connection);
+    } else {
+        result = "Not success";
+    }
 } catch (IOException ioe) {
     ioe.printStackTrace();
+    result = "Not success";
+} finally {
+    if (connection != null) {
+        connection.disconnect();
+    }
 }
 System.out.println(result);
 ```

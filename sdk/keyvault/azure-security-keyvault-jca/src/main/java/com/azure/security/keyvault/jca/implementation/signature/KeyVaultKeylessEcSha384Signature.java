@@ -9,7 +9,7 @@ public final class KeyVaultKeylessEcSha384Signature extends KeyVaultKeylessEcSig
     /**
      * Algorithm name used by this implementation.
      */
-    public static String ALGORITHM_NAME = "SHA384withECDSA";
+    public static final String ALGORITHM_NAME = "SHA384withECDSA";
 
     @Override
     public String getAlgorithmName() {

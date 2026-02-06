@@ -3,12 +3,15 @@
 
 package com.azure.security.keyvault.jca.implementation.signature;
 
-import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
+import com.azure.security.keyvault.jca.implementation.mocking.MockKeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.mocking.MockPrivateKey;
+import com.azure.security.keyvault.jca.implementation.mocking.MockPublicKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -18,59 +21,21 @@ import java.security.spec.PSSParameterSpec;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class KeyVaultKeylessRsaSsaPssSignatureTest {
 
     KeyVaultKeylessRsaSsaPssSignature keyVaultKeylessRsaSsaPssSignature;
 
+    private final PublicKey publicKey = new MockPublicKey();
+    private final PrivateKey privateKey = new MockPrivateKey();
+
     static final String KEY_VAULT_TEST_URI_GLOBAL = "https://fake.vault.azure.net/";
-
-    private final KeyVaultClient keyVaultClient = mock(KeyVaultClient.class);
-
-    private final KeyVaultPrivateKey keyVaultPrivateKey = mock(KeyVaultPrivateKey.class);
 
     @BeforeEach
     public void before() {
         System.setProperty("azure.keyvault.uri", KEY_VAULT_TEST_URI_GLOBAL);
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
     }
-
-    private final PublicKey publicKey = new PublicKey() {
-        @Override
-        public String getAlgorithm() {
-            return null;
-        }
-
-        @Override
-        public String getFormat() {
-            return null;
-        }
-
-        @Override
-        public byte[] getEncoded() {
-            return new byte[0];
-        }
-    };
-
-    private final PrivateKey privateKey = new PrivateKey() {
-        @Override
-        public String getAlgorithm() {
-            return null;
-        }
-
-        @Override
-        public String getFormat() {
-            return null;
-        }
-
-        @Override
-        public byte[] getEncoded() {
-            return new byte[0];
-        }
-    };
 
     @Test
     public void engineInitVerifyTest() {
@@ -103,13 +68,17 @@ public class KeyVaultKeylessRsaSsaPssSignatureTest {
 
     @Test
     public void setDigestNameAndEngineSignTest() throws InvalidAlgorithmParameterException {
+        KeyVaultClient keyVaultClient = new MockKeyVaultClient() {
+            @Override
+            public byte[] getSignedWithPrivateKey(String digestName, String digestValue, String keyId) {
+                return "PS256".equals(digestName) ? "fakeValue".getBytes(StandardCharsets.UTF_8) : null;
+            }
+        };
+        KeyVaultPrivateKey keyVaultPrivateKey = new KeyVaultPrivateKey("algorithm", "kid", keyVaultClient);
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
-        when(keyVaultPrivateKey.getKeyVaultClient()).thenReturn(keyVaultClient);
         keyVaultKeylessRsaSsaPssSignature.engineInitSign(keyVaultPrivateKey, null);
         keyVaultKeylessRsaSsaPssSignature
             .engineSetParameter(new PSSParameterSpec("SHA-1", "MGF1", MGF1ParameterSpec.SHA1, 20, 1));
-        when(keyVaultClient.getSignedWithPrivateKey(ArgumentMatchers.eq("PS256"), anyString(),
-            ArgumentMatchers.eq(null))).thenReturn("fakeValue".getBytes());
         assertArrayEquals("fakeValue".getBytes(), keyVaultKeylessRsaSsaPssSignature.engineSign());
     }
 
@@ -123,7 +92,8 @@ public class KeyVaultKeylessRsaSsaPssSignatureTest {
     @Test
     public void engineSetParameterWithNotPSSParameterSpecTest() {
         keyVaultKeylessRsaSsaPssSignature = new KeyVaultKeylessRsaSsaPssSignature();
-        AlgorithmParameterSpec algorithmParameterSpec = mock(AlgorithmParameterSpec.class);
+        AlgorithmParameterSpec algorithmParameterSpec = new AlgorithmParameterSpec() {
+        };
         assertThrows(InvalidAlgorithmParameterException.class,
             () -> keyVaultKeylessRsaSsaPssSignature.engineSetParameter(algorithmParameterSpec));
     }

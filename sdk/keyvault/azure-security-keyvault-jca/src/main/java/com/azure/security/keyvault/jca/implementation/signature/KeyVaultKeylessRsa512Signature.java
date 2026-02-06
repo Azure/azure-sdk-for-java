@@ -10,7 +10,7 @@ public class KeyVaultKeylessRsa512Signature extends KeyVaultKeylessRsaSignature 
     /**
      * Algorithm name used by this implementation.
      */
-    public static String ALGORITHM_NAME = "SHA512withRSA";
+    public static final String ALGORITHM_NAME = "SHA512withRSA";
 
     @Override
     public String getAlgorithmName() {
