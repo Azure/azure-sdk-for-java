@@ -75,7 +75,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     void configureWithoutConnectionStringAndNamespace() {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.enabled=true")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsAutoConfiguration.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsProperties.class));
     }
 
     @Test

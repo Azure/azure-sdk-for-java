@@ -7,7 +7,6 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.AzureEventHubsProducerClientConfiguration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
@@ -47,8 +46,7 @@ class EventHubsDockerComposeConnectionDetailsFactoryTests {
     @Configuration(proxyBeanMethods = false)
     @ImportAutoConfiguration(classes = {
         AzureGlobalPropertiesAutoConfiguration.class,
-        AzureEventHubsAutoConfiguration.class,
-        AzureEventHubsProducerClientConfiguration.class})
+        AzureEventHubsAutoConfiguration.class})
     static class Config {
     }
 }
