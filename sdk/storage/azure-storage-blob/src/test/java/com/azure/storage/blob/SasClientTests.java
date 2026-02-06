@@ -40,9 +40,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -903,6 +900,51 @@ public class SasClientTests extends BlobTestBase {
             () -> instrument(new BlobServiceClientBuilder().endpoint(cc.getBlobContainerUrl() + "?" + sas))
                 .buildClient()
                 .getProperties());
+    }
+
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    public void blobDynamicUserDelegationSas() {
+        liveTestScenarioWithRetry(() -> {
+            // Create container and blob using OAuth service client
+            BlobServiceClient oauthService = getOAuthServiceClient();
+            BlobContainerClient oauthContainer = oauthService.getBlobContainerClient(cc.getBlobContainerName());
+            BlobClient oauthBlob = oauthContainer.getBlobClient(blobName);
+
+            UserDelegationKey userDelegationKey = getUserDelegationInfo();
+
+            // Define request headers and query parameters
+            Map<String, String> requestHeaders = new HashMap<>();
+            requestHeaders.put("foo$", "bar!");
+            requestHeaders.put("company", "msft");
+            requestHeaders.put("city", "redmond,atlanta,reston");
+
+            Map<String, String> requestQueryParams = new HashMap<>();
+            requestQueryParams.put("hello$", "world!");
+            requestQueryParams.put("check", "spelling");
+            requestQueryParams.put("firstName", "john,Tim");
+
+            // Generate user delegation SAS with request headers and query params
+            BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true).setDeletePermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiryTime, permissions).setRequestHeaders(requestHeaders)
+                    .setRequestQueryParameters(requestQueryParams);
+
+            String blobToken = oauthBlob.generateUserDelegationSas(sasValues, userDelegationKey);
+
+            // Create blob client with SAS token and custom policy
+            BlobClient identityBlob = new BlobClientBuilder().endpoint(oauthBlob.getBlobUrl())
+                .sasToken(blobToken)
+                .addPolicy(getAddHeadersAndQueryPolicy(requestHeaders, requestQueryParams))
+                .buildClient();
+
+            // Verify we can get blob properties
+            assertDoesNotThrow(identityBlob::getProperties);
+        });
     }
 
     private BlobServiceSasSignatureValues generateValues(BlobSasPermission permission) {

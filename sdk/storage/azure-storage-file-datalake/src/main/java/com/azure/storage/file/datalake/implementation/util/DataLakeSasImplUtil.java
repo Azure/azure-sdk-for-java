@@ -25,13 +25,13 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
-import static com.azure.storage.common.implementation.SasImplUtils.formatRequestHeadersForSasSigning;
-import static com.azure.storage.common.implementation.SasImplUtils.formatRequestQueryParametersForSasSigning;
+import static com.azure.storage.common.implementation.SasImplUtils.formatRequestHeaders;
+import static com.azure.storage.common.implementation.SasImplUtils.formatRequestQueryParameters;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
 
 /**
  * This class provides helper methods for common datalake service sas patterns.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public class DataLakeSasImplUtil {
@@ -259,9 +259,9 @@ public class DataLakeSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_HEADERS,
-            formatRequestHeadersForSasSigning(this.requestHeaders));
+            formatRequestHeaders(this.requestHeaders, true));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
-            formatRequestQueryParametersForSasSigning(this.requestQueryParameters));
+            formatRequestQueryParameters(this.requestQueryParameters, true));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, this.contentDisposition);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
@@ -478,10 +478,10 @@ public class DataLakeSasImplUtil {
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
                 this.encryptionScope == null ? "" : this.encryptionScope,
-                this.requestHeaders == null ? "" : formatRequestHeadersForSasSigning(this.requestHeaders),
+                this.requestHeaders == null ? "" : formatRequestHeaders(this.requestHeaders, true),
                 this.requestQueryParameters == null
                     ? ""
-                    : formatRequestQueryParametersForSasSigning(this.requestQueryParameters),
+                    : formatRequestQueryParameters(this.requestQueryParameters, true),
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

@@ -25,8 +25,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
-import static com.azure.storage.common.implementation.SasImplUtils.formatRequestHeadersForSasSigning;
-import static com.azure.storage.common.implementation.SasImplUtils.formatRequestQueryParametersForSasSigning;
+import static com.azure.storage.common.implementation.SasImplUtils.formatRequestHeaders;
+import static com.azure.storage.common.implementation.SasImplUtils.formatRequestQueryParameters;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
 
 /**
@@ -202,7 +202,7 @@ public class BlobSasImplUtil {
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
-        final String stringToSign = stringToSign(delegationKey, canonicalName);
+        final String stringToSign = stringToSign(delegationKey, canonicalName, true);
         StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
         String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 
@@ -260,9 +260,9 @@ public class BlobSasImplUtil {
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_HEADERS,
-            formatRequestHeadersForSasSigning(this.requestHeaders));
+            formatRequestHeaders(this.requestHeaders, false));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
-            formatRequestQueryParametersForSasSigning(this.requestQueryParameters));
+            formatRequestQueryParameters(this.requestQueryParameters, false));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, this.contentDisposition);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
@@ -367,7 +367,7 @@ public class BlobSasImplUtil {
         }
     }
 
-    private String stringToSign(final UserDelegationKey key, String canonicalName) {
+    private String stringToSign(final UserDelegationKey key, String canonicalName, Boolean includeValuesInPairs) {
         String versionSegment = this.snapshotId == null ? this.versionId : this.snapshotId;
         if (VERSION.compareTo(BlobServiceVersion.V2019_12_12.getVersion()) <= 0) {
             return String.join("\n", this.permissions == null ? "" : this.permissions,
@@ -476,10 +476,10 @@ public class BlobSasImplUtil {
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource,
                 versionSegment == null ? "" : versionSegment, this.encryptionScope == null ? "" : this.encryptionScope,
-                this.requestHeaders == null ? "" : formatRequestHeadersForSasSigning(this.requestHeaders),
+                this.requestHeaders == null ? "" : formatRequestHeaders(this.requestHeaders, includeValuesInPairs),
                 this.requestQueryParameters == null
                     ? ""
-                    : formatRequestQueryParametersForSasSigning(this.requestQueryParameters),
+                    : formatRequestQueryParameters(this.requestQueryParameters, includeValuesInPairs),
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

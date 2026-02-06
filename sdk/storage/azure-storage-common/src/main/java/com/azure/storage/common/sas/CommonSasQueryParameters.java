@@ -9,11 +9,11 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.TimeAndFormat;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static com.azure.storage.common.implementation.SasImplUtils.formatRequestHeadersForSasSigning;
-import static com.azure.storage.common.implementation.SasImplUtils.formatRequestQueryParametersForSasSigning;
+import static com.azure.storage.common.implementation.SasImplUtils.formatKeyList;
 
 /**
  * Represents the components that make up an Azure Storage SAS' query parameters. This type is not constructed directly
@@ -49,8 +49,8 @@ public class CommonSasQueryParameters {
     private final String correlationId;
     private final String encryptionScope;
     private final String delegatedUserObjectId;
-    private final Map<String, String> requestHeaders;
-    private final Map<String, String> requestQueryParameters;
+    private final List<String> requestHeaders;
+    private final List<String> requestQueryParameters;
 
     /**
      * Creates a new {@link CommonSasQueryParameters} object.
@@ -200,9 +200,9 @@ public class CommonSasQueryParameters {
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION, this.keyVersion);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_HEADERS,
-            formatRequestHeadersForSasSigning(this.requestHeaders));
+            formatKeyList(this.requestHeaders));
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
-            formatRequestQueryParametersForSasSigning(this.requestQueryParameters));
+            formatKeyList(this.requestQueryParameters));
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         SasImplUtils.tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION,
             this.contentDisposition);
@@ -499,25 +499,27 @@ public class CommonSasQueryParameters {
 
     /**
      * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
-     * Any usage of the SAS must include these headers and values in the request.
+     * Any usage of the SAS must include these headers and values in the request. Only the header keys will be included
+     * in this list.
      *
      * <p>Note: This parameter is only valid for user delegation SAS. </p>
      *
-     * @return A map of request headers.
+     * @return A list of request headers.
      */
-    public Map<String, String> getRequestHeaders() {
+    public List<String> getRequestHeaders() {
         return requestHeaders;
     }
 
     /**
      * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
-     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request. Only the query
+     * parameter keys will be included in this list.
      *
      * <p>Note: This parameter is only valid for user delegation SAS. </p>
      *
-     * @return A map of request query parameters.
+     * @return A list of request query parameters.
      */
-    public Map<String, String> getRequestQueryParameters() {
+    public List<String> getRequestQueryParameters() {
         return requestQueryParameters;
     }
 }

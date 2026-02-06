@@ -989,6 +989,58 @@ public class SasAsyncClientTests extends BlobTestBase {
         StepVerifier.create(serviceClient.getProperties()).expectNextCount(1).verifyComplete();
     }
 
+    // RBAC replication lag
+    @Test
+    @LiveOnly
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2026-02-06")
+    public void blobDynamicUserDelegationSas() {
+        liveTestScenarioWithRetry(() -> {
+            // Create container and blob using OAuth service client
+            BlobServiceAsyncClient oauthService = getOAuthServiceAsyncClient();
+            BlobContainerAsyncClient oauthContainer = oauthService.getBlobContainerAsyncClient(cc.getBlobContainerName());
+            BlobAsyncClient oauthBlob = oauthContainer.getBlobAsyncClient(blobName);
+
+            // Define request headers and query parameters
+            Map<String, String> requestHeaders = new HashMap<>();
+            requestHeaders.put("foo$", "bar!");
+            requestHeaders.put("company", "msft");
+            requestHeaders.put("city", "redmond,atlanta,reston");
+
+            Map<String, String> requestQueryParams = new HashMap<>();
+            requestQueryParams.put("hello$", "world!");
+            requestQueryParams.put("check", "spelling");
+            requestQueryParams.put("firstName", "john,Tim");
+
+            // Generate user delegation SAS with request headers and query params
+            BlobSasPermission permissions = new BlobSasPermission().setReadPermission(true).setDeletePermission(true);
+            OffsetDateTime expiryTime = testResourceNamer.now().plusHours(1);
+
+            BlobServiceSasSignatureValues sasValues
+                = new BlobServiceSasSignatureValues(expiryTime, permissions).setRequestHeaders(requestHeaders)
+                    .setRequestQueryParameters(requestQueryParams);
+
+            Mono<BlobProperties> response = oauthService.getUserDelegationKey(null, expiryTime).flatMap(r -> {
+                String keyOid = testResourceNamer.recordValueFromConfig(r.getSignedObjectId());
+                r.setSignedObjectId(keyOid);
+
+                String keyTid = testResourceNamer.recordValueFromConfig(r.getSignedTenantId());
+                r.setSignedTenantId(keyTid);
+
+                String blobToken = ccAsync.generateUserDelegationSas(sasValues, r);
+
+                // Create blob client with SAS token and custom policy
+                BlobAsyncClient identityBlob = new BlobClientBuilder().endpoint(oauthBlob.getBlobUrl())
+                    .sasToken(blobToken)
+                    .addPolicy(getAddHeadersAndQueryPolicy(requestHeaders, requestQueryParams))
+                    .buildAsyncClient();
+
+                return identityBlob.getProperties();
+            });
+
+            StepVerifier.create(response).expectNextCount(1).verifyComplete();
+        });
+    }
+
     private BlobServiceSasSignatureValues generateValues(BlobSasPermission permission) {
         return new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1), permission)
             .setStartTime(testResourceNamer.now().minusDays(1))
