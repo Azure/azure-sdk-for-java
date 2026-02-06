@@ -5,7 +5,7 @@ package com.azure.security.keyvault.jca.implementation.signature;
 
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey;
-import com.azure.security.keyvault.jca.implementation.mocking.MockKeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.MockKeyVaultClient;
 import com.azure.security.keyvault.jca.implementation.mocking.MockPrivateKey;
 import com.azure.security.keyvault.jca.implementation.mocking.MockPublicKey;
 import org.junit.jupiter.api.BeforeEach;

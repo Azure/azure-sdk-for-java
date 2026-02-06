@@ -226,7 +226,7 @@ public class KeyVaultClient {
             // Priority: 1. Managed Identity, 2. Provided Access Token, 3. Client ID/Secret
             if (managedIdentity != null) {
                 LOGGER.info("Using managed identity for authentication");
-                result = AccessTokenUtil.getAccessToken(resource, managedIdentity);
+                result = getAccessToken(resource, managedIdentity);
             } else if (providedAccessToken != null && !providedAccessToken.isEmpty()) {
                 LOGGER.info("Using provided access token for authentication");
                 // Create an AccessToken object from the provided token string
@@ -238,8 +238,7 @@ public class KeyVaultClient {
                 LOGGER.info("Using client credentials (client ID/secret) for authentication");
                 String aadAuthenticationUri = getLoginUri(keyVaultUri + "certificates" + API_VERSION_POSTFIX,
                     disableChallengeResourceVerification);
-                result
-                    = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
+                result = getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             }
         } catch (UnsupportedEncodingException e) {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", e);
@@ -263,7 +262,7 @@ public class KeyVaultClient {
         String uri = keyVaultUri + "certificates" + API_VERSION_POSTFIX;
 
         while (uri != null && !uri.isEmpty()) {
-            String response = HttpUtil.get(uri, headers);
+            String response = httpGet(uri, headers);
             CertificateListResult certificateListResult = null;
 
             if (response != null) {
@@ -301,7 +300,7 @@ public class KeyVaultClient {
         LOGGER.entering("KeyVaultClient", "getCertificateBundle", alias);
 
         CertificateBundle result = null;
-        String response = HttpUtil.get(keyVaultUri + "certificates/" + alias + API_VERSION_POSTFIX,
+        String response = httpGet(keyVaultUri + "certificates/" + alias + API_VERSION_POSTFIX,
             Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
 
         if (response != null) {
@@ -362,7 +361,7 @@ public class KeyVaultClient {
         LOGGER.log(INFO, "Getting certificate chain for alias: {0}", alias);
 
         String uri = keyVaultUri + "secrets/" + alias + API_VERSION_POSTFIX;
-        String response = HttpUtil.get(uri, Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
+        String response = httpGet(uri, Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
 
         if (response == null) {
             throw new NullPointerException();
@@ -431,7 +430,7 @@ public class KeyVaultClient {
             return key;
         }
 
-        String body = HttpUtil.get(certificateBundle.getSid() + API_VERSION_POSTFIX,
+        String body = httpGet(certificateBundle.getSid() + API_VERSION_POSTFIX,
             Collections.singletonMap("Authorization", "Bearer " + getAccessToken()));
 
         if (body == null) {
@@ -504,8 +503,7 @@ public class KeyVaultClient {
         String bodyString = "{\"alg\": \"" + digestName + "\", \"value\": \"" + digestValue + "\"}";
         Map<String, String> headers = Collections.singletonMap("Authorization", "Bearer " + getAccessToken());
 
-        String uri = keyId + "/sign" + API_VERSION_POSTFIX;
-        String response = HttpUtil.post(uri, headers, bodyString, "application/json");
+        String response = httpPost("/sign" + API_VERSION_POSTFIX, headers, bodyString, "application/json");
 
         if (response != null) {
             try {
@@ -578,5 +576,22 @@ public class KeyVaultClient {
         LOGGER.exiting("KeyVaultClient", "createPrivateKeyFromPem", privateKey);
 
         return privateKey;
+    }
+
+    String httpGet(String uri, Map<String, String> headers) {
+        return HttpUtil.get(uri, headers);
+    }
+
+    String httpPost(String uri, Map<String, String> headers, String body, String contentType) {
+        return HttpUtil.post(uri, headers, body, contentType);
+    }
+
+    AccessToken getAccessToken(String resource, String identity) {
+        return AccessTokenUtil.getAccessToken(resource, managedIdentity);
+    }
+
+    AccessToken getAccessToken(String resource, String aadAuthenticationUri, String tenantId, String clientId,
+        String clientSecret) {
+        return AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
     }
 }

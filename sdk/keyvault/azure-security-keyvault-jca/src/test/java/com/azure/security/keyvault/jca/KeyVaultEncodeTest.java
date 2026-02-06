@@ -3,11 +3,11 @@
 
 package com.azure.security.keyvault.jca;
 
-import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
@@ -62,9 +62,10 @@ public class KeyVaultEncodeTest {
 
     @Test
     public void concatBytesWithThreeBytes() {
-        byte[] byte1 = RandomString.make(32).getBytes();
-        byte[] byte2 = RandomString.make(32).getBytes();
-        byte[] byte3 = RandomString.make(32).getBytes();
+        SecureRandom random = new SecureRandom();
+        byte[] byte1 = random.generateSeed(32);
+        byte[] byte2 = random.generateSeed(32);
+        byte[] byte3 = random.generateSeed(32);
         byte[] result = KeyVaultEncode.concatBytes(byte1, byte2, byte3);
         Assertions.assertArrayEquals(byte1, Arrays.copyOfRange(result, 0, byte1.length));
         Assertions.assertArrayEquals(byte2, Arrays.copyOfRange(result, byte1.length, byte1.length + byte2.length));
@@ -73,8 +74,9 @@ public class KeyVaultEncodeTest {
 
     @Test
     public void concatBytesWithTwoBytes() {
-        byte[] byte1 = RandomString.make(32).getBytes();
-        byte[] byte2 = RandomString.make(32).getBytes();
+        SecureRandom random = new SecureRandom();
+        byte[] byte1 = random.generateSeed(32);
+        byte[] byte2 = random.generateSeed(32);
         byte[] result = KeyVaultEncode.concatBytes(byte1, byte2);
         Assertions.assertArrayEquals(byte1, Arrays.copyOfRange(result, 0, byte1.length));
         Assertions.assertArrayEquals(byte2, Arrays.copyOfRange(result, byte1.length, result.length));
@@ -82,8 +84,8 @@ public class KeyVaultEncodeTest {
 
     @Test
     public void toBigIntegerBytesWithLengthPrefixTest() {
-        byte[] testByte = RandomString.make(32).getBytes();
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
+        byte[] testByte = random.generateSeed(32);
         int offset = random.nextInt(testByte.length);
         int length = random.nextInt(testByte.length - offset);
         byte[] result = KeyVaultEncode.toBigIntegerBytesWithLengthPrefix(testByte, offset, length);

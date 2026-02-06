@@ -6,7 +6,7 @@ package com.azure.security.keyvault.jca.implementation.certificates;
 import com.azure.security.keyvault.jca.implementation.KeyVaultClient;
 import com.azure.security.keyvault.jca.implementation.mocking.MockCertificate;
 import com.azure.security.keyvault.jca.implementation.mocking.MockKey;
-import com.azure.security.keyvault.jca.implementation.mocking.MockKeyVaultClient;
+import com.azure.security.keyvault.jca.implementation.MockKeyVaultClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
