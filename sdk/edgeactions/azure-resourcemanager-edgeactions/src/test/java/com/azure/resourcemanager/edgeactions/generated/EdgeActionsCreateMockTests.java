@@ -25,7 +25,7 @@ public final class EdgeActionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"attachments\":[{\"id\":\"ddystkiiuxhqy\",\"attachedResourceId\":\"dxorrqnbpoczv\"},{\"id\":\"fqrvkdvjsllrmvvd\",\"attachedResourceId\":\"watkpnpulexxb\"}]},\"sku\":{\"name\":\"zwtruwiqzbqjvsov\",\"tier\":\"yokacspkw\"},\"location\":\"zdobpxjmflbvvnch\",\"tags\":{\"ajiwkuo\":\"ciwwzjuqkhr\"},\"id\":\"oskg\",\"name\":\"sauuimj\",\"type\":\"vxieduugidyj\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"attachments\":[{\"id\":\"pxjmflbvvnchr\",\"attachedResourceId\":\"cciw\"},{\"id\":\"juqk\",\"attachedResourceId\":\"rsa\"},{\"id\":\"wkuofoskghsauu\",\"attachedResourceId\":\"mjmvxieduugidyjr\"}]},\"sku\":{\"name\":\"f\",\"tier\":\"y\"},\"location\":\"svexcsonpclhoco\",\"tags\":{\"gz\":\"kevle\",\"lvmezyvshxmzsbbz\":\"buhfmvfaxkffeiit\"},\"id\":\"ggi\",\"name\":\"rxwburv\",\"type\":\"xxjnspydptk\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,19 +35,18 @@ public final class EdgeActionsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeAction response = manager.edgeActions()
-            .define("kuofqweykhme")
-            .withRegion("pkc")
-            .withExistingResourceGroup("yggdtjixh")
-            .withSku(new SkuType().withName("zrkgqhcjrefovg").withTier("kqsleyyvxy"))
-            .withTags(mapOf("ajvnysounqe", "pngjcrcczsqpjhvm", "oaeupfhyhltrpmo", "a", "uaodsfcpk", "jmcmatuokthfu",
-                "xbezyiuokktwh", "xodpuozmyzydagfu"))
+            .define("jh")
+            .withRegion("twhrdxwzywqsm")
+            .withExistingResourceGroup("cattpngjcrcczsq")
+            .withSku(new SkuType().withName("odsfcpkvxodpuozm").withTier("zydagfuaxbezyiuo"))
+            .withTags(mapOf("ksymd", "reximoryocfs", "kiiuxhqyudxor", "ys", "poczvyifqrvkdvjs", "qn", "d", "lrmv"))
             .withProperties(new EdgeActionProperties())
             .create();
 
-        Assertions.assertEquals("zdobpxjmflbvvnch", response.location());
-        Assertions.assertEquals("ciwwzjuqkhr", response.tags().get("ajiwkuo"));
-        Assertions.assertEquals("zwtruwiqzbqjvsov", response.sku().name());
-        Assertions.assertEquals("yokacspkw", response.sku().tier());
+        Assertions.assertEquals("svexcsonpclhoco", response.location());
+        Assertions.assertEquals("kevle", response.tags().get("gz"));
+        Assertions.assertEquals("f", response.sku().name());
+        Assertions.assertEquals("y", response.sku().tier());
     }
 
     // Use "Map.of" if available

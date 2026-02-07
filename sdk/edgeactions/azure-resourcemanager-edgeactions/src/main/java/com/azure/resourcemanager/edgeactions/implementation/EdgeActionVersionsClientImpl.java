@@ -138,7 +138,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}")
-        @ExpectedResponses({ 202, 204 })
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -147,7 +147,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}")
-        @ExpectedResponses({ 202, 204 })
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> deleteSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
@@ -192,7 +192,6 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") VersionCodeInner body, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/getVersionCode")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -200,9 +199,8 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("edgeActionName") String edgeActionName, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/getVersionCode")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -210,25 +208,27 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("edgeActionName") String edgeActionName, @PathParam("version") String version,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/swapDefault")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> swapDefault(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("edgeActionName") String edgeActionName, @PathParam("version") String version, Context context);
+            @PathParam("edgeActionName") String edgeActionName, @PathParam("version") String version,
+            @HeaderParam("content-type") String contentType, Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Headers({ "Accept: application/json;q=0.9" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/swapDefault")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Response<BinaryData> swapDefaultSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("edgeActionName") String edgeActionName, @PathParam("version") String version, Context context);
+            @PathParam("edgeActionName") String edgeActionName, @PathParam("version") String version,
+            @HeaderParam("content-type") String contentType, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -1181,7 +1181,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1189,20 +1189,23 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     * @return the version code for the edge action version along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getVersionCodeWithResponseAsync(String resourceGroupName,
         String edgeActionName, String version) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getVersionCode(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, accept, context))
+                this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1210,18 +1213,20 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the version code for the edge action version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getVersionCodeWithResponse(String resourceGroupName, String edgeActionName,
         String version) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getVersionCodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, accept, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, accept,
+            Context.NONE);
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1230,18 +1235,19 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return the version code for the edge action version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> getVersionCodeWithResponse(String resourceGroupName, String edgeActionName,
         String version, Context context) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.getVersionCodeSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, accept, context);
+            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, accept, context);
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1249,7 +1255,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
+     * @return the {@link PollerFlux} for polling of the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VersionCodeInner>, VersionCodeInner>
@@ -1261,7 +1267,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1269,7 +1275,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VersionCodeInner>, VersionCodeInner> beginGetVersionCode(String resourceGroupName,
@@ -1280,7 +1286,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1289,7 +1295,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VersionCodeInner>, VersionCodeInner> beginGetVersionCode(String resourceGroupName,
@@ -1300,7 +1306,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1308,7 +1314,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
+     * @return the version code for the edge action version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VersionCodeInner> getVersionCodeAsync(String resourceGroupName, String edgeActionName,
@@ -1318,7 +1324,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1326,7 +1332,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VersionCodeInner getVersionCode(String resourceGroupName, String edgeActionName, String version) {
@@ -1334,7 +1340,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1343,7 +1349,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VersionCodeInner getVersionCode(String resourceGroupName, String edgeActionName, String version,
@@ -1352,7 +1358,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1365,14 +1371,15 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> swapDefaultWithResponseAsync(String resourceGroupName,
         String edgeActionName, String version) {
+        final String contentType = "application/json";
         return FluxUtil
             .withContext(context -> service.swapDefault(this.client.getEndpoint(), this.client.getApiVersion(),
-                this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, context))
+                this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1385,12 +1392,13 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> swapDefaultWithResponse(String resourceGroupName, String edgeActionName,
         String version) {
+        final String contentType = "application/json";
         return service.swapDefaultSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, Context.NONE);
+            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, Context.NONE);
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1404,12 +1412,13 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> swapDefaultWithResponse(String resourceGroupName, String edgeActionName,
         String version, Context context) {
+        final String contentType = "application/json";
         return service.swapDefaultSync(this.client.getEndpoint(), this.client.getApiVersion(),
-            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, context);
+            this.client.getSubscriptionId(), resourceGroupName, edgeActionName, version, contentType, context);
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1429,7 +1438,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1447,7 +1456,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1466,7 +1475,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1483,7 +1492,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -1498,7 +1507,7 @@ public final class EdgeActionVersionsClientImpl implements EdgeActionVersionsCli
     }
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.

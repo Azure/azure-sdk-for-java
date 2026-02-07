@@ -24,7 +24,7 @@ public final class EdgeActionVersionsListByEdgeActionMockTests {
     @Test
     public void testListByEdgeAction() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"deploymentType\":\"file\",\"validationStatus\":\"Failed\",\"provisioningState\":\"Provisioning\",\"isDefaultVersion\":\"True\",\"lastPackageUpdateTime\":\"2020-12-31T23:44:32Z\"},\"location\":\"md\",\"tags\":{\"lpbuxwgipwhonowk\":\"g\",\"uttmrywnuzoqft\":\"shwankixzbinje\",\"zlsico\":\"yqzrnkcqvyxlw\",\"hheunmmqhgyx\":\"oqqnwvlryav\"},\"id\":\"konocu\",\"name\":\"oklyaxuconuq\",\"type\":\"zf\"}]}";
+            = "{\"value\":[{\"properties\":{\"deploymentType\":\"others\",\"validationStatus\":\"Failed\",\"provisioningState\":\"Canceled\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-03-27T23:23:57Z\"},\"location\":\"uttmrywnuzoqft\",\"tags\":{\"lsicohoqqnwv\":\"zrnkcqvyxlwh\",\"yxzk\":\"ryavwhheunmmqh\",\"koklya\":\"noc\",\"ewrmjmwvvjektc\":\"uconuqszfkbey\"},\"id\":\"senhwlrs\",\"name\":\"frzpwvlqdqgb\",\"type\":\"qylihkaetckt\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class EdgeActionVersionsListByEdgeActionMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<EdgeActionVersion> response = manager.edgeActionVersions()
-            .listByEdgeAction("yhxdeoejzicwi", "sjttgzfbish", com.azure.core.util.Context.NONE);
+            .listByEdgeAction("agalpbuxwgipwhon", "wkgshwa", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("md", response.iterator().next().location());
-        Assertions.assertEquals("g", response.iterator().next().tags().get("lpbuxwgipwhonowk"));
-        Assertions.assertEquals(EdgeActionVersionDeploymentType.FILE,
+        Assertions.assertEquals("uttmrywnuzoqft", response.iterator().next().location());
+        Assertions.assertEquals("zrnkcqvyxlwh", response.iterator().next().tags().get("lsicohoqqnwv"));
+        Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS,
             response.iterator().next().properties().deploymentType());
-        Assertions.assertEquals(EdgeActionIsDefaultVersion.TRUE,
+        Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE,
             response.iterator().next().properties().isDefaultVersion());
     }
 }

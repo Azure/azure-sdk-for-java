@@ -123,7 +123,7 @@ public interface EdgeActionVersions {
         VersionCodeInner body, Context context);
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -131,12 +131,12 @@ public interface EdgeActionVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the version code for the edge action version.
      */
     VersionCode getVersionCode(String resourceGroupName, String edgeActionName, String version);
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -145,12 +145,12 @@ public interface EdgeActionVersions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the version code for the edge action version.
      */
     VersionCode getVersionCode(String resourceGroupName, String edgeActionName, String version, Context context);
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -162,7 +162,7 @@ public interface EdgeActionVersions {
     void swapDefault(String resourceGroupName, String edgeActionName, String version);
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.

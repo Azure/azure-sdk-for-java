@@ -22,7 +22,7 @@ public final class EdgeActionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Provisioning\",\"attachments\":[{\"id\":\"xxhejjzzvd\",\"attachedResourceId\":\"dgwdslfhot\"}]},\"sku\":{\"name\":\"mcy\",\"tier\":\"pwlbjnpg\"},\"location\":\"ftadehxnltyfs\",\"tags\":{\"nzwdejba\":\"usue\",\"xdn\":\"orxzdmohctbqvud\"},\"id\":\"nvowgujju\",\"name\":\"wdkcglhsl\",\"type\":\"zj\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"attachments\":[{\"id\":\"pwlbjnpg\",\"attachedResourceId\":\"cftadeh\"},{\"id\":\"ltyfsop\",\"attachedResourceId\":\"usue\"}]},\"sku\":{\"name\":\"nzwdejba\",\"tier\":\"orxzdmohctbqvud\"},\"location\":\"dndnvow\",\"tags\":{\"zj\":\"jugwdkcglhsl\",\"kuofqweykhme\":\"yggdtjixh\",\"yvdcsitynnaa\":\"evfyexfwhybcib\",\"eypvhezrkg\":\"dectehfiqsc\"},\"id\":\"hcjrefovgmk\",\"name\":\"sle\",\"type\":\"yvxyqjp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class EdgeActionsListMockTests {
 
         PagedIterable<EdgeAction> response = manager.edgeActions().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ftadehxnltyfs", response.iterator().next().location());
-        Assertions.assertEquals("usue", response.iterator().next().tags().get("nzwdejba"));
-        Assertions.assertEquals("mcy", response.iterator().next().sku().name());
-        Assertions.assertEquals("pwlbjnpg", response.iterator().next().sku().tier());
+        Assertions.assertEquals("dndnvow", response.iterator().next().location());
+        Assertions.assertEquals("jugwdkcglhsl", response.iterator().next().tags().get("zj"));
+        Assertions.assertEquals("nzwdejba", response.iterator().next().sku().name());
+        Assertions.assertEquals("orxzdmohctbqvud", response.iterator().next().sku().tier());
     }
 }

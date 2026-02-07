@@ -24,7 +24,7 @@ public final class EdgeActionExecutionFiltersCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"versionId\":\"ccm\",\"lastUpdateTime\":\"2021-02-03T02:36:14Z\",\"executionFilterIdentifierHeaderName\":\"dxyt\",\"executionFilterIdentifierHeaderValue\":\"moyrxvwfudwpz\",\"provisioningState\":\"Succeeded\"},\"location\":\"dzhlrq\",\"tags\":{\"rlhrxs\":\"ck\",\"ycanuzbpzkafku\":\"kyv\",\"rnwb\":\"b\"},\"id\":\"ehhseyvjusrts\",\"name\":\"hspkdeemao\",\"type\":\"mx\"}";
+            = "{\"properties\":{\"versionId\":\"ck\",\"lastUpdateTime\":\"2021-01-01T22:28:55Z\",\"executionFilterIdentifierHeaderName\":\"hrxsbk\",\"executionFilterIdentifierHeaderValue\":\"vpycanuzbp\",\"provisioningState\":\"Succeeded\"},\"location\":\"kuwbcrnwb\",\"tags\":{\"rts\":\"hseyvju\",\"mx\":\"hspkdeemao\"},\"id\":\"gkvtmelmqkrhah\",\"name\":\"ljuahaquhcdh\",\"type\":\"duala\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,20 +34,20 @@ public final class EdgeActionExecutionFiltersCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeActionExecutionFilter response = manager.edgeActionExecutionFilters()
-            .define("sx")
-            .withRegion("lfplp")
-            .withExistingEdgeAction("tkncwsc", "svlxotogtwrup")
-            .withTags(mapOf("tazqugxywpmueefj", "uscrpabgyepsb"))
-            .withProperties(new EdgeActionExecutionFilterProperties().withVersionId("micykvceoveilo")
-                .withExecutionFilterIdentifierHeaderName("tyfjfcnjbkcnxdhb")
-                .withExecutionFilterIdentifierHeaderValue("tkphywpnvjtoqn"))
+            .define("kphywpnvjto")
+            .withRegion("wpmueefj")
+            .withExistingEdgeAction("k", "nxdhbt")
+            .withTags(mapOf("onobglaocqx", "qkqujidsu", "yudxytlmoy", "ccm"))
+            .withProperties(new EdgeActionExecutionFilterProperties().withVersionId("ermclfplphoxuscr")
+                .withExecutionFilterIdentifierHeaderName("gyepsbjt")
+                .withExecutionFilterIdentifierHeaderValue("zq"))
             .create();
 
-        Assertions.assertEquals("dzhlrq", response.location());
-        Assertions.assertEquals("ck", response.tags().get("rlhrxs"));
-        Assertions.assertEquals("ccm", response.properties().versionId());
-        Assertions.assertEquals("dxyt", response.properties().executionFilterIdentifierHeaderName());
-        Assertions.assertEquals("moyrxvwfudwpz", response.properties().executionFilterIdentifierHeaderValue());
+        Assertions.assertEquals("kuwbcrnwb", response.location());
+        Assertions.assertEquals("hseyvju", response.tags().get("rts"));
+        Assertions.assertEquals("ck", response.properties().versionId());
+        Assertions.assertEquals("hrxsbk", response.properties().executionFilterIdentifierHeaderName());
+        Assertions.assertEquals("vpycanuzbp", response.properties().executionFilterIdentifierHeaderValue());
     }
 
     // Use "Map.of" if available

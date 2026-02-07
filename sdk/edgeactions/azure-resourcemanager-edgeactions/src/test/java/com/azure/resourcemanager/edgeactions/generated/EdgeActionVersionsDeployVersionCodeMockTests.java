@@ -24,7 +24,7 @@ public final class EdgeActionVersionsDeployVersionCodeMockTests {
     @Test
     public void testDeployVersionCode() throws Exception {
         String responseStr
-            = "{\"deploymentType\":\"zip\",\"validationStatus\":\"Failed\",\"provisioningState\":\"Upgrading\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-12-09T18:50:38Z\"}";
+            = "{\"deploymentType\":\"others\",\"validationStatus\":\"Failed\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-06-25T23:55:57Z\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,10 @@ public final class EdgeActionVersionsDeployVersionCodeMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeActionVersionProperties response = manager.edgeActionVersions()
-            .deployVersionCode("beypewrmjmw", "vjektcxsenh", "lrsf",
-                new VersionCodeInner().withContent("rzpwvlqdqgbiq").withName("lihkaetcktvfc"),
-                com.azure.core.util.Context.NONE);
+            .deployVersionCode("fcivfsnkym", "ctq", "jf",
+                new VersionCodeInner().withContent("ebrjcxe").withName("fuwutttxf"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(EdgeActionVersionDeploymentType.ZIP, response.deploymentType());
+        Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, response.deploymentType());
         Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, response.isDefaultVersion());
     }
 }

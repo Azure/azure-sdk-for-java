@@ -26,7 +26,7 @@ public final class EdgeActionVersionsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deploymentType\":\"file\",\"validationStatus\":\"Failed\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-03-15T23:25:16Z\"},\"location\":\"kadrgvt\",\"tags\":{\"uynhijg\":\"n\",\"iarbutrcvpna\":\"mebf\"},\"id\":\"zmhjrunmp\",\"name\":\"ttdbhrbnl\",\"type\":\"nkxmyskpbhenbtk\"}";
+            = "{\"properties\":{\"deploymentType\":\"others\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-04-02T03:24:37Z\"},\"location\":\"nkxmyskpbhenbtk\",\"tags\":{\"y\":\"w\"},\"id\":\"nrs\",\"name\":\"nlqidybyxczf\",\"type\":\"lhaaxdbabp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,18 +36,18 @@ public final class EdgeActionVersionsCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeActionVersion response = manager.edgeActionVersions()
-            .define("uujqgidokgjljyo")
-            .withRegion("ghkjeszzhbi")
-            .withExistingEdgeAction("hfnljkyq", "j")
-            .withTags(mapOf("mpvecxgodebfqk", "xfvgxbfsmxne", "flz", "rbmpukgri"))
+            .define("mpvecxgodebfqk")
+            .withRegion("flz")
+            .withExistingEdgeAction("bgsncghkjeszzhb", "jhtxfvgxbfsmxne")
+            .withTags(mapOf("qzahmgkbrp", "xzpuzycisp", "hibnuqqkpika", "y", "buynhijggm", "rgvtqag"))
             .withProperties(
-                new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.ZIP)
-                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.FALSE))
+                new EdgeActionVersionPropertiesInner().withDeploymentType(EdgeActionVersionDeploymentType.FILE)
+                    .withIsDefaultVersion(EdgeActionIsDefaultVersion.TRUE))
             .create();
 
-        Assertions.assertEquals("kadrgvt", response.location());
-        Assertions.assertEquals("n", response.tags().get("uynhijg"));
-        Assertions.assertEquals(EdgeActionVersionDeploymentType.FILE, response.properties().deploymentType());
+        Assertions.assertEquals("nkxmyskpbhenbtk", response.location());
+        Assertions.assertEquals("w", response.tags().get("y"));
+        Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, response.properties().deploymentType());
         Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, response.properties().isDefaultVersion());
     }
 

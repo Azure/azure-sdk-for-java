@@ -23,7 +23,7 @@ public final class EdgeActionVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"deploymentType\":\"zip\",\"validationStatus\":\"Succeeded\",\"provisioningState\":\"Canceled\",\"isDefaultVersion\":\"True\",\"lastPackageUpdateTime\":\"2021-08-31T22:03:19Z\"},\"location\":\"ez\",\"tags\":{\"xwburvjxxjns\":\"hxmzsbbzoggig\",\"ou\":\"ydptkoen\",\"dng\":\"nvudwtiukb\",\"g\":\"pocipazyxoegu\"},\"id\":\"npiucgygevqznty\",\"name\":\"mrbpizcdrqj\",\"type\":\"dpydn\"}";
+            = "{\"properties\":{\"deploymentType\":\"others\",\"validationStatus\":\"Failed\",\"provisioningState\":\"Succeeded\",\"isDefaultVersion\":\"False\",\"lastPackageUpdateTime\":\"2021-08-14T19:48:52Z\"},\"location\":\"qzntypm\",\"tags\":{\"ydnfyhxdeoejz\":\"izcdrqjsd\"},\"id\":\"cwif\",\"name\":\"jttgzf\",\"type\":\"ishc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,12 @@ public final class EdgeActionVersionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EdgeActionVersion response = manager.edgeActionVersions()
-            .getWithResponse("rfbyaosvexcso", "pclhocohslk", "vleggzfbuhfmvfax", com.azure.core.util.Context.NONE)
+            .getWithResponse("enkouknvudw", "iukbldngkpoci", "azyxoegukg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ez", response.location());
-        Assertions.assertEquals("hxmzsbbzoggig", response.tags().get("xwburvjxxjns"));
-        Assertions.assertEquals(EdgeActionVersionDeploymentType.ZIP, response.properties().deploymentType());
-        Assertions.assertEquals(EdgeActionIsDefaultVersion.TRUE, response.properties().isDefaultVersion());
+        Assertions.assertEquals("qzntypm", response.location());
+        Assertions.assertEquals("izcdrqjsd", response.tags().get("ydnfyhxdeoejz"));
+        Assertions.assertEquals(EdgeActionVersionDeploymentType.OTHERS, response.properties().deploymentType());
+        Assertions.assertEquals(EdgeActionIsDefaultVersion.FALSE, response.properties().isDefaultVersion());
     }
 }

@@ -290,27 +290,27 @@ public interface EdgeActionVersion {
     EdgeActionVersionProperties deployVersionCode(VersionCodeInner body, Context context);
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the version code for the edge action version.
      */
     VersionCode getVersionCode();
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the version code for the edge action version.
      */
     VersionCode getVersionCode(Context context);
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -318,7 +318,7 @@ public interface EdgeActionVersion {
     void swapDefault();
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

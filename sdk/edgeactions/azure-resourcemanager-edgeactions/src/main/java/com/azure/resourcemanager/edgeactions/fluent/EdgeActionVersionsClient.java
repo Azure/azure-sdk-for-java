@@ -338,7 +338,7 @@ public interface EdgeActionVersionsClient {
         VersionCodeInner body, Context context);
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -346,14 +346,14 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VersionCodeInner>, VersionCodeInner> beginGetVersionCode(String resourceGroupName,
         String edgeActionName, String version);
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -362,14 +362,14 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VersionCodeInner>, VersionCodeInner> beginGetVersionCode(String resourceGroupName,
         String edgeActionName, String version, Context context);
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -377,13 +377,13 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VersionCodeInner getVersionCode(String resourceGroupName, String edgeActionName, String version);
 
     /**
-     * A long-running resource action.
+     * Get the version code for the edge action version.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -392,13 +392,13 @@ public interface EdgeActionVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the version code for the edge action version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     VersionCodeInner getVersionCode(String resourceGroupName, String edgeActionName, String version, Context context);
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -413,7 +413,7 @@ public interface EdgeActionVersionsClient {
         String version);
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -429,7 +429,7 @@ public interface EdgeActionVersionsClient {
         Context context);
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
@@ -442,7 +442,7 @@ public interface EdgeActionVersionsClient {
     void swapDefault(String resourceGroupName, String edgeActionName, String version);
 
     /**
-     * A long-running resource action.
+     * Swap the default version for the edge action.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param edgeActionName The name of the Edge Action.
