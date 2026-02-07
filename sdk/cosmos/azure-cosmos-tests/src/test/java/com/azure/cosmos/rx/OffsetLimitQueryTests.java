@@ -305,7 +305,7 @@ public class OffsetLimitQueryTests extends TestSuiteBase {
 
     public void bulkInsert() {
         generateTestData();
-        voidBulkInsertBlocking(createdCollection, docs);
+        voidInsertAllItemsBlocking(createdCollection, docs, true);
     }
 
     public void generateTestData() {

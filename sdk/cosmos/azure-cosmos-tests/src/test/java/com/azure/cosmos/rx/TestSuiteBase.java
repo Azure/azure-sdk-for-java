@@ -101,6 +101,7 @@ import static org.mockito.Mockito.spy;
 
 public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
+    private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 5;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     protected static final int TIMEOUT = 40000;
@@ -653,12 +654,37 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                 return Mono.just(response);
             });
     }
+    
+    private <T> Flux<CosmosItemResponse<T>> insertUsingPointOperations(CosmosAsyncContainer cosmosContainer,
+                                                                       List<T> documentDefinitionList) {
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+            .setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                    .build()
+            );
+
+        List<Mono<CosmosItemResponse<T>>> result = new ArrayList<>(documentDefinitionList.size());
+        for (T docDef : documentDefinitionList) {
+            result.add(cosmosContainer.createItem(docDef, options));
+        }
+
+        return Flux.merge(Flux.fromIterable(result), DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL);
+    }
 
     @SuppressWarnings("unchecked")
-    public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                                         List<T> documentDefinitionList) {
+    public <T> List<T> insertAllItemsBlocking(CosmosAsyncContainer cosmosContainer,
+                                                         List<T> documentDefinitionList,
+                                                         boolean bulkEnabled) {
         if (documentDefinitionList == null || documentDefinitionList.isEmpty()) {
             return documentDefinitionList;
+        }
+
+        if (!bulkEnabled) {
+            return insertUsingPointOperations(cosmosContainer, documentDefinitionList)
+                .publishOn(Schedulers.parallel())
+                .map(CosmosItemResponse::getItem)
+                .collectList()
+                .block();
         }
 
         Class<T> clazz = (Class<T>) documentDefinitionList.get(0).getClass();
@@ -671,7 +697,17 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             .block();
     }
 
-    public <T> void voidBulkInsertBlocking(CosmosAsyncContainer cosmosContainer, List<T> documentDefinitionList) {
+    public <T> void voidInsertAllItemsBlocking(CosmosAsyncContainer cosmosContainer,
+                                        List<T> documentDefinitionList,
+                                        boolean bulkEnabled) {
+        if (!bulkEnabled) {
+            insertUsingPointOperations(cosmosContainer, documentDefinitionList)
+                .publishOn(Schedulers.parallel())
+                .then()
+                .block();
+            return;
+        }
+
         bulkInsert(cosmosContainer, documentDefinitionList)
             .publishOn(Schedulers.parallel())
             .then()

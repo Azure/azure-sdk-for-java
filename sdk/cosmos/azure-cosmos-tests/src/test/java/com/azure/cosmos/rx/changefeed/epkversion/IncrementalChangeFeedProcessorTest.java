@@ -2350,7 +2350,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         for (InternalObjectNode current : createdDocuments) {
             try {
                 logger.info("CREATED {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(current));
@@ -2368,7 +2368,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

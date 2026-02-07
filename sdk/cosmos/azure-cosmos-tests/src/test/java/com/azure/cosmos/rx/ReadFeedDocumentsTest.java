@@ -91,7 +91,7 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments = bulkInsertBlocking(createdCollection, docDefList);
+        createdDocuments = insertAllItemsBlocking(createdCollection, docDefList, true);
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

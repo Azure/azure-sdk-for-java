@@ -504,7 +504,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                     partitionKeys == null ? UUID.randomUUID().toString() : partitionKeys.get(random.nextInt(partitionKeys.size()))));
         }
 
-        List<TestObject> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+        List<TestObject> documentInserted = insertAllItemsBlocking(container, documentsToInsert, true);
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 

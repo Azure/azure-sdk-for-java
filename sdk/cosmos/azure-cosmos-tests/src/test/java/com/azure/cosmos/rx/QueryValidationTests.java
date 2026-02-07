@@ -570,7 +570,7 @@ public class QueryValidationTests extends TestSuiteBase {
             }
             docsToInsert.add(objectNode);
         }
-        return bulkInsertBlocking(container, docsToInsert);
+        return insertAllItemsBlocking(container, docsToInsert, true);
     }
 
     @Test(groups = {"query"}, timeOut = TIMEOUT)
@@ -668,7 +668,7 @@ public class QueryValidationTests extends TestSuiteBase {
                     partitionKeys == null ? UUID.randomUUID().toString() : partitionKeys.get(random.nextInt(partitionKeys.size()))));
         }
 
-        List<TestObject> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+        List<TestObject> documentInserted = insertAllItemsBlocking(container, documentsToInsert, true);
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 

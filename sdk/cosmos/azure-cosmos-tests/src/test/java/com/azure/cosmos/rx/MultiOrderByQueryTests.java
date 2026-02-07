@@ -161,7 +161,7 @@ public class MultiOrderByQueryTests extends TestSuiteBase {
             }
         }
 
-        voidBulkInsertBlocking(documentCollection, documents);
+        voidInsertAllItemsBlocking(documentCollection, documents, true);
         expectCount(documentCollection, documents.size());
 
         waitIfNeededForReplicasToCatchUp(getClientBuilder());

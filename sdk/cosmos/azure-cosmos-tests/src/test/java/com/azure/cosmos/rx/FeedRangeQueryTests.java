@@ -187,7 +187,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
                                                                                                               .size()))));
         }
 
-        List<JsonNode> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+        List<JsonNode> documentInserted = insertAllItemsBlocking(container, documentsToInsert, true);
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 

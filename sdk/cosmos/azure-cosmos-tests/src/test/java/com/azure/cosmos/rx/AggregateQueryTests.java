@@ -113,7 +113,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
     public void bulkInsert() {
         generateTestData();
-        voidBulkInsertBlocking(createdCollection, docs);
+        voidInsertAllItemsBlocking(createdCollection, docs, true);
     }
 
     public void generateTestData() {

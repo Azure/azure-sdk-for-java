@@ -653,7 +653,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             result.add(docDefinition);
         }
 
-        return bulkInsertBlocking(cosmosContainer, result);
+        return insertAllItemsBlocking(cosmosContainer, result, true);
     }
 
     @BeforeMethod(groups = { "query" })

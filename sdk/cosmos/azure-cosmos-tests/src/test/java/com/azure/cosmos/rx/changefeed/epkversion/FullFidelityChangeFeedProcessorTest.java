@@ -2153,7 +2153,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             logger.info("Adding the following item to bulk list: {}", item);
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
@@ -2164,7 +2164,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

@@ -509,7 +509,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition(99));
         }
 
-        List<InternalObjectNode> items = bulkInsertBlocking(cosmosContainer, docDefList);
+        List<InternalObjectNode> items = insertAllItemsBlocking(cosmosContainer, docDefList, true);
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
         return items;
     }
