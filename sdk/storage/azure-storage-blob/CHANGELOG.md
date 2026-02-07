@@ -1,8 +1,9 @@
 # Release History
 
-## 12.34.0-beta.1 (2026-02-06)
+## 12.34.0-beta.2 (2026-02-06)
 
 ### Features Added
+- Private drop
 - Added support for Dynamic User Delegation SAS.
 - Added support for service version 2026-04-06.
 
