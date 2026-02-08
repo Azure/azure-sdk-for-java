@@ -578,6 +578,17 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
 
                     assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(2);
                     assertThat(diagnosticsContext.getStatusCode()).isLessThan(HttpConstants.StatusCodes.BADREQUEST);
+                    if (diagnosticsContext.getDuration().toMillis() > 5000) {
+                        logger.error(
+                            "ClientRetryPolicy_dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion longer than 5s - {} {} {} {} {} {} {}",
+                            operationType,
+                            faultInjectionOperationType,
+                            shouldUsePreferredRegionsOnClient,
+                            isReadMany,
+                            hitLimit,
+                            true,
+                            diagnosticsContext.toJson());
+                    }
                     assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
                 } else {
                     assertThat(cosmosDiagnostics).isNotNull();
@@ -588,6 +599,17 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
                     assertThat(diagnosticsContext.getContactedRegionNames().size()).isEqualTo(1);
                     assertThat(diagnosticsContext.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.SERVICE_UNAVAILABLE);
                     assertThat(diagnosticsContext.getSubStatusCode()).isEqualTo(HttpConstants.SubStatusCodes.LEASE_NOT_FOUND);
+                    if (diagnosticsContext.getDuration().toMillis() > 5000) {
+                        logger.error(
+                            "ClientRetryPolicy_dataPlaneRequestHitsLeaseNotFoundInFirstPreferredRegion longer than 5s - {} {} {} {} {} {} {}",
+                            operationType,
+                            faultInjectionOperationType,
+                            shouldUsePreferredRegionsOnClient,
+                            isReadMany,
+                            hitLimit,
+                            false,
+                            diagnosticsContext.toJson());
+                    }
                     assertThat(diagnosticsContext.getDuration()).isLessThan(Duration.ofSeconds(5));
                 }
 

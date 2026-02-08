@@ -340,6 +340,9 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
             // Verify sub-status code is either 0 or 1003
 
             if (ConnectionMode.DIRECT.name().equals(accessor.getConnectionMode(clientToUse))) {
+                if (diagnosticsContext.getSubStatusCode() != HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS) {
+                    logger.error("CosmosNotFoundTests-performDocumentOperationOnDeletedContainer {}", diagnosticsContext.toJson());
+                }
                 assertThat(diagnosticsContext.getSubStatusCode())
                     .as("Sub-status code should be 1003")
                     .isIn(

@@ -948,7 +948,7 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
     }
 
     @Test(groups = { "fast", "fi-multi-master", "multi-region" }, dataProvider = "faultInjectionOperationTypeProviderForLeaseNotFound", timeOut = TIMEOUT)
-    public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException {
+    public void faultInjectionServerErrorRuleTests_LeaseNotFound(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType, boolean primaryAddressOnly, boolean isReadMany) throws JsonProcessingException, InterruptedException {
 
         boolean shouldRetryCrossRegion = false;
 
@@ -996,6 +996,10 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
                 ruleId,
                 shouldRetryCrossRegion
             );
+            // Allow time for the background address refresh to complete before validating diagnostics.
+            // The address refresh for LEASE_NOT_FOUND is triggered asynchronously via
+            // startBackgroundAddressRefresh() on Schedulers.boundedElastic().
+            Thread.sleep(500);
             this.validateAddressRefreshWithForceRefresh(cosmosDiagnostics, (operationType == OperationType.ReadFeed || operationType == OperationType.Query));
 
         } finally {
