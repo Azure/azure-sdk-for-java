@@ -333,26 +333,11 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
                 .as("Status code should be 404 (Not Found)")
                 .isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
 
-            // Verify sub-status code is either 0 or 1003
-
-            if (ConnectionMode.DIRECT.name().equals(accessor.getConnectionMode(clientToUse))) {
-                if (diagnosticsContext.getSubStatusCode() != HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS) {
-                    logger.error("CosmosNotFoundTests-performDocumentOperationOnDeletedContainer {}", diagnosticsContext.toJson());
-                }
-                assertThat(diagnosticsContext.getSubStatusCode())
-                    .as("Sub-status code should be 1003")
-                    .isIn(
-                        HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
-                    );
-            }
-
-            if (ConnectionMode.GATEWAY.name().equals(accessor.getConnectionMode(clientToUse))) {
-                assertThat(diagnosticsContext.getSubStatusCode())
-                    .as("Sub-status code should be 0")
-                    .isIn(
-                        HttpConstants.SubStatusCodes.UNKNOWN
-                    );
-            }
+            assertThat(diagnosticsContext.getSubStatusCode())
+                .as("Sub-status code should be 1003")
+                .isIn(
+                    HttpConstants.SubStatusCodes.OWNER_RESOURCE_NOT_EXISTS
+                );
         } finally {
             safeClose(clientToUse);
             safeClose(deletingAsyncClient);
