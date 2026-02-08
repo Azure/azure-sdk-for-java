@@ -307,10 +307,6 @@ public class CosmosNotFoundTests extends FaultInjectionTestBase {
 
             Thread.sleep(5000);
 
-            // Create an item in the container
-            TestObject testObject = TestObject.create(this.createdItemPk);
-            testContainer.createItem(testObject).block();
-
             // Create a different client instance to delete the container
             deletingAsyncClient = getClientBuilder()
                 .endpoint(TestConfigurations.HOST)
