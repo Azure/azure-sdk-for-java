@@ -54,7 +54,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
     public void before_ReadFeedTriggersTest() {
         client = getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
 
         for (int i = 0; i < 5; i++) {
             this.createdTriggers.add(this.createTriggers(createdCollection));
