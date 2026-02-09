@@ -9,6 +9,6 @@
   <!-- Generated classes -->
   <suppress files="com.azure.v2.security.keyvault.secrets.implementation.SecretClientServiceImpl.java" checks="FinalClass" />
   <suppress files="com.azure.v2.security.keyvault.secrets.implementation.SecretClientServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLogging" />
-  <suppress files="com.azure.v2.security.keyvault.secrets.implementation.SecretClientServiceImpl.java" checks="JavadocPackage" />
+  <suppress files="com.azure.v2.security.keyvault.secrets.implementation.*\.java" checks="JavadocPackage" />
   <suppress files="com.azure.v2.security.keyvault.secrets.implementation.SecretClientServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrow" />
 </suppressions>

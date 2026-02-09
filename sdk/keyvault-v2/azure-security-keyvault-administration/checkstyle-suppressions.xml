@@ -16,9 +16,11 @@
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientServiceImpl.java" checks="JavadocPackage" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrow" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsServiceImpl.java" checks="FinalClass" />
+  <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsServiceImpl.java" checks="JavadocPackage" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLogging" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleAssignmentsServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrow" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleDefinitionsServiceImpl.java" checks="FinalClass" />
+  <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleDefinitionsServiceImpl.java" checks="JavadocPackage" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleDefinitionsServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLogging" />
   <suppress files="com.azure.v2.security.keyvault.administration.implementation.RoleDefinitionsServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrow" />
 </suppressions>

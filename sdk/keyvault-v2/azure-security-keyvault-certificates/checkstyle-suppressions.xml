@@ -11,6 +11,6 @@
   <!-- Generated classes -->
   <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="FinalClass" />
   <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.GoodLogging" />
-  <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="JavadocPackage" />
+  <suppress files="com.azure.v2.security.keyvault.certificates.implementation.*\.java" checks="JavadocPackage" />
   <suppress files="com.azure.v2.security.keyvault.certificates.implementation.CertificateClientServiceImpl.java" checks="io.clientcore.linting.extensions.checkstyle.checks.RawExceptionThrow" />
 </suppressions>
