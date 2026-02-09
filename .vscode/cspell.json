@@ -874,12 +874,19 @@
 	{
       "filename": "/sdk/ai/azure-ai-voicelive/**",
       "words": [
+        "aiservices",
+        "AIservices",
         "Dexec",
+        "filler",
+        "FILLER",
+        "foundry",
+        "FOUNDRY",
         "viseme",
         "VISEME",
         "webrtc",
         "WEBRTC",
-        "aiservices"
+        "xhigh",
+        "XHIGH"
       ]
     },
     {

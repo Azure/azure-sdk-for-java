@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The response resource.
@@ -273,6 +274,7 @@ public final class SessionResponse implements JsonSerializable<SessionResponse> 
             jsonWriter.writeFieldName("max_output_tokens");
             this.maxOutputTokens.writeTo(jsonWriter);
         }
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -321,11 +323,34 @@ public final class SessionResponse implements JsonSerializable<SessionResponse> 
                 } else if ("max_output_tokens".equals(fieldName)) {
                     deserializedSessionResponse.maxOutputTokens
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSessionResponse.metadata = metadata;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedSessionResponse;
         });
+    }
+
+    /*
+     * Set of up to 16 key-value pairs that can be attached to an object.
+     * This can be useful for storing additional information about the object in a structured format.
+     * Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+     */
+    @Generated
+    private Map<String, String> metadata;
+
+    /**
+     * Get the metadata property: Set of up to 16 key-value pairs that can be attached to an object.
+     * This can be useful for storing additional information about the object in a structured format.
+     * Keys can be a maximum of 64 characters long and values can be a maximum of 512 characters long.
+     *
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
     }
 }
