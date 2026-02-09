@@ -37,6 +37,7 @@ public final class CosmosBatchRequestOptions {
     private String throughputControlGroupName;
     private CosmosEndToEndOperationLatencyPolicyConfig e2ePolicy;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
+    private boolean disableRetryForThrottledBatchRequest = false;
 
     /**
      * Creates an instance of the CosmosBatchRequestOptions class
@@ -56,6 +57,8 @@ public final class CosmosBatchRequestOptions {
         if (toBeCloned.excludeRegions != null) {
             this.excludeRegions = new ArrayList<>(toBeCloned.excludeRegions);
         }
+
+        this.disableRetryForThrottledBatchRequest = toBeCloned.disableRetryForThrottledBatchRequest;
     }
 
     /**
@@ -118,6 +121,15 @@ public final class CosmosBatchRequestOptions {
      */
     public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
         return this.thresholds;
+    }
+
+    boolean shouldDisableRetryForThrottledBatchRequest() {
+        return disableRetryForThrottledBatchRequest;
+    }
+
+    CosmosBatchRequestOptions setDisableRetryForThrottledBatchRequest(boolean disableRetryForThrottledBatchRequest) {
+        this.disableRetryForThrottledBatchRequest = disableRetryForThrottledBatchRequest;
+        return this;
     }
 
     RequestOptions toRequestOptions() {
@@ -305,6 +317,18 @@ public final class CosmosBatchRequestOptions {
                 OperationContextAndListenerTuple operationContextAndListenerTuple) {
                 return cosmosBatchRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
               }
+
+                @Override
+                public CosmosBatchRequestOptions setDisableRetryForThrottledBatchRequest(
+                    CosmosBatchRequestOptions cosmosBatchRequestOptions,
+                    boolean disableRetryForThrottledBatchRequest) {
+                    return cosmosBatchRequestOptions.setDisableRetryForThrottledBatchRequest(disableRetryForThrottledBatchRequest);
+                }
+
+                @Override
+                public boolean shouldDisableRetryForThrottledBatchRequest(CosmosBatchRequestOptions cosmosBatchRequestOptions) {
+                    return cosmosBatchRequestOptions.shouldDisableRetryForThrottledBatchRequest();
+                }
 
 
             }

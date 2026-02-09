@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
 import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosRequestOptions;
@@ -29,7 +30,11 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
  * It can be passed while processing bulk operations.
  */
 public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableRequestOptions {
-    private int maxMicroBatchConcurrency = Configs.getMaxBulkMicroBatchConcurrency();
+    private int maxOperationsConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_OP_CONCURRENCY;
+    private int maxBatchesConcurrency = BatchRequestResponseConstants.DEFAULT_MAX_BULK_TRANSACTIONAL_BATCH_CONCURRENCY;
+
+    private double maxBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_RETRY_RATE;
+    private double minBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
 
     private Integer maxConcurrentCosmosPartitions = null;
     private OperationContextAndListenerTuple operationContextAndListenerTuple;
@@ -45,8 +50,9 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
 
     public CosmosTransactionalBulkExecutionOptionsImpl(CosmosTransactionalBulkExecutionOptionsImpl toBeCloned) {
         this.schedulerOverride = toBeCloned.schedulerOverride;
-        this.maxMicroBatchConcurrency = toBeCloned.maxMicroBatchConcurrency;
         this.maxConcurrentCosmosPartitions = toBeCloned.maxConcurrentCosmosPartitions;
+        this.maxOperationsConcurrency = toBeCloned.maxOperationsConcurrency;
+        this.maxBatchesConcurrency = toBeCloned.maxBatchesConcurrency;
         this.throughputControlGroupName = toBeCloned.throughputControlGroupName;
         this.operationContextAndListenerTuple = toBeCloned.operationContextAndListenerTuple;
         this.diagnosticsTracker = toBeCloned.diagnosticsTracker;
@@ -62,12 +68,8 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
         }
     }
 
-    public CosmosTransactionalBulkExecutionOptionsImpl(Map<String, String> customOptions) {
-        if (customOptions == null) {
-            this.customOptions = new HashMap<>();
-        } else {
-            this.customOptions = customOptions;
-        }
+    public CosmosTransactionalBulkExecutionOptionsImpl() {
+        this.customOptions = new HashMap<>();
     }
 
     public CosmosItemSerializer getCustomItemSerializer() {
@@ -86,15 +88,44 @@ public class CosmosTransactionalBulkExecutionOptionsImpl implements OverridableR
         this.maxConcurrentCosmosPartitions = maxConcurrentCosmosPartitions;
     }
 
-    public int getMaxMicroBatchConcurrency() {
-        return maxMicroBatchConcurrency;
+    public int getMaxOperationsConcurrency() {
+        return this.maxOperationsConcurrency;
     }
 
-    public void setMaxMicroBatchConcurrency(int maxMicroBatchConcurrency) {
+    public void setMaxOperationsConcurrency(int maxOperationsConcurrency) {
+        this.maxOperationsConcurrency = maxOperationsConcurrency;
+    }
+
+    public int getMaxBatchesConcurrency() {
+        return maxBatchesConcurrency;
+    }
+
+    public void setMaxBatchesConcurrency(int maxBatchesConcurrency) {
         checkArgument(
-            maxMicroBatchConcurrency >= 1 && maxMicroBatchConcurrency <= 5,
-            "maxMicroBatchConcurrency should be between [1, 5]");
-        this.maxMicroBatchConcurrency = maxMicroBatchConcurrency;
+            maxBatchesConcurrency >= 1 && maxBatchesConcurrency <= 5,
+            "maxBatchesConcurrency should be between [1, 5]");
+        this.maxBatchesConcurrency = maxBatchesConcurrency;
+    }
+
+    public void setTargetedMicroBatchRetryRate(double minRetryRate, double maxRetryRate) {
+        if (minRetryRate < 0) {
+            throw new IllegalArgumentException("The minRetryRate must not be a negative value");
+        }
+
+        if (minRetryRate > maxRetryRate) {
+            throw new IllegalArgumentException("The minRetryRate must not exceed the maxRetryRate");
+        }
+
+        this.maxBatchRetryRate = maxRetryRate;
+        this.minBatchRetryRate = minRetryRate;
+    }
+
+    public double getMaxBatchRetryRate() {
+        return maxBatchRetryRate;
+    }
+
+    public double getMinBatchRetryRate() {
+        return minBatchRetryRate;
     }
 
     public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
