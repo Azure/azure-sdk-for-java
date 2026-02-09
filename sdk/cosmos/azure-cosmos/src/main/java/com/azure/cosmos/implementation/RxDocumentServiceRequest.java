@@ -1187,6 +1187,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
     }
 
+    public void setHubRegionProcessingOnly(boolean hubRegionProcessingOnly) {
+        this.headers.put(HttpConstants.HttpHeaders.HUB_REGION_PROCESSING_ONLY, Boolean.toString(hubRegionProcessingOnly));
+    }
+
     public Duration getResponseTimeout() {
         return responseTimeout;
     }
