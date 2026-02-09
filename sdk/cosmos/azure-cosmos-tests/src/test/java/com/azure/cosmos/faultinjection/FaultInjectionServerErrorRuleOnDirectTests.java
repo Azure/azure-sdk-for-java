@@ -999,8 +999,24 @@ public class FaultInjectionServerErrorRuleOnDirectTests extends FaultInjectionTe
             // Allow time for the background address refresh to complete before validating diagnostics.
             // The address refresh for LEASE_NOT_FOUND is triggered asynchronously via
             // startBackgroundAddressRefresh() on Schedulers.boundedElastic().
-            Thread.sleep(500);
-            this.validateAddressRefreshWithForceRefresh(cosmosDiagnostics, (operationType == OperationType.ReadFeed || operationType == OperationType.Query));
+            // Instead of a fixed sleep, poll until the validation passes or a timeout is reached
+            long addressRefreshDeadlineNanos = System.nanoTime() + Duration.ofSeconds(5).toNanos();
+            AssertionError lastAssertionError = null;
+            while (System.nanoTime() < addressRefreshDeadlineNanos) {
+                try {
+                    this.validateAddressRefreshWithForceRefresh(
+                        cosmosDiagnostics,
+                        (operationType == OperationType.ReadFeed || operationType == OperationType.Query));
+                    lastAssertionError = null;
+                    break;
+                } catch (AssertionError assertionError) {
+                    lastAssertionError = assertionError;
+                    Thread.sleep(100);
+                }
+            }
+            if (lastAssertionError != null) {
+                throw lastAssertionError;
+            }
 
         } finally {
             serverErrorRule.disable();
