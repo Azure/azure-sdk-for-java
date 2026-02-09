@@ -1263,7 +1263,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 docDefList.add(getDocumentDefinition());
             }
 
-            bulkInsert(createdFeedCollection, docDefList, FEED_COUNT).blockLast();
+            bulkInsert(createdFeedCollection, docDefList).blockLast();
 
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -1337,7 +1337,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     docDefList.add(getDocumentDefinition());
                 }
 
-                bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
+                bulkInsert(createdFeedCollection, docDefList)
                     .last()
                     .flatMap(cosmosItemResponse -> {
                         logger.info("Start first Change feed processor");
@@ -1389,7 +1389,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                                                                      docDefList1.add(getDocumentDefinition());
                                                                  }
 
-                                                                 return bulkInsert(createdFeedCollection, docDefList1, FEED_COUNT)
+                                                                 return bulkInsert(createdFeedCollection, docDefList1)
                                                                      .last();
                                                              });
                             }))
@@ -2153,7 +2153,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             logger.info("Adding the following item to bulk list: {}", item);
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
@@ -2164,7 +2164,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(bulkInsertBlocking(feedCollection, docDefList));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 
