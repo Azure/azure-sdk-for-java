@@ -30,7 +30,7 @@ import static org.awaitility.Awaitility.waitAtMost;
 
 @SpringBootTest(properties = {
     "spring.docker.compose.skip.in-tests=false",
-    "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/servicebus/servicebus-compose.yaml",
+    "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/bus/servicebus-compose.yaml",
     "spring.docker.compose.stop.command=down",
     "spring.cloud.azure.servicebus.namespace=sbemulatorns",
     "spring.cloud.azure.servicebus.entity-name=queue.1",

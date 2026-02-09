@@ -6,8 +6,7 @@ services:
       # Mount the emulator configuration to the path expected by the emulator image
       - "./Config.json:/Eventhubs_Emulator/ConfigFiles/Config.json"
     ports:
-      # Publish AMQP port to host to make readiness probing stable
-      - "5672:5672"
+      - "5672"
     environment:
       # Event Hubs emulator requires external blob/metadata storage provided by azurite
       BLOB_SERVER: azurite
