@@ -510,7 +510,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (value == null) {
                 return 1;
             }
-            
             return value + 1;
         });
 

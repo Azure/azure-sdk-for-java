@@ -2251,7 +2251,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
 
         createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
-        
+
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

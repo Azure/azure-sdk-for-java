@@ -203,7 +203,7 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
             Flux<CosmosItemOperation> deleteOperations =
                 container
-                    .queryItems( "SELECT * FROM root", Document.class)
+                    .queryItems( "SELECT * FROM root", options, Document.class)
                     .byPage()
                     .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
