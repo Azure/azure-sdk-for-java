@@ -3,10 +3,11 @@ services:
     image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest
     pull_policy: always
     volumes:
-      # Mount the emulator configuration; container path is case-sensitive
-      - "./Config.json:/EventHubs_Emulator/ConfigFiles/Config.json"
+      # Mount the emulator configuration to the path expected by the emulator image
+      - "./Config.json:/Eventhubs_Emulator/ConfigFiles/Config.json"
     ports:
-      - "5672"
+      # Publish AMQP port to host to make readiness probing stable
+      - "5672:5672"
     environment:
       ACCEPT_EULA: Y
     networks:
