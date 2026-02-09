@@ -29,7 +29,10 @@ import java.util.Collections;
 import static org.awaitility.Awaitility.waitAtMost;
 
 @SpringJUnitConfig
-@TestPropertySource(properties = { "spring.cloud.azure.eventhubs.event-hub-name=eh1" })
+@TestPropertySource(properties = {
+    "spring.cloud.azure.eventhubs.namespace=emulatorns1",
+    "spring.cloud.azure.eventhubs.event-hub-name=eh1"
+})
 @Testcontainers
 @EnabledOnOs(OS.LINUX)
 class EventHubsContainerConnectionDetailsFactoryTests {
