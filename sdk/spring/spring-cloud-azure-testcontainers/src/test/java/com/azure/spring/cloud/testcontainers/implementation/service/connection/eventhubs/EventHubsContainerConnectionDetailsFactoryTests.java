@@ -50,7 +50,8 @@ class EventHubsContainerConnectionDetailsFactoryTests {
         .withCopyFileToContainer(MountableFile.forClasspathResource("eventhubs/Config.json"),
             "/Eventhubs_Emulator/ConfigFiles/Config.json")
         .withNetwork(NETWORK)
-        .withAzuriteContainer(AZURITE);
+        .withEnv("BLOB_SERVER", "azurite")
+        .withEnv("METADATA_SERVER", "azurite");
 
     @Autowired
     private EventHubProducerClient producerClient;
