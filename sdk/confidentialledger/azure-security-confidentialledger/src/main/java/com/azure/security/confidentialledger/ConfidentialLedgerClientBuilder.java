@@ -298,6 +298,7 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
+        policies.add(new ConfidentialLedgerRedirectPolicy());
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
