@@ -1,6 +1,6 @@
 # Azure Resource Manager AgriFood client library for Java
 
-Please note, this package has been deprecated and will no longer be maintained after 09/01/2025. The underlying Azure Data Manager for Agriculture service will be retired on September 1, 2025. We recommend that you pause new development and begin transition planning as soon as possible. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+Please note, this package has been deprecated and will no longer be maintained after September 1, 2025. The underlying Azure Data Manager for Agriculture service will be retired on September 1, 2025. We recommend that you pause new development and begin transition planning as soon as possible. Refer to our [deprecation policy](https://aka.ms/azsdk/support-policies) for more details.
 
 Azure Resource Manager AgriFood client library for Java.
 
