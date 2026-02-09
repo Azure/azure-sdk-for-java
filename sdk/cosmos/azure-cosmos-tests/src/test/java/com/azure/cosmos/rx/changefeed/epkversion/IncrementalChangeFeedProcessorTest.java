@@ -2366,7 +2366,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, bulkEnabled));
 
         for (InternalObjectNode current : createdDocuments) {
             try {
