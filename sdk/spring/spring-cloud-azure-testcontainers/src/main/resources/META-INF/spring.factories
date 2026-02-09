@@ -3,4 +3,4 @@ com.azure.spring.cloud.testcontainers.implementation.service.connection.cosmos.C
 com.azure.spring.cloud.testcontainers.implementation.service.connection.bus.ServiceBusContainerConnectionDetailsFactory,\
 com.azure.spring.cloud.testcontainers.implementation.service.connection.storage.StorageBlobContainerConnectionDetailsFactory,\
 com.azure.spring.cloud.testcontainers.implementation.service.connection.storage.StorageQueueContainerConnectionDetailsFactory,\
-com.azure.spring.cloud.testcontainers.implementation.service.connection.eventhubs.EventHubsContainerConnectionDetailsFactory
+com.azure.spring.cloud.testcontainers.implementation.service.connection.hubs.EventHubsContainerConnectionDetailsFactory
