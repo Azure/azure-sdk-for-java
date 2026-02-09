@@ -42,6 +42,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 
 import static com.azure.storage.common.test.shared.StorageCommonTestUtils.getOidFromToken;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.verifySasAndTokenInRequest;
 import static com.azure.storage.file.share.FileShareTestHelper.assertExceptionStatusCodeAndMessage;
 import static com.azure.storage.file.share.FileShareTestHelper.assertResponseStatusCode;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -228,7 +229,7 @@ class FileSasClientTests extends FileShareTestBase {
                 .credential(tokenCredential)).buildFileClient();
 
             Response<ShareFileProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
-            FileShareTestHelper.assertResponseStatusCode(response, 200);
+            verifySasAndTokenInRequest(response);
         });
     }
 
@@ -262,7 +263,9 @@ class FileSasClientTests extends FileShareTestBase {
                 return client.getPropertiesWithResponse();
             });
 
-            StepVerifier.create(response).assertNext(r -> assertResponseStatusCode(r, 200)).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
@@ -354,8 +357,9 @@ class FileSasClientTests extends FileShareTestBase {
                 .shareTokenIntent(ShareTokenIntent.BACKUP)
                 .credential(tokenCredential)).buildClient();
 
-            Response<ShareProperties> response = client.getPropertiesWithResponse(null, Context.NONE);
-            FileShareTestHelper.assertResponseStatusCode(response, 200);
+            Response<ShareFileProperties> response
+                = client.getFileClient(filePath).getPropertiesWithResponse(null, Context.NONE);
+            verifySasAndTokenInRequest(response);
         });
     }
 
@@ -376,7 +380,7 @@ class FileSasClientTests extends FileShareTestBase {
             ShareServiceSasSignatureValues sasValues
                 = new ShareServiceSasSignatureValues(expiryTime, permissions).setDelegatedUserObjectId(oid);
 
-            Flux<Response<ShareProperties>> response = getUserDelegationInfoAsync().flatMapMany(key -> {
+            Mono<Response<ShareFileProperties>> response = getUserDelegationInfoAsync().flatMap(key -> {
                 String sas = primaryShareAsyncClient.generateUserDelegationSas(sasValues, key);
                 // When a delegated user object ID is set, the client must be authenticated with both the SAS and the
                 // token credential.
@@ -386,10 +390,12 @@ class FileSasClientTests extends FileShareTestBase {
                         .shareTokenIntent(ShareTokenIntent.BACKUP)
                         .credential(tokenCredential)).buildAsyncClient();
 
-                return client.getPropertiesWithResponse();
+                return client.getFileClient(filePath).getPropertiesWithResponse();
             });
 
-            StepVerifier.create(response).assertNext(r -> assertResponseStatusCode(r, 200)).verifyComplete();
+            StepVerifier.create(response)
+                .assertNext(StorageCommonTestUtils::verifySasAndTokenInRequest)
+                .verifyComplete();
         });
     }
 
