@@ -278,7 +278,10 @@ public class ClientSideRequestStatistics {
                         }
                     }
                 }
+
+                gatewayStatistics.httpResponseTimeout = rxDocumentServiceRequest.getResponseTimeout();
             }
+
             gatewayStatistics.statusCode = storeResponseDiagnostics.getStatusCode();
             gatewayStatistics.subStatusCode = storeResponseDiagnostics.getSubStatusCode();
             gatewayStatistics.sessionToken = storeResponseDiagnostics.getSessionTokenAsString();
@@ -947,6 +950,7 @@ public class ClientSideRequestStatistics {
         private String requestThroughputControlGroupName;
         private String requestThroughputControlGroupConfig;
         private String isHubRegionProcessingOnly;
+        private Duration httpResponseTimeout;
 
         public String getSessionToken() {
             return sessionToken;
@@ -1024,6 +1028,15 @@ public class ClientSideRequestStatistics {
             return this.requestThroughputControlGroupConfig;
         }
 
+        private String getHttpNetworkResponseTimeout() {
+
+            if (this.httpResponseTimeout != null) {
+                return this.httpResponseTimeout.toString();
+            }
+
+            return "n/a";
+        }
+
         public static class GatewayStatisticsSerializer extends StdSerializer<GatewayStatistics> {
             private static final long serialVersionUID = 1L;
 
@@ -1045,6 +1058,7 @@ public class ClientSideRequestStatistics {
                 jsonGenerator.writeObjectField("requestTimeline", gatewayStatistics.getRequestTimeline());
                 jsonGenerator.writeStringField("partitionKeyRangeId", gatewayStatistics.getPartitionKeyRangeId());
                 jsonGenerator.writeNumberField("responsePayloadSizeInBytes", gatewayStatistics.getResponsePayloadSizeInBytes());
+                jsonGenerator.writeStringField("httpResponseTimeout", gatewayStatistics.getHttpNetworkResponseTimeout());
                 this.writeNonNullStringField(jsonGenerator, "exceptionMessage", gatewayStatistics.getExceptionMessage());
                 this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", gatewayStatistics.getExceptionResponseHeaders());
                 this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", gatewayStatistics.getFaultInjectionRuleId());

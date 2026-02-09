@@ -25,14 +25,12 @@ public class HttpTimeoutPolicyForGatewayV2 extends HttpTimeoutPolicy {
 
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
         if (isPointRead) {
-            // Point read timeout policy: 500ms delay for 1st retry, 1s delay for 2nd retry
             return Collections.unmodifiableList(
                 Arrays.asList(
                     new ResponseTimeoutAndDelays(Duration.ofSeconds(6), Duration.ZERO),
                     new ResponseTimeoutAndDelays(Duration.ofSeconds(6), Duration.ZERO),
                     new ResponseTimeoutAndDelays(Duration.ofSeconds(10), Duration.ZERO)));
         } else {
-            // Query and Change Feed timeout policy: longer timeouts for these operations
             return Collections.unmodifiableList(
                 Arrays.asList(
                     new ResponseTimeoutAndDelays(Duration.ofSeconds(6), Duration.ZERO),
