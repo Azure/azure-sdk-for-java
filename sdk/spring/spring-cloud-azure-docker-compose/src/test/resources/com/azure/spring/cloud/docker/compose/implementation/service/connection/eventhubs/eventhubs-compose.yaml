@@ -9,11 +9,27 @@ services:
       # Publish AMQP port to host to make readiness probing stable
       - "5672:5672"
     environment:
+      # Event Hubs emulator requires external blob/metadata storage provided by azurite
+      BLOB_SERVER: azurite
+      METADATA_SERVER: azurite
       ACCEPT_EULA: Y
+    depends_on:
+      - azurite
     networks:
       eh-emulator:
         aliases:
           - "eh-emulator"
+
+  azurite:
+    image: "mcr.microsoft.com/azure-storage/azurite:latest"
+    ports:
+      - "10000"
+      - "10001"
+      - "10002"
+    networks:
+      eh-emulator:
+        aliases:
+          - "azurite"
 
 networks:
     eh-emulator:
