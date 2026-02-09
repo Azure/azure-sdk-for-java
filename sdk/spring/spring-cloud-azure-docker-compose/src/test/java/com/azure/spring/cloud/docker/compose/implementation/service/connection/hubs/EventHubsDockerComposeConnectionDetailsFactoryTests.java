@@ -25,7 +25,6 @@ import static org.awaitility.Awaitility.waitAtMost;
     "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/hubs/eventhubs-compose.yaml",
     "spring.docker.compose.stop.command=down",
     "spring.docker.compose.readiness.timeout=PT5M",
-    "spring.cloud.azure.eventhubs.namespace=emulatorns1",
     "spring.cloud.azure.eventhubs.event-hub-name=eh1",
     "spring.cloud.azure.eventhubs.producer.event-hub-name=eh1"
 })
