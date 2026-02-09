@@ -1,5 +1,11 @@
 # Azure Mixed Reality client library for Java
 
+## Disclaimer
+
+Please note, this package has been deprecated and will no longer be maintained after 2025/10/01. There is no replacement packages, as all mixed reality services are deprecated. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+
+## Overview
+
 Mixed Reality services, like Azure Spatial Anchors, Azure Remote Rendering, and others, use the Mixed Reality security
 token service (STS) for authentication. This package supports exchanging Mixed Reality account credentials for an access
 token from the STS that can be used to access Mixed Reality services.

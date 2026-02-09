@@ -1,14 +1,10 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.3.0-beta.1 (2026-02-09)
 
 ### Other Changes
+
+- Please note, this package has been deprecated and will no longer be maintained after 2025/10/01. There is no replacement packages, as all mixed reality services are deprecated. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ## 1.2.38 (2026-01-29)
 
