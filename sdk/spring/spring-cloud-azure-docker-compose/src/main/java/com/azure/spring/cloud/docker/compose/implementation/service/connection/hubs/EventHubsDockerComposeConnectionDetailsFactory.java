@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.docker.compose.implementation.service.connection.eventhubs;
+package com.azure.spring.cloud.docker.compose.implementation.service.connection.hubs;
 
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails;
 import org.springframework.boot.docker.compose.core.RunningService;
