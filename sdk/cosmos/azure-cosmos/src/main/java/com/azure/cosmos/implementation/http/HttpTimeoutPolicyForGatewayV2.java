@@ -20,11 +20,11 @@ public class HttpTimeoutPolicyForGatewayV2 extends HttpTimeoutPolicy {
 
     private HttpTimeoutPolicyForGatewayV2(boolean isPointRead) {
         this.isPointRead = isPointRead;
-        timeoutAndDelaysList = getTimeoutList();
+        this.timeoutAndDelaysList = getTimeoutList();
     }
 
     public List<ResponseTimeoutAndDelays> getTimeoutList() {
-        if (isPointRead) {
+        if (this.isPointRead) {
             return Collections.unmodifiableList(
                 Arrays.asList(
                     new ResponseTimeoutAndDelays(Duration.ofSeconds(6), Duration.ZERO),
