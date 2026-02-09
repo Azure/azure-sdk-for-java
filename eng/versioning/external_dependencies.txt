@@ -20,6 +20,7 @@ com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.18.4
 com.fasterxml.jackson.module:jackson-module-afterburner;2.18.4
 com.fasterxml.jackson.module:jackson-module-blackbird;2.18.4
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.18.4
+com.fasterxml.jackson.module:jackson-module-scala_2.13;2.18.4
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
@@ -43,6 +44,7 @@ commons-net:commons-net;3.9.0
 io.cloudevents:cloudevents-api;2.2.0
 io.cloudevents:cloudevents-core;2.2.0
 io.fabric8:kubernetes-client;6.12.1
+io.netty:netty-bom;4.1.130.Final
 io.netty:netty-buffer;4.1.130.Final
 io.netty:netty-common;4.1.130.Final
 io.netty:netty-codec;4.1.130.Final
@@ -57,6 +59,7 @@ io.netty:netty-transport;4.1.130.Final
 io.netty:netty-transport-native-epoll;4.1.130.Final
 io.netty:netty-transport-native-unix-common;4.1.130.Final
 io.netty:netty-transport-native-kqueue;4.1.130.Final
+io.projectreactor:reactor-bom;2024.0.9
 io.projectreactor.netty:reactor-netty-http;1.2.13
 io.projectreactor:reactor-core;3.7.14
 io.vertx:vertx-codegen;4.5.23
@@ -112,19 +115,19 @@ com.microsoft.azure:azure-storage;8.0.0
 com.microsoft.azure:msal4j;1.23.1
 com.microsoft.azure:msal4j-brokers;1.0.0
 com.microsoft.azure:msal4j-persistence-extension;1.3.0
-io.opentelemetry:opentelemetry-api;1.49.0
-io.opentelemetry:opentelemetry-sdk;1.49.0
-io.opentelemetry:opentelemetry-sdk-metrics;1.49.0
-io.opentelemetry:opentelemetry-sdk-logs;1.49.0
-io.opentelemetry:opentelemetry-exporter-logging;1.49.0
-io.opentelemetry:opentelemetry-exporter-otlp;1.49.0
-io.opentelemetry:opentelemetry-sdk-testing;1.49.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.49.0
-io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.49.0
-io.opentelemetry:opentelemetry-bom;1.49.0
-io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.14.0-alpha
-io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.14.0
-io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.14.0-alpha
+io.opentelemetry:opentelemetry-api;1.58.0
+io.opentelemetry:opentelemetry-sdk;1.58.0
+io.opentelemetry:opentelemetry-sdk-metrics;1.58.0
+io.opentelemetry:opentelemetry-sdk-logs;1.58.0
+io.opentelemetry:opentelemetry-exporter-logging;1.58.0
+io.opentelemetry:opentelemetry-exporter-otlp;1.58.0
+io.opentelemetry:opentelemetry-sdk-testing;1.58.0
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.58.0
+io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi;1.58.0
+io.opentelemetry:opentelemetry-bom;1.58.0
+io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;2.24.0-alpha
+io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.24.0
+io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;2.24.0-alpha
 io.projectreactor:reactor-test;3.7.11
 io.github.hakky54:logcaptor;2.9.3
 com.squareup.okio:okio;3.16.0
@@ -222,13 +225,6 @@ otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-extension-autoconfig
 otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-testing;1.43.0
 otel_exporter_deprecated_io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.26.0-alpha
 
-# This is a unique dependency as it is the only <type>test-jar</type> dependency in the
-# data track. It's also using a SNAPSHOT version which should be disallowed but there is
-# going to be some investigation necessary to find, at the very least, a newer version
-# which is, hopefully, not a SNAPSHOT.
-# sdk\batch\microsoft-azure-batch\pom.xml
-test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
-
 # Special test dependencies for clientcore integrations
 clientcore_dep_tests_org.slf4j:slf4j-simple;2.0.16
 
@@ -239,8 +235,6 @@ cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
 cosmos_org.hdrhistogram:HdrHistogram;2.1.12
-cosmos_com.fasterxml.jackson.core:jackson-databind;2.15.2
-cosmos_com.fasterxml.jackson.module:jackson-module-scala_2.12;2.15.2
 cosmos_com.microsoft.azure.synapse:synapseutils_2.12;1.5.4
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-<version>_2-12\pom.xml
@@ -248,6 +242,7 @@ cosmos_com.microsoft.azure.synapse:synapseutils_2.12;1.5.4
 cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;3.5.0
+cosmos-spark_4-0_org.apache.spark:spark-sql_2.13;4.0.0
 cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;3.3.0
 cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;3.4.0
 cosmos-spark_3-5_org.apache.spark:spark-hive_2.12;3.5.0
@@ -285,8 +280,8 @@ cosmos_org.apache.kafka:connect-api;3.6.0
 cosmos_com.jayway.jsonpath:json-path;2.9.0
 # Cosmos Kafka connector tests only
 cosmos_org.apache.kafka:connect-runtime;3.6.0
-cosmos_org.testcontainers:testcontainers;1.19.5
-cosmos_org.testcontainers:kafka;1.19.5
+cosmos_org.testcontainers:testcontainers;1.21.4
+cosmos_org.testcontainers:kafka;1.21.4
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
 cosmos_io.confluent:kafka-avro-serializer;7.6.0
 cosmos_org.apache.avro:avro;1.11.4
@@ -302,15 +297,15 @@ storage_com.microsoft.azure:azure-storage;8.6.6
 # sdk\spring\pom.xml modules
 springboot4_com.diffplug.spotless:spotless-maven-plugin;2.30.0
 springboot4_com.fasterxml.jackson.core:jackson-annotations;2.20
-springboot4_com.fasterxml.jackson.core:jackson-databind;2.20.1
-springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.20.1
-springboot4_com.fasterxml.jackson.module:jackson-module-parameter-names;2.20.1
+springboot4_com.fasterxml.jackson.core:jackson-databind;2.20.2
+springboot4_com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.20.2
+springboot4_com.fasterxml.jackson.module:jackson-module-parameter-names;2.20.2
 springboot4_com.github.spotbugs:spotbugs-maven-plugin;4.8.2.0
 springboot4_com.google.code.findbugs:jsr305;3.0.2
 springboot4_com.mysql:mysql-connector-j;9.5.0
 springboot4_com.nimbusds:nimbus-jose-jwt;9.37.3
-springboot4_io.lettuce:lettuce-core;6.8.1.RELEASE
-springboot4_io.micrometer:micrometer-core;1.16.1
+springboot4_io.lettuce:lettuce-core;6.8.2.RELEASE
+springboot4_io.micrometer:micrometer-core;1.16.2
 springboot4_io.netty:netty-buffer;4.2.9.Final
 springboot4_io.netty:netty-codec-http;4.2.9.Final
 springboot4_io.netty:netty-common;4.2.9.Final
@@ -318,8 +313,8 @@ springboot4_io.netty:netty-handler;4.2.9.Final
 springboot4_io.netty:netty-transport-native-epoll;4.2.9.Final
 springboot4_io.netty:netty-transport-native-kqueue;4.2.9.Final
 springboot4_io.netty:netty-transport;4.2.9.Final
-springboot4_io.projectreactor.netty:reactor-netty;1.3.1
-springboot4_io.projectreactor:reactor-test;3.8.1
+springboot4_io.projectreactor.netty:reactor-netty;1.3.2
+springboot4_io.projectreactor:reactor-test;3.8.2
 springboot4_jakarta.servlet:jakarta.servlet-api;6.1.0
 springboot4_jakarta.validation:jakarta.validation-api;3.1.1
 springboot4_javax.annotation:javax.annotation-api;1.3.2
@@ -337,64 +332,66 @@ springboot4_org.apache.maven.plugins:maven-surefire-plugin;3.5.4
 springboot4_org.assertj:assertj-core;3.27.6
 springboot4_org.hibernate.validator:hibernate-validator;9.0.1.Final
 springboot4_org.javatuples:javatuples;1.2
-springboot4_org.junit.jupiter:junit-jupiter;6.0.1
-springboot4_org.messaginghub:pooled-jms;3.1.8
+springboot4_org.junit.jupiter:junit-jupiter;6.0.2
+springboot4_org.messaginghub:pooled-jms;3.1.9
 springboot4_org.mockito:mockito-core;5.20.0
-springboot4_org.postgresql:postgresql;42.7.8
+springboot4_org.postgresql:postgresql;42.7.9
 springboot4_org.revapi:revapi-maven-plugin;0.14.6
 springboot4_org.slf4j:slf4j-api;2.0.17
 springboot4_org.slf4j:slf4j-simple;2.0.17
-springboot4_org.springframework.boot:spring-boot-actuator-autoconfigure;4.0.1
-springboot4_org.springframework.boot:spring-boot-actuator;4.0.1
-springboot4_org.springframework.boot:spring-boot-autoconfigure;4.0.1
-springboot4_org.springframework.boot:spring-boot-configuration-metadata;4.0.1
-springboot4_org.springframework.boot:spring-boot-configuration-processor;4.0.1
-springboot4_org.springframework.boot:spring-boot-data-redis;4.0.1
-springboot4_org.springframework.boot:spring-boot-docker-compose;4.0.1
-springboot4_org.springframework.boot:spring-boot-health;4.0.1
-springboot4_org.springframework.boot:spring-boot-http-converter;4.0.1
-springboot4_org.springframework.boot:spring-boot-jackson2;4.0.1
-springboot4_org.springframework.boot:spring-boot-jdbc;4.0.1
-springboot4_org.springframework.boot:spring-boot-jms;4.0.1
-springboot4_org.springframework.boot:spring-boot-kafka;4.0.1
-springboot4_org.springframework.boot:spring-boot-persistence;4.0.1
-springboot4_org.springframework.boot:spring-boot-restclient;4.0.1
-springboot4_org.springframework.boot:spring-boot-resttestclient;4.0.1
-springboot4_org.springframework.boot:spring-boot-security;4.0.1
-springboot4_org.springframework.boot:spring-boot-security-oauth2-client;4.0.1
-springboot4_org.springframework.boot:spring-boot-security-oauth2-resource-server;4.0.1
-springboot4_org.springframework.boot:spring-boot-starter-actuator;4.0.1
-springboot4_org.springframework.boot:spring-boot-starter-data-jdbc;4.0.1
-springboot4_org.springframework.boot:spring-boot-starter-integration;4.0.1
-springboot4_org.springframework.boot:spring-boot-starter-parent;4.0.1
-springboot4_org.springframework.boot:spring-boot-starter-test;4.0.1
-springboot4_org.springframework.boot:spring-boot-starter-webmvc;4.0.1
-springboot4_org.springframework.boot:spring-boot-starter;4.0.1
-springboot4_org.springframework.boot:spring-boot-test;4.0.1
-springboot4_org.springframework.boot:spring-boot-testcontainers;4.0.1
+springboot4_org.springframework.boot:spring-boot-actuator-autoconfigure;4.0.2
+springboot4_org.springframework.boot:spring-boot-actuator;4.0.2
+springboot4_org.springframework.boot:spring-boot-autoconfigure;4.0.2
+springboot4_org.springframework.boot:spring-boot-configuration-metadata;4.0.2
+springboot4_org.springframework.boot:spring-boot-configuration-processor;4.0.2
+springboot4_org.springframework.boot:spring-boot-data-redis;4.0.2
+springboot4_org.springframework.boot:spring-boot-docker-compose;4.0.2
+springboot4_org.springframework.boot:spring-boot-health;4.0.2
+springboot4_org.springframework.boot:spring-boot-http-converter;4.0.2
+springboot4_org.springframework.boot:spring-boot-jackson2;4.0.2
+springboot4_org.springframework.boot:spring-boot-jdbc;4.0.2
+springboot4_org.springframework.boot:spring-boot-jms;4.0.2
+springboot4_org.springframework.boot:spring-boot-kafka;4.0.2
+springboot4_org.springframework.boot:spring-boot-persistence;4.0.2
+springboot4_org.springframework.boot:spring-boot-restclient;4.0.2
+springboot4_org.springframework.boot:spring-boot-resttestclient;4.0.2
+springboot4_org.springframework.boot:spring-boot-security;4.0.2
+springboot4_org.springframework.boot:spring-boot-security-oauth2-client;4.0.2
+springboot4_org.springframework.boot:spring-boot-security-oauth2-resource-server;4.0.2
+springboot4_org.springframework.boot:spring-boot-starter-actuator;4.0.2
+springboot4_org.springframework.boot:spring-boot-starter-data-jdbc;4.0.2
+springboot4_org.springframework.boot:spring-boot-starter-integration;4.0.2
+springboot4_org.springframework.boot:spring-boot-starter-parent;4.0.2
+springboot4_org.springframework.boot:spring-boot-starter-test;4.0.2
+springboot4_org.springframework.boot:spring-boot-starter-webmvc;4.0.2
+springboot4_org.springframework.boot:spring-boot-starter;4.0.2
+springboot4_org.springframework.boot:spring-boot-test;4.0.2
+springboot4_org.springframework.boot:spring-boot-testcontainers;4.0.2
 springboot4_org.springframework.cloud:spring-cloud-bus;5.0.0
 springboot4_org.springframework.cloud:spring-cloud-context;5.0.0
 springboot4_org.springframework.cloud:spring-cloud-starter-stream-kafka;5.0.0
 springboot4_org.springframework.cloud:spring-cloud-stream-test-binder;5.0.0
 springboot4_org.springframework.cloud:spring-cloud-stream;5.0.0
-springboot4_org.springframework.data:spring-data-commons;4.0.1
-springboot4_org.springframework.integration:spring-integration-core;7.0.1
+springboot4_org.springframework.data:spring-data-commons;4.0.2
+springboot4_org.springframework.integration:spring-integration-core;7.0.2
 springboot4_org.springframework.retry:spring-retry;2.0.12
-springboot4_org.springframework:spring-beans;7.0.2
-springboot4_org.springframework:spring-context-support;7.0.2
-springboot4_org.springframework:spring-context;7.0.2
-springboot4_org.springframework:spring-core-test;7.0.2
-springboot4_org.springframework:spring-core;7.0.2
-springboot4_org.springframework:spring-expression;7.0.2
-springboot4_org.springframework:spring-messaging;7.0.2
-springboot4_org.springframework:spring-test;7.0.2
-springboot4_org.springframework:spring-tx;7.0.2
-springboot4_org.springframework:spring-web;7.0.2
-springboot4_org.springframework:spring-webmvc;7.0.2
+springboot4_org.springframework:spring-beans;7.0.3
+springboot4_org.springframework:spring-context-support;7.0.3
+springboot4_org.springframework:spring-context;7.0.3
+springboot4_org.springframework:spring-core-test;7.0.3
+springboot4_org.springframework:spring-core;7.0.3
+springboot4_org.springframework:spring-expression;7.0.3
+springboot4_org.springframework:spring-messaging;7.0.3
+springboot4_org.springframework:spring-test;7.0.3
+springboot4_org.springframework:spring-tx;7.0.3
+springboot4_org.springframework:spring-web;7.0.3
+springboot4_org.springframework:spring-webmvc;7.0.3
 springboot4_org.testcontainers:junit-jupiter;1.21.3
 springboot4_org.testcontainers:azure;1.21.3
 springboot4_jakarta.annotation:jakarta.annotation-api;3.0.0
-springboot4_ch.qos.logback:logback-classic;1.5.22
+springboot4_ch.qos.logback:logback-classic;1.5.25
+springboot4_org.awaitility:awaitility;4.3.0
+springboot4_com.microsoft.sqlserver:mssql-jdbc;13.2.1.jre11
 # Used for Spring version updates
-springboot4_org.springframework.boot:spring-boot-dependencies;4.0.1
+springboot4_org.springframework.boot:spring-boot-dependencies;4.0.2
 springboot4_org.springframework.cloud:spring-cloud-dependencies;2025.1.0

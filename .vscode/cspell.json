@@ -106,6 +106,7 @@
     "sdk/cosmos/azure-cosmos-spark_3-5/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-5_2-13/**",
+    "sdk/cosmos/azure-cosmos-spark_4-0_2-13/**",
     "sdk/cosmos/azure-cosmos-spark-account-data-resolver-sample/**",
     "sdk/cosmos/fabric-cosmos-spark-auth_3/**",
     "sdk/cosmos/azure-cosmos-encryption/**",
@@ -874,11 +875,19 @@
 	{
       "filename": "/sdk/ai/azure-ai-voicelive/**",
       "words": [
+        "aiservices",
+        "AIservices",
         "Dexec",
+        "filler",
+        "FILLER",
+        "foundry",
+        "FOUNDRY",
         "viseme",
         "VISEME",
         "webrtc",
-        "WEBRTC"
+        "WEBRTC",
+        "xhigh",
+        "XHIGH"
       ]
     },
     {

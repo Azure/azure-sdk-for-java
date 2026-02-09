@@ -105,6 +105,7 @@
     <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
     <module>sdk/easm</module>
+    <module>sdk/edgeactions</module>
     <module>sdk/edgeorder</module>
     <module>sdk/edgezones</module>
     <module>sdk/education</module>
@@ -268,6 +269,7 @@
     <module>sdk/transcription</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
+    <module>sdk/virtualenclaves</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>

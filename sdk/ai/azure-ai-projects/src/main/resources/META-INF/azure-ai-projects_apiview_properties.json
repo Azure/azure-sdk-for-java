@@ -177,7 +177,6 @@
     "com.azure.ai.projects.models.ApiKeyCredentials": "Azure.AI.Projects.ApiKeyCredentials",
     "com.azure.ai.projects.models.AttackStrategy": "Azure.AI.Projects.AttackStrategy",
     "com.azure.ai.projects.models.AzureAIAgentTarget": "Azure.AI.Projects.AzureAIAgentTarget",
-    "com.azure.ai.projects.models.AzureAIAssistantTarget": "Azure.AI.Projects.AzureAIAssistantTarget",
     "com.azure.ai.projects.models.AzureAIModelTarget": "Azure.AI.Projects.AzureAIModelTarget",
     "com.azure.ai.projects.models.AzureAISearchIndex": "Azure.AI.Projects.AzureAISearchIndex",
     "com.azure.ai.projects.models.AzureOpenAIModelConfiguration": "Azure.AI.Projects.AzureOpenAIModelConfiguration",

@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Renamed `enableAzureTokenProxy()` method in `WorkloadIdentityCredentialBuilder` to `enableAzureProxy()`. These changes only affect code written against beta version 1.19.0-beta.1.
 
 ### Bugs Fixed
 
@@ -18,6 +19,18 @@
 
 ### Other Changes
 - Ported the authentication flow of WorkloadIdentityCredential to use Msal4j.
+
+## 1.18.2 (2026-01-20)
+
+### Other Changes
+
+- Removed unused jetty, redisson, and lettuce-core dependencies.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-json` from `1.5.0` to version `1.5.1`.
 
 ## 1.18.1 (2025-10-13)
 
