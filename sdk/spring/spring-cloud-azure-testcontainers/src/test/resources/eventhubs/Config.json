@@ -3,14 +3,12 @@
     "NamespaceConfig": [
       {
         "Type": "EventHub",
-        "Name": "eventhubsns",
+        "Name": "emulatorns1",
         "Entities": [
           {
             "Name": "eh1",
             "PartitionCount": "2",
-            "ConsumerGroups": [
-              { "Name": "$Default" }
-            ]
+            "ConsumerGroups": []
           }
         ]
       }
