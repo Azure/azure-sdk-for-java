@@ -132,8 +132,13 @@ public final class StageSpec implements JsonSerializable<StageSpec> {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeMapField("specification", this.specification,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("specification", this.specification, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeArrayField("tasks", this.tasks, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("taskOption", this.taskOption);
         return jsonWriter.writeEndObject();

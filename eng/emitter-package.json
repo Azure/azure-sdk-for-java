@@ -1,7 +1,7 @@
 {
   "main": "dist/src/index.js",
   "dependencies": {
-    "@azure-tools/typespec-java": "0.39.0"
+    "@azure-tools/typespec-java": "/mnt/vss/_work/1/s/autorest.java/typespec-extension/azure-tools-typespec-java-0.39.1.tgz"
   },
   "devDependencies": {
     "@azure-tools/openai-typespec": "^1.8.0",
