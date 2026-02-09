@@ -295,6 +295,9 @@ public class HttpConstants {
 
         // Throughput bucket header
         public static final String THROUGHPUT_BUCKET = "x-ms-cosmos-throughput-bucket";
+
+        // Region affinity headers
+        public static final String HUB_REGION_PROCESSING_ONLY = "x-ms-cosmos-hub-region-processing-only";
     }
 
     public static class A_IMHeaderValues {

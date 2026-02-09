@@ -99,6 +99,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final CosmosItemRequestOptions DEFAULT_DELETE_ITEM_OPTIONS = new CosmosItemRequestOptions()
+        .setCosmosEndToEndOperationLatencyPolicyConfig(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                .build()
+        );
 
     protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
@@ -274,7 +279,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                     partitionKey = new PartitionKey(null);
                 }
 
-                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                return cosmosContainer.deleteItem(doc.getId(), partitionKey, DEFAULT_DELETE_ITEM_OPTIONS);
             }).then().block();
     }
 
@@ -362,7 +367,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                partitionKey = new PartitionKey(null);
                            }
 
-                           return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                           return cosmosContainer.deleteItem(doc.getId(), partitionKey, DEFAULT_DELETE_ITEM_OPTIONS);
                        }).then().block();
 
         expectCount(cosmosContainer, 0);
@@ -782,12 +787,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     public static void safeDeleteDocument(CosmosAsyncContainer cosmosContainer, String documentId, Object partitionKey) {
         if (cosmosContainer != null && documentId != null) {
             try {
-                CosmosItemRequestOptions options = new CosmosItemRequestOptions()
-                    .setCosmosEndToEndOperationLatencyPolicyConfig(
-                        new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
-                            .build()
-                    );
-                cosmosContainer.deleteItem(documentId, new PartitionKey(partitionKey), options).block();
+                cosmosContainer.deleteItem(documentId, new PartitionKey(partitionKey), DEFAULT_DELETE_ITEM_OPTIONS).block();
             } catch (Exception e) {
                 CosmosException dce = Utils.as(e, CosmosException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
@@ -798,12 +798,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static void deleteDocument(CosmosAsyncContainer cosmosContainer, String documentId) {
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
-            .setCosmosEndToEndOperationLatencyPolicyConfig(
-                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
-                    .build()
-            );
-        cosmosContainer.deleteItem(documentId, PartitionKey.NONE, options).block();
+        cosmosContainer.deleteItem(documentId, PartitionKey.NONE, DEFAULT_DELETE_ITEM_OPTIONS).block();
     }
 
     public static void deleteUserIfExists(CosmosAsyncClient client, String databaseId, String userId) {
