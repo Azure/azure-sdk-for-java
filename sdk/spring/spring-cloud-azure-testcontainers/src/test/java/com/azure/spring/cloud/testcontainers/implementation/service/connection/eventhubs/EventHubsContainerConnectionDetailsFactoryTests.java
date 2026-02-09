@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.azure.EventHubsEmulatorContainer;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.Network;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.MountableFile;
@@ -32,13 +34,23 @@ import static org.awaitility.Awaitility.waitAtMost;
 @EnabledOnOs(OS.LINUX)
 class EventHubsContainerConnectionDetailsFactoryTests {
 
+    private static final Network NETWORK = Network.newNetwork();
+
+    @Container
+    private static final GenericContainer<?> AZURITE = new GenericContainer<>("mcr.microsoft.com/azure-storage/azurite:latest")
+        .withExposedPorts(10000, 10001, 10002)
+        .withNetwork(NETWORK)
+        .withNetworkAliases("azurite");
+
     @Container
     @ServiceConnection
     private static final EventHubsEmulatorContainer EVENT_HUBS = new EventHubsEmulatorContainer(
         "mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest")
         .acceptLicense()
         .withCopyFileToContainer(MountableFile.forClasspathResource("eventhubs/Config.json"),
-            "/Eventhubs_Emulator/ConfigFiles/Config.json");
+            "/Eventhubs_Emulator/ConfigFiles/Config.json")
+        .withNetwork(NETWORK)
+        .withAzuriteContainer(AZURITE);
 
     @Autowired
     private EventHubProducerClient producerClient;
