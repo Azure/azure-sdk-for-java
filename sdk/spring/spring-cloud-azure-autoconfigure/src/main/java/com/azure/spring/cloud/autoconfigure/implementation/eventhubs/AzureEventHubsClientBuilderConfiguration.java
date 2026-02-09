@@ -4,18 +4,22 @@
 package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsPropertiesConfiguration;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
@@ -24,8 +28,15 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  *
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
+@Import(AzureEventHubsPropertiesConfiguration.class)
+@ConditionalOnBean(AzureEventHubsProperties.class)
 class AzureEventHubsClientBuilderConfiguration {
+
+    private final AzureEventHubsProperties eventHubsProperties;
+
+    AzureEventHubsClientBuilderConfiguration(AzureEventHubsProperties eventHubsProperties) {
+        this.eventHubsProperties = eventHubsProperties;
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -36,15 +47,23 @@ class AzureEventHubsClientBuilderConfiguration {
 
     @Bean(EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean
-    EventHubClientBuilderFactory eventHubClientBuilderFactory(AzureEventHubsProperties properties,
+    EventHubClientBuilderFactory eventHubClientBuilderFactory(
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers) {
-        final EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(properties);
+        final EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(this.eventHubsProperties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
         connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
+    }
+
+    @Bean
+    @ConditionalOnExpression("'${spring.cloud.azure.eventhubs.connection-string:}' != ''")
+    @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
+    StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsStaticConnectionStringProvider() {
+        return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
+            this.eventHubsProperties.getConnectionString());
     }
 
 }

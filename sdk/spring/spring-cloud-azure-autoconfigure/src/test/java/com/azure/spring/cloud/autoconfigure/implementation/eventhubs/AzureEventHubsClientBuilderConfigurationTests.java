@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.eventhubs;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
+import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -17,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AzureEventHubsClientBuilderConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureEventHubsClientBuilderConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class));
 
     @Test
     void noConnectionInfoProvidedShouldNotConfigure() {
@@ -30,7 +31,7 @@ class AzureEventHubsClientBuilderConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsClientBuilderConfiguration.class);
                 assertThat(context).hasSingleBean(EventHubClientBuilderFactory.class);
@@ -44,7 +45,7 @@ class AzureEventHubsClientBuilderConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.namespace=test-namespace"
             )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsClientBuilderConfiguration.class);
                 assertThat(context).hasSingleBean(EventHubClientBuilderFactory.class);
@@ -59,7 +60,7 @@ class AzureEventHubsClientBuilderConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", EventHubBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", EventHubBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
@@ -73,7 +74,7 @@ class AzureEventHubsClientBuilderConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", EventHubBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", EventHubBuilderCustomizer.class, () -> customizer)
             .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
@@ -89,7 +90,7 @@ class AzureEventHubsClientBuilderConfigurationTests {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("user-defined-builder", EventHubClientBuilder.class, EventHubClientBuilder::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubClientBuilder.class);
