@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.testcontainers.azure.EventHubsEmulatorContainer;
-import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.azure.AzuriteContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -37,8 +37,7 @@ class EventHubsContainerConnectionDetailsFactoryTests {
     private static final Network NETWORK = Network.newNetwork();
 
     @Container
-    private static final GenericContainer<?> AZURITE = new GenericContainer<>("mcr.microsoft.com/azure-storage/azurite:latest")
-        .withExposedPorts(10000, 10001, 10002)
+    private static final AzuriteContainer AZURITE = new AzuriteContainer("mcr.microsoft.com/azure-storage/azurite:latest")
         .withNetwork(NETWORK)
         .withNetworkAliases("azurite");
 
@@ -50,8 +49,7 @@ class EventHubsContainerConnectionDetailsFactoryTests {
         .withCopyFileToContainer(MountableFile.forClasspathResource("eventhubs/Config.json"),
             "/Eventhubs_Emulator/ConfigFiles/Config.json")
         .withNetwork(NETWORK)
-        .withEnv("BLOB_SERVER", "azurite")
-        .withEnv("METADATA_SERVER", "azurite");
+        .withAzuriteContainer(AZURITE);
 
     @Autowired
     private EventHubProducerClient producerClient;
