@@ -2,7 +2,7 @@
 
 ## Disclaimer
 
-Please note, this package has been deprecated and will no longer be maintained after 2025/10/01. There is no replacement packages, as all mixed reality services are deprecated. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+Please note, this package has been deprecated and will no longer be maintained after 2025/10/01. There are no replacement packages, as all mixed reality services are deprecated. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ## Overview
 
