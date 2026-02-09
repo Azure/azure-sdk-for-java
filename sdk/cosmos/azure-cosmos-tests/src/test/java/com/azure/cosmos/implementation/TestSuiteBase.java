@@ -287,7 +287,6 @@ public abstract class TestSuiteBase extends DocumentClientTest {
                 .byPage()
                 .publishOn(Schedulers.parallel()).flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(udf -> {
-                    RequestOptions requestOptions = new RequestOptions();
                     return container.getScripts().getUserDefinedFunction(udf.getId()).delete();
                 })
                 .then()
