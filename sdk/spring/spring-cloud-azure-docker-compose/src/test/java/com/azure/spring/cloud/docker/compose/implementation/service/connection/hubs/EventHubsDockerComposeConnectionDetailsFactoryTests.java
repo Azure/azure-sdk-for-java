@@ -22,7 +22,7 @@ import static org.awaitility.Awaitility.waitAtMost;
 
 @SpringBootTest(properties = {
     "spring.docker.compose.skip.in-tests=false",
-    "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/eventhubs/eventhubs-compose.yaml",
+    "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/hubs/eventhubs-compose.yaml",
     "spring.docker.compose.stop.command=down",
     "spring.docker.compose.readiness.timeout=PT5M",
     "spring.cloud.azure.eventhubs.namespace=emulatorns1",
