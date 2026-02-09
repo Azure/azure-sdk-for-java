@@ -38,6 +38,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
     AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class
 })
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "event-hub-name", "consumer.event-hub-name" })
+@ConditionalOnBean(AzureEventHubsProperties.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = "consumer-group")
 class AzureEventHubsConsumerClientConfiguration {
 

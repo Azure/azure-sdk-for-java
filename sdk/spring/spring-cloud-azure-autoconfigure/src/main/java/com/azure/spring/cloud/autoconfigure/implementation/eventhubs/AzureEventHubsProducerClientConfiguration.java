@@ -30,6 +30,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  *
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnBean(AzureEventHubsProperties.class)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "event-hub-name", "producer.event-hub-name" })
 class AzureEventHubsProducerClientConfiguration {
 
