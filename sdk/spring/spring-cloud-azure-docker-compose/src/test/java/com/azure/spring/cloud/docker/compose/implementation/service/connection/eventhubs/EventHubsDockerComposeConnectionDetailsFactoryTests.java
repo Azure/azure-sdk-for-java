@@ -38,7 +38,7 @@ class EventHubsDockerComposeConnectionDetailsFactoryTests {
     @Test
     void producerClientCanSendMessage() {
         // Wait for Event Hubs emulator to be fully ready and event hub entity to be available
-        waitAtMost(Duration.ofSeconds(240)).pollDelay(Duration.ofSeconds(5)).pollInterval(Duration.ofSeconds(2)).untilAsserted(() -> {
+        waitAtMost(Duration.ofSeconds(120)).pollInterval(Duration.ofSeconds(2)).untilAsserted(() -> {
             EventData event = new EventData("Hello World!");
             this.producerClient.send(Collections.singletonList(event));
         });
