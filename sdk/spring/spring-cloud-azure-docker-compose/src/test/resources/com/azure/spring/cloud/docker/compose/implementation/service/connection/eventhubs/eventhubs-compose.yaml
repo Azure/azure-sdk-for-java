@@ -3,7 +3,8 @@ services:
     image: mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest
     pull_policy: always
     volumes:
-      - "./Config.json:/Eventhubs_Emulator/ConfigFiles/Config.json"
+      # Mount the emulator configuration; container path is case-sensitive
+      - "./Config.json:/EventHubs_Emulator/ConfigFiles/Config.json"
     ports:
       - "5672"
     environment:
