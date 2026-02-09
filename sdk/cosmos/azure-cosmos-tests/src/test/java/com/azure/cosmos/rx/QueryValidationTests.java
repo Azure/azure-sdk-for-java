@@ -38,6 +38,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -594,6 +595,11 @@ public class QueryValidationTests extends TestSuiteBase {
         assertThat(results).isNotNull();
         assertThat(results.size()).isEqualTo(2);
         container.delete().block();
+    }
+
+    @AfterClass(groups = {"query", "split"}, timeOut = SHUTDOWN_TIMEOUT)
+    public void afterClass() {
+        safeClose(this.client);
     }
 
     private List<PartitionKeyRange> getPartitionKeyRanges(
