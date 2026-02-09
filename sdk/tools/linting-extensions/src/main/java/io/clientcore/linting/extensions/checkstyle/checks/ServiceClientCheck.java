@@ -400,14 +400,15 @@ public class ServiceClientCheck extends AbstractCheck {
                 return paramTypeIdentToken != null && REQUEST_OPTIONS.equals(paramTypeIdentToken.getText());
             }).isPresent();
 
-        boolean containsRequestContextParameter = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
-            if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
-                return false;
-            }
-            final DetailAST paramTypeIdentToken
-                = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
-            return paramTypeIdentToken != null && REQUEST_CONTEXT.equals(paramTypeIdentToken.getText());
-        }).isPresent();
+        boolean containsRequestContextParameter
+            = TokenUtil.findFirstTokenByPredicate(parametersToken, parameterToken -> {
+                if (parameterToken.getType() != TokenTypes.PARAMETER_DEF) {
+                    return false;
+                }
+                final DetailAST paramTypeIdentToken
+                    = parameterToken.findFirstToken(TokenTypes.TYPE).findFirstToken(TokenTypes.IDENT);
+                return paramTypeIdentToken != null && REQUEST_CONTEXT.equals(paramTypeIdentToken.getText());
+            }).isPresent();
 
         if (containsContextParameter) {
             // MONO and PagedFlux return type implies Asynchronous method
