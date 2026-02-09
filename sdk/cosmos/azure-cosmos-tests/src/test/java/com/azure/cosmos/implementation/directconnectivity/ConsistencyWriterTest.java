@@ -219,7 +219,7 @@ public class ConsistencyWriterTest {
         StoreResponse sr = new StoreResponse(null, 0, headers, null, 0);
         Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-2l);
         Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-2l);
-        ConsistencyWriter.getLsnAndGlobalCommittedLsn(sr, lsn, globalCommittedLsn);
+        ConsistencyWriter.getLsnAndGlobalCommittedLsn(sr, lsn, globalCommittedLsn, BarrierType.GLOBAL_STRONG_WRITE);
         assertThat(lsn.v).isEqualTo(3);
         assertThat(globalCommittedLsn.v).isEqualTo(2);
     }
@@ -394,7 +394,7 @@ public class ConsistencyWriterTest {
         Mockito.doReturn("0").when(storeResponse).getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
         Mockito.doReturn(ConsistencyLevel.SESSION).when(serviceConfigReader).getDefaultConsistencyLevel();
         ConsistencyWriter spyWriter = Mockito.spy(this.consistencyWriter);
-        Mockito.doReturn(Mono.just(storeResponse)).when(spyWriter).barrierForGlobalStrong(Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.doReturn(Mono.just(storeResponse)).when(spyWriter).barrierForWriteRequests(Mockito.any(), Mockito.any(), Mockito.any());
         AddressInformation addressInformation = Mockito.mock(AddressInformation.class);
         Uri primaryUri = Mockito.mock(Uri.class);
         Mockito.doReturn(true).when(primaryUri).isPrimary();
@@ -572,6 +572,7 @@ public class ConsistencyWriterTest {
             2,
             true,
             null,
+            globalCommittedLsn,
             globalCommittedLsn,
             1,
             1,

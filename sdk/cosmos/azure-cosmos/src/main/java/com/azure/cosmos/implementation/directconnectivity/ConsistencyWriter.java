@@ -319,7 +319,7 @@ public class ConsistencyWriter {
                         false,
                         primaryURI.get(),
                         replicaStatusList);
-                return barrierForGlobalStrong(request, response, cosmosExceptionValueHolder);
+                return barrierForWriteRequests(request, response, cosmosExceptionValueHolder);
             })
             .doFinally(signalType -> {
                 if (signalType != SignalType.CANCEL) {
@@ -335,7 +335,7 @@ public class ConsistencyWriter {
         } else {
 
             Mono<RxDocumentServiceRequest> barrierRequestObs = BarrierRequestHelper.createAsync(this.diagnosticsClientContext, request, this.authorizationTokenProvider, null, request.requestContext.globalCommittedSelectedLSN);
-            return barrierRequestObs.flatMap(barrierRequest -> waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN, cosmosExceptionValueHolder)
+            return barrierRequestObs.flatMap(barrierRequest -> waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN, cosmosExceptionValueHolder, request.requestContext.getBarrierType())
                 .flatMap(v -> {
 
                     if (!v) {
@@ -367,7 +367,7 @@ public class ConsistencyWriter {
         return false;
     }
 
-    Mono<StoreResponse> barrierForGlobalStrong(
+    Mono<StoreResponse> barrierForWriteRequests(
         RxDocumentServiceRequest request,
         StoreResponse response,
         AtomicReference<CosmosException> cosmosExceptionValueHolder) {
@@ -375,14 +375,24 @@ public class ConsistencyWriter {
         try {
             BarrierType barrierType = getBarrierRequestType(request, response);
             request.requestContext.setBarrierType(barrierType);
+
             if (barrierType == BarrierType.GLOBAL_STRONG_WRITE || barrierType == BarrierType.N_REGION_SYNCHRONOUS_COMMIT) {
                 Utils.ValueHolder<Long> lsn = Utils.ValueHolder.initialize(-1L);
                 Utils.ValueHolder<Long> globalCommittedLsn = Utils.ValueHolder.initialize(-1L);
 
-                getLsnAndGlobalCommittedLsn(response, lsn, globalCommittedLsn);
+                getLsnAndGlobalCommittedLsn(response, lsn, globalCommittedLsn, barrierType);
+
+                String errorMessage = "";
+                if (barrierType == BarrierType.GLOBAL_STRONG_WRITE) {
+                    logger.debug("ConsistencyWriter: globalCommittedLsn {}, lsn {}", globalCommittedLsn, lsn);
+                    errorMessage = "ConsistencyWriter: lsn {} or GlobalCommittedLsn {} is not set for global strong request";
+                } else {
+                    logger.debug("ConsistencyWriter: GlobalNRegionCommittedLsn {}, lsn {}", globalCommittedLsn, lsn);
+                    errorMessage = "ConsistencyWriter: lsn {} or GlobalNRegionCommittedLsn {} is not set for global strong request";
+                }
+
                 if (lsn.v == -1 || globalCommittedLsn.v == -1) {
-                    logger.error("ConsistencyWriter: lsn {} or GlobalCommittedLsn {} is not set for global strong request",
-                        lsn, globalCommittedLsn);
+                    logger.error(errorMessage, lsn, globalCommittedLsn);
                     // Service Generated because no lsn and glsn set by service
                     throw new GoneException(RMResources.Gone, HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 }
@@ -393,7 +403,6 @@ public class ConsistencyWriter {
                 //if necessary we would have already refreshed cache by now.
                 request.requestContext.forceRefreshAddressCache = false;
 
-                logger.debug("ConsistencyWriter: globalCommittedLsn {}, lsn {}", globalCommittedLsn, lsn);
                 //barrier only if necessary, i.e. when write region completes write, but read regions have not.
 
                 if (globalCommittedLsn.v < lsn.v) {
@@ -404,7 +413,7 @@ public class ConsistencyWriter {
                         request.requestContext.globalCommittedSelectedLSN);
 
                     return barrierRequestObs.flatMap(barrierRequest -> {
-                        Mono<Boolean> barrierWait = this.waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN, cosmosExceptionValueHolder);
+                        Mono<Boolean> barrierWait = this.waitForWriteBarrierAsync(barrierRequest, request.requestContext.globalCommittedSelectedLSN, cosmosExceptionValueHolder, request.requestContext.getBarrierType());
 
                         return barrierWait.flatMap(res -> {
                             if (!res) {
@@ -496,7 +505,8 @@ public class ConsistencyWriter {
     Mono<Boolean> waitForWriteBarrierAsync(
         RxDocumentServiceRequest barrierRequest,
         long selectedGlobalCommittedLsn,
-        AtomicReference<CosmosException> cosmosExceptionValueHolder) {
+        AtomicReference<CosmosException> cosmosExceptionValueHolder,
+        BarrierType barrierType) {
 
         AtomicInteger writeBarrierRetryCount = new AtomicInteger(ConsistencyWriter.MAX_NUMBER_OF_WRITE_BARRIER_READ_RETRIES);
         AtomicLong maxGlobalCommittedLsnReceived = new AtomicLong(0);
@@ -541,13 +551,20 @@ public class ConsistencyWriter {
                             cosmosExceptionFromStoreResult);
                     }
 
-                    if (responses != null && responses.stream().anyMatch(response -> response.globalCommittedLSN >= selectedGlobalCommittedLsn)) {
+                    if (responses != null && responses.stream().anyMatch(response -> {
+                        long lsnToCompare = barrierType == BarrierType.N_REGION_SYNCHRONOUS_COMMIT
+                            ? response.globalNRegionCommittedLSN
+                            : response.globalCommittedLSN;
+                        return lsnToCompare >= selectedGlobalCommittedLsn;
+                    })) {
                         return Mono.just(Boolean.TRUE);
                     }
 
                     //get max global committed lsn from current batch of responses, then update if greater than max of all batches.
                     long maxGlobalCommittedLsn = (responses != null) ?
-                        responses.stream().map(s -> s.globalCommittedLSN).max(ComparatorUtils.naturalComparator()).orElse(0L) :
+                        responses.stream().map(s -> barrierType == BarrierType.N_REGION_SYNCHRONOUS_COMMIT
+                            ? s.globalNRegionCommittedLSN
+                            : s.globalCommittedLSN).max(ComparatorUtils.naturalComparator()).orElse(0L) :
                         0L;
                     maxGlobalCommittedLsnReceived.set(Math.max(maxGlobalCommittedLsnReceived.get(), maxGlobalCommittedLsn));
 
@@ -582,7 +599,7 @@ public class ConsistencyWriter {
         ).take(1).single();
     }
 
-    static void getLsnAndGlobalCommittedLsn(StoreResponse response, Utils.ValueHolder<Long> lsn, Utils.ValueHolder<Long> globalCommittedLsn) {
+    static void getLsnAndGlobalCommittedLsn(StoreResponse response, Utils.ValueHolder<Long> lsn, Utils.ValueHolder<Long> globalCommittedLsn, BarrierType barrierType) {
         lsn.v = -1L;
         globalCommittedLsn.v = -1L;
 
@@ -592,11 +609,19 @@ public class ConsistencyWriter {
             lsn.v = Long.parseLong(headerValue);
         }
 
-        if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
-            globalCommittedLsn.v = Long.parseLong(headerValue);
-        }
-        else if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN)) != null) {
-            globalCommittedLsn.v = Long.parseLong(headerValue);
+        switch (barrierType) {
+            case NONE -> {
+            }
+            case GLOBAL_STRONG_WRITE -> {
+                if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
+                    globalCommittedLsn.v = Long.parseLong(headerValue);
+                }
+            }
+            case N_REGION_SYNCHRONOUS_COMMIT -> {
+                if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN)) != null) {
+                    globalCommittedLsn.v = Long.parseLong(headerValue);
+                }
+            }
         }
     }
 

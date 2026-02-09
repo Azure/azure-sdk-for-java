@@ -282,7 +282,7 @@ public class StoreResponse {
             try {
                 return Long.parseLong(numberOfReadRegionsString);
             } catch (NumberFormatException e) {
-                // If value cannot be parsed as Long, return -1.
+                logger.warn("Failed to parse NUMBER_OF_READ_REGIONS header value: {}. Returning -1.", numberOfReadRegionsString);
             }
         }
         return numberOfReadRegions;
