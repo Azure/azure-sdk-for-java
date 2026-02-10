@@ -269,7 +269,6 @@ public class Sample16_CreateAnalyzerWithLabelsAsync {
                     error -> {
                         // Error already handled in doOnError
                         latch.countDown();
-                        System.exit(1);
                     }
                 );
 
