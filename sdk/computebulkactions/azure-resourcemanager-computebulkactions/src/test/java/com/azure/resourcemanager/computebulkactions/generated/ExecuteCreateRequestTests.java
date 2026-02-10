@@ -20,7 +20,7 @@ public final class ExecuteCreateRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteCreateRequest model = BinaryData.fromString(
-            "{\"resourceConfigParameters\":{\"baseProfile\":{\"ofncckwyfzqwhxxb\":\"dataaztz\",\"xzfe\":\"datayq\",\"mncwsobqwcsdb\":\"dataztppriolxorjalto\"},\"resourceOverrides\":[{\"lsbjjcanvxbv\":\"datafhucqdpfuv\"},{\"mr\":\"dataudutnco\",\"f\":\"dataxqtvcofu\",\"u\":\"datavkg\"},{\"n\":\"datadknnqvsazn\",\"mkycgra\":\"dataorudsgsa\"}],\"resourceCount\":1064161892,\"resourcePrefix\":\"uetae\"},\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":1552436434,\"retryWindowInMinutes\":973815152}},\"correlationid\":\"s\"}")
+            "{\"resourceConfigParameters\":{\"baseProfile\":{\"ofncckwyfzqwhxxb\":\"\\\"dataaztz\\\"\",\"xzfe\":\"\\\"datayq\\\"\",\"mncwsobqwcsdb\":\"\\\"dataztppriolxorjalto\\\"\"},\"resourceOverrides\":[{\"lsbjjcanvxbv\":\"\\\"datafhucqdpfuv\\\"\"},{\"mr\":\"\\\"dataudutnco\\\"\",\"f\":\"\\\"dataxqtvcofu\\\"\",\"u\":\"\\\"datavkg\\\"\"},{\"n\":\"\\\"datadknnqvsazn\\\"\",\"mkycgra\":\"\\\"dataorudsgsa\\\"\"}],\"resourceCount\":1064161892,\"resourcePrefix\":\"uetae\"},\"executionParameters\":{\"optimizationPreference\":\"Availability\",\"retryPolicy\":{\"retryCount\":1552436434,\"retryWindowInMinutes\":973815152}},\"correlationid\":\"s\"}")
             .toObject(ExecuteCreateRequest.class);
         Assertions.assertEquals(1064161892, model.resourceConfigParameters().resourceCount());
         Assertions.assertEquals("uetae", model.resourceConfigParameters().resourcePrefix());
@@ -28,7 +28,7 @@ public final class ExecuteCreateRequestTests {
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(1552436434, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(973815152, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("s", model.correlationid());
+        Assertions.assertEquals("s", model.correlationId());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,22 +36,22 @@ public final class ExecuteCreateRequestTests {
         ExecuteCreateRequest model = new ExecuteCreateRequest()
             .withResourceConfigParameters(new ResourceProvisionPayload()
                 .withBaseProfile(
-                    mapOf("ofncckwyfzqwhxxb", BinaryData.fromBytes("dataaztz".getBytes(StandardCharsets.UTF_8)), "xzfe",
-                        BinaryData.fromBytes("datayq".getBytes(StandardCharsets.UTF_8)), "mncwsobqwcsdb",
-                        BinaryData.fromBytes("dataztppriolxorjalto".getBytes(StandardCharsets.UTF_8))))
+                    mapOf("ofncckwyfzqwhxxb", BinaryData.fromBytes("\"dataaztz\"".getBytes(StandardCharsets.UTF_8)),
+                        "xzfe", BinaryData.fromBytes("\"datayq\"".getBytes(StandardCharsets.UTF_8)), "mncwsobqwcsdb",
+                        BinaryData.fromBytes("\"dataztppriolxorjalto\"".getBytes(StandardCharsets.UTF_8))))
                 .withResourceOverrides(Arrays.asList(
-                    mapOf("lsbjjcanvxbv", BinaryData.fromBytes("datafhucqdpfuv".getBytes(StandardCharsets.UTF_8))),
-                    mapOf("mr", BinaryData.fromBytes("dataudutnco".getBytes(StandardCharsets.UTF_8)), "f",
-                        BinaryData.fromBytes("dataxqtvcofu".getBytes(StandardCharsets.UTF_8)), "u",
-                        BinaryData.fromBytes("datavkg".getBytes(StandardCharsets.UTF_8))),
-                    mapOf("n", BinaryData.fromBytes("datadknnqvsazn".getBytes(StandardCharsets.UTF_8)), "mkycgra",
-                        BinaryData.fromBytes("dataorudsgsa".getBytes(StandardCharsets.UTF_8)))))
+                    mapOf("lsbjjcanvxbv", BinaryData.fromBytes("\"datafhucqdpfuv\"".getBytes(StandardCharsets.UTF_8))),
+                    mapOf("mr", BinaryData.fromBytes("\"dataudutnco\"".getBytes(StandardCharsets.UTF_8)), "f",
+                        BinaryData.fromBytes("\"dataxqtvcofu\"".getBytes(StandardCharsets.UTF_8)), "u",
+                        BinaryData.fromBytes("\"datavkg\"".getBytes(StandardCharsets.UTF_8))),
+                    mapOf("n", BinaryData.fromBytes("\"datadknnqvsazn\"".getBytes(StandardCharsets.UTF_8)), "mkycgra",
+                        BinaryData.fromBytes("\"dataorudsgsa\"".getBytes(StandardCharsets.UTF_8)))))
                 .withResourceCount(1064161892)
                 .withResourcePrefix("uetae"))
             .withExecutionParameters(
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.AVAILABILITY)
                     .withRetryPolicy(new RetryPolicy().withRetryCount(1552436434).withRetryWindowInMinutes(973815152)))
-            .withCorrelationid("s");
+            .withCorrelationId("s");
         model = BinaryData.fromObject(model).toObject(ExecuteCreateRequest.class);
         Assertions.assertEquals(1064161892, model.resourceConfigParameters().resourceCount());
         Assertions.assertEquals("uetae", model.resourceConfigParameters().resourcePrefix());
@@ -59,7 +59,7 @@ public final class ExecuteCreateRequestTests {
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(1552436434, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(973815152, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("s", model.correlationid());
+        Assertions.assertEquals("s", model.correlationId());
     }
 
     // Use "Map.of" if available

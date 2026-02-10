@@ -16,7 +16,7 @@ public final class ResourceProvisionPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProvisionPayload model = BinaryData.fromString(
-            "{\"baseProfile\":{\"kif\":\"dataxwabmqoe\"},\"resourceOverrides\":[{\"ujmqlgkfbtndoa\":\"datau\",\"bjcntujitc\":\"datan\",\"twwaezkojvdcpzf\":\"dataed\",\"foxciq\":\"dataqouicybxarzgsz\"},{\"xkhnzbonlwnto\":\"dataidoamciodhkha\"}],\"resourceCount\":364905356,\"resourcePrefix\":\"kdwbwhkszz\"}")
+            "{\"baseProfile\":{\"kif\":\"\\\"dataxwabmqoe\\\"\"},\"resourceOverrides\":[{\"ujmqlgkfbtndoa\":\"\\\"datau\\\"\",\"bjcntujitc\":\"\\\"datan\\\"\",\"twwaezkojvdcpzf\":\"\\\"dataed\\\"\",\"foxciq\":\"\\\"dataqouicybxarzgsz\\\"\"},{\"xkhnzbonlwnto\":\"\\\"dataidoamciodhkha\\\"\"}],\"resourceCount\":364905356,\"resourcePrefix\":\"kdwbwhkszz\"}")
             .toObject(ResourceProvisionPayload.class);
         Assertions.assertEquals(364905356, model.resourceCount());
         Assertions.assertEquals("kdwbwhkszz", model.resourcePrefix());
@@ -25,13 +25,13 @@ public final class ResourceProvisionPayloadTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ResourceProvisionPayload model = new ResourceProvisionPayload()
-            .withBaseProfile(mapOf("kif", BinaryData.fromBytes("dataxwabmqoe".getBytes(StandardCharsets.UTF_8))))
+            .withBaseProfile(mapOf("kif", BinaryData.fromBytes("\"dataxwabmqoe\"".getBytes(StandardCharsets.UTF_8))))
             .withResourceOverrides(Arrays.asList(
-                mapOf("ujmqlgkfbtndoa", BinaryData.fromBytes("datau".getBytes(StandardCharsets.UTF_8)), "bjcntujitc",
-                    BinaryData.fromBytes("datan".getBytes(StandardCharsets.UTF_8)), "twwaezkojvdcpzf",
-                    BinaryData.fromBytes("dataed".getBytes(StandardCharsets.UTF_8)), "foxciq",
-                    BinaryData.fromBytes("dataqouicybxarzgsz".getBytes(StandardCharsets.UTF_8))),
-                mapOf("xkhnzbonlwnto", BinaryData.fromBytes("dataidoamciodhkha".getBytes(StandardCharsets.UTF_8)))))
+                mapOf("ujmqlgkfbtndoa", BinaryData.fromBytes("\"datau\"".getBytes(StandardCharsets.UTF_8)),
+                    "bjcntujitc", BinaryData.fromBytes("\"datan\"".getBytes(StandardCharsets.UTF_8)), "twwaezkojvdcpzf",
+                    BinaryData.fromBytes("\"dataed\"".getBytes(StandardCharsets.UTF_8)), "foxciq",
+                    BinaryData.fromBytes("\"dataqouicybxarzgsz\"".getBytes(StandardCharsets.UTF_8))),
+                mapOf("xkhnzbonlwnto", BinaryData.fromBytes("\"dataidoamciodhkha\"".getBytes(StandardCharsets.UTF_8)))))
             .withResourceCount(364905356)
             .withResourcePrefix("kdwbwhkszz");
         model = BinaryData.fromObject(model).toObject(ResourceProvisionPayload.class);

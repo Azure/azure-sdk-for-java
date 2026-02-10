@@ -29,7 +29,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     /*
      * CorrelationId item
      */
-    private String correlationid;
+    private String correlationId;
 
     /**
      * Creates an instance of ExecuteDeallocateRequest class.
@@ -78,22 +78,22 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     }
 
     /**
-     * Get the correlationid property: CorrelationId item.
+     * Get the correlationId property: CorrelationId item.
      * 
-     * @return the correlationid value.
+     * @return the correlationId value.
      */
-    public String correlationid() {
-        return this.correlationid;
+    public String correlationId() {
+        return this.correlationId;
     }
 
     /**
-     * Set the correlationid property: CorrelationId item.
+     * Set the correlationId property: CorrelationId item.
      * 
-     * @param correlationid the correlationid value to set.
+     * @param correlationId the correlationId value to set.
      * @return the ExecuteDeallocateRequest object itself.
      */
-    public ExecuteDeallocateRequest withCorrelationid(String correlationid) {
-        this.correlationid = correlationid;
+    public ExecuteDeallocateRequest withCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
         return this;
     }
 
@@ -104,7 +104,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
-        jsonWriter.writeStringField("correlationid", this.correlationid);
+        jsonWriter.writeStringField("correlationid", this.correlationId);
         jsonWriter.writeJsonField("resources", this.resources);
         return jsonWriter.writeEndObject();
     }
@@ -128,7 +128,7 @@ public final class ExecuteDeallocateRequest implements JsonSerializable<ExecuteD
                 if ("executionParameters".equals(fieldName)) {
                     deserializedExecuteDeallocateRequest.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteDeallocateRequest.correlationid = reader.getString();
+                    deserializedExecuteDeallocateRequest.correlationId = reader.getString();
                 } else if ("resources".equals(fieldName)) {
                     deserializedExecuteDeallocateRequest.resources = Resources.fromJson(reader);
                 } else {

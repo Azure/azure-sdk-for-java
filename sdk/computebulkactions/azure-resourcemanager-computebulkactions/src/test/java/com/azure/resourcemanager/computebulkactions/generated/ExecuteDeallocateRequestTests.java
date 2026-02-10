@@ -24,7 +24,7 @@ public final class ExecuteDeallocateRequestTests {
         Assertions.assertEquals(2063960908, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(2031634096, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals("su", model.resources().ids().get(0));
-        Assertions.assertEquals("yc", model.correlationid());
+        Assertions.assertEquals("yc", model.correlationId());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,13 +34,13 @@ public final class ExecuteDeallocateRequestTests {
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.AVAILABILITY)
                     .withRetryPolicy(new RetryPolicy().withRetryCount(2063960908).withRetryWindowInMinutes(2031634096)))
             .withResources(new Resources().withIds(Arrays.asList("su", "arm", "wdmjsjqbjhhyx", "rw")))
-            .withCorrelationid("yc");
+            .withCorrelationId("yc");
         model = BinaryData.fromObject(model).toObject(ExecuteDeallocateRequest.class);
         Assertions.assertEquals(OptimizationPreference.AVAILABILITY,
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(2063960908, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(2031634096, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals("su", model.resources().ids().get(0));
-        Assertions.assertEquals("yc", model.correlationid());
+        Assertions.assertEquals("yc", model.correlationId());
     }
 }

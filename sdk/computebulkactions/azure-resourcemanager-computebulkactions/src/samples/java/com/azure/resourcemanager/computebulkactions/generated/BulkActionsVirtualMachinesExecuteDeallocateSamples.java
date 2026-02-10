@@ -29,7 +29,7 @@ public final class BulkActionsVirtualMachinesExecuteDeallocateSamples {
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -48,6 +48,6 @@ public final class BulkActionsVirtualMachinesExecuteDeallocateSamples {
                     .withRetryPolicy(new RetryPolicy().withRetryCount(4).withRetryWindowInMinutes(27)))
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 }
