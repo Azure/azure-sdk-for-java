@@ -20,7 +20,9 @@ import com.azure.ai.agents.implementation.OpenAIJsonHelper;
 import com.openai.core.JsonValue;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.function.Tuple2;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +47,7 @@ public class AsyncCodeInterpreterAgent {
         ResponsesAsyncClient responsesAsyncClient = builder.buildResponsesAsyncClient();
         ConversationsAsyncClient conversationsAsyncClient = builder.buildConversationsAsyncClient();
 
+        // For cleanup
         AtomicReference<AgentVersionDetails> agentRef = new AtomicReference<>();
         AtomicReference<Conversation> conversationRef = new AtomicReference<>();
 
@@ -58,36 +61,35 @@ public class AsyncCodeInterpreterAgent {
                 + "When asked to perform calculations or data analysis, use the code interpreter to run Python code.")
             .setTools(Collections.singletonList(tool));
 
-        CountDownLatch latch = new CountDownLatch(1);
+        // primitives can't be passed as generic parameter type. Mono<int> X -> Mono<Integer> :check_mark:
+
+        // Observable types: (cold observable opposed to hot observable)
+        // Flux<>       -> --O---O---O---O---O---O---O---O---O---O---O--->X
+        // Mono<>       -> --0-->X
+        // Completable  -> ----->X
+
+        // Observables are composable
+        // Mono.just("string").concat(Mono.just("strong")) // Flux<String>
+        // map -> Observable<T> -> Observable<R>
+        // flatMap -> Observable<T> -> Observable<Observable<R>> -> Observable<R>
 
         agentsAsyncClient.createAgentVersion("MyAgent", agentDefinition)
-            .doOnNext(agent -> {
-                agentRef.set(agent);
-                System.out.printf("Agent created (id: %s, version: %s)\n", agent.getId(), agent.getVersion());
-            })
-            .flatMap(agent -> {
-                return Mono.fromCallable(() -> conversationsAsyncClient.getConversationServiceAsync().create().get())
-                    .subscribeOn(Schedulers.boundedElastic())
-                    .doOnNext(conversation -> {
-                        conversationRef.set(conversation);
-                        System.out.println("Created Conversation: " + conversation.id());
-                    })
-                    .map(conversation -> agent);
-            })
-            .flatMap(agent -> {
-                AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
-                JsonValue agentRefJsonValue = OpenAIJsonHelper.toJsonValue(agentReference);
-                Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-                additionalBodyProperties.put("agent", agentRefJsonValue);
+            .flatMap(agent ->
+                Mono.fromFuture(conversationsAsyncClient.getConversationServiceAsync().create())
+                    .map(conversation -> new Pair<>(agent, conversation)))
+            .flatMap(pair -> {
 
-                return Mono.fromCallable(() -> responsesAsyncClient.getResponseServiceAsync()
-                        .create(ResponseCreateParams.builder()
-                            .input("Calculate the first 10 prime numbers and show me the Python code you used.")
-                            .conversation(conversationRef.get().id())
-                            .additionalBodyProperties(additionalBodyProperties)
-                            .build())
-                        .get())
-                    .subscribeOn(Schedulers.boundedElastic());
+                AgentVersionDetails agent = pair.getFirst();
+                Conversation conversation = pair.getSecond();
+
+                agentRef.set(agent);
+                conversationRef.set(conversation);
+
+                AgentReference agentReference = new AgentReference(agent.getName()).setVersion(agent.getVersion());
+
+                return responsesAsyncClient.createWithAgentConversation(agentReference, conversation.id(),
+                        ResponseCreateParams.builder()
+                                .input("Calculate the first 10 prime numbers and show me the Python code you used."));
             })
             .doOnNext(response -> {
                 // Process and display the response
@@ -139,10 +141,29 @@ public class AsyncCodeInterpreterAgent {
             .doOnError(error -> {
                 System.err.println("Error: " + error.getMessage());
                 error.printStackTrace();
-            })
-            .doFinally(signalType -> latch.countDown())
-            .subscribe();
+            }).timeout(Duration.ofSeconds(30))
+                .block();
+    }
 
-        latch.await();
+    private static class Pair<T, R> {
+        private final T first;
+        private final R second;
+
+        public Pair(T first, R second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        public T getFirst() {
+            return first;
+        }
+
+        public R getSecond() {
+            return second;
+        }
+
+        public static <T, R> Pair<T, R> of(T first, R second) {
+            return new Pair<>(first, second);
+        }
     }
 }
