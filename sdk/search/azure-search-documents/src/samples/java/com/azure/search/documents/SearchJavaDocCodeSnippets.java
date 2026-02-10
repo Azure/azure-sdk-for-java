@@ -2630,19 +2630,18 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#resetSkillsWithResponse(String, BinaryData, RequestOptions)}
+     * Code snippet for {@link SearchIndexerClient#resetSkillsWithResponse(String, SkillNames, RequestOptions)}
      */
     public void resetSkillsWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#String-BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#String-SkillNames-RequestOptions
         SearchIndexerSkillset searchIndexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
 
         // Reset the "myOcr" and "myText" skills.
         Response<Void> resetSkillsResponse = SEARCH_INDEXER_CLIENT.resetSkillsWithResponse(
-            searchIndexerSkillset.getName(),
-            BinaryData.fromObject(new SkillNames().setSkillNames("myOcr", "myText")),
+            searchIndexerSkillset.getName(), new SkillNames().setSkillNames("myOcr", "myText"),
             new RequestOptions().setContext(new Context(KEY_1, VALUE_1)));
         System.out.printf("Resetting skills completed with status code %d.%n", resetSkillsResponse.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#String-BinaryData-RequestOptions
+        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#String-SkillNames-RequestOptions
     }
 
     /**
@@ -2658,18 +2657,17 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetSkillsWithResponse(String, BinaryData, RequestOptions)}
+     * Code snippet for {@link SearchIndexerAsyncClient#resetSkillsWithResponse(String, SkillNames, RequestOptions)}
      */
     public void resetSkillsWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#String-BinaryData-RequestOptions
+        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#String-SkillNames-RequestOptions
         SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
             .flatMap(searchIndexerSkillset -> SEARCH_INDEXER_ASYNC_CLIENT.resetSkillsWithResponse(
-                searchIndexerSkillset.getName(),
-                    BinaryData.fromObject(new SkillNames().setSkillNames("myOcr", "myText")),
-                    new RequestOptions()))
+                searchIndexerSkillset.getName(), new SkillNames().setSkillNames("myOcr", "myText"),
+                new RequestOptions()))
             .subscribe(resetSkillsResponse -> System.out.printf("Resetting skills completed with status code %d.%n",
                 resetSkillsResponse.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#String-BinaryData-RequestOptions
+        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#String-SkillNames-RequestOptions
     }
 
     /**
@@ -2925,11 +2923,8 @@ public class SearchJavaDocCodeSnippets {
     public void listAliasesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases#RequestOptions
         SEARCH_INDEX_CLIENT.listAliases(new RequestOptions().setContext(new Context(KEY_1, VALUE_1)))
-            .forEach(binaryData -> {
-                SearchAlias searchAlias = binaryData.toObject(SearchAlias.class);
-                System.out.printf("Listed alias '%s' that aliases index '%s'.",
-                    searchAlias.getName(), searchAlias.getIndexes().get(0));
-            });
+            .forEach(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
+                searchAlias.getName(), searchAlias.getIndexes().get(0)));
         // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases#RequestOptions
     }
 }
