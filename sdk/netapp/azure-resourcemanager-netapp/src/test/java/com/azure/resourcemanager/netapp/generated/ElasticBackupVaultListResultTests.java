@@ -12,10 +12,10 @@ public final class ElasticBackupVaultListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ElasticBackupVaultListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Patching\"},\"eTag\":\"elfclducc\",\"location\":\"rds\",\"tags\":{\"i\":\"cobiegstmninwjiz\",\"tbxqmuluxlxq\":\"nghgshej\"},\"id\":\"vnersbycucrw\",\"name\":\"amikzebrqbsm\",\"type\":\"wziqgfuhokzr\"}],\"nextLink\":\"whvhczznvfb\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\"},\"eTag\":\"xyasflvgsgzw\",\"location\":\"akoi\",\"tags\":{\"otqyry\":\"smjblmljhlnym\",\"tayx\":\"zcbmqqvxmvwf\"},\"id\":\"nsup\",\"name\":\"ujlzqnhcvsqltn\",\"type\":\"oibgsxg\"},{\"properties\":{\"provisioningState\":\"Creating\"},\"eTag\":\"onmpqoxwdof\",\"location\":\"xiqxeiiqbimh\",\"tags\":{\"vwbcblembnkbwv\":\"winhehfqpo\",\"uwfmduragegizvc\":\"vxkdivqihebwtswb\"},\"id\":\"felisdjub\",\"name\":\"gbqi\",\"type\":\"kxkbsazgakgacyr\"}],\"nextLink\":\"jdmspofapvuhryln\"}")
             .toObject(ElasticBackupVaultListResult.class);
-        Assertions.assertEquals("rds", model.value().get(0).location());
-        Assertions.assertEquals("cobiegstmninwjiz", model.value().get(0).tags().get("i"));
-        Assertions.assertEquals("whvhczznvfb", model.nextLink());
+        Assertions.assertEquals("akoi", model.value().get(0).location());
+        Assertions.assertEquals("smjblmljhlnym", model.value().get(0).tags().get("otqyry"));
+        Assertions.assertEquals("jdmspofapvuhryln", model.nextLink());
     }
 }

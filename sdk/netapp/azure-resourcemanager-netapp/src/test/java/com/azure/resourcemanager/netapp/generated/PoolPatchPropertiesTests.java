@@ -13,24 +13,24 @@ public final class PoolPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolPatchProperties model = BinaryData.fromString(
-            "{\"size\":9024669297571471912,\"qosType\":\"Auto\",\"coolAccess\":true,\"customThroughputMibps\":729860608}")
+            "{\"size\":5938651610318870648,\"qosType\":\"Manual\",\"coolAccess\":true,\"customThroughputMibps\":1455417694}")
             .toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(9024669297571471912L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals(5938651610318870648L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(729860608, model.customThroughputMibps());
+        Assertions.assertEquals(1455417694, model.customThroughputMibps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolPatchProperties model = new PoolPatchProperties().withSize(9024669297571471912L)
-            .withQosType(QosType.AUTO)
+        PoolPatchProperties model = new PoolPatchProperties().withSize(5938651610318870648L)
+            .withQosType(QosType.MANUAL)
             .withCoolAccess(true)
-            .withCustomThroughputMibps(729860608);
+            .withCustomThroughputMibps(1455417694);
         model = BinaryData.fromObject(model).toObject(PoolPatchProperties.class);
-        Assertions.assertEquals(9024669297571471912L, model.size());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
+        Assertions.assertEquals(5938651610318870648L, model.size());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
         Assertions.assertTrue(model.coolAccess());
-        Assertions.assertEquals(729860608, model.customThroughputMibps());
+        Assertions.assertEquals(1455417694, model.customThroughputMibps());
     }
 }

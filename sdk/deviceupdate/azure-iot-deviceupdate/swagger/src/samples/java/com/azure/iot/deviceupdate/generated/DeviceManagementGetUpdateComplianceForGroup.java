@@ -18,10 +18,10 @@ public class DeviceManagementGetUpdateComplianceForGroup {
                 .endpoint("contoso.api.adu.microsoft.com")
                 .instanceId("blue")
                 .buildClient();
-        // BEGIN:com.azure.iot.deviceupdate.generated.devicemanagementgetupdatecomplianceforgroup.devicemanagementgetupdatecomplianceforgroup
+        // BEGIN:com.azure.iot.deviceupdate.generated.device-management-get-update-compliance-for-group.device-management-get-update-compliance-for-group
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = deviceManagementClient.getUpdateComplianceForGroupWithResponse("group1", requestOptions);
-        // END:com.azure.iot.deviceupdate.generated.devicemanagementgetupdatecomplianceforgroup.devicemanagementgetupdatecomplianceforgroup
+        // END:com.azure.iot.deviceupdate.generated.device-management-get-update-compliance-for-group.device-management-get-update-compliance-for-group
     }
 }

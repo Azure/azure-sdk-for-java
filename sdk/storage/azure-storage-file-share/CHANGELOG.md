@@ -1,6 +1,6 @@
 # Release History
 
-## 12.29.0-beta.1 (Unreleased)
+## 12.30.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,57 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.29.2 (2026-02-05)
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-storage-blob` from `12.33.1` to `12.33.2` in `azure-storage-blob`.
+- updated `azure-storage-common` from `12.32.1` to `12.32.2` in `azure-storage-common`.
+
+### Bugs Fixed
+- Fixed a bug where builders were only using a single credential when multiple credentials  were added and credentials
+  were silently overwritten for principle-bound user delegation SAS. All credential changes will now be logged at the
+  info level; invalid combinations of credentials will throw an error.
+
+  This is a _potentially breaking_ change if users were incorrectly applying multiple credentials
+
+## 12.29.1 (2026-01-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.16.2` to version `1.16.3`.
+- Upgraded `azure-storage-common` from `12.32.0` to version `12.32.1`.
+- Upgraded `azure-core` from `1.57.0` to version `1.57.1`.
+
+## 12.29.0 (2026-01-15)
+
+### Features Added
+- Added support for User Delegation SAS.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for the `ShareServiceProperties.Protocol.SMB.EncryptionInTransit` parameter on `ShareServiceClient.setProperties()` APIs.
+- Added support for service version 2026-02-06.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-common` from `12.31.0` to version `12.32.0`.
+
+## 12.29.0-beta.1 (2025-12-03)
+
+### Features Added
+- Added support for User Delegation SAS.
+- Added support for Principal-Bound Identity User Delegation SAS.
+- Added support for the `ShareServiceProperties.Protocol.SMB.EncryptionInTransit` parameter on `ShareServiceClient.setProperties()` APIs. 
+- Added support for service version 2026-02-06.
 
 ## 12.28.0 (2025-10-21)
 

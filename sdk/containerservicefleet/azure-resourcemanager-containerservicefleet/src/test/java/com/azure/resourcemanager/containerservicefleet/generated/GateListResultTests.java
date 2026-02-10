@@ -15,13 +15,13 @@ public final class GateListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GateListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"kftutqxlngxlefg\",\"gateType\":\"Approval\",\"target\":{\"id\":\"nxkrx\",\"updateRunProperties\":{\"name\":\"mi\",\"stage\":\"thz\",\"group\":\"qdrabhjybigehoqf\",\"timing\":\"After\"}},\"state\":\"Skipped\"},\"eTag\":\"kanyktzlcuiywg\",\"id\":\"wgndrvynhzgpp\",\"name\":\"rcgyn\",\"type\":\"ocpecfvmmco\"}],\"nextLink\":\"sxlzevgbmqj\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"kyzxuutk\",\"gateType\":\"Approval\",\"target\":{\"id\":\"ws\",\"updateRunProperties\":{\"name\":\"svlxotogtwrup\",\"stage\":\"xvnmicykvceov\",\"group\":\"lo\",\"timing\":\"After\"}},\"state\":\"Pending\"},\"eTag\":\"yfjfcnjbkcn\",\"id\":\"hbttkphyw\",\"name\":\"nv\",\"type\":\"t\"},{\"properties\":{\"provisioningState\":\"Failed\",\"displayName\":\"mclfplphoxuscr\",\"gateType\":\"Approval\",\"target\":{\"id\":\"bgyepsbj\",\"updateRunProperties\":{\"name\":\"zq\",\"stage\":\"xywpmueefjzwfqkq\",\"group\":\"ids\",\"timing\":\"Before\"}},\"state\":\"Completed\"},\"eTag\":\"obglaocqxtcc\",\"id\":\"yudxytlmoy\",\"name\":\"xv\",\"type\":\"fudwpznt\"}],\"nextLink\":\"dzhlrq\"}")
             .toObject(GateListResult.class);
-        Assertions.assertEquals("kftutqxlngxlefg", model.value().get(0).displayName());
+        Assertions.assertEquals("kyzxuutk", model.value().get(0).displayName());
         Assertions.assertEquals(GateType.APPROVAL, model.value().get(0).gateType());
-        Assertions.assertEquals("nxkrx", model.value().get(0).target().id());
+        Assertions.assertEquals("ws", model.value().get(0).target().id());
         Assertions.assertEquals(Timing.AFTER, model.value().get(0).target().updateRunProperties().timing());
-        Assertions.assertEquals(GateState.SKIPPED, model.value().get(0).state());
-        Assertions.assertEquals("sxlzevgbmqj", model.nextLink());
+        Assertions.assertEquals(GateState.PENDING, model.value().get(0).state());
+        Assertions.assertEquals("dzhlrq", model.nextLink());
     }
 }

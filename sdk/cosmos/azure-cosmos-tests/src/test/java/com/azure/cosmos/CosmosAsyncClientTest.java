@@ -4,29 +4,17 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
-import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.util.internal.PlatformDependent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITest;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 
-import java.lang.management.BufferPoolMXBean;
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -120,7 +108,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
 
     @BeforeMethod(alwaysRun = true)
     public final void setTestName(Method method, Object[] row) {
-        String testClassAndMethodName = Strings.lenientFormat("%s::%s",
+        String testClassAndMethodName = String.format("%s::%s",
                 method.getDeclaringClass().getSimpleName(),
                 method.getName());
 
@@ -134,7 +122,7 @@ public abstract class CosmosAsyncClientTest implements ITest {
                 "%s[%s with %s consistency]" :
                 "%s[%s with %s consistency ContentOnWriteDisabled]";
 
-            this.testName = Strings.lenientFormat(template,
+            this.testName = String.format(template,
                     testClassAndMethodName,
                     connectionMode,
                     clientBuilder.getConsistencyLevel());

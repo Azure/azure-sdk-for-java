@@ -15,30 +15,30 @@ public final class PoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolProperties model = BinaryData.fromString(
-            "{\"poolId\":\"dwqslsrhmpqvw\",\"size\":3475044640487676472,\"serviceLevel\":\"Flexible\",\"provisioningState\":\"dcbrwimuvq\",\"totalThroughputMibps\":82.95491,\"utilizedThroughputMibps\":75.11184,\"customThroughputMibps\":1299562334,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Single\"}")
+            "{\"poolId\":\"emhooclutnpq\",\"size\":3028887990431623493,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"jk\",\"totalThroughputMibps\":48.612667,\"utilizedThroughputMibps\":79.15836,\"customThroughputMibps\":1879965141,\"qosType\":\"Auto\",\"coolAccess\":false,\"encryptionType\":\"Double\"}")
             .toObject(PoolProperties.class);
-        Assertions.assertEquals(3475044640487676472L, model.size());
-        Assertions.assertEquals(ServiceLevel.FLEXIBLE, model.serviceLevel());
-        Assertions.assertEquals(1299562334, model.customThroughputMibps());
+        Assertions.assertEquals(3028887990431623493L, model.size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
+        Assertions.assertEquals(1879965141, model.customThroughputMibps());
         Assertions.assertEquals(QosType.AUTO, model.qosType());
         Assertions.assertFalse(model.coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
+        Assertions.assertEquals(EncryptionType.DOUBLE, model.encryptionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolProperties model = new PoolProperties().withSize(3475044640487676472L)
-            .withServiceLevel(ServiceLevel.FLEXIBLE)
-            .withCustomThroughputMibps(1299562334)
+        PoolProperties model = new PoolProperties().withSize(3028887990431623493L)
+            .withServiceLevel(ServiceLevel.ULTRA)
+            .withCustomThroughputMibps(1879965141)
             .withQosType(QosType.AUTO)
             .withCoolAccess(false)
-            .withEncryptionType(EncryptionType.SINGLE);
+            .withEncryptionType(EncryptionType.DOUBLE);
         model = BinaryData.fromObject(model).toObject(PoolProperties.class);
-        Assertions.assertEquals(3475044640487676472L, model.size());
-        Assertions.assertEquals(ServiceLevel.FLEXIBLE, model.serviceLevel());
-        Assertions.assertEquals(1299562334, model.customThroughputMibps());
+        Assertions.assertEquals(3028887990431623493L, model.size());
+        Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
+        Assertions.assertEquals(1879965141, model.customThroughputMibps());
         Assertions.assertEquals(QosType.AUTO, model.qosType());
         Assertions.assertFalse(model.coolAccess());
-        Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
+        Assertions.assertEquals(EncryptionType.DOUBLE, model.encryptionType());
     }
 }

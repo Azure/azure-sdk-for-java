@@ -8,6 +8,7 @@ import com.azure.spring.cloud.service.implementation.servicebus.properties.Servi
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.junit.jupiter.api.Test;
 
+import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -65,7 +66,7 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
         verify(factory.getServiceBusClientBuilder(), times(1)).customEndpointAddress(customEndpoint);
         verify(builder, times(1)).topicName("test-topic");
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), atLeast(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     @Override

@@ -145,7 +145,7 @@ public class GroupByQueryTests extends TestSuiteBase {
 
     public void bulkInsert() {
         generateTestData(INSERT_DOCUMENTS_CNT);
-        voidBulkInsertBlocking(createdCollection, docs);
+        voidInsertAllItemsBlocking(createdCollection, docs, true);
     }
 
     public void generateTestData(int documentCnt) {
@@ -195,7 +195,7 @@ public class GroupByQueryTests extends TestSuiteBase {
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdCollection = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdCollection);
+        cleanUpContainer(createdCollection);
         bulkInsert();
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }

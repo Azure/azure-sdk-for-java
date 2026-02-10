@@ -21,7 +21,7 @@ public final class BackupVaultsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"qqbtny\"},\"location\":\"ylxd\",\"tags\":{\"kottlwuhvajmailf\":\"abmvmsxbaevwjc\"},\"id\":\"mjjz\",\"name\":\"kzwjiqullq\",\"type\":\"bdmvrscmqerndbr\"}";
+            = "{\"properties\":{\"provisioningState\":\"lsumywzashx\"},\"location\":\"noy\",\"tags\":{\"ebgvo\":\"ipubyznclkfk\",\"tuoqujlyegqavni\":\"e\"},\"id\":\"flqqbtnyjpylxd\",\"name\":\"fvabmvmsxba\",\"type\":\"vwjcnkottlwuh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class BackupVaultsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupVault response = manager.backupVaults()
-            .getWithResponse("ebgvo", "e", "tuoqujlyegqavni", com.azure.core.util.Context.NONE)
+            .getWithResponse("qg", "hlusrvxisi", "jceagb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ylxd", response.location());
-        Assertions.assertEquals("abmvmsxbaevwjc", response.tags().get("kottlwuhvajmailf"));
+        Assertions.assertEquals("noy", response.location());
+        Assertions.assertEquals("ipubyznclkfk", response.tags().get("ebgvo"));
     }
 }

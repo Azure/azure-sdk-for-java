@@ -3903,12 +3903,15 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         FileQuerySerialization outSer = output ? ser : null;
         String expression = "SELECT * from BlobStorage";
 
-        liveTestScenarioWithRetry(() -> {
-            StepVerifier.create(fc.queryWithResponse(
-                new FileQueryOptions(expression, new ByteArrayOutputStream()).setInputSerialization(inSer)
-                    .setOutputSerialization(outSer)))
-                .verifyError(IllegalArgumentException.class);
-        });
+        FileQueryOptions options
+            = new FileQueryOptions(expression, new ByteArrayOutputStream()).setInputSerialization(inSer)
+                .setOutputSerialization(outSer);
+
+        // The IllegalArgumentException is thrown synchronously by the fc.queryWithResponse(options) method call itself,
+        // before StepVerifier.create() can subscribe to the Mono. StepVerifier.verifyError() is designed to verify an
+        // onError signal emitted by a reactive stream. It does not catch exceptions thrown during the assembly or
+        // creation of the stream.
+        assertThrows(IllegalArgumentException.class, () -> fc.queryWithResponse(options));
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")
@@ -3973,19 +3976,6 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         liveTestScenarioWithRetry(() -> {
             StepVerifier.create(response).assertNext(Assertions::assertNotNull).verifyComplete();
         });
-    }
-
-    private void liveTestScenarioWithRetry(Runnable runnable) {
-        int retry = 0;
-        while (retry < 5) {
-            try {
-                runnable.run();
-                break;
-            } catch (Exception ex) {
-                retry++;
-                sleepIfLiveTesting(5000);
-            }
-        }
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2019-12-12")

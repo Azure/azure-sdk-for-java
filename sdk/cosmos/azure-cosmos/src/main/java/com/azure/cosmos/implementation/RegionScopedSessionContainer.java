@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
@@ -161,7 +161,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         }
 
         if (partitionScopedRegionLevelProgress != null && collectionResourceId != null) {
-            return new Pair<>(collectionResourceId, partitionScopedRegionLevelProgress);
+            return Pair.of(collectionResourceId, partitionScopedRegionLevelProgress);
         }
 
         return null;

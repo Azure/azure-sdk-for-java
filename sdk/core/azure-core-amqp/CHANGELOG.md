@@ -10,6 +10,19 @@
 
 ### Other Changes
 
+## 2.11.3 (2026-01-15)
+
+### Bugs Fixed
+
+- Fixed memory leak in azure-core-amqp `ReactorConnection` caused by redundant `cache()` operator. ([#44228](https://github.com/Azure/azure-sdk-for-java/issues/44228), [#47508](https://github.com/Azure/azure-sdk-for-java/issues/47508))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.57.0` to `1.57.1`.
+- Upgraded Reactor from `3.7.11` to `3.7.14`. ([#47611](https://github.com/Azure/azure-sdk-for-java/pull/47611))
+
 ## 2.11.2 (2025-10-06)
 
 ### Other Changes

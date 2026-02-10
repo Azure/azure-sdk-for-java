@@ -24,7 +24,7 @@ public final class ElasticBackupVaultsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"fgjblcd\",\"location\":\"yfcemftz\",\"tags\":{\"ugekdfqn\":\"kya\",\"owrczfjjnnuxxr\":\"ttw\",\"frhjulrsulwzp\":\"kmhmnulwempdc\"},\"id\":\"lusnawmhhgzotfr\",\"name\":\"yrgkoekv\",\"type\":\"wxxyxhighctx\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"eTag\":\"khcqtwmlmhj\",\"location\":\"tqeahje\",\"tags\":{\"hhkvguavtptbk\":\"agpokddxe\"},\"id\":\"wkqyns\",\"name\":\"gbvoffbkk\",\"type\":\"vdxaexqokmyrljia\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class ElasticBackupVaultsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ElasticBackupVault response = manager.elasticBackupVaults()
-            .define("mhsurlgwqkpmm")
-            .withRegion("awi")
-            .withExistingElasticAccount("pihtdmiwjekpt", "caydbjzcqymlcfnz")
-            .withTags(mapOf("vvjhvvlrlohewjj", "oms", "kzfzqxjosho", "ajnkdflqionswae"))
+            .define("clibbfqpsp")
+            .withRegion("exzgpmnmabedd")
+            .withExistingElasticAccount("mvpsimioyo", "glkmiqwnnr")
+            .withTags(mapOf("fpfqf", "wg", "xbsmtbljje", "cvstclgqrvwerf", "kwdvbtb", "hci", "htfpwpqb", "ekqhs"))
             .withProperties(new ElasticBackupVaultProperties())
             .create();
 
-        Assertions.assertEquals("yfcemftz", response.location());
-        Assertions.assertEquals("kya", response.tags().get("ugekdfqn"));
+        Assertions.assertEquals("tqeahje", response.location());
+        Assertions.assertEquals("agpokddxe", response.tags().get("hhkvguavtptbk"));
     }
 
     // Use "Map.of" if available

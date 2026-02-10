@@ -323,7 +323,8 @@ public class SessionTest extends TestSuiteBase {
                     serverBatchRequest,
                     new RequestOptions(),
                     false,
-                    true)
+                    true,
+                    false)
                 .block();
             assertThat(getSessionTokensInRequests().size()).isEqualTo(1);
             assertThat(getSessionTokensInRequests().get(0)).isNotEmpty();
