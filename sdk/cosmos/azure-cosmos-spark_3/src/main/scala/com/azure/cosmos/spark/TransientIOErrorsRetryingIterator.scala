@@ -6,7 +6,8 @@ import com.azure.cosmos.CosmosException
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
+import com.azure.cosmos.util.CosmosPagedFlux
+import reactor.core.scheduler.Schedulers
 
 import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
 import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
@@ -118,15 +119,13 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
             case None =>
           }
           currentFeedResponseIterator = Some(
-            new CosmosPagedIterable[TSparkRow](
-              newPagedFlux.get,
-              pageSize,
-              pagePrefetchBufferSize
-            )
-            .iterableByPage()
-            .iterator
-            .asScala
-            .buffered
+            newPagedFlux.get
+              .byPage(pageSize)
+              .cancelOn(Schedulers.boundedElastic())
+              .toIterable(pagePrefetchBufferSize)
+              .iterator
+              .asScala
+              .buffered
           )
 
           currentFeedResponseIterator.get
