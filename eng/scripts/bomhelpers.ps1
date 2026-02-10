@@ -174,6 +174,13 @@ function GetChangeLogContentFromMessage($ContentMessage) {
 function GetChangeLogEntryForPatch($NewDependencyNameToVersion, $OldDependencyNameToVersion) {
   $content = GetDependencyUpgradeChangeLogMessage -NewDependencyNameToVersion $NewDependencyNameToVersion -OldDependencyNameToVersion $OldDependencyNameToVersion
 
+  # Check if there are any actual dependency upgrades (filter out empty strings)
+  $actualUpgrades = $content | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+  if ($actualUpgrades.Count -eq 0) {
+    # No specific dependency changes detected, add a generic message
+    $content = @("- Upgraded core dependencies.", "")
+  }
+
   $content = GetChangeLogContentFromMessage($content)
   return $content
 }
@@ -337,10 +344,8 @@ function GeneratePatch($PatchInfo, [string]$BranchName, [string]$RemoteName, [st
       $releaseTag = $oldReleaseTag
     }
 
-    # Exclude CHANGELOG.md from restore to prevent merge conflicts with merge-back PRs.
-    # Changelogs should be updated from main, not rolled back and then updated.
-    Write-Host "git restore --source $releaseTag -W -S -- $artifactDirPath ':!**/CHANGELOG.md'"
-    $cmdOutput = git restore --source $releaseTag -W -S -- $artifactDirPath ':!**/CHANGELOG.md'
+    Write-Host "git restore --source $releaseTag -W -S -- $artifactDirPath"
+    $cmdOutput = git restore --source $releaseTag -W -S -- $artifactDirPath
     if ($LASTEXITCODE -ne 0) {
       LogError "Could not reset sources for $artifactId to the release version $releaseVersion"
       exit $LASTEXITCODE
