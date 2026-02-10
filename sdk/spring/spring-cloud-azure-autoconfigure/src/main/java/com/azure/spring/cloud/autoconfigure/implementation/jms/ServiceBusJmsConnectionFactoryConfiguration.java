@@ -66,7 +66,8 @@ class ServiceBusJmsConnectionFactoryConfiguration {
                 return;
             }
 
-            if (isCacheConnectionFactoryClassPresent() && cacheEnabledResult.orElseGet(() -> false)) {
+            // Use CachingConnectionFactory as default for sender side unless explicitly disabled
+            if (isCacheConnectionFactoryClassPresent() && cacheEnabledResult.orElseGet(() -> true)) {
                 registerJmsCachingConnectionFactory(registry);
                 return;
             }

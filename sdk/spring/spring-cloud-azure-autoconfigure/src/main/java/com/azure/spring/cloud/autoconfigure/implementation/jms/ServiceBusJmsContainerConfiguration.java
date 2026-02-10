@@ -3,8 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
+import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
+import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
 import jakarta.jms.ConnectionFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.jms.autoconfigure.DefaultJmsListenerContainerFactoryConfigurer;
@@ -14,22 +17,29 @@ import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
 
+import java.util.stream.Collectors;
+
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableJms.class)
 class ServiceBusJmsContainerConfiguration {
 
     private final AzureServiceBusJmsProperties azureServiceBusJMSProperties;
+    private final ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
 
-    ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties) {
+    ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
+                                       ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
+        this.factoryCustomizers = factoryCustomizers;
     }
 
     @Bean
     @ConditionalOnMissingBean
     JmsListenerContainerFactory<?> jmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        configurer.configure(jmsListenerContainerFactory, connectionFactory);
+        // Create a dedicated ServiceBusJmsConnectionFactory for the receiver side
+        ConnectionFactory receiverConnectionFactory = createReceiverConnectionFactory();
+        configurer.configure(jmsListenerContainerFactory, receiverConnectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.FALSE);
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);
         return jmsListenerContainerFactory;
@@ -38,13 +48,21 @@ class ServiceBusJmsContainerConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "topicJmsListenerContainerFactory")
     JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+        DefaultJmsListenerContainerFactoryConfigurer configurer) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        configurer.configure(jmsListenerContainerFactory, connectionFactory);
+        // Create a dedicated ServiceBusJmsConnectionFactory for the receiver side
+        ConnectionFactory receiverConnectionFactory = createReceiverConnectionFactory();
+        configurer.configure(jmsListenerContainerFactory, receiverConnectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.TRUE);
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);
         configureTopicListenerContainerFactory(jmsListenerContainerFactory);
         return jmsListenerContainerFactory;
+    }
+
+    private ServiceBusJmsConnectionFactory createReceiverConnectionFactory() {
+        return new ServiceBusJmsConnectionFactoryFactory(azureServiceBusJMSProperties,
+            factoryCustomizers.orderedStream().collect(Collectors.toList()))
+            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
     }
 
     private void configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {

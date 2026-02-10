@@ -43,12 +43,12 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
-    void useDefaultNativeConnection(String pricingTier) {
+    void useDefaultCachingConnection(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier
             )
-            .run(context -> assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class));
+            .run(context -> assertThat(context).hasSingleBean(CachingConnectionFactory.class));
     }
 
     @ParameterizedTest
@@ -70,7 +70,7 @@ class ServiceBusJmsConnectionFactoryConfigurationTests {
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=premium"
             )
-            .run(context -> assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class));
+            .run(context -> assertThat(context).hasSingleBean(CachingConnectionFactory.class));
     }
 
     @ParameterizedTest
