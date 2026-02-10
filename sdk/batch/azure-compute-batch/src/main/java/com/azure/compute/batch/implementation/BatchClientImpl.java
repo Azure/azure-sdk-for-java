@@ -2134,7 +2134,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -2207,7 +2206,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -2456,7 +2455,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -2529,7 +2527,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -2792,7 +2790,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -2865,7 +2862,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -3191,7 +3188,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -3264,7 +3260,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -3608,7 +3604,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -3681,7 +3676,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -4005,7 +4000,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -4078,7 +4072,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -4658,7 +4652,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -4731,7 +4724,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -5071,7 +5064,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -5144,7 +5136,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -5535,7 +5527,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -5601,7 +5592,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -5874,7 +5865,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -5940,7 +5930,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -7838,7 +7828,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -7904,7 +7893,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8334,7 +8323,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -8400,7 +8388,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -8698,7 +8686,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -8771,7 +8758,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -9068,7 +9055,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -9141,7 +9127,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -9569,7 +9555,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -9635,7 +9620,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -10067,7 +10052,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -10133,7 +10117,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -10917,7 +10901,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -10983,7 +10966,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -11356,7 +11339,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -11422,7 +11404,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -11803,7 +11785,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -11869,7 +11850,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -12286,7 +12267,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -12352,7 +12332,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -12787,7 +12767,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -12853,7 +12832,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -13268,7 +13247,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -13334,7 +13312,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -13769,7 +13747,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -13835,7 +13812,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -14254,7 +14231,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -14320,7 +14296,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -14756,7 +14732,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -14822,7 +14797,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -15239,7 +15214,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -15305,7 +15279,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -16505,7 +16479,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -16571,7 +16544,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -17006,7 +16979,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -17072,7 +17044,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -17497,7 +17469,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -17563,7 +17534,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -17966,7 +17937,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -18032,7 +18002,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -18445,7 +18415,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -18511,7 +18480,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -18948,7 +18917,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -19014,7 +18982,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -19696,7 +19664,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -19762,7 +19729,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -20138,7 +20105,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -20204,7 +20170,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -20597,7 +20563,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -20663,7 +20628,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -21083,7 +21048,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -21149,7 +21113,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -21587,7 +21551,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -21653,7 +21616,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -22071,7 +22034,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -22137,7 +22099,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -26163,7 +26125,8 @@ public final class BatchClientImpl {
      * Adds a user Account to the specified Compute Node.
      * 
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -26206,7 +26169,8 @@ public final class BatchClientImpl {
      * Adds a user Account to the specified Compute Node.
      * 
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -26249,7 +26213,9 @@ public final class BatchClientImpl {
      * Deletes a user Account from the specified Compute Node.
      * 
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -26278,7 +26244,9 @@ public final class BatchClientImpl {
      * Deletes a user Account from the specified Compute Node.
      * 
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -26541,7 +26509,7 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -26726,7 +26694,7 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -27275,8 +27243,9 @@ public final class BatchClientImpl {
     /**
      * Gets the settings required for remote login to a Compute Node.
      * 
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -27305,9 +27274,9 @@ public final class BatchClientImpl {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
      * 
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeRemoteLoginSettingsWithResponseAsync(String poolId, String nodeId,
@@ -27320,8 +27289,9 @@ public final class BatchClientImpl {
     /**
      * Gets the settings required for remote login to a Compute Node.
      * 
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -27350,8 +27320,8 @@ public final class BatchClientImpl {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
      * 
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node along with {@link Response}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeRemoteLoginSettingsWithResponse(String poolId, String nodeId,
@@ -27638,7 +27608,7 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -27830,7 +27800,7 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -28040,7 +28010,7 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -28230,7 +28200,7 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -29448,7 +29418,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -29521,7 +29490,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -29832,7 +29801,6 @@ public final class BatchClientImpl {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -29905,7 +29873,7 @@ public final class BatchClientImpl {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -30535,7 +30503,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -30601,7 +30568,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -31002,7 +30969,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -31068,7 +31034,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -31467,7 +31433,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -31533,7 +31498,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -31934,7 +31899,6 @@ public final class BatchClientImpl {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -32000,7 +31964,7 @@ public final class BatchClientImpl {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -32557,7 +32521,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -32623,7 +32586,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -33028,7 +32991,6 @@ public final class BatchClientImpl {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -33094,7 +33056,7 @@ public final class BatchClientImpl {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -34058,7 +34020,7 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -34236,7 +34198,7 @@ public final class BatchClientImpl {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }

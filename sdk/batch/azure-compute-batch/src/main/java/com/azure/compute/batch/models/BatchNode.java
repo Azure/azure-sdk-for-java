@@ -35,9 +35,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     private String url;
 
     /*
-     * The current state of the Compute Node. The Spot/Low-priority Compute Node has been preempted. Tasks which were
-     * running on the Compute Node when it was preempted will be rescheduled when another Compute Node becomes
-     * available.
+     * The current state of the Compute Node.
      */
     @Generated
     private BatchNodeState state;
@@ -201,9 +199,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     }
 
     /**
-     * Get the state property: The current state of the Compute Node. The Spot/Low-priority Compute Node has been
-     * preempted. Tasks which were running on the Compute Node when it was preempted will be rescheduled when another
-     * Compute Node becomes available.
+     * Get the state property: The current state of the Compute Node.
      *
      * @return the state value.
      */
@@ -472,8 +468,6 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                     deserializedBatchNode.vmSize = reader.getString();
                 } else if ("totalTasksRun".equals(fieldName)) {
                     deserializedBatchNode.totalTasksRun = reader.getInt();
-                } else if ("nodeAgentInfo".equals(fieldName)) {
-                    deserializedBatchNode.nodeAgentInfo = BatchNodeAgentInfo.fromJson(reader);
                 } else if ("virtualMachineInfo".equals(fieldName)) {
                     deserializedBatchNode.virtualMachineInfo = VirtualMachineInfo.fromJson(reader);
                 } else if ("schedulingState".equals(fieldName)) {
@@ -498,6 +492,8 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
                     deserializedBatchNode.isDedicated = reader.getNullable(JsonReader::getBoolean);
                 } else if ("endpointConfiguration".equals(fieldName)) {
                     deserializedBatchNode.endpointConfiguration = BatchNodeEndpointConfiguration.fromJson(reader);
+                } else if ("nodeAgentInfo".equals(fieldName)) {
+                    deserializedBatchNode.nodeAgentInfo = BatchNodeAgentInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

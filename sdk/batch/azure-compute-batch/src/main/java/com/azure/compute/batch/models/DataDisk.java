@@ -40,12 +40,6 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
     @Generated
     private final int diskSizeGb;
 
-    /*
-     * The storage Account type to be used for the data disk. If omitted, the default is "standard_lrs".
-     */
-    @Generated
-    private StorageAccountType storageAccountType;
-
     /**
      * Creates an instance of DataDisk class.
      *
@@ -107,30 +101,6 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
     }
 
     /**
-     * Get the storageAccountType property: The storage Account type to be used for the data disk. If omitted, the
-     * default is "standard_lrs".
-     *
-     * @return the storageAccountType value.
-     */
-    @Generated
-    public StorageAccountType getStorageAccountType() {
-        return this.storageAccountType;
-    }
-
-    /**
-     * Set the storageAccountType property: The storage Account type to be used for the data disk. If omitted, the
-     * default is "standard_lrs".
-     *
-     * @param storageAccountType the storageAccountType value to set.
-     * @return the DataDisk object itself.
-     */
-    @Generated
-    public DataDisk setStorageAccountType(StorageAccountType storageAccountType) {
-        this.storageAccountType = storageAccountType;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -141,8 +111,6 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
         jsonWriter.writeIntField("diskSizeGB", this.diskSizeGb);
         jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
         jsonWriter.writeJsonField("managedDisk", this.managedDisk);
-        jsonWriter.writeStringField("storageAccountType",
-            this.storageAccountType == null ? null : this.storageAccountType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -162,7 +130,6 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
             int diskSizeGb = 0;
             CachingType caching = null;
             ManagedDisk managedDisk = null;
-            StorageAccountType storageAccountType = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -174,8 +141,6 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
                     caching = CachingType.fromString(reader.getString());
                 } else if ("managedDisk".equals(fieldName)) {
                     managedDisk = ManagedDisk.fromJson(reader);
-                } else if ("storageAccountType".equals(fieldName)) {
-                    storageAccountType = StorageAccountType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -183,7 +148,6 @@ public final class DataDisk implements JsonSerializable<DataDisk> {
             DataDisk deserializedDataDisk = new DataDisk(logicalUnitNumber, diskSizeGb);
             deserializedDataDisk.caching = caching;
             deserializedDataDisk.managedDisk = managedDisk;
-            deserializedDataDisk.storageAccountType = storageAccountType;
             return deserializedDataDisk;
         });
     }

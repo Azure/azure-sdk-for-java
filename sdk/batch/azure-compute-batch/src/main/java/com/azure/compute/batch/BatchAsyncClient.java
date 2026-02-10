@@ -236,7 +236,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -278,7 +278,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -340,7 +340,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -379,7 +379,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -415,7 +415,6 @@ public final class BatchAsyncClient {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -488,7 +487,7 @@ public final class BatchAsyncClient {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -706,7 +705,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -750,7 +749,6 @@ public final class BatchAsyncClient {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -823,7 +821,7 @@ public final class BatchAsyncClient {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -1170,7 +1168,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * boolean
@@ -1226,7 +1224,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1270,7 +1268,6 @@ public final class BatchAsyncClient {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -1343,7 +1340,7 @@ public final class BatchAsyncClient {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -1638,7 +1635,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -1734,7 +1731,6 @@ public final class BatchAsyncClient {
      *                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                     }
      *                 }
-     *                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *             }
      *         ]
      *         licenseType: String (Optional)
@@ -1800,7 +1796,7 @@ public final class BatchAsyncClient {
      *                 }
      *                 wireServer (Optional): (recursive schema, see wireServer above)
      *             }
-     *             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *             uefiSettings (Optional): {
      *                 secureBootEnabled: Boolean (Optional)
      *                 vTpmEnabled: Boolean (Optional)
@@ -2001,7 +1997,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2040,7 +2036,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2048,9 +2044,9 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2129,7 +2125,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2222,7 +2218,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2341,7 +2337,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2384,7 +2380,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2439,7 +2435,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2572,7 +2568,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -2753,7 +2749,6 @@ public final class BatchAsyncClient {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -2819,7 +2814,7 @@ public final class BatchAsyncClient {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -3067,7 +3062,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3116,7 +3111,6 @@ public final class BatchAsyncClient {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -3189,7 +3183,7 @@ public final class BatchAsyncClient {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -3435,7 +3429,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -3616,7 +3610,6 @@ public final class BatchAsyncClient {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -3682,7 +3675,7 @@ public final class BatchAsyncClient {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -3936,7 +3929,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4054,7 +4047,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4096,7 +4089,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4269,7 +4262,6 @@ public final class BatchAsyncClient {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -4335,7 +4327,7 @@ public final class BatchAsyncClient {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -4534,7 +4526,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -4715,7 +4707,6 @@ public final class BatchAsyncClient {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -4781,7 +4772,7 @@ public final class BatchAsyncClient {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -5012,7 +5003,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5193,7 +5184,6 @@ public final class BatchAsyncClient {
      *                                     securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                 }
      *                             }
-     *                             storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                         }
      *                     ]
      *                     licenseType: String (Optional)
@@ -5259,7 +5249,7 @@ public final class BatchAsyncClient {
      *                             }
      *                             wireServer (Optional): (recursive schema, see wireServer above)
      *                         }
-     *                         securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                         securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                         uefiSettings (Optional): {
      *                             secureBootEnabled: Boolean (Optional)
      *                             vTpmEnabled: Boolean (Optional)
@@ -5497,7 +5487,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5575,7 +5565,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5646,7 +5636,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * boolean
@@ -5755,7 +5745,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -5950,7 +5940,6 @@ public final class BatchAsyncClient {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -6016,7 +6005,7 @@ public final class BatchAsyncClient {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -6256,7 +6245,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6441,7 +6430,6 @@ public final class BatchAsyncClient {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -6507,7 +6495,7 @@ public final class BatchAsyncClient {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -6724,7 +6712,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -6919,7 +6907,6 @@ public final class BatchAsyncClient {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -6985,7 +6972,7 @@ public final class BatchAsyncClient {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -7337,7 +7324,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7524,7 +7511,6 @@ public final class BatchAsyncClient {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -7590,7 +7576,7 @@ public final class BatchAsyncClient {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -7787,7 +7773,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -7982,7 +7968,6 @@ public final class BatchAsyncClient {
      *                                         securityEncryptionType: String(DiskWithVMGuestState/NonPersistedTPM/VMGuestStateOnly) (Optional)
      *                                     }
      *                                 }
-     *                                 storageAccountType: String(standard_lrs/premium_lrs/standardssd_lrs) (Optional)
      *                             }
      *                         ]
      *                         licenseType: String (Optional)
@@ -8048,7 +8033,7 @@ public final class BatchAsyncClient {
      *                                 }
      *                                 wireServer (Optional): (recursive schema, see wireServer above)
      *                             }
-     *                             securityType: String(trustedLaunch/confidentialVM) (Optional)
+     *                             securityType: String(trustedLaunch/confidentialvm) (Optional)
      *                             uefiSettings (Optional): {
      *                                 secureBootEnabled: Boolean (Optional)
      *                                 vTpmEnabled: Boolean (Optional)
@@ -8262,7 +8247,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8434,7 +8419,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8661,7 +8646,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8798,9 +8783,9 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -8938,7 +8923,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9176,7 +9161,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9396,7 +9381,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9614,7 +9599,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -9697,7 +9682,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9732,7 +9717,8 @@ public final class BatchAsyncClient {
      * Adds a user Account to the specified Compute Node.
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -9743,7 +9729,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9774,7 +9760,9 @@ public final class BatchAsyncClient {
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -9816,7 +9804,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9857,7 +9845,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -9992,7 +9980,7 @@ public final class BatchAsyncClient {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -10048,7 +10036,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10119,7 +10107,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10162,7 +10150,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10206,7 +10194,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10259,8 +10247,9 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -10271,7 +10260,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10289,9 +10278,9 @@ public final class BatchAsyncClient {
      * @throws BatchErrorException thrown if the request is rejected by server.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -10318,7 +10307,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10331,9 +10320,9 @@ public final class BatchAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10379,7 +10368,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10514,7 +10503,7 @@ public final class BatchAsyncClient {
      *             }
      *         ]
      *     }
-     *     nodeAgentInfo (Required): {
+     *     nodeAgentInfo (Optional): {
      *         version: String (Required)
      *         lastUpdateTime: OffsetDateTime (Required)
      *     }
@@ -10560,7 +10549,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10633,7 +10622,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -10746,7 +10735,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * BinaryData
@@ -10827,7 +10816,7 @@ public final class BatchAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -12160,7 +12149,9 @@ public final class BatchAsyncClient {
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
@@ -12414,8 +12405,9 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -12424,8 +12416,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node on successful completion of {@link Mono}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -14803,7 +14795,9 @@ public final class BatchAsyncClient {
      * Deletes a user Account from the specified Compute Node.
      *
      * You can delete a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure
+     * access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to delete a user Account.
@@ -15158,8 +15152,9 @@ public final class BatchAsyncClient {
     /**
      * Gets the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP. For more information, see
+     * https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -15169,8 +15164,8 @@ public final class BatchAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings required for remote login to a Compute Node.
      *
-     * Before you can remotely login to a Compute Node using the remote login settings,
-     * you must create a user Account on the Compute Node on successful completion of {@link Mono}.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account
+     * on the Compute Node and configure access ports for SSH and RDP on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -16369,7 +16364,8 @@ public final class BatchAsyncClient {
      * Adds a user Account to the specified Compute Node.
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -16398,7 +16394,8 @@ public final class BatchAsyncClient {
      * Adds a user Account to the specified Compute Node.
      *
      * You can add a user Account to a Compute Node only when it is in the idle or
-     * running state.
+     * running state. Before you can remotely login to a Compute Node you must configure access ports for SSH and RDP.
+     * For more information, see https://learn.microsoft.com/azure/batch/pool-endpoint-configuration.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.

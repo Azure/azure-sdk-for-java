@@ -25,7 +25,7 @@ public final class SecurityTypes extends ExpandableStringEnum<SecurityTypes> {
      * state from being read or modified.
      */
     @Generated
-    public static final SecurityTypes CONFIDENTIAL_VM = fromString("confidentialVM");
+    public static final SecurityTypes CONFIDENTIAL_VM = fromString("confidentialvm");
 
     /**
      * Creates a new instance of SecurityTypes value.
