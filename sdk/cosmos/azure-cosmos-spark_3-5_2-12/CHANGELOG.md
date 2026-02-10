@@ -11,7 +11,7 @@
 #### Bugs Fixed
 * Fixed an issue for micro batch stream query where feed range starts with null or incorrect initial offset. **NOTE: This issue only happens when a partition split happened during initial offset calculation stage. - See [47742](https://github.com/Azure/azure-sdk-for-java/pull/47742)
 * Fixed `java.lang.ClassCastException` during bulk write operations for write strategy `ItemPatch` or `ItemPatchIfExists`. - See [47748](https://github.com/Azure/azure-sdk-for-java/pull/47748)
-* Fixed an issue where `TransientIOErrorsRetryingIterator.close()` could trigger an unnecessary extra roundtrip to the service when the underlying flux subscription was already fully drained. - See [GitHub Issue 47777](https://github.com/Azure/azure-sdk-for-java/issues/47777)
+* Fixed an issue where `TransientIOErrorsRetryingIterator.close()` could trigger an unnecessary extra roundtrip to the service when the underlying flux subscription was already fully drained. - See [PR 47972](https://github.com/Azure/azure-sdk-for-java/pull/47972)
 
 #### Other Changes
 
