@@ -23,21 +23,36 @@ import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.Http2ConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DatabaseForTest;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.ResourceResponseValidator;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
@@ -133,8 +148,45 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
     private static CosmosAsyncContainer SHARED_SINGLE_PARTITION_COLLECTION;
 
+    // Internal API shared resources for tests using AsyncDocumentClient
+    protected static Database SHARED_DATABASE_INTERNAL;
+    protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION_INTERNAL;
+    protected static DocumentCollection SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL;
+    protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL;
+
+    // Field to hold AsyncDocumentClient.Builder for internal API tests
+    private final AsyncDocumentClient.Builder internalClientBuilder;
+
     public TestSuiteBase(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
+        this.internalClientBuilder = null;
+    }
+
+    /**
+     * Constructor for tests that use internal AsyncDocumentClient API.
+     * @param clientBuilder the AsyncDocumentClient.Builder
+     */
+    public TestSuiteBase(AsyncDocumentClient.Builder clientBuilder) {
+        super();
+        this.internalClientBuilder = clientBuilder;
+        logger.debug("Initializing {} with AsyncDocumentClient.Builder ...", this.getClass().getSimpleName());
+    }
+
+    /**
+     * Default constructor for tests that don't use any client builder.
+     */
+    protected TestSuiteBase() {
+        super();
+        this.internalClientBuilder = null;
+        logger.debug("Initializing {} ...", this.getClass().getSimpleName());
+    }
+
+    /**
+     * Returns the AsyncDocumentClient.Builder for internal client tests.
+     * @return the AsyncDocumentClient.Builder or null if not configured
+     */
+    public final AsyncDocumentClient.Builder clientBuilder() {
+        return this.internalClientBuilder;
     }
 
     protected static CosmosAsyncDatabase getSharedCosmosDatabase(CosmosAsyncClient client) {
@@ -174,10 +226,6 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
 
         credential = new AzureKeyCredential(TestConfigurations.MASTER_KEY);
-    }
-
-    protected TestSuiteBase() {
-        logger.debug("Initializing {} ...", this.getClass().getSimpleName());
     }
 
     private static <T> ImmutableList<T> immutableListOrNull(List<T> list) {
@@ -1631,6 +1679,374 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         return "";
+    }
+
+    // ==================== AsyncDocumentClient (internal API) helper methods ====================
+
+    /**
+     * Creates a gateway AsyncDocumentClient.Builder for housekeeping operations.
+     * @return the AsyncDocumentClient.Builder
+     */
+    protected static AsyncDocumentClient.Builder createGatewayHouseKeepingDocumentClient() {
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        ThrottlingRetryOptions options = new ThrottlingRetryOptions();
+        options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
+        connectionPolicy.setThrottlingRetryOptions(options);
+        return new AsyncDocumentClient.Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withContentResponseOnWriteEnabled(true)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+    }
+
+    /**
+     * Creates a gateway AsyncDocumentClient.Builder.
+     * @return the AsyncDocumentClient.Builder
+     */
+    protected static AsyncDocumentClient.Builder createGatewayRxDocumentClient(
+            ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
+            List<String> preferredLocationsList, boolean contentResponseOnWriteEnabled) {
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
+        connectionPolicy.setMultipleWriteRegionsEnabled(multiMasterEnabled);
+        connectionPolicy.setPreferredRegions(preferredLocationsList);
+        return new AsyncDocumentClient.Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(consistencyLevel)
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+    }
+
+    protected static AsyncDocumentClient.Builder createInternalGatewayRxDocumentClient() {
+        return createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true);
+    }
+
+    /**
+     * Creates a direct AsyncDocumentClient.Builder.
+     * @return the AsyncDocumentClient.Builder
+     */
+    protected static AsyncDocumentClient.Builder createDirectRxDocumentClient(
+            ConsistencyLevel consistencyLevel,
+            Protocol protocol,
+            boolean multiMasterEnabled,
+            List<String> preferredRegions,
+            boolean contentResponseOnWriteEnabled) {
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(directConnectionConfig);
+        if (preferredRegions != null) {
+            connectionPolicy.setPreferredRegions(preferredRegions);
+        }
+
+        if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
+            connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        }
+        Configs configs = spy(new Configs());
+        doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
+
+        return new AsyncDocumentClient.Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(consistencyLevel)
+                .withConfigs(configs)
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+    }
+
+    // ==================== Internal API data providers ====================
+
+    @DataProvider
+    public static Object[][] internalClientBuilders() {
+        return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}};
+    }
+
+    @DataProvider
+    public static Object[][] internalClientBuildersWithSessionConsistency() {
+        return new Object[][]{
+                {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)},
+                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true)},
+                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true)}
+        };
+    }
+
+    // ==================== Internal API CRUD helper methods ====================
+
+    public static DocumentCollection createCollection(String databaseId,
+                                                      DocumentCollection collection,
+                                                      RequestOptions options) {
+        AsyncDocumentClient client = createGatewayHouseKeepingDocumentClient().build();
+        try {
+            return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
+        } finally {
+            client.close();
+        }
+    }
+
+    public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
+                                                      DocumentCollection collection, RequestOptions options) {
+        return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
+    }
+
+    public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
+                                                      DocumentCollection collection) {
+        return client.createCollection("dbs/" + databaseId, collection, null).block().getResource();
+    }
+
+    public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document) {
+        return createDocument(client, databaseId, collectionId, document, null);
+    }
+
+    public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document, RequestOptions options) {
+        return client.createDocument(TestUtils.getCollectionNameLink(databaseId, collectionId), document, options, false).block().getResource();
+    }
+
+    public Flux<ResourceResponse<Document>> bulkInsert(AsyncDocumentClient client,
+                                                             String collectionLink,
+                                                             List<Document> documentDefinitionList,
+                                                             int concurrencyLevel) {
+        ArrayList<Mono<ResourceResponse<Document>>> result = new ArrayList<>(documentDefinitionList.size());
+        for (Document docDef : documentDefinitionList) {
+            result.add(client.createDocument(collectionLink, docDef, null, false));
+        }
+
+        return Flux.merge(Flux.fromIterable(result), concurrencyLevel).publishOn(Schedulers.parallel());
+    }
+
+    public Flux<ResourceResponse<Document>> bulkInsert(AsyncDocumentClient client,
+                                                             String collectionLink,
+                                                             List<Document> documentDefinitionList) {
+        return bulkInsert(client, collectionLink, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL);
+    }
+
+    public static User createUser(AsyncDocumentClient client, String databaseId, User user) {
+        return client.createUser("dbs/" + databaseId, user, null).block().getResource();
+    }
+
+    public static User safeCreateUser(AsyncDocumentClient client, String databaseId, User user) {
+        deleteUserIfExists(client, databaseId, user.getId());
+        return createUser(client, databaseId, user);
+    }
+
+    public static Permission createPermission(AsyncDocumentClient client, String userLink, Permission permission, RequestOptions options) {
+        return client.createPermission(userLink, permission, options).block().getResource();
+    }
+
+    public static String getUserLink(Database database, User user) {
+        return database.getSelfLink() + "/users/" + user.getId();
+    }
+
+    // ==================== Internal API cleanup methods ====================
+
+    protected static void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
+        if (client != null && database != null) {
+            try {
+                client.deleteDatabase(database.getSelfLink(), null).block();
+            } catch (Exception e) {
+                // Ignore deletion errors
+            }
+        }
+    }
+
+    protected static void safeDeleteCollection(AsyncDocumentClient client, DocumentCollection collection) {
+        if (client != null && collection != null) {
+            try {
+                client.deleteCollection(collection.getSelfLink(), null).block();
+            } catch (Exception e) {
+                // Ignore deletion errors
+            }
+        }
+    }
+
+    protected static void safeDeleteCollection(AsyncDocumentClient client, String databaseId, String collectionId) {
+        if (client != null && databaseId != null && collectionId != null) {
+            try {
+                client.deleteCollection("/dbs/" + databaseId + "/colls/" + collectionId, null).block();
+            } catch (Exception e) {
+                // Ignore deletion errors
+            }
+        }
+    }
+
+    protected static void safeClose(AsyncDocumentClient client) {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected static void safeCloseAsync(AsyncDocumentClient client) {
+        if (client != null) {
+            new Thread(() -> {
+                try {
+                    client.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        }
+    }
+
+    protected static void deleteUserIfExists(AsyncDocumentClient client, String databaseId, String oderId) {
+        if (client != null) {
+            try {
+                client.readUser("/dbs/" + databaseId + "/users/" + oderId, null).block();
+                client.deleteUser("/dbs/" + databaseId + "/users/" + oderId, null).block();
+            } catch (Exception e) {
+                // Ignore if not found
+            }
+        }
+    }
+
+    protected static void deleteCollectionIfExists(AsyncDocumentClient client, String databaseId, String collectionId) {
+        if (client != null) {
+            try {
+                client.readCollection("/dbs/" + databaseId + "/colls/" + collectionId, null).block();
+                client.deleteCollection("/dbs/" + databaseId + "/colls/" + collectionId, null).block();
+            } catch (Exception e) {
+                // Ignore if not found
+            }
+        }
+    }
+
+    protected static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
+        if (client != null) {
+            try {
+                client.deleteDocument("/dbs/" + databaseId + "/colls/" + collectionId + "/docs/" + docId, null).block();
+            } catch (Exception e) {
+                // Ignore if not found
+            }
+        }
+    }
+
+    // ==================== Internal API validation methods ====================
+
+    public <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
+                                                     ResourceResponseValidator<T> validator) {
+        validateSuccess(observable, validator, subscriberValidationTimeout);
+    }
+
+    public static <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
+                                                            ResourceResponseValidator<T> validator, long timeout) {
+        StepVerifier.create(observable)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
+    }
+
+    public <T extends Resource> void validateResourceResponseFailure(Mono<ResourceResponse<T>> observable,
+                                                     FailureValidator validator) {
+        validateResourceResponseFailure(observable, validator, subscriberValidationTimeout);
+    }
+
+    public static <T extends Resource> void validateResourceResponseFailure(Mono<ResourceResponse<T>> observable,
+                                                            FailureValidator validator, long timeout) {
+        StepVerifier.create(observable)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
+    }
+
+    public <T extends Resource> void validateResourceQuerySuccess(Flux<FeedResponse<T>> observable,
+                                                          FeedResponseListValidator<T> validator) {
+        validateResourceQuerySuccess(observable, validator, subscriberValidationTimeout);
+    }
+
+    public static <T extends Resource> void validateResourceQuerySuccess(Flux<FeedResponse<T>> observable,
+                                                                 FeedResponseListValidator<T> validator, long timeout) {
+        StepVerifier.create(observable.collectList())
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
+    }
+
+    public <T extends Resource> void validateResourceQueryFailure(Flux<FeedResponse<T>> observable,
+                                                          FailureValidator validator) {
+        validateResourceQueryFailure(observable, validator, subscriberValidationTimeout);
+    }
+
+    public static <T extends Resource> void validateResourceQueryFailure(Flux<FeedResponse<T>> observable,
+                                                                 FailureValidator validator, long timeout) {
+        StepVerifier.create(observable)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
+    }
+
+    // ==================== Internal API collection definitions ====================
+
+    protected static DocumentCollection getInternalCollectionDefinition() {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        DocumentCollection collectionDefinition = new DocumentCollection();
+        collectionDefinition.setId(UUID.randomUUID().toString());
+        collectionDefinition.setPartitionKey(partitionKeyDef);
+
+        return collectionDefinition;
+    }
+
+    protected static DocumentCollection getInternalCollectionDefinitionWithRangeRangeIndex() {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        IndexingPolicy indexingPolicy = new IndexingPolicy();
+        List<IncludedPath> includedPaths = new ArrayList<>();
+        IncludedPath includedPath = new IncludedPath("/*");
+        includedPaths.add(includedPath);
+        indexingPolicy.setIncludedPaths(includedPaths);
+
+        DocumentCollection collectionDefinition = new DocumentCollection();
+        collectionDefinition.setIndexingPolicy(indexingPolicy);
+        collectionDefinition.setId(UUID.randomUUID().toString());
+        collectionDefinition.setPartitionKey(partitionKeyDef);
+
+        return collectionDefinition;
+    }
+
+    public static String getCollectionLink(DocumentCollection collection) {
+        return collection.getSelfLink();
+    }
+
+    public static String getDatabaseLink(Database database) {
+        return database.getSelfLink();
+    }
+
+    @SuppressWarnings("fallthrough")
+    protected static void waitIfNeededForReplicasToCatchUp(AsyncDocumentClient.Builder clientBuilder) {
+        switch (clientBuilder.getDesiredConsistencyLevel()) {
+            case EVENTUAL:
+            case CONSISTENT_PREFIX:
+                logger.info(" additional wait in EVENTUAL mode so the replica catch up");
+                // give times to replicas to catch up after a write
+                try {
+                    TimeUnit.MILLISECONDS.sleep(WAIT_REPLICA_CATCH_UP_IN_MILLIS);
+                } catch (Exception e) {
+                    logger.error("unexpected failure", e);
+                }
+
+            case SESSION:
+            case BOUNDED_STALENESS:
+            case STRONG:
+            default:
+                break;
+        }
     }
 
 }
