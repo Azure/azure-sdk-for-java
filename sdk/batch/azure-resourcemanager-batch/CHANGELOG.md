@@ -1,14 +1,364 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.1.0 (2026-02-10)
 
-### Features Added
+- Azure Resource Manager Batch client library for Java. This package contains Microsoft Azure SDK for Batch Management SDK. The Batch Management Client. Package api-version 2025-06-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.ListPoolsResult` was removed
 
-### Other Changes
+#### `models.CertificateProvisioningState` was removed
+
+#### `models.DetectorListResult` was removed
+
+#### `models.CertificateReference` was removed
+
+#### `models.Certificate` was removed
+
+#### `models.CertificateStoreLocation` was removed
+
+#### `models.Certificate$Update` was removed
+
+#### `models.Certificate$UpdateStages` was removed
+
+#### `models.SupportedSkusResult` was removed
+
+#### `models.CertificatesCancelDeletionHeaders` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.ListApplicationPackagesResult` was removed
+
+#### `models.CertificatesUpdateHeaders` was removed
+
+#### `models.AccessRulePropertiesSubscriptionsItem` was removed
+
+#### `models.Certificate$Definition` was removed
+
+#### `models.CertificateCreateOrUpdateParameters` was removed
+
+#### `models.Certificates` was removed
+
+#### `models.Certificate$DefinitionStages` was removed
+
+#### `models.CertificatesCreateResponse` was removed
+
+#### `models.OutboundEnvironmentEndpointCollection` was removed
+
+#### `models.CertificatesCreateHeaders` was removed
+
+#### `models.CertificatesUpdateResponse` was removed
+
+#### `models.NodeCommunicationMode` was removed
+
+#### `models.CertificatesGetHeaders` was removed
+
+#### `models.CertificatesCancelDeletionResponse` was removed
+
+#### `models.CertificateBaseProperties` was removed
+
+#### `models.CertificatesGetResponse` was removed
+
+#### `models.ListPrivateEndpointConnectionsResult` was removed
+
+#### `models.BatchAccountListResult` was removed
+
+#### `models.ListCertificatesResult` was removed
+
+#### `models.DeleteCertificateError` was removed
+
+#### `models.ListApplicationsResult` was removed
+
+#### `models.CertificateFormat` was removed
+
+#### `models.CertificateVisibility` was removed
+
+#### `models.ListPrivateLinkResourcesResult` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationListResult` was removed
+
+#### `models.AzureProxyResource` was removed
+
+#### `models.PoolsDisableAutoScaleHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+
+#### `models.AutoScaleRunError` was modified
+
+* `AutoScaleRunError()` was changed to private access
+* `withCode(java.lang.String)` was removed
+* `withDetails(java.util.List)` was removed
+* `withMessage(java.lang.String)` was removed
+
+#### `models.OperationDisplay` was modified
+
+* `OperationDisplay()` was changed to private access
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `withResource(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+
+#### `models.CheckNameAvailabilityParameters` was modified
+
+* `java.lang.String type()` -> `models.ResourceType type()`
+* `withType(java.lang.String)` was removed
+
+#### `models.AutoScaleRun` was modified
+
+* `AutoScaleRun()` was changed to private access
+* `withEvaluationTime(java.time.OffsetDateTime)` was removed
+* `withResults(java.lang.String)` was removed
+* `withError(models.AutoScaleRunError)` was removed
+
+#### `models.EndpointDependency` was modified
+
+* `EndpointDependency()` was changed to private access
+
+#### `models.ResizeOperationStatus` was modified
+
+* `ResizeOperationStatus()` was changed to private access
+* `withTargetLowPriorityNodes(java.lang.Integer)` was removed
+* `withStartTime(java.time.OffsetDateTime)` was removed
+* `withNodeDeallocationOption(models.ComputeNodeDeallocationOption)` was removed
+* `withErrors(java.util.List)` was removed
+* `withTargetDedicatedNodes(java.lang.Integer)` was removed
+* `withResizeTimeout(java.time.Duration)` was removed
+
+#### `models.ProvisioningIssue` was modified
+
+* `ProvisioningIssue()` was changed to private access
+
+#### `models.PoolsStopResizeHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+
+#### `models.EndpointDetail` was modified
+
+* `EndpointDetail()` was changed to private access
+
+#### `models.NetworkSecurityProfile` was modified
+
+* `NetworkSecurityProfile()` was changed to private access
+* `withAccessRulesVersion(java.lang.Integer)` was removed
+* `withEnabledLogCategories(java.util.List)` was removed
+* `withAccessRules(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withDiagnosticSettingsVersion(java.lang.Integer)` was removed
+
+#### `models.PoolsUpdateHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+
+#### `models.AccessRule` was modified
+
+* `AccessRule()` was changed to private access
+* `withProperties(models.AccessRuleProperties)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `BatchManager` was modified
+
+* `certificates()` was removed
+
+#### `models.DataDisk` was modified
+
+* `withStorageAccountType(models.StorageAccountType)` was removed
+* `storageAccountType()` was removed
+
+#### `models.AutoStorageProperties` was modified
+
+* `AutoStorageProperties()` was changed to private access
+* `withStorageAccountId(java.lang.String)` was removed
+* `withLastKeySync(java.time.OffsetDateTime)` was removed
+* `withAuthenticationMode(models.AutoStorageAuthenticationMode)` was removed
+* `withNodeIdentityReference(models.ComputeNodeIdentityReference)` was removed
+
+#### `models.ProvisioningIssueProperties` was modified
+
+* `ProvisioningIssueProperties()` was changed to private access
+
+#### `models.NetworkSecurityPerimeter` was modified
+
+* `NetworkSecurityPerimeter()` was changed to private access
+* `withId(java.lang.String)` was removed
+* `withLocation(java.lang.String)` was removed
+* `java.util.UUID perimeterGuid()` -> `java.lang.String perimeterGuid()`
+* `withPerimeterGuid(java.util.UUID)` was removed
+
+#### `models.PrivateEndpoint` was modified
+
+* `PrivateEndpoint()` was changed to private access
+
+#### `models.VirtualMachineFamilyCoreQuota` was modified
+
+* `VirtualMachineFamilyCoreQuota()` was changed to private access
+
+#### `models.PoolsCreateHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+
+#### `models.AccessRuleProperties` was modified
+
+* `AccessRuleProperties()` was changed to private access
+* `withDirection(models.AccessRuleDirection)` was removed
+* `withNetworkSecurityPerimeters(java.util.List)` was removed
+* `withFullyQualifiedDomainNames(java.util.List)` was removed
+* `withAddressPrefixes(java.util.List)` was removed
+* `withEmailAddresses(java.util.List)` was removed
+* `withSubscriptions(java.util.List)` was removed
+* `withPhoneNumbers(java.util.List)` was removed
+
+#### `models.Pool$Definition` was modified
+
+* `withCertificates(java.util.List)` was removed
+* `withApplicationLicenses(java.util.List)` was removed
+* `withResourceTags(java.util.Map)` was removed
+* `withTargetNodeCommunicationMode(models.NodeCommunicationMode)` was removed
+
+#### `models.NetworkSecurityPerimeterConfigurationProperties` was modified
+
+* `NetworkSecurityPerimeterConfigurationProperties()` was changed to private access
+* `withProfile(models.NetworkSecurityProfile)` was removed
+* `withNetworkSecurityPerimeter(models.NetworkSecurityPerimeter)` was removed
+* `withResourceAssociation(models.ResourceAssociation)` was removed
+
+#### `models.SkuCapability` was modified
+
+* `SkuCapability()` was changed to private access
+
+#### `models.PoolsGetHeaders` was modified
+
+* `withEtag(java.lang.String)` was removed
+
+#### `models.ResourceAssociation` was modified
+
+* `ResourceAssociation()` was changed to private access
+* `withAccessMode(models.ResourceAssociationAccessMode)` was removed
+* `withName(java.lang.String)` was removed
+
+#### `models.Pool` was modified
+
+* `targetNodeCommunicationMode()` was removed
+* `currentNodeCommunicationMode()` was removed
+* `certificates()` was removed
+* `applicationLicenses()` was removed
+* `resourceTags()` was removed
+
+#### `models.Pool$Update` was modified
+
+* `withApplicationLicenses(java.util.List)` was removed
+* `withTargetNodeCommunicationMode(models.NodeCommunicationMode)` was removed
+* `withCertificates(java.util.List)` was removed
+* `withResourceTags(java.util.Map)` was removed
+
+#### `models.ResizeError` was modified
+
+* `ResizeError()` was changed to private access
+* `withDetails(java.util.List)` was removed
+* `withMessage(java.lang.String)` was removed
+* `withCode(java.lang.String)` was removed
+
+#### `models.IpRule` was modified
+
+* `withAction(java.lang.String)` was removed
+* `java.lang.String action()` -> `models.IpRuleAction action()`
+
+### Features Added
+
+* `models.IPFamily` was added
+
+* `models.ResourceType` was added
+
+* `models.ProxyAgentSettings` was added
+
+* `models.IpRuleAction` was added
+
+* `models.AccessRulePropertiesSubscription` was added
+
+* `models.DiskCustomerManagedKey` was added
+
+* `models.IPTag` was added
+
+* `models.HostEndpointSettings` was added
+
+* `models.JobDefaultOrder` was added
+
+* `models.HostEndpointSettingsModeTypes` was added
+
+* `models.DiskEncryptionSetParameters` was added
+
+#### `models.CheckNameAvailabilityParameters` was modified
+
+* `withType(models.ResourceType)` was added
+
+#### `models.Application` was modified
+
+* `systemData()` was added
+
+#### `models.DiskEncryptionConfiguration` was modified
+
+* `customerManagedKey()` was added
+* `withCustomerManagedKey(models.DiskCustomerManagedKey)` was added
+
+#### `models.SecurityProfile` was modified
+
+* `proxyAgentSettings()` was added
+* `withProxyAgentSettings(models.ProxyAgentSettings)` was added
+
+#### `models.BatchAccount` was modified
+
+* `systemData()` was added
+
+#### `models.VMDiskSecurityProfile` was modified
+
+* `diskEncryptionSet()` was added
+* `withDiskEncryptionSet(models.DiskEncryptionSetParameters)` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `systemData()` was added
+
+#### `models.ManagedDisk` was modified
+
+* `diskEncryptionSet()` was added
+* `withDiskEncryptionSet(models.DiskEncryptionSetParameters)` was added
+
+#### `models.DataDisk` was modified
+
+* `withManagedDisk(models.ManagedDisk)` was added
+* `managedDisk()` was added
+
+#### `models.ApplicationPackage` was modified
+
+* `systemData()` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `systemData()` was added
+
+#### `models.TaskSchedulingPolicy` was modified
+
+* `withJobDefaultOrder(models.JobDefaultOrder)` was added
+* `jobDefaultOrder()` was added
+
+#### `models.PublicIpAddressConfiguration` was modified
+
+* `ipTags()` was added
+* `withIpTags(java.util.List)` was added
+* `withIpFamilies(java.util.List)` was added
+* `ipFamilies()` was added
+
+#### `models.Pool` was modified
+
+* `systemData()` was added
+
+#### `models.DetectorResponse` was modified
+
+* `systemData()` was added
+
+#### `models.IpRule` was modified
+
+* `withAction(models.IpRuleAction)` was added
 
 ## 2.0.0 (2024-09-26)
 
