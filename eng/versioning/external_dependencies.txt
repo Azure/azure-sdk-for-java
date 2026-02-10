@@ -33,7 +33,6 @@ com.microsoft.azure:azure-client-authentication;1.7.14
 com.microsoft.azure:azure-client-runtime;1.7.14
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.6
-com.microsoft.sqlserver:mssql-jdbc;12.10.0.jre8
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;9.0.0
@@ -134,7 +133,7 @@ com.squareup.okio:okio;3.16.0
 com.squareup.okio:okio-jvm;3.16.0
 junit:junit;4.13.2
 commons-cli:commons-cli;1.9.0
-org.assertj:assertj-core;3.22.0
+org.assertj:assertj-core;3.27.7
 org.bouncycastle:bcprov-jdk18on;1.81
 org.bouncycastle:bcpkix-lts8on;2.73.8
 org.eclipse.jetty:jetty-alpn-conscrypt-server;9.4.58.v20250814
