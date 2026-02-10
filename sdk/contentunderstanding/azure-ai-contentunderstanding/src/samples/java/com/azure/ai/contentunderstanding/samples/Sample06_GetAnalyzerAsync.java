@@ -9,7 +9,6 @@ import com.azure.ai.contentunderstanding.ContentUnderstandingClientBuilder;
 import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
 import java.util.concurrent.TimeUnit;
 
