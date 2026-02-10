@@ -2058,16 +2058,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     // ==================== Internal API collection definitions ====================
 
     protected static DocumentCollection getInternalCollectionDefinition() {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        collectionDefinition.setPartitionKey(partitionKeyDef);
-
-        return collectionDefinition;
+        return getInternalCollectionDefinition(UUID.randomUUID().toString());
     }
 
     protected static DocumentCollection getInternalCollectionDefinition(String collectionId) {

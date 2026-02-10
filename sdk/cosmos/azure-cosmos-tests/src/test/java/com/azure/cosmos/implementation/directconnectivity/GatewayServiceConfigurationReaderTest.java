@@ -19,7 +19,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
