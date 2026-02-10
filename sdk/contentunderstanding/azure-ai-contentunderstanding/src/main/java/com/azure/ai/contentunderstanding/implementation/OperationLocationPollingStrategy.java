@@ -99,7 +99,7 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
             return Mono
                 .error(
                     new AzureException(String.format(
-                        "Operation failed or cancelled with status code %d,"
+                        "Operation failed or cancelled with status code %d"
                             + ", '%s' header: %s, and response body: %s",
                         response.getStatusCode(), PollingUtils.OPERATION_LOCATION_HEADER, operationLocationHeader,
                         response.getValue())));
