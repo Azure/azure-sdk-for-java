@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for MixedReality Management</name>
-  <description>This package contains Microsoft Azure SDK for MixedReality Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Mixed Reality Client. Package tag package-2021-01.</description>
+  <description>Please note, this package has been deprecated and will no longer be maintained after 2025/10/01. There are no replacement packages, as all mixed reality services are deprecated. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details. This package contains Microsoft Azure SDK for MixedReality Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. Mixed Reality Client. Package tag package-2021-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.18.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.18.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

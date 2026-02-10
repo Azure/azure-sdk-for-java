@@ -16,6 +16,7 @@ import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /**
  * Used to initialize parameters for a Shared Access Signature (SAS) for an Azure Blob Storage service. Once all the
@@ -83,6 +84,8 @@ public final class BlobServiceSasSignatureValues {
     private String correlationId;
     private String encryptionScope;
     private String delegatedUserObjectId;
+    private Map<String, String> requestHeaders;
+    private Map<String, String> requestQueryParameters;
 
     /**
      * Creates an object with empty values for all fields.
@@ -597,6 +600,58 @@ public final class BlobServiceSasSignatureValues {
      */
     public BlobServiceSasSignatureValues setDelegatedUserObjectId(String delegatedUserObjectId) {
         this.delegatedUserObjectId = delegatedUserObjectId;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
+     * Any usage of the SAS must include these headers and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @return The custom request headers to be set when the SAS is used.
+     */
+    public Map<String, String> getRequestHeaders() {
+        return requestHeaders;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Headers to include in the SAS.
+     * Any usage of the SAS must include these headers and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @param requestHeaders The custom request headers to be set when the SAS is used.
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setRequestHeaders(Map<String, String> requestHeaders) {
+        this.requestHeaders = requestHeaders;
+        return this;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @return The custom query parameters to be set when the SAS is used.
+     */
+    public Map<String, String> getRequestQueryParameters() {
+        return requestQueryParameters;
+    }
+
+    /**
+     * Optional. Beginning in version 2026-04-06, this value specifies Custom Request Query Parameters to include in
+     * the SAS. Any usage of the SAS must include these query parameters and values in the request.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @param requestQueryParameters The custom query parameters to be set when the SAS is used.
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setRequestQueryParameters(Map<String, String> requestQueryParameters) {
+        this.requestQueryParameters = requestQueryParameters;
         return this;
     }
 

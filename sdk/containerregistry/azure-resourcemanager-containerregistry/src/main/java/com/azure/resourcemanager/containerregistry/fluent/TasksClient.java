@@ -20,7 +20,9 @@ import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in TasksClient.
+ * @deprecated Use azure-resourcemanager-containerregistry-tasks lib.
  */
+@Deprecated
 public interface TasksClient {
     /**
      * Lists all the tasks for a specified container registry.

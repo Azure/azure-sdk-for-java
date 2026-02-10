@@ -9,14 +9,16 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
 /**
  * This class provides helper methods for sas.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public class SasImplUtils {
@@ -116,5 +118,103 @@ public class SasImplUtils {
         }
 
         return retVals;
+    }
+
+    /**
+     * Formats request headers for SAS signing.
+     *
+     * @param requestHeaders The map of request headers to format.
+     * @param includeKeyValues Whether to include the values of the query parameters in the formatted string.
+     * If false, only the keys will be included, separated by commas.
+     * @return A formatted string with or without values depending on the includeKeyValues parameter.
+     * @see
+     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas#version-2026-04-06-and-later-blob-storage-and-data-lake-storage">
+     *     Version 2026-04-06 and later (Blob Storage and Data Lake Storage)</a>
+     */
+    public static String formatRequestHeaders(Map<String, String> requestHeaders, boolean includeKeyValues) {
+        if (requestHeaders == null || requestHeaders.isEmpty()) {
+            return null;
+        }
+
+        // Ensure deterministic ordering by header name for SAS signing.
+        List<String> sortedKeys = new ArrayList<>(requestHeaders.keySet());
+        sortedKeys.sort(String::compareTo);
+
+        if (includeKeyValues) {
+            StringBuilder sb = new StringBuilder();
+            for (String key : sortedKeys) {
+                String value = requestHeaders.get(key);
+                sb.append(key).append(':').append(value).append('\n');
+            }
+            return sb.toString();
+        }
+
+        return String.join(",", sortedKeys);
+    }
+
+    /**
+     * Formats request headers for SAS signing.
+     *
+     * @param requestQueryParameters The map of request headers to format.
+     * @param includeKeyValues Whether to include the values of the query parameters in the formatted string.
+     * If false, only the keys will be included, separated by commas.
+     * @return A formatted string with or without values depending on the includeKeyValues parameter.
+     * @see
+     * <a href="https://learn.microsoft.com/en-us/rest/api/storageservices/create-user-delegation-sas#version-2026-04-06-and-later-blob-storage-and-data-lake-storage">
+     *     Version 2026-04-06 and later (Blob Storage and Data Lake Storage)</a>
+     */
+    public static String formatRequestQueryParameters(Map<String, String> requestQueryParameters,
+        boolean includeKeyValues) {
+        if (requestQueryParameters == null || requestQueryParameters.isEmpty()) {
+            return null;
+        }
+
+        // Ensure deterministic ordering by parameter name for SAS signing.
+        List<String> sortedKeys = new ArrayList<>(requestQueryParameters.keySet());
+        sortedKeys.sort(String::compareTo);
+
+        if (includeKeyValues) {
+            StringBuilder sb = new StringBuilder();
+            for (String key : sortedKeys) {
+                String value = requestQueryParameters.get(key);
+                sb.append('\n').append(key).append(':').append(value);
+            }
+            return sb.toString();
+        }
+
+        return String.join(",", sortedKeys);
+    }
+
+    /**
+     * Formats a list of keys into a comma separated string.
+     *
+     * @param listOfKeys The list of keys to format.
+     * @return A comma separated string of the keys, or null if the list is null/empty.
+     */
+    public static String formatKeyList(List<String> listOfKeys) {
+        if (listOfKeys == null || listOfKeys.isEmpty()) {
+            return null;
+        }
+        return String.join(",", listOfKeys);
+    }
+
+    /**
+    * Parses a comma separated string of keys into a list. The values for the keys are never present at this point.
+    *
+    * @param rawString The comma separated string of keys to parse.
+    * @return A list of the keys, or null if the string is null/empty.
+    */
+    public static List<String> parseRequestHeadersAndQueryParameterString(String rawString) {
+        if (CoreUtils.isNullOrEmpty(rawString)) {
+            return null;
+        }
+        String[] keys = rawString.split(",");
+        List<String> keyList = new ArrayList<>();
+        for (String key : keys) {
+            if (!CoreUtils.isNullOrEmpty(key)) {
+                keyList.add(key.trim());
+            }
+        }
+        return keyList;
     }
 }

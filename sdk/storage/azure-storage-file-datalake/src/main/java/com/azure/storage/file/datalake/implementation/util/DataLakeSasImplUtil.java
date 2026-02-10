@@ -20,15 +20,18 @@ import com.azure.storage.file.datalake.sas.FileSystemSasPermission;
 import com.azure.storage.file.datalake.sas.PathSasPermission;
 
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
+import static com.azure.storage.common.implementation.SasImplUtils.formatRequestHeaders;
+import static com.azure.storage.common.implementation.SasImplUtils.formatRequestQueryParameters;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
 
 /**
  * This class provides helper methods for common datalake service sas patterns.
- *
+ * <p>
  * RESERVED FOR INTERNAL USE.
  */
 public class DataLakeSasImplUtil {
@@ -73,6 +76,8 @@ public class DataLakeSasImplUtil {
     private String correlationId;
     private String encryptionScope;
     private String delegatedUserObjectId;
+    private Map<String, String> requestHeaders;
+    private Map<String, String> requestQueryParameters;
 
     /**
      * Creates a new {@link DataLakeSasImplUtil} with the specified parameters
@@ -114,6 +119,8 @@ public class DataLakeSasImplUtil {
         this.isDirectory = isDirectory;
         this.encryptionScope = sasValues.getEncryptionScope();
         this.delegatedUserObjectId = sasValues.getDelegatedUserObjectId();
+        this.requestHeaders = sasValues.getRequestHeaders();
+        this.requestQueryParameters = sasValues.getRequestQueryParameters();
     }
 
     /**
@@ -252,6 +259,11 @@ public class DataLakeSasImplUtil {
         }
 
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_ENCRYPTION_SCOPE, this.encryptionScope);
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_HEADERS,
+            formatRequestHeaders(this.requestHeaders, false));
+        tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_REQUEST_QUERY_PARAMETERS,
+            formatRequestQueryParameters(this.requestQueryParameters, false));
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CACHE_CONTROL, this.cacheControl);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_DISPOSITION, this.contentDisposition);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CONTENT_ENCODING, this.contentEncoding);
@@ -426,6 +438,30 @@ public class DataLakeSasImplUtil {
                 this.contentEncoding == null ? "" : this.contentEncoding,
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType);
+        } else if (VERSION.compareTo(DataLakeServiceVersion.V2026_02_06.getVersion()) <= 0) {
+            return String.join("\n", this.permissions == null ? "" : this.permissions,
+                this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
+                this.expiryTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
+                canonicalName, key.getSignedObjectId() == null ? "" : key.getSignedObjectId(),
+                key.getSignedTenantId() == null ? "" : key.getSignedTenantId(),
+                key.getSignedStart() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedStart()),
+                key.getSignedExpiry() == null
+                    ? ""
+                    : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
+                key.getSignedService() == null ? "" : key.getSignedService(),
+                key.getSignedVersion() == null ? "" : key.getSignedVersion(),
+                this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
+                this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
+                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
+                this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
+                this.sasIpRange == null ? "" : this.sasIpRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
+                this.encryptionScope == null ? "" : this.encryptionScope,
+                this.cacheControl == null ? "" : this.cacheControl,
+                this.contentDisposition == null ? "" : this.contentDisposition,
+                this.contentEncoding == null ? "" : this.contentEncoding,
+                this.contentLanguage == null ? "" : this.contentLanguage,
+                this.contentType == null ? "" : this.contentType);
         } else {
             return String.join("\n", this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -440,13 +476,15 @@ public class DataLakeSasImplUtil {
                 key.getSignedVersion() == null ? "" : key.getSignedVersion(),
                 this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
                 this.unauthorizedAadObjectId == null ? "" : this.unauthorizedAadObjectId,
-                this.correlationId == null ? "" : this.correlationId,
-                key.getSignedDelegatedUserTenantId() == null ? "" : key.getSignedDelegatedUserTenantId(),
+                this.correlationId == null ? "" : this.correlationId, "", /* new schema 2025-07-05 */
                 this.delegatedUserObjectId == null ? "" : this.delegatedUserObjectId,
                 this.sasIpRange == null ? "" : this.sasIpRange.toString(),
                 this.protocol == null ? "" : this.protocol.toString(), VERSION, resource, "", /* Version segment. */
-                this.encryptionScope == null ? "" : this.encryptionScope, "", /* request header */
-                "", /* request query parameter */
+                this.encryptionScope == null ? "" : this.encryptionScope,
+                this.requestHeaders == null ? "" : formatRequestHeaders(this.requestHeaders, true),
+                this.requestQueryParameters == null
+                    ? ""
+                    : formatRequestQueryParameters(this.requestQueryParameters, true),
                 this.cacheControl == null ? "" : this.cacheControl,
                 this.contentDisposition == null ? "" : this.contentDisposition,
                 this.contentEncoding == null ? "" : this.contentEncoding,

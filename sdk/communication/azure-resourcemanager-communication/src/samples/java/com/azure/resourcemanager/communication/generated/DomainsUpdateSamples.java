@@ -13,7 +13,7 @@ import com.azure.resourcemanager.communication.models.UserEngagementTracking;
 public final class DomainsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/domains/update.
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2025-09-01/examples/domains/update.
      * json
      */
     /**
