@@ -7,10 +7,9 @@ import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.models.FeedResponse
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.{CosmosPagedFlux, CosmosPagedIterable}
-import reactor.core.scheduler.Schedulers
 
 import java.util.concurrent.{ExecutorService, SynchronousQueue, ThreadPoolExecutor, TimeUnit, TimeoutException}
-import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong, AtomicReference}
+import java.util.concurrent.atomic.{AtomicLong, AtomicReference}
 import scala.util.Random
 import scala.util.control.Breaks
 import scala.concurrent.{Await, ExecutionContext, Future}
@@ -69,10 +68,6 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
   private[spark] var currentItemIterator: Option[BufferedIterator[TSparkRow]] = None
   private val lastPagedFlux = new AtomicReference[Option[CosmosPagedFlux[TSparkRow]]](None)
 
-  // Tracks whether the underlying flux subscription was fully drained (all pages consumed).
-  // When true, then skip cancelOn().subscribe().dispose()
-  private val lastPagedFluxFullyDrained = new AtomicBoolean(false)
-
   private val totalChangesCnt = new AtomicLong(0)
 
   def getTotalChangeFeedItemsCnt: Long = {
@@ -118,16 +113,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         case None =>
           val newPagedFlux = Some(cosmosPagedFluxFactory.apply(lastContinuationToken.get))
           lastPagedFlux.getAndSet(newPagedFlux) match {
-            case Some(oldPagedFlux) =>
-              if (lastPagedFluxFullyDrained.get()) {
-                logDebug(s"Skipping cancel of oldPagedFlux - already fully drained, Context: $operationContextString")
-              } else {
-                logDebug(s"Attempting to cancel oldPagedFlux, Context: $operationContextString")
-                oldPagedFlux.cancelOn(Schedulers.boundedElastic()).onErrorComplete().subscribe().dispose()
-              }
+            case Some(_) =>
+              logInfo(s"Replacing oldPagedFlux with newPagedFlux, Context: $operationContextString")
             case None =>
           }
-          lastPagedFluxFullyDrained.set(false)
           currentFeedResponseIterator = Some(
             new CosmosPagedIterable[TSparkRow](
               newPagedFlux.get,
@@ -195,7 +184,6 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
           None
         }
       } else {
-        lastPagedFluxFullyDrained.set(true)
         Some(false)
       }
     }
@@ -285,18 +273,13 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
     }
   }
 
-  // When the flux subscription was fully drained (all pages consumed), re-subscribing
-  // via cancelOn().subscribe().dispose() would create a new subscription triggering an
-  // unnecessary extra roundtrip to the service. Only cancel when not fully drained.
+  // Removing .subscribe() from cancelOn() to avoid creating a new subscription that
+  // triggers an unnecessary extra roundtrip to the service. The cancelOn() only sets the
+  // scheduler for cancellation signals - calling .subscribe() was incorrectly creating
+  // a brand new subscription to the cold flux. Clearing the reference is sufficient.
   // See GitHub issue #47777.
   override def close(): Unit = {
-    lastPagedFlux.getAndSet(None) match {
-      case Some(oldPagedFlux) =>
-        if (!lastPagedFluxFullyDrained.get()) {
-          oldPagedFlux.cancelOn(Schedulers.boundedElastic()).onErrorComplete().subscribe().dispose()
-        }
-      case None =>
-    }
+    lastPagedFlux.getAndSet(None)
   }
 }
 
