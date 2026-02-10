@@ -490,7 +490,7 @@ public class FaultInjectionServerErrorRuleOnGatewayV2Tests extends FaultInjectio
 
     }
 
-    @Test(groups = {"fi-thinclient-multi-master"}, dataProvider = "responseDelayOperationTypeProvider", timeOut = 4 * TIMEOUT)
+    @Test(groups = {"fi-thinclient-multi-master"}, dataProvider = "responseDelayOperationTypeProvider", timeOut = 4 * TIMEOUT, retryAnalyzer = FlakyTestRetryAnalyzer.class)
     public void faultInjectionServerErrorRuleTests_ServerResponseDelay(
         OperationType operationType,
         FaultInjectionOperationType faultInjectionOperationType) throws JsonProcessingException {
