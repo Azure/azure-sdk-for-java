@@ -25,7 +25,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
     /*
      * CorrelationId item
      */
-    private String correlationid;
+    private String correlationId;
 
     /**
      * Creates an instance of CancelOperationsRequest class.
@@ -54,22 +54,22 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
     }
 
     /**
-     * Get the correlationid property: CorrelationId item.
+     * Get the correlationId property: CorrelationId item.
      * 
-     * @return the correlationid value.
+     * @return the correlationId value.
      */
-    public String correlationid() {
-        return this.correlationid;
+    public String correlationId() {
+        return this.correlationId;
     }
 
     /**
-     * Set the correlationid property: CorrelationId item.
+     * Set the correlationId property: CorrelationId item.
      * 
-     * @param correlationid the correlationid value to set.
+     * @param correlationId the correlationId value to set.
      * @return the CancelOperationsRequest object itself.
      */
-    public CancelOperationsRequest withCorrelationid(String correlationid) {
-        this.correlationid = correlationid;
+    public CancelOperationsRequest withCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
         return this;
     }
 
@@ -80,7 +80,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("operationIds", this.operationIds, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("correlationid", this.correlationid);
+        jsonWriter.writeStringField("correlationid", this.correlationId);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,7 +104,7 @@ public final class CancelOperationsRequest implements JsonSerializable<CancelOpe
                     List<String> operationIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedCancelOperationsRequest.operationIds = operationIds;
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedCancelOperationsRequest.correlationid = reader.getString();
+                    deserializedCancelOperationsRequest.correlationId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

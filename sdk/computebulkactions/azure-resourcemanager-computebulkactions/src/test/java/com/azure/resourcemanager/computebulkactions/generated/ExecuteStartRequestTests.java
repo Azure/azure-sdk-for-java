@@ -23,7 +23,7 @@ public final class ExecuteStartRequestTests {
         Assertions.assertEquals(24291544, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(1252976241, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals("fpagaowpulp", model.resources().ids().get(0));
-        Assertions.assertEquals("r", model.correlationid());
+        Assertions.assertEquals("r", model.correlationId());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,12 +32,12 @@ public final class ExecuteStartRequestTests {
             .withExecutionParameters(new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                 .withRetryPolicy(new RetryPolicy().withRetryCount(24291544).withRetryWindowInMinutes(1252976241)))
             .withResources(new Resources().withIds(Arrays.asList("fpagaowpulp", "blylsyxkqjnsj")))
-            .withCorrelationid("r");
+            .withCorrelationId("r");
         model = BinaryData.fromObject(model).toObject(ExecuteStartRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
         Assertions.assertEquals(24291544, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(1252976241, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals("fpagaowpulp", model.resources().ids().get(0));
-        Assertions.assertEquals("r", model.correlationid());
+        Assertions.assertEquals("r", model.correlationId());
     }
 }

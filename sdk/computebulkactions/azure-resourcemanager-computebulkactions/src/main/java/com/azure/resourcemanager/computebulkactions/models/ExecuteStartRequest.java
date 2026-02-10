@@ -29,7 +29,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
     /*
      * CorrelationId item
      */
-    private String correlationid;
+    private String correlationId;
 
     /**
      * Creates an instance of ExecuteStartRequest class.
@@ -78,22 +78,22 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
     }
 
     /**
-     * Get the correlationid property: CorrelationId item.
+     * Get the correlationId property: CorrelationId item.
      * 
-     * @return the correlationid value.
+     * @return the correlationId value.
      */
-    public String correlationid() {
-        return this.correlationid;
+    public String correlationId() {
+        return this.correlationId;
     }
 
     /**
-     * Set the correlationid property: CorrelationId item.
+     * Set the correlationId property: CorrelationId item.
      * 
-     * @param correlationid the correlationid value to set.
+     * @param correlationId the correlationId value to set.
      * @return the ExecuteStartRequest object itself.
      */
-    public ExecuteStartRequest withCorrelationid(String correlationid) {
-        this.correlationid = correlationid;
+    public ExecuteStartRequest withCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
         return this;
     }
 
@@ -104,7 +104,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
-        jsonWriter.writeStringField("correlationid", this.correlationid);
+        jsonWriter.writeStringField("correlationid", this.correlationId);
         jsonWriter.writeJsonField("resources", this.resources);
         return jsonWriter.writeEndObject();
     }
@@ -128,7 +128,7 @@ public final class ExecuteStartRequest implements JsonSerializable<ExecuteStartR
                 if ("executionParameters".equals(fieldName)) {
                     deserializedExecuteStartRequest.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteStartRequest.correlationid = reader.getString();
+                    deserializedExecuteStartRequest.correlationId = reader.getString();
                 } else if ("resources".equals(fieldName)) {
                     deserializedExecuteStartRequest.resources = Resources.fromJson(reader);
                 } else {

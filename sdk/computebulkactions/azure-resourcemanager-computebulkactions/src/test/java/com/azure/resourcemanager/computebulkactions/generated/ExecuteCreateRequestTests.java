@@ -28,7 +28,7 @@ public final class ExecuteCreateRequestTests {
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(1552436434, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(973815152, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("s", model.correlationid());
+        Assertions.assertEquals("s", model.correlationId());
     }
 
     @org.junit.jupiter.api.Test
@@ -51,7 +51,7 @@ public final class ExecuteCreateRequestTests {
             .withExecutionParameters(
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.AVAILABILITY)
                     .withRetryPolicy(new RetryPolicy().withRetryCount(1552436434).withRetryWindowInMinutes(973815152)))
-            .withCorrelationid("s");
+            .withCorrelationId("s");
         model = BinaryData.fromObject(model).toObject(ExecuteCreateRequest.class);
         Assertions.assertEquals(1064161892, model.resourceConfigParameters().resourceCount());
         Assertions.assertEquals("uetae", model.resourceConfigParameters().resourcePrefix());
@@ -59,7 +59,7 @@ public final class ExecuteCreateRequestTests {
             model.executionParameters().optimizationPreference());
         Assertions.assertEquals(1552436434, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(973815152, model.executionParameters().retryPolicy().retryWindowInMinutes());
-        Assertions.assertEquals("s", model.correlationid());
+        Assertions.assertEquals("s", model.correlationId());
     }
 
     // Use "Map.of" if available

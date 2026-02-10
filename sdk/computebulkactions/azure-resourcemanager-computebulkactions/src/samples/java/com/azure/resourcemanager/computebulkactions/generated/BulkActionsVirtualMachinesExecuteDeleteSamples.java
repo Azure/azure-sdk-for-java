@@ -30,7 +30,7 @@ public final class BulkActionsVirtualMachinesExecuteDeleteSamples {
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3",
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -50,7 +50,7 @@ public final class BulkActionsVirtualMachinesExecuteDeleteSamples {
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3",
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationid("dfe927c5-16a6-40b7-a0f7-8524975ed642")
+                .withCorrelationId("dfe927c5-16a6-40b7-a0f7-8524975ed642")
                 .withForceDeletion(true), com.azure.core.util.Context.NONE);
     }
 }

@@ -24,7 +24,7 @@ public final class BulkActionsVirtualMachinesGetOperationStatusSamples {
         manager.bulkActions()
             .virtualMachinesGetOperationStatusWithResponse("eastus2euap",
                 new GetOperationStatusRequest().withOperationIds(Arrays.asList("23480d2f-1dca-4610-afb4-dd25eec1f34r"))
-                    .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"),
+                    .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -41,7 +41,7 @@ public final class BulkActionsVirtualMachinesGetOperationStatusSamples {
         manager.bulkActions()
             .virtualMachinesGetOperationStatusWithResponse("eastus2euap",
                 new GetOperationStatusRequest().withOperationIds(Arrays.asList("2a3fce8e-874c-45f4-9d27-1a804f3b7a0f"))
-                    .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"),
+                    .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"),
                 com.azure.core.util.Context.NONE);
     }
 }

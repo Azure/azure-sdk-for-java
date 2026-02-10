@@ -16,16 +16,16 @@ public final class CancelOperationsRequestTests {
             "{\"operationIds\":[\"hairsbrgzdwms\",\"eypqwdxggicccn\",\"qhuexm\",\"ttlstvlzywemhz\"],\"correlationid\":\"ncsdtclusiyp\"}")
             .toObject(CancelOperationsRequest.class);
         Assertions.assertEquals("hairsbrgzdwms", model.operationIds().get(0));
-        Assertions.assertEquals("ncsdtclusiyp", model.correlationid());
+        Assertions.assertEquals("ncsdtclusiyp", model.correlationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CancelOperationsRequest model = new CancelOperationsRequest()
             .withOperationIds(Arrays.asList("hairsbrgzdwms", "eypqwdxggicccn", "qhuexm", "ttlstvlzywemhz"))
-            .withCorrelationid("ncsdtclusiyp");
+            .withCorrelationId("ncsdtclusiyp");
         model = BinaryData.fromObject(model).toObject(CancelOperationsRequest.class);
         Assertions.assertEquals("hairsbrgzdwms", model.operationIds().get(0));
-        Assertions.assertEquals("ncsdtclusiyp", model.correlationid());
+        Assertions.assertEquals("ncsdtclusiyp", model.correlationId());
     }
 }

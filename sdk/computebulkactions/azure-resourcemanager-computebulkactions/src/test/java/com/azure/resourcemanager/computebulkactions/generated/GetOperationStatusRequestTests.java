@@ -16,16 +16,16 @@ public final class GetOperationStatusRequestTests {
             .fromString("{\"operationIds\":[\"ae\",\"u\",\"ah\",\"icslfaoq\"],\"correlationid\":\"piyylhalnswhccsp\"}")
             .toObject(GetOperationStatusRequest.class);
         Assertions.assertEquals("ae", model.operationIds().get(0));
-        Assertions.assertEquals("piyylhalnswhccsp", model.correlationid());
+        Assertions.assertEquals("piyylhalnswhccsp", model.correlationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GetOperationStatusRequest model
             = new GetOperationStatusRequest().withOperationIds(Arrays.asList("ae", "u", "ah", "icslfaoq"))
-                .withCorrelationid("piyylhalnswhccsp");
+                .withCorrelationId("piyylhalnswhccsp");
         model = BinaryData.fromObject(model).toObject(GetOperationStatusRequest.class);
         Assertions.assertEquals("ae", model.operationIds().get(0));
-        Assertions.assertEquals("piyylhalnswhccsp", model.correlationid());
+        Assertions.assertEquals("piyylhalnswhccsp", model.correlationId());
     }
 }

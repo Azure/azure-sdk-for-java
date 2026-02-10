@@ -45,7 +45,7 @@ public final class BulkActionsVirtualMachinesExecuteCreateSamples {
                     .withResourceCount(1))
                 .withExecutionParameters(new ExecutionParameters()
                     .withRetryPolicy(new RetryPolicy().withRetryCount(5).withRetryWindowInMinutes(45)))
-                .withCorrelationid("7efcfae3-f50d-4323-9aba-1093a33368f8"), com.azure.core.util.Context.NONE);
+                .withCorrelationId("7efcfae3-f50d-4323-9aba-1093a33368f8"), com.azure.core.util.Context.NONE);
     }
 
     /*
