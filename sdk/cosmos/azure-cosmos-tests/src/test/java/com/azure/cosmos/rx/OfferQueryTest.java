@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -50,7 +49,7 @@ public class OfferQueryTest extends TestSuiteBase {
         return TestUtils.getDatabaseNameLink(databaseId);
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public OfferQueryTest(Builder clientBuilder) {
         super(clientBuilder);
     }

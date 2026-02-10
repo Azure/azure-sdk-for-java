@@ -23,7 +23,6 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -51,7 +50,6 @@ import java.util.UUID;
  *
  */
 
-// TODO change to use external TestSuiteBase
 public class ResourceTokenTest extends TestSuiteBase {
     public final String databaseId = DatabaseForTest.generateId();
 
@@ -96,7 +94,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     private static final String PERMISSION_FOR_DOC = "PermissionForDoc";
     private static final String PERMISSION_FOR_DOC_WITH_NAME = "PermissionForDocWithName";
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public ResourceTokenTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -277,7 +275,7 @@ public class ResourceTokenTest extends TestSuiteBase {
 
             ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                    .withId(createdCollection.getId()).build();
-            validateSuccess(readObservable, validator);
+            validateResourceResponseSuccess(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
@@ -319,7 +317,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .readDocument(documentUrl, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(documentId).build();
-            validateSuccess(readObservable, validator);
+            validateResourceResponseSuccess(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
@@ -350,7 +348,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .readDocument(createdDocument.getSelfLink(), options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(createdDocument.getId()).build();
-            validateSuccess(readObservable, validator);
+            validateResourceResponseSuccess(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
@@ -386,7 +384,7 @@ public class ResourceTokenTest extends TestSuiteBase {
                     .readDocument(documentUrl, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                     .withId(documentId).build();
-            validateSuccess(readObservable, validator);
+            validateResourceResponseSuccess(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
@@ -422,7 +420,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(documentUrl, options);
             FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
-            validateFailure(readObservable, validator);
+            validateResourceResponseFailure(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }
@@ -454,7 +452,7 @@ public class ResourceTokenTest extends TestSuiteBase {
             Mono<ResourceResponse<Document>> readObservable = asyncClientResourceToken
                     .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
             FailureValidator validator = new FailureValidator.Builder().resourceTokenNotFound().build();
-            validateFailure(readObservable, validator);
+            validateResourceResponseFailure(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
         }

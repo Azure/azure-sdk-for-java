@@ -22,7 +22,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.Offer;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -35,7 +34,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-//TODO: change to use external TestSuiteBase
 public class ReadFeedOffersTest extends TestSuiteBase {
 
     protected static final int FEED_TIMEOUT = 60000;
@@ -49,7 +47,7 @@ public class ReadFeedOffersTest extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public ReadFeedOffersTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }

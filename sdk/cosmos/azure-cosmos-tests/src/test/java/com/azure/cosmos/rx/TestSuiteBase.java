@@ -269,6 +269,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(), options, 10100);
             SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = createCollection(SHARED_DATABASE, getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes(), options);
             SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 6000);
+
+            // Initialize internal shared database for tests that use AsyncDocumentClient
+            Database internalDb = new Database();
+            internalDb.setId(SHARED_DATABASE.getId());
+            SHARED_DATABASE_FOR_INTERNAL_CLIENT = internalDb;
         }
     }
 
