@@ -24,7 +24,7 @@ public class KnowledgeSource implements JsonSerializable<KnowledgeSource> {
      * The kind of knowledge source.
      */
     @Generated
-    private KnowledgeSourceKind kind = KnowledgeSourceKind.fromString("KnowledgeSource");
+    private KnowledgeSourceKind kind;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
