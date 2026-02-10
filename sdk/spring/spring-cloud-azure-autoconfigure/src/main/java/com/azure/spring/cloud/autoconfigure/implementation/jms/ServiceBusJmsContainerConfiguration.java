@@ -98,8 +98,8 @@ class ServiceBusJmsContainerConfiguration {
         // Case 3: If cache.enabled is explicitly false
         if (cacheEnabledResult.isBound() && !cacheEnabledResult.get()) {
             // If pool.enabled is true, use JmsPoolConnectionFactory bean
-            if (poolEnabledResult.isBound() && poolEnabledResult.get() && 
-                connectionFactory instanceof JmsPoolConnectionFactory) {
+            if (poolEnabledResult.isBound() && poolEnabledResult.get()
+                && connectionFactory instanceof JmsPoolConnectionFactory) {
                 return connectionFactory;
             }
             // Otherwise create dedicated ServiceBusJmsConnectionFactory
@@ -107,15 +107,15 @@ class ServiceBusJmsContainerConfiguration {
         }
 
         // Case 2 & 1: If cache.enabled is true (explicitly), use CachingConnectionFactory bean
-        if (cacheEnabledResult.isBound() && cacheEnabledResult.get() && 
-            connectionFactory instanceof CachingConnectionFactory) {
+        if (cacheEnabledResult.isBound() && cacheEnabledResult.get()
+            && connectionFactory instanceof CachingConnectionFactory) {
             return connectionFactory;
         }
 
         // Case 1: If pool.enabled is true and cache is not set, use JmsPoolConnectionFactory bean
-        if (poolEnabledResult.isBound() && poolEnabledResult.get() && 
-            !cacheEnabledResult.isBound() &&
-            connectionFactory instanceof JmsPoolConnectionFactory) {
+        if (poolEnabledResult.isBound() && poolEnabledResult.get()
+            && !cacheEnabledResult.isBound()
+            && connectionFactory instanceof JmsPoolConnectionFactory) {
             return connectionFactory;
         }
 
