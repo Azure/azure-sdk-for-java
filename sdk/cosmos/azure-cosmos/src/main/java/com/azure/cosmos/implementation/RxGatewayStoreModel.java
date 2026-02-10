@@ -47,6 +47,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +68,13 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private static final boolean leakDetectionDebuggingEnabled = ResourceLeakDetector.getLevel().ordinal() >=
         ResourceLeakDetector.Level.ADVANCED.ordinal();
     private static final boolean HTTP_CONNECTION_WITHOUT_TLS_ALLOWED = Configs.isHttpConnectionWithoutTLSAllowed();
+    private static final List<String> headersNeedToBeEscaped = Arrays.asList(
+        HttpConstants.HttpHeaders.PARTITION_KEY,
+        HttpConstants.HttpHeaders.POST_TRIGGER_EXCLUDE,
+        HttpConstants.HttpHeaders.POST_TRIGGER_INCLUDE,
+        HttpConstants.HttpHeaders.PRE_TRIGGER_EXCLUDE,
+        HttpConstants.HttpHeaders.PRE_TRIGGER_INCLUDE
+    );
 
     private final DiagnosticsClientContext clientContext;
     private final Logger logger = LoggerFactory.getLogger(RxGatewayStoreModel.class);
@@ -335,7 +343,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         for (Entry<String, String> entry : this.defaultHeaders.entrySet()) {
             if (!headers.containsKey(entry.getKey())) {
                 // populate default header only if there is no overwrite by the request header
-                httpHeaders.set(entry.getKey(), entry.getValue());
+                if (headersNeedToBeEscaped.contains(entry.getKey())) {
+                    httpHeaders.set(entry.getKey(), Utils.escapeNonAscii(entry.getValue()));
+                } else {
+                    httpHeaders.set(entry.getKey(), entry.getValue());
+                }
             }
         }
 
@@ -346,7 +358,11 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     // netty doesn't allow setting null value in header
                     httpHeaders.set(entry.getKey(), "");
                 } else {
-                    httpHeaders.set(entry.getKey(), entry.getValue());
+                    if (headersNeedToBeEscaped.contains(entry.getKey())) {
+                        httpHeaders.set(entry.getKey(), Utils.escapeNonAscii(entry.getValue()));
+                    } else {
+                        httpHeaders.set(entry.getKey(), entry.getValue());
+                    }
                 }
             }
         }
