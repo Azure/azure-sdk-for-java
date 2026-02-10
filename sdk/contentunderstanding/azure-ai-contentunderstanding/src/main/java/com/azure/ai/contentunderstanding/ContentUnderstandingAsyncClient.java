@@ -142,6 +142,17 @@ public final class ContentUnderstandingAsyncClient {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -153,7 +164,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -236,6 +247,17 @@ public final class ContentUnderstandingAsyncClient {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -248,7 +270,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1463,7 +1485,7 @@ public final class ContentUnderstandingAsyncClient {
     }
 
     /**
-     * Return default settings for this Content Understanding resource.
+     * Update default settings for this Content Understanding resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -1513,8 +1535,13 @@ public final class ContentUnderstandingAsyncClient {
      * @param stringEncoding The string encoding format for content spans in the response.
      * Possible values are 'codePoint', 'utf16', and `utf8`. Default is `codePoint`.").
      * @param inputs Inputs to analyze. Currently, only pro mode supports multiple inputs.
-     * @param modelDeployments Override default mapping of model names to deployments.
-     * Ex. { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * @param modelDeployments Override the resource-level default mapping of supported large language model (LLM) names
+     * to model deployment names in Microsoft Foundry. Dictionary of string to string
+     * (LLM model name -&gt; model deployment name in Microsoft Foundry). Keys must be supported model names for the
+     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
+     * Values are model deployment names in your Microsoft Foundry resource.
+     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
+     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
      * @param processingLocation The location where the data may be processed. Defaults to global.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1522,7 +1549,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1553,7 +1580,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -1584,7 +1611,7 @@ public final class ContentUnderstandingAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)

@@ -602,6 +602,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -613,8 +624,8 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return provides status details for long running operations along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return provides status details for analyze operations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> analyzeWithResponseAsync(String analyzerId, BinaryData analyzeRequest1,
@@ -711,6 +722,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -722,7 +744,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return provides status details for long running operations along with {@link Response}.
+     * @return provides status details for analyze operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> analyzeWithResponse(String analyzerId, BinaryData analyzeRequest1,
@@ -818,6 +840,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -829,7 +862,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult>
@@ -933,6 +966,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -944,7 +988,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     * @return the {@link SyncPoller} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeWithModel(String analyzerId,
@@ -1048,6 +1092,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -1059,7 +1114,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeAsync(String analyzerId, BinaryData analyzeRequest1,
@@ -1162,6 +1217,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -1173,7 +1239,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     * @return the {@link SyncPoller} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginAnalyze(String analyzerId, BinaryData analyzeRequest1,
@@ -1265,6 +1331,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -1277,8 +1354,8 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return provides status details for long running operations along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return provides status details for analyze operations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BinaryData>> analyzeBinaryWithResponseAsync(String analyzerId, String contentType,
@@ -1363,6 +1440,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -1375,7 +1463,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return provides status details for long running operations along with {@link Response}.
+     * @return provides status details for analyze operations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Response<BinaryData> analyzeBinaryWithResponse(String analyzerId, String contentType,
@@ -1459,6 +1547,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -1471,7 +1570,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinaryWithModelAsync(
@@ -1564,6 +1663,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -1576,7 +1686,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     * @return the {@link SyncPoller} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<ContentAnalyzerAnalyzeOperationStatus, AnalyzeResult> beginAnalyzeBinaryWithModel(
@@ -1669,6 +1779,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -1681,7 +1802,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link PollerFlux} for polling of provides status details for long running operations.
+     * @return the {@link PollerFlux} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginAnalyzeBinaryAsync(String analyzerId, String contentType,
@@ -1773,6 +1894,17 @@ public final class ContentUnderstandingClientImpl {
      *             }
      *         ]
      *     }
+     *     usage (Optional): {
+     *         documentPagesMinimal: Integer (Optional)
+     *         documentPagesBasic: Integer (Optional)
+     *         documentPagesStandard: Integer (Optional)
+     *         audioHours: Double (Optional)
+     *         videoHours: Double (Optional)
+     *         contextualizationTokens: Integer (Optional)
+     *         tokens (Optional): {
+     *             String: int (Required)
+     *         }
+     *     }
      * }
      * }
      * </pre>
@@ -1785,7 +1917,7 @@ public final class ContentUnderstandingClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link SyncPoller} for polling of provides status details for long running operations.
+     * @return the {@link SyncPoller} for polling of provides status details for analyze operations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginAnalyzeBinary(String analyzerId, String contentType,
@@ -6079,7 +6211,7 @@ public final class ContentUnderstandingClientImpl {
     }
 
     /**
-     * Return default settings for this Content Understanding resource.
+     * Update default settings for this Content Understanding resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -6126,7 +6258,7 @@ public final class ContentUnderstandingClientImpl {
     }
 
     /**
-     * Return default settings for this Content Understanding resource.
+     * Update default settings for this Content Understanding resource.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>

@@ -27,8 +27,13 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
     private List<AnalyzeInput> inputs;
 
     /*
-     * Override default mapping of model names to deployments.
-     * Ex. { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * Override the resource-level default mapping of supported large language model (LLM) names to model deployment
+     * names in Microsoft Foundry. Dictionary of string to string
+     * (LLM model name -> model deployment name in Microsoft Foundry). Keys must be supported model names for the
+     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
+     * Values are model deployment names in your Microsoft Foundry resource.
+     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
+     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
      */
     @Generated
     private Map<String, String> modelDeployments;
@@ -63,8 +68,13 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
     }
 
     /**
-     * Get the modelDeployments property: Override default mapping of model names to deployments.
-     * Ex. { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * Get the modelDeployments property: Override the resource-level default mapping of supported large language model
+     * (LLM) names to model deployment names in Microsoft Foundry. Dictionary of string to string
+     * (LLM model name -&gt; model deployment name in Microsoft Foundry). Keys must be supported model names for the
+     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
+     * Values are model deployment names in your Microsoft Foundry resource.
+     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
+     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
      * 
      * @return the modelDeployments value.
      */
@@ -74,8 +84,13 @@ public final class AnalyzeRequest1 implements JsonSerializable<AnalyzeRequest1> 
     }
 
     /**
-     * Set the modelDeployments property: Override default mapping of model names to deployments.
-     * Ex. { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
+     * Set the modelDeployments property: Override the resource-level default mapping of supported large language model
+     * (LLM) names to model deployment names in Microsoft Foundry. Dictionary of string to string
+     * (LLM model name -&gt; model deployment name in Microsoft Foundry). Keys must be supported model names for the
+     * analyzer you are calling (get them via Get Analyzer, GET /analyzers/{analyzerId}, response.supportedModels).
+     * Values are model deployment names in your Microsoft Foundry resource.
+     * To get more information for a quickstart for REST API, see https://aka.ms/cudoc-quickstart-rest.
+     * Example: { "gpt-4.1": "myGpt41Deployment", "text-embedding-3-large": "myTextEmbedding3LargeDeployment" }.
      * 
      * @param modelDeployments the modelDeployments value to set.
      * @return the AnalyzeRequest1 object itself.
