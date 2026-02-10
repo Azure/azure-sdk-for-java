@@ -8,6 +8,7 @@
 - Renamed `enableAzureTokenProxy()` method in `WorkloadIdentityCredentialBuilder` to `enableAzureProxy()`. These changes only affect code written against beta version 1.19.0-beta.1.
 
 ### Bugs Fixed
+- Fixed `NullPointerException` in `IdentityClientOptions` when running in GraalVM native images (e.g., Quarkus applications). Replaced reflection-dependent `AzureIdentityEnvVars` enum usage with direct string literal to ensure compatibility with native compilation.
 
 ### Other Changes
 - Removed unused jetty, redisson, and lettuce-core dependencies.
