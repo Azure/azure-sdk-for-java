@@ -10,16 +10,6 @@
 
 ### Other Changes
 
-## 11.9.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 11.9.0-beta.1 (2025-11-17)
 
 ### Features Added

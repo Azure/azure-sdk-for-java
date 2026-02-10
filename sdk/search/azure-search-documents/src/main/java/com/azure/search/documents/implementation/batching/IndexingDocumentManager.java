@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Consumer;
@@ -22,11 +23,9 @@ import java.util.function.Function;
 /**
  * This class is responsible for keeping track of the documents that are currently being indexed and the documents that
  * are waiting to be indexed.
- *
- * @param <T> The type of document that is being indexed.
  */
-final class IndexingDocumentManager<T> {
-    private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
+final class IndexingDocumentManager {
+    private final LinkedList<TryTrackingIndexAction> actions = new LinkedList<>();
     private final ReentrantLock lock = new ReentrantLock();
 
     IndexingDocumentManager() {
@@ -37,18 +36,18 @@ final class IndexingDocumentManager<T> {
      * resilient against cases where the request timeouts or is cancelled by an external operation, preventing the
      * documents from being lost.
      */
-    private final Deque<TryTrackingIndexAction<T>> inFlightActions = new LinkedList<>();
+    private final Deque<TryTrackingIndexAction> inFlightActions = new LinkedList<>();
 
-    Collection<IndexAction<T>> getActions() {
+    Collection<IndexAction> getActions() {
         lock.lock();
         try {
-            List<IndexAction<T>> actions = new ArrayList<>(inFlightActions.size() + this.actions.size());
+            List<IndexAction> actions = new ArrayList<>(inFlightActions.size() + this.actions.size());
 
-            for (TryTrackingIndexAction<T> inFlightAction : inFlightActions) {
+            for (TryTrackingIndexAction inFlightAction : inFlightActions) {
                 actions.add(inFlightAction.getAction());
             }
 
-            for (TryTrackingIndexAction<T> action : this.actions) {
+            for (TryTrackingIndexAction action : this.actions) {
                 actions.add(action.getAction());
             }
 
@@ -70,18 +69,18 @@ final class IndexingDocumentManager<T> {
      * @param batchSize The size required to create a batch
      * @return A tuple of the number of actions in the batch and if a batch is available for processing.
      */
-    Tuple2<Integer, Boolean> addAndCheckForBatch(Collection<IndexAction<T>> actions,
-        Function<T, String> documentKeyRetriever, Consumer<OnActionAddedOptions<T>> onActionAddedConsumer,
-        int batchSize) {
+    Tuple2<Integer, Boolean> addAndCheckForBatch(Collection<IndexAction> actions,
+        Function<Map<String, Object>, String> documentKeyRetriever,
+        Consumer<OnActionAddedOptions> onActionAddedConsumer, int batchSize) {
         lock.lock();
 
         try {
-            for (IndexAction<T> action : actions) {
-                this.actions
-                    .addLast(new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())));
+            for (IndexAction action : actions) {
+                this.actions.addLast(
+                    new TryTrackingIndexAction(action, documentKeyRetriever.apply(action.getAdditionalProperties())));
 
                 if (onActionAddedConsumer != null) {
-                    onActionAddedConsumer.accept(new OnActionAddedOptions<>(action));
+                    onActionAddedConsumer.accept(new OnActionAddedOptions(action));
                 }
             }
 
@@ -105,7 +104,7 @@ final class IndexingDocumentManager<T> {
      * actions available.
      * @return A list of documents to be sent to the service for indexing.
      */
-    List<TryTrackingIndexAction<T>> tryCreateBatch(int batchSize, boolean ignoreBatchSize) {
+    List<TryTrackingIndexAction> tryCreateBatch(int batchSize, boolean ignoreBatchSize) {
         lock.lock();
 
         try {
@@ -116,7 +115,7 @@ final class IndexingDocumentManager<T> {
             }
 
             int size = Math.min(batchSize, actionSize + inFlightActionSize);
-            final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(size);
+            final List<TryTrackingIndexAction> batchActions = new ArrayList<>(size);
 
             // Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
             // factor of 1 as that would potentially cause collisions.
@@ -127,7 +126,7 @@ final class IndexingDocumentManager<T> {
 
             // If the batch is filled using documents lost in-flight add the remaining back to the beginning of the queue.
             if (inFlightDocumentsAdded == size) {
-                TryTrackingIndexAction<T> inflightAction;
+                TryTrackingIndexAction inflightAction;
                 while ((inflightAction = inFlightActions.pollLast()) != null) {
                     actions.push(inflightAction);
                 }
@@ -142,13 +141,13 @@ final class IndexingDocumentManager<T> {
         }
     }
 
-    private int fillFromQueue(List<TryTrackingIndexAction<T>> batch, Collection<TryTrackingIndexAction<T>> queue,
+    private int fillFromQueue(List<TryTrackingIndexAction> batch, Collection<TryTrackingIndexAction> queue,
         int requested, Set<String> duplicateKeyTracker) {
         int actionsAdded = 0;
 
-        Iterator<TryTrackingIndexAction<T>> iterator = queue.iterator();
+        Iterator<TryTrackingIndexAction> iterator = queue.iterator();
         while (actionsAdded < requested && iterator.hasNext()) {
-            TryTrackingIndexAction<T> potentialDocumentToAdd = iterator.next();
+            TryTrackingIndexAction potentialDocumentToAdd = iterator.next();
 
             if (duplicateKeyTracker.contains(potentialDocumentToAdd.getKey())) {
                 continue;
@@ -163,7 +162,7 @@ final class IndexingDocumentManager<T> {
         return actionsAdded;
     }
 
-    void reinsertCancelledActions(List<TryTrackingIndexAction<T>> actionsInFlight) {
+    void reinsertCancelledActions(List<TryTrackingIndexAction> actionsInFlight) {
         lock.lock();
         try {
             inFlightActions.addAll(actionsInFlight);
@@ -172,7 +171,7 @@ final class IndexingDocumentManager<T> {
         }
     }
 
-    void reinsertFailedActions(List<TryTrackingIndexAction<T>> actionsToRetry) {
+    void reinsertFailedActions(List<TryTrackingIndexAction> actionsToRetry) {
         lock.lock();
 
         try {

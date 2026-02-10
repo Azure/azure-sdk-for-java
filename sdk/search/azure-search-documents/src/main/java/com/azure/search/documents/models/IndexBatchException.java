@@ -4,12 +4,11 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.exception.AzureException;
-import com.azure.search.documents.SearchDocument;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +23,7 @@ public final class IndexBatchException extends AzureException {
     /**
      * Indexing results.
      */
-    private final ArrayList<IndexingResult> results;
+    private final List<IndexingResult> results;
 
     /**
      * Constructs an {@code IndexBatchException} from the given {@link IndexDocumentsResult}.
@@ -43,23 +42,15 @@ public final class IndexBatchException extends AzureException {
      * @param keyFieldName The name of the key field from the index schema.
      * @return A new batch containing all the actions from the given batch that failed and should be retried.
      */
-    public IndexBatchBase<SearchDocument> findFailedActionsToRetry(IndexBatchBase<SearchDocument> originalBatch,
-        String keyFieldName) {
-        return findFailedActionsToRetry(originalBatch, searchDocument -> searchDocument.get(keyFieldName).toString());
-    }
-
-    /**
-     * Finds all index actions in the given batch that failed and need to be retried, and returns them in a new batch.
-     *
-     * @param originBatch The batch that partially failed indexing.
-     * @param keySelector A lambda that retrieves a key value from a given document of type T.
-     * @param <T> The given document type.
-     * @return A new batch containing all the actions from the given batch that failed and should be retried.
-     */
-    public <T> IndexBatchBase<T> findFailedActionsToRetry(IndexBatchBase<T> originBatch,
-        Function<T, String> keySelector) {
-        List<IndexAction<T>> failedActions = doFindFailedActionsToRetry(originBatch, keySelector);
-        return new IndexBatchBase<T>(failedActions);
+    public IndexDocumentsBatch findFailedActionsToRetry(IndexDocumentsBatch originalBatch, String keyFieldName) {
+        Set<String> uniqueRetriableKeys = getIndexingResults().stream()
+            .filter(result -> isRetriableStatusCode(result.getStatusCode()))
+            .map(IndexingResult::getKey)
+            .collect(Collectors.toSet());
+        return new IndexDocumentsBatch(originalBatch.getActions()
+            .stream()
+            .filter(action -> isActionIncluded(action, uniqueRetriableKeys, keyFieldName))
+            .collect(Collectors.toList()));
     }
 
     /**
@@ -76,24 +67,9 @@ public final class IndexBatchException extends AzureException {
         return String.format(MESSAGE_FORMAT, failedResultCount, result.getResults().size());
     }
 
-    private <T> List<IndexAction<T>> doFindFailedActionsToRetry(IndexBatchBase<T> originBatch,
-        Function<T, String> keySelector) {
-        Set<String> uniqueRetriableKeys = getIndexingResults().stream()
-            .filter(result -> isRetriableStatusCode(result.getStatusCode()))
-            .map(IndexingResult::getKey)
-            .collect(Collectors.toSet());
-        return originBatch.getActions()
-            .stream()
-            .filter(action -> isActionIncluded(action, uniqueRetriableKeys, keySelector))
-            .collect(Collectors.toList());
-    }
-
-    private <T> boolean isActionIncluded(IndexAction<T> action, Set<String> uniqueRetriableKeys,
-        Function<T, String> keySelector) {
-        if (action.getDocument() != null) {
-            return uniqueRetriableKeys.contains(keySelector.apply(action.getDocument()));
-        }
-        return false;
+    private static boolean isActionIncluded(IndexAction action, Set<String> uniqueRetriableKeys, String keyFieldName) {
+        return action.getAdditionalProperties() != null
+            && uniqueRetriableKeys.contains(Objects.toString(action.getAdditionalProperties().get(keyFieldName), null));
     }
 
     /**

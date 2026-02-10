@@ -5,13 +5,12 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
+import com.azure.search.documents.models.IndexAction;
+import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * This example shows how to manage the contents of an Azure AI Search index.
@@ -46,13 +45,13 @@ public class IndexContentManagementExample {
             .indexName(INDEX_NAME)
             .buildClient();
 
-        List<Hotel> hotels = new ArrayList<>();
-        hotels.add(new Hotel().setHotelId("100"));
-        hotels.add(new Hotel().setHotelId("200"));
-        hotels.add(new Hotel().setHotelId("300"));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.MERGE_OR_UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.MERGE_OR_UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "200")),
+            new IndexAction().setActionType(IndexActionType.MERGE_OR_UPLOAD).setAdditionalProperties(Collections.singletonMap("HotelId", "300")));
 
         // Perform index operations on a list of documents
-        IndexDocumentsResult result = client.mergeOrUploadDocuments(hotels);
+        IndexDocumentsResult result = client.indexDocuments(batch);
         System.out.printf("Indexed %s documents%n", result.getResults().size());
     }
 
@@ -66,9 +65,9 @@ public class IndexContentManagementExample {
             .indexName(INDEX_NAME)
             .buildClient();
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addMergeOrUploadActions(Collections.singletonList(new Hotel().setHotelId("100")))
-            .addDeleteActions(Collections.singletonList(new Hotel().setHotelId("200")));
+        IndexDocumentsBatch batch = new IndexDocumentsBatch(
+            new IndexAction().setActionType(IndexActionType.MERGE).setAdditionalProperties(Collections.singletonMap("HotelId", "100")),
+            new IndexAction().setActionType(IndexActionType.DELETE).setAdditionalProperties(Collections.singletonMap("HotelId", "200")));
 
         // Send a single batch that performs many different actions
         IndexDocumentsResult result = client.indexDocuments(batch);

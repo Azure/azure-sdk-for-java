@@ -304,7 +304,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger failedCount = new AtomicInteger();
 
-        SearchClientBuilder builder = clientBuilder.addPolicy((context, next) -> {
+        SearchClientBuilder builder = clientBuilder.addPolicy((ignored, next) -> {
             requestCount.incrementAndGet();
             return next.process();
         });
@@ -314,8 +314,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlushInterval(Duration.ofSeconds(5))
             .initialBatchActionCount(10)
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> failedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> failedCount.incrementAndGet())
             .buildSender();
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
@@ -348,7 +348,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger failedCount = new AtomicInteger();
 
-        SearchClientBuilder builder = clientBuilder.addPolicy((context, next) -> {
+        SearchClientBuilder builder = clientBuilder.addPolicy((ignored, next) -> {
             requestCount.incrementAndGet();
             return next.process();
         });
@@ -359,8 +359,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlushInterval(Duration.ofSeconds(5))
                 .initialBatchActionCount(10)
-                .onActionSucceeded(options -> successCount.incrementAndGet())
-                .onActionError(options -> failedCount.incrementAndGet())
+                .onActionSucceeded(ignored -> successCount.incrementAndGet())
+                .onActionError(ignored -> failedCount.incrementAndGet())
                 .buildAsyncSender();
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
@@ -394,7 +394,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger failedCount = new AtomicInteger();
 
-        SearchClientBuilder builder = clientBuilder.addPolicy((context, next) -> {
+        SearchClientBuilder builder = clientBuilder.addPolicy((ignored, next) -> {
             requestCount.incrementAndGet();
             return next.process();
         });
@@ -404,8 +404,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlushInterval(Duration.ofSeconds(5))
             .initialBatchActionCount(10)
-            .onActionSucceeded(options -> successCount.incrementAndGet())
-            .onActionError(options -> failedCount.incrementAndGet())
+            .onActionSucceeded(ignored -> successCount.incrementAndGet())
+            .onActionError(ignored -> failedCount.incrementAndGet())
             .buildSender();
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
@@ -442,7 +442,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger failedCount = new AtomicInteger();
 
-        SearchClientBuilder builder = clientBuilder.addPolicy((context, next) -> {
+        SearchClientBuilder builder = clientBuilder.addPolicy((ignored, next) -> {
             requestCount.incrementAndGet();
             return next.process();
         });
@@ -453,8 +453,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlushInterval(Duration.ofSeconds(5))
                 .initialBatchActionCount(10)
-                .onActionSucceeded(options -> successCount.incrementAndGet())
-                .onActionError(options -> failedCount.incrementAndGet())
+                .onActionSucceeded(ignored -> successCount.incrementAndGet())
+                .onActionError(ignored -> failedCount.incrementAndGet())
                 .buildAsyncSender();
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
