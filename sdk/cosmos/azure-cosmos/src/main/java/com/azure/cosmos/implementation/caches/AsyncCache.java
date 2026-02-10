@@ -253,7 +253,7 @@ public class AsyncCache<TKey, TValue> {
             // 1. All existing production code uses the default equality comparer
             // 2. The serialization format remains unchanged (we still write the comparer for backward compatibility)
             // 3. Future format changes should increment the serialVersionUID to handle compatibility explicitly
-            ois.readObject(); // Read and discard the serialized comparer to maintain format compatibility
+            Object unusedComparer = ois.readObject(); // Read and discard the serialized comparer to maintain format compatibility
             
             // Use the default equality comparer (same as AsyncCache constructor)
             @SuppressWarnings("unchecked")

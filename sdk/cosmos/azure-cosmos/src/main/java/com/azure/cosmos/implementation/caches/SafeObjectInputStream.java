@@ -17,6 +17,13 @@ import java.util.Set;
 /**
  * A secure ObjectInputStream that restricts deserialization to a whitelist of allowed classes.
  * This prevents Remote Code Execution (RCE) attacks via unsafe deserialization.
+ * 
+ * <p>Note: This class only validates the top-level class being deserialized from the stream.
+ * Nested objects deserialized within a class's {@code readObject()} method are not checked
+ * by this class - they must be validated by the class's own deserialization logic.
+ * For example, when deserializing a {@code SerializableAsyncCollectionCache}, this class
+ * validates the outer cache object, while the cache's {@code readObject()} method is
+ * responsible for validating the individual collection objects it deserializes.</p>
  */
 public class SafeObjectInputStream extends ObjectInputStream {
     private static final Logger LOGGER = LoggerFactory.getLogger(SafeObjectInputStream.class);

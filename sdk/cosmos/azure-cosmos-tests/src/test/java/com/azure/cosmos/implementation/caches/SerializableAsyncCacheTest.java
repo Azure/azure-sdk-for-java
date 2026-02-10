@@ -144,7 +144,7 @@ public class SerializableAsyncCacheTest {
             SerializableAsyncCollectionCache cache = (SerializableAsyncCollectionCache) ois.readObject();
             
             // Should not reach here
-            assertThat(false).as("Expected InvalidClassException to be thrown").isTrue();
+            org.testng.Assert.fail("Expected InvalidClassException to be thrown");
         } catch (java.io.InvalidClassException e) {
             // Expected - the malicious class type was rejected
             assertThat(e.getMessage()).contains("Expected SerializableDocumentCollection");
@@ -172,7 +172,7 @@ public class SerializableAsyncCacheTest {
             AsyncCache<String, DocumentCollection> cache = snapshot.getCollectionInfoByNameCache();
             
             // Should not reach here
-            assertThat(false).as("Expected exception to be thrown for unauthorized class").isTrue();
+            org.testng.Assert.fail("Expected exception to be thrown for unauthorized class");
         } catch (Exception e) {
             // Expected - the unauthorized class was rejected
             // The exception could be wrapped in a CosmosException, so check the cause chain

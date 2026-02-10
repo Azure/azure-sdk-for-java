@@ -81,7 +81,7 @@ public class SerializableDocumentCollectionTests {
             SerializableDocumentCollection deserializedDocumentCollection = (SerializableDocumentCollection) ois.readObject();
             
             // Should not reach here
-            assertThat(false).as("Expected InvalidClassException to be thrown").isTrue();
+            org.testng.Assert.fail("Expected InvalidClassException to be thrown");
         } catch (java.io.InvalidClassException e) {
             // Expected - the malicious class type was rejected
             assertThat(e.getMessage()).contains("Expected ObjectNode");
