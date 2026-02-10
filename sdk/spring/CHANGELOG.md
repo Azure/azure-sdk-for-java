@@ -26,6 +26,14 @@ This section includes changes in `spring-cloud-azure-testcontainers` module.
 
 - Add ServiceBusContainerConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
 
+### Spring Cloud Azure Starter Monitor
+
+This section includes changes in `spring-cloud-azure-starter-monitor` module.
+
+#### Other Changes
+
+- Re-enabled for Spring Boot 4 support with OpenTelemetry 2.24.0.
+
 ## 7.0.0 (2026-02-03)
 - This release is compatible with Spring Boot 4.0.0-4.0.2. (Note: 4.0.x (x>2) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2025.1.0. (Note: 2025.1.x (x>0) should be supported, but they aren't tested with this release.)
