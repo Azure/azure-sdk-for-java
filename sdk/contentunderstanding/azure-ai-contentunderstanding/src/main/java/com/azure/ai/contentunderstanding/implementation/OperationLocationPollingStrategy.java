@@ -74,7 +74,7 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
         // Response<?> is Response<BinaryData>
         HttpHeader operationLocationHeader = response.getHeaders().get(PollingUtils.OPERATION_LOCATION_HEADER);
         if (operationLocationHeader != null) {
-            pollingContext.setData(PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName(),
+            pollingContext.setData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER),
                 PollingUtils.getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
         }
         final String httpMethod = response.getRequest().getHttpMethod().name();
