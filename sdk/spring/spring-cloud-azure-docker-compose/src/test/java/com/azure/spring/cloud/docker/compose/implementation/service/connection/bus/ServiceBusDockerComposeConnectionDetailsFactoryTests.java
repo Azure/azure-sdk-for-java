@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.AzureServiceBusMessagingAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
@@ -32,6 +33,7 @@ import static org.awaitility.Awaitility.waitAtMost;
     "spring.docker.compose.skip.in-tests=false",
     "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/bus/servicebus-compose.yaml",
     "spring.docker.compose.stop.command=down",
+    "spring.docker.compose.readiness.timeout=PT5M",
     "spring.cloud.azure.servicebus.namespace=sbemulatorns",
     "spring.cloud.azure.servicebus.entity-name=queue.1",
     "spring.cloud.azure.servicebus.entity-type=queue",
@@ -44,10 +46,21 @@ import static org.awaitility.Awaitility.waitAtMost;
 class ServiceBusDockerComposeConnectionDetailsFactoryTests {
 
     @Autowired
+    private AzureServiceBusConnectionDetails connectionDetails;
+
+    @Autowired
     private ServiceBusSenderClient senderClient;
 
     @Autowired
     private ServiceBusTemplate serviceBusTemplate;
+
+    @Test
+    void connectionDetailsShouldBeProvidedByFactory() {
+        assertThat(connectionDetails).isNotNull();
+        assertThat(connectionDetails.getConnectionString())
+            .isNotBlank()
+            .startsWith("Endpoint=sb://");
+    }
 
     @Test
     void senderClientCanSendMessage() {
