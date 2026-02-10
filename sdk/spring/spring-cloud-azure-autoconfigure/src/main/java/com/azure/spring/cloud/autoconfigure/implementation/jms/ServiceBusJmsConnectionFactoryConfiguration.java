@@ -55,23 +55,70 @@ class ServiceBusJmsConnectionFactoryConfiguration {
             this.environment = environment;
         }
 
+        /**
+         * Registers the appropriate ConnectionFactory bean based on configuration properties.
+         * <p>
+         * The ConnectionFactory type is determined by the following table:
+         * <table border="1">
+         *   <tr>
+         *     <th>spring.jms.servicebus.pool.enabled</th>
+         *     <th>spring.jms.cache.enabled</th>
+         *     <th>Sender ConnectionFactory</th>
+         *   </tr>
+         *   <tr><td>not set</td><td>not set</td><td>CachingConnectionFactory</td></tr>
+         *   <tr><td>not set</td><td>true</td><td>CachingConnectionFactory</td></tr>
+         *   <tr><td>not set</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
+         *   <tr><td>true</td><td>not set</td><td>JmsPoolConnectionFactory</td></tr>
+         *   <tr><td>true</td><td>true</td><td>CachingConnectionFactory</td></tr>
+         *   <tr><td>true</td><td>false</td><td>JmsPoolConnectionFactory</td></tr>
+         *   <tr><td>false</td><td>not set</td><td>CachingConnectionFactory</td></tr>
+         *   <tr><td>false</td><td>true</td><td>CachingConnectionFactory</td></tr>
+         *   <tr><td>false</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
+         * </table>
+         * <p>
+         * When using CachingConnectionFactory or JmsPoolConnectionFactory, the related class must be in the classpath.
+         * If not present, it falls back to ServiceBusJmsConnectionFactory.
+         */
         @Override
         public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
                                             BeanDefinitionRegistry registry) {
             BindResult<Boolean> poolEnabledResult = Binder.get(environment).bind("spring.jms.servicebus.pool.enabled", Boolean.class);
             BindResult<Boolean> cacheEnabledResult = Binder.get(environment).bind("spring.jms.cache.enabled", Boolean.class);
 
-            if (isPoolConnectionFactoryClassPresent() && poolEnabledResult.orElseGet(() -> false)) {
+            // Case 3: If cache.enabled is explicitly false, check pool.enabled
+            if (cacheEnabledResult.isBound() && !cacheEnabledResult.get()) {
+                // If pool.enabled is true, use JmsPoolConnectionFactory
+                if (isPoolConnectionFactoryClassPresent() && poolEnabledResult.isBound() && poolEnabledResult.get()) {
+                    registerJmsPoolConnectionFactory(registry);
+                    return;
+                }
+                // Otherwise use ServiceBusJmsConnectionFactory
+                registerServiceBusJmsConnectionFactory(registry);
+                return;
+            }
+
+            // Case 2: If cache.enabled is true (explicitly or by default when both true)
+            if (cacheEnabledResult.isBound() && cacheEnabledResult.get()) {
+                if (isCacheConnectionFactoryClassPresent()) {
+                    registerJmsCachingConnectionFactory(registry);
+                    return;
+                }
+            }
+
+            // Case 1: If pool.enabled is true and cache is not set
+            if (isPoolConnectionFactoryClassPresent() && poolEnabledResult.isBound() && poolEnabledResult.get()) {
                 registerJmsPoolConnectionFactory(registry);
                 return;
             }
 
-            // Use CachingConnectionFactory as default for sender side unless explicitly disabled
-            if (isCacheConnectionFactoryClassPresent() && cacheEnabledResult.orElseGet(() -> true)) {
+            // Case 4: Default - neither property is set or pool.enabled is false
+            // Use CachingConnectionFactory as default
+            if (isCacheConnectionFactoryClassPresent()) {
                 registerJmsCachingConnectionFactory(registry);
                 return;
             }
 
+            // Fallback if CachingConnectionFactory is not in classpath
             registerServiceBusJmsConnectionFactory(registry);
         }
 

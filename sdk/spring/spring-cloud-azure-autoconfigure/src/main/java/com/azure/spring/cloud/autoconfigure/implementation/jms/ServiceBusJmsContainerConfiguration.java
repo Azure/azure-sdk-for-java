@@ -67,22 +67,59 @@ class ServiceBusJmsContainerConfiguration {
         return jmsListenerContainerFactory;
     }
 
+    /**
+     * Determines the appropriate ConnectionFactory for JMS listener containers based on configuration properties.
+     * <p>
+     * The ConnectionFactory type is determined by the following table:
+     * <table border="1">
+     *   <tr>
+     *     <th>spring.jms.servicebus.pool.enabled</th>
+     *     <th>spring.jms.cache.enabled</th>
+     *     <th>Receiver ConnectionFactory</th>
+     *   </tr>
+     *   <tr><td>not set</td><td>not set</td><td>ServiceBusJmsConnectionFactory</td></tr>
+     *   <tr><td>not set</td><td>true</td><td>CachingConnectionFactory</td></tr>
+     *   <tr><td>not set</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
+     *   <tr><td>true</td><td>not set</td><td>JmsPoolConnectionFactory</td></tr>
+     *   <tr><td>true</td><td>true</td><td>CachingConnectionFactory</td></tr>
+     *   <tr><td>true</td><td>false</td><td>JmsPoolConnectionFactory</td></tr>
+     *   <tr><td>false</td><td>not set</td><td>ServiceBusJmsConnectionFactory</td></tr>
+     *   <tr><td>false</td><td>true</td><td>CachingConnectionFactory</td></tr>
+     *   <tr><td>false</td><td>false</td><td>ServiceBusJmsConnectionFactory</td></tr>
+     * </table>
+     *
+     * @param connectionFactory the ConnectionFactory bean registered by {@link ServiceBusJmsConnectionFactoryConfiguration}
+     * @return the ConnectionFactory to use for the receiver
+     */
     private ConnectionFactory getReceiverConnectionFactory(ConnectionFactory connectionFactory) {
-        // Check if pooling or caching was explicitly enabled by the user
         BindResult<Boolean> poolEnabledResult = Binder.get(environment).bind("spring.jms.servicebus.pool.enabled", Boolean.class);
         BindResult<Boolean> cacheEnabledResult = Binder.get(environment).bind("spring.jms.cache.enabled", Boolean.class);
         
-        // Only use the bean ConnectionFactory if pooling or caching was explicitly enabled
-        // This ensures receiver uses dedicated ServiceBusJmsConnectionFactory when properties are not set
-        boolean poolExplicitlyEnabled = poolEnabledResult.isBound() && poolEnabledResult.get();
-        boolean cacheExplicitlyEnabled = cacheEnabledResult.isBound() && cacheEnabledResult.get();
-        
-        if ((poolExplicitlyEnabled && connectionFactory instanceof JmsPoolConnectionFactory) ||
-            (cacheExplicitlyEnabled && connectionFactory instanceof CachingConnectionFactory)) {
+        // Case 3: If cache.enabled is explicitly false
+        if (cacheEnabledResult.isBound() && !cacheEnabledResult.get()) {
+            // If pool.enabled is true, use JmsPoolConnectionFactory bean
+            if (poolEnabledResult.isBound() && poolEnabledResult.get() && 
+                connectionFactory instanceof JmsPoolConnectionFactory) {
+                return connectionFactory;
+            }
+            // Otherwise create dedicated ServiceBusJmsConnectionFactory
+            return createServiceBusJmsConnectionFactory();
+        }
+
+        // Case 2 & 1: If cache.enabled is true (explicitly), use CachingConnectionFactory bean
+        if (cacheEnabledResult.isBound() && cacheEnabledResult.get() && 
+            connectionFactory instanceof CachingConnectionFactory) {
             return connectionFactory;
         }
-        
-        // Create a dedicated ServiceBusJmsConnectionFactory for the receiver
+
+        // Case 1: If pool.enabled is true and cache is not set, use JmsPoolConnectionFactory bean
+        if (poolEnabledResult.isBound() && poolEnabledResult.get() && 
+            !cacheEnabledResult.isBound() &&
+            connectionFactory instanceof JmsPoolConnectionFactory) {
+            return connectionFactory;
+        }
+
+        // Case 4: Default - create dedicated ServiceBusJmsConnectionFactory for receiver
         return createServiceBusJmsConnectionFactory();
     }
 

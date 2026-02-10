@@ -318,7 +318,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"standard", "premium"})
-    void jmsPoolConnectionFactoryBeanConfiguredByPoolEnableCacheEnable(String pricingTier) {
+    void cachingConnectionFactoryBeanConfiguredByPoolEnableCacheEnable(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -327,9 +327,9 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.cache.enabled=true"
             )
             .run(context -> {
-                    assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
+                    assertThat(context).hasSingleBean(CachingConnectionFactory.class);
                     assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
-                    assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
+                    assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
                 }
             );
     }
