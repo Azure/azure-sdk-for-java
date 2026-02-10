@@ -94,6 +94,62 @@ class TransientIOErrorsRetryingIteratorSpec extends UnitSpec with BasicLoggingTr
     transientErrorCount.get > 0 shouldEqual true
   }
 
+  "Closing after full drain" should "not trigger extra flux factory invocation" in {
+
+    val pageCount = 25
+    val producerCount = 2
+    val transientErrorCount = new AtomicLong(0)
+    val factoryInvocationCount = new AtomicLong(0)
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken => {
+        factoryInvocationCount.incrementAndGet()
+        generateMockedCosmosPagedFlux(
+          continuationToken, pageCount, transientErrorCount, injectEmptyPages = false, injectedDelayOfFirstPage = None)
+      },
+      pageSize,
+      1,
+      None,
+      None
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    // Fully drain the iterator
+    iterator.count(_ => true) shouldEqual (pageCount * pageSize * producerCount)
+
+    val factoryCountBeforeClose = factoryInvocationCount.get()
+    iterator.close()
+    val factoryCountAfterClose = factoryInvocationCount.get()
+
+    // close() should NOT have triggered an additional factory invocation
+    factoryCountAfterClose shouldEqual factoryCountBeforeClose
+  }
+
+  "Closing before full drain" should "still attempt to cancel the flux" in {
+
+    val pageCount = 25
+    val transientErrorCount = new AtomicLong(0)
+    val iterator = new TransientIOErrorsRetryingIterator(
+      continuationToken => generateMockedCosmosPagedFlux(
+        continuationToken, pageCount, transientErrorCount, injectEmptyPages = false, injectedDelayOfFirstPage = None),
+      pageSize,
+      1,
+      None,
+      None
+    )
+    iterator.maxRetryIntervalInMs = 5
+
+    // Partially drain - read only some items
+    var itemsRead = 0
+    while (iterator.hasNext && itemsRead < 5) {
+      iterator.next()
+      itemsRead += 1
+    }
+    itemsRead shouldEqual 5
+
+    // close() should not throw and should execute the cancellation path
+    noException should be thrownBy iterator.close()
+  }
+
   private val objectMapper = new ObjectMapper
 
   @throws[JsonProcessingException]
