@@ -17,7 +17,7 @@ public final class LocalStorageDiskType extends ExpandableStringEnum<LocalStorag
     public static final LocalStorageDiskType HDD = fromString("HDD");
 
     /**
-     * SSD DiskType.
+     * SDD DiskType.
      */
     public static final LocalStorageDiskType SSD = fromString("SSD");
 

@@ -23,7 +23,7 @@ public final class ExecuteHibernateRequestTests {
         Assertions.assertEquals(699446772, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(767638110, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals("lwnwxuqlcvydyp", model.resources().ids().get(0));
-        Assertions.assertEquals("nuj", model.correlationId());
+        Assertions.assertEquals("nuj", model.correlationid());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,12 +32,12 @@ public final class ExecuteHibernateRequestTests {
             .withExecutionParameters(new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST)
                 .withRetryPolicy(new RetryPolicy().withRetryCount(699446772).withRetryWindowInMinutes(767638110)))
             .withResources(new Resources().withIds(Arrays.asList("lwnwxuqlcvydyp", "tdooaoj", "niodkooeb")))
-            .withCorrelationId("nuj");
+            .withCorrelationid("nuj");
         model = BinaryData.fromObject(model).toObject(ExecuteHibernateRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST, model.executionParameters().optimizationPreference());
         Assertions.assertEquals(699446772, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(767638110, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals("lwnwxuqlcvydyp", model.resources().ids().get(0));
-        Assertions.assertEquals("nuj", model.correlationId());
+        Assertions.assertEquals("nuj", model.correlationid());
     }
 }

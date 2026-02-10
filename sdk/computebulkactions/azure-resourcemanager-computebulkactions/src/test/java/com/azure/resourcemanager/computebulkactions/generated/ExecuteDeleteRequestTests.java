@@ -24,7 +24,7 @@ public final class ExecuteDeleteRequestTests {
         Assertions.assertEquals(71172193, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(1165571898, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals("snfdsdoakgtdl", model.resources().ids().get(0));
-        Assertions.assertEquals("bbejdcngqqm", model.correlationId());
+        Assertions.assertEquals("bbejdcngqqm", model.correlationid());
         Assertions.assertFalse(model.forceDeletion());
     }
 
@@ -35,7 +35,7 @@ public final class ExecuteDeleteRequestTests {
                 new ExecutionParameters().withOptimizationPreference(OptimizationPreference.COST_AVAILABILITY_BALANCED)
                     .withRetryPolicy(new RetryPolicy().withRetryCount(71172193).withRetryWindowInMinutes(1165571898)))
             .withResources(new Resources().withIds(Arrays.asList("snfdsdoakgtdl", "kkze", "dlhewp", "sdsttwvog")))
-            .withCorrelationId("bbejdcngqqm")
+            .withCorrelationid("bbejdcngqqm")
             .withForceDeletion(false);
         model = BinaryData.fromObject(model).toObject(ExecuteDeleteRequest.class);
         Assertions.assertEquals(OptimizationPreference.COST_AVAILABILITY_BALANCED,
@@ -43,7 +43,7 @@ public final class ExecuteDeleteRequestTests {
         Assertions.assertEquals(71172193, model.executionParameters().retryPolicy().retryCount());
         Assertions.assertEquals(1165571898, model.executionParameters().retryPolicy().retryWindowInMinutes());
         Assertions.assertEquals("snfdsdoakgtdl", model.resources().ids().get(0));
-        Assertions.assertEquals("bbejdcngqqm", model.correlationId());
+        Assertions.assertEquals("bbejdcngqqm", model.correlationid());
         Assertions.assertFalse(model.forceDeletion());
     }
 }

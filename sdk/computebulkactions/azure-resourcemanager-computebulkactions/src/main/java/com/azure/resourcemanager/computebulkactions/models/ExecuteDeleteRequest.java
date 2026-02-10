@@ -29,7 +29,7 @@ public final class ExecuteDeleteRequest implements JsonSerializable<ExecuteDelet
     /*
      * CorrelationId item
      */
-    private String correlationId;
+    private String correlationid;
 
     /*
      * Forced delete resource item
@@ -83,22 +83,22 @@ public final class ExecuteDeleteRequest implements JsonSerializable<ExecuteDelet
     }
 
     /**
-     * Get the correlationId property: CorrelationId item.
+     * Get the correlationid property: CorrelationId item.
      * 
-     * @return the correlationId value.
+     * @return the correlationid value.
      */
-    public String correlationId() {
-        return this.correlationId;
+    public String correlationid() {
+        return this.correlationid;
     }
 
     /**
-     * Set the correlationId property: CorrelationId item.
+     * Set the correlationid property: CorrelationId item.
      * 
-     * @param correlationId the correlationId value to set.
+     * @param correlationid the correlationid value to set.
      * @return the ExecuteDeleteRequest object itself.
      */
-    public ExecuteDeleteRequest withCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
+    public ExecuteDeleteRequest withCorrelationid(String correlationid) {
+        this.correlationid = correlationid;
         return this;
     }
 
@@ -129,7 +129,7 @@ public final class ExecuteDeleteRequest implements JsonSerializable<ExecuteDelet
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
-        jsonWriter.writeStringField("correlationid", this.correlationId);
+        jsonWriter.writeStringField("correlationid", this.correlationid);
         jsonWriter.writeJsonField("resources", this.resources);
         jsonWriter.writeBooleanField("forceDeletion", this.forceDeletion);
         return jsonWriter.writeEndObject();
@@ -154,7 +154,7 @@ public final class ExecuteDeleteRequest implements JsonSerializable<ExecuteDelet
                 if ("executionParameters".equals(fieldName)) {
                     deserializedExecuteDeleteRequest.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteDeleteRequest.correlationId = reader.getString();
+                    deserializedExecuteDeleteRequest.correlationid = reader.getString();
                 } else if ("resources".equals(fieldName)) {
                     deserializedExecuteDeleteRequest.resources = Resources.fromJson(reader);
                 } else if ("forceDeletion".equals(fieldName)) {

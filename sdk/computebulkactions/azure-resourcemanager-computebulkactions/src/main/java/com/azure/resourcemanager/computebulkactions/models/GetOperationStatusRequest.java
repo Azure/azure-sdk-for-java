@@ -25,7 +25,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     /*
      * CorrelationId item
      */
-    private String correlationId;
+    private String correlationid;
 
     /**
      * Creates an instance of GetOperationStatusRequest class.
@@ -54,22 +54,22 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     }
 
     /**
-     * Get the correlationId property: CorrelationId item.
+     * Get the correlationid property: CorrelationId item.
      * 
-     * @return the correlationId value.
+     * @return the correlationid value.
      */
-    public String correlationId() {
-        return this.correlationId;
+    public String correlationid() {
+        return this.correlationid;
     }
 
     /**
-     * Set the correlationId property: CorrelationId item.
+     * Set the correlationid property: CorrelationId item.
      * 
-     * @param correlationId the correlationId value to set.
+     * @param correlationid the correlationid value to set.
      * @return the GetOperationStatusRequest object itself.
      */
-    public GetOperationStatusRequest withCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
+    public GetOperationStatusRequest withCorrelationid(String correlationid) {
+        this.correlationid = correlationid;
         return this;
     }
 
@@ -80,7 +80,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("operationIds", this.operationIds, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("correlationid", this.correlationId);
+        jsonWriter.writeStringField("correlationid", this.correlationid);
         return jsonWriter.writeEndObject();
     }
 
@@ -104,7 +104,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
                     List<String> operationIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedGetOperationStatusRequest.operationIds = operationIds;
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedGetOperationStatusRequest.correlationId = reader.getString();
+                    deserializedGetOperationStatusRequest.correlationid = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -29,7 +29,7 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
     /*
      * CorrelationId item
      */
-    private String correlationId;
+    private String correlationid;
 
     /**
      * Creates an instance of ExecuteHibernateRequest class.
@@ -78,22 +78,22 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
     }
 
     /**
-     * Get the correlationId property: CorrelationId item.
+     * Get the correlationid property: CorrelationId item.
      * 
-     * @return the correlationId value.
+     * @return the correlationid value.
      */
-    public String correlationId() {
-        return this.correlationId;
+    public String correlationid() {
+        return this.correlationid;
     }
 
     /**
-     * Set the correlationId property: CorrelationId item.
+     * Set the correlationid property: CorrelationId item.
      * 
-     * @param correlationId the correlationId value to set.
+     * @param correlationid the correlationid value to set.
      * @return the ExecuteHibernateRequest object itself.
      */
-    public ExecuteHibernateRequest withCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
+    public ExecuteHibernateRequest withCorrelationid(String correlationid) {
+        this.correlationid = correlationid;
         return this;
     }
 
@@ -104,7 +104,7 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("executionParameters", this.executionParameters);
-        jsonWriter.writeStringField("correlationid", this.correlationId);
+        jsonWriter.writeStringField("correlationid", this.correlationid);
         jsonWriter.writeJsonField("resources", this.resources);
         return jsonWriter.writeEndObject();
     }
@@ -128,7 +128,7 @@ public final class ExecuteHibernateRequest implements JsonSerializable<ExecuteHi
                 if ("executionParameters".equals(fieldName)) {
                     deserializedExecuteHibernateRequest.executionParameters = ExecutionParameters.fromJson(reader);
                 } else if ("correlationid".equals(fieldName)) {
-                    deserializedExecuteHibernateRequest.correlationId = reader.getString();
+                    deserializedExecuteHibernateRequest.correlationid = reader.getString();
                 } else if ("resources".equals(fieldName)) {
                     deserializedExecuteHibernateRequest.resources = Resources.fromJson(reader);
                 } else {

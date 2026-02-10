@@ -672,7 +672,7 @@ public final class BulkActionsVirtualMachinesCancelOperationsSamples {
         manager.bulkActions()
             .virtualMachinesCancelOperationsWithResponse("eastus2euap",
                 new CancelOperationsRequest().withOperationIds(Arrays.asList("23480d2f-1dca-4610-afb4-dd25eec1f34r"))
-                    .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"),
+                    .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -689,7 +689,7 @@ public final class BulkActionsVirtualMachinesCancelOperationsSamples {
         manager.bulkActions()
             .virtualMachinesCancelOperationsWithResponse("eastus2euap",
                 new CancelOperationsRequest().withOperationIds(Arrays.asList("2a3fce8e-874c-45f4-9d27-1a804f3b7a0f"))
-                    .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"),
+                    .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -739,7 +739,7 @@ public final class BulkActionsVirtualMachinesExecuteCreateSamples {
                     .withResourceCount(1))
                 .withExecutionParameters(new ExecutionParameters()
                     .withRetryPolicy(new RetryPolicy().withRetryCount(5).withRetryWindowInMinutes(45)))
-                .withCorrelationId("7efcfae3-f50d-4323-9aba-1093a33368f8"), com.azure.core.util.Context.NONE);
+                .withCorrelationid("7efcfae3-f50d-4323-9aba-1093a33368f8"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -804,7 +804,7 @@ public final class BulkActionsVirtualMachinesExecuteDeallocateSamples {
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -823,7 +823,7 @@ public final class BulkActionsVirtualMachinesExecuteDeallocateSamples {
                     .withRetryPolicy(new RetryPolicy().withRetryCount(4).withRetryWindowInMinutes(27)))
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -857,7 +857,7 @@ public final class BulkActionsVirtualMachinesExecuteDeleteSamples {
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3",
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -877,7 +877,7 @@ public final class BulkActionsVirtualMachinesExecuteDeleteSamples {
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3",
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource4")))
-                .withCorrelationId("dfe927c5-16a6-40b7-a0f7-8524975ed642")
+                .withCorrelationid("dfe927c5-16a6-40b7-a0f7-8524975ed642")
                 .withForceDeletion(true), com.azure.core.util.Context.NONE);
     }
 }
@@ -911,7 +911,7 @@ public final class BulkActionsVirtualMachinesExecuteHibernateSamples {
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -930,7 +930,7 @@ public final class BulkActionsVirtualMachinesExecuteHibernateSamples {
                     .withRetryPolicy(new RetryPolicy().withRetryCount(5).withRetryWindowInMinutes(27)))
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -963,7 +963,7 @@ public final class BulkActionsVirtualMachinesExecuteStartSamples {
                 .withExecutionParameters(new ExecutionParameters())
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -982,7 +982,7 @@ public final class BulkActionsVirtualMachinesExecuteStartSamples {
                     .withRetryPolicy(new RetryPolicy().withRetryCount(2).withRetryWindowInMinutes(27)))
                 .withResources(new Resources().withIds(Arrays.asList(
                     "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.Compute/virtualMachines/testResource3")))
-                .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
+                .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1010,7 +1010,7 @@ public final class BulkActionsVirtualMachinesGetOperationStatusSamples {
         manager.bulkActions()
             .virtualMachinesGetOperationStatusWithResponse("eastus2euap",
                 new GetOperationStatusRequest().withOperationIds(Arrays.asList("23480d2f-1dca-4610-afb4-dd25eec1f34r"))
-                    .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"),
+                    .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -1027,7 +1027,7 @@ public final class BulkActionsVirtualMachinesGetOperationStatusSamples {
         manager.bulkActions()
             .virtualMachinesGetOperationStatusWithResponse("eastus2euap",
                 new GetOperationStatusRequest().withOperationIds(Arrays.asList("2a3fce8e-874c-45f4-9d27-1a804f3b7a0f"))
-                    .withCorrelationId("4431320c-7a90-4300-b82b-73f0696ae50e"),
+                    .withCorrelationid("4431320c-7a90-4300-b82b-73f0696ae50e"),
                 com.azure.core.util.Context.NONE);
     }
 }
