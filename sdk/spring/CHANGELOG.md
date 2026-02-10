@@ -32,7 +32,7 @@ This section includes changes in `spring-cloud-azure-starter-monitor` module.
 
 #### Other Changes
 
-- Re-enabled for Spring Boot 4 support with OpenTelemetry 2.24.0.
+- Support spring-cloud-azure-starter-monitor in Spring Boot 4. [#47624](https://github.com/Azure/azure-sdk-for-java/issues/47624)
 
 ## 7.0.0 (2026-02-03)
 - This release is compatible with Spring Boot 4.0.0-4.0.2. (Note: 4.0.x (x>2) should be supported, but they aren't tested with this release.)
