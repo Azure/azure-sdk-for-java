@@ -148,11 +148,21 @@ public final class ResourceProvisionPayload implements JsonSerializable<Resource
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("resourceCount", this.resourceCount);
-        jsonWriter.writeMapField("baseProfile", this.baseProfile,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeArrayField("resourceOverrides", this.resourceOverrides, (writer, element) -> writer.writeMap(
-            element,
-            (writer1, element1) -> writer1.writeUntyped(element1 == null ? null : element1.toObject(Object.class))));
+        jsonWriter.writeMapField("baseProfile", this.baseProfile, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeArrayField("resourceOverrides", this.resourceOverrides,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> {
+                if (element1 == null) {
+                    writer1.writeNull();
+                } else {
+                    element1.writeTo(writer1);
+                }
+            }));
         jsonWriter.writeStringField("resourcePrefix", this.resourcePrefix);
         return jsonWriter.writeEndObject();
     }

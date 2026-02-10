@@ -606,7 +606,7 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
         FaultInjectionOperationType faultInjectionOperationType,
         boolean shouldUsePreferredRegionsOnClient,
         boolean isReadMany,
-        int hitLimit) {
+        int hitLimit) throws InterruptedException {
 
         boolean shouldRetryCrossRegion = false;
 
@@ -677,6 +677,11 @@ public class ClientRetryPolicyE2ETests extends TestSuiteBase {
             testContainer.createItem(createdItem).block();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(testContainer, Arrays.asList(tooManyRequestsRule, leaseNotFoundFaultRule)).block();
+
+            if (shouldRetryCrossRegion) {
+                // add some delay so to allow the data can be replicated cross regions
+                Thread.sleep(200);
+            }
 
             CosmosDiagnostics cosmosDiagnostics
                 = this.performDocumentOperation(testContainer, operationType, createdItem, testItem -> new PartitionKey(testItem.getMypk()), isReadMany)

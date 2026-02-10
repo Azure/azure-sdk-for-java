@@ -33,7 +33,6 @@ com.microsoft.azure:azure-client-authentication;1.7.14
 com.microsoft.azure:azure-client-runtime;1.7.14
 com.microsoft.azure:azure-keyvault-cryptography;1.2.2
 com.microsoft.azure:qpid-proton-j-extensions;1.2.6
-com.microsoft.sqlserver:mssql-jdbc;12.10.0.jre8
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;9.0.0
@@ -134,7 +133,7 @@ com.squareup.okio:okio;3.16.0
 com.squareup.okio:okio-jvm;3.16.0
 junit:junit;4.13.2
 commons-cli:commons-cli;1.9.0
-org.assertj:assertj-core;3.22.0
+org.assertj:assertj-core;3.27.7
 org.bouncycastle:bcprov-jdk18on;1.81
 org.bouncycastle:bcpkix-lts8on;2.73.8
 org.eclipse.jetty:jetty-alpn-conscrypt-server;9.4.58.v20250814
@@ -224,13 +223,6 @@ otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-extension-autoconfig
 otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-extension-autoconfigure;1.43.0
 otel_exporter_deprecated_io.opentelemetry:opentelemetry-sdk-testing;1.43.0
 otel_exporter_deprecated_io.opentelemetry.semconv:opentelemetry-semconv-incubating;1.26.0-alpha
-
-# This is a unique dependency as it is the only <type>test-jar</type> dependency in the
-# data track. It's also using a SNAPSHOT version which should be disallowed but there is
-# going to be some investigation necessary to find, at the very least, a newer version
-# which is, hopefully, not a SNAPSHOT.
-# sdk\batch\microsoft-azure-batch\pom.xml
-test_jar_com.microsoft.azure:azure-mgmt-resources;1.3.1-SNAPSHOT
 
 # Special test dependencies for clientcore integrations
 clientcore_dep_tests_org.slf4j:slf4j-simple;2.0.16
@@ -397,6 +389,8 @@ springboot4_org.testcontainers:junit-jupiter;1.21.3
 springboot4_org.testcontainers:azure;1.21.3
 springboot4_jakarta.annotation:jakarta.annotation-api;3.0.0
 springboot4_ch.qos.logback:logback-classic;1.5.25
+springboot4_org.awaitility:awaitility;4.3.0
+springboot4_com.microsoft.sqlserver:mssql-jdbc;13.2.1.jre11
 # Used for Spring version updates
 springboot4_org.springframework.boot:spring-boot-dependencies;4.0.2
 springboot4_org.springframework.cloud:spring-cloud-dependencies;2025.1.0
