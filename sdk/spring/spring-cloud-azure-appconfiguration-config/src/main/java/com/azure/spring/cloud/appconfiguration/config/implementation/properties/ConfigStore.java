@@ -269,7 +269,7 @@ public final class ConfigStore {
                 // new URI is used to validate the endpoint as a valid URI
                 new URI(validationEndpoint).toURL();
                 this.endpoint = validationEndpoint;
-            } catch (URISyntaxException | MalformedURLException e) {
+            } catch (URISyntaxException | MalformedURLException | IllegalArgumentException e) {
                 throw new IllegalStateException("Endpoint in connection string is not a valid URI.", e);
             }
         } else if (!connectionStrings.isEmpty()) {

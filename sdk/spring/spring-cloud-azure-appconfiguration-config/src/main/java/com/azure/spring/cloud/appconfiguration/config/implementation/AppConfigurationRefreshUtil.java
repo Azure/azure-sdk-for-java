@@ -103,8 +103,16 @@ public class AppConfigurationRefreshUtil {
                     RefreshEventData result = executeRefreshWithRetry(
                         clientFactory,
                         originEndpoint,
-                        (client, data, ctx) -> refreshWithTime(client, stateHolder.getState(originEndpoint),
-                            monitor.getRefreshInterval(), data, replicaLookUp, ctx),
+                        (client, data, ctx) -> {
+                            if (stateHolder.getState(originEndpoint) == null) {
+                                LOGGER.debug(
+                                    "Skipping configuration refresh check for {} because monitoring state is not initialized.",
+                                    originEndpoint);
+                                return;
+                            }
+                            refreshWithTime(client, stateHolder.getState(originEndpoint),
+                                monitor.getRefreshInterval(), data, replicaLookUp, ctx);
+                        },
                         eventData,
                         context,
                         "configuration refresh check");
@@ -198,7 +206,13 @@ public class AppConfigurationRefreshUtil {
         StateHolder stateHolder) {
         RefreshEventData eventData = new RefreshEventData();
         if (stateHolder.getLoadState(originEndpoint)) {
-            refreshWithoutTime(client, stateHolder.getState(originEndpoint).getWatchKeys(), eventData, context);
+            WatchedConfigurationSettings state = stateHolder.getState(originEndpoint);
+            if (state != null) {
+                refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
+            } else {
+                LOGGER.debug("Skipping configuration refresh check for {} as no watched state is available",
+                    originEndpoint);
+            }
         }
         return eventData.getDoRefresh();
     }

@@ -59,7 +59,9 @@ class AzureAppConfigurationBootstrapRegistrar {
         context.getBootstrapContext().addCloseListener(event -> {
             StateHolder stateHolder = event.getBootstrapContext().get(StateHolder.class);
             ConfigurableApplicationContext applicationContext = event.getApplicationContext();
-            applicationContext.getBeanFactory().registerSingleton("appConfigurationStateHolder", stateHolder);
+            if (!applicationContext.getBeanFactory().containsBean("appConfigurationStateHolder")) {
+                applicationContext.getBeanFactory().registerSingleton("appConfigurationStateHolder", stateHolder);
+            }
         });
     }
 
