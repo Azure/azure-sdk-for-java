@@ -80,8 +80,13 @@ public final class DocumentChartFigure extends DocumentFigure {
         jsonWriter.writeArrayField("footnotes", getFootnotes(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("role", getRole() == null ? null : getRole().toString());
-        jsonWriter.writeMapField("content", this.content,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("content", this.content, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
     }
