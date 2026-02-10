@@ -19,7 +19,7 @@ You can use any other Spark 3.5 spark offering as well, also you should be able 
 - For Spark 3.5 (Scala 2.12)
   - [Azure Databricks Runtime 15.4 LTS with Spark 3.5.0](https://learn.microsoft.com/azure/databricks/release-notes/runtime/15.4lts)
 - For Spark 3.5 (Scala 2.12/2.13)
-  - [Azure Databricks Runtime 16.4 LTS with Spark 3.5.0](https://learn.microsoft.com/azure/databricks/release-notes/runtime/16.4lts)
+  - [Azure Databricks Runtime 16.4 LTS with Spark 3.5.2](https://learn.microsoft.com/azure/databricks/release-notes/runtime/16.4lts)
 - For Spark 4.0
   - [Azure Databricks Runtime 17.3 LTS with Spark 4.0.0](https://learn.microsoft.com/azure/databricks/release-notes/runtime/17.3lts)
 
