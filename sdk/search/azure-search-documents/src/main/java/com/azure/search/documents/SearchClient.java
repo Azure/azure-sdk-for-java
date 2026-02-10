@@ -161,9 +161,9 @@ public final class SearchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public long getDocumentCount() {
-        // Generated convenience method for hiddenGeneratedgetDocumentCountWithResponse
+        // Generated convenience method for hiddenGeneratedGetDocumentCountWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetDocumentCountWithResponse(requestOptions).getValue().toObject(Long.class);
+        return hiddenGeneratedGetDocumentCountWithResponse(requestOptions).getValue().toObject(Long.class);
     }
 
     /**
@@ -263,7 +263,7 @@ public final class SearchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LookupDocument getDocument(String key, String querySourceAuthorization, Boolean enableElevatedRead,
         List<String> selectedFields) {
-        // Generated convenience method for hiddenGeneratedgetDocumentWithResponse
+        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
@@ -280,7 +280,7 @@ public final class SearchClient {
                     .collect(Collectors.joining(",")),
                 false);
         }
-        return hiddenGeneratedgetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
+        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
     }
 
     /**
@@ -298,9 +298,9 @@ public final class SearchClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LookupDocument getDocument(String key) {
-        // Generated convenience method for hiddenGeneratedgetDocumentWithResponse
+        // Generated convenience method for hiddenGeneratedGetDocumentWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
+        return hiddenGeneratedGetDocumentWithResponse(key, requestOptions).getValue().toObject(LookupDocument.class);
     }
 
     /**
@@ -980,7 +980,7 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedgetDocumentCountWithResponse(RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedGetDocumentCountWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getDocumentCountWithResponse(requestOptions);
     }
 
@@ -1027,7 +1027,7 @@ public final class SearchClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedgetDocumentWithResponse(String key, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedGetDocumentWithResponse(String key, RequestOptions requestOptions) {
         return this.serviceClient.getDocumentWithResponse(key, requestOptions);
     }
 }

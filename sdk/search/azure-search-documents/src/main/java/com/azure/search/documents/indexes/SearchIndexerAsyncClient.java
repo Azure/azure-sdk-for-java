@@ -363,36 +363,6 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     options (Optional): [
-     *         String(permissions) (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resyncWithResponse(String name, BinaryData indexerResync,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resyncWithResponseAsync(name, indexerResync, requestOptions);
-    }
-
-    /**
      * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1326,36 +1296,6 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
-     * Reset an existing skillset in a search service.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     skillNames (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resetSkillsWithResponse(String name, BinaryData skillNames,
-        RequestOptions requestOptions) {
-        return this.serviceClient.resetSkillsWithResponseAsync(name, skillNames, requestOptions);
-    }
-
-    /**
      * Creates a new datasource or updates a datasource if it already exists.
      *
      * @param name The name of the datasource.
@@ -1506,9 +1446,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection> getDataSourceConnection(String name) {
-        // Generated convenience method for hiddenGeneratedgetDataSourceConnectionWithResponse
+        // Generated convenience method for hiddenGeneratedGetDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetDataSourceConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetDataSourceConnectionWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
     }
 
@@ -1655,9 +1595,9 @@ public final class SearchIndexerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerDataSourceConnection>
         createDataSourceConnection(SearchIndexerDataSourceConnection dataSourceConnection) {
-        // Generated convenience method for hiddenGeneratedcreateDataSourceConnectionWithResponse
+        // Generated convenience method for hiddenGeneratedCreateDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection),
+        return hiddenGeneratedCreateDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection),
             requestOptions).flatMap(FluxUtil::toMono)
                 .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerDataSourceConnection.class));
     }
@@ -1698,9 +1638,10 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resync(String name, IndexerResyncBody indexerResync) {
-        // Generated convenience method for resyncWithResponse
+        // Generated convenience method for hiddenGeneratedResyncWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return resyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions).flatMap(FluxUtil::toMono);
+        return hiddenGeneratedResyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions)
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -1923,9 +1864,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> getIndexer(String name) {
-        // Generated convenience method for hiddenGeneratedgetIndexerWithResponse
+        // Generated convenience method for hiddenGeneratedGetIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetIndexerWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
     }
 
@@ -2066,9 +2007,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexer> createIndexer(SearchIndexer indexer) {
-        // Generated convenience method for hiddenGeneratedcreateIndexerWithResponse
+        // Generated convenience method for hiddenGeneratedCreateIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions)
+        return hiddenGeneratedCreateIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexer.class));
     }
@@ -2089,9 +2030,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerStatus> getIndexerStatus(String name) {
-        // Generated convenience method for hiddenGeneratedgetIndexerStatusWithResponse
+        // Generated convenience method for hiddenGeneratedGetIndexerStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetIndexerStatusWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetIndexerStatusWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerStatus.class));
     }
 
@@ -2245,9 +2186,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> getSkillset(String name) {
-        // Generated convenience method for hiddenGeneratedgetSkillsetWithResponse
+        // Generated convenience method for hiddenGeneratedGetSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetSkillsetWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return hiddenGeneratedGetSkillsetWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
     }
 
@@ -2392,9 +2333,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchIndexerSkillset> createSkillset(SearchIndexerSkillset skillset) {
-        // Generated convenience method for hiddenGeneratedcreateSkillsetWithResponse
+        // Generated convenience method for hiddenGeneratedCreateSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions)
+        return hiddenGeneratedCreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(SearchIndexerSkillset.class));
     }
@@ -2415,9 +2356,9 @@ public final class SearchIndexerAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetSkills(String name, SkillNames skillNames) {
-        // Generated convenience method for resetSkillsWithResponse
+        // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return resetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions)
+        return hiddenGeneratedResetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -2550,6 +2491,42 @@ public final class SearchIndexerAsyncClient {
     }
 
     /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.".
+     *
+     * @param name The name of the indexer.
+     * @param indexerResync The definition of the indexer resync options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resyncWithResponse(String name, IndexerResyncBody indexerResync,
+        RequestOptions requestOptions) {
+        return this.serviceClient.resyncWithResponseAsync(name, BinaryData.fromObject(indexerResync), requestOptions);
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resetSkillsWithResponse(String name, SkillNames skillNames,
+        RequestOptions requestOptions) {
+        return this.serviceClient.resetSkillsWithResponseAsync(name, BinaryData.fromObject(skillNames), requestOptions);
+    }
+
+    /**
      * Retrieves a datasource definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2605,7 +2582,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetDataSourceConnectionWithResponse(String name,
+    Mono<Response<BinaryData>> hiddenGeneratedGetDataSourceConnectionWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getDataSourceConnectionWithResponseAsync(name, requestOptions);
     }
@@ -2709,9 +2686,39 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
+    Mono<Response<BinaryData>> hiddenGeneratedCreateDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
         RequestOptions requestOptions) {
         return this.serviceClient.createDataSourceConnectionWithResponseAsync(dataSourceConnection, requestOptions);
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.".
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     options (Optional): [
+     *         String(permissions) (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the indexer.
+     * @param indexerResync The definition of the indexer resync options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> hiddenGeneratedResyncWithResponse(String name, BinaryData indexerResync,
+        RequestOptions requestOptions) {
+        return this.serviceClient.resyncWithResponseAsync(name, indexerResync, requestOptions);
     }
 
     /**
@@ -2807,7 +2814,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetIndexerWithResponse(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetIndexerWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexerWithResponseAsync(name, requestOptions);
     }
 
@@ -2985,7 +2992,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedcreateIndexerWithResponse(BinaryData indexer,
+    Mono<Response<BinaryData>> hiddenGeneratedCreateIndexerWithResponse(BinaryData indexer,
         RequestOptions requestOptions) {
         return this.serviceClient.createIndexerWithResponseAsync(indexer, requestOptions);
     }
@@ -3074,7 +3081,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexerStatusWithResponseAsync(name, requestOptions);
     }
 
@@ -3210,7 +3217,7 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedgetSkillsetWithResponse(String name, RequestOptions requestOptions) {
+    Mono<Response<BinaryData>> hiddenGeneratedGetSkillsetWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getSkillsetWithResponseAsync(name, requestOptions);
     }
 
@@ -3466,8 +3473,38 @@ public final class SearchIndexerAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> hiddenGeneratedcreateSkillsetWithResponse(BinaryData skillset,
+    Mono<Response<BinaryData>> hiddenGeneratedCreateSkillsetWithResponse(BinaryData skillset,
         RequestOptions requestOptions) {
         return this.serviceClient.createSkillsetWithResponseAsync(skillset, requestOptions);
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     skillNames (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skillset.
+     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> hiddenGeneratedResetSkillsWithResponse(String name, BinaryData skillNames,
+        RequestOptions requestOptions) {
+        return this.serviceClient.resetSkillsWithResponseAsync(name, skillNames, requestOptions);
     }
 }

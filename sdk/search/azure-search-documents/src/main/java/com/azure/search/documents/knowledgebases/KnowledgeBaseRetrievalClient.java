@@ -87,13 +87,13 @@ public final class KnowledgeBaseRetrievalClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBaseRetrievalResponse retrieve(String knowledgeBaseName,
         KnowledgeBaseRetrievalRequest retrievalRequest, String querySourceAuthorization) {
-        // Generated convenience method for hiddenGeneratedretrieveWithResponse
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (querySourceAuthorization != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("x-ms-query-source-authorization"),
                 querySourceAuthorization);
         }
-        return hiddenGeneratedretrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
+        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
             requestOptions).getValue().toObject(KnowledgeBaseRetrievalResponse.class);
     }
 
@@ -114,9 +114,9 @@ public final class KnowledgeBaseRetrievalClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KnowledgeBaseRetrievalResponse retrieve(String knowledgeBaseName,
         KnowledgeBaseRetrievalRequest retrievalRequest) {
-        // Generated convenience method for hiddenGeneratedretrieveWithResponse
+        // Generated convenience method for hiddenGeneratedRetrieveWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedretrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
+        return hiddenGeneratedRetrieveWithResponse(knowledgeBaseName, BinaryData.fromObject(retrievalRequest),
             requestOptions).getValue().toObject(KnowledgeBaseRetrievalResponse.class);
     }
 
@@ -262,7 +262,7 @@ public final class KnowledgeBaseRetrievalClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedretrieveWithResponse(String knowledgeBaseName, BinaryData retrievalRequest,
+    Response<BinaryData> hiddenGeneratedRetrieveWithResponse(String knowledgeBaseName, BinaryData retrievalRequest,
         RequestOptions requestOptions) {
         return this.serviceClient.retrieveWithResponse(knowledgeBaseName, retrievalRequest, requestOptions);
     }

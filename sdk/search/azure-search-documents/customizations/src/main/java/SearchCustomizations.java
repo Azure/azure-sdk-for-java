@@ -14,6 +14,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.Type;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
@@ -44,14 +45,14 @@ public class SearchCustomizations extends Customization {
         removeGetApis(searchClient);
         removeGetApis(searchAsyncClient);
 
-        hideResponseBinaryDataApis(searchClient);
-        hideResponseBinaryDataApis(searchAsyncClient);
-        hideResponseBinaryDataApis(indexes.getClass("SearchIndexClient"));
-        hideResponseBinaryDataApis(indexes.getClass("SearchIndexAsyncClient"));
-        hideResponseBinaryDataApis(indexes.getClass("SearchIndexerClient"));
-        hideResponseBinaryDataApis(indexes.getClass("SearchIndexerAsyncClient"));
-        hideResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalClient"));
-        hideResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
+        hideWithResponseBinaryDataApis(searchClient);
+        hideWithResponseBinaryDataApis(searchAsyncClient);
+        hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexClient"));
+        hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexAsyncClient"));
+        hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexerClient"));
+        hideWithResponseBinaryDataApis(indexes.getClass("SearchIndexerAsyncClient"));
+        hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalClient"));
+        hideWithResponseBinaryDataApis(knowledge.getClass("KnowledgeBaseRetrievalAsyncClient"));
     }
 
     // Weird quirk in the Java generator where SearchOptions is inferred from the parameters of searchPost in TypeSpec,
@@ -121,19 +122,28 @@ public class SearchCustomizations extends Customization {
         }));
     }
 
-    // At the time this was added, Java TypeSpec for Azure-type generation doesn't support returning Response<T>, which
-    // we want, so hide all the Response<BinaryData> APIs in the specified class and manually add Response<T> APIs.
-    private static void hideResponseBinaryDataApis(ClassCustomization customization) {
+    // At the time this was added, Java TypeSpec for Azure-type generation doesn't use 'T' in WithResponse APIs, which
+    // we want, so hide all the WithResponse APIs using BinaryData in the specified class and manually add 'T' APIs.
+    private static void hideWithResponseBinaryDataApis(ClassCustomization customization) {
         customization.customizeAst(ast -> ast.getClassByName(customization.getClassName())
             .ifPresent(clazz -> clazz.getMethods().forEach(method -> {
-                if (method.isPublic()
-                    && method.isAnnotationPresent("Generated")
-                    && method.getNameAsString().endsWith("WithResponse")
-                    && method.getType().toString().contains("Response<BinaryData>")) {
+                if (!method.isPublic() || !method.isAnnotationPresent("Generated")) {
+                    // Method either isn't public or isn't Generated, skip deeper inspection.
+                    return;
+                }
+
+                if (hasBinaryDataInType(method.getType())
+                    || method.getParameters().stream().anyMatch(param -> hasBinaryDataInType(param.getType()))) {
                     String methodName = method.getNameAsString();
-                    String newMethodName = "hiddenGenerated" + Character.toLowerCase(methodName.charAt(0))
+                    String newMethodName = "hiddenGenerated" + Character.toUpperCase(methodName.charAt(0))
                         + methodName.substring(1);
                     method.setModifiers().setName(newMethodName);
+
+                    String returnTypeName = method.getType().toString();
+                    if (returnTypeName.contains("PagedIterable")) {
+                        // PagedIterable generation behaves differently and will break with the logic below.
+                        return;
+                    }
 
                     clazz.getMethodsByName(methodName.replace("WithResponse", "")).forEach(nonWithResponse -> {
                         String body = nonWithResponse.getBody().map(BlockStmt::toString).get();
@@ -142,6 +152,10 @@ public class SearchCustomizations extends Customization {
                     });
                 }
             })));
+    }
+
+    private static boolean hasBinaryDataInType(Type type) {
+        return type.toString().contains("BinaryData");
     }
 
     // Removes GET equivalents of POST APIs in SearchClient and SearchAsyncClient as we never plan to expose those.

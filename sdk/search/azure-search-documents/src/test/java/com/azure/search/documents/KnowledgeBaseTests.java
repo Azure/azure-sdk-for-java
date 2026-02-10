@@ -535,13 +535,13 @@ public class KnowledgeBaseTests extends SearchTestBase {
 
     @Test
     @Disabled("Requires further resource deployment")
-    public void knowledgeBaseObjectHasNoAgentReferences() {
+    public void knowledgeBaseObjectHasNoAgentReferences() throws IOException {
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         KnowledgeBase knowledgeBase
             = new KnowledgeBase(randomKnowledgeBaseName(), KNOWLEDGE_SOURCE_REFERENCE).setModels(KNOWLEDGE_BASE_MODEL);
 
         KnowledgeBase created = searchIndexClient.createKnowledgeBase(knowledgeBase);
-        String kbJson = BinaryData.fromObject(created).toString();
+        String kbJson = created.toJsonString();
 
         // Filter out the name field which may contain the test method name with "agent"
         String jsonWithoutName = kbJson.replaceAll("\"name\":\"[^\"]*\"", "\"name\":\"FILTERED\"");

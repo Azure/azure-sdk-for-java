@@ -354,35 +354,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Resync selective options from the datasource to be re-ingested by the indexer.".
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     options (Optional): [
-     *         String(permissions) (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the indexer.
-     * @param indexerResync The definition of the indexer resync options.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resyncWithResponse(String name, BinaryData indexerResync, RequestOptions requestOptions) {
-        return this.serviceClient.resyncWithResponse(name, indexerResync, requestOptions);
-    }
-
-    /**
      * Resets specific documents in the datasource to be selectively re-ingested by the indexer.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
@@ -1306,35 +1277,6 @@ public final class SearchIndexerClient {
     }
 
     /**
-     * Reset an existing skillset in a search service.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     skillNames (Optional): [
-     *         String (Optional)
-     *     ]
-     * }
-     * }
-     * </pre>
-     *
-     * @param name The name of the skillset.
-     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resetSkillsWithResponse(String name, BinaryData skillNames, RequestOptions requestOptions) {
-        return this.serviceClient.resetSkillsWithResponse(name, skillNames, requestOptions);
-    }
-
-    /**
      * Creates a new datasource or updates a datasource if it already exists.
      *
      * @param name The name of the datasource.
@@ -1475,9 +1417,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection getDataSourceConnection(String name) {
-        // Generated convenience method for hiddenGeneratedgetDataSourceConnectionWithResponse
+        // Generated convenience method for hiddenGeneratedGetDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetDataSourceConnectionWithResponse(name, requestOptions).getValue()
+        return hiddenGeneratedGetDataSourceConnectionWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerDataSourceConnection.class);
     }
 
@@ -1621,9 +1563,9 @@ public final class SearchIndexerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerDataSourceConnection
         createDataSourceConnection(SearchIndexerDataSourceConnection dataSourceConnection) {
-        // Generated convenience method for hiddenGeneratedcreateDataSourceConnectionWithResponse
+        // Generated convenience method for hiddenGeneratedCreateDataSourceConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection),
+        return hiddenGeneratedCreateDataSourceConnectionWithResponse(BinaryData.fromObject(dataSourceConnection),
             requestOptions).getValue().toObject(SearchIndexerDataSourceConnection.class);
     }
 
@@ -1661,9 +1603,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resync(String name, IndexerResyncBody indexerResync) {
-        // Generated convenience method for resyncWithResponse
+        // Generated convenience method for hiddenGeneratedResyncWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        resyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions).getValue();
+        hiddenGeneratedResyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions).getValue();
     }
 
     /**
@@ -1874,9 +1816,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexer getIndexer(String name) {
-        // Generated convenience method for hiddenGeneratedgetIndexerWithResponse
+        // Generated convenience method for hiddenGeneratedGetIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetIndexerWithResponse(name, requestOptions).getValue().toObject(SearchIndexer.class);
+        return hiddenGeneratedGetIndexerWithResponse(name, requestOptions).getValue().toObject(SearchIndexer.class);
     }
 
     /**
@@ -2013,9 +1955,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexer createIndexer(SearchIndexer indexer) {
-        // Generated convenience method for hiddenGeneratedcreateIndexerWithResponse
+        // Generated convenience method for hiddenGeneratedCreateIndexerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions).getValue()
+        return hiddenGeneratedCreateIndexerWithResponse(BinaryData.fromObject(indexer), requestOptions).getValue()
             .toObject(SearchIndexer.class);
     }
 
@@ -2034,9 +1976,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerStatus getIndexerStatus(String name) {
-        // Generated convenience method for hiddenGeneratedgetIndexerStatusWithResponse
+        // Generated convenience method for hiddenGeneratedGetIndexerStatusWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetIndexerStatusWithResponse(name, requestOptions).getValue()
+        return hiddenGeneratedGetIndexerStatusWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerStatus.class);
     }
 
@@ -2182,9 +2124,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset getSkillset(String name) {
-        // Generated convenience method for hiddenGeneratedgetSkillsetWithResponse
+        // Generated convenience method for hiddenGeneratedGetSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedgetSkillsetWithResponse(name, requestOptions).getValue()
+        return hiddenGeneratedGetSkillsetWithResponse(name, requestOptions).getValue()
             .toObject(SearchIndexerSkillset.class);
     }
 
@@ -2327,9 +2269,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset) {
-        // Generated convenience method for hiddenGeneratedcreateSkillsetWithResponse
+        // Generated convenience method for hiddenGeneratedCreateSkillsetWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return hiddenGeneratedcreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions).getValue()
+        return hiddenGeneratedCreateSkillsetWithResponse(BinaryData.fromObject(skillset), requestOptions).getValue()
             .toObject(SearchIndexerSkillset.class);
     }
 
@@ -2348,9 +2290,9 @@ public final class SearchIndexerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void resetSkills(String name, SkillNames skillNames) {
-        // Generated convenience method for resetSkillsWithResponse
+        // Generated convenience method for hiddenGeneratedResetSkillsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        resetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions).getValue();
+        hiddenGeneratedResetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions).getValue();
     }
 
     /**
@@ -2479,6 +2421,41 @@ public final class SearchIndexerClient {
     }
 
     /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.".
+     *
+     * @param name The name of the indexer.
+     * @param indexerResync The definition of the indexer resync options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resyncWithResponse(String name, IndexerResyncBody indexerResync,
+        RequestOptions requestOptions) {
+        return this.serviceClient.resyncWithResponse(name, BinaryData.fromObject(indexerResync), requestOptions);
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     *
+     * @param name The name of the skillset.
+     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> resetSkillsWithResponse(String name, SkillNames skillNames, RequestOptions requestOptions) {
+        return this.serviceClient.resetSkillsWithResponse(name, BinaryData.fromObject(skillNames), requestOptions);
+    }
+
+    /**
      * Retrieves a datasource definition.
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -2534,7 +2511,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedgetDataSourceConnectionWithResponse(String name,
+    Response<BinaryData> hiddenGeneratedGetDataSourceConnectionWithResponse(String name,
         RequestOptions requestOptions) {
         return this.serviceClient.getDataSourceConnectionWithResponse(name, requestOptions);
     }
@@ -2638,9 +2615,39 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedcreateDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
+    Response<BinaryData> hiddenGeneratedCreateDataSourceConnectionWithResponse(BinaryData dataSourceConnection,
         RequestOptions requestOptions) {
         return this.serviceClient.createDataSourceConnectionWithResponse(dataSourceConnection, requestOptions);
+    }
+
+    /**
+     * Resync selective options from the datasource to be re-ingested by the indexer.".
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     options (Optional): [
+     *         String(permissions) (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the indexer.
+     * @param indexerResync The definition of the indexer resync options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> hiddenGeneratedResyncWithResponse(String name, BinaryData indexerResync,
+        RequestOptions requestOptions) {
+        return this.serviceClient.resyncWithResponse(name, indexerResync, requestOptions);
     }
 
     /**
@@ -2736,7 +2743,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedgetIndexerWithResponse(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedGetIndexerWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexerWithResponse(name, requestOptions);
     }
 
@@ -2914,7 +2921,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedcreateIndexerWithResponse(BinaryData indexer, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedCreateIndexerWithResponse(BinaryData indexer, RequestOptions requestOptions) {
         return this.serviceClient.createIndexerWithResponse(indexer, requestOptions);
     }
 
@@ -3001,7 +3008,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedgetIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedGetIndexerStatusWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getIndexerStatusWithResponse(name, requestOptions);
     }
 
@@ -3137,7 +3144,7 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedgetSkillsetWithResponse(String name, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedGetSkillsetWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getSkillsetWithResponse(name, requestOptions);
     }
 
@@ -3393,7 +3400,37 @@ public final class SearchIndexerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> hiddenGeneratedcreateSkillsetWithResponse(BinaryData skillset, RequestOptions requestOptions) {
+    Response<BinaryData> hiddenGeneratedCreateSkillsetWithResponse(BinaryData skillset, RequestOptions requestOptions) {
         return this.serviceClient.createSkillsetWithResponse(skillset, requestOptions);
+    }
+
+    /**
+     * Reset an existing skillset in a search service.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     skillNames (Optional): [
+     *         String (Optional)
+     *     ]
+     * }
+     * }
+     * </pre>
+     *
+     * @param name The name of the skillset.
+     * @param skillNames The names of the skills to reset. If not specified, all skills in the skillset will be reset.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> hiddenGeneratedResetSkillsWithResponse(String name, BinaryData skillNames,
+        RequestOptions requestOptions) {
+        return this.serviceClient.resetSkillsWithResponse(name, skillNames, requestOptions);
     }
 }
