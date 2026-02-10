@@ -13,4 +13,5 @@ module com.azure.resourcemanager.containerregistry {
     // open packages specifically for azure core
     opens com.azure.resourcemanager.containerregistry.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.containerregistry.models to com.azure.core;
+    opens com.azure.resourcemanager.containerregistry.implementation.models to com.azure.core;
 }

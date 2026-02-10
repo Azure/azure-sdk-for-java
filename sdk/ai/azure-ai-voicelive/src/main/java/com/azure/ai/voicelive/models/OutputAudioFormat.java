@@ -22,13 +22,13 @@ public final class OutputAudioFormat extends ExpandableStringEnum<OutputAudioFor
      * 16-bit PCM audio format at 8kHz sampling rate.
      */
     @Generated
-    public static final OutputAudioFormat PCM16_8000HZ = fromString("pcm16-8000hz");
+    public static final OutputAudioFormat PCM16_8000HZ = fromString("pcm16_8000hz");
 
     /**
      * 16-bit PCM audio format at 16kHz sampling rate.
      */
     @Generated
-    public static final OutputAudioFormat PCM16_16000HZ = fromString("pcm16-16000hz");
+    public static final OutputAudioFormat PCM16_16000HZ = fromString("pcm16_16000hz");
 
     /**
      * G.711 μ-law (mu-law) audio format at 8kHz sampling rate.
