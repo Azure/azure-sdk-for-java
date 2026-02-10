@@ -289,7 +289,7 @@ to share throughput between containers, you can enable database provisioned thro
 ```java
 @Override
 public CosmosConfig cosmosConfig() {
-    int autoscale = false; 
+    boolean autoscale = false; 
     int initialRequestUnits = 400;
     return CosmosConfig.builder()
                        .enableDatabaseThroughput(autoscale, initialRequestUnits) 
