@@ -10,6 +10,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `TransientIOErrorsRetryingIterator.close()` could trigger an unnecessary extra roundtrip to the service when the underlying flux subscription was already fully drained. - See [PR 47972](https://github.com/Azure/azure-sdk-for-java/pull/47972)
 
 #### Other Changes
 
