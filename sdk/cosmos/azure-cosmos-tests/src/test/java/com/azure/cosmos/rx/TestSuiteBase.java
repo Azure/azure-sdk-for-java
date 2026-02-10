@@ -27,10 +27,25 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DatabaseForTest;
+import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
+import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.ResourceResponseValidator;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.implementation.User;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.QueryFeedOperationState;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -127,14 +142,41 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     protected int subscriberValidationTimeout = TIMEOUT;
 
-    private static CosmosAsyncDatabase SHARED_DATABASE;
-    private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY;
-    private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION;
-    private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
-    private static CosmosAsyncContainer SHARED_SINGLE_PARTITION_COLLECTION;
+    protected static CosmosAsyncDatabase SHARED_DATABASE;
+    protected static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY;
+    protected static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION;
+    protected static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
+    protected static CosmosAsyncContainer SHARED_SINGLE_PARTITION_COLLECTION;
+
+    // Support for internal AsyncDocumentClient-based tests
+    protected static Database SHARED_DATABASE_FOR_INTERNAL_CLIENT;
+    protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION_FOR_INTERNAL_CLIENT;
+    protected static DocumentCollection SHARED_SINGLE_PARTITION_COLLECTION_FOR_INTERNAL_CLIENT;
+    protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_FOR_INTERNAL_CLIENT;
+
+    private final AsyncDocumentClient.Builder asyncDocumentClientBuilder;
 
     public TestSuiteBase(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
+        this.asyncDocumentClientBuilder = null;
+    }
+
+    /**
+     * Constructor for tests that need the internal AsyncDocumentClient API.
+     * @param clientBuilder the AsyncDocumentClient builder
+     */
+    public TestSuiteBase(AsyncDocumentClient.Builder clientBuilder) {
+        super();
+        this.asyncDocumentClientBuilder = clientBuilder;
+        logger.debug("Initializing {} with AsyncDocumentClient.Builder ...", this.getClass().getSimpleName());
+    }
+
+    /**
+     * Returns the AsyncDocumentClient.Builder for internal client tests.
+     * @return the AsyncDocumentClient.Builder
+     */
+    public final AsyncDocumentClient.Builder clientBuilder() {
+        return this.asyncDocumentClientBuilder;
     }
 
     protected static CosmosAsyncDatabase getSharedCosmosDatabase(CosmosAsyncClient client) {
@@ -177,6 +219,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     protected TestSuiteBase() {
+        this.asyncDocumentClientBuilder = null;
         logger.debug("Initializing {} ...", this.getClass().getSimpleName());
     }
 
@@ -1631,6 +1674,405 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         return "";
+    }
+
+    // ==================== AsyncDocumentClient (internal API) helper methods ====================
+
+    /**
+     * Creates a gateway AsyncDocumentClient.Builder for housekeeping operations.
+     * @return the AsyncDocumentClient.Builder
+     */
+    static protected AsyncDocumentClient.Builder createGatewayHouseKeepingDocumentClient() {
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        ThrottlingRetryOptions options = new ThrottlingRetryOptions();
+        options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
+        connectionPolicy.setThrottlingRetryOptions(options);
+        return new AsyncDocumentClient.Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withContentResponseOnWriteEnabled(true)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+    }
+
+    /**
+     * Creates a gateway AsyncDocumentClient.Builder.
+     * @return the AsyncDocumentClient.Builder
+     */
+    static protected AsyncDocumentClient.Builder createInternalGatewayRxDocumentClient(
+            ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
+            List<String> preferredLocationsList, boolean contentResponseOnWriteEnabled) {
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
+        connectionPolicy.setMultipleWriteRegionsEnabled(multiMasterEnabled);
+        connectionPolicy.setPreferredRegions(preferredLocationsList);
+        return new AsyncDocumentClient.Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(consistencyLevel)
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+    }
+
+    /**
+     * Creates a direct AsyncDocumentClient.Builder.
+     * @return the AsyncDocumentClient.Builder
+     */
+    static protected AsyncDocumentClient.Builder createInternalDirectRxDocumentClient(
+            ConsistencyLevel consistencyLevel,
+            Protocol protocol,
+            boolean multiMasterEnabled,
+            List<String> preferredLocationsList,
+            boolean contentResponseOnWriteEnabled) {
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
+
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(directConnectionConfig);
+        if (preferredLocationsList != null) {
+            connectionPolicy.setPreferredRegions(preferredLocationsList);
+        }
+
+        if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
+            connectionPolicy.setMultipleWriteRegionsEnabled(true);
+        }
+        Configs configs = spy(new Configs());
+        doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
+
+        return new AsyncDocumentClient.Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(consistencyLevel)
+                .withConfigs(configs)
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+    }
+
+    /**
+     * Creates a Database using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param databaseId the database id
+     * @return the created Database
+     */
+    static protected Database createDatabase(AsyncDocumentClient client, String databaseId) {
+        Database databaseDefinition = new Database();
+        databaseDefinition.setId(databaseId);
+        return client.createDatabase(databaseDefinition, null).block().getResource();
+    }
+
+    /**
+     * Creates a Database using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param database the database definition
+     * @return the created Database
+     */
+    static protected Database createDatabase(AsyncDocumentClient client, Database database) {
+        Mono<ResourceResponse<Database>> databaseObservable = client.createDatabase(database, null);
+        return databaseObservable.block().getResource();
+    }
+
+    /**
+     * Creates a DocumentCollection using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param databaseId the database id
+     * @param collection the collection definition
+     * @param options the request options
+     * @return the created DocumentCollection
+     */
+    public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
+                                                      DocumentCollection collection, RequestOptions options) {
+        return client.createCollection(TestUtils.getDatabaseNameLink(databaseId), collection, options)
+            .block()
+            .getResource();
+    }
+
+    /**
+     * Creates a DocumentCollection using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param databaseId the database id
+     * @param collection the collection definition
+     * @return the created DocumentCollection
+     */
+    public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
+                                                      DocumentCollection collection) {
+        return createCollection(client, databaseId, collection, null);
+    }
+
+    /**
+     * Creates a Document using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param databaseId the database id
+     * @param collectionId the collection id
+     * @param document the document definition
+     * @return the created Document
+     */
+    public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document) {
+        return createDocument(client, databaseId, collectionId, document, null);
+    }
+
+    /**
+     * Creates a Document using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param databaseId the database id
+     * @param collectionId the collection id
+     * @param document the document definition
+     * @param options the request options
+     * @return the created Document
+     */
+    public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document, RequestOptions options) {
+        return client.createDocument(TestUtils.getCollectionNameLink(databaseId, collectionId), document, options, false).block().getResource();
+    }
+
+    /**
+     * Creates a User using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param databaseId the database id
+     * @param user the user definition
+     * @return the created User
+     */
+    public static User createUser(AsyncDocumentClient client, String databaseId, User user) {
+        return client.createUser("dbs/" + databaseId, user, null).block().getResource();
+    }
+
+    /**
+     * Safely deletes a Database.
+     * @param client the AsyncDocumentClient
+     * @param database the database to delete
+     */
+    static protected void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
+        if (database != null) {
+            safeDeleteDatabase(client, database.getId());
+        }
+    }
+
+    /**
+     * Safely deletes a Database by id.
+     * @param client the AsyncDocumentClient
+     * @param databaseId the database id
+     */
+    static protected void safeDeleteDatabase(AsyncDocumentClient client, String databaseId) {
+        if (client != null) {
+            try {
+                client.deleteDatabase(TestUtils.getDatabaseNameLink(databaseId), null).block();
+            } catch (Exception e) {
+                // ignore
+            }
+        }
+    }
+
+    /**
+     * Safely closes an AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     */
+    static protected void safeClose(AsyncDocumentClient client) {
+        if (client != null) {
+            try {
+                client.close();
+            } catch (Exception e) {
+                logger.error("failed to close client", e);
+            }
+        }
+    }
+
+    /**
+     * Deletes a collection.
+     * @param client the AsyncDocumentClient
+     * @param collectionLink the collection link
+     */
+    public static void deleteCollection(AsyncDocumentClient client, String collectionLink) {
+        client.deleteCollection(collectionLink, null).block();
+    }
+
+    /**
+     * Validates success for ResourceResponse.
+     * @param observable the observable
+     * @param validator the validator
+     * @param <T> the resource type
+     */
+    public <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
+                                                     ResourceResponseValidator<T> validator) {
+        validateSuccess(observable, validator, subscriberValidationTimeout);
+    }
+
+    /**
+     * Validates success for ResourceResponse with timeout.
+     * @param observable the observable
+     * @param validator the validator
+     * @param timeout the timeout
+     * @param <T> the resource type
+     */
+    public static <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
+                                                            ResourceResponseValidator<T> validator, long timeout) {
+        StepVerifier.create(observable)
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
+    }
+
+    /**
+     * Validates failure for ResourceResponse.
+     * @param observable the observable
+     * @param validator the validator
+     * @param <T> the resource type
+     */
+    public <T extends Resource> void validateResourceResponseFailure(Mono<ResourceResponse<T>> observable,
+                                                     FailureValidator validator) {
+        validateResourceResponseFailure(observable, validator, subscriberValidationTimeout);
+    }
+
+    /**
+     * Validates failure for ResourceResponse with timeout.
+     * @param observable the observable
+     * @param validator the validator
+     * @param timeout the timeout
+     * @param <T> the resource type
+     */
+    public static <T extends Resource> void validateResourceResponseFailure(Mono<ResourceResponse<T>> observable,
+                                                            FailureValidator validator, long timeout) {
+        StepVerifier.create(observable)
+            .expectErrorSatisfies(validator::validate)
+            .verify(Duration.ofMillis(timeout));
+    }
+
+    /**
+     * Validates query success for FeedResponse.
+     * @param observable the observable
+     * @param validator the validator
+     * @param <T> the resource type
+     */
+    public <T extends Resource> void validateResourceQuerySuccess(Flux<FeedResponse<T>> observable,
+                                                          FeedResponseListValidator<T> validator) {
+        validateResourceQuerySuccess(observable, validator, subscriberValidationTimeout);
+    }
+
+    /**
+     * Validates query success for FeedResponse with timeout.
+     * @param observable the observable
+     * @param validator the validator
+     * @param timeout the timeout
+     * @param <T> the resource type
+     */
+    public static <T extends Resource> void validateResourceQuerySuccess(Flux<FeedResponse<T>> observable,
+                                                                 FeedResponseListValidator<T> validator, long timeout) {
+        StepVerifier.create(observable.collectList())
+            .assertNext(validator::validate)
+            .expectComplete()
+            .verify(Duration.ofMillis(timeout));
+    }
+
+    /**
+     * Gets the internal DocumentCollection definition.
+     * @return the DocumentCollection
+     */
+    static protected DocumentCollection getInternalCollectionDefinition() {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        DocumentCollection collectionDefinition = new DocumentCollection();
+        collectionDefinition.setId(UUID.randomUUID().toString());
+        collectionDefinition.setPartitionKey(partitionKeyDef);
+
+        return collectionDefinition;
+    }
+
+    /**
+     * Gets the internal DocumentCollection definition with range index.
+     * @return the DocumentCollection
+     */
+    static protected DocumentCollection getInternalCollectionDefinitionWithRangeRangeIndex() {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+        IndexingPolicy indexingPolicy = new IndexingPolicy();
+        List<IncludedPath> includedPaths = new ArrayList<>();
+        IncludedPath includedPath = new IncludedPath("/*");
+        includedPaths.add(includedPath);
+        indexingPolicy.setIncludedPaths(includedPaths);
+
+        DocumentCollection collectionDefinition = new DocumentCollection();
+        collectionDefinition.setIndexingPolicy(indexingPolicy);
+        collectionDefinition.setId(UUID.randomUUID().toString());
+        collectionDefinition.setPartitionKey(partitionKeyDef);
+
+        return collectionDefinition;
+    }
+
+    /**
+     * DataProvider for internal client builders.
+     * @return the client builders
+     */
+    @DataProvider(name = "internalClientBuilders")
+    public static Object[][] internalClientBuilders() {
+        return new Object[][]{{createInternalGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}};
+    }
+
+    /**
+     * Gets the collection link for a DocumentCollection.
+     * @param collection the DocumentCollection
+     * @return the collection link
+     */
+    public static String getCollectionLink(DocumentCollection collection) {
+        return collection.getSelfLink();
+    }
+
+    /**
+     * Truncates a DocumentCollection by deleting all documents.
+     * @param collection the DocumentCollection
+     */
+    protected static void truncateCollection(DocumentCollection collection) {
+        logger.info("Truncating DocumentCollection {} ...", collection.getId());
+
+        try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient()) {
+
+            CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+            options.setMaxDegreeOfParallelism(-1);
+
+            logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
+
+            String altLink = collection.getAltLink();
+            // Normalize altLink so both "dbs/.../colls/..." and "/dbs/.../colls/..." are handled consistently.
+            String normalizedAltLink = StringUtils.strip(altLink, "/");
+            String[] altLinkSegments = normalizedAltLink.split("/");
+            // altLink format (after normalization): dbs/{dbName}/colls/{collName}
+
+            if (altLinkSegments.length >= 4) {
+                String dbId = altLinkSegments[1];
+                String collId = altLinkSegments[3];
+                CosmosAsyncDatabase database = cosmosClient.getDatabase(dbId);
+                CosmosAsyncContainer container = database.getContainer(collId);
+                
+                List<String> ids = container.queryItems("SELECT * FROM c", options, InternalObjectNode.class)
+                    .byPage()
+                    .flatMap(page -> Flux.fromIterable(page.getResults()))
+                    .map(doc -> doc.getId())
+                    .collectList()
+                    .block();
+
+                if (ids != null) {
+                    for (String id : ids) {
+                        try {
+                            container.deleteItem(id, PartitionKey.NONE).block();
+                        } catch (Exception e) {
+                            // ignore
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
