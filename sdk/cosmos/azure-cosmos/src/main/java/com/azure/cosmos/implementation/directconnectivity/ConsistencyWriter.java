@@ -610,18 +610,18 @@ public class ConsistencyWriter {
         }
 
         switch (barrierType) {
-            case NONE -> {
-            }
-            case GLOBAL_STRONG_WRITE -> {
+            case NONE:
+                break;
+            case GLOBAL_STRONG_WRITE:
                 if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN)) != null) {
                     globalCommittedLsn.v = Long.parseLong(headerValue);
                 }
-            }
-            case N_REGION_SYNCHRONOUS_COMMIT -> {
+                break;
+            case N_REGION_SYNCHRONOUS_COMMIT:
                 if ((headerValue = response.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_N_REGION_COMMITTED_GLSN)) != null) {
                     globalCommittedLsn.v = Long.parseLong(headerValue);
                 }
-            }
+                break;
         }
     }
 
