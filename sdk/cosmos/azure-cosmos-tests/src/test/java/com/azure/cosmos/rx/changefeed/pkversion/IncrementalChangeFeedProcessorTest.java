@@ -1688,7 +1688,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "long-emulator" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "long-emulator" }, timeOut = 3 * TIMEOUT)
     public void readFeedDocumentsWithThroughputControl() throws InterruptedException {
         // Create a separate client as throughput control group will be applied to it
         CosmosAsyncClient clientWithThroughputControl =
@@ -1712,12 +1712,15 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
             Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
 
             int maxItemCount = 100; // force the RU usage per requests > 1
-            int feedCount = maxItemCount * 2; // force to do two fetches
+            // force to do two fetches
             // using the original client to create the docs to isolate possible throttling
-            setupReadFeedDocuments(
-                createdDocuments,
-                this.createdDatabase.getContainer(createdFeedCollection.getId()),
-                feedCount);
+            for (int i = 0; i < 2; i++) {
+                setupReadFeedDocuments(
+                    createdDocuments,
+                    this.createdDatabase.getContainer(createdFeedCollection.getId()),
+                    maxItemCount,
+                    true);
+            }
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
@@ -2229,14 +2232,26 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    private void setupReadFeedDocuments(List<InternalObjectNode> createdDocuments, CosmosAsyncContainer feedCollection, long count) {
+    private void setupReadFeedDocuments(
+        List<InternalObjectNode> createdDocuments,
+        CosmosAsyncContainer feedCollection,
+        long count) {
+        setupReadFeedDocuments(createdDocuments, feedCollection, count, false);
+    }
+
+    private void setupReadFeedDocuments(
+        List<InternalObjectNode> createdDocuments,
+        CosmosAsyncContainer feedCollection,
+        long count,
+        boolean bulkEnabled) {
         List<InternalObjectNode> docDefList = new ArrayList<>();
 
         for(int i = 0; i < count; i++) {
             docDefList.add(getDocumentDefinition());
         }
 
-        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, false));
+        createdDocuments.addAll(insertAllItemsBlocking(feedCollection, docDefList, bulkEnabled));
+
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
     }
 

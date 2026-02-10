@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2026-02-09)
 
 ### Features Added
 
@@ -33,15 +33,11 @@
 - Added custom text normalization URL support for Azure voices:
   - Added `customTextNormalizationUrl` property to `AzureCustomVoice`, `AzurePersonalVoice`, and `AzureStandardVoice`
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Fixed `OutputAudioFormat` enum values from dash-separated to underscore-separated:
   - `pcm16-8000hz` → `pcm16_8000hz`
   - `pcm16-16000hz` → `pcm16_16000hz`
-
-### Other Changes
 
 ## 1.0.0-beta.3 (2025-12-03)
 

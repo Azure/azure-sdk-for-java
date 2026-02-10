@@ -246,8 +246,13 @@ public final class StorageBlobTierChangedEventData implements JsonSerializable<S
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
         jsonWriter.writeStringField("previousTier", this.previousTier == null ? null : this.previousTier.toString());
-        jsonWriter.writeMapField("storageDiagnostics", this.storageDiagnostics,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("storageDiagnostics", this.storageDiagnostics, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeStringField("api", this.api);
         jsonWriter.writeStringField("clientRequestId", this.clientRequestId);
         jsonWriter.writeStringField("requestId", this.requestId);

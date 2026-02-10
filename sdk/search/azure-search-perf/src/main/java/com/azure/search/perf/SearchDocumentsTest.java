@@ -3,12 +3,9 @@
 
 package com.azure.search.perf;
 
-import com.azure.search.perf.core.Hotel;
 import com.azure.search.perf.core.SearchPerfStressOptions;
 import com.azure.search.perf.core.ServiceTest;
 import reactor.core.publisher.Mono;
-
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Performs searching operations.
@@ -34,19 +31,12 @@ public class SearchDocumentsTest extends ServiceTest<SearchPerfStressOptions> {
 
     @Override
     public void run() {
-        AtomicInteger count = new AtomicInteger();
-        searchClient.search("").iterator().forEachRemaining(result -> {
-            result.getDocument(Hotel.class);
-            count.incrementAndGet();
-        });
-
-        assert count.get() > 0;
+        assert searchClient.search(null).stream().count() > 0;
     }
 
     @Override
     public Mono<Void> runAsync() {
-        return searchAsyncClient.search("")
-            .map(result -> result.getDocument(Hotel.class))
+        return searchAsyncClient.search(null)
             .count()
             .flatMap(
                 count -> count > 0 ? Mono.empty() : Mono.error(new RuntimeException("Expected autocomplete results.")));
