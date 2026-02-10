@@ -73,8 +73,7 @@ public class ReproTest extends TestSuiteBase {
 
     @AfterClass(groups = {"fast"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.client).isNotNull();
-        this.client.close();
+        safeClose(this.client);
     }
 
     @Test(groups = { "fast" }, timeOut = TIMEOUT * 1_000_000)

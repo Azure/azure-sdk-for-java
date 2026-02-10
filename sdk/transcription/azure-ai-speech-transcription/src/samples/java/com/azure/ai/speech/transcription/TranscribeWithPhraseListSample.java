@@ -54,8 +54,7 @@ public class TranscribeWithPhraseListSample {
                     "Secret Garden",
                     "empleada doméstica",
                     "habitación"
-                ))
-                .setBiasingWeight(5.0); // Weight range: 1.0-20.0 (higher = stronger bias)
+                ));
 
             // Create transcription options with phrase list
             TranscriptionOptions options = new TranscriptionOptions(audioFileDetails)
@@ -65,7 +64,6 @@ public class TranscribeWithPhraseListSample {
             phraseListOptions.getPhrases().forEach(phrase ->
                 System.out.println("  - " + phrase)
             );
-            System.out.println("\nBiasing weight: " + phraseListOptions.getBiasingWeight());
             System.out.println("\nTranscribing with phrase list...\n");
 
             // Transcribe
