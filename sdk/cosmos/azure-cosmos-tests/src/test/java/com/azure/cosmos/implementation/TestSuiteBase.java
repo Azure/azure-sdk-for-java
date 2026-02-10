@@ -194,8 +194,10 @@ public abstract class TestSuiteBase extends DocumentClientTest {
             logger.info("Truncating DocumentCollection {} documents ...", collection.getId());
 
             String altLink = collection.getAltLink();
-            String[] altLinkSegments = altLink.split("/");
-            // altLink format: dbs/{dbName}/colls/{collName}
+            // Normalize altLink so both "dbs/.../colls/..." and "/dbs/.../colls/..." are handled consistently.
+            String normalizedAltLink = StringUtils.strip(altLink, "/");
+            String[] altLinkSegments = normalizedAltLink.split("/");
+            // altLink format (after normalization): dbs/{dbName}/colls/{collName}
             String databaseName = altLinkSegments[1];
             String containerName = altLinkSegments[3];
 
@@ -203,7 +205,7 @@ public abstract class TestSuiteBase extends DocumentClientTest {
 
             Flux<CosmosItemOperation> deleteOperations =
                 container
-                    .queryItems( "SELECT * FROM root", Document.class)
+                    .queryItems( "SELECT * FROM root", options, Document.class)
                     .byPage()
                     .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
@@ -287,7 +289,6 @@ public abstract class TestSuiteBase extends DocumentClientTest {
                 .byPage()
                 .publishOn(Schedulers.parallel()).flatMap(page -> Flux.fromIterable(page.getResults()))
                 .flatMap(udf -> {
-                    RequestOptions requestOptions = new RequestOptions();
                     return container.getScripts().getUserDefinedFunction(udf.getId()).delete();
                 })
                 .then()
