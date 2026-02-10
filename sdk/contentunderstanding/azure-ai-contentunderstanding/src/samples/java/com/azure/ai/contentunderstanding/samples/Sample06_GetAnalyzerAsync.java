@@ -11,6 +11,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrating how to get analyzer information asynchronously.
@@ -124,9 +125,12 @@ public class Sample06_GetAnalyzerAsync {
             );
         // END:ContentUnderstandingGetAnalyzerAsync
 
-        // Wait for the async operation to complete
+        // Wait for the async operation to complete with a timeout
         try {
-            latch.await();
+            if (!latch.await(10, TimeUnit.SECONDS)) {
+                System.err.println("Operation timed out after 10 seconds");
+                System.exit(1);
+            }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             e.printStackTrace();

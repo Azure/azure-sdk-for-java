@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -64,6 +65,9 @@ public class Sample00_UpdateDefaultsAsync {
         // Step 1: Get current defaults to see what's configured
         System.out.println("Getting current default configuration...");
         
+        // Use CountDownLatch to wait for async operation to complete
+        CountDownLatch latch = new CountDownLatch(1);
+        
         // Chain all operations reactively
         client.getDefaults()
             .doOnNext(currentDefaults -> {
@@ -114,6 +118,7 @@ public class Sample00_UpdateDefaultsAsync {
                 System.err.println("Error occurred: " + error.getMessage());
                 error.printStackTrace();
             })
+            .doFinally(signalType -> latch.countDown())
             .subscribe(
                 result -> {
                     // Success - operations completed
@@ -124,10 +129,12 @@ public class Sample00_UpdateDefaultsAsync {
                 }
             );
 
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
+        // Wait for the async operation to complete with a timeout
         try {
-            TimeUnit.SECONDS.sleep(10);
+            if (!latch.await(30, TimeUnit.SECONDS)) {
+                System.err.println("Operation timed out after 30 seconds");
+                System.exit(1);
+            }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             e.printStackTrace();
