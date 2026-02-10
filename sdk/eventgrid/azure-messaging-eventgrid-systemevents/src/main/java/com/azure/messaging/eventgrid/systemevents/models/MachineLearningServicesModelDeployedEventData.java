@@ -125,10 +125,20 @@ public final class MachineLearningServicesModelDeployedEventData
         jsonWriter.writeStringField("serviceName", this.serviceName);
         jsonWriter.writeStringField("serviceComputeType", this.serviceComputeType);
         jsonWriter.writeStringField("modelIds", this.modelIds);
-        jsonWriter.writeMapField("serviceTags", this.serviceTags,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
-        jsonWriter.writeMapField("serviceProperties", this.serviceProperties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("serviceTags", this.serviceTags, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
+        jsonWriter.writeMapField("serviceProperties", this.serviceProperties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         return jsonWriter.writeEndObject();
     }
 
