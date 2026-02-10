@@ -281,7 +281,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     }
 
     @Test
-    void configureWithConnectionDetails() {
+    void connectionDetailsOverridesPropertyConnectionString() {
         String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
         this.contextRunner
             .withPropertyValues(
