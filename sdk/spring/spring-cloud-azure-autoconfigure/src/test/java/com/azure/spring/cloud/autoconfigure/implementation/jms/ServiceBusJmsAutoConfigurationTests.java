@@ -287,14 +287,14 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"standard", "premium"})
-    void nativeConnectionFactoryBeanConfiguredByDefaultInJmsListenerContainerFactory(String pricingTier) {
+    void cachingConnectionFactoryBeanConfiguredByDefault(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
             .run(context -> {
-                assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
-                assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
             });
     }
@@ -387,7 +387,7 @@ class ServiceBusJmsAutoConfigurationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"standard", "premium"})
-    void nativeConnectionFactoryBeanConfiguredByPoolDisable(String pricingTier) {
+    void cachingConnectionFactoryBeanConfiguredByPoolDisable(String pricingTier) {
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
@@ -395,8 +395,8 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.pool.enabled=false"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
-                assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
+                assertThat(context).hasSingleBean(CachingConnectionFactory.class);
+                assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
             });
     }
