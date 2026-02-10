@@ -143,6 +143,16 @@ to use the same version of Scala that Spark was compiled for.
 | 4.16.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*                         |
 | 4.15.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*                         |
 
+#### azure-cosmos-spark_3-5_2-13
+| Connector | Supported Spark Versions | Minimum Java Version  | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
+|-----------|--------------------------|-----------------------|---------------------------|-------------------------------|---------------------------|
+| 4.43.0    | 3.5.0                    | [8, 11]               | 2.13                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
+
+#### azure-cosmos-spark_4-0_2-13
+| Connector | Supported Spark Versions | Minimum Java Version | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
+|-----------|--------------------------|----------------------|---------------------------|-------------------------------|---------------------------|
+| 4.43.0    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         |                           |
+
 ### Download
 
 You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime from Maven:
