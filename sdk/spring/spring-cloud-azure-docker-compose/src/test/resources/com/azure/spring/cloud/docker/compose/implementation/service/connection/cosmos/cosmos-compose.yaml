@@ -1,0 +1,25 @@
+services:
+  cosmos:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    pull_policy: always
+    privileged: true
+    ports:
+      - "8081"
+      - "10250"
+      - "10251"
+      - "10252"
+      - "10253"
+      - "10254"
+      - "10255"
+    environment:
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 3
+      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
+      AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE: 0.0.0.0
+      AZURE_COSMOS_EMULATOR_ENABLE_MONGODB_ENDPOINT: "false"
+      AZURE_COSMOS_EMULATOR_ENABLE_ANALYTICS_ENDPOINT: "false"
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate --quiet --spider https://localhost:8081/_explorer/emulator.pem"]
+      interval: 10s
+      timeout: 10s
+      retries: 18
+      start_period: 20s

@@ -1,5 +1,6 @@
 org.springframework.boot.autoconfigure.service.connection.ConnectionDetailsFactory=\
 com.azure.spring.cloud.docker.compose.implementation.service.connection.bus.ServiceBusDockerComposeConnectionDetailsFactory,\
+com.azure.spring.cloud.docker.compose.implementation.service.connection.cosmos.CosmosDockerComposeConnectionDetailsFactory,\
 com.azure.spring.cloud.docker.compose.implementation.service.connection.storage.StorageBlobDockerComposeConnectionDetailsFactory,\
 com.azure.spring.cloud.docker.compose.implementation.service.connection.storage.StorageQueueDockerComposeConnectionDetailsFactory,\
 com.azure.spring.cloud.docker.compose.implementation.service.connection.hubs.EventHubsDockerComposeConnectionDetailsFactory

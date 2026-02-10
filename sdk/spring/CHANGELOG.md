@@ -17,6 +17,7 @@ This section includes changes in `spring-cloud-azure-docker-compose` module.
 #### New Features
 
 - Add ServiceBusDockerComposeConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
+- Add CosmosDockerComposeConnectionDetailsFactory. [#44019](https://github.com/Azure/azure-sdk-for-java/pull/44019).
 
 ### Spring Cloud Azure Test Containers
 
