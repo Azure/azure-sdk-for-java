@@ -11,9 +11,12 @@ import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.bind.BindResult;
+import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.jms.autoconfigure.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
@@ -27,11 +30,14 @@ class ServiceBusJmsContainerConfiguration {
 
     private final AzureServiceBusJmsProperties azureServiceBusJMSProperties;
     private final ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
+    private final Environment environment;
 
     ServiceBusJmsContainerConfiguration(AzureServiceBusJmsProperties azureServiceBusJMSProperties,
-                                       ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                                       ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers,
+                                       Environment environment) {
         this.azureServiceBusJMSProperties = azureServiceBusJMSProperties;
         this.factoryCustomizers = factoryCustomizers;
+        this.environment = environment;
     }
 
     @Bean
@@ -62,11 +68,21 @@ class ServiceBusJmsContainerConfiguration {
     }
 
     private ConnectionFactory getReceiverConnectionFactory(ConnectionFactory connectionFactory) {
-        // Use the bean ConnectionFactory if it's pooled or cached for efficiency
-        // Otherwise create a dedicated ServiceBusJmsConnectionFactory for the receiver
-        if (connectionFactory instanceof JmsPoolConnectionFactory || connectionFactory instanceof CachingConnectionFactory) {
+        // Check if pooling or caching was explicitly enabled by the user
+        BindResult<Boolean> poolEnabledResult = Binder.get(environment).bind("spring.jms.servicebus.pool.enabled", Boolean.class);
+        BindResult<Boolean> cacheEnabledResult = Binder.get(environment).bind("spring.jms.cache.enabled", Boolean.class);
+        
+        // Only use the bean ConnectionFactory if pooling or caching was explicitly enabled
+        // This ensures receiver uses dedicated ServiceBusJmsConnectionFactory when properties are not set
+        boolean poolExplicitlyEnabled = poolEnabledResult.isBound() && poolEnabledResult.get();
+        boolean cacheExplicitlyEnabled = cacheEnabledResult.isBound() && cacheEnabledResult.get();
+        
+        if ((poolExplicitlyEnabled && connectionFactory instanceof JmsPoolConnectionFactory) ||
+            (cacheExplicitlyEnabled && connectionFactory instanceof CachingConnectionFactory)) {
             return connectionFactory;
         }
+        
+        // Create a dedicated ServiceBusJmsConnectionFactory for the receiver
         return createServiceBusJmsConnectionFactory();
     }
 
