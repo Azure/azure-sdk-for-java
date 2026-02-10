@@ -456,7 +456,8 @@
         "isdirectory",
         "SSDLRS",
         "VMGUEST",
-        "imds"
+        "imds",
+        "confidentialvm"
       ]
     },
     {
