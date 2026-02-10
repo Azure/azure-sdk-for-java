@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.caches.AsyncCache;
+import com.azure.cosmos.implementation.caches.SafeObjectInputStream;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -53,8 +54,12 @@ public class CosmosClientMetadataCachesSnapshot implements Serializable {
 
     public AsyncCache<String, DocumentCollection> getCollectionInfoByNameCache() {
         try {
+            SafeObjectInputStream ois = new SafeObjectInputStream(
+                new ByteArrayInputStream(collectionInfoByNameCache),
+                AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache.class.getName()
+            );
             return ((AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache)
-                new ObjectInputStream(new ByteArrayInputStream(collectionInfoByNameCache)).readObject())
+                ois.readObject())
                 .toAsyncCache();
         } catch (IOException | ClassNotFoundException e) {
             throw CosmosBridgeInternal.cosmosException(ERROR_CODE, e);
@@ -63,8 +68,12 @@ public class CosmosClientMetadataCachesSnapshot implements Serializable {
 
     public AsyncCache<String, DocumentCollection> getCollectionInfoByIdCache() {
         try {
+            SafeObjectInputStream ois = new SafeObjectInputStream(
+                new ByteArrayInputStream(collectionInfoByIdCache),
+                AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache.class.getName()
+            );
             return ((AsyncCache.SerializableAsyncCache.SerializableAsyncCollectionCache)
-                new ObjectInputStream(new ByteArrayInputStream(collectionInfoByIdCache)).readObject())
+                ois.readObject())
                 .toAsyncCache();
         } catch (IOException | ClassNotFoundException e) {
             throw CosmosBridgeInternal.cosmosException(ERROR_CODE, e);

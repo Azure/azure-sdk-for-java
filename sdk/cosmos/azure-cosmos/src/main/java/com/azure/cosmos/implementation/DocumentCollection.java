@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collection;
@@ -537,7 +538,15 @@ public final class DocumentCollection extends Resource {
         }
 
         private void readObject(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-            ObjectNode objectNode = (ObjectNode) objectInputStream.readObject();
+            Object obj = objectInputStream.readObject();
+            // Security fix: Validate that the deserialized object is the expected type
+            if (!(obj instanceof ObjectNode)) {
+                throw new InvalidClassException(
+                    "Expected ObjectNode but got " + 
+                    (obj == null ? "null" : obj.getClass().getName())
+                );
+            }
+            ObjectNode objectNode = (ObjectNode) obj;
             ObjectNode collectionNode = (ObjectNode)objectNode.get(COLLECTIONS_ROOT_PROPERTY_NAME);
             String altLink = objectNode.get(ALT_LINK_PROPERTY_NAME).asText();
             this.documentCollection = new DocumentCollection(collectionNode);

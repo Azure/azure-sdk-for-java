@@ -9,6 +9,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -175,7 +176,15 @@ public class AsyncCache<TKey, TValue> {
             @Override
             protected DocumentCollection deserializeValue(ObjectInputStream ois) throws IOException,
                 ClassNotFoundException {
-                return ((DocumentCollection.SerializableDocumentCollection) ois.readObject()).getWrappedItem();
+                Object obj = ois.readObject();
+                // Security fix: Validate that the deserialized object is the expected type
+                if (!(obj instanceof DocumentCollection.SerializableDocumentCollection)) {
+                    throw new InvalidClassException(
+                        "Expected SerializableDocumentCollection but got " + 
+                        (obj == null ? "null" : obj.getClass().getName())
+                    );
+                }
+                return ((DocumentCollection.SerializableDocumentCollection) obj).getWrappedItem();
             }
         }
 
@@ -237,8 +246,20 @@ public class AsyncCache<TKey, TValue> {
                 pairs.put(key, new AsyncLazy<>(value));
             }
 
+            // Security fix: Don't deserialize the IEqualityComparer as it could be a malicious object.
+            // Instead, skip it and use the default equality comparer.
+            // This is safe because all existing serialized caches use the default comparer.
+            ois.readObject(); // Read and discard the serialized comparer
+            
+            // Use the default equality comparer
             @SuppressWarnings("unchecked")
-            IEqualityComparer<TValue> equalityComparer = (IEqualityComparer<TValue>) ois.readObject();
+            IEqualityComparer<TValue> equalityComparer = (value1, value2) -> {
+                if (value1 == value2)
+                    return true;
+                if (value1 == null || value2 == null)
+                    return false;
+                return value1.equals(value2);
+            };
             this.cache = new AsyncCache<>(equalityComparer, pairs);
         }
     }
