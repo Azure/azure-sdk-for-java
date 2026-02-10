@@ -7,6 +7,8 @@ import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsConnectionDetails;
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.service.implementation.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -98,12 +100,63 @@ class AzureEventHubsClientBuilderConfigurationTests {
             });
     }
 
+    @Test
+    void connectionStringPropertyRegistersStaticProvider() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + connectionString
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                assertThat(context.getBean(StaticConnectionStringProvider.class).getConnectionString())
+                    .isEqualTo(connectionString);
+            });
+    }
+
+    @Test
+    void connectionDetailsRegistersStaticProvider() {
+        String connectionString = String.format(CONNECTION_STRING_FORMAT, "details-namespace");
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(AzureEventHubsConnectionDetails.class, () -> new TestConnectionDetails(connectionString))
+            .run(context -> {
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                assertThat(context.getBean(StaticConnectionStringProvider.class).getConnectionString())
+                    .isEqualTo(connectionString);
+            });
+    }
+
+    @Test
+    void namespaceOnlyDoesNotRegisterStaticProvider() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.namespace=test-namespace"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> assertThat(context).doesNotHaveBean(StaticConnectionStringProvider.class));
+    }
+
     private static class EventHubBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
 
     }
 
     private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
 
+    }
+
+    private static final class TestConnectionDetails implements AzureEventHubsConnectionDetails {
+        private final String connectionString;
+
+        TestConnectionDetails(String connectionString) {
+            this.connectionString = connectionString;
+        }
+
+        @Override
+        public String getConnectionString() {
+            return this.connectionString;
+        }
     }
 
 }
