@@ -3,6 +3,7 @@
 ## 12.34.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for Dynamic User Delegation SAS.
 
 ### Breaking Changes
 
