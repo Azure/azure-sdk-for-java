@@ -10,7 +10,7 @@ import com.azure.ai.contentunderstanding.models.ContentAnalyzer;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Sample demonstrating how to get analyzer information asynchronously.
@@ -45,6 +45,9 @@ public class Sample06_GetAnalyzerAsync {
         String analyzerId = "prebuilt-invoice";
 
         System.out.println("Retrieving analyzer '" + analyzerId + "'...");
+
+        // Use CountDownLatch to wait for async operation to complete
+        CountDownLatch latch = new CountDownLatch(1);
 
         client.getAnalyzer(analyzerId)
             .doOnNext(analyzer -> {
@@ -109,6 +112,7 @@ public class Sample06_GetAnalyzerAsync {
                 System.err.println("Error occurred: " + error.getMessage());
                 error.printStackTrace();
             })
+            .doFinally(signalType -> latch.countDown())
             .subscribe(
                 result -> {
                     // Success - operations completed
@@ -120,10 +124,9 @@ public class Sample06_GetAnalyzerAsync {
             );
         // END:ContentUnderstandingGetAnalyzerAsync
 
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
+        // Wait for the async operation to complete
         try {
-            TimeUnit.SECONDS.sleep(5);
+            latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             e.printStackTrace();

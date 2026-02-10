@@ -105,6 +105,7 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
     /**
      * {@inheritDoc}
      */
+    @Override
     public U getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
             throw LOGGER.logExceptionAsError(new AzureException("Long running operation failed."));
