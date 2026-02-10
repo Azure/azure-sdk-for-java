@@ -10,6 +10,5 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-resourcemanager-agrifood</module>
-    <module>azure-verticals-agrifood-farming</module>
   </modules>
 </project>
