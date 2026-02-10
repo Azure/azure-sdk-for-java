@@ -2,6 +2,9 @@
 
 ### 2.27.0 (2026-02-10)
 
+#### Other Changes
+* Updated `azure-cosmos` to version `4.78.0`.
+
 ### 2.26.0 (2026-01-26)
 
 #### Other Changes
