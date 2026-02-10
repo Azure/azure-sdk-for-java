@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -43,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample00_UpdateDefaultsAsync {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // BEGIN: com.azure.ai.contentunderstanding.sample00Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -63,7 +64,9 @@ public class Sample00_UpdateDefaultsAsync {
 
         // Step 1: Get current defaults to see what's configured
         System.out.println("Getting current default configuration...");
-        
+
+        CountDownLatch latch = new CountDownLatch(1);
+
         // Chain all operations reactively
         client.getDefaults()
             .doOnNext(currentDefaults -> {
@@ -117,20 +120,18 @@ public class Sample00_UpdateDefaultsAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
 
         // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+        // we use a CountDownLatch so the program does not end before the async operations complete.
+        if (!latch.await(30, TimeUnit.SECONDS)) {
+            System.err.println("Timed out waiting for async operations to complete.");
         }
     }
 

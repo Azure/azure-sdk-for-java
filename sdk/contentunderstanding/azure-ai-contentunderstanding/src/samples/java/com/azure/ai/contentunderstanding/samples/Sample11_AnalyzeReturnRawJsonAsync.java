@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,7 +36,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample11_AnalyzeReturnRawJsonAsync {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         // BEGIN: com.azure.ai.contentunderstanding.sample11Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -73,6 +74,8 @@ public class Sample11_AnalyzeReturnRawJsonAsync {
             = client.beginAnalyze("prebuilt-documentSearch", requestBody, new RequestOptions());
 
         System.out.println("File loaded: " + filePath + " (" + String.format("%,d", fileBytes.length) + " bytes)");
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         operation.last()
             .flatMap(pollResponse -> {
@@ -141,21 +144,19 @@ public class Sample11_AnalyzeReturnRawJsonAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
         // END:ContentUnderstandingAnalyzeReturnRawJsonAsync
 
         // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.MINUTES.sleep(1);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+        // we use a CountDownLatch so the program does not end before the async operations complete.
+        if (!latch.await(2, TimeUnit.MINUTES)) {
+            System.err.println("Timed out waiting for async operations to complete.");
         }
     }
 }

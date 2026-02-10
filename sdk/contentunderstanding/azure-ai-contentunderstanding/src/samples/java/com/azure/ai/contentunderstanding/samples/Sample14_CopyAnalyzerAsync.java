@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample14_CopyAnalyzerAsync {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // BEGIN: com.azure.ai.contentunderstanding.sample14Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -54,6 +55,8 @@ public class Sample14_CopyAnalyzerAsync {
 
         String finalSourceAnalyzerId = sourceAnalyzerId; // For use in lambda
         String finalTargetAnalyzerId = targetAnalyzerId; // For use in lambda
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         // BEGIN: com.azure.ai.contentunderstanding.copyAnalyzerAsync
         // Step 1: Create the source analyzer
@@ -257,6 +260,7 @@ public class Sample14_CopyAnalyzerAsync {
                 .subscribe(
                     result -> {
                         // Success - operations completed
+                        latch.countDown();
                     },
                     error -> {
                         // Error already handled in doOnError
@@ -267,18 +271,15 @@ public class Sample14_CopyAnalyzerAsync {
                         client.deleteAnalyzer(finalTargetAnalyzerId)
                             .onErrorResume(e -> Mono.empty())
                             .subscribe();
-                        System.exit(1);
+                        latch.countDown();
                     }
                 );
         // END: com.azure.ai.contentunderstanding.copyAnalyzerAsync
 
         // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.SECONDS.sleep(60);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+        // we use a CountDownLatch so the program does not end before the async operations complete.
+        if (!latch.await(3, TimeUnit.MINUTES)) {
+            System.err.println("Timed out waiting for async operations to complete.");
         }
     }
 }

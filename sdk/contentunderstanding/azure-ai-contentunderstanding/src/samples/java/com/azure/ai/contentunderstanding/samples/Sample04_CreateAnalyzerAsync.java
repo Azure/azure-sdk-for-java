@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,7 +45,7 @@ public class Sample04_CreateAnalyzerAsync {
 
     private static String createdAnalyzerId;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // BEGIN: com.azure.ai.contentunderstanding.sample04Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -127,6 +128,9 @@ public class Sample04_CreateAnalyzerAsync {
             = client.beginCreateAnalyzer(analyzerId, customAnalyzer, true);
 
         String finalAnalyzerId = analyzerId; // For use in lambda
+
+        CountDownLatch latch = new CountDownLatch(1);
+
         operation.last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
@@ -280,21 +284,19 @@ public class Sample04_CreateAnalyzerAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
         // END:ContentUnderstandingCreateAnalyzerAsync
 
         // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.SECONDS.sleep(60);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+        // we use a CountDownLatch so the program does not end before the async operations complete.
+        if (!latch.await(2, TimeUnit.MINUTES)) {
+            System.err.println("Timed out waiting for async operations to complete.");
         }
     }
 }

@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,7 +49,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample15_GrantCopyAuthAsync {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // Get configuration from environment variables
         String sourceEndpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String sourceKey = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -140,7 +141,8 @@ public class Sample15_GrantCopyAuthAsync {
         String finalSourceRegion = sourceRegion; // For use in lambda
         String finalTargetResourceId = targetResourceId; // For use in lambda
         String finalTargetRegion = targetRegion; // For use in lambda
-        
+
+        CountDownLatch latch = new CountDownLatch(1);
         createPoller.last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
@@ -207,20 +209,16 @@ public class Sample15_GrantCopyAuthAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
+                    latch.countDown();
                     System.exit(1);
                 }
             );
 
-        // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.SECONDS.sleep(60);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
-        }
+        // Wait for async operations to complete
+        latch.await(3, TimeUnit.MINUTES);
     }
 }

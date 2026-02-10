@@ -21,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -29,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample12_GetResultFileAsync {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         // BEGIN: com.azure.ai.contentunderstanding.sample12Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -62,6 +63,8 @@ public class Sample12_GetResultFileAsync {
             = client.beginAnalyze("prebuilt-videoSearch", Arrays.asList(input));
 
         System.out.println("Started analysis operation");
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         poller.last()
             .flatMap(pollResponse -> {
@@ -242,21 +245,19 @@ public class Sample12_GetResultFileAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
         // END: com.azure.ai.contentunderstanding.getResultFileAsync
 
         // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.MINUTES.sleep(2);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+        // we use a CountDownLatch so the program does not end before the async operations complete.
+        if (!latch.await(5, TimeUnit.MINUTES)) {
+            System.err.println("Timed out waiting for async operations to complete.");
         }
     }
 

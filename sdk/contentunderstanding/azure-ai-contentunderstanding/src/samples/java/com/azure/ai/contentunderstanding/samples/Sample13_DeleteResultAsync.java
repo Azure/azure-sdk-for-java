@@ -17,6 +17,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample13_DeleteResultAsync {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // BEGIN: com.azure.ai.contentunderstanding.sample13Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -58,6 +59,8 @@ public class Sample13_DeleteResultAsync {
 
         // Wait for operation to complete
         System.out.println("Started analysis operation");
+
+        CountDownLatch latch = new CountDownLatch(1);
 
         poller.last()
             .flatMap(pollResponse -> {
@@ -116,21 +119,19 @@ public class Sample13_DeleteResultAsync {
             .subscribe(
                 result -> {
                     System.out.println("\nSample completed successfully!");
+                    latch.countDown();
                 },
                 error -> {
                     // Error already handled in doOnError
-                    System.exit(1);
+                    latch.countDown();
                 }
             );
         // END: com.azure.ai.contentunderstanding.deleteResultAsync
 
         // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.SECONDS.sleep(10);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+        // we use a CountDownLatch so the program does not end before the async operations complete.
+        if (!latch.await(2, TimeUnit.MINUTES)) {
+            System.err.println("Timed out waiting for async operations to complete.");
         }
     }
 }

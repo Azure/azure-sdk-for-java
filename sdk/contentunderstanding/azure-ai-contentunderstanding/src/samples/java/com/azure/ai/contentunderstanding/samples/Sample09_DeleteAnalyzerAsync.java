@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Sample09_DeleteAnalyzerAsync {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         // BEGIN: com.azure.ai.contentunderstanding.sample09Async.buildClient
         String endpoint = System.getenv("CONTENTUNDERSTANDING_ENDPOINT");
         String key = System.getenv("CONTENTUNDERSTANDING_KEY");
@@ -83,6 +84,9 @@ public class Sample09_DeleteAnalyzerAsync {
         PollerFlux<?, ContentAnalyzer> createPoller = client.beginCreateAnalyzer(analyzerId, analyzer, true);
         
         String finalAnalyzerId = analyzerId; // For use in lambda
+
+        CountDownLatch latch = new CountDownLatch(1);
+
         createPoller.last()
             .flatMap(pollResponse -> {
                 if (pollResponse.getStatus().isComplete()) {
@@ -122,23 +126,21 @@ public class Sample09_DeleteAnalyzerAsync {
             .subscribe(
                 result -> {
                     // Success - operations completed
+                    latch.countDown();
                 },
                 error -> {
                     if (!(error instanceof ResourceNotFoundException)) {
                         // Error already handled in doOnError
-                        System.exit(1);
                     }
+                    latch.countDown();
                 }
             );
         // END:ContentUnderstandingDeleteAnalyzerAsync
 
         // The .subscribe() creation is not a blocking call. For the purpose of this example,
-        // we sleep the thread so the program does not end before the async operations complete.
-        try {
-            TimeUnit.SECONDS.sleep(30);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+        // we use a CountDownLatch so the program does not end before the async operations complete.
+        if (!latch.await(2, TimeUnit.MINUTES)) {
+            System.err.println("Timed out waiting for async operations to complete.");
         }
     }
 }
