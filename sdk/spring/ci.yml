@@ -608,7 +608,7 @@ extends:
         safeName: springcloudazurestartermonitor
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
-        skipVerifyChangelog: true
+        skipVerifyChangeLog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestartermonitor }}
     MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*
