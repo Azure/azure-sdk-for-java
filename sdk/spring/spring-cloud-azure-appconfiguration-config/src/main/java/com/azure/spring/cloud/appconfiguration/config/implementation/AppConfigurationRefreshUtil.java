@@ -207,6 +207,7 @@ public class AppConfigurationRefreshUtil {
         RefreshEventData eventData = new RefreshEventData();
         if (stateHolder.getLoadState(originEndpoint)) {
             WatchedConfigurationSettings state = stateHolder.getState(originEndpoint);
+            State state = stateHolder.getState(originEndpoint);
             if (state != null) {
                 refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
             } else {
