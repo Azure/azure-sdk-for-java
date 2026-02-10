@@ -62,7 +62,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
 
         try {
             createdContainer = getSharedMultiPartitionCosmosContainer(client);
-            truncateCollection(createdContainer);
+            cleanUpContainer(createdContainer);
 
             createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
 
@@ -504,7 +504,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                     partitionKeys == null ? UUID.randomUUID().toString() : partitionKeys.get(random.nextInt(partitionKeys.size()))));
         }
 
-        List<TestObject> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+        List<TestObject> documentInserted = insertAllItemsBlocking(container, documentsToInsert, true);
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 

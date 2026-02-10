@@ -449,8 +449,13 @@ public final class WorkloadImpactProperties implements JsonSerializable<Workload
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("performance", this.performance, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("connectivity", this.connectivity);
-        jsonWriter.writeMapField("additionalProperties", this.additionalProperties,
-            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
+        jsonWriter.writeMapField("additionalProperties", this.additionalProperties, (writer, element) -> {
+            if (element == null) {
+                writer.writeNull();
+            } else {
+                element.writeTo(writer);
+            }
+        });
         jsonWriter.writeJsonField("errorDetails", this.errorDetails);
         jsonWriter.writeJsonField("workload", this.workload);
         jsonWriter.writeStringField("impactGroupId", this.impactGroupId);
