@@ -7,6 +7,7 @@ import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
 import jakarta.jms.ConnectionFactory;
+import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
+import org.springframework.jms.connection.CachingConnectionFactory;
 
 import java.util.stream.Collectors;
 
@@ -35,10 +37,10 @@ class ServiceBusJmsContainerConfiguration {
     @Bean
     @ConditionalOnMissingBean
     JmsListenerContainerFactory<?> jmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        // Create a dedicated ServiceBusJmsConnectionFactory for the receiver side
-        ConnectionFactory receiverConnectionFactory = createReceiverConnectionFactory();
+        // Use the bean ConnectionFactory if it's pooled or cached, otherwise create a dedicated one for receiver
+        ConnectionFactory receiverConnectionFactory = getReceiverConnectionFactory(connectionFactory);
         configurer.configure(jmsListenerContainerFactory, receiverConnectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.FALSE);
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);
@@ -48,10 +50,10 @@ class ServiceBusJmsContainerConfiguration {
     @Bean
     @ConditionalOnMissingBean(name = "topicJmsListenerContainerFactory")
     JmsListenerContainerFactory<?> topicJmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer) {
+        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
-        // Create a dedicated ServiceBusJmsConnectionFactory for the receiver side
-        ConnectionFactory receiverConnectionFactory = createReceiverConnectionFactory();
+        // Use the bean ConnectionFactory if it's pooled or cached, otherwise create a dedicated one for receiver
+        ConnectionFactory receiverConnectionFactory = getReceiverConnectionFactory(connectionFactory);
         configurer.configure(jmsListenerContainerFactory, receiverConnectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.TRUE);
         configureCommonListenerContainerFactory(jmsListenerContainerFactory);
@@ -59,7 +61,16 @@ class ServiceBusJmsContainerConfiguration {
         return jmsListenerContainerFactory;
     }
 
-    private ServiceBusJmsConnectionFactory createReceiverConnectionFactory() {
+    private ConnectionFactory getReceiverConnectionFactory(ConnectionFactory connectionFactory) {
+        // Use the bean ConnectionFactory if it's pooled or cached for efficiency
+        // Otherwise create a dedicated ServiceBusJmsConnectionFactory for the receiver
+        if (connectionFactory instanceof JmsPoolConnectionFactory || connectionFactory instanceof CachingConnectionFactory) {
+            return connectionFactory;
+        }
+        return createServiceBusJmsConnectionFactory();
+    }
+
+    private ServiceBusJmsConnectionFactory createServiceBusJmsConnectionFactory() {
         return new ServiceBusJmsConnectionFactoryFactory(azureServiceBusJMSProperties,
             factoryCustomizers.orderedStream().collect(Collectors.toList()))
             .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
