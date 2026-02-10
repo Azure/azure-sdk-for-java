@@ -150,7 +150,7 @@ You can use the maven coordinate of the jar to auto install the Spark Connector 
 
 You can also integrate against Cosmos DB Spark Connector in your SBT project:
 ```scala
-libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-5_2-12" % "4.43.0"
+libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-5_2-13" % "4.43.0"
 ```
 
 Cosmos DB Spark Connector is available on [Maven Central Repo](https://central.sonatype.com/search?namespace=com.azure.cosmos.spark).
