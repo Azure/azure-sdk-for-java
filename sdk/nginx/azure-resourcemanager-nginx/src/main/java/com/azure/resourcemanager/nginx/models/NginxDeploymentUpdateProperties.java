@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.nginx.fluent.models.NginxDeploymentUpdatePropertiesNginxAppProtect;
 import java.io.IOException;
 
 /**
@@ -49,7 +50,7 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
     /*
      * Update settings for NGINX App Protect (NAP)
      */
-    private NginxDeploymentUpdatePropertiesNginxAppProtect nginxAppProtect;
+    private NginxDeploymentUpdatePropertiesNginxAppProtect innerNginxAppProtect;
 
     /**
      * Creates an instance of NginxDeploymentUpdateProperties class.
@@ -178,23 +179,39 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
     }
 
     /**
-     * Get the nginxAppProtect property: Update settings for NGINX App Protect (NAP).
+     * Get the innerNginxAppProtect property: Update settings for NGINX App Protect (NAP).
      * 
-     * @return the nginxAppProtect value.
+     * @return the innerNginxAppProtect value.
      */
-    public NginxDeploymentUpdatePropertiesNginxAppProtect nginxAppProtect() {
-        return this.nginxAppProtect;
+    private NginxDeploymentUpdatePropertiesNginxAppProtect innerNginxAppProtect() {
+        return this.innerNginxAppProtect;
     }
 
     /**
-     * Set the nginxAppProtect property: Update settings for NGINX App Protect (NAP).
+     * Get the webApplicationFirewallSettings property: Settings for the NGINX App Protect Web Application Firewall
+     * (WAF).
      * 
-     * @param nginxAppProtect the nginxAppProtect value to set.
+     * @return the webApplicationFirewallSettings value.
+     */
+    public WebApplicationFirewallSettings webApplicationFirewallSettings() {
+        return this.innerNginxAppProtect() == null
+            ? null
+            : this.innerNginxAppProtect().webApplicationFirewallSettings();
+    }
+
+    /**
+     * Set the webApplicationFirewallSettings property: Settings for the NGINX App Protect Web Application Firewall
+     * (WAF).
+     * 
+     * @param webApplicationFirewallSettings the webApplicationFirewallSettings value to set.
      * @return the NginxDeploymentUpdateProperties object itself.
      */
     public NginxDeploymentUpdateProperties
-        withNginxAppProtect(NginxDeploymentUpdatePropertiesNginxAppProtect nginxAppProtect) {
-        this.nginxAppProtect = nginxAppProtect;
+        withWebApplicationFirewallSettings(WebApplicationFirewallSettings webApplicationFirewallSettings) {
+        if (this.innerNginxAppProtect() == null) {
+            this.innerNginxAppProtect = new NginxDeploymentUpdatePropertiesNginxAppProtect();
+        }
+        this.innerNginxAppProtect().withWebApplicationFirewallSettings(webApplicationFirewallSettings);
         return this;
     }
 
@@ -210,7 +227,7 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
         jsonWriter.writeJsonField("userProfile", this.userProfile);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
-        jsonWriter.writeJsonField("nginxAppProtect", this.nginxAppProtect);
+        jsonWriter.writeJsonField("nginxAppProtect", this.innerNginxAppProtect);
         return jsonWriter.writeEndObject();
     }
 
@@ -247,7 +264,7 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
                     deserializedNginxDeploymentUpdateProperties.autoUpgradeProfile
                         = AutoUpgradeProfile.fromJson(reader);
                 } else if ("nginxAppProtect".equals(fieldName)) {
-                    deserializedNginxDeploymentUpdateProperties.nginxAppProtect
+                    deserializedNginxDeploymentUpdateProperties.innerNginxAppProtect
                         = NginxDeploymentUpdatePropertiesNginxAppProtect.fromJson(reader);
                 } else {
                     reader.skipChildren();

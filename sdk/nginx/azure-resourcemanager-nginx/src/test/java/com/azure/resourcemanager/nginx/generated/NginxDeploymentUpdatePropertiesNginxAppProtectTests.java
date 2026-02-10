@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.nginx.fluent.models.NginxDeploymentUpdatePropertiesNginxAppProtect;
 import com.azure.resourcemanager.nginx.models.ActivationState;
-import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdatePropertiesNginxAppProtect;
 import com.azure.resourcemanager.nginx.models.WebApplicationFirewallSettings;
 import org.junit.jupiter.api.Assertions;
 

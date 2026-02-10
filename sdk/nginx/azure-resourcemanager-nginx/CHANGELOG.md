@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (2025-10-09)
+## 1.1.0-beta.4 (2026-02-10)
 
 - Azure Resource Manager Nginx client library for Java. This package contains Microsoft Azure SDK for Nginx Management SDK.  Package api-version 2025-03-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
@@ -17,6 +17,8 @@
 #### `models.OperationListResult` was removed
 
 #### `models.NginxDeploymentListResponse` was removed
+
+#### `models.NginxDeploymentUpdatePropertiesNginxAppProtect` was removed
 
 #### `models.UserIdentityProperties` was modified
 
@@ -40,15 +42,16 @@
 
 #### `models.AnalysisDiagnostic` was modified
 
-* `withRule(java.lang.String)` was removed
-* `float line()` -> `double line()`
-* `withFile(java.lang.String)` was removed
-* `withDescription(java.lang.String)` was removed
-* `validate()` was removed
-* `withId(java.lang.String)` was removed
-* `withLine(float)` was removed
+* `AnalysisDiagnostic()` was changed to private access
 * `withMessage(java.lang.String)` was removed
+* `validate()` was removed
+* `withLine(float)` was removed
+* `withFile(java.lang.String)` was removed
+* `withRule(java.lang.String)` was removed
 * `withDirective(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withId(java.lang.String)` was removed
+* `float line()` -> `double line()`
 
 #### `models.NginxFrontendIpConfiguration` was modified
 
@@ -60,11 +63,12 @@
 
 #### `models.OperationDisplay` was modified
 
-* `withResource(java.lang.String)` was removed
-* `withOperation(java.lang.String)` was removed
-* `withProvider(java.lang.String)` was removed
-* `validate()` was removed
+* `OperationDisplay()` was changed to private access
 * `withDescription(java.lang.String)` was removed
+* `withProvider(java.lang.String)` was removed
+* `withOperation(java.lang.String)` was removed
+* `validate()` was removed
+* `withResource(java.lang.String)` was removed
 
 #### `models.NginxDeploymentUserProfile` was modified
 
@@ -72,21 +76,24 @@
 
 #### `models.DiagnosticItem` was modified
 
-* `withLine(float)` was removed
+* `DiagnosticItem()` was changed to private access
 * `withMessage(java.lang.String)` was removed
-* `withRule(java.lang.String)` was removed
-* `withDescription(java.lang.String)` was removed
+* `withLine(float)` was removed
 * `withLevel(models.Level)` was removed
+* `float line()` -> `double line()`
+* `withFile(java.lang.String)` was removed
+* `validate()` was removed
+* `withId(java.lang.String)` was removed
+* `withRule(java.lang.String)` was removed
 * `withDirective(java.lang.String)` was removed
 * `withCategory(java.lang.String)` was removed
-* `validate()` was removed
-* `withFile(java.lang.String)` was removed
-* `withId(java.lang.String)` was removed
-* `float line()` -> `double line()`
+* `withDescription(java.lang.String)` was removed
 
 #### `models.NginxDeploymentUpdateProperties` was modified
 
+* `nginxAppProtect()` was removed
 * `validate()` was removed
+* `withNginxAppProtect(models.NginxDeploymentUpdatePropertiesNginxAppProtect)` was removed
 
 #### `models.NginxLogging` was modified
 
@@ -114,9 +121,10 @@
 
 #### `models.AnalysisResultData` was modified
 
+* `AnalysisResultData()` was changed to private access
 * `validate()` was removed
-* `withErrors(java.util.List)` was removed
 * `withDiagnostics(java.util.List)` was removed
+* `withErrors(java.util.List)` was removed
 
 #### `models.NginxConfigurationRequestProperties` was modified
 
@@ -128,11 +136,12 @@
 
 #### `models.NginxConfigurationResponseProperties` was modified
 
-* `withFiles(java.util.List)` was removed
-* `withProtectedFiles(java.util.List)` was removed
+* `NginxConfigurationResponseProperties()` was changed to private access
 * `validate()` was removed
-* `withRootFile(java.lang.String)` was removed
+* `withProtectedFiles(java.util.List)` was removed
 * `withPackageProperty(models.NginxConfigurationPackage)` was removed
+* `withFiles(java.util.List)` was removed
+* `withRootFile(java.lang.String)` was removed
 
 #### `models.IdentityProperties` was modified
 
@@ -148,6 +157,7 @@
 
 #### `models.NginxDeploymentApiKeyResponseProperties` was modified
 
+* `NginxDeploymentApiKeyResponseProperties()` was changed to private access
 * `validate()` was removed
 * `withEndDateTime(java.time.OffsetDateTime)` was removed
 
@@ -161,8 +171,9 @@
 
 #### `models.WebApplicationFirewallComponentVersions` was modified
 
-* `validate()` was removed
+* `WebApplicationFirewallComponentVersions()` was changed to private access
 * `withWafEngineVersion(java.lang.String)` was removed
+* `validate()` was removed
 * `withWafNginxVersion(java.lang.String)` was removed
 
 #### `models.NginxConfigurationProtectedFileRequest` was modified
@@ -171,6 +182,7 @@
 
 #### `models.WebApplicationFirewallStatus` was modified
 
+* `WebApplicationFirewallStatus()` was changed to private access
 * `validate()` was removed
 
 #### `models.NginxPublicIpAddress` was modified
@@ -187,9 +199,10 @@
 
 #### `models.WebApplicationFirewallPackage` was modified
 
-* `withVersion(java.lang.String)` was removed
+* `WebApplicationFirewallPackage()` was changed to private access
 * `withRevisionDatetime(java.time.OffsetDateTime)` was removed
 * `validate()` was removed
+* `withVersion(java.lang.String)` was removed
 
 #### `models.AutoUpgradeProfile` was modified
 
@@ -199,18 +212,15 @@
 
 * `validate()` was removed
 
-#### `models.NginxDeploymentUpdatePropertiesNginxAppProtect` was modified
-
-* `validate()` was removed
-
 #### `models.AnalysisCreate` was modified
 
 * `validate()` was removed
 
 #### `models.NginxConfigurationProtectedFileResponse` was modified
 
-* `validate()` was removed
+* `NginxConfigurationProtectedFileResponse()` was changed to private access
 * `withContentHash(java.lang.String)` was removed
+* `validate()` was removed
 * `withVirtualPath(java.lang.String)` was removed
 
 #### `models.NginxDeploymentApiKeyRequestProperties` was modified
@@ -256,6 +266,11 @@
 * `models.NginxDeploymentWafPolicyApplyingStatus` was added
 
 * `models.DefaultWafPolicies` was added
+
+#### `models.NginxDeploymentUpdateProperties` was modified
+
+* `withWebApplicationFirewallSettings(models.WebApplicationFirewallSettings)` was added
+* `webApplicationFirewallSettings()` was added
 
 #### `models.NginxDeploymentApiKeyRequest` was modified
 

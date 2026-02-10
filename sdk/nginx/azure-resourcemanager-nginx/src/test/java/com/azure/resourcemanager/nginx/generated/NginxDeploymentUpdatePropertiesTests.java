@@ -9,7 +9,6 @@ import com.azure.resourcemanager.nginx.models.ActivationState;
 import com.azure.resourcemanager.nginx.models.AutoUpgradeProfile;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdateProperties;
-import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdatePropertiesNginxAppProtect;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
 import com.azure.resourcemanager.nginx.models.NginxFrontendIpConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxLogging;
@@ -49,8 +48,7 @@ public final class NginxDeploymentUpdatePropertiesTests {
             model.networkProfile().frontEndIpConfiguration().privateIpAddresses().get(0).subnetId());
         Assertions.assertEquals("ggi", model.networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertEquals("xwburvjxxjns", model.autoUpgradeProfile().upgradeChannel());
-        Assertions.assertEquals(ActivationState.ENABLED,
-            model.nginxAppProtect().webApplicationFirewallSettings().activationState());
+        Assertions.assertEquals(ActivationState.ENABLED, model.webApplicationFirewallSettings().activationState());
     }
 
     @org.junit.jupiter.api.Test
@@ -86,9 +84,8 @@ public final class NginxDeploymentUpdatePropertiesTests {
                                 .withSubnetId("mzsb"))))
                     .withNetworkInterfaceConfiguration(new NginxNetworkInterfaceConfiguration().withSubnetId("ggi")))
                 .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("xwburvjxxjns"))
-                .withNginxAppProtect(
-                    new NginxDeploymentUpdatePropertiesNginxAppProtect().withWebApplicationFirewallSettings(
-                        new WebApplicationFirewallSettings().withActivationState(ActivationState.ENABLED)));
+                .withWebApplicationFirewallSettings(
+                    new WebApplicationFirewallSettings().withActivationState(ActivationState.ENABLED));
         model = BinaryData.fromObject(model).toObject(NginxDeploymentUpdateProperties.class);
         Assertions.assertFalse(model.enableDiagnosticsSupport());
         Assertions.assertEquals("t", model.logging().storageAccount().accountName());
@@ -108,7 +105,6 @@ public final class NginxDeploymentUpdatePropertiesTests {
             model.networkProfile().frontEndIpConfiguration().privateIpAddresses().get(0).subnetId());
         Assertions.assertEquals("ggi", model.networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertEquals("xwburvjxxjns", model.autoUpgradeProfile().upgradeChannel());
-        Assertions.assertEquals(ActivationState.ENABLED,
-            model.nginxAppProtect().webApplicationFirewallSettings().activationState());
+        Assertions.assertEquals(ActivationState.ENABLED, model.webApplicationFirewallSettings().activationState());
     }
 }

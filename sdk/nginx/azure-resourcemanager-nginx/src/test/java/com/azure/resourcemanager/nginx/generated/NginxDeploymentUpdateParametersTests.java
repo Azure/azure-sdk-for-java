@@ -12,7 +12,6 @@ import com.azure.resourcemanager.nginx.models.IdentityType;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdateParameters;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdateProperties;
-import com.azure.resourcemanager.nginx.models.NginxDeploymentUpdatePropertiesNginxAppProtect;
 import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
 import com.azure.resourcemanager.nginx.models.NginxFrontendIpConfiguration;
 import com.azure.resourcemanager.nginx.models.NginxLogging;
@@ -71,7 +70,7 @@ public final class NginxDeploymentUpdateParametersTests {
         Assertions.assertEquals("rq", model.properties().networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertEquals("poczvyifqrvkdvjs", model.properties().autoUpgradeProfile().upgradeChannel());
         Assertions.assertEquals(ActivationState.DISABLED,
-            model.properties().nginxAppProtect().webApplicationFirewallSettings().activationState());
+            model.properties().webApplicationFirewallSettings().activationState());
     }
 
     @org.junit.jupiter.api.Test
@@ -105,9 +104,8 @@ public final class NginxDeploymentUpdateParametersTests {
                             .withSubnetId("qyud"))))
                     .withNetworkInterfaceConfiguration(new NginxNetworkInterfaceConfiguration().withSubnetId("rq")))
                 .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("poczvyifqrvkdvjs"))
-                .withNginxAppProtect(
-                    new NginxDeploymentUpdatePropertiesNginxAppProtect().withWebApplicationFirewallSettings(
-                        new WebApplicationFirewallSettings().withActivationState(ActivationState.DISABLED))));
+                .withWebApplicationFirewallSettings(
+                    new WebApplicationFirewallSettings().withActivationState(ActivationState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(NginxDeploymentUpdateParameters.class);
         Assertions.assertEquals(IdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("qsc", model.tags().get("eypvhezrkg"));
@@ -142,7 +140,7 @@ public final class NginxDeploymentUpdateParametersTests {
         Assertions.assertEquals("rq", model.properties().networkProfile().networkInterfaceConfiguration().subnetId());
         Assertions.assertEquals("poczvyifqrvkdvjs", model.properties().autoUpgradeProfile().upgradeChannel());
         Assertions.assertEquals(ActivationState.DISABLED,
-            model.properties().nginxAppProtect().webApplicationFirewallSettings().activationState());
+            model.properties().webApplicationFirewallSettings().activationState());
     }
 
     // Use "Map.of" if available
