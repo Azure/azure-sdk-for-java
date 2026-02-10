@@ -151,7 +151,7 @@ to use the same version of Scala that Spark was compiled for.
 #### azure-cosmos-spark_4-0_2-13
 | Connector | Supported Spark Versions | Minimum Java Version | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
 |-----------|--------------------------|----------------------|---------------------------|-------------------------------|---------------------------|
-| 4.43.0    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         |                           |
+| 4.43.0    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         | TBD                       |
 
 ### Download
 

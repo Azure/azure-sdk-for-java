@@ -64,15 +64,15 @@ version number. The Databricks runtimes, Fabric runtimes, and Spark version rang
 
 #### Files and tables to update:
 
-| README file | Contains tables for |
+| README file | Contains tables for (in order) |
 |-------------|-------------------|
-| `azure-cosmos-spark_3-3_2-12/README.md` | `#### azure-cosmos-spark_3-3_2-12`, `#### azure-cosmos-spark_3-4_2-12`, `#### azure-cosmos-spark_3-5_2-12`, `#### azure-cosmos-spark_3-5_2-13`, `#### azure-cosmos-spark_4-0_2-13` |
-| `azure-cosmos-spark_3-4_2-12/README.md` | `#### azure-cosmos-spark_3-4_2-12`, `#### azure-cosmos-spark_3-3_2-12`, `#### azure-cosmos-spark_3-5_2-12`, `#### azure-cosmos-spark_3-5_2-13`, `#### azure-cosmos-spark_4-0_2-13` |
-| `azure-cosmos-spark_3-5_2-12/README.md` | `#### azure-cosmos-spark_3-5_2-12`, `#### azure-cosmos-spark_3-4_2-12`, `#### azure-cosmos-spark_3-3_2-12`, `#### azure-cosmos-spark_3-5_2-13`, `#### azure-cosmos-spark_4-0_2-13` |
-| `azure-cosmos-spark_3-5_2-13/README.md` | `#### azure-cosmos-spark_3-5_2-13`, `#### azure-cosmos-spark_3-5_2-12`, `#### azure-cosmos-spark_3-4_2-12`, `#### azure-cosmos-spark_3-3_2-12`, `#### azure-cosmos-spark_4-0_2-13` |
-| `azure-cosmos-spark_4-0_2-13/README.md` | `#### azure-cosmos-spark_4-0_2-13`, `#### azure-cosmos-spark_3-5_2-13`, `#### azure-cosmos-spark_3-5_2-12` |
+| `azure-cosmos-spark_3-3_2-12/README.md` | `_3-3_2-12`, `_3-4_2-12`, `_3-5_2-12`, `_3-5_2-13`, `_4-0_2-13` |
+| `azure-cosmos-spark_3-4_2-12/README.md` | `_3-4_2-12`, `_3-3_2-12`, `_3-5_2-12`, `_3-5_2-13`, `_4-0_2-13` |
+| `azure-cosmos-spark_3-5_2-12/README.md` | `_3-5_2-12`, `_3-3_2-12`, `_3-4_2-12`, `_3-5_2-13`, `_4-0_2-13` |
+| `azure-cosmos-spark_3-5_2-13/README.md` | `_3-5_2-13`, `_3-3_2-12`, `_3-4_2-12`, `_3-5_2-12`, `_4-0_2-13` |
+| `azure-cosmos-spark_4-0_2-13/README.md` | `_4-0_2-13`, `_3-3_2-12`, `_3-4_2-12`, `_3-5_2-12`, `_3-5_2-13` |
 
-Total: **4 READMEs × 5 tables + 1 README × 3 tables = 23 table row insertions**.
+Total: **5 READMEs × 5 tables = 25 table row insertions**.
 
 #### Table column differences by connector:
 
@@ -96,7 +96,12 @@ and replace the old version with the new one.
 
 Update `sdk/cosmos/azure-cosmos-spark_3/docs/quick-start.md`:
 
-Five version references to update — search for the old version and replace with the new one:
+Two areas to update:
+
+**Prerequisites section** — contains links to Databricks Runtime versions for each Spark version.
+Add/update entries as needed when new Spark versions are added.
+
+**Install section** — five version references to update. Search for the old version and replace with the new one:
 
 ```
 For Spark 3.3:
@@ -167,4 +172,5 @@ For `azure-cosmos-kafka-connect`:
 
 ## Reference: Example PRs
 
+- [PR #47968](https://github.com/Azure/azure-sdk-for-java/pull/47968) — Spark connector 4.43.0 + Cosmos Java SDK 4.78.0 release
 - [PR #46852](https://github.com/Azure/azure-sdk-for-java/pull/46852) — Spark connector 4.40.0 release (13 files changed)

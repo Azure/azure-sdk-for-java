@@ -34,7 +34,7 @@ For Spark 3.3:
 For Spark 3.4:
 - Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12:4.43.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-4_2-12/4.43.0/jar)
 
-For Spark 3.5 (Scala 2.13):
+For Spark 3.5 (Scala 2.12):
 - Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:4.43.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-5_2-12/4.43.0/jar)
 
 For Spark 3.5 (Scala 2.13):

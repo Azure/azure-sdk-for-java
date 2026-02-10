@@ -20,42 +20,10 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_4-0_2-13
 | Connector | Supported Spark Versions | Minimum Java Version | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
 |-----------|--------------------------|----------------------|---------------------------|-------------------------------|---------------------------|
-| 4.43.0    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         |                           |
+| 4.43.0    | 4.0.0                    | [17, 21]             | 2.13                      | 17.\*                         | TBD                       |
 
 Note: Spark 4.0 requires Scala 2.13 and Java 17 or higher. When using the Scala API, it is necessary for applications
 to use Scala 2.13 that Spark 4.0 was compiled for.
-
-#### azure-cosmos-spark_3-5_2-13
-| Connector | Supported Spark Versions | Minimum Java Version  | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
-|-----------|--------------------------|-----------------------|---------------------------|-------------------------------|---------------------------|
-| 4.43.0    | 3.5.0                    | [8, 11]               | 2.13                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
-
-#### azure-cosmos-spark_3-5_2-12
-| Connector | Supported Spark Versions | Minimum Java Version  | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
-|-----------|--------------------------|-----------------------|---------------------------|-------------------------------|---------------------------|
-| 4.43.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
-| 4.42.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
-| 4.41.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
-| 4.40.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.39.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.38.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.37.2    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.37.1    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.37.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.36.1    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.36.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.35.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.34.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.33.1    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.33.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.32.1    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.32.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.31.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.30.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-| 4.29.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
-
-Note: Java 8 prior to version 8u371 support is deprecated as of Spark 3.5.0. When using the Scala API, it is necessary for applications
-to use the same version of Scala that Spark was compiled for.
 
 #### azure-cosmos-spark_3-3_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
@@ -147,6 +115,38 @@ to use the same version of Scala that Spark was compiled for.
 | 4.22.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.*                          |                           |
 | 4.21.1    | 3.4.0                    | [8, 11]                | 2.12                     | 13.*                          |                           |
 | 4.21.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.*                          |                           |
+
+#### azure-cosmos-spark_3-5_2-12
+| Connector | Supported Spark Versions | Minimum Java Version  | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
+|-----------|--------------------------|-----------------------|---------------------------|-------------------------------|---------------------------|
+| 4.43.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
+| 4.42.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
+| 4.41.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
+| 4.40.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.39.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.38.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.37.2    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.37.1    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.37.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.36.1    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.36.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.35.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.34.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.33.1    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.33.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.32.1    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.32.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.31.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.30.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+| 4.29.0    | 3.5.0                    | [8, 11]               | 2.12                      | 14.\*, 15.\*                  |                           |
+
+Note: Java 8 prior to version 8u371 support is deprecated as of Spark 3.5.0. When using the Scala API, it is necessary for applications
+to use the same version of Scala that Spark was compiled for.
+
+#### azure-cosmos-spark_3-5_2-13
+| Connector | Supported Spark Versions | Minimum Java Version  | Supported Scala Versions  | Supported Databricks Runtimes | Supported Fabric Runtimes |
+|-----------|--------------------------|-----------------------|---------------------------|-------------------------------|---------------------------|
+| 4.43.0    | 3.5.0                    | [8, 11]               | 2.13                      | 14.\*, 15.\*, 16.4 LTS        | 1.3.\*                    |
 
 ### Download
 
