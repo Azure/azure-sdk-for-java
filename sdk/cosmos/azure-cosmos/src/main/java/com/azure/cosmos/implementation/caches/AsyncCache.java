@@ -246,12 +246,16 @@ public class AsyncCache<TKey, TValue> {
                 pairs.put(key, new AsyncLazy<>(value));
             }
 
-            // Security fix: Don't deserialize the IEqualityComparer as it could be a malicious object.
+            // Security fix: Don't deserialize the IEqualityComparer as it could be a malicious object
+            // (e.g., a crafted lambda that executes arbitrary code).
             // Instead, skip it and use the default equality comparer.
-            // This is safe because all existing serialized caches use the default comparer.
-            ois.readObject(); // Read and discard the serialized comparer
+            // This is safe because:
+            // 1. All existing production code uses the default equality comparer
+            // 2. The serialization format remains unchanged (we still write the comparer for backward compatibility)
+            // 3. Future format changes should increment the serialVersionUID to handle compatibility explicitly
+            ois.readObject(); // Read and discard the serialized comparer to maintain format compatibility
             
-            // Use the default equality comparer
+            // Use the default equality comparer (same as AsyncCache constructor)
             @SuppressWarnings("unchecked")
             IEqualityComparer<TValue> equalityComparer = (value1, value2) -> {
                 if (value1 == value2)

@@ -12,7 +12,7 @@
 * **[SECURITY]** Fixed Remote Code Execution (RCE) vulnerability via unsafe Java deserialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. Added `SafeObjectInputStream` with class allowlisting to prevent deserialization of unauthorized classes.
 
 #### Other Changes
-* Added `x-ms-hub-region-processing-only` header to allow hub-region stickiness when 404 `READ SESSION NOT AVAIALBLE` is hit for Single-Writer accounts. - [PR 47631](https://github.com/Azure/azure-sdk-for-java/pull/47631)
+* Added `x-ms-hub-region-processing-only` header to allow hub-region stickiness when 404 `READ SESSION NOT AVAILABLE` is hit for Single-Writer accounts. - [PR 47631](https://github.com/Azure/azure-sdk-for-java/pull/47631)
 
 ### 4.77.0 (2026-01-26)
 
