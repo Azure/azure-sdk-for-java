@@ -3,110 +3,214 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.DatabaseForTest;
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.FeedResponseValidator;
+import com.azure.cosmos.implementation.Offer;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.QueryFeedOperationState;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.TestSuiteBase;
+import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import org.assertj.core.util.Strings;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Tests for throughput (offer) operations using public APIs.
- */
 public class OfferQueryTest extends TestSuiteBase {
 
-    private static final int SETUP_TIMEOUT = 40000;
-    private static final int TIMEOUT = 30000;
-    private static final int INITIAL_THROUGHPUT = 10100;
+    public final static int SETUP_TIMEOUT = 40000;
+    public final String databaseId = DatabaseForTest.generateId();
 
-    private final String databaseId = CosmosDatabaseForTest.generateId();
-    private List<CosmosAsyncContainer> createdContainers = new ArrayList<>();
+    private List<DocumentCollection> createdCollections = new ArrayList<>();
 
-    private CosmosAsyncClient client;
-    private CosmosAsyncDatabase database;
+    private AsyncDocumentClient client;
+
+    private String getDatabaseLink() {
+        return TestUtils.getDatabaseNameLink(databaseId);
+    }
 
     @Factory(dataProvider = "clientBuilders")
-    public OfferQueryTest(CosmosClientBuilder clientBuilder) {
+    public OfferQueryTest(Builder clientBuilder) {
         super(clientBuilder);
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void readThroughputForContainer() {
-        CosmosAsyncContainer container = createdContainers.get(0);
+    public void queryOffersWithFilter() throws Exception {
+        String collectionResourceId = createdCollections.get(0).getResourceId();
+        String query = String.format("SELECT * from c where c.offerResourceId = '%s'", collectionResourceId);
 
-        ThroughputResponse response = container.readThroughput().block();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 2);
 
-        assertThat(response).isNotNull();
-        assertThat(response.getProperties()).isNotNull();
-        assertThat(response.getProperties().getManualThroughput()).isEqualTo(INITIAL_THROUGHPUT);
+        QueryFeedOperationState queryDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client);
+        QueryFeedOperationState offerDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, options, client);
+
+        try {
+            Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
+                query,
+                queryDummyState);
+
+            List<Offer> allOffers = client
+                .readOffers(offerDummyState)
+                .flatMap(f -> Flux.fromIterable(f.getResults())).collectList().single().block();
+            List<Offer> expectedOffers = allOffers.stream().filter(o -> collectionResourceId.equals(o.getString("offerResourceId"))).collect(Collectors.toList());
+
+            assertThat(expectedOffers).isNotEmpty();
+
+            Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+            int expectedPageSize = (expectedOffers.size() + maxItemCount - 1) / maxItemCount;
+
+            FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
+                .totalSize(expectedOffers.size())
+                .exactlyContainsInAnyOrder(expectedOffers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .numberOfPages(expectedPageSize)
+                .pageSatisfy(0, new FeedResponseValidator.Builder<Offer>()
+                    .requestChargeGreaterThanOrEqualTo(1.0).build())
+                .build();
+
+            validateQuerySuccess(queryObservable, validator, 10000);
+        } finally {
+            safeClose(queryDummyState);
+            safeClose(offerDummyState);
+        }
     }
 
-    @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void readThroughputForMultipleContainers() {
-        // Read throughput for all created containers
-        for (CosmosAsyncContainer container : createdContainers) {
-            ThroughputResponse response = container.readThroughput().block();
+    @Test(groups = { "query" }, timeOut = TIMEOUT * 10)
+    public void queryOffersFilterMorePages() throws Exception {
 
-            assertThat(response).isNotNull();
-            assertThat(response.getProperties()).isNotNull();
-            assertThat(response.getProperties().getManualThroughput()).isEqualTo(INITIAL_THROUGHPUT);
+        List<String> collectionResourceIds = createdCollections.stream().map(c -> c.getResourceId()).collect(Collectors.toList());
+        String query = String.format("SELECT * from c where c.offerResourceId in (%s)",
+                Strings.join(collectionResourceIds.stream().map(s -> "'" + s + "'").collect(Collectors.toList())).with(","));
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(options, 1);
+
+        QueryFeedOperationState queryDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.Query, options, client);
+
+        QueryFeedOperationState offerDummyState = TestUtils
+            .createDummyQueryFeedOperationState(ResourceType.Offer, OperationType.ReadFeed, new CosmosQueryRequestOptions(), client);
+
+        try {
+
+            Flux<FeedResponse<Offer>> queryObservable = client.queryOffers(
+                query,
+                queryDummyState);
+
+            List<Offer> expectedOffers = client
+                .readOffers(offerDummyState)
+                .flatMap(f -> Flux.fromIterable(f.getResults()))
+                .collectList()
+                .single().block()
+                .stream().filter(o -> collectionResourceIds.contains(o.getOfferResourceId()))
+                .collect(Collectors.toList());
+
+            assertThat(expectedOffers).hasSize(createdCollections.size());
+
+            Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
+            int expectedPageSize = (expectedOffers.size() + maxItemCount - 1) / maxItemCount;
+
+            FeedResponseListValidator<Offer> validator = new FeedResponseListValidator.Builder<Offer>()
+                .totalSize(expectedOffers.size())
+                .exactlyContainsInAnyOrder(expectedOffers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .numberOfPages(expectedPageSize)
+                .pageSatisfy(0, new FeedResponseValidator.Builder<Offer>()
+                    .requestChargeGreaterThanOrEqualTo(1.0).build())
+                .build();
+
+            validateQuerySuccess(queryObservable, validator, 10000);
+        } finally {
+            safeClose(queryDummyState);
+            safeClose(offerDummyState);
         }
     }
 
     @Test(groups = { "query" }, timeOut = TIMEOUT)
-    public void readThroughputForDatabase() {
-        // Create a database with throughput
-        String dbWithThroughputId = CosmosDatabaseForTest.generateId();
-        client.createDatabase(dbWithThroughputId, ThroughputProperties.createManualThroughput(4000)).block();
-        CosmosAsyncDatabase dbWithThroughput = client.getDatabase(dbWithThroughputId);
+    public void queryCollections_NoResults() throws Exception {
 
-        try {
-            ThroughputResponse response = dbWithThroughput.readThroughput().block();
+        String query = "SELECT * from root r where r.id = '2'";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        try (CosmosAsyncClient cosmosClient = new CosmosClientBuilder()
+            .key(TestConfigurations.MASTER_KEY)
+            .endpoint(TestConfigurations.HOST)
+            .buildAsyncClient()) {
 
-            assertThat(response).isNotNull();
-            assertThat(response.getProperties()).isNotNull();
-            assertThat(response.getProperties().getManualThroughput()).isEqualTo(4000);
-        } finally {
-            safeDeleteDatabase(dbWithThroughput);
+            QueryFeedOperationState dummyState = new QueryFeedOperationState(
+                cosmosClient,
+                "SomeSpanName",
+                "SomeDBName",
+                "SomeContainerName",
+                ResourceType.Document,
+                OperationType.Query,
+                null,
+                options,
+                new CosmosPagedFluxOptions()
+            );
+
+            try {
+                Flux<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(getDatabaseLink(), query, dummyState);
+
+                FeedResponseListValidator<DocumentCollection> validator = new FeedResponseListValidator.Builder<DocumentCollection>()
+                    .containsExactly(new ArrayList<>())
+                    .numberOfPages(1)
+                    .pageSatisfy(0, new FeedResponseValidator.Builder<DocumentCollection>()
+                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                    .build();
+                validateQuerySuccess(queryObservable, validator);
+            } finally {
+                safeClose(dummyState);
+            }
         }
     }
 
     @BeforeClass(groups = { "query" }, timeOut = SETUP_TIMEOUT)
-    public void before_OfferQueryTest() {
-        client = getClientBuilder().buildAsyncClient();
-        client.createDatabase(databaseId).block();
-        database = client.getDatabase(databaseId);
+    public void before_OfferQueryTest() throws Exception {
+        client = clientBuilder().build();
 
-        // Create multiple containers with throughput
-        for (int i = 0; i < 3; i++) {
-            CosmosContainerProperties containerProperties = new CosmosContainerProperties(
-                UUID.randomUUID().toString(),
-                "/mypk"
-            );
-            database.createContainer(
-                containerProperties,
-                ThroughputProperties.createManualThroughput(INITIAL_THROUGHPUT),
-                new CosmosContainerRequestOptions()
-            ).block();
-            createdContainers.add(database.getContainer(containerProperties.getId()));
+        Database d1 = new Database();
+        d1.setId(databaseId);
+        createDatabase(client, d1);
+
+        for(int i = 0; i < 3; i++) {
+            DocumentCollection collection = new DocumentCollection();
+            collection.setId(UUID.randomUUID().toString());
+
+            PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+            ArrayList<String> paths = new ArrayList<String>();
+            paths.add("/mypk");
+            partitionKeyDef.setPaths(paths);
+            collection.setPartitionKey(partitionKeyDef);
+
+            createdCollections.add(createCollection(client, databaseId, collection));
         }
     }
 
-    @AfterClass(groups = { "query" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "query" }, timeOut = 2*SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(database);
+        safeDeleteDatabase(client, databaseId);
         safeClose(client);
     }
 }
