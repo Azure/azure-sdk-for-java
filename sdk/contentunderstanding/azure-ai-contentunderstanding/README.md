@@ -155,6 +155,7 @@ After the script runs successfully, you can use prebuilt analyzers like `prebuil
 If you encounter errors:
 - **Access Denied**: Ensure you have the **Cognitive Services User** role assignment.
 - **Deployment Not Found**: Check that deployment names in environment variables match exactly what you created in Foundry.
+
 ### Adding the package to your product
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-contentunderstanding;current})
