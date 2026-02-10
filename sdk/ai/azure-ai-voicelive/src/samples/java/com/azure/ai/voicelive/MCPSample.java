@@ -94,10 +94,6 @@ public final class MCPSample {
     private static final int SAMPLE_SIZE_BITS = 16;
     private static final int CHUNK_SIZE = 1200;
 
-    // Scanner for user input (reused across approval requests)
-    // This Scanner wraps System.in and should not be closed to allow continued console input
-    private static final Scanner CONSOLE_SCANNER = new Scanner(System.in);
-
     private MCPSample() {
     }
 
@@ -415,9 +411,11 @@ public final class MCPSample {
      * Get user approval for MCP tool call.
      */
     private static boolean getUserApproval() {
+        @SuppressWarnings("resource")
+        Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("Approve MCP call? (y/n): ");
-            String input = CONSOLE_SCANNER.nextLine().trim().toLowerCase();
+            String input = scanner.nextLine().trim().toLowerCase();
             switch (input) {
                 case "y":
                     return true;
