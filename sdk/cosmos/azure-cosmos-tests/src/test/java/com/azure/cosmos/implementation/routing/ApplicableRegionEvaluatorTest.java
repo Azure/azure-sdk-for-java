@@ -24,7 +24,9 @@ import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.PerPartitionAutomaticFailoverInfoHolder;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PerPartitionCircuitBreakerInfoHolder;
 import org.assertj.core.api.Assertions;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -207,7 +209,6 @@ public class ApplicableRegionEvaluatorTest {
                 globalEndpointManager,
                 true,
                 new ThrottlingRetryOptions(),
-                null,
                 globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover,
                 false);
@@ -300,8 +301,10 @@ public class ApplicableRegionEvaluatorTest {
                         true,
                         collectionResourceId,
                         new SerializationDiagnosticsContext()),
-                    new AvailabilityStrategyContext(true, false)
-                ));
+                    new AvailabilityStrategyContext(true, false),
+                    new AtomicBoolean(false),
+                    new PerPartitionCircuitBreakerInfoHolder(),
+                    new PerPartitionAutomaticFailoverInfoHolder()));
         } else {
             request.requestContext.setCrossRegionAvailabilityContext(
                 new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
@@ -311,8 +314,10 @@ public class ApplicableRegionEvaluatorTest {
                         false,
                         collectionResourceId,
                         new SerializationDiagnosticsContext()),
-                    new AvailabilityStrategyContext(false, false)
-                ));
+                    new AvailabilityStrategyContext(false, false),
+                    new AtomicBoolean(false),
+                    new PerPartitionCircuitBreakerInfoHolder(),
+                    new PerPartitionAutomaticFailoverInfoHolder()));
         }
 
         return request;

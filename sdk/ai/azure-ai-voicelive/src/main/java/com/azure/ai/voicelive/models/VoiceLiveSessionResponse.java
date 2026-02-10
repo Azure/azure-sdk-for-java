@@ -603,6 +603,12 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
             jsonWriter.writeFieldName("max_response_output_tokens");
             this.maxResponseOutputTokens.writeTo(jsonWriter);
         }
+        jsonWriter.writeStringField("reasoning_effort",
+            this.reasoningEffort == null ? null : this.reasoningEffort.toString());
+        if (this.fillerResponse != null) {
+            jsonWriter.writeFieldName("filler_response");
+            this.fillerResponse.writeTo(jsonWriter);
+        }
         jsonWriter.writeJsonField("agent", this.agent);
         jsonWriter.writeStringField("id", this.id);
         return jsonWriter.writeEndObject();
@@ -674,6 +680,12 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
                 } else if ("max_response_output_tokens".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.maxResponseOutputTokens
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
+                } else if ("reasoning_effort".equals(fieldName)) {
+                    deserializedVoiceLiveSessionResponse.reasoningEffort
+                        = ReasoningEffort.fromString(reader.getString());
+                } else if ("filler_response".equals(fieldName)) {
+                    deserializedVoiceLiveSessionResponse.fillerResponse
+                        = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
                 } else if ("agent".equals(fieldName)) {
                     deserializedVoiceLiveSessionResponse.agent = RespondingAgentOptions.fromJson(reader);
                 } else if ("id".equals(fieldName)) {
@@ -720,6 +732,68 @@ public final class VoiceLiveSessionResponse implements JsonSerializable<VoiceLiv
     @Generated
     public VoiceLiveSessionResponse setMaxResponseOutputTokens(BinaryData maxResponseOutputTokens) {
         this.maxResponseOutputTokens = maxResponseOutputTokens;
+        return this;
+    }
+
+    /*
+     * Constrains effort on reasoning for reasoning models. Check model documentation for supported values for each
+     * model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     */
+    @Generated
+    private ReasoningEffort reasoningEffort;
+
+    /*
+     * Configuration for filler response generation during latency or tool calls.
+     */
+    @Generated
+    private BinaryData fillerResponse;
+
+    /**
+     * Get the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
+     * for supported values for each model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     *
+     * @return the reasoningEffort value.
+     */
+    @Generated
+    public ReasoningEffort getReasoningEffort() {
+        return this.reasoningEffort;
+    }
+
+    /**
+     * Set the reasoningEffort property: Constrains effort on reasoning for reasoning models. Check model documentation
+     * for supported values for each model.
+     * Reducing reasoning effort can result in faster responses and fewer tokens used on reasoning in a response.
+     *
+     * @param reasoningEffort the reasoningEffort value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setReasoningEffort(ReasoningEffort reasoningEffort) {
+        this.reasoningEffort = reasoningEffort;
+        return this;
+    }
+
+    /**
+     * Get the fillerResponse property: Configuration for filler response generation during latency or tool calls.
+     *
+     * @return the fillerResponse value.
+     */
+    @Generated
+    public BinaryData getFillerResponse() {
+        return this.fillerResponse;
+    }
+
+    /**
+     * Set the fillerResponse property: Configuration for filler response generation during latency or tool calls.
+     *
+     * @param fillerResponse the fillerResponse value to set.
+     * @return the VoiceLiveSessionResponse object itself.
+     */
+    @Generated
+    public VoiceLiveSessionResponse setFillerResponse(BinaryData fillerResponse) {
+        this.fillerResponse = fillerResponse;
         return this;
     }
 }
