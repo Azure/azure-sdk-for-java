@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- The default JMS ConnectionFactory for Service Bus has been changed from `ServiceBusJmsConnectionFactory` to `CachingConnectionFactory` to improve efficiency for sender operations using `JmsTemplate`. This change only affects the sender side when neither `spring.jms.servicebus.pool.enabled` nor `spring.jms.cache.enabled` properties are explicitly set. The receiver side (JMS listeners) continues to use a dedicated `ServiceBusJmsConnectionFactory` instance. To revert to the previous behavior, explicitly set `spring.jms.cache.enabled=false`.
+
 ### Bugs Fixed
 
 ### Other Changes
