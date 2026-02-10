@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ConsistencyTestsBase;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -14,6 +13,8 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.VectorSessionToken;
+import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -54,6 +55,8 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -1495,7 +1498,7 @@ public class CosmosItemTest extends TestSuiteBase {
             String[] tokenParts = StringUtils.split(originalSessionToken, ":");
             ISessionToken sessionToken = SessionTokenHelper.parse(originalSessionToken);
             ISessionToken modifiedSessionToken
-                = ConsistencyTestsBase.createSessionToken(sessionToken, 100000000);
+                = createSessionToken(sessionToken, 100000000);
 
             return tokenParts[0] + ":" + modifiedSessionToken.convertToString();
         } catch (Exception ex) {
@@ -1503,6 +1506,28 @@ public class CosmosItemTest extends TestSuiteBase {
         }
 
         return originalSessionToken;
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private static ISessionToken createSessionToken(ISessionToken from, long globalLSN) throws Exception {
+        // Creates session token with specified GlobalLSN
+        if (from instanceof VectorSessionToken) {
+            VectorSessionToken fromSessionToken = (VectorSessionToken) from;
+            Field fieldVersion = VectorSessionToken.class.getDeclaredField("version");
+            fieldVersion.setAccessible(true);
+            Long version = (Long) fieldVersion.get(fromSessionToken);
+
+            Field fieldLocalLsnByRegion = VectorSessionToken.class.getDeclaredField("localLsnByRegion");
+            fieldLocalLsnByRegion.setAccessible(true);
+            UnmodifiableMap<Integer, Long> localLsnByRegion = (UnmodifiableMap<Integer, Long>) fieldLocalLsnByRegion.get(fromSessionToken);
+
+            Constructor<VectorSessionToken> constructor = VectorSessionToken.class.getDeclaredConstructor(long.class, long.class, UnmodifiableMap.class);
+            constructor.setAccessible(true);
+            VectorSessionToken vectorSessionToken = constructor.newInstance(version, globalLSN, localLsnByRegion);
+            return vectorSessionToken;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     private static String replacePkRangeIdInSessionToken(String originalSessionToken, String partitionKeyRangeId) {
