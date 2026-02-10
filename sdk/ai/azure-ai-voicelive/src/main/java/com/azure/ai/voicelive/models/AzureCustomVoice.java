@@ -314,6 +314,7 @@ public final class AzureCustomVoice extends AzureVoice {
         jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         jsonWriter.writeNumberField("temperature", this.temperature);
         jsonWriter.writeStringField("custom_lexicon_url", this.customLexiconUri);
+        jsonWriter.writeStringField("custom_text_normalization_url", this.customTextNormalizationUrl);
         jsonWriter.writeArrayField("prefer_locales", this.preferLocales,
             (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("locale", this.locale);
@@ -341,6 +342,7 @@ public final class AzureCustomVoice extends AzureVoice {
             AzureVoiceType type = AzureVoiceType.AZURE_CUSTOM;
             Double temperature = null;
             String customLexiconUri = null;
+            String customTextNormalizationUrl = null;
             List<String> preferLocales = null;
             String locale = null;
             String style = null;
@@ -360,6 +362,8 @@ public final class AzureCustomVoice extends AzureVoice {
                     temperature = reader.getNullable(JsonReader::getDouble);
                 } else if ("custom_lexicon_url".equals(fieldName)) {
                     customLexiconUri = reader.getString();
+                } else if ("custom_text_normalization_url".equals(fieldName)) {
+                    customTextNormalizationUrl = reader.getString();
                 } else if ("prefer_locales".equals(fieldName)) {
                     preferLocales = reader.readArray(reader1 -> reader1.getString());
                 } else if ("locale".equals(fieldName)) {
@@ -380,6 +384,7 @@ public final class AzureCustomVoice extends AzureVoice {
             deserializedAzureCustomVoice.type = type;
             deserializedAzureCustomVoice.temperature = temperature;
             deserializedAzureCustomVoice.customLexiconUri = customLexiconUri;
+            deserializedAzureCustomVoice.customTextNormalizationUrl = customTextNormalizationUrl;
             deserializedAzureCustomVoice.preferLocales = preferLocales;
             deserializedAzureCustomVoice.locale = locale;
             deserializedAzureCustomVoice.style = style;
@@ -388,5 +393,33 @@ public final class AzureCustomVoice extends AzureVoice {
             deserializedAzureCustomVoice.volume = volume;
             return deserializedAzureCustomVoice;
         });
+    }
+
+    /*
+     * The custom_text_normalization_url property.
+     */
+    @Generated
+    private String customTextNormalizationUrl;
+
+    /**
+     * Get the customTextNormalizationUrl property: The custom_text_normalization_url property.
+     *
+     * @return the customTextNormalizationUrl value.
+     */
+    @Generated
+    public String getCustomTextNormalizationUrl() {
+        return this.customTextNormalizationUrl;
+    }
+
+    /**
+     * Set the customTextNormalizationUrl property: The custom_text_normalization_url property.
+     *
+     * @param customTextNormalizationUrl the customTextNormalizationUrl value to set.
+     * @return the AzureCustomVoice object itself.
+     */
+    @Generated
+    public AzureCustomVoice setCustomTextNormalizationUrl(String customTextNormalizationUrl) {
+        this.customTextNormalizationUrl = customTextNormalizationUrl;
+        return this;
     }
 }

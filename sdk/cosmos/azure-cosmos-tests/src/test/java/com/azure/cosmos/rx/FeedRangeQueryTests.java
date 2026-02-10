@@ -161,7 +161,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
     public void beforeClass() throws Exception {
         client = this.getClientBuilder().buildAsyncClient();
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
-        truncateCollection(createdContainer);
+        cleanUpContainer(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(
             DEFAULT_NUM_DOCUMENTS_PER_PKEY,
@@ -187,7 +187,7 @@ public class FeedRangeQueryTests extends TestSuiteBase {
                                                                                                               .size()))));
         }
 
-        List<JsonNode> documentInserted = bulkInsertBlocking(container, documentsToInsert);
+        List<JsonNode> documentInserted = insertAllItemsBlocking(container, documentsToInsert, true);
 
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
 
