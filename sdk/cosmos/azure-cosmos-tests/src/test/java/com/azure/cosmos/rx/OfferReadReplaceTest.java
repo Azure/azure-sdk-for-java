@@ -15,7 +15,6 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceResponseValidator;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -25,7 +24,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-//TODO: change to use external TestSuiteBase
 public class OfferReadReplaceTest extends TestSuiteBase {
 
     public final String databaseId = DatabaseForTest.generateId();
@@ -35,7 +33,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
 
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "internalClientBuilders")
     public OfferReadReplaceTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
     }
@@ -73,7 +71,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                 .notNullEtag()
                 .build();
 
-            validateSuccess(readObservable, validatorForRead);
+            validateResourceResponseSuccess(readObservable, validatorForRead);
 
             // update offer
             int newThroughput = oldThroughput + 100;
@@ -86,7 +84,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                 .notNullEtag()
                 .build();
 
-            validateSuccess(replaceObservable, validatorForReplace);
+            validateResourceResponseSuccess(replaceObservable, validatorForReplace);
         } finally {
             safeClose(offerDummyState);
         }
@@ -97,7 +95,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
         client = clientBuilder().build();
         createdDatabase = createDatabase(client, databaseId);
         createdCollection = createCollection(client, createdDatabase.getId(),
-                getCollectionDefinition());
+                getInternalCollectionDefinition());
     }
 
     @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

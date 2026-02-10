@@ -755,17 +755,17 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return createCollection(client.getDatabase(databaseId), collection, options);
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionWithFullFidelity() {
+    protected static CosmosContainerProperties getCollectionDefinitionWithFullFidelity() {
         CosmosContainerProperties cosmosContainerProperties = getCollectionDefinition(UUID.randomUUID().toString());
         cosmosContainerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(5)));
         return cosmosContainerProperties;
     }
 
-    static protected CosmosContainerProperties getCollectionDefinition() {
+    protected static CosmosContainerProperties getCollectionDefinition() {
         return getCollectionDefinition(UUID.randomUUID().toString());
     }
 
-    static protected CosmosContainerProperties getCollectionDefinition(String collectionId) {
+    protected static CosmosContainerProperties getCollectionDefinition(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
@@ -776,11 +776,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return collectionDefinition;
     }
 
-    static protected CosmosContainerProperties getCollectionDefinition(String collectionId, PartitionKeyDefinition partitionKeyDefinition) {
+    protected static CosmosContainerProperties getCollectionDefinition(String collectionId, PartitionKeyDefinition partitionKeyDefinition) {
         return new CosmosContainerProperties(collectionId, partitionKeyDefinition);
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionForHashV2(String collectionId) {
+    protected static CosmosContainerProperties getCollectionDefinitionForHashV2(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
@@ -792,7 +792,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return collectionDefinition;
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionForHashV2WithHpk(String collectionId) {
+    protected static CosmosContainerProperties getCollectionDefinitionForHashV2WithHpk(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/state");
@@ -806,7 +806,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
 
-    static protected CosmosContainerProperties getCollectionDefinitionWithHpk(String collectionId) {
+    protected static CosmosContainerProperties getCollectionDefinitionWithHpk(String collectionId) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/state");
@@ -818,15 +818,15 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return new CosmosContainerProperties(collectionId, partitionKeyDef);
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
+    protected static CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
         return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/id"));
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex() {
+    protected static CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex() {
         return getCollectionDefinitionWithRangeRangeIndex(Collections.singletonList("/mypk"));
     }
 
-    static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex(List<String> partitionKeyPath) {
+    protected static CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndex(List<String> partitionKeyPath) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
 
         partitionKeyDef.setPaths(partitionKeyPath);
@@ -916,13 +916,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return client.getDatabase(databaseSettings.getId());
     }
 
-    static protected CosmosAsyncDatabase createDatabase(CosmosAsyncClient client, String databaseId) {
+    protected static CosmosAsyncDatabase createDatabase(CosmosAsyncClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         client.createDatabase(databaseSettings).block();
         return client.getDatabase(databaseSettings.getId());
     }
 
-    static protected CosmosDatabase createSyncDatabase(CosmosClient client, String databaseId) {
+    protected static CosmosDatabase createSyncDatabase(CosmosClient client, String databaseId) {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         try {
             client.createDatabase(databaseSettings);
@@ -933,7 +933,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return null;
     }
 
-    static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
+    protected static CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
         List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
             .collectList()
             .block();
@@ -948,7 +948,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeDeleteDatabase(CosmosAsyncDatabase database) {
+    protected static void safeDeleteDatabase(CosmosAsyncDatabase database) {
         if (database != null) {
             try {
                 database.delete().block();
@@ -957,7 +957,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeDeleteSyncDatabase(CosmosDatabase database) {
+    protected static void safeDeleteSyncDatabase(CosmosDatabase database) {
         if (database != null) {
             try {
                 logger.info("attempting to delete database ....");
@@ -969,7 +969,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
+    protected static void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
             List<CosmosContainerProperties> collections = database.readAllContainers()
                 .collectList()
@@ -981,7 +981,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeDeleteCollection(CosmosAsyncContainer collection) {
+    protected static void safeDeleteCollection(CosmosAsyncContainer collection) {
 
         if (collection != null) {
             try {
@@ -1022,7 +1022,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeDeleteCollection(CosmosAsyncDatabase database, String collectionId) {
+    protected static void safeDeleteCollection(CosmosAsyncDatabase database, String collectionId) {
         if (database != null && collectionId != null) {
             try {
                 safeDeleteCollection(database.getContainer(collectionId));
@@ -1031,13 +1031,13 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeClose(QueryFeedOperationState state) {
+    protected static void safeClose(QueryFeedOperationState state) {
         if (state != null) {
             safeClose(state.getClient());
         }
     }
 
-    static protected void safeClose(CosmosAsyncClient client) {
+    protected static void safeClose(CosmosAsyncClient client) {
         if (client != null) {
             try {
                 client.close();
@@ -1047,7 +1047,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    static protected void safeCloseSyncClient(CosmosClient client) {
+    protected static void safeCloseSyncClient(CosmosClient client) {
         if (client != null) {
             try {
                 logger.info("closing client ...");
@@ -1517,7 +1517,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return cosmosConfigurations.stream().map(c -> new Object[]{c}).collect(Collectors.toList()).toArray(new Object[0][]);
     }
 
-    static protected CosmosClientBuilder createGatewayHouseKeepingDocumentClient(boolean contentResponseOnWriteEnabled) {
+    protected static CosmosClientBuilder createGatewayHouseKeepingDocumentClient(boolean contentResponseOnWriteEnabled) {
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -1529,7 +1529,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                                         .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
-    static protected CosmosClientBuilder createGatewayRxDocumentClient(
+    protected static CosmosClientBuilder createGatewayRxDocumentClient(
         ConsistencyLevel consistencyLevel,
         boolean multiMasterEnabled,
         List<String> preferredRegions,
@@ -1546,7 +1546,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             false);
     }
 
-    static protected CosmosClientBuilder createGatewayRxDocumentClient(
+    protected static CosmosClientBuilder createGatewayRxDocumentClient(
         String endpoint,
         ConsistencyLevel consistencyLevel,
         boolean multiMasterEnabled,
@@ -1584,11 +1584,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         return builder;
     }
 
-    static protected CosmosClientBuilder createGatewayRxDocumentClient() {
+    protected static CosmosClientBuilder createGatewayRxDocumentClient() {
         return createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true, true);
     }
 
-    static protected CosmosClientBuilder createDirectRxDocumentClient(ConsistencyLevel consistencyLevel,
+    protected static CosmosClientBuilder createDirectRxDocumentClient(ConsistencyLevel consistencyLevel,
                                                                       Protocol protocol,
                                                                       boolean multiMasterEnabled,
                                                                       List<String> preferredRegions,
@@ -1682,7 +1682,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * Creates a gateway AsyncDocumentClient.Builder for housekeeping operations.
      * @return the AsyncDocumentClient.Builder
      */
-    static protected AsyncDocumentClient.Builder createGatewayHouseKeepingDocumentClient() {
+    protected static AsyncDocumentClient.Builder createGatewayHouseKeepingDocumentClient() {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
@@ -1703,7 +1703,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * Creates a gateway AsyncDocumentClient.Builder.
      * @return the AsyncDocumentClient.Builder
      */
-    static protected AsyncDocumentClient.Builder createInternalGatewayRxDocumentClient(
+    protected static AsyncDocumentClient.Builder createInternalGatewayRxDocumentClient(
             ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
             List<String> preferredLocationsList, boolean contentResponseOnWriteEnabled) {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -1725,7 +1725,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * Creates a direct AsyncDocumentClient.Builder.
      * @return the AsyncDocumentClient.Builder
      */
-    static protected AsyncDocumentClient.Builder createInternalDirectRxDocumentClient(
+    protected static AsyncDocumentClient.Builder createInternalDirectRxDocumentClient(
             ConsistencyLevel consistencyLevel,
             Protocol protocol,
             boolean multiMasterEnabled,
@@ -1762,7 +1762,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * @param databaseId the database id
      * @return the created Database
      */
-    static protected Database createDatabase(AsyncDocumentClient client, String databaseId) {
+    protected static Database createDatabase(AsyncDocumentClient client, String databaseId) {
         Database databaseDefinition = new Database();
         databaseDefinition.setId(databaseId);
         return client.createDatabase(databaseDefinition, null).block().getResource();
@@ -1774,7 +1774,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * @param database the database definition
      * @return the created Database
      */
-    static protected Database createDatabase(AsyncDocumentClient client, Database database) {
+    protected static Database createDatabase(AsyncDocumentClient client, Database database) {
         Mono<ResourceResponse<Database>> databaseObservable = client.createDatabase(database, null);
         return databaseObservable.block().getResource();
     }
@@ -1847,7 +1847,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * @param client the AsyncDocumentClient
      * @param database the database to delete
      */
-    static protected void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
+    protected static void safeDeleteDatabase(AsyncDocumentClient client, Database database) {
         if (database != null) {
             safeDeleteDatabase(client, database.getId());
         }
@@ -1858,12 +1858,12 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * @param client the AsyncDocumentClient
      * @param databaseId the database id
      */
-    static protected void safeDeleteDatabase(AsyncDocumentClient client, String databaseId) {
+    protected static void safeDeleteDatabase(AsyncDocumentClient client, String databaseId) {
         if (client != null) {
             try {
                 client.deleteDatabase(TestUtils.getDatabaseNameLink(databaseId), null).block();
             } catch (Exception e) {
-                // ignore
+                // Ignore errors during cleanup as database may not exist
             }
         }
     }
@@ -1872,7 +1872,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * Safely closes an AsyncDocumentClient.
      * @param client the AsyncDocumentClient
      */
-    static protected void safeClose(AsyncDocumentClient client) {
+    protected static void safeClose(AsyncDocumentClient client) {
         if (client != null) {
             try {
                 client.close();
@@ -1897,9 +1897,9 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * @param validator the validator
      * @param <T> the resource type
      */
-    public <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
+    public <T extends Resource> void validateResourceResponseSuccess(Mono<ResourceResponse<T>> observable,
                                                      ResourceResponseValidator<T> validator) {
-        validateSuccess(observable, validator, subscriberValidationTimeout);
+        validateResourceResponseSuccess(observable, validator, subscriberValidationTimeout);
     }
 
     /**
@@ -1909,7 +1909,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * @param timeout the timeout
      * @param <T> the resource type
      */
-    public static <T extends Resource> void validateSuccess(Mono<ResourceResponse<T>> observable,
+    public static <T extends Resource> void validateResourceResponseSuccess(Mono<ResourceResponse<T>> observable,
                                                             ResourceResponseValidator<T> validator, long timeout) {
         StepVerifier.create(observable)
             .assertNext(validator::validate)
@@ -1972,7 +1972,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * Gets the internal DocumentCollection definition.
      * @return the DocumentCollection
      */
-    static protected DocumentCollection getInternalCollectionDefinition() {
+    protected static DocumentCollection getInternalCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
@@ -1989,7 +1989,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
      * Gets the internal DocumentCollection definition with range index.
      * @return the DocumentCollection
      */
-    static protected DocumentCollection getInternalCollectionDefinitionWithRangeRangeIndex() {
+    protected static DocumentCollection getInternalCollectionDefinitionWithRangeIndex() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");
@@ -2067,7 +2067,7 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
                         try {
                             container.deleteItem(id, PartitionKey.NONE).block();
                         } catch (Exception e) {
-                            // ignore
+                            // Ignore errors during document deletion as document may have already been deleted
                         }
                     }
                 }
