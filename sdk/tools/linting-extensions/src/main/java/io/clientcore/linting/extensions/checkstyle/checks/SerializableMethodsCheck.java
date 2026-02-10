@@ -68,12 +68,6 @@ public class SerializableMethodsCheck extends AbstractCheck {
         // Check if the class is abstract - skip validation for abstract types
         snapshot.isAbstract = isAbstractType(classNode);
 
-        // Check if the class extends JsonSerializable or XmlSerializable
-        DetailAST extendsSection = classNode.findFirstToken(TokenTypes.EXTENDS_CLAUSE);
-        if (extendsSection != null) {
-            digestExtendsSection(extendsSection, snapshot);
-        }
-
         DetailAST interfaceSection = classNode.findFirstToken(TokenTypes.IMPLEMENTS_CLAUSE);
         if (interfaceSection != null) {
             digestInterfaceSection(interfaceSection, snapshot);
@@ -88,22 +82,6 @@ public class SerializableMethodsCheck extends AbstractCheck {
             return false;
         }
         return modifierBlock.findFirstToken(TokenTypes.ABSTRACT) != null;
-    }
-
-    private void digestExtendsSection(DetailAST extendsSection, TypeSnapshot snapshot) {
-        DetailAST cursor = extendsSection.getFirstChild();
-
-        while (cursor != null) {
-            if (cursor.getType() == TokenTypes.IDENT) {
-                String parentLabel = cursor.getText();
-                if ("JsonSerializable".equals(parentLabel)) {
-                    snapshot.extendsJsonSerializable = true;
-                } else if ("XmlSerializable".equals(parentLabel)) {
-                    snapshot.extendsXmlSerializable = true;
-                }
-            }
-            cursor = cursor.getNextSibling();
-        }
     }
 
     private void digestInterfaceSection(DetailAST interfaceSection, TypeSnapshot snapshot) {
@@ -166,11 +144,6 @@ public class SerializableMethodsCheck extends AbstractCheck {
             return;
         }
 
-        // Skip validation for types that extend from JsonSerializable or XmlSerializable
-        if (snapshot.extendsJsonSerializable || snapshot.extendsXmlSerializable) {
-            return;
-        }
-
         if (snapshot.implementsJsonSerializable && !snapshot.observedFromJson) {
             log(classNode, ERR_NO_FROM_JSON);
         }
@@ -183,10 +156,9 @@ public class SerializableMethodsCheck extends AbstractCheck {
     private static class TypeSnapshot {
         DetailAST classNode;
         boolean isAbstract;
+        boolean extendsAnotherType;
         boolean implementsJsonSerializable;
         boolean implementsXmlSerializable;
-        boolean extendsJsonSerializable;
-        boolean extendsXmlSerializable;
         boolean observedFromJson;
         boolean observedFromXml;
 

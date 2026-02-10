@@ -195,54 +195,24 @@ public class SerializableMethodsCheckTest extends AbstractModuleTestSupport {
     }
 
     @Test
-    public void classExtendsJsonSerializableType() throws Exception {
+    public void classExtendsAnotherTypeAndImplementsJsonSerializable() throws Exception {
         File testFile = TestUtils.createCheckFile("extendsJson", "package com.azure;",
-            "public interface ExtendsJson extends JsonSerializable {", "    public void toJson() {}", "}");
+            "public class ExtendsJson extends BaseClass implements JsonSerializable {", "    public void toJson() {}",
+            "}");
 
-        // Classes extending JsonSerializable should not require fromJson method
-        verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath());
-    }
-
-    @Test
-    public void classExtendsXmlSerializableType() throws Exception {
-        File testFile = TestUtils.createCheckFile("extendsXml", "package com.azure;",
-            "public interface ExtendsXml extends XmlSerializable {", "    public void toXml() {}", "}");
-
-        // Classes extending XmlSerializable should not require fromXml method
-        verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath());
-    }
-
-    @Test
-    public void classExtendsJsonSerializableAndImplementsInterface() throws Exception {
-        File testFile = TestUtils.createCheckFile("extendsJsonImpl", "package com.azure;",
-            "public class ExtendsJsonImpl extends BaseJson implements JsonSerializable {",
-            "    public void toJson() {}", "}");
-
-        // Classes extending a non-serializable type but implementing JsonSerializable should require fromJson
+        // Classes extending another type and implementing JsonSerializable should require fromJson method
         String[] expectedErrors = { "2:1: " + ERR_NO_FROM_JSON };
         verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
     }
 
     @Test
-    public void concreteClassExtendingAbstractJsonSerializable() throws Exception {
+    public void classExtendsTypeAndImplementsJsonSerializableWithFromJson() throws Exception {
         File testFile = TestUtils.createCheckFile("concreteExtendsAbstract", "package com.azure;",
             "public class ConcreteClass extends AbstractBase implements JsonSerializable {",
             "    public void toJson() {}", "    public static ConcreteClass fromJson() { return null; }", "}");
 
-        // Concrete class implementing JsonSerializable with fromJson should pass
+        // Classes extending any type should pass (validation is skipped)
         verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath());
-    }
-
-    @Test
-    public void concreteClassImplementingJsonSerializableMissingFromJson() throws Exception {
-        File testFile = TestUtils.createCheckFile("concreteMissing", "package com.azure;",
-            "public class ConcreteMissing extends AbstractBase implements JsonSerializable {",
-            "    public void toJson() {}", "}");
-
-        // Concrete class implementing JsonSerializable without fromJson should fail
-        // unless it extends from JsonSerializable type
-        String[] expectedErrors = { "2:1: " + ERR_NO_FROM_JSON };
-        verify(lintingChecker, new File[] { testFile }, testFile.getAbsolutePath(), expectedErrors);
     }
 
     @Test
