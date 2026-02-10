@@ -2080,4 +2080,96 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    /**
+     * Deletes a document using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param documentLink the document link
+     * @param partitionKey the partition key
+     * @param etag the etag (can be null)
+     */
+    public static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey partitionKey, String etag) {
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(partitionKey);
+        if (etag != null) {
+            options.setIfMatchETag(etag);
+        }
+        try {
+            client.deleteDocument(documentLink, options).block();
+        } catch (Exception e) {
+            // Ignore ResourceNotFoundException if document was already deleted, or other errors during cleanup
+        }
+    }
+
+    /**
+     * Bulk inserts documents using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param collectionLink the collection link
+     * @param documents the documents to insert
+     * @param <T> the document type
+     */
+    public static <T extends Resource> void bulkInsert(AsyncDocumentClient client, String collectionLink, List<T> documents) {
+        bulkInsert(client, collectionLink, documents, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL);
+    }
+
+    /**
+     * Bulk inserts documents using AsyncDocumentClient with concurrency level.
+     * @param client the AsyncDocumentClient
+     * @param collectionLink the collection link
+     * @param documents the documents to insert
+     * @param concurrencyLevel the concurrency level
+     * @param <T> the document type
+     */
+    public static <T extends Resource> void bulkInsert(AsyncDocumentClient client, String collectionLink, List<T> documents, int concurrencyLevel) {
+        Flux.fromIterable(documents)
+            .flatMap(doc -> client.createDocument(collectionLink, doc, new RequestOptions(), false), concurrencyLevel)
+            .collectList()
+            .block();
+    }
+
+    /**
+     * Truncates a DocumentCollection using AsyncDocumentClient.
+     * @param client the AsyncDocumentClient
+     * @param collection the DocumentCollection
+     */
+    protected static void truncateCollection(AsyncDocumentClient client, DocumentCollection collection) {
+        logger.info("Truncating DocumentCollection {} ...", collection.getId());
+
+        String collectionLink = collection.getSelfLink();
+        if (collectionLink == null) {
+            collectionLink = TestUtils.getCollectionNameLink(
+                collection.getAltLink().split("/")[1], // dbs/{dbId}/colls/{collId} -> dbId
+                collection.getId());
+        }
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setMaxDegreeOfParallelism(-1);
+
+        QueryFeedOperationState dummyState = TestUtils.createDummyQueryFeedOperationState(
+            ResourceType.Document,
+            OperationType.Query,
+            options,
+            client);
+
+        try {
+            String query = "SELECT * FROM c";
+            final String finalCollectionLink = collectionLink;
+            List<Document> docs = client.queryDocuments(finalCollectionLink, query, dummyState, Document.class)
+                .flatMap(page -> Flux.fromIterable(page.getResults()))
+                .collectList()
+                .block();
+
+            if (docs != null) {
+                for (Document doc : docs) {
+                    try {
+                        client.deleteDocument(doc.getSelfLink(), new RequestOptions()).block();
+                    } catch (Exception e) {
+                        // Ignore ResourceNotFoundException if document was already deleted, or other errors during cleanup
+                    }
+                }
+            }
+        } finally {
+            safeClose(dummyState);
+        }
+    }
+
 }

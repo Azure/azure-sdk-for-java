@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
@@ -15,7 +16,6 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -58,7 +58,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 import static java.lang.annotation.ElementType.METHOD;
 import static org.assertj.core.api.Assertions.assertThat;
 
-//TODO: change to use external TestSuiteBase
 public class ChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
@@ -93,7 +92,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     public ChangeFeedTest() {
-        super(createGatewayRxDocumentClient());
+        super(createInternalGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true));
         subscriberValidationTimeout = TIMEOUT;
     }
 
@@ -575,7 +574,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     public void before_ChangeFeedTest() {
         // set up the client
         client = clientBuilder().build();
-        createdDatabase = SHARED_DATABASE;
+        createdDatabase = SHARED_DATABASE_FOR_INTERNAL_CLIENT;
     }
 
     @AfterClass(groups = { "query", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
