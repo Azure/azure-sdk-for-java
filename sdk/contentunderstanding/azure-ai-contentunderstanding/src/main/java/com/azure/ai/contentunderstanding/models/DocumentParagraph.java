@@ -13,7 +13,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Paragraph in a document, generally consisting of an contiguous sequence of lines
+ * Paragraph in a document, generally consisting of a contiguous sequence of lines
  * with common alignment and spacing.
  */
 @Immutable
