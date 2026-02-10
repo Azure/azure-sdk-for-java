@@ -127,8 +127,8 @@ public final class ObjectField extends ContentField {
         if (getValueObject() != null && getValueObject().containsKey(fieldName)) {
             return getValueObject().get(fieldName);
         }
-        throw LOGGER
-            .logThrowableAsError(new NoSuchElementException("Field '" + fieldName + "' was not found in the object."));
+        throw LOGGER.logThrowableAsError(
+            new java.util.NoSuchElementException("Field '" + fieldName + "' was not found in the object."));
     }
 
     /**

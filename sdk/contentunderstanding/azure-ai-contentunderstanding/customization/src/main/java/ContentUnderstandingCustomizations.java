@@ -161,6 +161,9 @@ public class ContentUnderstandingCustomizations extends Customization {
         // SERVICE-FIX: Add keyFrameTimesMs case-insensitive deserialization
         customizeAudioVisualContentDeserialization(customization, logger);
 
+        // Fix generated polling strategy code (String.valueOf -> getCaseSensitiveName, error msg comma, @Override removal)
+        fixGeneratedPollingStrategyCode(customization, logger);
+
         // Hide methods that expose stringEncoding parameter (if generator still emits them)
         hideStringEncodingMethods(customization, logger);
 
@@ -441,6 +444,55 @@ public class ContentUnderstandingCustomizations extends Customization {
             helperContent);
     }
 
+    /**
+     * Fix generated polling strategy code:
+     * 1) Replace String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER) with
+     *    PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName() in onInitialResponse
+     * 2) Fix error message format string: add missing comma after %d
+     * 3) Remove @Override from getResult in SyncOperationLocationPollingStrategy
+     */
+    private void fixGeneratedPollingStrategyCode(LibraryCustomization customization, Logger logger) {
+        logger.info("Fixing generated polling strategy code");
+
+        // Fix OperationLocationPollingStrategy
+        customization.getClass(IMPLEMENTATION_PACKAGE, "OperationLocationPollingStrategy").customizeAst(ast ->
+            ast.getClassByName("OperationLocationPollingStrategy").ifPresent(clazz -> {
+                for (MethodDeclaration method : clazz.getMethods()) {
+                    method.getBody().ifPresent(body -> {
+                        String bodyStr = body.toString();
+                        String updated = bodyStr
+                            .replace("String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER)",
+                                "PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName()")
+                            .replace("Operation failed or cancelled with status code %d\"",
+                                "Operation failed or cancelled with status code %d,\"");
+                        if (!updated.equals(bodyStr)) {
+                            method.setBody(StaticJavaParser.parseBlock(updated));
+                        }
+                    });
+                }
+            }));
+
+        // Fix SyncOperationLocationPollingStrategy
+        customization.getClass(IMPLEMENTATION_PACKAGE, "SyncOperationLocationPollingStrategy").customizeAst(ast ->
+            ast.getClassByName("SyncOperationLocationPollingStrategy").ifPresent(clazz -> {
+                for (MethodDeclaration method : clazz.getMethods()) {
+                    // Remove @Override from getResult
+                    if ("getResult".equals(method.getNameAsString())) {
+                        method.getAnnotationByClass(Override.class).ifPresent(Node::remove);
+                    }
+                    method.getBody().ifPresent(body -> {
+                        String bodyStr = body.toString();
+                        String updated = bodyStr.replace(
+                            "String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER)",
+                            "PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName()");
+                        if (!updated.equals(bodyStr)) {
+                            method.setBody(StaticJavaParser.parseBlock(updated));
+                        }
+                    });
+                }
+            }));
+    }
+
     // =================== Extensions equivalent implementations ===================
 
     /**
@@ -555,7 +607,8 @@ public class ContentUnderstandingCustomizations extends Customization {
                         + "if (getValueObject() != null && getValueObject().containsKey(fieldName)) {"
                         + "    return getValueObject().get(fieldName);"
                         + "}"
-                        + "throw LOGGER.logThrowableAsError(new java.util.NoSuchElementException(\"Field '\" + fieldName + \"' was not found in the object.\")); }"));
+                        + "throw LOGGER.logThrowableAsError(\n"
+                        + "            new java.util.NoSuchElementException(\"Field '\" + fieldName + \"' was not found in the object.\")); }"));
 
                 // Add getFieldOrDefault(String fieldName) method - returns null if not found
                 clazz.addMethod("getFieldOrDefault", Modifier.Keyword.PUBLIC)

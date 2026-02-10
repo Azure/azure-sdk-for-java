@@ -74,7 +74,7 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
         // Response<?> is Response<BinaryData>
         HttpHeader operationLocationHeader = response.getHeaders().get(PollingUtils.OPERATION_LOCATION_HEADER);
         if (operationLocationHeader != null) {
-            pollingContext.setData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER),
+            pollingContext.setData(PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName(),
                 PollingUtils.getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
         }
         final String httpMethod = response.getRequest().getHttpMethod().name();
@@ -99,7 +99,7 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
             return Mono
                 .error(
                     new AzureException(String.format(
-                        "Operation failed or cancelled with status code %d"
+                        "Operation failed or cancelled with status code %d,"
                             + ", '%s' header: %s, and response body: %s",
                         response.getStatusCode(), PollingUtils.OPERATION_LOCATION_HEADER, operationLocationHeader,
                         response.getValue())));
@@ -141,7 +141,7 @@ public final class OperationLocationPollingStrategy<T, U> extends OperationResou
     public Mono<PollResponse<T>> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         return super.poll(pollingContext, pollResponseType).map(pollResponse -> {
             String operationLocationHeader
-                = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));
+                = pollingContext.getData(PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName());
             String operationId = null;
             if (operationLocationHeader != null) {
                 operationId = PollingUtils.parseOperationId(operationLocationHeader);

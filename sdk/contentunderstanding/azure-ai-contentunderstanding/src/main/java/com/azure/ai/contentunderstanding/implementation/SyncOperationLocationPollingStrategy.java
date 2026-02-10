@@ -75,7 +75,7 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
         // Response<?> is Response<BinaryData>
         HttpHeader operationLocationHeader = response.getHeaders().get(PollingUtils.OPERATION_LOCATION_HEADER);
         if (operationLocationHeader != null) {
-            pollingContext.setData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER),
+            pollingContext.setData(PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName(),
                 PollingUtils.getAbsolutePath(operationLocationHeader.getValue(), endpoint, LOGGER));
         }
         final String httpMethod = response.getRequest().getHttpMethod().name();
@@ -105,7 +105,6 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
     /**
      * {@inheritDoc}
      */
-    @Override
     public U getResult(PollingContext<T> pollingContext, TypeReference<U> resultType) {
         if (pollingContext.getLatestResponse().getStatus() == LongRunningOperationStatus.FAILED) {
             throw LOGGER.logExceptionAsError(new AzureException("Long running operation failed."));
@@ -133,7 +132,8 @@ public final class SyncOperationLocationPollingStrategy<T, U> extends SyncOperat
     @Override
     public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
         PollResponse<T> pollResponse = super.poll(pollingContext, pollResponseType);
-        String operationLocationHeader = pollingContext.getData(String.valueOf(PollingUtils.OPERATION_LOCATION_HEADER));
+        String operationLocationHeader
+            = pollingContext.getData(PollingUtils.OPERATION_LOCATION_HEADER.getCaseSensitiveName());
         String operationId = null;
         if (operationLocationHeader != null) {
             operationId = PollingUtils.parseOperationId(operationLocationHeader);
