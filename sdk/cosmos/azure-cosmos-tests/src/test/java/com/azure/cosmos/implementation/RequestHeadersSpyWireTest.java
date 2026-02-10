@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
@@ -371,9 +372,9 @@ public class RequestHeadersSpyWireTest extends TestSuiteBase {
 
         client = new SpyClientBuilder(this.clientBuilder()).build();
 
-        createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
-        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION);
+        createdDatabase = SHARED_DATABASE_INTERNAL;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL);
 
         client.createDocument(getCollectionLink(createdCollection),
             getDocumentDefinition(), null, false).block();

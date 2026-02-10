@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.cosmos.implementation;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
@@ -23,7 +24,7 @@ public class NetworkFailureTest extends TestSuiteBase {
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public NetworkFailureTest(AsyncDocumentClient.Builder clientBuilder) {
         super(clientBuilder);
-        this.collectionDefinition = getCollectionDefinition();
+        this.collectionDefinition = getInternalCollectionDefinition();
     }
 
     @Test(groups = { "long-emulator" }, timeOut = TIMEOUT)
@@ -33,7 +34,7 @@ public class NetworkFailureTest extends TestSuiteBase {
         try {
             client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder());
 
-            Database database = SHARED_DATABASE;
+            Database database = SHARED_DATABASE_INTERNAL;
 
             Mono<ResourceResponse<DocumentCollection>> createObservable = client
                     .createCollection(database.getSelfLink(), collectionDefinition, null);
@@ -57,7 +58,7 @@ public class NetworkFailureTest extends TestSuiteBase {
 
             FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosException.class).build();
             Instant start = Instant.now();
-            validateFailure(createObservable, validator, TIMEOUT);
+            validateResourceResponseFailure(createObservable, validator, TIMEOUT);
             Instant after = Instant.now();
             assertThat(after.toEpochMilli() - start.toEpochMilli())
                     .isGreaterThanOrEqualTo(ClientRetryPolicy.MaxRetryCount * ClientRetryPolicy.RetryIntervalInMS);

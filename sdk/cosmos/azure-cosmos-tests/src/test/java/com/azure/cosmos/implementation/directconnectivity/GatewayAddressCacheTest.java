@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity;
+import com.azure.cosmos.rx.TestSuiteBase;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.FlakyTestRetryAnalyzer;
@@ -22,7 +23,7 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.TestSuiteBase;
+import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
@@ -1593,11 +1594,11 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
     @BeforeClass(groups = { "direct" }, timeOut = SETUP_TIMEOUT)
     public void before_GatewayAddressCacheTest() {
         client = clientBuilder().build();
-        createdDatabase = SHARED_DATABASE;
+        createdDatabase = SHARED_DATABASE_INTERNAL;
 
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(30000);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
+        createdCollection = createCollection(client, createdDatabase.getId(), getInternalCollectionDefinition(), options);
     }
 
     @AfterClass(groups = { "direct" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -1606,7 +1607,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
+    static protected DocumentCollection getInternalCollectionDefinition() {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/mypk");

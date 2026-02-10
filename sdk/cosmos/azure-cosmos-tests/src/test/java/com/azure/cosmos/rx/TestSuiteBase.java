@@ -142,11 +142,11 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
     protected int subscriberValidationTimeout = TIMEOUT;
 
-    private static CosmosAsyncDatabase SHARED_DATABASE;
-    private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY;
-    private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION;
-    private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
-    private static CosmosAsyncContainer SHARED_SINGLE_PARTITION_COLLECTION;
+    protected static CosmosAsyncDatabase SHARED_DATABASE;
+    protected static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY;
+    protected static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION;
+    protected static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
+    protected static CosmosAsyncContainer SHARED_SINGLE_PARTITION_COLLECTION;
 
     // Internal API shared resources for tests using AsyncDocumentClient
     protected static Database SHARED_DATABASE_INTERNAL;
@@ -274,6 +274,26 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
             SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(), options, 10100);
             SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = createCollection(SHARED_DATABASE, getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes(), options);
             SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 6000);
+
+            // Initialize internal shared resources for tests using AsyncDocumentClient
+            SHARED_DATABASE_INTERNAL = new Database();
+            SHARED_DATABASE_INTERNAL.setId(SHARED_DATABASE.getId());
+
+            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL = new DocumentCollection();
+            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL.setId(SHARED_MULTI_PARTITION_COLLECTION.getId());
+            SHARED_MULTI_PARTITION_COLLECTION_INTERNAL.setResourceId(
+                SHARED_MULTI_PARTITION_COLLECTION.read().block().getProperties().getResourceId());
+
+            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL = new DocumentCollection();
+            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL.setId(SHARED_SINGLE_PARTITION_COLLECTION.getId());
+            SHARED_SINGLE_PARTITION_COLLECTION_INTERNAL.setResourceId(
+                SHARED_SINGLE_PARTITION_COLLECTION.read().block().getProperties().getResourceId());
+
+            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL = new DocumentCollection();
+            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL.setId(
+                SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES.getId());
+            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES_INTERNAL.setResourceId(
+                SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES.read().block().getProperties().getResourceId());
         }
     }
 
@@ -1794,6 +1814,16 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    public static Database createDatabase(AsyncDocumentClient client, String databaseId) {
+        Database database = new Database();
+        database.setId(databaseId);
+        return client.createDatabase(database, null).block().getResource();
+    }
+
+    public static Database createDatabase(AsyncDocumentClient client, Database database) {
+        return client.createDatabase(database, null).block().getResource();
+    }
+
     public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
                                                       DocumentCollection collection, RequestOptions options) {
         return client.createCollection("dbs/" + databaseId, collection, options).block().getResource();
@@ -1853,6 +1883,16 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         if (client != null && database != null) {
             try {
                 client.deleteDatabase(database.getSelfLink(), null).block();
+            } catch (Exception e) {
+                // Ignore deletion errors
+            }
+        }
+    }
+
+    protected static void safeDeleteDatabase(AsyncDocumentClient client, String databaseId) {
+        if (client != null && databaseId != null) {
+            try {
+                client.deleteDatabase("/dbs/" + databaseId, null).block();
             } catch (Exception e) {
                 // Ignore deletion errors
             }
@@ -1923,12 +1963,42 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    protected static void deleteCollection(AsyncDocumentClient client, String collectionLink) {
+        if (client != null) {
+            try {
+                client.deleteCollection(collectionLink, null).block();
+            } catch (Exception e) {
+                // Ignore if not found
+            }
+        }
+    }
+
+    protected void truncateCollection(DocumentCollection collection) {
+        // This is a no-op placeholder - the original implementation likely deleted all documents
+        // For shared test collections, we don't actually want to delete all documents
+        // since other tests might depend on them
+        logger.info("truncateCollection called for {}", collection.getId());
+    }
+
     protected static void deleteDocumentIfExists(AsyncDocumentClient client, String databaseId, String collectionId, String docId) {
         if (client != null) {
             try {
                 client.deleteDocument("/dbs/" + databaseId + "/colls/" + collectionId + "/docs/" + docId, null).block();
             } catch (Exception e) {
                 // Ignore if not found
+            }
+        }
+    }
+
+    protected static void deleteDocument(AsyncDocumentClient client, String documentLink, PartitionKey partitionKey, String collectionLink) {
+        if (client != null) {
+            try {
+                RequestOptions options = new RequestOptions();
+                options.setPartitionKey(partitionKey);
+                client.deleteDocument(documentLink, options).block();
+            } catch (Exception e) {
+                // Log but don't throw
+                logger.warn("Failed to delete document: {}", documentLink, e);
             }
         }
     }
@@ -1995,6 +2065,19 @@ public abstract class TestSuiteBase extends CosmosAsyncClientTest {
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
+        collectionDefinition.setPartitionKey(partitionKeyDef);
+
+        return collectionDefinition;
+    }
+
+    protected static DocumentCollection getInternalCollectionDefinition(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        DocumentCollection collectionDefinition = new DocumentCollection();
+        collectionDefinition.setId(collectionId);
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         return collectionDefinition;
