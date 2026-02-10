@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -115,6 +116,77 @@ public class SerializableAsyncCacheTest {
         collection.setIndexingPolicy(indexingPolicy);
 
         return collection;
+    }
+
+    @Test(groups = { "unit" })
+    public void deserializeWithInvalidClassType_shouldFail() throws Exception {
+        // Create a malicious payload with a different class type
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        
+        // Write a valid SerializableAsyncCollectionCache structure but with a malicious value
+        oos.writeInt(1); // size = 1
+        oos.writeUTF("testKey"); // key
+        
+        // Write a malicious object instead of SerializableDocumentCollection
+        oos.writeObject("MaliciousString");
+        
+        // Write the equality comparer
+        oos.writeObject((IEqualityComparer<DocumentCollection>) (v1, v2) -> v1 == v2);
+        oos.flush();
+        
+        byte[] maliciousBytes = baos.toByteArray();
+        
+        // Attempt to deserialize - should fail with InvalidClassException
+        try {
+            ByteArrayInputStream bais = new ByteArrayInputStream(maliciousBytes);
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            SerializableAsyncCollectionCache cache = (SerializableAsyncCollectionCache) ois.readObject();
+            
+            // Should not reach here
+            assertThat(false).as("Expected InvalidClassException to be thrown").isTrue();
+        } catch (java.io.InvalidClassException e) {
+            // Expected - the malicious class type was rejected
+            assertThat(e.getMessage()).contains("Expected SerializableDocumentCollection");
+        }
+    }
+
+    @Test(groups = { "unit" })
+    public void safeObjectInputStream_rejectsUnauthorizedClasses() throws Exception {
+        // Create a malicious payload with an unauthorized class
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        
+        // Write a malicious object (String instead of SerializableAsyncCollectionCache)
+        oos.writeObject("MaliciousPayload");
+        oos.flush();
+        
+        byte[] maliciousBytes = baos.toByteArray();
+        
+        // Create a CosmosClientMetadataCachesSnapshot with the malicious payload
+        CosmosClientMetadataCachesSnapshot snapshot = new CosmosClientMetadataCachesSnapshot();
+        snapshot.collectionInfoByNameCache = maliciousBytes;
+        
+        // Attempt to deserialize - should fail with InvalidClassException
+        try {
+            AsyncCache<String, DocumentCollection> cache = snapshot.getCollectionInfoByNameCache();
+            
+            // Should not reach here
+            assertThat(false).as("Expected exception to be thrown for unauthorized class").isTrue();
+        } catch (Exception e) {
+            // Expected - the unauthorized class was rejected
+            // The exception could be wrapped in a CosmosException, so check the cause chain
+            Throwable cause = e;
+            boolean foundInvalidClassException = false;
+            while (cause != null && !foundInvalidClassException) {
+                if (cause instanceof java.io.InvalidClassException) {
+                    foundInvalidClassException = true;
+                    assertThat(cause.getMessage()).contains("Unauthorized deserialization attempt");
+                }
+                cause = cause.getCause();
+            }
+            assertThat(foundInvalidClassException).as("Expected InvalidClassException in cause chain").isTrue();
+        }
     }
 }
 

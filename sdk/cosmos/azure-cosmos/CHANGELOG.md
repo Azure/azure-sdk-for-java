@@ -9,6 +9,7 @@
 #### Bugs Fixed
 * Fixed an issue where `query plan` failed with `400` or query return empty result when `CosmosQueryRequestOptions` has partition key filter and  partition key value contains non-ascii character. See [PR 47881](https://github.com/Azure/azure-sdk-for-java/pull/47881)
 * Fixed an issue where operation failed with `400` when configured with pre-trigger or post-trigger with non-ascii character. Only impact for gateway mode. See [PR 47881](https://github.com/Azure/azure-sdk-for-java/pull/47881)
+* **[SECURITY]** Fixed Remote Code Execution (RCE) vulnerability via unsafe Java deserialization in `CosmosClientMetadataCachesSnapshot`, `AsyncCache`, and `DocumentCollection`. Added `SafeObjectInputStream` with class allowlisting to prevent deserialization of unauthorized classes.
 
 #### Other Changes
 * Added `x-ms-hub-region-processing-only` header to allow hub-region stickiness when 404 `READ SESSION NOT AVAIALBLE` is hit for Single-Writer accounts. - [PR 47631](https://github.com/Azure/azure-sdk-for-java/pull/47631)
