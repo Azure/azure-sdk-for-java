@@ -746,17 +746,12 @@ public abstract class IdentityClientBase {
 
                     if (redactedOutput.contains("azd auth login") || redactedOutput.contains("not logged in")) {
                         if (azdCommand.toString().contains("claims")) {
-                            String userFriendlyError = extractUserFriendlyErrorFromAzdOutput(redactedOutput);
-                            if (userFriendlyError != null) {
-                                throw LOGGER
-                                    .logExceptionAsError(new ClientAuthenticationException(userFriendlyError, null));
-                            }
+                            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(extractUserFriendlyErrorFromAzdOutput(redactedOutput), null));
                         }
                         throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                            new CredentialUnavailableException("AzureDeveloperCliCredential authentication unavailable."
-                                + " Please run 'azd auth login' to set up account."));
+                            new CredentialUnavailableException(extractUserFriendlyErrorFromAzdOutput(redactedOutput)));
                     }
-                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(redactedOutput, null));
+                    throw LOGGER.logExceptionAsError(new ClientAuthenticationException(extractUserFriendlyErrorFromAzdOutput(redactedOutput), null));
                 } else {
                     throw LOGGER.logExceptionAsError(
                         new ClientAuthenticationException("Failed to invoke Azure Developer CLI ", null));
@@ -802,7 +797,7 @@ public abstract class IdentityClientBase {
      * Returns null if no messages can be parsed.
      */
     String extractUserFriendlyErrorFromAzdOutput(String output) {
-        if (output == null || output.isEmpty()) {
+        if (output == null || output.trim().isEmpty()) {
             return null;
         }
 
@@ -853,7 +848,7 @@ public abstract class IdentityClientBase {
         }
 
         if (messages.isEmpty()) {
-            return null;
+            return output;
         }
 
         // Prefer the suggestion line if present
