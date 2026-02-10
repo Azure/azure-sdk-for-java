@@ -15,5 +15,5 @@
   <suppress files="com.azure.search.documents.indexes.SearchIndexClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.indexes.SearchIndexerClient.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.implementation.batching.SearchIndexingPublisher.java" checks="io.clientcore.linting.extensions.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector" checks="io.clientcore.linting.extensions.checkstyle.checks.SerializableMethodsCheck" />
+  <suppress files="com.azure.search.documents.indexes.models.SearchIndexerKnowledgeStoreProjectionSelector.java" checks="io.clientcore.linting.extensions.checkstyle.checks.SerializableMethodsCheck" />
 </suppressions>
