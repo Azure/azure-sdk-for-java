@@ -72,4 +72,48 @@ public class FeatureFlagKeyValueSelectorTest {
         assertEquals("test1", labels[1]);
     }
 
+    @Test
+    public void getTagsFilterDefaultTest() {
+        FeatureFlagKeyValueSelector selector = new FeatureFlagKeyValueSelector();
+        // When no tags filter is set, should return null
+        assertNull(selector.getTagsFilter());
+    }
+
+    @Test
+    public void getTagsFilterCustomTest() {
+        FeatureFlagKeyValueSelector selector = new FeatureFlagKeyValueSelector();
+        List<String> tags = Arrays.asList("env=prod", "team=backend");
+        selector.setTagsFilter(tags);
+
+        List<String> result = selector.getTagsFilter();
+        assertEquals(2, result.size());
+        assertEquals("env=prod", result.get(0));
+        assertEquals("team=backend", result.get(1));
+    }
+
+    @Test
+    public void setTagsFilterReturnsSelectorTest() {
+        FeatureFlagKeyValueSelector selector = new FeatureFlagKeyValueSelector();
+        FeatureFlagKeyValueSelector returned = selector.setTagsFilter(Arrays.asList("env=dev"));
+        assertEquals(selector, returned);
+    }
+
+    @Test
+    public void setTagsFilterEmptyListTest() {
+        FeatureFlagKeyValueSelector selector = new FeatureFlagKeyValueSelector();
+        selector.setTagsFilter(new ArrayList<>());
+        List<String> result = selector.getTagsFilter();
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void setTagsFilterSingleTagTest() {
+        FeatureFlagKeyValueSelector selector = new FeatureFlagKeyValueSelector();
+        selector.setTagsFilter(Arrays.asList("environment=production"));
+
+        List<String> result = selector.getTagsFilter();
+        assertEquals(1, result.size());
+        assertEquals("environment=production", result.get(0));
+    }
+
 }
