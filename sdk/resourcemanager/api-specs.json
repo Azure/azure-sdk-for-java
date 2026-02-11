@@ -9,7 +9,19 @@
     "dir": "../appservice/azure-resourcemanager-appservice",
     "source": "specification/web/resource-manager/Microsoft.Web/AppService/readme.md",
     "package": "com.azure.resourcemanager.appservice",
-    "args": "--tag=package-2025-03 --add-inner=AppServiceCertificate --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider --enable-sync-stack=false"
+    "args": "--tag=package-2025-03 --remove-inner=CsmDeploymentStatus --name-for-ungrouped-operations=ResourceProvider --enable-sync-stack=false"
+  },
+  "certificateregistration": {
+    "dir": "../appservice/azure-resourcemanager-appservice",
+    "source": "specification/certificateregistration/resource-manager/Microsoft.CertificateRegistration/CertificateRegistration/readme.md",
+    "package": "com.azure.resourcemanager.appservice",
+    "args": "--tag=package-2024-11 --title=CertificateRegistrationManagementClient --add-inner=AppServiceCertificate --enable-sync-stack=false"
+  },
+  "domainregistration": {
+    "dir": "../appservice/azure-resourcemanager-appservice",
+    "source": "specification/domainregistration/resource-manager/Microsoft.DomainRegistration/DomainRegistration/readme.md",
+    "package": "com.azure.resourcemanager.appservice",
+    "args": "--tag=package-2024-11 --title=DomainRegistrationManagementClient --enable-sync-stack=false"
   },
   "authorization": {
     "dir": "../authorization/azure-resourcemanager-authorization",
