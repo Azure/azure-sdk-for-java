@@ -4,7 +4,7 @@
   <mirrors>
     <!-- Mirror all requests to Azure Artifacts feed, except Confluent (not available as upstream) -->
     <mirror>
-      <id>central</id>
+      <id>test-maven-feed</id>
       <name>Azure Artifacts Maven Mirror</name>
       <url>https://pkgs.dev.azure.com/azure-sdk/public/_packaging/test-maven-feed/maven/v1</url>
       <mirrorOf>*,!confluent</mirrorOf>

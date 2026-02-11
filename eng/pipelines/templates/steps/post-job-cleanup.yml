@@ -14,7 +14,7 @@ steps:
     displayName: 'Clean after tests'
     inputs:
       mavenPomFile: pom.xml
-      options: '$(DefaultTestOptions) -T 1C'
+      options: '$(DefaultTestOptions) -T 1C -o'
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)
@@ -27,7 +27,7 @@ steps:
     displayName: 'Clean after tests for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml
-      options: $(DefaultTestOptions) -amd -T 1C
+      options: $(DefaultTestOptions) -amd -T 1C -o
       mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(JavaTestVersion)

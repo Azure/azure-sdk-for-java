@@ -10,4 +10,4 @@ steps:
   - task: MavenAuthenticate@0
     displayName: 'Maven Authenticate'
     inputs:
-      artifactsFeeds: 'central,azure-sdk-for-java'
+      artifactsFeeds: 'test-maven-feed'
