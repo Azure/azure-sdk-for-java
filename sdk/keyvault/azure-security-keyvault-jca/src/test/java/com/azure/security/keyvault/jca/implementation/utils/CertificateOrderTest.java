@@ -85,34 +85,86 @@ public class CertificateOrderTest {
         X509Certificate cert1 = (X509Certificate) certs[1];
         X509Certificate cert2 = (X509Certificate) certs[2];
 
-        // Print certificate information for debugging
-        System.out.println("PKCS12 Certificate Chain Order:");
-        System.out.println("Cert 0: Subject=" + cert0.getSubjectX500Principal().getName());
-        System.out.println("Cert 0: Issuer=" + cert0.getIssuerX500Principal().getName());
-        System.out.println("Cert 1: Subject=" + cert1.getSubjectX500Principal().getName());
-        System.out.println("Cert 1: Issuer=" + cert1.getIssuerX500Principal().getName());
-        System.out.println("Cert 2: Subject=" + cert2.getSubjectX500Principal().getName());
-        System.out.println("Cert 2: Issuer=" + cert2.getIssuerX500Principal().getName());
+        // Certificate 0 should be the end-entity (leaf) certificate
+        assertTrue(cert0.getSubjectX500Principal().getName().contains("CN=signer"),
+            "First certificate should be the end-entity certificate");
 
-        // Check if the first certificate is the end-entity certificate
-        boolean firstIsLeaf = cert0.getSubjectX500Principal().getName().contains("CN=signer");
+        // Certificate 1 should be the intermediate CA
+        assertTrue(cert1.getSubjectX500Principal().getName().contains("CN=Intermediate CA"),
+            "Second certificate should be the intermediate CA");
 
-        if (!firstIsLeaf) {
-            // If the first cert is not the leaf, the order might be reversed
-            // We expect: signer (leaf), intermediate CA, root CA
-            System.out.println("WARNING: Certificate chain order may be reversed!");
+        // Certificate 2 should be the root CA
+        assertTrue(cert2.getSubjectX500Principal().getName().contains("CN=Root CA"),
+            "Third certificate should be the root CA");
 
-            // Check if it's reversed (root CA, intermediate CA, leaf)
-            assertTrue(cert2.getSubjectX500Principal().getName().contains("CN=signer"),
-                "If not in correct order, the last certificate should be the end-entity certificate");
-        } else {
-            // Expected order: end-entity, intermediate, root
-            assertTrue(cert0.getSubjectX500Principal().getName().contains("CN=signer"),
-                "First certificate should be the end-entity certificate");
-            assertTrue(cert1.getSubjectX500Principal().getName().contains("CN=Intermediate CA"),
-                "Second certificate should be the intermediate CA");
-            assertTrue(cert2.getSubjectX500Principal().getName().contains("CN=Root CA"),
-                "Third certificate should be the root CA");
+        // Verify the chain: cert0 should be issued by cert1
+        assertEquals(cert0.getIssuerX500Principal(), cert1.getSubjectX500Principal(),
+            "End-entity cert should be issued by intermediate CA");
+
+        // Verify the chain: cert1 should be issued by cert2
+        assertEquals(cert1.getIssuerX500Principal(), cert2.getSubjectX500Principal(),
+            "Intermediate CA should be issued by root CA");
+    }
+
+    /**
+     * Test to verify that the orderCertificateChain method correctly orders
+     * a reversed certificate chain (root CA, intermediate, leaf).
+     */
+    @Test
+    public void testOrderCertificateChainReversed() throws CertificateException, IOException, KeyStoreException,
+        NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
+
+        String pemString = new String(
+            Files.readAllBytes(
+                Paths.get("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem")),
+            StandardCharsets.UTF_8);
+
+        Certificate[] certs = CertificateUtil.loadCertificatesFromSecretBundleValue(pemString);
+
+        // Reverse the certificate order to simulate the issue
+        Certificate[] reversedCerts = new Certificate[certs.length];
+        for (int i = 0; i < certs.length; i++) {
+            reversedCerts[i] = certs[certs.length - 1 - i];
         }
+
+        // Now order the reversed chain
+        Certificate[] orderedCerts = CertificateUtil.orderCertificateChain(reversedCerts);
+
+        assertEquals(3, orderedCerts.length, "Should have 3 certificates in chain");
+
+        X509Certificate cert0 = (X509Certificate) orderedCerts[0];
+        X509Certificate cert1 = (X509Certificate) orderedCerts[1];
+        X509Certificate cert2 = (X509Certificate) orderedCerts[2];
+
+        // After ordering, certificate 0 should be the end-entity (leaf) certificate
+        assertTrue(cert0.getSubjectX500Principal().getName().contains("CN=signer"),
+            "First certificate should be the end-entity certificate after ordering");
+
+        // Certificate 1 should be the intermediate CA
+        assertTrue(cert1.getSubjectX500Principal().getName().contains("CN=Intermediate CA"),
+            "Second certificate should be the intermediate CA after ordering");
+
+        // Certificate 2 should be the root CA
+        assertTrue(cert2.getSubjectX500Principal().getName().contains("CN=Root CA"),
+            "Third certificate should be the root CA after ordering");
+    }
+
+    /**
+     * Test to verify that orderCertificateChain handles null and empty arrays correctly.
+     */
+    @Test
+    public void testOrderCertificateChainEdgeCases() {
+        // Test null array
+        Certificate[] result = CertificateUtil.orderCertificateChain(null);
+        assertEquals(null, result, "Should return null for null input");
+
+        // Test empty array
+        result = CertificateUtil.orderCertificateChain(new Certificate[0]);
+        assertEquals(0, result.length, "Should return empty array for empty input");
+
+        // Test single certificate
+        Certificate[] singleCert = new Certificate[1];
+        result = CertificateUtil.orderCertificateChain(singleCert);
+        assertEquals(1, result.length, "Should return single certificate unchanged");
     }
 }

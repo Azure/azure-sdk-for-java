@@ -23,9 +23,12 @@ import java.security.NoSuchProviderException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class CertificateUtil {
@@ -34,11 +37,16 @@ public final class CertificateUtil {
 
     public static Certificate[] loadCertificatesFromSecretBundleValue(String string) throws CertificateException,
         IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
+        Certificate[] certificates;
         if (string.contains(BEGIN_CERTIFICATE)) {
-            return loadCertificatesFromSecretBundleValuePem(string);
+            certificates = loadCertificatesFromSecretBundleValuePem(string);
         } else {
-            return loadCertificatesFromSecretBundleValuePKCS12(string);
+            certificates = loadCertificatesFromSecretBundleValuePKCS12(string);
         }
+
+        // Ensure certificates are in the correct order: end-entity (leaf) → intermediate(s) → root CA
+        // This is required for jarsigner and other Java security tools
+        return orderCertificateChain(certificates);
     }
 
     private static Certificate[] loadCertificatesFromSecretBundleValuePem(InputStream inputStream)
@@ -111,6 +119,102 @@ public final class CertificateUtil {
         // Vault name must be a 3-24 character string, containing only 0-9, a-z, A-Z, and not consecutive -.
         String keyWord = "/certificates/";
         return id.substring(id.indexOf(keyWord) + keyWord.length());
+    }
+
+    /**
+     * Orders a certificate chain to ensure it's in the correct order for jarsigner and Java security tools.
+     * The correct order is: end-entity (leaf) certificate, intermediate CA(s), root CA.
+     *
+     * This method identifies the end-entity certificate (the one not issuing any other certificate in the chain)
+     * and builds the chain from leaf to root by following the issuer relationships.
+     *
+     * @param certificates The array of certificates to order
+     * @return The ordered array of certificates, or the original array if ordering cannot be determined
+     */
+    static Certificate[] orderCertificateChain(Certificate[] certificates) {
+        if (certificates == null || certificates.length <= 1) {
+            return certificates;
+        }
+
+        try {
+            // Convert to X509Certificate for easier manipulation
+            X509Certificate[] x509Certs = new X509Certificate[certificates.length];
+            for (int i = 0; i < certificates.length; i++) {
+                if (!(certificates[i] instanceof X509Certificate)) {
+                    // If not X509, return original order
+                    return certificates;
+                }
+                x509Certs[i] = (X509Certificate) certificates[i];
+            }
+
+            // Create a map of subject DN to certificate for quick lookup
+            Map<String, X509Certificate> subjectToCert = new HashMap<>();
+            for (X509Certificate cert : x509Certs) {
+                subjectToCert.put(cert.getSubjectX500Principal().getName(), cert);
+            }
+
+            // Find the end-entity (leaf) certificate
+            // It's the one that is not the issuer of any other certificate in the chain
+            X509Certificate leafCert = null;
+            for (X509Certificate cert : x509Certs) {
+                boolean isIssuerOfOther = false;
+                String certSubject = cert.getSubjectX500Principal().getName();
+
+                for (X509Certificate otherCert : x509Certs) {
+                    if (cert != otherCert) {
+                        String otherIssuer = otherCert.getIssuerX500Principal().getName();
+                        if (certSubject.equals(otherIssuer)) {
+                            isIssuerOfOther = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isIssuerOfOther) {
+                    leafCert = cert;
+                    break;
+                }
+            }
+
+            if (leafCert == null) {
+                // Couldn't identify leaf certificate, return original order
+                return certificates;
+            }
+
+            // Build the chain from leaf to root
+            List<Certificate> orderedChain = new ArrayList<>();
+            X509Certificate current = leafCert;
+
+            while (current != null && orderedChain.size() < x509Certs.length) {
+                orderedChain.add(current);
+
+                // Find the issuer of the current certificate
+                String issuerDN = current.getIssuerX500Principal().getName();
+                String currentSubjectDN = current.getSubjectX500Principal().getName();
+
+                // Check if this is a self-signed certificate (root CA)
+                if (issuerDN.equals(currentSubjectDN)) {
+                    // Self-signed, we've reached the root
+                    break;
+                }
+
+                // Look for the issuer in the certificate chain
+                X509Certificate issuer = subjectToCert.get(issuerDN);
+                if (issuer == null || issuer == current) {
+                    // No issuer found in chain, or circular reference
+                    break;
+                }
+
+                current = issuer;
+            }
+
+            // Convert back to Certificate array
+            return orderedChain.toArray(new Certificate[0]);
+
+        } catch (Exception e) {
+            // If any error occurs during ordering, return original order
+            return certificates;
+        }
     }
 
 }
