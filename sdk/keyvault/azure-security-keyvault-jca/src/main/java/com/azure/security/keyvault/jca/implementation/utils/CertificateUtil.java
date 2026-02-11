@@ -185,7 +185,7 @@ public final class CertificateUtil {
             List<Certificate> orderedChain = new ArrayList<>();
             X509Certificate current = leafCert;
 
-            while (current != null && orderedChain.size() < x509Certs.length) {
+            while (orderedChain.size() < x509Certs.length) {
                 orderedChain.add(current);
 
                 // Find the issuer of the current certificate
